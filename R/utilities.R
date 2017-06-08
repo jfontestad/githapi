@@ -17,9 +17,9 @@ gh_token <- function() {
   token
 }
 
-# FUNCTION: gh_api_url ------------------------------------------------------------------------
+# FUNCTION: gh_api ----------------------------------------------------------------------------
 # Retrieve the GitHub API URL from environment variable or use default
-gh_api_url <- function() {
+gh_api <- function() {
   api_url <- Sys.getenv("GITHUB_API_URL")
   if (identical(api_url, "")) {
     api_url <- "https://api.github.com"
