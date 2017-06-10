@@ -4,19 +4,25 @@
 \alias{gh_branches}
 \title{Get information about all the head commits in each branch.}
 \usage{
-gh_branches(repo, extended = FALSE, token = gh_token(),
-  api_url = gh_api_url(), ...)
+gh_branches(repo, extended = FALSE, limit = Inf, token = gh_token(),
+  api = gh_api(), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified as "owner/repo".}
+\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+
+\item{extended}{(logical, optional) Whether to return extended information for each branch.
+Warning: this may take some time for a lot of branches. Default: \code{FALSE}.}
+
+\item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
+returns all.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
-
-\item{...}{Parameters passed to \code{gh::gh())}.}
+value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.}
+environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+
+\item{...}{Parameters passed to \code{\link{gh}}.}
 }
 \value{
 A tibble with columns "branch", "sha" and "url". When \code{extended = TRUE} the columns
@@ -24,11 +30,7 @@ A tibble with columns "branch", "sha" and "url". When \code{extended = TRUE} the
   added.
 }
 \description{
-This function returns useful information about the head commits of each branch in the
-repository. If \code{extended = FALSE} a tibble with the columns "branch", "sha" and "url"
-is returned with a row for each branch. If \code{extended = TRUE} the the tibble contains
-the columns "branch", "sha", date", "author_name", "author_email", "committer_name",
-"committer_email", "message" and "url".
+\url{https://developer.github.com/v3/repos/branches/#list-branches}
 }
 \details{
 Note: Extended results requires an separate API call for every required branch. This may

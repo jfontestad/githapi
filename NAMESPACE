@@ -2,6 +2,10 @@
 
 export(gh_branch)
 export(gh_branches)
+export(gh_repo)
+export(gh_repos)
+export(gh_user)
+export(gh_users)
 import(assertthat)
 import(dplyr)
 import(gh)

@@ -1,14 +1,18 @@
 context("repositories api")
 
 #  FUNCTION: gh_repo --------------------------------------------------------------------------
-test_that("gh_repo returns information about a repository", {
+test_that("gh_repo returns a list describing the repository", {
   repo <- gh_repo("ChadGoymer/githapi")
   expect_identical(repo$name, "githapi")
   expect_identical(repo$owner$login, "ChadGoymer")
 })
 
+test_that("gh_repo returns an error is the specified repo does not exist", {
+  expect_error(gh_repo("BobDylan/repo"), "Specified repo does not exist in GitHub: 'BobDylan/repo'")
+})
+
 #  FUNCTION: gh_repos -------------------------------------------------------------------------
-test_that("gh_repos returns information about all the repositories a user or org has", {
+test_that("gh_repos returns a tibble describing all the repositories a user or org has", {
   repos <- gh_repos("ChadGoymer")
   expect_true("githapi" %in% repos$name)
   expect_identical(repos$name, sort(repos$name))
@@ -16,17 +20,31 @@ test_that("gh_repos returns information about all the repositories a user or org
   repos <- gh_repos("ChadGoymer", sort = "updated")
   expect_identical(repos$updated_at, sort(repos$updated_at, decreasing = TRUE))
 
-  # TODO: tests for organisation
+  repos <- gh_repos("tidyverse")
+  expect_true(all(c("dplyr", "tidyr") %in% repos$name))
+})
+
+test_that("gh_repos returns an error is the specified owner does not exist", {
+  expect_error(gh_repos("BobDylan"), "Specified owner does not exist in GitHub: 'BobDylan'")
 })
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
-test_that("gh_branch returns information about a specific branch in the repository", {
+test_that("gh_branch returns a list describing the branch", {
   branch <- gh_branch("master", "ChadGoymer/githapi")
   expect_identical(branch$name, "master")
 })
 
+test_that("gh_branch returns an error is the specified branch or repo does not exist", {
+  expect_error(
+    gh_branch("no_branch", "ChadGoymer/githapi"),
+    "Specified branch or repo does not exist in GitHub: 'no_branch', 'ChadGoymer/githapi'")
+  expect_error(
+    gh_branch("master", "BobDylan/repo"),
+    "Specified branch or repo does not exist in GitHub: 'master', 'BobDylan/repo'")
+})
+
 #  FUNCTION: gh_branches ------------------------------------------------------------------
-test_that("gh_branches returns a tibble of information about the branches", {
+test_that("gh_branches returns a tibble describing all the branches", {
   branches <- gh_branches("ChadGoymer/githapi")
   expect_true(is_tibble(branches))
   expect_true("master" %in% branches$name)
@@ -38,4 +56,10 @@ test_that("gh_branches returns a tibble of information about the branches", {
     names(branches_ext),
     c("name", "sha", "date", "author_name", "author_email", "committer_name",
       "committer_email", "message", "tree_sha", "tree_url", "url"))
+})
+
+test_that("gh_branches returns an error is the specified repo does not exist", {
+  expect_error(
+    gh_branches("BobDylan/repo"),
+    "Specified repo does not exist in GitHub: 'BobDylan/repo'")
 })
