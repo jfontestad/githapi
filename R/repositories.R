@@ -154,9 +154,7 @@ gh_branch <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh}}.
-#' @return A tibble with columns "branch", "sha" and "url". When \code{extended = TRUE} the columns
-#'   "date", "author_name", "author_email", "committer_name", "committer_email" and "message" are
-#'   added.
+#' @return A tibble describing all the branches (see GitHub's API documentation for details).
 #' @export
 gh_branches <- function(
   repo,

@@ -25,9 +25,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh}}.}
 }
 \value{
-A tibble with columns "branch", "sha" and "url". When \code{extended = TRUE} the columns
-  "date", "author_name", "author_email", "committer_name", "committer_email" and "message" are
-  added.
+A tibble describing all the branches (see GitHub's API documentation for details).
 }
 \description{
 \url{https://developer.github.com/v3/repos/branches/#list-branches}
