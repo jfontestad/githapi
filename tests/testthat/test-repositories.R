@@ -13,7 +13,7 @@ test_that("gh_repo returns an error is the specified repo does not exist", {
 })
 
 #  FUNCTION: gh_repos -------------------------------------------------------------------------
-test_that("gh_repos returns a tibble describing all the repositories a user or org has", {
+test_that("gh_repos returns a tibble describing all the repositories a user has", {
   repos <- gh_repos("ChadGoymer")
   expect_true(is_tibble(repos))
   expect_true("githapi" %in% repos$name)
@@ -21,13 +21,30 @@ test_that("gh_repos returns a tibble describing all the repositories a user or o
 
   repos <- gh_repos("ChadGoymer", sort = "updated")
   expect_identical(repos$updated_at, sort(repos$updated_at, decreasing = TRUE))
+})
 
+test_that("gh_repos returns a tibble describing all the repositories an org has", {
   repos <- gh_repos("tidyverse")
+  expect_true(is_tibble(repos))
   expect_true(all(c("dplyr", "tidyr") %in% repos$name))
 })
 
 test_that("gh_repos returns an error is the specified owner does not exist", {
   expect_error(gh_repos("SomeNameThatDoesNotExist"), "Specified owner does not exist in GitHub: 'SomeNameThatDoesNotExist'")
+})
+
+#  FUNCTION: gh_tags ----------------------------------------------------------------------
+test_that("gh_tags returns a tibble describing all the tags", {
+  tags <- gh_tags("ChadGoymer/githapi")
+  expect_true(is_tibble(tags))
+  expect_true("0.0.0" %in% tags$name)
+  expect_identical(names(tags), c("name", "sha", "url", "zipball_url", "tarball_url"))
+})
+
+test_that("gh_tags returns an error is the specified repo does not exist", {
+  expect_error(
+    gh_tags("SomeNameThatDoesNotExist/repo"),
+    "Specified repo does not exist in GitHub: 'SomeNameThatDoesNotExist/repo'")
 })
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------

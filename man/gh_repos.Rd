@@ -5,7 +5,7 @@
 \title{Get information about a user or organisation's repositories.}
 \usage{
 gh_repos(owner, type = "owner", sort = "full_name",
-  direction = ifelse(sort == "full_name", "asc", "desc"), limit = Inf,
+  direction = ifelse(sort == "full_name", "asc", "desc"), limit = 1000,
   token = gh_token(), api = gh_api(), ...)
 }
 \arguments{

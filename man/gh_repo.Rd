@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_repo}
 \alias{gh_repo}
-\title{Get repository}
+\title{Get information about a repository.}
 \usage{
 gh_repo(repo, token = gh_token(), api = gh_api(), ...)
 }

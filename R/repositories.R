@@ -1,5 +1,5 @@
 #  FUNCTION: gh_repo --------------------------------------------------------------------------
-#' Get repository
+#' Get information about a repository.
 #'
 #' \url{https://developer.github.com/v3/repos/#get}
 #'
@@ -60,7 +60,7 @@ gh_repos <- function(
   type      = "owner",
   sort      = "full_name",
   direction = ifelse(sort == "full_name", "asc", "desc"),
-  limit     = Inf,
+  limit     = 1000,
   token     = gh_token(),
   api       = gh_api(),
   ...)
@@ -94,8 +94,50 @@ gh_repos <- function(
   response %>%
     map(flatten_) %>%
     bind_rows %>%
-    select(name, owner_login, owner_type, description, html_url, url, created_at,updated_at, size, open_issues, default_branch) %>%
+    select(name, owner_login, owner_type, description, html_url, url, created_at, updated_at, size, open_issues, default_branch) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+}
+
+#  FUNCTION: gh_tags --------------------------------------------------------------------------
+#' Get information about all the tags in a repository.
+#'
+#' \url{https://developer.github.com/v3/repos/#list-tags}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param limit (integer, optional) The maximum number to return. Default: \code{Inf}, which
+#'   returns all.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh}}.
+#' @return A tibble describing all the tags (see GitHub's API documentation for details).
+#' @export
+gh_tags <- function(
+  repo,
+  limit    = 1000,
+  token    = gh_token(),
+  api      = gh_api(),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.infinite(limit) || is.count(limit))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  response <- try(silent = TRUE, {
+    gh("/repos/:repo/tags", repo = repo,
+       .token = token, .api_url = api, .limit = limit, per_page = 100, ...) %>%
+      map(flatten) %>%
+      bind_rows %>%
+      select(name, sha, url, zipball_url, tarball_url)
+  })
+
+  if (is(response, "try-error") || response == "") {
+    stop("Specified repo does not exist in GitHub: '", repo, "'")
+  }
+
+  response
 }
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
@@ -159,7 +201,7 @@ gh_branch <- function(
 gh_branches <- function(
   repo,
   extended = FALSE,
-  limit    = Inf,
+  limit    = 1000,
   token    = gh_token(),
   api      = gh_api(),
   ...)
