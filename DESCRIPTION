@@ -3,7 +3,7 @@ Title: User-friendly access to the GitHub API for R, consistent with the tidyver
 Version: 0.0.0
 Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("aut", "cre"))
 Description: Provides a suite of functions which simplify working with GitHub's API.
-Imports:
+Depends:
     assertthat,
     gh,
     stringr,

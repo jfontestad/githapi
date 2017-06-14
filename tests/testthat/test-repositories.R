@@ -9,7 +9,7 @@ test_that("gh_repo returns a list describing the repository", {
 })
 
 test_that("gh_repo returns an error is the specified repo does not exist", {
-  expect_error(gh_repo("SomeNameThatDoesNotExist/repo"), "Specified repo does not exist in GitHub: 'SomeNameThatDoesNotExist/repo'")
+  expect_error(gh_repo("SomeNameThatDoesNotExist/repo"))
 })
 
 #  FUNCTION: gh_repos -------------------------------------------------------------------------
@@ -30,7 +30,7 @@ test_that("gh_repos returns a tibble describing all the repositories an org has"
 })
 
 test_that("gh_repos returns an error is the specified owner does not exist", {
-  expect_error(gh_repos("SomeNameThatDoesNotExist"), "Specified owner does not exist in GitHub: 'SomeNameThatDoesNotExist'")
+  expect_error(gh_repos("SomeNameThatDoesNotExist"))
 })
 
 #  FUNCTION: gh_tags ----------------------------------------------------------------------
@@ -42,9 +42,7 @@ test_that("gh_tags returns a tibble describing all the tags", {
 })
 
 test_that("gh_tags returns an error is the specified repo does not exist", {
-  expect_error(
-    gh_tags("SomeNameThatDoesNotExist/repo"),
-    "Specified repo does not exist in GitHub: 'SomeNameThatDoesNotExist/repo'")
+  expect_error(gh_tags("SomeNameThatDoesNotExist/repo"))
 })
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
@@ -55,12 +53,8 @@ test_that("gh_branch returns a list describing the branch", {
 })
 
 test_that("gh_branch returns an error is the specified branch or repo does not exist", {
-  expect_error(
-    gh_branch("no_branch", "ChadGoymer/githapi"),
-    "Specified branch or repo does not exist in GitHub: 'no_branch', 'ChadGoymer/githapi'")
-  expect_error(
-    gh_branch("master", "SomeNameThatDoesNotExist/repo"),
-    "Specified branch or repo does not exist in GitHub: 'master', 'SomeNameThatDoesNotExist/repo'")
+  expect_error(gh_branch("no_branch", "ChadGoymer/githapi"))
+  expect_error(gh_branch("master", "SomeNameThatDoesNotExist/repo"))
 })
 
 #  FUNCTION: gh_branches ------------------------------------------------------------------
@@ -79,7 +73,49 @@ test_that("gh_branches returns a tibble describing all the branches", {
 })
 
 test_that("gh_branches returns an error is the specified repo does not exist", {
-  expect_error(
-    gh_branches("SomeNameThatDoesNotExist/repo"),
-    "Specified repo does not exist in GitHub: 'SomeNameThatDoesNotExist/repo'")
+  expect_error(gh_branches("SomeNameThatDoesNotExist/repo"))
+})
+
+#  FUNCTION: gh_commit ------------------------------------------------------------------------
+test_that("gh_commit returns a list describing the commit", {
+  commit_master <- gh_commit("master", "ChadGoymer/githapi")
+  expect_is(commit_master, "list")
+  expect_true(all(c("sha", "commit", "author", "committer", "files") %in% names(commit_master)))
+
+  commit_d9fe50f <- gh_commit("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  expect_identical(commit_d9fe50f$sha, "d9fe50f8e31d7430df2c5b02442dffb68c854f08")
+  expect_identical(commit_d9fe50f$commit$message, "Initial commit")
+  expect_identical(commit_d9fe50f$author$login, "ChadGoymer")
+  expect_identical(commit_d9fe50f$committer$login, "ChadGoymer")
+  expect_identical(commit_d9fe50f$files[[1]]$filename, "README.md")
+})
+
+test_that("gh_commit returns an error is the specified commit or repo does not exist", {
+  expect_error(gh_commit("no_commit", "ChadGoymer/githapi"))
+  expect_error(gh_commit("master", "SomeNameThatDoesNotExist/repo"))
+})
+
+#  FUNCTION: gh_commits -------------------------------------------------------------------
+test_that("gh_commits returns a tibble describing all the commits on a branch", {
+  commits <- gh_commits("master", "ChadGoymer/githapi")
+  expect_true(is_tibble(commits))
+  expect_true("d9fe50f8e31d7430df2c5b02442dffb68c854f08" %in% commits$sha)
+  expect_identical(
+    names(commits),
+    c("sha", "date", "author_name", "author_email", "committer_name", "committer_email",
+      "message", "tree_sha", "tree_url", "url"))
+})
+
+test_that("gh_commits returns the number of commits specified with extended results", {
+  commits_ext <- gh_commits("master", "ChadGoymer/githapi", limit = 2, extended = TRUE)
+  expect_true(is_tibble(commits_ext))
+  expect_identical(nrow(commits_ext), 2L)
+  expect_identical(
+    names(commits_ext),
+    c("sha", "date", "author_name", "author_email", "committer_name", "committer_email",
+      "message", "tree_sha", "tree_url", "url", "files"))
+})
+
+test_that("gh_commits returns an error is the specified repo does not exist", {
+  expect_error(gh_commits("master", "SomeNameThatDoesNotExist/repo"))
 })

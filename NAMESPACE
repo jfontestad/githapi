@@ -2,6 +2,8 @@
 
 export(gh_branch)
 export(gh_branches)
+export(gh_commit)
+export(gh_commits)
 export(gh_repo)
 export(gh_repos)
 export(gh_tags)
