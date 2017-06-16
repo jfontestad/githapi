@@ -119,3 +119,52 @@ test_that("gh_commits returns the number of commits specified with extended resu
 test_that("gh_commits returns an error is the specified repo does not exist", {
   expect_error(gh_commits("master", "SomeNameThatDoesNotExist/repo"))
 })
+
+#  FUNCTION: gh_compare_commits ---------------------------------------------------------------
+test_that("gh_compare_commits returns information on the differences between two commits", {
+  comparison <- gh_compare_commits(
+    "d9fe50f8e31d7430df2c5b02442dffb68c854f08",
+    "d8a62ccdc3df3e002dbac55390772424b136844a",
+    "ChadGoymer/githapi")
+
+  expect_true(is.tibble(comparison))
+
+  expect_identical(
+    names(comparison),
+    c("sha", "date", "author_name", "author_email",
+      "committer_name", "committer_email", "message", "url"))
+
+  expect_identical(
+    comparison$sha,
+    c("2a1e6b031d75bb97d94ab9ee26272a052da83339", "d8a62ccdc3df3e002dbac55390772424b136844a"))
+})
+
+#  FUNCTION: gh_compare_files -----------------------------------------------------------------
+test_that("gh_compare_files returns a tibble of information of file differences between commits", {
+  comparison <- gh_compare_files(
+    "d9fe50f8e31d7430df2c5b02442dffb68c854f08",
+    "d8a62ccdc3df3e002dbac55390772424b136844a",
+    "ChadGoymer/githapi")
+
+  expect_true(is.tibble(comparison))
+
+  expect_identical(
+    names(comparison),
+    c("filename", "status", "additions", "deletions", "changes", "contents_url"))
+
+  expect_identical(
+    comparison$filename,
+    c(".Rbuildignore",
+      ".gitignore",
+      "DESCRIPTION",
+      "NAMESPACE",
+      "R/githapi.R",
+      "R/repositories.R",
+      "R/utilities.R",
+      "githapi.Rproj",
+      "man/gh_branch.Rd",
+      "man/gh_branches.Rd",
+      "man/githapi.Rd",
+      "tests/testthat.R",
+      "tests/testthat/test-repositories.R"))
+})

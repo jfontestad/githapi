@@ -285,3 +285,82 @@ gh_commits <- function(
 
   commits
 }
+
+
+#  FUNCTION: gh_compare_commits ---------------------------------------------------------------
+#' Compare two commits
+#'
+#' \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
+#'
+#' @param base (string) The base branch name.
+#' @param head (string) The branch to compare to the base.
+#' @param repo (string) The repository specified as "owner/repo".
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh}}.
+#' @return A list describing the commits and the differences (see GitHub's API documentation for
+#'   details).
+#' @export
+gh_compare_commits <- function(
+  base,
+  head,
+  repo,
+  token    = gh_token(),
+  api      = gh_api(),
+  ...)
+{
+  assert_that(is.string(base))
+  assert_that(is.string(head))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh("/repos/:repo/compare/:comp", repo = repo, comp = str_c(base, "...", head),
+     .token = token, .api_url = api, ...) %>%
+    .[["commits"]] %>%
+    map("commit") %>%
+    map(flatten_) %>%
+    bind_rows %>%
+    mutate(sha = basename(url), date = parse_datetime(author_date)) %>%
+    select(sha, date, everything(), -author_date, -tree_sha, -tree_url, -comment_count, -committer_date)
+}
+
+#  FUNCTION: gh_compare_files -----------------------------------------------------------------
+#' Compare the files of two commits
+#'
+#' \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
+#'
+#' @param base (string) The base branch name.
+#' @param head (string) The branch to compare to the base.
+#' @param repo (string) The repository specified as "owner/repo".
+#' @param token (string, optional) The personal access token for GitHub authorisation.
+#'   Default: value stored in the environment variable \code{"GITHUB_TOKEN"} or
+#'   \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh}}.
+#' @return A list describing the files and the differences (see GitHub's API documentation
+#'   for details).
+#' @export
+gh_compare_files <- function(
+  base,
+  head,
+  repo,
+  token    = gh_token(),
+  api      = gh_api(),
+  ...)
+{
+  assert_that(is.string(base))
+  assert_that(is.string(head))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh("/repos/:repo/compare/:comp", repo = repo, comp = str_c(base, "...", head),
+     .token = token, .api_url = api, ...) %>%
+    .[["files"]] %>%
+    bind_rows %>%
+    select(filename, status, additions, deletions, changes, contents_url)
+}

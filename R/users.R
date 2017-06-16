@@ -56,6 +56,7 @@ gh_users <- function(
   assert_that(is.string(api))
 
   gh("/users", .token = token, .api_url = api, .limit = limit, per_page = 1000, ...) %>%
+    .[] %>%
     bind_rows %>%
     select(login, type, html_url, url)
 }
