@@ -307,8 +307,8 @@ gh_compare_commits <- function(
   base,
   head,
   repo,
-  token    = gh_token(),
-  api      = gh_api(),
+  token = gh_token(),
+  api   = gh_api(),
   ...)
 {
   assert_that(is.string(base))
@@ -348,8 +348,8 @@ gh_compare_files <- function(
   base,
   head,
   repo,
-  token    = gh_token(),
-  api      = gh_api(),
+  token = gh_token(),
+  api   = gh_api(),
   ...)
 {
   assert_that(is.string(base))
@@ -363,4 +363,43 @@ gh_compare_files <- function(
     .[["files"]] %>%
     bind_rows %>%
     select(filename, status, additions, deletions, changes, contents_url)
+}
+
+#  FUNCTION: gh_contents ----------------------------------------------------------------------
+#' Get contents of a file.
+#'
+#' url{https://developer.github.com/v3/repos/contents/#get-contents}
+#'
+#' Note: This function can only get the contents of files less than 1MB. For larger files use
+#' \code{gh_git_blob}.
+#'
+#' @param path (string) The path to the file in the repository
+#' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
+#'   the head commit is used.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh}}.
+#' @return A string containing the contents of the specified file.
+#' @export
+gh_contents <- function(
+  path,
+  ref,
+  repo,
+  token = gh_token(),
+  api   = gh_api(),
+  ...)
+{
+  assert_that(is.string(path))
+  assert_that(is.string(ref))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh("/repos/:repo/contents/:path", repo = repo, path = path, ref = ref,
+     .token = token, .api = api,
+     .send_headers = c(Accept = "application/vnd.github.raw")) %>%
+    .[["message"]]
 }
