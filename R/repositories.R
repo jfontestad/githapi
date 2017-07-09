@@ -14,14 +14,14 @@
 gh_repo <- function(
   repo,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/repos/:repo", repo = repo, .token = token, .api_url = api)
+  gh_url("repos", repo, api = api) %>% gh_page(token = token)
 }
 
 #  FUNCTION: gh_repos -------------------------------------------------------------------------
@@ -52,29 +52,25 @@ gh_repos <- function(
   type      = "owner",
   sort      = "full_name",
   direction = ifelse(sort == "full_name", "asc", "desc"),
-  limit     = 1000,
   token     = gh_token(),
-  api       = gh_api(),
+  api       = getOption("github.api"),
   ...)
 {
   assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
   assert_that(is.string(type) && type %in% c("owner", "member"))
   assert_that(is.string(sort) && sort %in% c("created", "updated", "pushed", "full_name"))
   assert_that(is.string(direction) && direction %in% c("asc", "desc"))
-  assert_that(is.infinite(limit) || is.count(limit))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   repos <- try(silent = TRUE, {
-    gh("/orgs/:org/repos", org = owner,
-       type = type, sort = sort, direction = direction,
-       .token = token, .api_url = api, .limit = limit, per_page = 100, ...)
+    gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+      gh_page(token = token, ...)
   })
 
   if (is(repos, "try-error")) {
-    repos <- gh("/users/:user/repos", user = owner,
-       type = type, sort = sort, direction = direction,
-       .token = token, .api_url = api, .limit = limit, per_page = 100, ...)
+    repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+      gh_page(token = token, ...)
   }
 
   repos %>%
@@ -101,18 +97,16 @@ gh_repos <- function(
 #' @export
 gh_tags <- function(
   repo,
-  limit    = 1000,
-  token    = gh_token(),
-  api      = gh_api(),
+  token = gh_token(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.infinite(limit) || is.count(limit))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/repos/:repo/tags", repo = repo,
-     .token = token, .api_url = api, .limit = limit, per_page = 100, ...) %>%
+  gh_url("repos", repo, "tags", api = api) %>%
+    gh_page(...) %>%
     map(flatten) %>%
     bind_rows %>%
     select(name, sha, url, zipball_url, tarball_url)
@@ -136,7 +130,7 @@ gh_branch <- function(
   branch,
   repo,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(branch))
@@ -144,8 +138,8 @@ gh_branch <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/repos/:repo/branches/:branch", repo = repo, branch = branch,
-     .token = token, .api_url = api, ...)
+  gh_url("repos", repo, "branches", branch, api = api) %>%
+    gh_page(token = token, ...)
 }
 
 #  FUNCTION: gh_branches ----------------------------------------------------------------------
@@ -171,19 +165,17 @@ gh_branch <- function(
 gh_branches <- function(
   repo,
   extended = FALSE,
-  limit    = 1000,
   token    = gh_token(),
-  api      = gh_api(),
+  api      = getOption("github.api"),
   ...)
 {
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
   assert_that(is.flag(extended))
-  assert_that(is.infinite(limit) || is.count(limit))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  branches <- gh("/repos/:repo/branches", repo = repo,
-     .token = token, .api_url = api, .limit = limit, per_page = 100, ...) %>%
+  branches <- gh_url("repos", repo, "branches", api = api) %>%
+    gh_page(token = token, ...) %>%
     map(flatten) %>%
     bind_rows
 
@@ -219,7 +211,7 @@ gh_commit <- function(
   ref,
   repo,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(ref))
@@ -227,8 +219,8 @@ gh_commit <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/repos/:repo/commits/:ref", repo = repo, ref = ref,
-     .token = token, .api_url = api, ...)
+  gh_url("repos", repo, "commits", ref, api = api) %>%
+    gh_page(token = token, ...)
 }
 
 #  FUNCTION: gh_commits -----------------------------------------------------------------------
@@ -254,20 +246,18 @@ gh_commits <- function(
   ref,
   repo,
   extended = FALSE,
-  limit    = 1000,
   token    = gh_token(),
-  api      = gh_api(),
+  api      = getOption("github.api"),
   ...)
 {
   assert_that(is.string(ref))
   assert_that(is.flag(extended))
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.infinite(limit) || is.count(limit))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  commits <- gh("/repos/:repo/commits", repo = repo, sha = ref,
-     .token = token, .api_url = api, .limit = limit, per_page = 100, ...) %>%
+  commits <- gh_url("repos", repo, "commits", sha = ref, api = api) %>%
+    gh_page(token = token, ...) %>%
     map("commit") %>%
     map(flatten_) %>%
     bind_rows %>%
@@ -308,7 +298,7 @@ gh_compare_commits <- function(
   head,
   repo,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(base))
@@ -317,8 +307,8 @@ gh_compare_commits <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/repos/:repo/compare/:comp", repo = repo, comp = str_c(base, "...", head),
-     .token = token, .api_url = api, ...) %>%
+  gh_url("repos", repo, "compare", str_c(base, "...", head), api = api) %>%
+    gh_page(token = token, ...) %>%
     .[["commits"]] %>%
     map("commit") %>%
     map(flatten_) %>%
@@ -349,7 +339,7 @@ gh_compare_files <- function(
   head,
   repo,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(base))
@@ -358,8 +348,8 @@ gh_compare_files <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/repos/:repo/compare/:comp", repo = repo, comp = str_c(base, "...", head),
-     .token = token, .api_url = api, ...) %>%
+  gh_url("repos", repo, "compare", str_c(base, "...", head), api = api) %>%
+    gh_page(token = token, ...) %>%
     .[["files"]] %>%
     bind_rows %>%
     select(filename, status, additions, deletions, changes, contents_url)
@@ -389,7 +379,7 @@ gh_contents <- function(
   ref,
   repo,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(path))
@@ -398,8 +388,58 @@ gh_contents <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/repos/:repo/contents/:path", repo = repo, path = path, ref = ref,
-     .token = token, .api = api,
-     .send_headers = c(Accept = "application/vnd.github.raw")) %>%
-    .[["message"]]
+  gh_url("repos", repo, "contents", path, ref = ref, api = api) %>%
+    gh_get(token = token, ...)
+}
+
+#  FUNCTION: gh_download ----------------------------------------------------------------------
+#' Download the entire tree from a commit.
+#'
+#' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
+#'   the head commit is used.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param path (string) The path to save to.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh}}.
+#' @return Full tree of files in specified location.
+#' @export
+gh_download <- function(
+  ref,
+  repo,
+  path,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(ref))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (!file.exists(path)) dir.create(path)
+  archive_path <- file.path(path, str_c(str_replace(repo, "/", "-"), "-", ref, ".zip"))
+  on.exit(unlink(archive_path), add = TRUE)
+
+  gh("/repos/:repo/:archive_format/:ref",
+     repo = repo, archive_format = "zipball", ref = ref,
+     .token = token, .api_url = api,
+     .send_headers = c(Accept = "application/vnd.github.raw"), .content_type = "raw") %>%
+    writeBin(archive_path)
+
+  unzip(archive_path, exdir = path)
+
+  # Tidy up by moving files up a directory level
+  archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
+  on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
+
+  subfolders <- list.dirs(archive_folder, full.names = FALSE)
+  map(file.path(path, subfolders[subfolders != ""]), dir.create)
+
+  files <- list.files(archive_folder, recursive = TRUE)
+  file.rename(file.path(archive_folder, files), file.path(path, files))
+
+  invisible(path)
 }

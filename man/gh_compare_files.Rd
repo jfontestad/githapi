@@ -4,7 +4,8 @@
 \alias{gh_compare_files}
 \title{Compare the files of two commits}
 \usage{
-gh_compare_files(base, head, repo, token = gh_token(), api = gh_api(), ...)
+gh_compare_files(base, head, repo, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{base}{(string) The base branch name.}

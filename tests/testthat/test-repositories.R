@@ -106,10 +106,10 @@ test_that("gh_commits returns a tibble describing all the commits on a branch", 
       "message", "tree_sha", "tree_url", "url"))
 })
 
-test_that("gh_commits returns the number of commits specified with extended results", {
-  commits_ext <- gh_commits("master", "ChadGoymer/githapi", limit = 2, extended = TRUE)
+test_that("gh_commits returns the commits specified with extended results", {
+  commits_ext <- gh_commits("master", "ChadGoymer/githapi", extended = TRUE, page_size = 10L, max_pages  = 10L)
   expect_true(is_tibble(commits_ext))
-  expect_identical(nrow(commits_ext), 2L)
+  expect_true(nrow(commits_ext) < 100L)
   expect_identical(
     names(commits_ext),
     c("sha", "date", "author_name", "author_email", "committer_name", "committer_email",

@@ -5,9 +5,15 @@ flatten_ <- function(x, ..., sep = "_") {
 }
 
 # FUNCTION: gh_token --------------------------------------------------------------------------
-# Retrieve the GitHub personal access token from environment variables
+# Retrieve the GitHub personal access token from the following locations:
+#  - github.token option
+#  - GITHUB_TOKEN environment variable
+#  - GITHUB_PAT environment variable
 gh_token <- function() {
-  token <- Sys.getenv("GITHUB_TOKEN")
+  token <- getOption("github.token")
+  if (is.null(token)) {
+    token <- Sys.getenv("GITHUB_TOKEN")
+  }
   if (identical(token, "")) {
     token <- Sys.getenv("GITHUB_PAT")
   }
@@ -15,14 +21,4 @@ gh_token <- function() {
     stop("Cannot find GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
   }
   token
-}
-
-# FUNCTION: gh_api ----------------------------------------------------------------------------
-# Retrieve the GitHub API URL from environment variable or use default
-gh_api <- function() {
-  api_url <- Sys.getenv("GITHUB_API_URL")
-  if (identical(api_url, "")) {
-    api_url <- "https://api.github.com"
-  }
-  api_url
 }

@@ -14,7 +14,7 @@
 gh_user <- function(
   user,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(user))
@@ -22,7 +22,7 @@ gh_user <- function(
   assert_that(is.string(api))
 
   response <- try(silent = TRUE, {
-    gh("/users/:user", user = user, .token = token, .api_url = api, ...)
+    gh_url("users", user, api = api) %>% gh_page(token = token, ...)
   })
 
   if (is(response, "try-error") || response == "") {
@@ -46,16 +46,15 @@ gh_user <- function(
 #' @return A tibble describing the users (see GitHub's API documentation for more detail).
 #' @export
 gh_users <- function(
-  limit = 1000,
   token = gh_token(),
-  api   = gh_api(),
+  api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.infinite(limit) || is.count(limit))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh("/users", .token = token, .api_url = api, .limit = limit, per_page = 1000, ...) %>%
+  gh_url("users") %>%
+    gh_page(token = token, ...) %>%
     .[] %>%
     bind_rows %>%
     select(login, type, html_url, url)

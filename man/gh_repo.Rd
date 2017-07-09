@@ -4,7 +4,7 @@
 \alias{gh_repo}
 \title{Get information about a repository.}
 \usage{
-gh_repo(repo, token = gh_token(), api = gh_api(), ...)
+gh_repo(repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}

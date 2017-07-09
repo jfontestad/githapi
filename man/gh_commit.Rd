@@ -4,7 +4,7 @@
 \alias{gh_commit}
 \title{Get information about a commit.}
 \usage{
-gh_commit(ref, repo, token = gh_token(), api = gh_api(), ...)
+gh_commit(ref, repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{ref}{(string) A git reference: either a SHA-1, tag or branch. If a branch is specified

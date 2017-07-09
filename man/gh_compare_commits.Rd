@@ -4,8 +4,8 @@
 \alias{gh_compare_commits}
 \title{Compare two commits}
 \usage{
-gh_compare_commits(base, head, repo, token = gh_token(), api = gh_api(),
-  ...)
+gh_compare_commits(base, head, repo, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{base}{(string) The base branch name.}

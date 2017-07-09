@@ -4,7 +4,8 @@
 \alias{gh_branch}
 \title{Get information about a branch.}
 \usage{
-gh_branch(branch, repo, token = gh_token(), api = gh_api(), ...)
+gh_branch(branch, repo, token = gh_token(), api = getOption("github.api"),
+  ...)
 }
 \arguments{
 \item{branch}{(string) The branch name.}

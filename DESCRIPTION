@@ -5,7 +5,8 @@ Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("
 Description: Provides a suite of functions which simplify working with GitHub's API.
 Depends:
     assertthat,
-    gh,
+    httr,
+    jsonlite,
     stringr,
     tibble,
     readr,

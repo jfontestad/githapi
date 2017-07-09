@@ -4,13 +4,10 @@
 \alias{gh_tags}
 \title{Get information about all the tags in a repository.}
 \usage{
-gh_tags(repo, limit = 1000, token = gh_token(), api = gh_api(), ...)
+gh_tags(repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
-
-\item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
-returns all.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
@@ -19,6 +16,9 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
 \item{...}{Parameters passed to \code{\link{gh}}.}
+
+\item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
+returns all.}
 }
 \value{
 A tibble describing all the tags (see GitHub's API documentation for details).

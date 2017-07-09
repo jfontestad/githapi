@@ -5,8 +5,8 @@
 \title{Get information about a user or organisation's repositories.}
 \usage{
 gh_repos(owner, type = "owner", sort = "full_name",
-  direction = ifelse(sort == "full_name", "asc", "desc"), limit = 1000,
-  token = gh_token(), api = gh_api(), ...)
+  direction = ifelse(sort == "full_name", "asc", "desc"),
+  token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{owner}{(string) The user or organisation owning the repository.}
@@ -20,9 +20,6 @@ Default: \code{"owner"}.}
 \item{direction}{(string, optional) Can be one of \code{"asc"} or \code{"desc"}. Default:
 when using \code{"full_name"}: \code{"asc"}, otherwise \code{"desc"}.}
 
-\item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
-returns all.}
-
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
 
@@ -30,6 +27,9 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
 \item{...}{Parameters passed to \code{\link{gh}}.}
+
+\item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
+returns all.}
 }
 \value{
 A tibble describing all the repositories a user or organisation has (see GitHub's

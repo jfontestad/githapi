@@ -4,7 +4,7 @@
 \alias{gh_user}
 \title{Get a single user}
 \usage{
-gh_user(user, token = gh_token(), api = gh_api(), ...)
+gh_user(user, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{user}{(string) The GitHub username of the user.}

@@ -4,7 +4,8 @@
 \alias{gh_contents}
 \title{Get contents of a file.}
 \usage{
-gh_contents(path, ref, repo, token = gh_token(), api = gh_api(), ...)
+gh_contents(path, ref, repo, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{path}{(string) The path to the file in the repository}

@@ -4,11 +4,9 @@
 \alias{gh_users}
 \title{Get all users}
 \usage{
-gh_users(limit = 1000, token = gh_token(), api = gh_api(), ...)
+gh_users(token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
-\item{limit}{(integer, optional) The maximum number to return. Default: 1000.}
-
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
@@ -16,6 +14,8 @@ string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PA
 environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{gh::gh())}.}
+
+\item{limit}{(integer, optional) The maximum number to return. Default: 1000.}
 }
 \value{
 A tibble describing the users (see GitHub's API documentation for more detail).
