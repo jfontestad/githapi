@@ -31,7 +31,7 @@ gh_url <- function(
   if (!identical(length(path), 0L))
     address$path <- file.path(address$path, path)
 
-  query <- dots[names(dots) != ""]
+  query <- dots[names(dots) != "" & !map_lgl(dots, is.null)]
   if (!identical(length(query), 0L))
     address$query <- c(address$query, query)
 

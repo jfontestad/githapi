@@ -4,8 +4,7 @@
 \alias{gh_repos}
 \title{Get information about a user or organisation's repositories.}
 \usage{
-gh_repos(owner, type = "owner", sort = "full_name",
-  direction = ifelse(sort == "full_name", "asc", "desc"),
+gh_repos(owner, type = NULL, sort = NULL, direction = NULL,
   token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{

@@ -179,3 +179,5 @@ test_that("gh_contents returns the text in a specified file", {
     readme_d9fe50f,
     "# githapi\nUser-friendly access to the GitHub API for R, consistent with the tidyverse.\n")
 })
+
+#  FUNCTION: gh_download ----------------------------------------------------------------------

@@ -49,9 +49,9 @@ gh_repo <- function(
 #' @export
 gh_repos <- function(
   owner,
-  type      = "owner",
-  sort      = "full_name",
-  direction = ifelse(sort == "full_name", "asc", "desc"),
+  type      = NULL,
+  sort      = NULL,
+  direction = NULL,
   token     = gh_token(),
   api       = getOption("github.api"),
   ...)
