@@ -42,6 +42,10 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 
 \item{...}{Parameters passed to \code{\link{gh_get}}.}
 }
+\value{
+A tibble describing all the issues a repository has (see GitHub's API documentation for
+  more detail)
+}
 \description{
-List issues for a repository
+\url{https://developer.github.com/v3/issues/#list-issues-for-a-repository}
 }

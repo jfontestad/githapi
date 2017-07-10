@@ -21,7 +21,7 @@ gh_repo <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh_url("repos", repo, api = api) %>% gh_page(token = token)
+  gh_url("repos", repo, api = api) %>% gh_page(token = token, ...)
 }
 
 #  FUNCTION: gh_repos -------------------------------------------------------------------------
