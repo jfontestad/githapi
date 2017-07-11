@@ -57,9 +57,9 @@ gh_repos <- function(
   ...)
 {
   assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
-  assert_that(is.string(type) && type %in% c("owner", "member"))
-  assert_that(is.string(sort) && sort %in% c("created", "updated", "pushed", "full_name"))
-  assert_that(is.string(direction) && direction %in% c("asc", "desc"))
+  assert_that(is.null(type) || is.string(type) && type %in% c("owner", "member"))
+  assert_that(is.null(sort) || is.string(sort) && sort %in% c("created", "updated", "pushed", "full_name"))
+  assert_that(is.null(direction) || is.string(direction) && direction %in% c("asc", "desc"))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -423,10 +423,8 @@ gh_download <- function(
   archive_path <- file.path(path, str_c(str_replace(repo, "/", "-"), "-", ref, ".zip"))
   on.exit(unlink(archive_path), add = TRUE)
 
-  gh("/repos/:repo/:archive_format/:ref",
-     repo = repo, archive_format = "zipball", ref = ref,
-     .token = token, .api_url = api,
-     .send_headers = c(Accept = "application/vnd.github.raw"), .content_type = "raw") %>%
+  gh_url("repos", repo, "zipball", ref, api = api) %>%
+    gh_get(token = token, binary = TRUE, ...) %>%
     writeBin(archive_path)
 
   unzip(archive_path, exdir = path)
@@ -435,7 +433,7 @@ gh_download <- function(
   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
   on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
 
-  subfolders <- list.dirs(archive_folder, full.names = FALSE)
+  subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
   map(file.path(path, subfolders[subfolders != ""]), dir.create)
 
   files <- list.files(archive_folder, recursive = TRUE)
