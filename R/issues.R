@@ -105,11 +105,18 @@ gh_issues <- function(
   })
 
   issues %>%
+    map(function(i) {
+      if (is.null(i$assignee$login)) i$assignee$login <- ""
+      if (is.null(i$milestone$number)) i$milestone$number <- ""
+      if (is.null(i$milestone$title)) i$milestone$title <- ""
+      i
+    }) %>%
     map(flatten_) %>%
     bind_rows() %>%
     mutate(labels = labels) %>%
-    select(number, state, title, body, user_login, labels, assignee_login,
-           milestone_number, milestone_title, created_at, updated_at) %>%
+    select(
+      number, title, body, state, user_login, labels, assignee_login,
+      milestone_number, milestone_title, created_at, updated_at) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
 
@@ -194,7 +201,7 @@ gh_user_issues <- function(
     map(flatten_) %>%
     bind_rows() %>%
     mutate(labels = labels) %>%
-    select(number, state, title, body, user_login, labels, assignee_login,
+    select(number, title, body, state, user_login, labels, assignee_login,
            milestone_number, milestone_title, created_at, updated_at, repository_name) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
