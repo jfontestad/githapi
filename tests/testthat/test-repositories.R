@@ -95,6 +95,13 @@ test_that("gh_commit returns an error is the specified commit or repo does not e
   expect_error(gh_commit("master", "SomeNameThatDoesNotExist/repo"))
 })
 
+#  FUNCTION: gh_commit_sha --------------------------------------------------------------------
+test_that("gh_commit_sha returns a string with the SHA-1", {
+  commit_sha <- gh_commit_sha("0.0.0", "ChadGoymer/githapi")
+  expect_true(is.string(commit_sha))
+  expect_identical(commit_sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
+})
+
 #  FUNCTION: gh_commits -------------------------------------------------------------------
 test_that("gh_commits returns a tibble describing all the commits on a branch", {
   commits <- gh_commits("master", "ChadGoymer/githapi")
@@ -167,6 +174,15 @@ test_that("gh_compare_files returns a tibble of information of file differences 
       "man/githapi.Rd",
       "tests/testthat.R",
       "tests/testthat/test-repositories.R"))
+})
+
+#  FUNCTION: gh_readme ------------------------------------------------------------------------
+test_that("gh_readme returns the text in the README file", {
+  readme_d9fe50f <- gh_readme("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  expect_true(is.string(readme_d9fe50f))
+  expect_identical(
+    readme_d9fe50f,
+    "# githapi\nUser-friendly access to the GitHub API for R, consistent with the tidyverse.\n")
 })
 
 #  FUNCTION: gh_contents ----------------------------------------------------------------------

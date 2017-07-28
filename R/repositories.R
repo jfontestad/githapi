@@ -223,6 +223,37 @@ gh_commit <- function(
     gh_page(token = token, ...)
 }
 
+#  FUNCTION: gh_commit_sha --------------------------------------------------------------------
+#' Get the SHA-1 of a commit reference
+#'
+#' \url{https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference}
+#'
+#' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
+#'   the head commit is used.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh}}.
+#' @return A list describing the branch (see GitHub's API documentation for details).
+#' @export
+gh_commit_sha <- function(
+  ref,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(ref))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "commits", ref, api = api) %>%
+    gh_get(token = token, accept = "application/vnd.github.VERSION.sha", ...)
+}
+
 #  FUNCTION: gh_commits -----------------------------------------------------------------------
 #' Get information about all the history of commits.
 #'
@@ -275,7 +306,6 @@ gh_commits <- function(
 
   commits
 }
-
 
 #  FUNCTION: gh_compare_commits ---------------------------------------------------------------
 #' Compare two commits
@@ -353,6 +383,37 @@ gh_compare_files <- function(
     .[["files"]] %>%
     bind_rows %>%
     select(filename, status, additions, deletions, changes, contents_url)
+}
+
+#  FUNCTION: gh_readme ------------------------------------------------------------------------
+#' Get the README
+#'
+#' url{https://developer.github.com/v3/repos/contents/#get-the-readme}
+#'
+#' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
+#'   the head commit is used.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh}}.
+#' @return A string containing the contents of the README.
+#' @export
+gh_readme <- function(
+  ref,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(ref))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "readme", ref = ref, api = api) %>%
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_contents ----------------------------------------------------------------------

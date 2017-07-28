@@ -4,7 +4,7 @@
 \alias{gh_get}
 \title{Get the contents of a github http request as a string.}
 \usage{
-gh_get(address, binary = FALSE, github_url = getOption("github.url"),
+gh_get(address, binary = FALSE, accept = "application/vnd.github.raw",
   token = gh_token())
 }
 \description{

@@ -6,7 +6,6 @@
     message("Cannot find a GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
 
   github_env <- list(
-    GITHUB_URL = "https://github.com",
     GITHUB_API = "https://api.github.com",
     GITHUB_TOKEN = token)
 

@@ -43,14 +43,14 @@ gh_url <- function(
 #' @export
 gh_get <- function(
   address,
-  binary     = FALSE,
-  github_url = getOption("github.url"),
-  token      = gh_token())
+  binary = FALSE,
+  accept = "application/vnd.github.raw",
+  token  = gh_token())
 {
   request <- GET(
     address,
     add_headers(
-      Accept = "application/vnd.github.raw",
+      Accept = accept,
       Authorization = paste("token", token)))
   stop_for_status(request)
 
@@ -67,15 +67,14 @@ gh_get <- function(
 gh_page <- function(
   address,
   ...,
-  page_size  = 100L,
-  max_pages  = 100L,
-  github_url = getOption("github.url"),
-  token      = gh_token())
+  page_size = 100L,
+  max_pages = 100L,
+  token     = gh_token())
 {
   page_result <- function(page_url) {
     page_url %>%
       build_url %>%
-      gh_get(..., github_url = github_url, token = token) %>%
+      gh_get(..., token = token) %>%
       fromJSON(simplifyDataFrame = FALSE)
   }
 
@@ -93,41 +92,4 @@ gh_page <- function(
   }
 
   result
-}
-
-#  FUNCTION: gh_post --------------------------------------------------------------------------
-#' @export
-gh_post <- function(
-  address,
-  ...,
-  binary     = FALSE,
-  github_url = getOption("github.url"),
-  token      = gh_token())
-{
-  github_app <- oauth_app(app_name, key = app_key, secret = app_secret)
-
-  github <- oauth_endpoint(
-    NULL,
-    authorize = "authorize",
-    access = "access_token",
-    base_url = file.path(github_url, "login/oauth"))
-
-  github_token <- oauth2.0_token(endpoint = github, app = github_app, cache = token_cache)
-
-  body <- list(...)
-  print(body)
-
-  response <- POST(
-    address,
-    body = list(...),
-    encode = "json",
-    add_headers(
-      Accept = "application/vnd.github.v3+json",
-      Authorization = paste("token", token)))
-  stop_for_status(response)
-
-  if (binary)
-    content(response, as = NULL, type = "raw")
-  else
-    content(response, as = "text", type = NULL)
 }
