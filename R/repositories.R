@@ -1,4 +1,4 @@
-#  FUNCTION: gh_repo --------------------------------------------------------------------------
+#  FUNCTION: gh_repository --------------------------------------------------------------------
 #' Get information about a repository.
 #'
 #' \url{https://developer.github.com/v3/repos/#get}
@@ -11,7 +11,7 @@
 #' @param ... Parameters passed to \code{\link{gh}}.
 #' @return A list describing the repository (see GitHub's API documentation for details).
 #' @export
-gh_repo <- function(
+gh_repository <- function(
   repo,
   token = gh_token(),
   api   = getOption("github.api"),
@@ -24,7 +24,7 @@ gh_repo <- function(
   gh_url("repos", repo, api = api) %>% gh_page(token = token, ...)
 }
 
-#  FUNCTION: gh_repos -------------------------------------------------------------------------
+#  FUNCTION: gh_repositories ------------------------------------------------------------------
 #' Get information about a user or organisation's repositories.
 #'
 #' \url{https://developer.github.com/v3/repos/#list-user-repositories}
@@ -47,7 +47,7 @@ gh_repo <- function(
 #' @return A tibble describing all the repositories a user or organisation has (see GitHub's
 #'   API documentation for more detail).
 #' @export
-gh_repos <- function(
+gh_repositories <- function(
   owner,
   type      = NULL,
   sort      = NULL,

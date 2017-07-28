@@ -34,3 +34,39 @@ test_that("gh_user_issues returns a tibble describing all the issues assigned to
   expect_true("This issue has been created for testing the issues API.\r\n" %in% my_issues$body)
   expect_true("ChadGoymer" %in% my_issues$user_login)
 })
+
+#  FUNCTION: gh_assignees --------------------------------------------------------------------
+test_that("gh_assignees returns a tibble describing all the assignees of issues", {
+  assignees <- gh_assignees("ChadGoymer/githapi")
+  expect_is(assignees, "tbl")
+  expect_identical(names(assignees), c("login", "type", "site_admin"))
+  expect_true("ChadGoymer" %in% assignees$login)
+})
+
+#  FUNCTION: gh_issue_comments ----------------------------------------------------------------
+test_that("gh_issue_comments returns a tibble of comments", {
+  issue_1_comments <- gh_issue_comments(1, "ChadGoymer/githapi")
+  expect_is(issue_1_comments, "tbl")
+  expect_identical(
+    names(issue_1_comments),
+    c("id", "body", "user_login", "created_at", "updated_at", "html_url"))
+  expect_true("This is the first comment" %in% issue_1_comments$body)
+
+  all_issue_comments <- gh_issue_comments(repo = "ChadGoymer/githapi")
+  expect_is(all_issue_comments, "tbl")
+  expect_identical(
+    names(all_issue_comments),
+    c("id", "body", "user_login", "created_at", "updated_at", "html_url"))
+  expect_true("This is the first comment" %in% all_issue_comments$body)
+})
+
+#  FUNCTION: gh_issue_comment -----------------------------------------------------------------
+test_that("gh_issue_comment returns a list describing the comment", {
+  first_comment <- gh_issue_comment(316619966, "ChadGoymer/githapi")
+  expect_is(first_comment, "list")
+  expect_true(all(c("id", "user", "created_at", "updated_at", "body") %in% names(first_comment)))
+  expect_identical(first_comment$id, 316619966L)
+  expect_identical(first_comment$user$login, "ChadGoymer")
+  expect_identical(first_comment$created_at, "2017-07-20T07:25:06Z")
+  expect_identical(first_comment$body, "This is the first comment")
+})

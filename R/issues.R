@@ -44,9 +44,11 @@ gh_issue <- function(
 #' @param creator	(string) The user that created the issue.
 #' @param mentioned	(string) A user that's mentioned in the issue.
 #' @param labels	(string) A list of comma separated label names. Example: bug,ui,@high
-#' @param sort	(string) What to sort results by. Can be either created, updated, comments. Default: created
+#' @param sort	(string) What to sort results by. Can be either created, updated, comments.
+#'   Default: created
 #' @param direction	(string) The direction of the sort. Can be either asc or desc. Default: desc
-#' @param since	(string) Only issues updated at or after this time are returned. This is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+#' @param since (string) Only issues updated at or after this time are returned. This is a
+#'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -205,3 +207,118 @@ gh_user_issues <- function(
            milestone_number, milestone_title, created_at, updated_at, repository_name) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
+
+#  FUNCTION: gh_assignees ---------------------------------------------------------------------
+#' List assignees for issues in a repository
+#'
+#' \url{https://developer.github.com/v3/issues/assignees/#list-assignees}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A tibble describing all the issues a repository has (see GitHub's API documentation for
+#'   more detail)
+#' @export
+gh_assignees <- function(
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "assignees", api = api) %>%
+    gh_page(token = token, ...) %>%
+    bind_rows() %>%
+    select(login, type, site_admin)
+}
+
+#  FUNCTION: gh_issue_comments ----------------------------------------------------------------
+#' List comments on an issue
+#'
+#' \url{https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue}
+#'
+#' @param issue_number (integer) The number assigned to the issue.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param since (string) Only issues updated at or after this time are returned. This is a
+#'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the issue (see GitHub's API documentation for details).
+#' @export
+gh_issue_comments <- function(
+  issue_number,
+  repo,
+  since = NULL,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo))
+  assert_that(is.null(since) || is.string(since))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (missing(issue_number)) {
+    comments <- gh_url("repos", repo, "issues/comments", since = since, api = api) %>%
+      gh_page(token = token, ...)
+  } else {
+    assert_that(is.count(issue_number))
+    comments <- gh_url("repos", repo, "issues", issue_number, "comments", since = since, api = api) %>%
+      gh_page(token = token, ...)
+  }
+
+  if (!identical(comments, list())) {
+    comments %>%
+      map(flatten_) %>%
+      bind_rows() %>%
+      select(id, body, user_login, created_at, updated_at, html_url) %>%
+      mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+  } else {
+    tibble(
+      body = character(),
+      user_login = character(),
+      created_at = parse_datetime(character()),
+      updated_at = parse_datetime(character()),
+      html_url = character())
+  }
+}
+
+#  FUNCTION: gh_issue_comment -----------------------------------------------------------------
+#' Get a single issue comment
+#'
+#' \url{https://developer.github.com/v3/issues/comments/#get-a-single-comment}
+#'
+#' @param comment_id (integer) The number assigned to the comment.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the issue comment (see GitHub's API documentation for details).
+#' @export
+gh_issue_comment <- function(
+  comment_id,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(comment_id))
+  assert_that(is.string(repo))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "issues/comments", comment_id, api = api) %>%
+    gh_page(token = token, ...)
+}
+

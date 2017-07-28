@@ -1,30 +1,30 @@
 context("repositories api")
 
-#  FUNCTION: gh_repo --------------------------------------------------------------------------
-test_that("gh_repo returns a list describing the repository", {
-  repo <- gh_repo("ChadGoymer/githapi")
+#  FUNCTION: gh_repository --------------------------------------------------------------------
+test_that("gh_repository returns a list describing the repository", {
+  repo <- gh_repository("ChadGoymer/githapi")
   expect_is(repo, "list")
   expect_identical(repo$name, "githapi")
   expect_identical(repo$owner$login, "ChadGoymer")
 })
 
-test_that("gh_repo returns an error is the specified repo does not exist", {
-  expect_error(gh_repo("SomeNameThatDoesNotExist/repo"))
+test_that("gh_repository returns an error is the specified repo does not exist", {
+  expect_error(gh_repository("SomeNameThatDoesNotExist/repo"))
 })
 
-#  FUNCTION: gh_repos -------------------------------------------------------------------------
-test_that("gh_repos returns a tibble describing all the repositories a user has", {
-  repos <- gh_repos("ChadGoymer")
+#  FUNCTION: gh_repositories ------------------------------------------------------------------
+test_that("gh_repositories returns a tibble describing all the repositories a user has", {
+  repos <- gh_repositories("ChadGoymer")
   expect_true(is_tibble(repos))
   expect_true("githapi" %in% repos$name)
   expect_identical(repos$name, sort(repos$name))
 
-  repos <- gh_repos("ChadGoymer", sort = "updated")
+  repos <- gh_repositories("ChadGoymer", sort = "updated")
   expect_identical(repos$updated_at, sort(repos$updated_at, decreasing = TRUE))
 })
 
-test_that("gh_repos returns a tibble describing all the repositories an org has", {
-  repos <- gh_repos("tidyverse")
+test_that("gh_repositories returns a tibble describing all the repositories an org has", {
+  repos <- gh_repositories("tidyverse")
   expect_true(is_tibble(repos))
   expect_true(all(c("dplyr", "tidyr") %in% repos$name))
 })

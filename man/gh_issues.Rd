@@ -28,11 +28,13 @@ user, and * for issues assigned to any user.}
 
 \item{labels}{(string) A list of comma separated label names. Example: bug,ui,@high}
 
-\item{sort}{(string) What to sort results by. Can be either created, updated, comments. Default: created}
+\item{sort}{(string) What to sort results by. Can be either created, updated, comments.
+Default: created}
 
 \item{direction}{(string) The direction of the sort. Can be either asc or desc. Default: desc}
 
-\item{since}{(string) Only issues updated at or after this time are returned. This is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
+\item{since}{(string) Only issues updated at or after this time are returned. This is a
+timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
