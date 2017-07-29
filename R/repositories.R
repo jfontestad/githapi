@@ -397,7 +397,7 @@ gh_compare_files <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A string containing the contents of the README.
 #' @export
 gh_readme <- function(
@@ -432,7 +432,7 @@ gh_readme <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A string containing the contents of the specified file.
 #' @export
 gh_contents <- function(
