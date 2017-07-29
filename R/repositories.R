@@ -205,7 +205,7 @@ gh_branches <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh}}.
-#' @return A list describing the branch (see GitHub's API documentation for details).
+#' @return A list describing the commit (see GitHub's API documentation for details).
 #' @export
 gh_commit <- function(
   ref,

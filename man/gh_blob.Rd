@@ -7,7 +7,7 @@
 gh_blob(sha, repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
-\item{sha}{(string) SHA of the blob}
+\item{sha}{(string) SHA-1 of the blob}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
