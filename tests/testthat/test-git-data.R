@@ -31,3 +31,14 @@ test_that("gh_git_reference returns information about a git reference", {
   expect_is(tag_v0.1.0, "list")
   expect_identical(tag_v0.1.0$ref, "refs/tags/v0.1.0")
 })
+
+#  FUNCTION: gh_git_references ----------------------------------------------------------------
+test_that("gh_git_references returns a tibble of information about references", {
+  references <- gh_git_references("ChadGoymer/githapi")
+  expect_is(references, "tbl")
+  expect_identical(
+    names(references),
+    c("name", "type", "object_type", "object_sha", "ref", "url"))
+  expect_true(all(c("master", "v0.0.0") %in% references$name))
+  expect_true("ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964" %in% references$object_sha)
+})
