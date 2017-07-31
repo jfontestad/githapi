@@ -52,3 +52,14 @@ test_that("gh_git_tags returns a list of information about a tag", {
   expect_identical(test_tag$tagger$name, "Chad Goymer")
   expect_identical(test_tag$object$sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
 })
+
+#  FUNCTION: gh_git_tree ----------------------------------------------------------------------
+test_that("gh_git_tree returns a tibble of information about the files in a commit", {
+  tree <- gh_git_tree("ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964", "ChadGoymer/githapi")
+  expect_is(tree, "tbl")
+  expect_identical(names(tree), c("path", "type", "sha", "size", "url"))
+  expect_true(all(c("README.md", "R/githapi.R") %in% tree$path))
+  expect_true(all(
+    c("abb7f8ce52e6bdea33170ec8edbd6cfb1eca0722", "9b3517bffc7f42185b6f3465ac1f739547157943") %in%
+      tree$sha))
+})

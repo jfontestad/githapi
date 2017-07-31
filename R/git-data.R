@@ -151,3 +151,38 @@ gh_git_tag <- function(
   gh_url("repos", repo, "git/tags", sha, api = api) %>%
     gh_page(token = token, ...)
 }
+
+#  FUNCTION: gh_git_tree ----------------------------------------------------------------------
+#' Get a tree
+#'
+#' url{https://developer.github.com/v3/git/trees/#get-a-tree}
+#'
+#' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
+#'   the head commit is used.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the files in a commit (see GitHub's API documentation for details).
+#' @export
+gh_git_tree <- function(
+  ref,
+  repo,
+  recursive = TRUE,
+  token     = gh_token(),
+  api       = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(ref))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "git/trees", ref, recursive = as.integer(recursive), api = api) %>%
+    gh_page(...) %>%
+    .[["tree"]] %>%
+    bind_rows() %>%
+    select(path, type, sha, size, url)
+}
