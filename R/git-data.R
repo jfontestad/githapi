@@ -121,3 +121,33 @@ gh_git_references <- function(
     mutate(name = basename(ref), type = ref_map[dirname(ref)]) %>%
     select(name, type, object_type, object_sha, ref, url)
 }
+
+#  FUNCTION: gh_git_tag -----------------------------------------------------------------------
+#' Get an annotated tag
+#'
+#' url{https://developer.github.com/v3/git/tags/#get-a-tag}
+#'
+#' @param sha (string) The SHA-1 of the tag.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A list describing the tag (see GitHub's API documentation for details).
+#' @export
+gh_git_tag <- function(
+  sha,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(sha) && identical(str_length(sha), 40L))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "git/tags", sha, api = api) %>%
+    gh_page(token = token, ...)
+}

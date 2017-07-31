@@ -42,3 +42,13 @@ test_that("gh_git_references returns a tibble of information about references", 
   expect_true(all(c("master", "v0.0.0") %in% references$name))
   expect_true("ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964" %in% references$object_sha)
 })
+
+#  FUNCTION: gh_git_tag -----------------------------------------------------------------------
+test_that("gh_git_tags returns a list of information about a tag", {
+  test_tag <- gh_git_tag("30426b4f967d8c253b1bb5a67c5838dc306aab50", "ChadGoymer/githapi")
+  expect_is(test_tag, "list")
+  expect_identical(names(test_tag), c("sha", "url", "tagger", "object", "tag", "message"))
+  expect_identical(test_tag$sha, "30426b4f967d8c253b1bb5a67c5838dc306aab50")
+  expect_identical(test_tag$tagger$name, "Chad Goymer")
+  expect_identical(test_tag$object$sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
+})
