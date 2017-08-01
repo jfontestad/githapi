@@ -70,3 +70,12 @@ test_that("gh_issue_comment returns a list describing the comment", {
   expect_identical(first_comment$created_at, "2017-07-20T07:25:06Z")
   expect_identical(first_comment$body, "This is the first comment")
 })
+
+#  FUNCTION: gh_label -------------------------------------------------------------------------
+test_that("gh_label returns a list describing the label", {
+  label <- gh_label("bug", "ChadGoymer/githapi")
+  expect_is(label, "list")
+  expect_identical(names(label), c("id", "url", "name", "color", "default"))
+  expect_identical(label$name, "bug")
+  expect_identical(label$color, "b60205")
+})

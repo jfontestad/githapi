@@ -9,7 +9,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the issue (see GitHub's API documentation for details).
 #' @export
 gh_issue <- function(
@@ -53,7 +53,7 @@ gh_issue <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the issues a repository has (see GitHub's API documentation for
 #'   more detail)
 #' @export
@@ -149,7 +149,7 @@ gh_issues <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the issues a user has assigned to them (see GitHub's API
 #'   documentation for more detail)
 #' @export
@@ -218,7 +218,7 @@ gh_user_issues <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the issues a repository has (see GitHub's API documentation for
 #'   more detail)
 #' @export
@@ -251,7 +251,7 @@ gh_assignees <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the issue (see GitHub's API documentation for details).
 #' @export
 gh_issue_comments <- function(
@@ -303,7 +303,7 @@ gh_issue_comments <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the issue comment (see GitHub's API documentation for details).
 #' @export
 gh_issue_comment <- function(
@@ -322,3 +322,32 @@ gh_issue_comment <- function(
     gh_page(token = token, ...)
 }
 
+#  FUNCTION: gh_label -------------------------------------------------------------------------
+#' Get a single label
+#'
+#' url{https://developer.github.com/v3/issues/labels/#get-a-single-label}
+#'
+#' @param name (string) The name of the label.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A list describing the label (see GitHub's API documentation for details).
+#' @export
+gh_label <- function(
+  name,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(name))
+  assert_that(is.string(repo))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "labels", name, api = api) %>%
+    gh_page(token = token, ...)
+}
