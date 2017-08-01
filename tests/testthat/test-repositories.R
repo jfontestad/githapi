@@ -37,7 +37,7 @@ test_that("gh_repos returns an error is the specified owner does not exist", {
 test_that("gh_tags returns a tibble describing all the tags", {
   tags <- gh_tags("ChadGoymer/githapi")
   expect_true(is_tibble(tags))
-  expect_true("0.0.0" %in% tags$name)
+  expect_true("v0.0.0" %in% tags$name)
   expect_identical(names(tags), c("name", "sha", "url", "zipball_url", "tarball_url"))
 })
 
@@ -97,7 +97,7 @@ test_that("gh_commit returns an error is the specified commit or repo does not e
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 test_that("gh_commit_sha returns a string with the SHA-1", {
-  commit_sha <- gh_commit_sha("0.0.0", "ChadGoymer/githapi")
+  commit_sha <- gh_commit_sha("v0.0.0", "ChadGoymer/githapi")
   expect_true(is.string(commit_sha))
   expect_identical(commit_sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
 })
