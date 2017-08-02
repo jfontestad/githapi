@@ -15,7 +15,7 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
-\item{...}{Parameters passed to \code{\link{gh}}.}
+\item{...}{Parameters passed to \code{\link{gh_page}}.}
 
 \item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
 returns all.}

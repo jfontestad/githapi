@@ -8,7 +8,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the repository (see GitHub's API documentation for details).
 #' @export
 gh_repository <- function(
@@ -43,7 +43,7 @@ gh_repository <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the repositories a user or organisation has (see GitHub's
 #'   API documentation for more detail).
 #' @export
@@ -92,7 +92,7 @@ gh_repositories <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the tags (see GitHub's API documentation for details).
 #' @export
 gh_tags <- function(
@@ -123,7 +123,7 @@ gh_tags <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the branch (see GitHub's API documentation for details).
 #' @export
 gh_branch <- function(
@@ -159,7 +159,7 @@ gh_branch <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
 #' @export
 gh_branches <- function(
@@ -204,7 +204,7 @@ gh_branches <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the commit (see GitHub's API documentation for details).
 #' @export
 gh_commit <- function(
@@ -235,7 +235,7 @@ gh_commit <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the branch (see GitHub's API documentation for details).
 #' @export
 gh_commit_sha <- function(
@@ -270,7 +270,7 @@ gh_commit_sha <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
 #' @export
 gh_commits <- function(
@@ -319,7 +319,7 @@ gh_commits <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the commits and the differences (see GitHub's API documentation for
 #'   details).
 #' @export
@@ -360,7 +360,7 @@ gh_compare_commits <- function(
 #'   \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the files and the differences (see GitHub's API documentation
 #'   for details).
 #' @export
@@ -464,7 +464,7 @@ gh_contents <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return Full tree of files in specified location.
 #' @export
 gh_download <- function(
