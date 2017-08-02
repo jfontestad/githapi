@@ -100,3 +100,15 @@ test_that("gh_labels returns a tibble of information about the labels", {
   expect_true("enhancement" %in% labels$name)
   expect_true("1d76db" %in% labels$color)
 })
+
+#  FUNCTION: gh_milestone ---------------------------------------------------------------------
+test_that("gh_milestone returns a list describing a milestone", {
+  milestone <- gh_milestone(1, "ChadGoymer/githapi")
+  expect_is(milestone, "list")
+  expect_identical(
+    names(milestone),
+    c("url", "html_url", "labels_url", "id", "number", "title", "description", "creator",
+      "open_issues", "closed_issues", "state", "created_at", "updated_at", "due_on", "closed_at"))
+  expect_identical(milestone$number, 1L)
+  expect_identical(milestone$title, "v0.2.0")
+})

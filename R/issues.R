@@ -399,3 +399,34 @@ gh_labels <- function(
     bind_rows() %>%
     select(id, name, color, default, url)
 }
+
+
+#  FUNCTION: gh_milestone ---------------------------------------------------------------------
+#' Get a single milestone
+#'
+#' url{https://developer.github.com/v3/issues/milestones/#get-a-single-milestone}
+#'
+#' @param milestone (integer) The number assigned to the milestone.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A list describing the milestone (see GitHub's API documentation for details).
+#' @export
+gh_milestone <- function(
+  milestone,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(milestone))
+  assert_that(is.string(repo))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "milestones", milestone, api = api) %>%
+    gh_page(token = token, ...)
+}
