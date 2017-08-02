@@ -4,11 +4,11 @@
 \alias{gh_issue}
 \title{Get a single issue}
 \usage{
-gh_issue(issue_number, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_issue(issue, repo, token = gh_token(), api = getOption("github.api"),
+  ...)
 }
 \arguments{
-\item{issue_number}{(integer) The number assigned to the issue.}
+\item{issue}{(integer) The number assigned to the issue.}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 

@@ -87,4 +87,16 @@ test_that("gh_labels returns a tibble of information about the labels", {
   expect_identical(names(labels), c("id", "name", "color", "default", "url"))
   expect_true("bug" %in% labels$name)
   expect_true("b60205" %in% labels$color)
+
+  issue_labels <- gh_labels("ChadGoymer/githapi", issue = 1)
+  expect_is(labels, "tbl")
+  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+  expect_true("test" %in% labels$name)
+  expect_true("fbca04" %in% labels$color)
+
+  milestone_labels <- gh_labels("ChadGoymer/githapi", milestone = 1)
+  expect_is(labels, "tbl")
+  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+  expect_true("enhancement" %in% labels$name)
+  expect_true("1d76db" %in% labels$color)
 })

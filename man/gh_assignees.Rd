@@ -18,7 +18,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
-A tibble describing all the issues a repository has (see GitHub's API documentation for
+A tibble describing all the assignees (see GitHub's API documentation for
   more detail)
 }
 \description{
