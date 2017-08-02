@@ -112,3 +112,15 @@ test_that("gh_milestone returns a list describing a milestone", {
   expect_identical(milestone$number, 1L)
   expect_identical(milestone$title, "v0.2.0")
 })
+
+#  FUNCTION: gh_milestones --------------------------------------------------------------------
+test_that("gh_milestones returns a tibble describing the milestones", {
+  milestones <- gh_milestones("ChadGoymer/githapi", state = "all")
+  expect_is(milestones, "tbl")
+  expect_identical(
+    names(milestones),
+    c("id", "number", "title", "description", "creator_login", "open_issues",
+      "closed_issues", "state", "created_at", "updated_at", "url"))
+  expect_true(1L %in% milestones$number)
+  expect_true("v0.2.0" %in% milestones$title)
+})

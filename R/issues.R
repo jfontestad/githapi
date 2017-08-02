@@ -430,3 +430,51 @@ gh_milestone <- function(
   gh_url("repos", repo, "milestones", milestone, api = api) %>%
     gh_page(token = token, ...)
 }
+
+
+#  FUNCTION: gh_milestones --------------------------------------------------------------------
+#' List milestones for a repository
+#'
+#' url{https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param state (string) The state of the milestone. Either open, closed, or all. Default: open
+#' @param sort (string) What to sort results by. Either due_on or completeness. Default: due_on
+#' @param direction (string) The direction of the sort. Either asc or desc. Default: asc
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the milestones (see GitHub's API documentation for details).
+#' @export
+gh_milestones <- function(
+  repo,
+  state     = NULL,
+  sort      = NULL,
+  direction = NULL,
+  token     = gh_token(),
+  api       = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo))
+  assert_that(is.null(state) || is.string(state))
+  assert_that(is.null(sort) || is.string(sort))
+  assert_that(is.null(direction) || is.string(direction))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url(
+    "repos", repo, "milestones", api = api,
+    state = state, sort = sort, direction = direction) %>%
+    gh_page(token = token, ...) %>%
+    map(flatten_) %>%
+    bind_rows() %>%
+    mutate(
+      number = as.integer(number),
+      created_at = parse_datetime(created_at),
+      updated_at = parse_datetime(updated_at)) %>%
+    select(
+      id, number, title, description, creator_login, open_issues,
+      closed_issues, state, created_at, updated_at, url)
+}
