@@ -70,3 +70,57 @@ test_that("gh_issue_comment returns a list describing the comment", {
   expect_identical(first_comment$created_at, "2017-07-20T07:25:06Z")
   expect_identical(first_comment$body, "This is the first comment")
 })
+
+#  FUNCTION: gh_label -------------------------------------------------------------------------
+test_that("gh_label returns a list describing the label", {
+  label <- gh_label("bug", "ChadGoymer/githapi")
+  expect_is(label, "list")
+  expect_identical(names(label), c("id", "url", "name", "color", "default"))
+  expect_identical(label$name, "bug")
+  expect_identical(label$color, "b60205")
+})
+
+#  FUNCTION: gh_labels ------------------------------------------------------------------------
+test_that("gh_labels returns a tibble of information about the labels", {
+  labels <- gh_labels("ChadGoymer/githapi")
+  expect_is(labels, "tbl")
+  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+  expect_true("bug" %in% labels$name)
+  expect_true("b60205" %in% labels$color)
+
+  issue_labels <- gh_labels("ChadGoymer/githapi", issue = 1)
+  expect_is(labels, "tbl")
+  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+  expect_true("test" %in% labels$name)
+  expect_true("fbca04" %in% labels$color)
+
+  milestone_labels <- gh_labels("ChadGoymer/githapi", milestone = 1)
+  expect_is(labels, "tbl")
+  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+  expect_true("enhancement" %in% labels$name)
+  expect_true("1d76db" %in% labels$color)
+})
+
+#  FUNCTION: gh_milestone ---------------------------------------------------------------------
+test_that("gh_milestone returns a list describing a milestone", {
+  milestone <- gh_milestone(1, "ChadGoymer/githapi")
+  expect_is(milestone, "list")
+  expect_identical(
+    names(milestone),
+    c("url", "html_url", "labels_url", "id", "number", "title", "description", "creator",
+      "open_issues", "closed_issues", "state", "created_at", "updated_at", "due_on", "closed_at"))
+  expect_identical(milestone$number, 1L)
+  expect_identical(milestone$title, "v0.2.0")
+})
+
+#  FUNCTION: gh_milestones --------------------------------------------------------------------
+test_that("gh_milestones returns a tibble describing the milestones", {
+  milestones <- gh_milestones("ChadGoymer/githapi", state = "all")
+  expect_is(milestones, "tbl")
+  expect_identical(
+    names(milestones),
+    c("id", "number", "title", "description", "creator_login", "open_issues",
+      "closed_issues", "state", "created_at", "updated_at", "url"))
+  expect_true(1L %in% milestones$number)
+  expect_true("v0.2.0" %in% milestones$title)
+})

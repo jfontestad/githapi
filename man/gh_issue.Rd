@@ -4,11 +4,11 @@
 \alias{gh_issue}
 \title{Get a single issue}
 \usage{
-gh_issue(issue_number, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_issue(issue, repo, token = gh_token(), api = getOption("github.api"),
+  ...)
 }
 \arguments{
-\item{issue_number}{(integer) The number assigned to the issue.}
+\item{issue}{(integer) The number assigned to the issue.}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
@@ -18,7 +18,7 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
 A list describing the issue (see GitHub's API documentation for details).
