@@ -79,3 +79,12 @@ test_that("gh_label returns a list describing the label", {
   expect_identical(label$name, "bug")
   expect_identical(label$color, "b60205")
 })
+
+#  FUNCTION: gh_labels ------------------------------------------------------------------------
+test_that("gh_labels returns a tibble of information about the labels", {
+  labels <- gh_labels("ChadGoymer/githapi")
+  expect_is(labels, "tbl")
+  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+  expect_true("bug" %in% labels$name)
+  expect_true("b60205" %in% labels$color)
+})
