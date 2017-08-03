@@ -61,3 +61,48 @@ gh_organizations <- function(
     bind_rows() %>%
     select(id, name = login, description, url)
 }
+
+#  FUNCTION: gh_member ------------------------------------------------------------------------
+#' Check membership
+#'
+#' url{https://developer.github.com/v3/orgs/members/#check-membership}
+#'
+#' @param user (string, optional) The GitHub username of the user.
+#' @param org (string) The name of the organization.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return TRUE if the user is a member, FALSE otherwise (see GitHub's API documentation for
+#'   details).
+#' @export
+gh_member <- function(
+  user,
+  org,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(user))
+  assert_that(is.string(org))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  response <- try(silent = TRUE, {
+    gh_url("orgs", org, "members", user, api = api) %>%
+      gh_get(token = token, ...)
+  })
+
+  if (identical(response, "")) {
+    TRUE
+  } else {
+    FALSE
+  }
+}
+
+
+
+
+# Public members list	https://developer.github.com/v3/orgs/members/#public-members-list		gh_members	GET /orgs/:org/public_members
+#

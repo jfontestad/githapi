@@ -21,3 +21,9 @@ test_that("gh_organizations returns a tibble describing the organizations", {
   expect_identical(names(hadley_orgs), c("id", "name", "description", "url"))
   expect_true("tidyverse" %in% hadley_orgs$name)
 })
+
+#  FUNCTION: gh_member ------------------------------------------------------------------------
+test_that("gh_member returns TRUE if user is a member and FALSE otherwise", {
+  expect_true(gh_member("hadley", "tidyverse"))
+  expect_false(gh_member("doesnotexist", "tidyverse"))
+})
