@@ -35,3 +35,9 @@ test_that("gh_members returns a tibble describing the members", {
   expect_identical(names(tidy_members), c("id", "login", "type", "site_admin", "url"))
   expect_true("hadley" %in% tidy_members$login)
 })
+
+#  FUNCTION: gh_membership --------------------------------------------------------------------
+#  TODO: set up an organization so it can be tested
+
+#  FUNCTION: gh_memberships -------------------------------------------------------------------
+#  TODO: set up an organization so it can be tested
