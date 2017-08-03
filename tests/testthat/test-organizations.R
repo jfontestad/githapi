@@ -27,3 +27,11 @@ test_that("gh_member returns TRUE if user is a member and FALSE otherwise", {
   expect_true(gh_member("hadley", "tidyverse"))
   expect_false(gh_member("doesnotexist", "tidyverse"))
 })
+
+#  FUNCTION: gh_members -----------------------------------------------------------------------
+test_that("gh_members returns a tibble describing the members", {
+  tidy_members <- gh_members("tidyverse")
+  expect_is(tidy_members, "tbl")
+  expect_identical(names(tidy_members), c("id", "login", "type", "site_admin", "url"))
+  expect_true("hadley" %in% tidy_members$login)
+})
