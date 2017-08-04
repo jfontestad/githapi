@@ -41,3 +41,9 @@ test_that("gh_members returns a tibble describing the members", {
 
 #  FUNCTION: gh_memberships -------------------------------------------------------------------
 #  TODO: set up an organization so it can be tested
+
+#  FUNCTION: gh_team --------------------------------------------------------------------------
+#  TODO: set up an organization so it can be tested
+
+#  FUNCTION: gh_teams -------------------------------------------------------------------------
+#  TODO: set up an organization so it can be tested
