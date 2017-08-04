@@ -2,15 +2,17 @@
 % Please edit documentation in R/organizations.R
 \name{gh_membership}
 \alias{gh_membership}
-\title{Get organization membership}
+\title{Get organization and team membership}
 \usage{
-gh_membership(user, org, token = gh_token(), api = getOption("github.api"),
-  ...)
+gh_membership(user, org, team, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{user}{(string, optional) The GitHub username of the user.}
 
 \item{org}{(string) The name of the organization.}
+
+\item{team}{(integer) The GitHub ID of the team.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
@@ -25,4 +27,5 @@ A list describing the users membership (see GitHub's API documentation for detai
 }
 \description{
 url{https://developer.github.com/v3/orgs/members/#get-organization-membership}
+url{https://developer.github.com/v3/orgs/teams/#get-team-membership}
 }

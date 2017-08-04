@@ -2,14 +2,15 @@
 % Please edit documentation in R/organizations.R
 \name{gh_members}
 \alias{gh_members}
-\title{Members list
-url{https://developer.github.com/v3/orgs/members/#members-list}}
+\title{Get Organization or team members list}
 \usage{
-gh_members(org, filter = NULL, role = NULL, token = gh_token(),
+gh_members(org, team, filter = NULL, role = NULL, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
 \item{org}{(string) The name of the organization.}
+
+\item{team}{(integer) The GitHub ID of the team.}
 
 \item{filter}{(string) Filter members returned in the list. Can be one of:
 \itemize{
@@ -39,6 +40,6 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 A tibble describing the members (see GitHub's API documentation for details).
 }
 \description{
-Members list
 url{https://developer.github.com/v3/orgs/members/#members-list}
+url{https://developer.github.com/v3/orgs/teams/#list-team-members}
 }

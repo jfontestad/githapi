@@ -102,10 +102,13 @@ gh_member <- function(
 }
 
 #  FUNCTION: gh_members -----------------------------------------------------------------------
-#' Members list
+#' Get Organization or team members list
+#'
 #' url{https://developer.github.com/v3/orgs/members/#members-list}
+#' url{https://developer.github.com/v3/orgs/teams/#list-team-members}
 #'
 #' @param org (string) The name of the organization.
+#' @param team (integer) The GitHub ID of the team.
 #' @param filter (string) Filter members returned in the list. Can be one of:
 #'   \itemize{
 #'     \item 2fa_disabled: Members without two-factor authentication enabled. Available for
@@ -129,19 +132,32 @@ gh_member <- function(
 #' @export
 gh_members <- function(
   org,
+  team,
   filter = NULL,
   role   = NULL,
   token  = gh_token(),
   api    = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(org))
   assert_that(is.null(filter) | is.string(filter))
   assert_that(is.null(role) | is.string(role))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh_url("orgs", org, "members", filter = filter, role = role, api = api) %>%
+  if (!missing(org) && !missing(team))
+    stop("Must specify either org or team, not both!")
+
+  if (!missing(org)) {
+    assert_that(is.string(org))
+    url <- gh_url("orgs", org, "members", filter = filter, role = role, api = api)
+  } else if (!missing(team)) {
+    assert_that(is.count(team))
+    url <- gh_url("teams", team, "members", org, role = role, api = api)
+  } else {
+    stop("Must specify either org or team!")
+  }
+
+  url %>%
     gh_page(token = token, ...) %>%
     map(flatten_) %>%
     bind_rows() %>%
@@ -149,12 +165,14 @@ gh_members <- function(
 }
 
 #  FUNCTION: gh_membership --------------------------------------------------------------------
-#' Get organization membership
+#' Get organization and team membership
 #'
 #' url{https://developer.github.com/v3/orgs/members/#get-organization-membership}
+#' url{https://developer.github.com/v3/orgs/teams/#get-team-membership}
 #'
 #' @param user (string, optional) The GitHub username of the user.
 #' @param org (string) The name of the organization.
+#' @param team (integer) The GitHub ID of the team.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -165,6 +183,7 @@ gh_members <- function(
 gh_membership <- function(
   user,
   org,
+  team,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
@@ -174,7 +193,20 @@ gh_membership <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh_url("orgs", org, "memberships", user, api = api) %>%
+  if (!missing(org) && !missing(team))
+    stop("Must specify either org or team, not both!")
+
+  if (!missing(org)) {
+    assert_that(is.string(org))
+    url <- gh_url("orgs", org, "memberships", user, api = api)
+  } else if (!missing(team)) {
+    assert_that(is.count(team))
+    url <- gh_url("teams", team, "memberships", user, api = api)
+  } else {
+    stop("Must specify either org or team!")
+  }
+
+  url %>%
     gh_page(token = token, ...)
 }
 
