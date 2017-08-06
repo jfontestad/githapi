@@ -111,6 +111,7 @@ gh_issues <- function(
       if (is.null(i$assignee$login)) i$assignee$login <- ""
       if (is.null(i$milestone$number)) i$milestone$number <- ""
       if (is.null(i$milestone$title)) i$milestone$title <- ""
+      if (is.null(i$closed_at)) i$closed_at <- NA
       i
     }) %>%
     map(flatten_) %>%
@@ -118,8 +119,11 @@ gh_issues <- function(
     mutate(labels = labels) %>%
     select(
       number, title, body, state, user_login, labels, assignee_login,
-      milestone_number, milestone_title, created_at, updated_at) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+      milestone_number, milestone_title, created_at, updated_at, closed_at) %>%
+    mutate(
+      created_at = parse_datetime(created_at),
+      updated_at = parse_datetime(updated_at),
+      closed_at  = parse_datetime(closed_at))
 }
 
 #  FUNCTION: gh_user_issues -------------------------------------------------------------------

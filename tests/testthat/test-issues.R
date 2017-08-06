@@ -16,7 +16,7 @@ test_that("gh_issues returns a tibble of information about all the issues", {
   expect_identical(
     names(issues),
     c("number", "title", "body", "state", "user_login", "labels", "assignee_login",
-      "milestone_number", "milestone_title", "created_at", "updated_at"))
+      "milestone_number", "milestone_title", "created_at", "updated_at", "closed_at"))
   expect_true("Test issue" %in% issues$title)
   expect_true("This issue has been created for testing the issues API.\r\n" %in% issues$body)
   expect_true("ChadGoymer" %in% issues$user_login)
