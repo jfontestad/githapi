@@ -13,7 +13,7 @@ string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PA
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{gh::gh())}.}
+\item{...}{Parameters passed to \code{\link{gh_page}}.}
 
 \item{limit}{(integer, optional) The maximum number to return. Default: 1000.}
 }

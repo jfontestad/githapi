@@ -2,13 +2,15 @@
 % Please edit documentation in R/repositories.R
 \name{gh_repositories}
 \alias{gh_repositories}
-\title{Get information about a user or organisation's repositories.}
+\title{Get information about a user's, organisation's or team's repositories.}
 \usage{
-gh_repositories(owner, type = NULL, sort = NULL, direction = NULL,
+gh_repositories(owner, team, type = NULL, sort = NULL, direction = NULL,
   token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{owner}{(string) The user or organisation owning the repository.}
+
+\item{team}{(string) The team owning the repository.}
 
 \item{type}{(string, optional) Can be one of \code{"all"}, \code{"owner"}, \code{"member"}.
 Default: \code{"owner"}.}
@@ -25,7 +27,7 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
-\item{...}{Parameters passed to \code{\link{gh}}.}
+\item{...}{Parameters passed to \code{\link{gh_page}}.}
 
 \item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
 returns all.}
@@ -37,4 +39,8 @@ A tibble describing all the repositories a user or organisation has (see GitHub'
 \description{
 \url{https://developer.github.com/v3/repos/#list-user-repositories}
 \url{https://developer.github.com/v3/repos/#list-organization-repositories}
+\url{https://developer.github.com/v3/orgs/teams/#list-team-repos}
+}
+\details{
+Note: Must specify either \code{owner} or \code{team}, but not both.
 }

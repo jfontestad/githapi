@@ -8,7 +8,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the user (see GitHub's API documentation for details).
 #' @export
 gh_user <- function(
@@ -42,7 +42,7 @@ gh_user <- function(
 #'   string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.
-#' @param ... Parameters passed to \code{gh::gh())}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing the users (see GitHub's API documentation for more detail).
 #' @export
 gh_users <- function(

@@ -363,6 +363,8 @@ gh_label <- function(
 #' url{https://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone}
 #' url{https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository}
 #'
+#' Note: Must specify either \code{issue} or \code{milestone}, but not both.
+#'
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
 #' @param issue (integer) The number assigned to the issue.
 #' @param milestone (integer) The number assigned to the milestone.
