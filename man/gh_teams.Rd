@@ -7,7 +7,8 @@
 gh_teams(org, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
-\item{org}{(string, optional) The name of the organization.}
+\item{org}{(string, optional) The name of the organization. If not specified, the teams of
+the authenticated user are returned.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
@@ -18,8 +19,9 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
-A tibble describing your memberships (see GitHub's API documentation for details).
+A tibble describing the teams (see GitHub's API documentation for details).
 }
 \description{
 url{https://developer.github.com/v3/orgs/teams/#list-teams}
+url{https://developer.github.com/v3/orgs/teams/#list-user-teams}
 }

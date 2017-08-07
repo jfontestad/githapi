@@ -23,7 +23,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_get}}.}
 }
 \value{
-A list describing the users membership (see GitHub's API documentation for details).
+A list describing the membership (see GitHub's API documentation for details).
 }
 \description{
 url{https://developer.github.com/v3/orgs/members/#get-organization-membership}

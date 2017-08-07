@@ -7,7 +7,7 @@
 gh_member(user, org, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
-\item{user}{(string, optional) The GitHub username of the user.}
+\item{user}{(string) The GitHub username of the user.}
 
 \item{org}{(string) The name of the organization.}
 

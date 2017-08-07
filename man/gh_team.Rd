@@ -18,7 +18,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
-A list describing the user (see GitHub's API documentation for details).
+A list describing the team (see GitHub's API documentation for details).
 }
 \description{
 url{https://developer.github.com/v3/orgs/teams/#get-team}

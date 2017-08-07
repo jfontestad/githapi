@@ -8,7 +8,8 @@ gh_organizations(user, token = gh_token(), api = getOption("github.api"),
   ...)
 }
 \arguments{
-\item{user}{(string, optional) The GitHub username of the user.}
+\item{user}{(string, optional) The GitHub username of the user. If not specified, all
+organizations are returned.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
@@ -19,7 +20,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
-A list describing the user (see GitHub's API documentation for details).
+A tibble describing the organizations (see GitHub's API documentation for details).
 }
 \description{
 url{https://developer.github.com/v3/orgs/#list-all-organizations}

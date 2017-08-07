@@ -31,13 +31,14 @@ gh_organization <- function(
 #' url{https://developer.github.com/v3/orgs/#list-all-organizations}
 #' url{https://developer.github.com/v3/orgs/#list-user-organizations}
 #'
-#' @param user (string, optional) The GitHub username of the user.
+#' @param user (string, optional) The GitHub username of the user. If not specified, all
+#'   organizations are returned.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return A list describing the user (see GitHub's API documentation for details).
+#' @return A tibble describing the organizations (see GitHub's API documentation for details).
 #' @export
 gh_organizations <- function(
   user,
@@ -67,7 +68,7 @@ gh_organizations <- function(
 #'
 #' url{https://developer.github.com/v3/orgs/members/#check-membership}
 #'
-#' @param user (string, optional) The GitHub username of the user.
+#' @param user (string) The GitHub username of the user.
 #' @param org (string) The name of the organization.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
@@ -182,7 +183,7 @@ gh_members <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A list describing the users membership (see GitHub's API documentation for details).
+#' @return A list describing the membership (see GitHub's API documentation for details).
 #' @export
 gh_membership <- function(
   user,
@@ -261,7 +262,7 @@ gh_memberships <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return A list describing the user (see GitHub's API documentation for details).
+#' @return A list describing the team (see GitHub's API documentation for details).
 #' @export
 gh_team <- function(
   team,
@@ -281,14 +282,16 @@ gh_team <- function(
 #' List teams
 #'
 #' url{https://developer.github.com/v3/orgs/teams/#list-teams}
+#' url{https://developer.github.com/v3/orgs/teams/#list-user-teams}
 #'
-#' @param org (string, optional) The name of the organization.
+#' @param org (string, optional) The name of the organization. If not specified, the teams of
+#'   the authenticated user are returned.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return A tibble describing your memberships (see GitHub's API documentation for details).
+#' @return A tibble describing the teams (see GitHub's API documentation for details).
 #' @export
 gh_teams <- function(
   org,
@@ -296,11 +299,17 @@ gh_teams <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(org))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh_url("orgs", org, "teams", api = api) %>%
+  if (missing(org)) {
+    url <- gh_url("user/teams", api = api)
+  } else {
+    assert_that(is.string(org))
+    url <- gh_url("orgs", org, "teams", api = api)
+  }
+
+  url %>%
     gh_page(token = token, ...) %>%
     map(flatten_) %>%
     bind_rows()
@@ -318,7 +327,8 @@ gh_teams <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A list describing the user (see GitHub's API documentation for details).
+#' @return TRUE if the team is a manager, FALSE otherwise (see GitHub's API documentation for
+#'   details).
 #' @export
 gh_manager <- function(
   team,
