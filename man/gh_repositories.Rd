@@ -2,13 +2,15 @@
 % Please edit documentation in R/repositories.R
 \name{gh_repositories}
 \alias{gh_repositories}
-\title{Get information about a user or organisation's repositories.}
+\title{Get information about a user's, organisation's or team's repositories.}
 \usage{
-gh_repositories(owner, type = NULL, sort = NULL, direction = NULL,
+gh_repositories(owner, team, type = NULL, sort = NULL, direction = NULL,
   token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{owner}{(string) The user or organisation owning the repository.}
+
+\item{team}{(string) The team owning the repository.}
 
 \item{type}{(string, optional) Can be one of \code{"all"}, \code{"owner"}, \code{"member"}.
 Default: \code{"owner"}.}
@@ -37,4 +39,8 @@ A tibble describing all the repositories a user or organisation has (see GitHub'
 \description{
 \url{https://developer.github.com/v3/repos/#list-user-repositories}
 \url{https://developer.github.com/v3/repos/#list-organization-repositories}
+\url{https://developer.github.com/v3/orgs/teams/#list-team-repos}
+}
+\details{
+Note: Must specify either \code{owner} or \code{team}, but not both.
 }

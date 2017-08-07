@@ -25,12 +25,16 @@ gh_repository <- function(
 }
 
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
-#' Get information about a user or organisation's repositories.
+#' Get information about a user's, organisation's or team's repositories.
 #'
 #' \url{https://developer.github.com/v3/repos/#list-user-repositories}
 #' \url{https://developer.github.com/v3/repos/#list-organization-repositories}
+#' \url{https://developer.github.com/v3/orgs/teams/#list-team-repos}
+#'
+#' Note: Must specify either \code{owner} or \code{team}, but not both.
 #'
 #' @param owner (string) The user or organisation owning the repository.
+#' @param team (string) The team owning the repository.
 #' @param type (string, optional) Can be one of \code{"all"}, \code{"owner"}, \code{"member"}.
 #'   Default: \code{"owner"}.
 #' @param sort (string, optional) Can be one of \code{"created"}, \code{"updated"},
@@ -49,6 +53,7 @@ gh_repository <- function(
 #' @export
 gh_repositories <- function(
   owner,
+  team,
   type      = NULL,
   sort      = NULL,
   direction = NULL,
@@ -56,20 +61,31 @@ gh_repositories <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
   assert_that(is.null(type) || is.string(type) && type %in% c("owner", "member"))
   assert_that(is.null(sort) || is.string(sort) && sort %in% c("created", "updated", "pushed", "full_name"))
   assert_that(is.null(direction) || is.string(direction) && direction %in% c("asc", "desc"))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  repos <- try(silent = TRUE, {
-    gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
-      gh_page(token = token, ...)
-  })
+  if (!missing(owner) && !missing(team))
+    stop("Must specify either owner or team, not both!")
 
-  if (is(repos, "try-error")) {
-    repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+  if (!missing(owner)) {
+    assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
+
+    repos <- try(silent = TRUE, {
+      gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+        gh_page(token = token, ...)
+    })
+
+    if (is(repos, "try-error")) {
+      repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+        gh_page(token = token, ...)
+    }
+  } else if (!missing(team)) {
+    assert_that(is.string(team))
+
+    repos <- gh_url("teams", team, "repos", api = api) %>%
       gh_page(token = token, ...)
   }
 

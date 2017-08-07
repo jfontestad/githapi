@@ -30,3 +30,6 @@ url{https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue}
 url{https://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone}
 url{https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository}
 }
+\details{
+Note: Must specify either \code{issue} or \code{milestone}, but not both.
+}

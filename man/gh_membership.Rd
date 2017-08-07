@@ -29,3 +29,6 @@ A list describing the users membership (see GitHub's API documentation for detai
 url{https://developer.github.com/v3/orgs/members/#get-organization-membership}
 url{https://developer.github.com/v3/orgs/teams/#get-team-membership}
 }
+\details{
+Note: Must specify either \code{org} or \code{team}, but not both.
+}

@@ -107,6 +107,8 @@ gh_member <- function(
 #' url{https://developer.github.com/v3/orgs/members/#members-list}
 #' url{https://developer.github.com/v3/orgs/teams/#list-team-members}
 #'
+#' Note: Must specify either \code{org} or \code{team}, but not both.
+#'
 #' @param org (string) The name of the organization.
 #' @param team (integer) The GitHub ID of the team.
 #' @param filter (string) Filter members returned in the list. Can be one of:
@@ -169,6 +171,8 @@ gh_members <- function(
 #'
 #' url{https://developer.github.com/v3/orgs/members/#get-organization-membership}
 #' url{https://developer.github.com/v3/orgs/teams/#get-team-membership}
+#'
+#' Note: Must specify either \code{org} or \code{team}, but not both.
 #'
 #' @param user (string, optional) The GitHub username of the user.
 #' @param org (string) The name of the organization.

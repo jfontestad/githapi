@@ -43,3 +43,6 @@ A tibble describing the members (see GitHub's API documentation for details).
 url{https://developer.github.com/v3/orgs/members/#members-list}
 url{https://developer.github.com/v3/orgs/teams/#list-team-members}
 }
+\details{
+Note: Must specify either \code{org} or \code{team}, but not both.
+}

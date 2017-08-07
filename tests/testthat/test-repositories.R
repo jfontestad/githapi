@@ -29,8 +29,8 @@ test_that("gh_repositories returns a tibble describing all the repositories an o
   expect_true(all(c("dplyr", "tidyr") %in% repos$name))
 })
 
-test_that("gh_repos returns an error is the specified owner does not exist", {
-  expect_error(gh_repos("SomeNameThatDoesNotExist"))
+test_that("gh_repositories returns an error is the specified owner does not exist", {
+  expect_error(gh_repositories("SomeNameThatDoesNotExist"))
 })
 
 #  FUNCTION: gh_tags ----------------------------------------------------------------------
