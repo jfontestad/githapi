@@ -9,6 +9,8 @@ gh_pull_requests(repo, state = NULL, head = NULL, base = NULL,
   api = getOption("github.api"), ...)
 }
 \arguments{
+\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+
 \item{state}{(string) Either open, closed, or all to filter by state. Default: open}
 
 \item{head}{(string) Filter pulls by head user and branch name in the format of
@@ -22,9 +24,17 @@ Default: created}
 
 \item{direction}{(string) The direction of the sort. Can be either asc or desc.
 Default: desc when sort is created or sort is not specified, otherwise asc."}
+
+\item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
+value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+
+\item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
+environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+
+\item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
-A tibble describing the pull requests
+A tibble describing the pull requests (see GitHub's API documentation for details).
 }
 \description{
 url{https://developer.github.com/v3/pulls/#list-pull-requests}
