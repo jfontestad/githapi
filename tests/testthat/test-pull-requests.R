@@ -28,3 +28,13 @@ test_that("gh_pull_requests returns a tibble describing the pull requests", {
     "head_repo_full_name", "locked", "url"))
   expect_true("Add Git Data Functions" %in% pulls$title)
 })
+
+#  FUNCTION: gh_pull_commits ------------------------------------------------------------------
+test_that("gh_pull_commits returns a tibble describing the commits on a pull request", {
+  commits <- gh_pull_commits(8, "ChadGoymer/githapi")
+  expect_is(commits, "tbl")
+  expect_identical(
+    names(commits),
+    c("sha", "author_login", "commit_date", "commit_message", "url", "parents_sha"))
+  expect_true("8934516f37977847381604e432f1fa1bd2ad69fa" %in% commits$sha)
+})

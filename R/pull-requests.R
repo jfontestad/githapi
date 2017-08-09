@@ -15,8 +15,8 @@
 gh_pull_request <- function(
   pull_request,
   repo,
-  token     = gh_token(),
-  api       = getOption("github.api"),
+  token = gh_token(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.count(pull_request))
@@ -84,4 +84,39 @@ gh_pull_requests <- function(
     select(
       id, number, title, body, user_login, state, created_at, updated_at, closed_at, merged_at,
       merge_commit_sha, head_ref, head_sha, head_user_login, head_repo_full_name, locked, url)
+}
+
+#  FUNCTION: gh_pull_commits ------------------------------------------------------------------
+#' List commits on a pull request
+#'
+#' url{https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request}
+#'
+#' @param pull_request (integer) The number assigned to the pull request.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the commits on a pull request (see GitHub's API documentation
+#'   for details).
+#' @export
+gh_pull_commits <- function(
+  pull_request,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(pull_request))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "pulls", pull_request, "commits", api = api) %>%
+    gh_page(token = token, ...) %>%
+    map(flatten_) %>%
+    bind_rows() %>%
+    mutate(commit_date = parse_datetime(commit_author_date)) %>%
+    select(sha, author_login, commit_date, commit_message, url, parents_sha)
 }
