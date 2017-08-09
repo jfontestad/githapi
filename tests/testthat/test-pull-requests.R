@@ -38,3 +38,14 @@ test_that("gh_pull_commits returns a tibble describing the commits on a pull req
     c("sha", "author_login", "commit_date", "commit_message", "url", "parents_sha"))
   expect_true("8934516f37977847381604e432f1fa1bd2ad69fa" %in% commits$sha)
 })
+
+#  FUNCTION: gh_pull_files --------------------------------------------------------------------
+test_that("gh_pull_files returns a tibble describing the files changed on a pull request", {
+  files <- gh_pull_files(8, "ChadGoymer/githapi")
+  expect_is(files, "tbl")
+  expect_identical(
+    names(files),
+    c("sha", "filename", "status", "additions", "deletions",
+      "changes", "blob_url", "contents_url", "patch"))
+  expect_true("R/git-data.R" %in% files$filename)
+})
