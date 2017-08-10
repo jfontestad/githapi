@@ -193,3 +193,37 @@ gh_pull_merged <- function(
     FALSE
   }
 }
+
+#  FUNCTION: gh_pull_review -------------------------------------------------------------------
+#' Get a single review
+#'
+#' url{https://developer.github.com/v3/pulls/reviews/#get-a-single-review}
+#'
+#' @param review (integer) The number assigned to the review.
+#' @param pull_request (integer) The number assigned to the pull request.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A list describing the pull request review (see GitHub's API documentation for
+#'   details).
+#' @export
+gh_pull_review <- function(
+  review,
+  pull_request,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(review))
+  assert_that(is.count(pull_request))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "pulls", pull_request, "reviews", review, api = api) %>%
+    gh_page(token = token, ...)
+}

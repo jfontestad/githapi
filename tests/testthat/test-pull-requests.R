@@ -58,3 +58,10 @@ test_that("gh_pull_merged returns TRUE if the pull request has been merged and F
   unmerged <- gh_pull_merged(13, "ChadGoymer/githapi")
   expect_false(merged)
 })
+
+#  FUNCTION: gh_pull_review -------------------------------------------------------------------
+test_that("gh_pull_review returns a list describing the pull request review", {
+  # TODO: Add a collaborator so they can be assigned to review
+  # review <- gh_pull_review(1, 8, "ChadGoymer/githapi")
+  # expect_is(review, "list")
+})
