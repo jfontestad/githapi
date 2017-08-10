@@ -49,3 +49,12 @@ test_that("gh_pull_files returns a tibble describing the files changed on a pull
       "changes", "blob_url", "contents_url", "patch"))
   expect_true("R/git-data.R" %in% files$filename)
 })
+
+#  FUNCTION: gh_pull_merged -------------------------------------------------------------------
+test_that("gh_pull_merged returns TRUE if the pull request has been merged and FALSE otherwise", {
+  merged <- gh_pull_merged(8, "ChadGoymer/githapi")
+  expect_true(merged)
+
+  unmerged <- gh_pull_merged(13, "ChadGoymer/githapi")
+  expect_false(merged)
+})
