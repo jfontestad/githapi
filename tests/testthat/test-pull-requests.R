@@ -65,3 +65,9 @@ test_that("gh_pull_review returns a list describing the pull request review", {
   # review <- gh_pull_review(1, 8, "ChadGoymer/githapi")
   # expect_is(review, "list")
 })
+
+#  FUNCTION: gh_pull_reviews ------------------------------------------------------------------
+test_that("gh_pull_reviews returns a tibble describing the pull request reviews", {
+  reviews <- gh_pull_reviews(13, "ChadGoymer/githapi")
+  expect_is(reviews, "tbl")
+})
