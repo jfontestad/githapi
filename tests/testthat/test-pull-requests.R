@@ -68,6 +68,20 @@ test_that("gh_pull_review returns a list describing the pull request review", {
 
 #  FUNCTION: gh_pull_reviews ------------------------------------------------------------------
 test_that("gh_pull_reviews returns a tibble describing the pull request reviews", {
-  reviews <- gh_pull_reviews(13, "ChadGoymer/githapi")
-  expect_is(reviews, "tbl")
+  # TODO: Add a collaborator so they can be assigned to review
+  # reviews <- gh_pull_reviews(13, "ChadGoymer/githapi")
+  # expect_is(reviews, "tbl")
+})
+
+#  FUNCTION: gh_pull_comments -----------------------------------------------------------------
+test_that("gh_pull_comments returns a tibble describing the pull request comments", {
+  # TODO: Add a collaborator so they can be assigned to review
+  # repo_comments <- gh_pull_comments("ChadGoymer/githapi")
+  # expect_is(repo_comments, "tbl")
+  #
+  # pull_comments <- gh_pull_comments("ChadGoymer/githapi", 13)
+  # expect_is(pull_comments, "tbl")
+  #
+  # review_comments <- gh_pull_comments("ChadGoymer/githapi", 13, 1)
+  # expect_is(review_comments, "tbl")
 })
