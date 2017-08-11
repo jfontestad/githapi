@@ -56,7 +56,7 @@ test_that("gh_pull_merged returns TRUE if the pull request has been merged and F
   expect_true(merged)
 
   unmerged <- gh_pull_merged(13, "ChadGoymer/githapi")
-  expect_false(merged)
+  expect_false(unmerged)
 })
 
 #  FUNCTION: gh_pull_review -------------------------------------------------------------------
@@ -91,4 +91,11 @@ test_that("gh_pull_comments returns a tibble describing the pull request comment
   #
   # review_comments <- gh_pull_comments("ChadGoymer/githapi", 13, 1)
   # expect_is(review_comments, "tbl")
+})
+
+#  FUNCTION: gh_pull_review_requests ----------------------------------------------------------
+test_that("gh_pull_review_requests returns a tibble describing the pull request review requests", {
+  # TODO: Add a collaborator so they can be assigned to review
+  # review_requests <- gh_pull_review_requests(13, "ChadGoymer/githapi")
+  # expect_is(review_requests, "tbl")
 })
