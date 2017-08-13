@@ -205,3 +205,14 @@ test_that("gh_download saves the contents of a commit to the specified location"
   expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
   expect_true(dir.exists(file.path(temp_path, "R")))
 })
+
+#  FUNCTION: gh_collaborators -----------------------------------------------------------------
+test_that("gh_collaborators returns a tibble describing the collaborators", {
+  collaborators <- gh_collaborators("ChadGoymer/githapi")
+  expect_is(collaborators, "tbl")
+  expect_identical(
+    names(collaborators),
+    c("id", "login", "type", "site_admin", "permissions_admin", "permissions_push",
+      "permissions_pull", "url"))
+  expect_true("ChadGoymer" %in% collaborators$login)
+})
