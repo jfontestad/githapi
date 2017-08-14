@@ -73,10 +73,10 @@ gh_repositories <- function(
   if (!missing(owner)) {
     assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
 
-    repos <- try(silent = TRUE, {
+    repos <- try(silent = TRUE, suppressMessages({
       gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
         gh_page(token = token, ...)
-    })
+    }))
 
     if (is(repos, "try-error")) {
       repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
@@ -517,4 +517,115 @@ gh_download <- function(
   file.rename(file.path(archive_folder, files), file.path(path, files))
 
   invisible(path)
+}
+
+#  FUNCTION: gh_collaborator ------------------------------------------------------------------
+#' Check if a user is a collaborator
+#'
+#' url{https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator}
+#'
+#' @param user (string) The GitHub username of the user.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return TRUE if the user is a collaborator, FALSE otherwise (see GitHub's API
+#'   documentation for details).
+#' @export
+gh_collaborator <- function(
+  user,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(user))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  response <- try(silent = TRUE, suppressMessages({
+    gh_url("repos", repo, "collaborators", user, api = api) %>%
+      gh_get(token = token, ...)
+  }))
+
+  if (identical(response, "")) {
+    TRUE
+  } else {
+    FALSE
+  }
+}
+
+#  FUNCTION: gh_collaborators -----------------------------------------------------------------
+#' List collaborators
+#'
+#' url{https://developer.github.com/v3/repos/collaborators/#list-collaborators}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param affiliation (string) Filter collaborators returned by their affiliation.
+#'   Can be one of:
+#'   \itemize{
+#'     \item outside: All outside collaborators of an organization-owned repository.
+#'     \item direct: All collaborators with permissions to an organization-owned repository,
+#'       regardless of organization membership status.
+#'     \item all: All collaborators the authenticated user can see.
+#'     \item Default: all.
+#'   }
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the collaborators (see GitHub's API documentation for details).
+#' @export
+gh_collaborators <- function(
+  repo,
+  affiliation = NULL,
+  token       = gh_token(),
+  api         = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "collaborators", affiliation = affiliation, api = api) %>%
+    gh_page(token = token, ...) %>%
+    map(flatten_) %>%
+    bind_rows() %>%
+    select(id, login, type, site_admin, permissions_admin, permissions_push, permissions_pull, url)
+}
+
+#  FUNCTION: gh_permissions -------------------------------------------------------------------
+#' Review a user's permission level
+#'
+#' url{https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level}
+#'
+#' @param user (string) The GitHub username of the user.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the user's permissions (see GitHub's API documentation for
+#'   details).
+#' @export
+gh_permissions <- function(
+  user,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(user))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  # GET /repos/:owner/:repo/collaborators/:username/permission
+  gh_url("repos", repo, "collaborators", user, "permission", api = api) %>%
+    gh_page(token = token, ...)
 }

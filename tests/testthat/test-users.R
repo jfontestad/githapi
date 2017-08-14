@@ -19,3 +19,11 @@ test_that("gh_users returns a tibble describing all the users", {
   expect_identical(nrow(users), 100L)
   expect_named(users, c("login", "type", "html_url", "url"))
 })
+
+#  FUNCTION: gh_user_email --------------------------------------------------------------------
+test_that("gh_user_email returns the authenticated user's email addresses", {
+  email <- gh_user_email()
+  expect_is(email, "tbl")
+  expect_identical(names(email), c("email", "primary", "verified", "visibility"))
+  expect_true("chad.goymer@gmail.com" %in% email$email)
+})

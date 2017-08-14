@@ -182,10 +182,10 @@ gh_pull_merged <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  response <- try(silent = TRUE, {
+  response <- try(silent = TRUE, suppressMessages({
     gh_url("repos", repo, "pulls", pull_request, "merge", api = api) %>%
       gh_get(token = token, ...)
-  })
+  }))
 
   if (identical(response, "")) {
     TRUE
