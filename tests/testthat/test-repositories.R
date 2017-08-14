@@ -225,3 +225,12 @@ test_that("gh_collaborators returns a tibble describing the collaborators", {
       "permissions_pull", "url"))
   expect_true("ChadGoymer" %in% collaborators$login)
 })
+
+#  FUNCTION: gh_permissions -------------------------------------------------------------------
+test_that("gh_permissions returns a list describing the user's permissions", {
+  permissions <- gh_permissions("ChadGoymer", "ChadGoymer/githapi")
+  expect_is(permissions, "list")
+  expect_identical(names(permissions), c("permission", "user"))
+  expect_identical(permissions$permission, "admin")
+  expect_identical(permissions$user$login, "ChadGoymer")
+})
