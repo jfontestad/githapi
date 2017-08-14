@@ -4,11 +4,11 @@
 \alias{gh_issue_comments}
 \title{List comments on an issue}
 \usage{
-gh_issue_comments(issue_number, repo, since = NULL, token = gh_token(),
+gh_issue_comments(issue, repo, since = NULL, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{issue_number}{(integer) The number assigned to the issue.}
+\item{issue}{(integer) The number assigned to the issue.}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
@@ -21,10 +21,10 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
-A list describing the issue (see GitHub's API documentation for details).
+A tibble describing the issue comments (see GitHub's API documentation for details).
 }
 \description{
 \url{https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue}

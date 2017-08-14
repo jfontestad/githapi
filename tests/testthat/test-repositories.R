@@ -29,8 +29,8 @@ test_that("gh_repositories returns a tibble describing all the repositories an o
   expect_true(all(c("dplyr", "tidyr") %in% repos$name))
 })
 
-test_that("gh_repos returns an error is the specified owner does not exist", {
-  expect_error(gh_repos("SomeNameThatDoesNotExist"))
+test_that("gh_repositories returns an error is the specified owner does not exist", {
+  expect_error(gh_repositories("SomeNameThatDoesNotExist"))
 })
 
 #  FUNCTION: gh_tags ----------------------------------------------------------------------
@@ -204,4 +204,33 @@ test_that("gh_download saves the contents of a commit to the specified location"
 
   expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
   expect_true(dir.exists(file.path(temp_path, "R")))
+})
+
+#  FUNCTION: gh_collaborator ------------------------------------------------------------------
+test_that("gh_collaborator return TRUE if the user is a collaborator, FALSE otherwise", {
+  is_collaborator <- gh_collaborator("ChadGoymer", "ChadGoymer/githapi")
+  expect_true(is_collaborator)
+
+  not_collaborator <- gh_collaborator("Batman", "ChadGoymer/githapi")
+  expect_false(not_collaborator)
+})
+
+#  FUNCTION: gh_collaborators -----------------------------------------------------------------
+test_that("gh_collaborators returns a tibble describing the collaborators", {
+  collaborators <- gh_collaborators("ChadGoymer/githapi")
+  expect_is(collaborators, "tbl")
+  expect_identical(
+    names(collaborators),
+    c("id", "login", "type", "site_admin", "permissions_admin", "permissions_push",
+      "permissions_pull", "url"))
+  expect_true("ChadGoymer" %in% collaborators$login)
+})
+
+#  FUNCTION: gh_permissions -------------------------------------------------------------------
+test_that("gh_permissions returns a list describing the user's permissions", {
+  permissions <- gh_permissions("ChadGoymer", "ChadGoymer/githapi")
+  expect_is(permissions, "list")
+  expect_identical(names(permissions), c("permission", "user"))
+  expect_identical(permissions$permission, "admin")
+  expect_identical(permissions$user$login, "ChadGoymer")
 })

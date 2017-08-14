@@ -8,7 +8,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the repository (see GitHub's API documentation for details).
 #' @export
 gh_repository <- function(
@@ -25,12 +25,16 @@ gh_repository <- function(
 }
 
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
-#' Get information about a user or organisation's repositories.
+#' Get information about a user's, organisation's or team's repositories.
 #'
 #' \url{https://developer.github.com/v3/repos/#list-user-repositories}
 #' \url{https://developer.github.com/v3/repos/#list-organization-repositories}
+#' \url{https://developer.github.com/v3/orgs/teams/#list-team-repos}
+#'
+#' Note: Must specify either \code{owner} or \code{team}, but not both.
 #'
 #' @param owner (string) The user or organisation owning the repository.
+#' @param team (string) The team owning the repository.
 #' @param type (string, optional) Can be one of \code{"all"}, \code{"owner"}, \code{"member"}.
 #'   Default: \code{"owner"}.
 #' @param sort (string, optional) Can be one of \code{"created"}, \code{"updated"},
@@ -43,12 +47,13 @@ gh_repository <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the repositories a user or organisation has (see GitHub's
 #'   API documentation for more detail).
 #' @export
 gh_repositories <- function(
   owner,
+  team,
   type      = NULL,
   sort      = NULL,
   direction = NULL,
@@ -56,20 +61,31 @@ gh_repositories <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
   assert_that(is.null(type) || is.string(type) && type %in% c("owner", "member"))
   assert_that(is.null(sort) || is.string(sort) && sort %in% c("created", "updated", "pushed", "full_name"))
   assert_that(is.null(direction) || is.string(direction) && direction %in% c("asc", "desc"))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  repos <- try(silent = TRUE, {
-    gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
-      gh_page(token = token, ...)
-  })
+  if (!missing(owner) && !missing(team))
+    stop("Must specify either owner or team, not both!")
 
-  if (is(repos, "try-error")) {
-    repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+  if (!missing(owner)) {
+    assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
+
+    repos <- try(silent = TRUE, suppressMessages({
+      gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+        gh_page(token = token, ...)
+    }))
+
+    if (is(repos, "try-error")) {
+      repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
+        gh_page(token = token, ...)
+    }
+  } else if (!missing(team)) {
+    assert_that(is.string(team))
+
+    repos <- gh_url("teams", team, "repos", api = api) %>%
       gh_page(token = token, ...)
   }
 
@@ -92,7 +108,7 @@ gh_repositories <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the tags (see GitHub's API documentation for details).
 #' @export
 gh_tags <- function(
@@ -123,7 +139,7 @@ gh_tags <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the branch (see GitHub's API documentation for details).
 #' @export
 gh_branch <- function(
@@ -159,7 +175,7 @@ gh_branch <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
 #' @export
 gh_branches <- function(
@@ -204,7 +220,7 @@ gh_branches <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the commit (see GitHub's API documentation for details).
 #' @export
 gh_commit <- function(
@@ -235,7 +251,7 @@ gh_commit <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the branch (see GitHub's API documentation for details).
 #' @export
 gh_commit_sha <- function(
@@ -270,7 +286,7 @@ gh_commit_sha <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
 #' @export
 gh_commits <- function(
@@ -319,7 +335,7 @@ gh_commits <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the commits and the differences (see GitHub's API documentation for
 #'   details).
 #' @export
@@ -360,7 +376,7 @@ gh_compare_commits <- function(
 #'   \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
 #' @return A list describing the files and the differences (see GitHub's API documentation
 #'   for details).
 #' @export
@@ -464,7 +480,7 @@ gh_contents <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return Full tree of files in specified location.
 #' @export
 gh_download <- function(
@@ -501,4 +517,115 @@ gh_download <- function(
   file.rename(file.path(archive_folder, files), file.path(path, files))
 
   invisible(path)
+}
+
+#  FUNCTION: gh_collaborator ------------------------------------------------------------------
+#' Check if a user is a collaborator
+#'
+#' url{https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator}
+#'
+#' @param user (string) The GitHub username of the user.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return TRUE if the user is a collaborator, FALSE otherwise (see GitHub's API
+#'   documentation for details).
+#' @export
+gh_collaborator <- function(
+  user,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(user))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  response <- try(silent = TRUE, suppressMessages({
+    gh_url("repos", repo, "collaborators", user, api = api) %>%
+      gh_get(token = token, ...)
+  }))
+
+  if (identical(response, "")) {
+    TRUE
+  } else {
+    FALSE
+  }
+}
+
+#  FUNCTION: gh_collaborators -----------------------------------------------------------------
+#' List collaborators
+#'
+#' url{https://developer.github.com/v3/repos/collaborators/#list-collaborators}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param affiliation (string) Filter collaborators returned by their affiliation.
+#'   Can be one of:
+#'   \itemize{
+#'     \item outside: All outside collaborators of an organization-owned repository.
+#'     \item direct: All collaborators with permissions to an organization-owned repository,
+#'       regardless of organization membership status.
+#'     \item all: All collaborators the authenticated user can see.
+#'     \item Default: all.
+#'   }
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the collaborators (see GitHub's API documentation for details).
+#' @export
+gh_collaborators <- function(
+  repo,
+  affiliation = NULL,
+  token       = gh_token(),
+  api         = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "collaborators", affiliation = affiliation, api = api) %>%
+    gh_page(token = token, ...) %>%
+    map(flatten_) %>%
+    bind_rows() %>%
+    select(id, login, type, site_admin, permissions_admin, permissions_push, permissions_pull, url)
+}
+
+#  FUNCTION: gh_permissions -------------------------------------------------------------------
+#' Review a user's permission level
+#'
+#' url{https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level}
+#'
+#' @param user (string) The GitHub username of the user.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the user's permissions (see GitHub's API documentation for
+#'   details).
+#' @export
+gh_permissions <- function(
+  user,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(user))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  # GET /repos/:owner/:repo/collaborators/:username/permission
+  gh_url("repos", repo, "collaborators", user, "permission", api = api) %>%
+    gh_page(token = token, ...)
 }
