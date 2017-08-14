@@ -21,9 +21,9 @@ gh_user <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  response <- try(silent = TRUE, {
+  response <- try(silent = TRUE, suppressMessages({
     gh_url("users", user, api = api) %>% gh_page(token = token, ...)
-  })
+  }))
 
   if (is(response, "try-error") || response == "") {
     stop("Specified user does not exist in GitHub: '", user, "'")

@@ -73,10 +73,10 @@ gh_repositories <- function(
   if (!missing(owner)) {
     assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
 
-    repos <- try(silent = TRUE, {
+    repos <- try(silent = TRUE, suppressMessages({
       gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
         gh_page(token = token, ...)
-    })
+    }))
 
     if (is(repos, "try-error")) {
       repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
@@ -517,6 +517,45 @@ gh_download <- function(
   file.rename(file.path(archive_folder, files), file.path(path, files))
 
   invisible(path)
+}
+
+#  FUNCTION: gh_collaborator ------------------------------------------------------------------
+#' Check if a user is a collaborator
+#'
+#' url{https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator}
+#'
+#' @param user (string) The GitHub username of the user.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return TRUE if the user is a collaborator, FALSE otherwise (see GitHub's API
+#'   documentation for details).
+#' @export
+gh_collaborator <- function(
+  user,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(user))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  response <- try(silent = TRUE, suppressMessages({
+    gh_url("repos", repo, "collaborators", user, api = api) %>%
+      gh_get(token = token, ...)
+  }))
+
+  if (identical(response, "")) {
+    TRUE
+  } else {
+    FALSE
+  }
 }
 
 #  FUNCTION: gh_collaborators -----------------------------------------------------------------
