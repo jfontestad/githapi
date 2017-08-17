@@ -57,15 +57,10 @@ test_that("gh_json returns the github response parsed into a list", {
 # FUNCTION: gh_page ---------------------------------------------------------------------------
 test_that("paging something from github returns the correct result", {
   test_commits <- gh_page(
-    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits"))
-  expect_identical(
-    test_commits[[length(test_commits)]]$sha,
-    "d9fe50f8e31d7430df2c5b02442dffb68c854f08")
-  expect_identical(test_commits[[length(test_commits)]]$commit$author$name, "Chad Goymer")
-  expect_identical(test_commits[[length(test_commits)]]$commit$author$date, "2017-06-05T07:18:30Z")
-  expect_identical(test_commits[[length(test_commits)]]$commit$message, "Initial commit")
-
-  # TODO: Add a way to test paging - increase branches or commits in test repo
+    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits"),
+    page_size = 10L, max_pages = 2L)
+  expect_is(test_commits, "list")
+  expect_identical(length(test_commits), 20L)
 })
 
 #  FUNCTION: gh_post --------------------------------------------------------------------------

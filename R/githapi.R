@@ -66,9 +66,10 @@ gh_get <- function(
 #' @export
 gh_json <- function(
   address,
+  accept = "application/vnd.github.v3+json",
   token  = gh_token())
 {
-  gh_get(address, accept = "application/vnd.github.v3+json", token = token) %>%
+  gh_get(address, accept = accept, token = token) %>%
     fromJSON(simplifyDataFrame = FALSE)
 }
 
@@ -82,21 +83,14 @@ gh_page <- function(
   max_pages = 100L,
   token     = gh_token())
 {
-  page_result <- function(page_url) {
-    page_url %>%
-      build_url %>%
-      gh_get(..., token = token) %>%
-      fromJSON(simplifyDataFrame = FALSE)
-  }
-
   page_url <- parse_url(address)
   page_url$query <- c(page_url$query, list(per_page = page_size, page = 1L))
-  result <- page_result(page_url)
+  result <- build_url(page_url) %>% gh_json(token = token, ...)
 
-  if (identical(length(result), page_size)) {
+  if (identical(length(result), page_size) && max_pages != 1L) {
     for (p in 2:max_pages) {
       page_url$query$page <- p
-      result <- c(result, page_result(page_url))
+      result <- c(result, build_url(page_url) %>% gh_json(token = token, ...))
       if (!identical(length(result), page_size * p))
         break
     }
