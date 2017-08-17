@@ -39,7 +39,7 @@ gh_url <- function(
 }
 
 #  FUNCTION: gh_get ---------------------------------------------------------------------------
-#' Get the contents of a github http request as a string.
+#' Get the contents of a github http request.
 #' @export
 gh_get <- function(
   address,
@@ -59,6 +59,17 @@ gh_get <- function(
   } else {
     content(request, "text")
   }
+}
+
+#  FUNCTION: gh_json --------------------------------------------------------------------------
+#' Get the JSON contents of a GitHub request and parse into a list.
+#' @export
+gh_json <- function(
+  address,
+  token  = gh_token())
+{
+  gh_get(address, accept = "application/vnd.github.v3+json", token = token) %>%
+    fromJSON(simplifyDataFrame = FALSE)
 }
 
 #  FUNCTION: gh_page ---------------------------------------------------------------------------

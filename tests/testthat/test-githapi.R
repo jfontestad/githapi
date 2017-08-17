@@ -47,6 +47,13 @@ test_that("getting something from github returns the correct result", {
   expect_match(test_readme, "^# githapi\nUser-friendly access to the GitHub API for R")
 })
 
+#  FUNCTION: gh_json --------------------------------------------------------------------------
+test_that("gh_json returns the github response parsed into a list", {
+  response <- gh_json(file.path(getOption("github.api"), "repos/ChadGoymer/githapi"))
+  expect_is(response, "list")
+  expect_identical(response$name, "githapi")
+})
+
 # FUNCTION: gh_page ---------------------------------------------------------------------------
 test_that("paging something from github returns the correct result", {
   test_commits <- gh_page(
