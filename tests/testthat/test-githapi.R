@@ -63,6 +63,15 @@ test_that("paging something from github returns the correct result", {
   expect_identical(length(test_commits), 20L)
 })
 
+#  FUNCTION: gh_tibble ------------------------------------------------------------------------
+test_that("gh_tibble returns the github response parsed into a tibble", {
+  test_commits <- gh_tibble(
+    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits"),
+    page_size = 10L, max_pages = 2L)
+  expect_is(test_commits, "tbl")
+  expect_identical(nrow(test_commits), 20L)
+})
+
 #  FUNCTION: gh_post --------------------------------------------------------------------------
 # test_that("gh_post send a message to github", {
 #   file.path(getOption("github.api"), "repos/ChadGoymer/githapi-test/git/blobs") %>%

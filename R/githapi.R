@@ -69,7 +69,7 @@ gh_json <- function(
   accept = "application/vnd.github.v3+json",
   token  = gh_token())
 {
-  gh_get(address, accept = accept, token = token) %>%
+  gh_get(address, binary = FALSE, accept = accept, token = token) %>%
     fromJSON(simplifyDataFrame = FALSE)
 }
 
@@ -87,14 +87,30 @@ gh_page <- function(
   page_url$query <- c(page_url$query, list(per_page = page_size, page = 1L))
   result <- build_url(page_url) %>% gh_json(token = token, ...)
 
-  if (identical(length(result), page_size) && max_pages != 1L) {
-    for (p in 2:max_pages) {
-      page_url$query$page <- p
+  if (identical(length(result), as.integer(page_size)) && max_pages > 1) {
+    page <- 2
+    while (page <= max_pages) {
+      page_url$query$page <- page
       result <- c(result, build_url(page_url) %>% gh_json(token = token, ...))
-      if (!identical(length(result), page_size * p))
-        break
+      page <- page + 1
     }
   }
 
   result
+}
+
+#  FUNCTION: gh_tibble ------------------------------------------------------------------------
+#' Get and parse the contents of a github http request, including multiple pages and return a
+#' tibble.
+#' @export
+gh_tibble <- function(
+  address,
+  ...,
+  page_size = 100L,
+  max_pages = 100L,
+  token     = gh_token())
+{
+  gh_page(address, ..., page_size = page_size, max_pages = max_pages) %>%
+    map(flatten_) %>%
+    bind_rows()
 }

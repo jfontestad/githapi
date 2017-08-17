@@ -4,7 +4,8 @@
 \alias{gh_json}
 \title{Get the JSON contents of a GitHub request and parse into a list.}
 \usage{
-gh_json(address, token = gh_token())
+gh_json(address, accept = "application/vnd.github.v3+json",
+  token = gh_token())
 }
 \description{
 Get the JSON contents of a GitHub request and parse into a list.
