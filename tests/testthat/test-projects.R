@@ -29,3 +29,10 @@ test_that("gh_columns returns a tibble describing the columns", {
   expect_true(all(c("To do", "In progress", "Done") %in% columns$name))
 })
 
+#  FUNCTION: gh_cards -------------------------------------------------------------------------
+test_that("gh_cards returns a tibble describing the cards", {
+  cards <- gh_cards(1310204)
+  expect_is(cards, "tbl")
+  expect_identical(names(cards), c("id", "creator_login", "created_at", "updated_at", "url"))
+  expect_true("ChadGoymer" %in% cards$creator_login)
+})

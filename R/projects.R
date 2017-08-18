@@ -105,3 +105,32 @@ gh_columns <- function(
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
 
+#  FUNCTION: gh_cards -------------------------------------------------------------------------
+#' List project cards
+#'
+#' url{https://developer.github.com/v3/projects/cards/#list-project-cards}
+#'
+#' @param column (integer) The ID of the column in GitHub.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the cards (see GitHub's API documentation for details).
+#' @export
+gh_cards <- function(
+  column,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(column))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  # NOTE: Projects is currently in beta, so requires preview accept header
+  gh_url("projects/columns", column, "cards", api = api) %>%
+    gh_tibble(token = token, accept = "application/vnd.github.inertia-preview+json", ...) %>%
+    select(id, creator_login, created_at, updated_at, url) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+}
