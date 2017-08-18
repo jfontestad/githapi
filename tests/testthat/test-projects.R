@@ -21,6 +21,16 @@ test_that("gh_projects returns a tibble describing the projects", {
   expect_true("githapi" %in% projects$name)
 })
 
+#  FUNCTION: gh_column ------------------------------------------------------------------------
+test_that("gh_column returns a list describing the column", {
+  column <- gh_column(1310204)
+  expect_is(column, "list")
+  expect_identical(
+    names(column),
+    c("url", "project_url", "cards_url", "id", "name", "created_at", "updated_at"))
+  expect_identical(column$name, "To do")
+})
+
 #  FUNCTION: gh_columns -----------------------------------------------------------------------
 test_that("gh_columns returns a tibble describing the columns", {
   columns <- gh_columns(747228)
