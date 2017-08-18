@@ -313,10 +313,17 @@ gh_commits <- function(
 
   if (extended) {
     commits <- mutate(commits, files = map(sha, function(.sha) {
-      gh_commit(ref = .sha, repo = repo, token = token, api = api, ...) %>%
-        .[["files"]] %>%
-        bind_rows %>%
-        select(filename, status, additions, deletions, changes, contents_url)
+      commit_files <- gh_commit(ref = .sha, repo = repo, token = token, api = api, ...) %>%
+        .[["files"]]
+      if (identical(commit_files, list())) {
+        tibble(
+          filename = NA_character_, status = NA_character_, additions = NA_integer_,
+          deletions = NA_integer_, changes = NA_integer_, contents_url = NA_character_)
+      } else {
+        commit_files %>%
+          bind_rows() %>%
+          select(filename, status, additions, deletions, changes, contents_url)
+      }
     }))
   }
 

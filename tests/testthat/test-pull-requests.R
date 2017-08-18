@@ -55,7 +55,8 @@ test_that("gh_pull_merged returns TRUE if the pull request has been merged and F
   merged <- gh_pull_merged(8, "ChadGoymer/githapi")
   expect_true(merged)
 
-  unmerged <- gh_pull_merged(13, "ChadGoymer/githapi")
+  # TODO: set up pull request for testing
+  unmerged <- gh_pull_merged(25, "ChadGoymer/githapi")
   expect_false(unmerged)
 })
 
