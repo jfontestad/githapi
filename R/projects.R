@@ -1,3 +1,31 @@
+#  FUNCTION: gh_project -----------------------------------------------------------------------
+#' Get a project
+#'
+#' url{https://developer.github.com/v3/projects/#get-a-project}
+#'
+#' @param project (integer) The ID of the project in GitHub.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the projects (see GitHub's API documentation for details).
+#' @export
+gh_project <- function(
+  project,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(project))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  # NOTE: Projects is currently in beta, so requires preview accept header
+  gh_url("projects", project, api = api) %>%
+    gh_json(token = token, accept = "application/vnd.github.inertia-preview+json", ...)
+}
+
 #  FUNCTION: gh_projects ----------------------------------------------------------------------
 #' List organisation or repository projects
 #'
