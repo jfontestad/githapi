@@ -9,7 +9,7 @@
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return A tibble describing the projects (see GitHub's API documentation for details).
+#' @return A list describing the project (see GitHub's API documentation for details).
 #' @export
 gh_project <- function(
   project,
@@ -72,8 +72,36 @@ gh_projects <- function(
   url %>%
     gh_tibble(token = token, accept = "application/vnd.github.inertia-preview+json", ...) %>%
     select(id, number, name, body, state, creator_login, created_at, updated_at, url) %>%
-    mutate(
-      created_at = parse_datetime(created_at),
-      updated_at = parse_datetime(updated_at))
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+}
+
+#  FUNCTION: gh_columns -----------------------------------------------------------------------
+#' List project columns
+#'
+#' url{https://developer.github.com/v3/projects/columns/#list-project-columns}
+#'
+#' @param project (integer) The ID of the project in GitHub.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the columns (see GitHub's API documentation for details).
+#' @export
+gh_columns <- function(
+  project,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(project))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  # NOTE: Projects is currently in beta, so requires preview accept header
+  gh_url("projects", project, "columns", api = api) %>%
+    gh_tibble(token = token, accept = "application/vnd.github.inertia-preview+json", ...) %>%
+    select(id, name, created_at, updated_at, url) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
 
