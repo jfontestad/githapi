@@ -39,10 +39,24 @@ test_that("gh_columns returns a tibble describing the columns", {
   expect_true(all(c("To do", "In progress", "Done") %in% columns$name))
 })
 
+#  FUNCTION: gh_card --------------------------------------------------------------------------
+test_that("gh_card returns a list describing the card", {
+  card <- gh_card(4211067)
+  expect_is(card, "list")
+  expect_identical(
+    names(card),
+    c("url", "column_url", "id", "note", "creator", "created_at", "updated_at", "content_url"))
+  expect_identical(
+    card$content_url,
+    "https://api.github.com/repos/ChadGoymer/githapi/issues/16")
+})
+
 #  FUNCTION: gh_cards -------------------------------------------------------------------------
 test_that("gh_cards returns a tibble describing the cards", {
   cards <- gh_cards(1310204)
   expect_is(cards, "tbl")
-  expect_identical(names(cards), c("id", "creator_login", "created_at", "updated_at", "url"))
+  expect_identical(
+    names(cards),
+    c("id", "creator_login", "created_at", "updated_at", "content_url", "url"))
   expect_true("ChadGoymer" %in% cards$creator_login)
 })

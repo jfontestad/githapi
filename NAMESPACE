@@ -3,6 +3,7 @@
 export(gh_assignees)
 export(gh_branch)
 export(gh_branches)
+export(gh_card)
 export(gh_cards)
 export(gh_collaborator)
 export(gh_collaborators)
