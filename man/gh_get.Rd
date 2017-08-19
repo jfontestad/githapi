@@ -2,11 +2,11 @@
 % Please edit documentation in R/githapi.R
 \name{gh_get}
 \alias{gh_get}
-\title{Get the contents of a github http request as a string.}
+\title{Get the contents of a github http request.}
 \usage{
 gh_get(address, binary = FALSE, accept = "application/vnd.github.raw",
   token = gh_token())
 }
 \description{
-Get the contents of a github http request as a string.
+Get the contents of a github http request.
 }

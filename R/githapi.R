@@ -39,7 +39,7 @@ gh_url <- function(
 }
 
 #  FUNCTION: gh_get ---------------------------------------------------------------------------
-#' Get the contents of a github http request as a string.
+#' Get the contents of a github http request.
 #' @export
 gh_get <- function(
   address,
@@ -61,6 +61,18 @@ gh_get <- function(
   }
 }
 
+#  FUNCTION: gh_json --------------------------------------------------------------------------
+#' Get the JSON contents of a GitHub request and parse into a list.
+#' @export
+gh_json <- function(
+  address,
+  accept = "application/vnd.github.v3+json",
+  token  = gh_token())
+{
+  gh_get(address, binary = FALSE, accept = accept, token = token) %>%
+    fromJSON(simplifyDataFrame = FALSE)
+}
+
 #  FUNCTION: gh_page ---------------------------------------------------------------------------
 #' Get and parse the contents of a github http request, including multiple pages.
 #' @export
@@ -71,25 +83,34 @@ gh_page <- function(
   max_pages = 100L,
   token     = gh_token())
 {
-  page_result <- function(page_url) {
-    page_url %>%
-      build_url %>%
-      gh_get(..., token = token) %>%
-      fromJSON(simplifyDataFrame = FALSE)
-  }
-
   page_url <- parse_url(address)
   page_url$query <- c(page_url$query, list(per_page = page_size, page = 1L))
-  result <- page_result(page_url)
+  result <- build_url(page_url) %>% gh_json(token = token, ...)
 
-  if (identical(length(result), page_size)) {
-    for (p in 2:max_pages) {
-      page_url$query$page <- p
-      result <- c(result, page_result(page_url))
-      if (!identical(length(result), page_size * p))
-        break
+  if (identical(length(result), as.integer(page_size)) && max_pages > 1) {
+    page <- 2
+    while (page <= max_pages) {
+      page_url$query$page <- page
+      result <- c(result, build_url(page_url) %>% gh_json(token = token, ...))
+      page <- page + 1
     }
   }
 
   result
+}
+
+#  FUNCTION: gh_tibble ------------------------------------------------------------------------
+#' Get and parse the contents of a github http request, including multiple pages and return a
+#' tibble.
+#' @export
+gh_tibble <- function(
+  address,
+  ...,
+  page_size = 100L,
+  max_pages = 100L,
+  token     = gh_token())
+{
+  gh_page(address, ..., page_size = page_size, max_pages = max_pages) %>%
+    map(flatten_) %>%
+    bind_rows()
 }

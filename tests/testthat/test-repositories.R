@@ -15,7 +15,7 @@ test_that("gh_repository returns an error is the specified repo does not exist",
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
 test_that("gh_repositories returns a tibble describing all the repositories a user has", {
   repos <- gh_repositories("ChadGoymer")
-  expect_true(is_tibble(repos))
+  expect_is(repos, "tbl")
   expect_true("githapi" %in% repos$name)
   expect_identical(repos$name, sort(repos$name))
 
@@ -25,7 +25,7 @@ test_that("gh_repositories returns a tibble describing all the repositories a us
 
 test_that("gh_repositories returns a tibble describing all the repositories an org has", {
   repos <- gh_repositories("tidyverse")
-  expect_true(is_tibble(repos))
+  expect_is(repos, "tbl")
   expect_true(all(c("dplyr", "tidyr") %in% repos$name))
 })
 
@@ -36,7 +36,7 @@ test_that("gh_repositories returns an error is the specified owner does not exis
 #  FUNCTION: gh_tags ----------------------------------------------------------------------
 test_that("gh_tags returns a tibble describing all the tags", {
   tags <- gh_tags("ChadGoymer/githapi")
-  expect_true(is_tibble(tags))
+  expect_is(tags, "tbl")
   expect_true("v0.0.0" %in% tags$name)
   expect_identical(names(tags), c("name", "sha", "url", "zipball_url", "tarball_url"))
 })
@@ -60,12 +60,12 @@ test_that("gh_branch returns an error is the specified branch or repo does not e
 #  FUNCTION: gh_branches ------------------------------------------------------------------
 test_that("gh_branches returns a tibble describing all the branches", {
   branches <- gh_branches("ChadGoymer/githapi")
-  expect_true(is_tibble(branches))
+  expect_is(branches, "tbl")
   expect_true("master" %in% branches$name)
   expect_identical(names(branches), c("name", "sha", "url"))
 
   branches_ext <- gh_branches("ChadGoymer/githapi", extended = TRUE)
-  expect_true(is_tibble(branches_ext))
+  expect_is(branches_ext, "tbl")
   expect_identical(
     names(branches_ext),
     c("name", "sha", "date", "author_name", "author_email", "committer_name",
@@ -105,7 +105,7 @@ test_that("gh_commit_sha returns a string with the SHA-1", {
 #  FUNCTION: gh_commits -------------------------------------------------------------------
 test_that("gh_commits returns a tibble describing all the commits on a branch", {
   commits <- gh_commits("master", "ChadGoymer/githapi")
-  expect_true(is_tibble(commits))
+  expect_is(commits, "tbl")
   expect_true("d9fe50f8e31d7430df2c5b02442dffb68c854f08" %in% commits$sha)
   expect_identical(
     names(commits),
@@ -115,8 +115,8 @@ test_that("gh_commits returns a tibble describing all the commits on a branch", 
 
 test_that("gh_commits returns the commits specified with extended results", {
   commits_ext <- gh_commits("master", "ChadGoymer/githapi", extended = TRUE, page_size = 10L, max_pages  = 10L)
-  expect_true(is_tibble(commits_ext))
   expect_true(nrow(commits_ext) < 100L)
+  expect_is(commits_ext, "tbl")
   expect_identical(
     names(commits_ext),
     c("sha", "date", "author_name", "author_email", "committer_name", "committer_email",
@@ -153,7 +153,7 @@ test_that("gh_compare_files returns a tibble of information of file differences 
     "d8a62ccdc3df3e002dbac55390772424b136844a",
     "ChadGoymer/githapi")
 
-  expect_true(is.tibble(comparison))
+  expect_is(comparison, "tbl")
 
   expect_identical(
     names(comparison),

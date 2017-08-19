@@ -47,18 +47,29 @@ test_that("getting something from github returns the correct result", {
   expect_match(test_readme, "^# githapi\nUser-friendly access to the GitHub API for R")
 })
 
+#  FUNCTION: gh_json --------------------------------------------------------------------------
+test_that("gh_json returns the github response parsed into a list", {
+  response <- gh_json(file.path(getOption("github.api"), "repos/ChadGoymer/githapi"))
+  expect_is(response, "list")
+  expect_identical(response$name, "githapi")
+})
+
 # FUNCTION: gh_page ---------------------------------------------------------------------------
 test_that("paging something from github returns the correct result", {
   test_commits <- gh_page(
-    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits"))
-  expect_identical(
-    test_commits[[length(test_commits)]]$sha,
-    "d9fe50f8e31d7430df2c5b02442dffb68c854f08")
-  expect_identical(test_commits[[length(test_commits)]]$commit$author$name, "Chad Goymer")
-  expect_identical(test_commits[[length(test_commits)]]$commit$author$date, "2017-06-05T07:18:30Z")
-  expect_identical(test_commits[[length(test_commits)]]$commit$message, "Initial commit")
+    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits"),
+    page_size = 10L, max_pages = 2L)
+  expect_is(test_commits, "list")
+  expect_identical(length(test_commits), 20L)
+})
 
-  # TODO: Add a way to test paging - increase branches or commits in test repo
+#  FUNCTION: gh_tibble ------------------------------------------------------------------------
+test_that("gh_tibble returns the github response parsed into a tibble", {
+  test_commits <- gh_tibble(
+    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits"),
+    page_size = 10L, max_pages = 2L)
+  expect_is(test_commits, "tbl")
+  expect_identical(nrow(test_commits), 20L)
 })
 
 #  FUNCTION: gh_post --------------------------------------------------------------------------
