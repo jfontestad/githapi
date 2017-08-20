@@ -55,7 +55,7 @@ gh_git_commit <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/commits", sha, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_git_reference -----------------------------------------------------------------
@@ -86,7 +86,7 @@ gh_git_reference <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/refs", ref, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_git_references ----------------------------------------------------------------
@@ -149,7 +149,7 @@ gh_git_tag <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/tags", sha, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_git_tree ----------------------------------------------------------------------
@@ -181,7 +181,7 @@ gh_git_tree <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/trees", ref, recursive = as.integer(recursive), api = api) %>%
-    gh_page(...) %>%
+    gh_page(token = token, ...) %>%
     .[["tree"]] %>%
     bind_rows() %>%
     select(path, type, sha, size, url)

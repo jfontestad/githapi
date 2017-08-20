@@ -22,7 +22,7 @@ gh_organization <- function(
   assert_that(is.string(api))
 
   gh_url("orgs", org, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_organizations -----------------------------------------------------------------
@@ -212,7 +212,7 @@ gh_membership <- function(
   }
 
   url %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_memberships -------------------------------------------------------------------
@@ -275,7 +275,7 @@ gh_team <- function(
   assert_that(is.string(api))
 
   gh_url("teams", team, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_teams -------------------------------------------------------------------------

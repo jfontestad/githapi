@@ -25,7 +25,7 @@ gh_pull_request <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_pull_requests -----------------------------------------------------------------
@@ -225,7 +225,7 @@ gh_pull_review <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, "reviews", review, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_pull_reviews ------------------------------------------------------------------
@@ -289,7 +289,7 @@ gh_pull_comment <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls/comments", comment, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_pull_comments -----------------------------------------------------------------

@@ -25,7 +25,7 @@ gh_issue <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "issues", issue, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_issues ------------------------------------------------------------------------
@@ -323,7 +323,7 @@ gh_issue_comment <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "issues/comments", comment, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_label -------------------------------------------------------------------------
@@ -353,7 +353,7 @@ gh_label <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "labels", name, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_labels ------------------------------------------------------------------------
@@ -434,9 +434,8 @@ gh_milestone <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "milestones", milestone, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
-
 
 #  FUNCTION: gh_milestones --------------------------------------------------------------------
 #' List milestones for a repository

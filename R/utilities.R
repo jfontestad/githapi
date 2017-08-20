@@ -22,3 +22,13 @@ gh_token <- function() {
   }
   token
 }
+
+# FUNCTION: page_size -------------------------------------------------------------------------
+# Calculate the page sizes based on the number of items requested.
+page_size <- function(n_max = 1000L) {
+  if (n_max <= 100) {
+    page_size <- n_max
+  } else {
+    page_size <- c(rep(100L, floor(n_max/100)), n_max %% 100L)
+  }
+}

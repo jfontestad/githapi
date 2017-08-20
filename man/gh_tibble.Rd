@@ -5,8 +5,7 @@
 \title{Get and parse the contents of a github http request, including multiple pages and return a
 tibble.}
 \usage{
-gh_tibble(address, ..., page_size = 100L, max_pages = 100L,
-  token = gh_token())
+gh_tibble(address, ..., n_max = 1000L, token = gh_token())
 }
 \description{
 Get and parse the contents of a github http request, including multiple pages and return a

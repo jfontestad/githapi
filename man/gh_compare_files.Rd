@@ -24,7 +24,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_page}}.}
 }
 \value{
-A list describing the files and the differences (see GitHub's API documentation
+A tibble describing the files and the differences (see GitHub's API documentation
   for details).
 }
 \description{

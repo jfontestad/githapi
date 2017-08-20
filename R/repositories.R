@@ -21,7 +21,8 @@ gh_repository <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh_url("repos", repo, api = api) %>% gh_page(token = token, ...)
+  gh_url("repos", repo, api = api) %>%
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
@@ -91,7 +92,7 @@ gh_repositories <- function(
 
   repos %>%
     map(flatten_) %>%
-    bind_rows %>%
+    bind_rows() %>%
     select(name, owner_login, owner_type, description, html_url, url, created_at, updated_at, size, open_issues, default_branch) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
@@ -124,7 +125,7 @@ gh_tags <- function(
   gh_url("repos", repo, "tags", api = api) %>%
     gh_page(...) %>%
     map(flatten) %>%
-    bind_rows %>%
+    bind_rows() %>%
     select(name, sha, url, zipball_url, tarball_url)
 }
 
@@ -155,7 +156,7 @@ gh_branch <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "branches", branch, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_branches ----------------------------------------------------------------------
@@ -200,7 +201,7 @@ gh_branches <- function(
       map("commit") %>%
       map("commit") %>%
       map(flatten_) %>%
-      bind_rows %>%
+      bind_rows() %>%
       mutate(name = branches$name, sha = basename(url), date = parse_datetime(author_date)) %>%
       select(name, sha, date, everything(), -author_date, -committer_date, -comment_count)
   }
@@ -236,7 +237,7 @@ gh_commit <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "commits", ref, api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
@@ -307,13 +308,13 @@ gh_commits <- function(
     gh_page(token = token, ...) %>%
     map("commit") %>%
     map(flatten_) %>%
-    bind_rows %>%
+    bind_rows() %>%
     mutate(sha = basename(url), date = parse_datetime(author_date)) %>%
     select(sha, date, everything(), -author_date, -committer_date, -comment_count)
 
   if (extended) {
     commits <- mutate(commits, files = map(sha, function(.sha) {
-      commit_files <- gh_commit(ref = .sha, repo = repo, token = token, api = api, ...) %>%
+      commit_files <- gh_commit(ref = .sha, repo = repo, token = token, api = api) %>%
         .[["files"]]
       if (identical(commit_files, list())) {
         tibble(
@@ -343,7 +344,7 @@ gh_commits <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return A list describing the commits and the differences (see GitHub's API documentation for
+#' @return A tibble describing the commits and the differences (see GitHub's API documentation for
 #'   details).
 #' @export
 gh_compare_commits <- function(
@@ -365,7 +366,7 @@ gh_compare_commits <- function(
     .[["commits"]] %>%
     map("commit") %>%
     map(flatten_) %>%
-    bind_rows %>%
+    bind_rows() %>%
     mutate(sha = basename(url), date = parse_datetime(author_date)) %>%
     select(sha, date, everything(), -author_date, -tree_sha, -tree_url, -comment_count, -committer_date)
 }
@@ -384,7 +385,7 @@ gh_compare_commits <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return A list describing the files and the differences (see GitHub's API documentation
+#' @return A tibble describing the files and the differences (see GitHub's API documentation
 #'   for details).
 #' @export
 gh_compare_files <- function(
@@ -404,7 +405,7 @@ gh_compare_files <- function(
   gh_url("repos", repo, "compare", str_c(base, "...", head), api = api) %>%
     gh_page(token = token, ...) %>%
     .[["files"]] %>%
-    bind_rows %>%
+    bind_rows() %>%
     select(filename, status, additions, deletions, changes, contents_url)
 }
 
@@ -634,5 +635,5 @@ gh_permissions <- function(
 
   # GET /repos/:owner/:repo/collaborators/:username/permission
   gh_url("repos", repo, "collaborators", user, "permission", api = api) %>%
-    gh_page(token = token, ...)
+    gh_json(token = token, ...)
 }

@@ -79,21 +79,16 @@ gh_json <- function(
 gh_page <- function(
   address,
   ...,
-  page_size = 100L,
-  max_pages = 100L,
-  token     = gh_token())
+  n_max = 1000L,
+  token = gh_token())
 {
+  pages <- page_size(n_max)
   page_url <- parse_url(address)
-  page_url$query <- c(page_url$query, list(per_page = page_size, page = 1L))
-  result <- build_url(page_url) %>% gh_json(token = token, ...)
 
-  if (identical(length(result), as.integer(page_size)) && max_pages > 1) {
-    page <- 2
-    while (page <= max_pages) {
-      page_url$query$page <- page
-      result <- c(result, build_url(page_url) %>% gh_json(token = token, ...))
-      page <- page + 1
-    }
+  result <- list()
+  for (page in seq_along(pages)) {
+    page_url$query <- c(page_url$query, list(per_page = pages[page], page = page))
+    result <- c(result, build_url(page_url) %>% gh_json(token = token, ...))
   }
 
   result
@@ -106,11 +101,10 @@ gh_page <- function(
 gh_tibble <- function(
   address,
   ...,
-  page_size = 100L,
-  max_pages = 100L,
-  token     = gh_token())
+  n_max = 1000L,
+  token = gh_token())
 {
-  gh_page(address, ..., page_size = page_size, max_pages = max_pages) %>%
+  gh_page(address, ..., n_max = n_max) %>%
     map(flatten_) %>%
     bind_rows()
 }
