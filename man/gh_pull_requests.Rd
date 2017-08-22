@@ -5,7 +5,7 @@
 \title{List pull requests}
 \usage{
 gh_pull_requests(repo, state = NULL, head = NULL, base = NULL,
-  sort = NULL, direction = NULL, token = gh_token(),
+  sort = NULL, direction = NULL, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -24,6 +24,8 @@ Default: created}
 
 \item{direction}{(string) The direction of the sort. Can be either asc or desc.
 Default: desc when sort is created or sort is not specified, otherwise asc."}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

@@ -10,7 +10,8 @@
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A string containing the contents of the specified file.
+#' @return A string containing the contents of the specified file (see GitHub's API
+#'   documentation for details).
 #' @export
 gh_git_blob <- function(
   sha,
@@ -25,7 +26,7 @@ gh_git_blob <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/blobs", sha, api = api) %>%
-    gh_get(token = token, ...)
+    gh_get(accept = "raw", token = token, ...)
 }
 
 #  FUNCTION: gh_git_commit --------------------------------------------------------------------
@@ -39,7 +40,7 @@ gh_git_blob <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the commit (see GitHub's API documentation for details).
 #' @export
 gh_git_commit <- function(
@@ -55,7 +56,7 @@ gh_git_commit <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/commits", sha, api = api) %>%
-    gh_json(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_git_reference -----------------------------------------------------------------
@@ -70,7 +71,7 @@ gh_git_commit <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the reference (see GitHub's API documentation for details).
 #' @export
 gh_git_reference <- function(
@@ -86,7 +87,7 @@ gh_git_reference <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/refs", ref, api = api) %>%
-    gh_json(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_git_references ----------------------------------------------------------------
@@ -95,30 +96,37 @@ gh_git_reference <- function(
 #' url{https://developer.github.com/v3/git/refs/#get-all-references}
 #'
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return a tibble describing the references
+#' @return A tibble describing the references (see GitHub's API documentation for details).
 #' @export
 gh_git_references <- function(
   repo,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  ref_map <- c("refs/heads" = "branch", "refs/tags" = "tag")
+  ref_map <- c(
+    "refs/heads" = "branch",
+    "refs/tags"  = "tag",
+    "head"       = "pull request",
+    "merge"      = "pull merge")
 
   gh_url("repos", repo, "git/refs", api = api) %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows() %>%
-    mutate(name = basename(ref), type = ref_map[dirname(ref)]) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(
+      name = ifelse(str_detect(ref, "pull"), basename(dirname(ref)), basename(ref)),
+      type = ifelse(str_detect(ref, "pull"), ref_map[basename(ref)], ref_map[dirname(ref)])) %>%
     select(name, type, object_type, object_sha, ref, url)
 }
 
@@ -133,7 +141,7 @@ gh_git_references <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the tag (see GitHub's API documentation for details).
 #' @export
 gh_git_tag <- function(
@@ -149,7 +157,7 @@ gh_git_tag <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/tags", sha, api = api) %>%
-    gh_json(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_git_tree ----------------------------------------------------------------------
@@ -164,8 +172,9 @@ gh_git_tag <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
-#' @return A tibble describing the files in a commit (see GitHub's API documentation for details).
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A tibble describing the files in a commit (see GitHub's API documentation for
+#'   details).
 #' @export
 gh_git_tree <- function(
   ref,
@@ -181,8 +190,6 @@ gh_git_tree <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "git/trees", ref, recursive = as.integer(recursive), api = api) %>%
-    gh_page(token = token, ...) %>%
-    .[["tree"]] %>%
-    bind_rows() %>%
+    gh_get(sub_list = "tree", simplify = TRUE, token = token, ...) %>%
     select(path, type, sha, size, url)
 }

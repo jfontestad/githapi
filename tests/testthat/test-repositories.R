@@ -38,7 +38,7 @@ test_that("gh_tags returns a tibble describing all the tags", {
   tags <- gh_tags("ChadGoymer/githapi")
   expect_is(tags, "tbl")
   expect_true("v0.0.0" %in% tags$name)
-  expect_identical(names(tags), c("name", "sha", "url", "zipball_url", "tarball_url"))
+  expect_identical(names(tags), c("name", "commit_sha", "commit_url", "zipball_url", "tarball_url"))
 })
 
 test_that("gh_tags returns an error is the specified repo does not exist", {
@@ -62,14 +62,7 @@ test_that("gh_branches returns a tibble describing all the branches", {
   branches <- gh_branches("ChadGoymer/githapi")
   expect_is(branches, "tbl")
   expect_true("master" %in% branches$name)
-  expect_identical(names(branches), c("name", "sha", "url"))
-
-  branches_ext <- gh_branches("ChadGoymer/githapi", extended = TRUE)
-  expect_is(branches_ext, "tbl")
-  expect_identical(
-    names(branches_ext),
-    c("name", "sha", "date", "author_name", "author_email", "committer_name",
-      "committer_email", "message", "tree_sha", "tree_url", "url"))
+  expect_identical(names(branches), c("name", "commit_sha", "commit_url"))
 })
 
 test_that("gh_branches returns an error is the specified repo does not exist", {
@@ -104,23 +97,13 @@ test_that("gh_commit_sha returns a string with the SHA-1", {
 
 #  FUNCTION: gh_commits -------------------------------------------------------------------
 test_that("gh_commits returns a tibble describing all the commits on a branch", {
-  commits <- gh_commits("master", "ChadGoymer/githapi")
+  commits <- gh_commits("master", "ChadGoymer/githapi", n_max = 1000)
   expect_is(commits, "tbl")
   expect_true("d9fe50f8e31d7430df2c5b02442dffb68c854f08" %in% commits$sha)
   expect_identical(
     names(commits),
-    c("sha", "date", "author_name", "author_email", "committer_name", "committer_email",
-      "message", "tree_sha", "tree_url", "url"))
-})
-
-test_that("gh_commits returns the commits specified with extended results", {
-  commits_ext <- gh_commits("master", "ChadGoymer/githapi", extended = TRUE, n_max  = 10)
-  expect_identical(nrow(commits_ext), 10L)
-  expect_is(commits_ext, "tbl")
-  expect_identical(
-    names(commits_ext),
-    c("sha", "date", "author_name", "author_email", "committer_name", "committer_email",
-      "message", "tree_sha", "tree_url", "url", "files"))
+    c("sha", "date", "message", "url", "author_name", "author_email",
+      "committer_name", "committer_email", "tree_sha", "tree_url"))
 })
 
 test_that("gh_commits returns an error is the specified repo does not exist", {
@@ -138,8 +121,8 @@ test_that("gh_compare_commits returns information on the differences between two
 
   expect_identical(
     names(comparison),
-    c("sha", "date", "author_name", "author_email",
-      "committer_name", "committer_email", "message", "url"))
+    c("sha", "date", "message", "url", "author_name", "author_email",
+      "committer_name", "committer_email"))
 
   expect_identical(
     comparison$sha,

@@ -8,7 +8,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the organization (see GitHub's API documentation for details).
 #' @export
 gh_organization <- function(
@@ -22,7 +22,7 @@ gh_organization <- function(
   assert_that(is.string(api))
 
   gh_url("orgs", org, api = api) %>%
-    gh_json(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_organizations -----------------------------------------------------------------
@@ -33,6 +33,7 @@ gh_organization <- function(
 #'
 #' @param user (string, optional) The GitHub username of the user. If not specified, all
 #'   organizations are returned.
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -42,10 +43,12 @@ gh_organization <- function(
 #' @export
 gh_organizations <- function(
   user,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -57,9 +60,7 @@ gh_organizations <- function(
   }
 
   url %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows() %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     select(id, name = login, description, url)
 }
 
@@ -92,7 +93,7 @@ gh_member <- function(
 
   response <- try(silent = TRUE, suppressMessages({
     gh_url("orgs", org, "members", user, api = api) %>%
-      gh_get(token = token, ...)
+      gh_get(accept = "raw", token = token, ...)
   }))
 
   if (identical(response, "")) {
@@ -126,6 +127,7 @@ gh_member <- function(
 #'     \item member: Non-owner organization members.
 #'     \item Default: all.
 #'   }
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -138,12 +140,14 @@ gh_members <- function(
   team,
   filter = NULL,
   role   = NULL,
+  n_max = 1000L,
   token  = gh_token(),
   api    = getOption("github.api"),
   ...)
 {
   assert_that(is.null(filter) | is.string(filter))
   assert_that(is.null(role) | is.string(role))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -161,9 +165,7 @@ gh_members <- function(
   }
 
   url %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows() %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     select(id, login, type, site_admin, url)
 }
 
@@ -212,7 +214,7 @@ gh_membership <- function(
   }
 
   url %>%
-    gh_json(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_memberships -------------------------------------------------------------------
@@ -222,6 +224,7 @@ gh_membership <- function(
 #' url{https://developer.github.com/v3/orgs/members/#get-your-organization-membership}
 #'
 #' @param org (string, optional) The name of the organization.
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -231,10 +234,12 @@ gh_membership <- function(
 #' @export
 gh_memberships <- function(
   org,
+  n_max = 1000L,
   token  = gh_token(),
   api    = getOption("github.api"),
   ...)
 {
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -246,9 +251,7 @@ gh_memberships <- function(
   }
 
   url %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows()
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: gh_team --------------------------------------------------------------------------
@@ -261,7 +264,7 @@ gh_memberships <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the team (see GitHub's API documentation for details).
 #' @export
 gh_team <- function(
@@ -275,7 +278,7 @@ gh_team <- function(
   assert_that(is.string(api))
 
   gh_url("teams", team, api = api) %>%
-    gh_json(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_teams -------------------------------------------------------------------------
@@ -286,6 +289,7 @@ gh_team <- function(
 #'
 #' @param org (string, optional) The name of the organization. If not specified, the teams of
 #'   the authenticated user are returned.
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -295,10 +299,12 @@ gh_team <- function(
 #' @export
 gh_teams <- function(
   org,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -310,9 +316,7 @@ gh_teams <- function(
   }
 
   url %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows()
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: gh_manager -----------------------------------------------------------------------
@@ -344,7 +348,7 @@ gh_manager <- function(
 
   response <- try(silent = TRUE, suppressMessages({
     gh_url("teams", team, "repos", repo, api = api) %>%
-      gh_get(token = token, ...)
+      gh_get(accept = "raw", token = token, ...)
   }))
 
   if (identical(response, "")) {

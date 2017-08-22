@@ -4,7 +4,8 @@
 \alias{gh_page}
 \title{Get and parse the contents of a github http request, including multiple pages.}
 \usage{
-gh_page(address, ..., n_max = 1000L, token = gh_token())
+gh_page(address, sub_list = NULL, simplify = FALSE, accept = "json",
+  n_max = 1000L, token = gh_token())
 }
 \description{
 Get and parse the contents of a github http request, including multiple pages.

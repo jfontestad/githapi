@@ -7,6 +7,25 @@
 #' @name githapi
 NULL
 
+# FUNCTION: gh_token --------------------------------------------------------------------------
+# Retrieve the GitHub personal access token from the following locations:
+#  - github.token option
+#  - GITHUB_TOKEN environment variable
+#  - GITHUB_PAT environment variable
+gh_token <- function() {
+  token <- getOption("github.token")
+  if (is.null(token)) {
+    token <- Sys.getenv("GITHUB_TOKEN")
+  }
+  if (identical(token, "")) {
+    token <- Sys.getenv("GITHUB_PAT")
+  }
+  if (identical(token, "")) {
+    stop("Cannot find GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
+  }
+  token
+}
+
 #  FUNCTION: gh_url ----------------------------------------------------------------------------
 #' Build the URL for the github API
 #'
@@ -43,10 +62,18 @@ gh_url <- function(
 #' @export
 gh_get <- function(
   address,
-  binary = FALSE,
-  accept = "application/vnd.github.raw",
-  token  = gh_token())
+  sub_list = NULL,
+  simplify = FALSE,
+  binary   = FALSE,
+  accept   = "json",
+  token    = gh_token())
 {
+  if (identical(accept, "raw") || binary) {
+    accept <- "application/vnd.github.raw"
+  } else if (identical(accept, "json")) {
+    accept <- "application/vnd.github.v3+json"
+  }
+
   request <- GET(
     address,
     add_headers(
@@ -55,22 +82,25 @@ gh_get <- function(
   stop_for_status(request)
 
   if (binary) {
-    content(request, "raw")
-  } else {
-    content(request, "text")
-  }
-}
+    result <- content(request, "raw")
+  } else if (identical(accept %>% str_sub(., nchar(.) - 3, nchar(.)), "json")) {
+    result <- content(request, "text") %>%
+      fromJSON(simplifyDataFrame = simplify, flatten = simplify)
 
-#  FUNCTION: gh_json --------------------------------------------------------------------------
-#' Get the JSON contents of a GitHub request and parse into a list.
-#' @export
-gh_json <- function(
-  address,
-  accept = "application/vnd.github.v3+json",
-  token  = gh_token())
-{
-  gh_get(address, binary = FALSE, accept = accept, token = token) %>%
-    fromJSON(simplifyDataFrame = FALSE)
+    if (!missing(sub_list)) {
+      result <- result[[sub_list]]
+    }
+
+    if (simplify) {
+      result <- result %>%
+        as_tibble() %>%
+        set_names(str_replace_all(names(.), "\\.", "_"))
+    }
+  } else {
+    result <- content(request, "text")
+  }
+
+  result
 }
 
 #  FUNCTION: gh_page ---------------------------------------------------------------------------
@@ -78,33 +108,38 @@ gh_json <- function(
 #' @export
 gh_page <- function(
   address,
-  ...,
-  n_max = 1000L,
-  token = gh_token())
+  sub_list = NULL,
+  simplify = FALSE,
+  accept   = "json",
+  n_max    = 1000L,
+  token    = gh_token())
 {
-  pages <- page_size(n_max)
+  if (n_max <= 100) {
+    pages <- n_max
+  } else {
+    pages <- c(rep(100L, floor(n_max/100)), n_max %% 100L)
+  }
+
   page_url <- parse_url(address)
 
-  result <- list()
+  if (simplify) {
+    result <- tibble()
+  } else {
+    result <- list()
+  }
+
   for (page in seq_along(pages)) {
     page_url$query <- c(page_url$query, list(per_page = pages[page], page = page))
-    result <- c(result, build_url(page_url) %>% gh_json(token = token, ...))
+    if (simplify) {
+      result <- bind_rows(
+        result,
+        build_url(page_url) %>% gh_get(token = token, simplify = simplify, accept = accept))
+    } else {
+      result <- c(
+        result,
+        build_url(page_url) %>% gh_get(token = token, simplify = simplify, accept = accept))
+    }
   }
 
   result
-}
-
-#  FUNCTION: gh_tibble ------------------------------------------------------------------------
-#' Get and parse the contents of a github http request, including multiple pages and return a
-#' tibble.
-#' @export
-gh_tibble <- function(
-  address,
-  ...,
-  n_max = 1000L,
-  token = gh_token())
-{
-  gh_page(address, ..., n_max = n_max) %>%
-    map(flatten_) %>%
-    bind_rows()
 }

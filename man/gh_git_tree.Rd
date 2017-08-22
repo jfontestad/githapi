@@ -19,10 +19,11 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link{gh_get}}.}
 }
 \value{
-A tibble describing the files in a commit (see GitHub's API documentation for details).
+A tibble describing the files in a commit (see GitHub's API documentation for
+  details).
 }
 \description{
 url{https://developer.github.com/v3/git/trees/#get-a-tree}

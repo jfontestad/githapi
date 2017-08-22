@@ -4,7 +4,7 @@
 \alias{gh_labels}
 \title{List all labels for an issue, milestone or repository}
 \usage{
-gh_labels(repo, issue, milestone, token = gh_token(),
+gh_labels(repo, issue, milestone, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -13,6 +13,8 @@ gh_labels(repo, issue, milestone, token = gh_token(),
 \item{issue}{(integer) The number assigned to the issue.}
 
 \item{milestone}{(integer) The number assigned to the milestone.}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

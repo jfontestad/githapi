@@ -4,10 +4,13 @@
 \alias{gh_columns}
 \title{List project columns}
 \usage{
-gh_columns(project, token = gh_token(), api = getOption("github.api"), ...)
+gh_columns(project, n_max = 1000L, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{project}{(integer) The ID of the project in GitHub.}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

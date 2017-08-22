@@ -4,14 +4,13 @@
 \alias{gh_branches}
 \title{Get information about all the head commits in each branch.}
 \usage{
-gh_branches(repo, extended = FALSE, token = gh_token(),
+gh_branches(repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
-\item{extended}{(logical, optional) Whether to return extended information for each branch.
-Warning: this may take some time for a lot of branches. Default: \code{FALSE}.}
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
@@ -29,8 +28,4 @@ A tibble describing all the branches (see GitHub's API documentation for details
 }
 \description{
 \url{https://developer.github.com/v3/repos/branches/#list-branches}
-}
-\details{
-Note: Extended results requires an separate API call for every required branch. This may
-impact performance of the function considerably depending on the number of branches.
 }

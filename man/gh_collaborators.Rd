@@ -4,8 +4,8 @@
 \alias{gh_collaborators}
 \title{List collaborators}
 \usage{
-gh_collaborators(repo, affiliation = NULL, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_collaborators(repo, affiliation = NULL, n_max = 1000L,
+  token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
@@ -19,6 +19,8 @@ Can be one of:
   \item all: All collaborators the authenticated user can see.
   \item Default: all.
 }}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
