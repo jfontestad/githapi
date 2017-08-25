@@ -36,7 +36,7 @@ gh_project <- function(
 #' @param org (string) The name of the organization.
 #' @param state (string, optional) Indicates the state of the projects to return. Can be either open,
 #'   closed, or all. Default: open
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -114,7 +114,7 @@ gh_column <- function(
 #' url{https://developer.github.com/v3/projects/columns/#list-project-columns}
 #'
 #' @param project (integer) The ID of the project in GitHub.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -177,7 +177,7 @@ gh_card <- function(
 #' url{https://developer.github.com/v3/projects/cards/#list-project-cards}
 #'
 #' @param column (integer) The ID of the column in GitHub.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the

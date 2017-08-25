@@ -10,7 +10,7 @@ gh_branches(repo, n_max = 1000L, token = gh_token(),
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
-\item{n_max}{(integer) Maximum number to return.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
@@ -19,9 +19,6 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
 \item{...}{Parameters passed to \code{\link{gh_page}}.}
-
-\item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
-returns all.}
 }
 \value{
 A tibble describing all the branches (see GitHub's API documentation for details).

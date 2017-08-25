@@ -42,9 +42,7 @@ gh_repository <- function(
 #'   \code{"pushed"}, \code{"full_name"}. Default: \code{"full_name"}.
 #' @param direction (string, optional) Can be one of \code{"asc"} or \code{"desc"}. Default:
 #'   when using \code{"full_name"}: \code{"asc"}, otherwise \code{"desc"}.
-#' @param limit (integer, optional) The maximum number to return. Default: \code{Inf}, which
-#'   returns all.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -107,9 +105,7 @@ gh_repositories <- function(
 #' \url{https://developer.github.com/v3/repos/#list-tags}
 #'
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param limit (integer, optional) The maximum number to return. Default: \code{Inf}, which
-#'   returns all.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -170,9 +166,7 @@ gh_branch <- function(
 #' \url{https://developer.github.com/v3/repos/branches/#list-branches}
 #'
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param limit (integer, optional) The maximum number to return. Default: \code{Inf}, which
-#'   returns all.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -266,9 +260,7 @@ gh_commit_sha <- function(
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param limit (integer, optional) The maximum number to return. Default: \code{Inf}, which
-#'   returns all.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -544,7 +536,7 @@ gh_collaborator <- function(
 #'     \item all: All collaborators the authenticated user can see.
 #'     \item Default: all.
 #'   }
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the

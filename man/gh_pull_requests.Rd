@@ -25,7 +25,7 @@ Default: created}
 \item{direction}{(string) The direction of the sort. Can be either asc or desc.
 Default: desc when sort is created or sort is not specified, otherwise asc."}
 
-\item{n_max}{(integer) Maximum number to return.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
