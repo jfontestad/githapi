@@ -102,11 +102,12 @@ gh_issues <- function(
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
       labels = map_chr(labels, ~str_c(.$name, collapse = ",")),
+      assignees = map_chr(assignees, ~str_c(.$login, collapse = ",")),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at),
       closed_at  = parse_datetime(closed_at)) %>%
     select(
-      number, title, body, state, user_login, labels, assignee_login,
+      number, title, body, state, user_login, labels, assignees,
       milestone_number, milestone_title, created_at, updated_at, closed_at)
 }
 
