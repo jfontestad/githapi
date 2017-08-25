@@ -8,7 +8,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the project (see GitHub's API documentation for details).
 #' @export
 gh_project <- function(
@@ -23,7 +23,7 @@ gh_project <- function(
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_url("projects", project, api = api) %>%
-    gh_json(token = token, accept = "application/vnd.github.inertia-preview+json", ...)
+    gh_get(accept = "application/vnd.github.inertia-preview+json", token = token, ...)
 }
 
 #  FUNCTION: gh_projects ----------------------------------------------------------------------
@@ -36,6 +36,7 @@ gh_project <- function(
 #' @param org (string) The name of the organization.
 #' @param state (string, optional) Indicates the state of the projects to return. Can be either open,
 #'   closed, or all. Default: open
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -47,11 +48,13 @@ gh_projects <- function(
   repo,
   org,
   state = NULL,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.null(state) || is.string(state))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -70,7 +73,9 @@ gh_projects <- function(
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   url %>%
-    gh_tibble(token = token, accept = "application/vnd.github.inertia-preview+json", ...) %>%
+    gh_page(
+      simplify = TRUE, accept = "application/vnd.github.inertia-preview+json",
+      n_max = n_max, token = token, ...) %>%
     select(id, number, name, body, state, creator_login, created_at, updated_at, url) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
@@ -85,7 +90,7 @@ gh_projects <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the column (see GitHub's API documentation for details).
 #' @export
 gh_column <- function(
@@ -100,7 +105,7 @@ gh_column <- function(
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_url("projects/columns", column, api = api) %>%
-    gh_json(token = token, accept = "application/vnd.github.inertia-preview+json", ...)
+    gh_get(accept = "application/vnd.github.inertia-preview+json", token = token, ...)
 }
 
 #  FUNCTION: gh_columns -----------------------------------------------------------------------
@@ -109,6 +114,7 @@ gh_column <- function(
 #' url{https://developer.github.com/v3/projects/columns/#list-project-columns}
 #'
 #' @param project (integer) The ID of the project in GitHub.
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -118,17 +124,21 @@ gh_column <- function(
 #' @export
 gh_columns <- function(
   project,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.count(project))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_url("projects", project, "columns", api = api) %>%
-    gh_tibble(token = token, accept = "application/vnd.github.inertia-preview+json", ...) %>%
+    gh_page(
+      simplify = TRUE, accept = "application/vnd.github.inertia-preview+json",
+      n_max = n_max, token = token, ...) %>%
     select(id, name, created_at, updated_at, url) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
@@ -143,7 +153,7 @@ gh_columns <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the card (see GitHub's API documentation for details).
 #' @export
 gh_card <- function(
@@ -158,7 +168,7 @@ gh_card <- function(
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_url("projects/columns/cards", card, api = api) %>%
-    gh_json(token = token, accept = "application/vnd.github.inertia-preview+json", ...)
+    gh_get(accept = "application/vnd.github.inertia-preview+json", token = token, ...)
 }
 
 #  FUNCTION: gh_cards -------------------------------------------------------------------------
@@ -167,6 +177,7 @@ gh_card <- function(
 #' url{https://developer.github.com/v3/projects/cards/#list-project-cards}
 #'
 #' @param column (integer) The ID of the column in GitHub.
+#' @param n_max (integer) Maximum number to return.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -176,17 +187,21 @@ gh_card <- function(
 #' @export
 gh_cards <- function(
   column,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.count(column))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_url("projects/columns", column, "cards", api = api) %>%
-    gh_tibble(token = token, accept = "application/vnd.github.inertia-preview+json", ...) %>%
+    gh_page(
+      simplify = TRUE, accept = "application/vnd.github.inertia-preview+json",
+      n_max = n_max, token = token, ...) %>%
     select(id, creator_login, created_at, updated_at, content_url, url) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }

@@ -4,8 +4,8 @@
 \alias{gh_issue_comments}
 \title{List comments on an issue}
 \usage{
-gh_issue_comments(issue, repo, since = NULL, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_issue_comments(issue, repo, since = NULL, n_max = 1000L,
+  token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{issue}{(integer) The number assigned to the issue.}
@@ -14,6 +14,8 @@ gh_issue_comments(issue, repo, since = NULL, token = gh_token(),
 
 \item{since}{(string) Only issues updated at or after this time are returned. This is a
 timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

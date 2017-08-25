@@ -4,7 +4,7 @@
 \alias{gh_commits}
 \title{Get information about all the history of commits.}
 \usage{
-gh_commits(ref, repo, extended = FALSE, token = gh_token(),
+gh_commits(ref, repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -13,8 +13,7 @@ the head commit is used.}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
-\item{extended}{(logical, optional) Whether to return extended information for each branch.
-Warning: this may take some time for a lot of branches. Default: \code{FALSE}.}
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

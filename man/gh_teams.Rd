@@ -4,11 +4,14 @@
 \alias{gh_teams}
 \title{List teams}
 \usage{
-gh_teams(org, token = gh_token(), api = getOption("github.api"), ...)
+gh_teams(org, n_max = 1000L, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{org}{(string, optional) The name of the organization. If not specified, the teams of
 the authenticated user are returned.}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

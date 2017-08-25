@@ -4,8 +4,8 @@
 \alias{gh_members}
 \title{Get Organization or team members list}
 \usage{
-gh_members(org, team, filter = NULL, role = NULL, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_members(org, team, filter = NULL, role = NULL, n_max = 1000L,
+  token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{org}{(string) The name of the organization.}
@@ -27,6 +27,8 @@ gh_members(org, team, filter = NULL, role = NULL, token = gh_token(),
   \item member: Non-owner organization members.
   \item Default: all.
 }}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

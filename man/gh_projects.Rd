@@ -4,7 +4,7 @@
 \alias{gh_projects}
 \title{List organisation or repository projects}
 \usage{
-gh_projects(repo, org, state = NULL, token = gh_token(),
+gh_projects(repo, org, state = NULL, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -14,6 +14,8 @@ gh_projects(repo, org, state = NULL, token = gh_token(),
 
 \item{state}{(string, optional) Indicates the state of the projects to return. Can be either open,
 closed, or all. Default: open}
+
+\item{n_max}{(integer) Maximum number to return.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
