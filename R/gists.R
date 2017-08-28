@@ -1,3 +1,37 @@
+#  FUNCTION: gh_gist --------------------------------------------------------------------------
+#' Get a single gist
+#'
+#' url{https://developer.github.com/v3/gists/#get-a-single-gist}
+#' url(https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+#'
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the gist (see GitHub's API documentation for details).
+#' @export
+gh_gist <- function(
+  gist,
+  sha,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(gist))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (missing(sha)) {
+    url <- gh_url("gists", gist, api = api)
+  } else {
+    assert_that(is.string(sha) && identical(str_length(sha), 40L))
+    url <- gh_url("gists", gist, sha, api = api)
+  }
+
+  url %>% gh_get(token = token, ...)
+}
+
 #  FUNCTION: gh_gists -------------------------------------------------------------------------
 #' List a user's gists, or all public or starred gists.
 #'
