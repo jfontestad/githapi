@@ -22,3 +22,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \value{
 A list describing the gist (see GitHub's API documentation for details).
 }
+\description{
+url{https://developer.github.com/v3/gists/#get-a-single-gist}
+url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+}

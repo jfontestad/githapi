@@ -482,7 +482,7 @@ gh_download <- function(
   invisible(path)
 }
 
-#  FUNCTION: gh_collaborator ------------------------------------------------------------------
+#  FUNCTION: is_collaborator ------------------------------------------------------------------
 #' Check if a user is a collaborator
 #'
 #' url{https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator}
@@ -497,7 +497,7 @@ gh_download <- function(
 #' @return TRUE if the user is a collaborator, FALSE otherwise (see GitHub's API
 #'   documentation for details).
 #' @export
-gh_collaborator <- function(
+is_collaborator <- function(
   user,
   repo,
   token = gh_token(),

@@ -22,10 +22,10 @@ test_that("gh_organizations returns a tibble describing the organizations", {
   expect_true("tidyverse" %in% hadley_orgs$name)
 })
 
-#  FUNCTION: gh_member ------------------------------------------------------------------------
+#  FUNCTION: is_member ------------------------------------------------------------------------
 test_that("gh_member returns TRUE if user is a member and FALSE otherwise", {
-  expect_true(gh_member("hadley", "tidyverse"))
-  expect_false(gh_member("doesnotexist", "tidyverse"))
+  expect_true(is_member("hadley", "tidyverse"))
+  expect_false(is_member("doesnotexist", "tidyverse"))
 })
 
 #  FUNCTION: gh_members -----------------------------------------------------------------------
@@ -46,4 +46,7 @@ test_that("gh_members returns a tibble describing the members", {
 #  TODO: set up an organization so it can be tested
 
 #  FUNCTION: gh_teams -------------------------------------------------------------------------
+#  TODO: set up an organization so it can be tested
+
+#  FUNCTION: is_manager -----------------------------------------------------------------------
 #  TODO: set up an organization so it can be tested

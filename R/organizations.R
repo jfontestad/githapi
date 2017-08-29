@@ -64,7 +64,7 @@ gh_organizations <- function(
     select(id, name = login, description, url)
 }
 
-#  FUNCTION: gh_member ------------------------------------------------------------------------
+#  FUNCTION: is_member ------------------------------------------------------------------------
 #' Check membership
 #'
 #' url{https://developer.github.com/v3/orgs/members/#check-membership}
@@ -79,7 +79,7 @@ gh_organizations <- function(
 #' @return TRUE if the user is a member, FALSE otherwise (see GitHub's API documentation for
 #'   details).
 #' @export
-gh_member <- function(
+is_member <- function(
   user,
   org,
   token = gh_token(),
@@ -319,7 +319,7 @@ gh_teams <- function(
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
 }
 
-#  FUNCTION: gh_manager -----------------------------------------------------------------------
+#  FUNCTION: is_manager -----------------------------------------------------------------------
 #' Check if a team manages a repository
 #'
 #' url{https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository}
@@ -334,7 +334,7 @@ gh_teams <- function(
 #' @return TRUE if the team is a manager, FALSE otherwise (see GitHub's API documentation for
 #'   details).
 #' @export
-gh_manager <- function(
+is_manager <- function(
   team,
   repo,
   token = gh_token(),

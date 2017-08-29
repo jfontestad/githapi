@@ -2,7 +2,7 @@
 #' Get a single gist
 #'
 #' url{https://developer.github.com/v3/gists/#get-a-single-gist}
-#' url(https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+#' url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
 #'
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.

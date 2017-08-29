@@ -69,9 +69,6 @@ test_that("gh_gist_commits returns a tibble describing the gist commits", {
 
 #  FUNCTION: is_gist_starred ------------------------------------------------------------------
 test_that("is_gist_starred returns TRUE if the gist has been starred, FALSE otherwise", {
-  is_starred <- is_gist_starred("806dca6b09a39e7b6326a0c8137583e6")
-  expect_true(is_starred)
-
-  not_starred <- is_gist_starred("8f4589b02a513914584b28593b9cdcda")
-  expect_false(not_starred)
+  expect_true(is_gist_starred("806dca6b09a39e7b6326a0c8137583e6"))
+  expect_false(is_gist_starred("8f4589b02a513914584b28593b9cdcda"))
 })
