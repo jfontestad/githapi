@@ -132,3 +132,39 @@ gh_gist_commits <- function(
       version, user_login, committed_at, change_status_total,
       change_status_additions, change_status_deletions, url)
 }
+
+#  FUNCTION: is_gist_starred ------------------------------------------------------------------
+#' Check if a gist is starred
+#'
+#' url{https://developer.github.com/v3/gists/#check-if-a-gist-is-starred}
+#'
+#' @param gist (string) The ID of the gist in GitHub.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return TRUE if the gist has been starred, FALSE otherwise (see GitHub's API documentation
+#'   for details).
+#' @export
+is_gist_starred <- function(
+  gist,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(gist))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  response <- try(silent = TRUE, suppressMessages({
+    gh_url("gists", gist, "star", api = api) %>%
+      gh_get(accept = "raw", token = token, ...)
+  }))
+
+  if (identical(response, "")) {
+    TRUE
+  } else {
+    FALSE
+  }
+}
