@@ -4,6 +4,8 @@
 #' url{https://developer.github.com/v3/gists/#get-a-single-gist}
 #' url(https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
 #'
+#' @param gist (string) The ID of the gist in GitHub.
+#' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -95,4 +97,38 @@ gh_gists <- function(
     select(
       id, description, owner_login, created_at, updated_at, comments,
       filenames, languages, file_sizes, public, url)
+}
+
+#  FUNCTION: gh_gist_commits ------------------------------------------------------------------
+#' List gist commits
+#'
+#' url{https://developer.github.com/v3/gists/#list-gist-commits}
+#'
+#' @param gist (string) The ID of the gist in GitHub.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A tibble describing the gist commits (see GitHub's API documentation for details).
+#' @export
+gh_gist_commits <- function(
+  gist,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(gist))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("gists", gist, "commits", api = api) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(committed_at = parse_datetime(committed_at)) %>%
+    select(
+      version, user_login, committed_at, change_status_total,
+      change_status_additions, change_status_deletions, url)
 }

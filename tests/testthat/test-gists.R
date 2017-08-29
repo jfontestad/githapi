@@ -55,3 +55,14 @@ test_that("gh_gists returns a tibble describing the gists", {
       "filenames", "languages", "file_sizes", "public", "url"))
   expect_true("An R script to test GitHub's Gist API" %in% starred_gists$description)
 })
+
+#  FUNCTION: gh_gist_commits ------------------------------------------------------------------
+test_that("gh_gist_commits returns a tibble describing the gist commits", {
+  git_commits <- gh_gist_commits("806dca6b09a39e7b6326a0c8137583e6")
+  expect_is(git_commits, "tbl")
+  expect_identical(
+    names(git_commits),
+    c("version", "user_login", "committed_at", "change_status_total",
+      "change_status_additions", "change_status_deletions", "url"))
+  expect_true("4a239d53a0e38a3dd2b70e0cd5c7cb316369ab9f" %in% git_commits$version)
+})
