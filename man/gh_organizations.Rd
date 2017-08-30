@@ -11,7 +11,7 @@ gh_organizations(user, n_max = 1000L, token = gh_token(),
 \item{user}{(string, optional) The GitHub username of the user. If not specified, all
 organizations are returned.}
 
-\item{n_max}{(integer) Maximum number to return.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

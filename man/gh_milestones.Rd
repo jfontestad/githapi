@@ -16,7 +16,7 @@ gh_milestones(repo, state = NULL, sort = NULL, direction = NULL,
 
 \item{direction}{(string) The direction of the sort. Either asc or desc. Default: asc}
 
-\item{n_max}{(integer) Maximum number to return.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

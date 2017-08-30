@@ -8,7 +8,7 @@ gh_users(n_max = 1000L, token = gh_token(), api = getOption("github.api"),
   ...)
 }
 \arguments{
-\item{n_max}{(integer) Maximum number to return.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}

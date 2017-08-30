@@ -96,7 +96,7 @@ gh_git_reference <- function(
 #' url{https://developer.github.com/v3/git/refs/#get-all-references}
 #'
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the

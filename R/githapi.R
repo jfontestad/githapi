@@ -176,7 +176,7 @@ gh_get <- function(
 # @param simplify (boolean) Whether to simplify the parsed JSON into tibbles.
 # @param accept (string) The format of the returned result. Either "json", "raw" or other
 #   GitHub accepted format. Default: "json".
-# @param n_max (integer) Maximum number to return.
+# @param n_max (integer, optional) Maximum number to return. Default: 1000.
 # @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 # @return A list if simplify = FALSE, or a tibble if TRUE.

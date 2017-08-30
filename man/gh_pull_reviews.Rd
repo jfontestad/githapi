@@ -12,7 +12,7 @@ gh_pull_reviews(pull_request, repo, n_max = 1000L, token = gh_token(),
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
-\item{n_max}{(integer) Maximum number to return.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

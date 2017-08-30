@@ -43,7 +43,7 @@ gh_pull_request <- function(
 #'   Default: created
 #' @param direction (string) The direction of the sort. Can be either asc or desc.
 #'   Default: desc when sort is created or sort is not specified, otherwise asc."
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -94,7 +94,7 @@ gh_pull_requests <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -132,7 +132,7 @@ gh_pull_commits <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -240,7 +240,7 @@ gh_pull_review <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -314,7 +314,7 @@ gh_pull_comment <- function(
 #' @param direction (string) Can be either asc or desc. Ignored without sort parameter.
 #' @param since (string) Only comments updated at or after this time are returned. This is a
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -363,7 +363,7 @@ gh_pull_comments <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the

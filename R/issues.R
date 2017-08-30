@@ -49,7 +49,7 @@ gh_issue <- function(
 #' @param direction	(string) The direction of the sort. Can be either asc or desc. Default: desc
 #' @param since (string) Only issues updated at or after this time are returned. This is a
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -134,7 +134,7 @@ gh_issues <- function(
 #' @param direction (string) The direction of the sort. Can be either asc or desc. Default: desc.
 #' @param since (string) Only issues updated at or after this time are returned. This is a
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -197,7 +197,7 @@ gh_user_issues <- function(
 #' \url{https://developer.github.com/v3/issues/assignees/#list-assignees}
 #'
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -232,7 +232,7 @@ gh_assignees <- function(
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
 #' @param since (string) Only issues updated at or after this time are returned. This is a
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -350,7 +350,7 @@ gh_label <- function(
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
 #' @param issue (integer) The number assigned to the issue.
 #' @param milestone (integer) The number assigned to the milestone.
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -429,7 +429,7 @@ gh_milestone <- function(
 #' @param state (string) The state of the milestone. Either open, closed, or all. Default: open
 #' @param sort (string) What to sort results by. Either due_on or completeness. Default: due_on
 #' @param direction (string) The direction of the sort. Either asc or desc. Default: asc
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the

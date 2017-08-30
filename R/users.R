@@ -38,7 +38,7 @@ gh_user <- function(
 #'
 #' \url{https://developer.github.com/v3/users/#get-all-users}
 #'
-#' @param n_max (integer) Maximum number to return.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the

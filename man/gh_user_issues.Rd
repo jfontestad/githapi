@@ -34,7 +34,7 @@ Default: created.}
 \item{since}{(string) Only issues updated at or after this time are returned. This is a
 timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
 
-\item{n_max}{(integer) Maximum number to return.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

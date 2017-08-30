@@ -189,13 +189,10 @@ test_that("gh_download saves the contents of a commit to the specified location"
   expect_true(dir.exists(file.path(temp_path, "R")))
 })
 
-#  FUNCTION: gh_collaborator ------------------------------------------------------------------
+#  FUNCTION: is_collaborator ------------------------------------------------------------------
 test_that("gh_collaborator return TRUE if the user is a collaborator, FALSE otherwise", {
-  is_collaborator <- gh_collaborator("ChadGoymer", "ChadGoymer/githapi")
-  expect_true(is_collaborator)
-
-  not_collaborator <- gh_collaborator("Batman", "ChadGoymer/githapi")
-  expect_false(not_collaborator)
+  expect_true(is_collaborator("ChadGoymer", "ChadGoymer/githapi"))
+  expect_false(is_collaborator("Batman", "ChadGoymer/githapi"))
 })
 
 #  FUNCTION: gh_collaborators -----------------------------------------------------------------
