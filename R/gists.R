@@ -168,3 +168,37 @@ is_gist_starred <- function(
     FALSE
   }
 }
+
+#  FUNCTION: gh_gist_forks --------------------------------------------------------------------
+#' List gist forks
+#'
+#' url{https://developer.github.com/v3/gists/#list-gist-forks}
+#'
+#' @param gist (string) The ID of the gist in GitHub.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A tibble describing the forks (see GitHub's API documentation for details).
+#' @export
+gh_gist_forks <- function(
+  gist,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(gist))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("gists", gist, "forks", api = api) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(
+      created_at = parse_datetime(created_at),
+      updated_at = parse_datetime(updated_at)) %>%
+    select(id, description, owner_login, created_at, updated_at, public, comments, url)
+}

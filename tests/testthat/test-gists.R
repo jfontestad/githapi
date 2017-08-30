@@ -72,3 +72,13 @@ test_that("is_gist_starred returns TRUE if the gist has been starred, FALSE othe
   expect_true(is_gist_starred("806dca6b09a39e7b6326a0c8137583e6"))
   expect_false(is_gist_starred("8f4589b02a513914584b28593b9cdcda"))
 })
+
+#  FUNCTION: gh_gist_forks --------------------------------------------------------------------
+test_that("gh_gist_forks returns a tibble describing the forks", {
+  # TODO: Find forked gist to test
+  forks <- gh_gist_forks("109311bb0361f32d87a2", n_max = 10)
+  expect_is(forks, "tbl")
+  expect_identical(
+    names(forks),
+    c("id", "description", "owner_login", "created_at", "updated_at", "public", "comments", "url"))
+})
