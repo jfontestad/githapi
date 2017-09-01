@@ -125,6 +125,16 @@ test_that("gh_milestones returns a tibble describing the milestones", {
   expect_true("v0.2.0" %in% milestones$title)
 })
 
+#  FUNCTION: gh_event -------------------------------------------------------------------------
+test_that("gh_event returns a list describing the event", {
+  event <- gh_event(1227046339, "ChadGoymer/githapi")
+  expect_is(event, "list")
+  expect_identical(
+    names(event),
+    c("id", "url", "actor", "event", "commit_id", "commit_url", "created_at", "issue"))
+  expect_identical(event$issue$number, 29L)
+})
+
 #  FUNCTION: gh_events ------------------------------------------------------------------------
 test_that("gh_events returns a tibble describing the issue events", {
   events <- gh_events("ChadGoymer/githapi", n_max = 10)
