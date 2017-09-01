@@ -592,3 +592,46 @@ gh_permissions <- function(
   gh_url("repos", repo, "collaborators", user, "permission", api = api) %>%
     gh_get(token = token, ...)
 }
+
+#  FUNCTION: gh_commit_comments ---------------------------------------------------------------
+#' List comments for a single commit or entire repository
+#'
+#' url{https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit}
+#' url{https://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
+#'   specified the head commit is used.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing all the commit comments (see GitHub's API documentation for details).
+#' @export
+gh_commit_comments <- function(
+  repo,
+  ref,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (missing(ref)) {
+    url <- gh_url("repos", repo, "comments", api = api)
+  } else {
+    assert_that(is.string(ref))
+    url <- gh_url("repos", repo, "commits", ref, "comments", api = api)
+  }
+
+  url %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
+    select(id, commit_id, body, user_login, created_at, updated_at, position, line, path, url)
+}
