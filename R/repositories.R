@@ -593,6 +593,36 @@ gh_permissions <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: gh_commit_comment ----------------------------------------------------------------
+#' Get a single commit comment
+#'
+#' url{https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment}
+#'
+#' @param comment (integer) The ID assigned to the comment in GitHub.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the commit comment (see GitHub's API documentation for details).
+#' @export
+gh_commit_comment <- function(
+  comment,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(comment))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "comments", comment, api = api) %>%
+    gh_get(token = token, ...)
+}
+
 #  FUNCTION: gh_commit_comments ---------------------------------------------------------------
 #' List comments for a single commit or entire repository
 #'

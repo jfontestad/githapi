@@ -53,7 +53,7 @@ gh_rate_limit <- function(
 
   rate <- content(request, "text") %>%
     fromJSON(simplifyDataFrame = FALSE) %>%
-    .[["resources"]]
+    pull(resources)
 
   if (rate$core$remaining < 1) {
     stop(

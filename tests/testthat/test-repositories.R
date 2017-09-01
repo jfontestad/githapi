@@ -215,6 +215,17 @@ test_that("gh_permissions returns a list describing the user's permissions", {
   expect_identical(permissions$user$login, "ChadGoymer")
 })
 
+#  FUNCTION: gh_commit_comment ----------------------------------------------------------------
+test_that("gh_commit_comment returns a list describing the commit comment", {
+  comment <- gh_commit_comment(24028377, "ChadGoymer/githapi")
+  expect_is(comment, "list")
+  expect_identical(
+    names(comment),
+    c("url", "html_url", "id", "user", "position", "line", "path", "commit_id", "created_at",
+      "updated_at", "author_association", "body"))
+  expect_identical(comment$body, "Wow, This is a cool commit!")
+})
+
 #  FUNCTION: gh_commit_comments ---------------------------------------------------------------
 test_that("gh_commit_comments returns a tibble describing all the commit comments", {
   repo_comments <- gh_commit_comments("ChadGoymer/githapi")
