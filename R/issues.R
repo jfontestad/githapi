@@ -467,3 +467,76 @@ gh_milestones <- function(
       id, number, title, description, creator_login, open_issues,
       closed_issues, state, created_at, updated_at, url)
 }
+
+#  FUNCTION: gh_event -------------------------------------------------------------------------
+#' Get a single event
+#'
+#' url{https://developer.github.com/v3/issues/events/#get-a-single-event}
+#'
+#' @param event (integer) The ID assigned to the event in GitHub.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the event (see GitHub's API documentation for details).
+#' @export
+gh_event <- function(
+  event,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(event))
+  assert_that(is.string(repo))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  # GET /repos/:owner/:repo/issues/events/:id
+  gh_url("repos", repo, "issues/events", event, api = api) %>%
+    gh_get(token = token, ...)
+}
+
+#  FUNCTION: gh_events ------------------------------------------------------------------------
+#' List events for an issue or all issues in a repository
+#'
+#' url{https://developer.github.com/v3/issues/events/#list-events-for-a-repository}
+#' url{https://developer.github.com/v3/issues/events/#list-events-for-an-issue}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param issue (integer, optional) The number assigned to the issue.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A tibble describing the issue events (see GitHub's API documentation for details).
+#' @export
+gh_events <- function(
+  repo,
+  issue,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (missing(issue)) {
+    url <- gh_url("repos", repo, "issues/events", api = api)
+  } else {
+    assert_that(is.count(issue))
+    url <- gh_url("repos", repo, "issues", issue, "events", api = api)
+  }
+
+  url %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(created_at = parse_datetime(created_at)) %>%
+    select(id, event, issue_number, issue_title, created_at, actor_login, commit_id, url)
+}
