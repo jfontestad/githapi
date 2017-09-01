@@ -10,9 +10,9 @@ test_that("gh_pull_request returns a list describing the pull request", {
       "locked", "title", "user", "body", "created_at", "updated_at", "closed_at", "merged_at",
       "merge_commit_sha", "assignee", "assignees", "requested_reviewers", "milestone",
       "commits_url", "review_comments_url", "review_comment_url", "comments_url",
-      "statuses_url", "head", "base", "_links", "merged", "mergeable", "rebaseable",
-      "mergeable_state", "merged_by", "comments", "review_comments", "maintainer_can_modify",
-      "commits", "additions", "deletions", "changed_files"))
+      "statuses_url", "head", "base", "_links", "author_association", "merged", "mergeable",
+      "rebaseable", "mergeable_state", "merged_by", "comments", "review_comments",
+      "maintainer_can_modify", "commits", "additions", "deletions", "changed_files"))
   expect_identical(pull_request$number, 8L)
   expect_identical(pull_request$title, "Add Git Data Functions")
 })
