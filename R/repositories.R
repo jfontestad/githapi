@@ -115,7 +115,7 @@ gh_repositories <- function(
 #' @export
 gh_tags <- function(
   repo,
-  n_max     = 1000L,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
@@ -664,4 +664,38 @@ gh_commit_comments <- function(
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
     select(id, commit_id, body, user_login, created_at, updated_at, position, line, path, url)
+}
+
+#  FUNCTION: gh_contributers ------------------------------------------------------------------
+#' List contributors
+#'
+#' url{https://developer.github.com/v3/repos/#list-contributors}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param anon (boolean) Set to TRUE to include anonymous contributors in results.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the contributers (see GitHub's API documentation for details).
+#' @export
+gh_contributers <- function(
+  repo,
+  anon  = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.null(anon) || is.flag(anon))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "contributors", anon = as.integer(anon), api = api) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    select(id, login, contributions, type, site_admin, url)
 }

@@ -244,3 +244,13 @@ test_that("gh_commit_comments returns a tibble describing all the commit comment
       "updated_at", "position", "line", "path", "url"))
   expect_true("Wow, This is a cool commit!" %in% commit_comments$body)
 })
+
+#  FUNCTION: gh_contributers ------------------------------------------------------------------
+test_that("gh_contributers returns a tibble describing the contributers", {
+  contributers <- gh_contributers("ChadGoymer/githapi")
+  expect_is(contributers, "tbl")
+  expect_identical(
+    names(contributers),
+    c("id", "login", "contributions", "type", "site_admin", "url"))
+  expect_true("ChadGoymer" %in% contributers$login)
+})
