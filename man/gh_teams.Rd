@@ -4,12 +4,14 @@
 \alias{gh_teams}
 \title{List teams}
 \usage{
-gh_teams(org, n_max = 1000L, token = gh_token(),
+gh_teams(org, repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{org}{(string, optional) The name of the organization. If not specified, the teams of
-the authenticated user are returned.}
+\item{org}{(string, optional) The name of the organization. If org and repo are not
+specified, the teams of the authenticated user are returned.}
+
+\item{repo}{(string, optional) The repository specified in the format: \code{"owner/repo"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
