@@ -115,7 +115,7 @@ gh_repositories <- function(
 #' @export
 gh_tags <- function(
   repo,
-  n_max     = 1000L,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
@@ -590,5 +590,140 @@ gh_permissions <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "collaborators", user, "permission", api = api) %>%
+    gh_get(token = token, ...)
+}
+
+#  FUNCTION: gh_commit_comment ----------------------------------------------------------------
+#' Get a single commit comment
+#'
+#' url{https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment}
+#'
+#' @param comment (integer) The ID assigned to the comment in GitHub.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the commit comment (see GitHub's API documentation for details).
+#' @export
+gh_commit_comment <- function(
+  comment,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(comment))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "comments", comment, api = api) %>%
+    gh_get(token = token, ...)
+}
+
+#  FUNCTION: gh_commit_comments ---------------------------------------------------------------
+#' List comments for a single commit or entire repository
+#'
+#' url{https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit}
+#' url{https://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
+#'   specified the head commit is used.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing all the commit comments (see GitHub's API documentation for details).
+#' @export
+gh_commit_comments <- function(
+  repo,
+  ref,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (missing(ref)) {
+    url <- gh_url("repos", repo, "comments", api = api)
+  } else {
+    assert_that(is.string(ref))
+    url <- gh_url("repos", repo, "commits", ref, "comments", api = api)
+  }
+
+  url %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
+    select(id, commit_id, body, user_login, created_at, updated_at, position, line, path, url)
+}
+
+#  FUNCTION: gh_contributers ------------------------------------------------------------------
+#' List contributors
+#'
+#' url{https://developer.github.com/v3/repos/#list-contributors}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param anon (boolean) Set to TRUE to include anonymous contributors in results.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A tibble describing the contributers (see GitHub's API documentation for details).
+#' @export
+gh_contributers <- function(
+  repo,
+  anon  = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.null(anon) || is.flag(anon))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "contributors", anon = as.integer(anon), api = api) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    select(id, login, contributions, type, site_admin, url)
+}
+
+#  FUNCTION: gh_languages ---------------------------------------------------------------------
+#' List languages
+#'
+#' url{https://developer.github.com/v3/repos/#list-languages}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the number of bytes written in each language (see GitHub's API
+#'   documentation for details).
+#' @export
+gh_languages <- function(
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "languages", api = api) %>%
     gh_get(token = token, ...)
 }

@@ -214,3 +214,50 @@ test_that("gh_permissions returns a list describing the user's permissions", {
   expect_identical(permissions$permission, "admin")
   expect_identical(permissions$user$login, "ChadGoymer")
 })
+
+#  FUNCTION: gh_commit_comment ----------------------------------------------------------------
+test_that("gh_commit_comment returns a list describing the commit comment", {
+  comment <- gh_commit_comment(24028377, "ChadGoymer/githapi")
+  expect_is(comment, "list")
+  expect_identical(
+    names(comment),
+    c("url", "html_url", "id", "user", "position", "line", "path", "commit_id", "created_at",
+      "updated_at", "author_association", "body"))
+  expect_identical(comment$body, "Wow, This is a cool commit!")
+})
+
+#  FUNCTION: gh_commit_comments ---------------------------------------------------------------
+test_that("gh_commit_comments returns a tibble describing all the commit comments", {
+  repo_comments <- gh_commit_comments("ChadGoymer/githapi")
+  expect_is(repo_comments, "tbl")
+  expect_identical(
+    names(repo_comments),
+    c("id", "commit_id", "body", "user_login", "created_at",
+      "updated_at", "position", "line", "path", "url"))
+  expect_true("Wow, This is a cool commit!" %in% repo_comments$body)
+
+  commit_comments <- gh_commit_comments("ChadGoymer/githapi", "d378328243626794ca725946c4e0662622aeb933")
+  expect_is(commit_comments, "tbl")
+  expect_identical(
+    names(commit_comments),
+    c("id", "commit_id", "body", "user_login", "created_at",
+      "updated_at", "position", "line", "path", "url"))
+  expect_true("Wow, This is a cool commit!" %in% commit_comments$body)
+})
+
+#  FUNCTION: gh_contributers ------------------------------------------------------------------
+test_that("gh_contributers returns a tibble describing the contributers", {
+  contributers <- gh_contributers("ChadGoymer/githapi")
+  expect_is(contributers, "tbl")
+  expect_identical(
+    names(contributers),
+    c("id", "login", "contributions", "type", "site_admin", "url"))
+  expect_true("ChadGoymer" %in% contributers$login)
+})
+
+#  FUNCTION: gh_languages ---------------------------------------------------------------------
+test_that("gh_languages returns a tibble describing the languages", {
+  languages <- gh_languages("ChadGoymer/githapi")
+  expect_is(languages, "list")
+  expect_identical(names(languages), "R")
+})

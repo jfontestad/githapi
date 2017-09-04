@@ -287,8 +287,9 @@ gh_team <- function(
 #' url{https://developer.github.com/v3/orgs/teams/#list-teams}
 #' url{https://developer.github.com/v3/orgs/teams/#list-user-teams}
 #'
-#' @param org (string, optional) The name of the organization. If not specified, the teams of
-#'   the authenticated user are returned.
+#' @param org (string, optional) The name of the organization. If org and repo are not
+#'   specified, the teams of the authenticated user are returned.
+#' @param repo (string, optional) The repository specified in the format: \code{"owner/repo"}.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
@@ -299,6 +300,7 @@ gh_team <- function(
 #' @export
 gh_teams <- function(
   org,
+  repo,
   n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
@@ -308,8 +310,16 @@ gh_teams <- function(
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
+  if (!missing(org) && !missing(repo))
+    stop("Must specify either org or repo, not both!")
+
   if (missing(org)) {
-    url <- gh_url("user/teams", api = api)
+    if (missing(repo)) {
+      url <- gh_url("user/teams", api = api)
+    } else {
+      assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+      url <- gh_url("repos", repo, "teams", api = api)
+    }
   } else {
     assert_that(is.string(org))
     url <- gh_url("orgs", org, "teams", api = api)
