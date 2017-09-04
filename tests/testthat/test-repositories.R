@@ -254,3 +254,10 @@ test_that("gh_contributers returns a tibble describing the contributers", {
     c("id", "login", "contributions", "type", "site_admin", "url"))
   expect_true("ChadGoymer" %in% contributers$login)
 })
+
+#  FUNCTION: gh_languages ---------------------------------------------------------------------
+test_that("gh_languages returns a tibble describing the languages", {
+  languages <- gh_languages("ChadGoymer/githapi")
+  expect_is(languages, "list")
+  expect_identical(names(languages), "R")
+})
