@@ -287,7 +287,18 @@ test_that("gh_release returns a list describing the release", {
   release_by_id <- gh_release(7210389, "ChadGoymer/githapi")
   expect_identical(release_by_id, release_0.1.0)
 
-  # release_latest <- gh_release(repo = "ChadGoymer/githapi")
-  # expect_is(release_latest, "list")
-  # expect_true(parse_datetime(release_0.1.0$created_at) < parse_datetime(release_latest$created_at))
+  release_latest <- gh_release(repo = "ChadGoymer/githapi")
+  expect_is(release_latest, "list")
+  expect_true(parse_datetime(release_0.1.0$created_at) < parse_datetime(release_latest$created_at))
+})
+
+#  FUNCTION: gh_assets ------------------------------------------------------------------------
+test_that("gh_assets returns a tibble describing the assets for a release", {
+    assets <- gh_assets(7657161, "ChadGoymer/githapi")
+    expect_is(assets, "tbl")
+    expect_identical(
+      names(assets),
+      c("id", "name", "label", "content_type", "state", "size", "download_count",
+        "created_at", "updated_at", "uploader_login", "url"))
+    expect_true("githapi-v0.3.0.zip" %in% assets$name)
 })
