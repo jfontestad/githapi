@@ -728,6 +728,49 @@ gh_languages <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: gh_release -----------------------------------------------------------------------
+#' Get a single release
+#'
+#' url{https://developer.github.com/v3/repos/releases/#get-a-single-release}
+#' url{https://developer.github.com/v3/repos/releases/#get-the-latest-release}
+#' url{https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name}
+#'
+#' @param tag (string, optional) The tag associated with a release. If not supplied the latest
+#'   release is returned.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the release (see GitHub's API documentation for details).
+#' @export
+gh_release <- function(
+  tag,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (missing(tag)) {
+    url <- gh_url("repos", repo, "releases/latest", api = api)
+  } else {
+    assert_that(is.string(tag) || is.count(tag))
+    if (is.string(tag)) {
+      url <- gh_url("repos", repo, "releases/tags", tag, api = api)
+    } else {
+      url <- gh_url("repos", repo, "releases", tag, api = api)
+    }
+  }
+
+  url %>%
+    gh_get(token = token, ...)
+}
+
 #  FUNCTION: gh_releases ----------------------------------------------------------------------
 #' List releases for a repository
 #'

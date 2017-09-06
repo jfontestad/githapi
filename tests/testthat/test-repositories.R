@@ -272,3 +272,22 @@ test_that("gh_releases returns a tibble describing the releases", {
       "target_commitish", "created_at", "published_at", "assets", "zipball_url", "url"))
   expect_true("v0.1.0" %in% releases$tag_name)
 })
+
+#  FUNCTION: gh_release -----------------------------------------------------------------------
+test_that("gh_release returns a list describing the release", {
+  release_0.1.0 <- gh_release("v0.1.0", "ChadGoymer/githapi")
+  expect_is(release_0.1.0, "list")
+  expect_identical(
+    names(release_0.1.0),
+    c("url", "assets_url", "upload_url", "html_url", "id", "tag_name", "target_commitish",
+      "name", "draft", "author", "prerelease", "created_at", "published_at", "assets",
+      "tarball_url", "zipball_url", "body"))
+  expect_identical(release_0.1.0$tag_name, "v0.1.0")
+
+  release_by_id <- gh_release(7210389, "ChadGoymer/githapi")
+  expect_identical(release_by_id, release_0.1.0)
+
+  # release_latest <- gh_release(repo = "ChadGoymer/githapi")
+  # expect_is(release_latest, "list")
+  # expect_true(parse_datetime(release_0.1.0$created_at) < parse_datetime(release_latest$created_at))
+})
