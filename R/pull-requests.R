@@ -121,7 +121,7 @@ gh_pull_commits <- function(
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
       commit_date = parse_datetime(commit_author_date),
-      parents_sha = map_chr(parents, ~str_c(.$sha, collapse = ","))) %>%
+      parents_sha = collapse_list(parents, "sha")) %>%
     select(sha, author_login, commit_date, commit_message, url, parents_sha)
 }
 

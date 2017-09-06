@@ -727,3 +727,40 @@ gh_languages <- function(
   gh_url("repos", repo, "languages", api = api) %>%
     gh_get(token = token, ...)
 }
+
+#  FUNCTION: gh_releases ----------------------------------------------------------------------
+#' List releases for a repository
+#'
+#' url{https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A tibble describing the releases (see GitHub's API documentation for details).
+#' @export
+gh_releases <- function(
+  repo,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("repos", repo, "releases", api = api) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(
+      assets = collapse_list(assets, "name"),
+      created_at = parse_datetime(created_at),
+      published_at = parse_datetime(published_at)) %>%
+    select(
+      id, tag_name, name, body, author_login, draft, prerelease, target_commitish,
+      created_at, published_at, assets, zipball_url, url)
+}

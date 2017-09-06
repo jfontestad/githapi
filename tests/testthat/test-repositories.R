@@ -261,3 +261,14 @@ test_that("gh_languages returns a tibble describing the languages", {
   expect_is(languages, "list")
   expect_identical(names(languages), "R")
 })
+
+#  FUNCTION: gh_releases ----------------------------------------------------------------------
+test_that("gh_releases returns a tibble describing the releases", {
+  releases <- gh_releases("ChadGoymer/githapi")
+  expect_is(releases, "tbl")
+  expect_identical(
+    names(releases),
+    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease",
+      "target_commitish", "created_at", "published_at", "assets", "zipball_url", "url"))
+  expect_true("v0.1.0" %in% releases$tag_name)
+})

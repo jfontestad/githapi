@@ -89,9 +89,9 @@ gh_gists <- function(
     mutate(
       description = ifelse(as.character(description) == "list()", NA, as.character(description)),
       owner_login = ifelse(has_name(., "owner_login"), owner_login, NA_character_),
-      filenames   = map_chr(files, ~str_c(.$filename, collapse = ",")),
-      languages   = map_chr(files, ~ifelse(is.null(.$language), NA, str_c(.$language, collapse = ","))),
-      file_sizes  = map_chr(files, ~str_c(.$size, collapse = ",")),
+      filenames   = collapse_list(files, "filename"),
+      languages   = collapse_list(files, "language"),
+      file_sizes  = collapse_list(files, "size"),
       created_at  = parse_datetime(created_at),
       updated_at  = parse_datetime(updated_at)) %>%
     select(
