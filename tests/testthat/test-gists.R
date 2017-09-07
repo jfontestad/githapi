@@ -82,6 +82,16 @@ test_that("gh_gist_forks returns a tibble describing the forks", {
     c("id", "description", "owner_login", "created_at", "updated_at", "public", "comments", "url"))
 })
 
+#  FUNCTION: gh_gist_comment ------------------------------------------------------------------
+test_that("gh_gist_comment returns a list describing the gist comment", {
+  comment <- gh_gist_comment(2185561, "806dca6b09a39e7b6326a0c8137583e6")
+  expect_is(comment, "list")
+  expect_identical(
+    names(comment),
+    c("url", "id", "user", "author_association", "created_at", "updated_at", "body"))
+  expect_identical(comment$body, "This is a comment about the test gist.")
+})
+
 #  FUNCTION: gh_gist_comments -----------------------------------------------------------------
 test_that("gh_gist_comments returns a tibble describing the gist comments", {
   comments <- gh_gist_comments("806dca6b09a39e7b6326a0c8137583e6")

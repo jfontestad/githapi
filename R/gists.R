@@ -203,6 +203,36 @@ gh_gist_forks <- function(
     select(id, description, owner_login, created_at, updated_at, public, comments, url)
 }
 
+#  FUNCTION: gh_gist_comment ------------------------------------------------------------------
+#' Get a single comment
+#'
+#' url{https://developer.github.com/v3/gists/comments/#get-a-single-comment}
+#'
+#' @param comment (integer) The ID of the comment in GitHub.
+#' @param gist (string) The ID of the gist in GitHub.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the gist comment (see GitHub's API documentation for details).
+#' @export
+gh_gist_comment <- function(
+  comment,
+  gist,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(comment))
+  assert_that(is.string(gist))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gh_url("gists", gist, "comments", comment, api = api) %>%
+    gh_get(token = token, ...)
+}
+
 #  FUNCTION: gh_gist_comments -----------------------------------------------------------------
 #' List comments on a gist
 #'
