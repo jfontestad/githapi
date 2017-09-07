@@ -292,6 +292,17 @@ test_that("gh_release returns a list describing the release", {
   expect_true(parse_datetime(release_0.1.0$created_at) < parse_datetime(release_latest$created_at))
 })
 
+#  FUNCTION: gh_asset -------------------------------------------------------------------------
+test_that("gh_asset returns a list describing the release asset", {
+  asset <- gh_asset(4759932, "ChadGoymer/githapi")
+  expect_is(asset, "list")
+  expect_identical(
+    names(asset),
+    c("url", "id", "name", "label", "uploader", "content_type", "state", "size",
+      "download_count", "created_at", "updated_at", "browser_download_url"))
+  expect_identical(asset$name, "githapi-v0.3.0.zip")
+})
+
 #  FUNCTION: gh_assets ------------------------------------------------------------------------
 test_that("gh_assets returns a tibble describing the assets for a release", {
     assets <- gh_assets(7657161, "ChadGoymer/githapi")

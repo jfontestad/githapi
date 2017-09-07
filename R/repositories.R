@@ -808,6 +808,37 @@ gh_releases <- function(
       created_at, published_at, assets, zipball_url, url)
 }
 
+#  FUNCTION: gh_asset -------------------------------------------------------------------------
+#' Get a single release asset
+#'
+#' url{https://developer.github.com/v3/repos/releases/#get-a-single-release-asset}
+#'
+#' @param asset (integer) The ID assigned to the asset by GitHub
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A list describing the release asset (see GitHub's API documentation for details).
+#' @export
+gh_asset <- function(
+  asset,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.count(asset))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  # GET /repos/:owner/:repo/releases/assets/:id
+  gh_url("repos", repo, "releases/assets", asset, api = api) %>%
+    gh_get(token = token, ...)
+}
+
 #  FUNCTION: gh_assets ------------------------------------------------------------------------
 #' List assets for a release
 #'
