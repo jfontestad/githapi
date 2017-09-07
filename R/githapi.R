@@ -218,3 +218,21 @@ gh_page <- function(
 
   result
 }
+
+# FUNCTION: collapse_list ---------------------------------------------------------------------
+# Collapse a list by extracting elements and combining them into a single string
+#
+# @param x (list) The list to collapse
+# @param element (string) the element of the list to extract
+# @param sep (string) The separator between elements
+# @return A character vector of combined elements
+collapse_list <- function(x, element, sep = ",") {
+  assert_that(is.list(x))
+  assert_that(is.string(element))
+  assert_that(is.string(sep))
+
+  map_chr(x, ~ifelse(
+    is.null(.[[element]]) | identical(.[[element]], list()),
+    NA,
+    str_c(.[[element]], collapse = sep)))
+}

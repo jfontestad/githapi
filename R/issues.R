@@ -101,8 +101,8 @@ gh_issues <- function(
     since     = since) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
-      labels = map_chr(labels, ~str_c(.$name, collapse = ",")),
-      assignees = map_chr(assignees, ~str_c(.$login, collapse = ",")),
+      labels = collapse_list(labels, "name"),
+      assignees = collapse_list(assignees, "login"),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at),
       closed_at  = parse_datetime(closed_at)) %>%
@@ -183,7 +183,7 @@ gh_user_issues <- function(
     since     = since) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
-      labels = map_chr(labels, ~str_c(.$name, collapse = ",")),
+      labels = collapse_list(labels, "name"),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at)) %>%
     select(

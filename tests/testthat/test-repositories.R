@@ -261,3 +261,55 @@ test_that("gh_languages returns a tibble describing the languages", {
   expect_is(languages, "list")
   expect_identical(names(languages), "R")
 })
+
+#  FUNCTION: gh_releases ----------------------------------------------------------------------
+test_that("gh_releases returns a tibble describing the releases", {
+  releases <- gh_releases("ChadGoymer/githapi")
+  expect_is(releases, "tbl")
+  expect_identical(
+    names(releases),
+    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease",
+      "target_commitish", "created_at", "published_at", "assets", "zipball_url", "url"))
+  expect_true("v0.1.0" %in% releases$tag_name)
+})
+
+#  FUNCTION: gh_release -----------------------------------------------------------------------
+test_that("gh_release returns a list describing the release", {
+  release_0.1.0 <- gh_release("v0.1.0", "ChadGoymer/githapi")
+  expect_is(release_0.1.0, "list")
+  expect_identical(
+    names(release_0.1.0),
+    c("url", "assets_url", "upload_url", "html_url", "id", "tag_name", "target_commitish",
+      "name", "draft", "author", "prerelease", "created_at", "published_at", "assets",
+      "tarball_url", "zipball_url", "body"))
+  expect_identical(release_0.1.0$tag_name, "v0.1.0")
+
+  release_by_id <- gh_release(7210389, "ChadGoymer/githapi")
+  expect_identical(release_by_id, release_0.1.0)
+
+  release_latest <- gh_release(repo = "ChadGoymer/githapi")
+  expect_is(release_latest, "list")
+  expect_true(parse_datetime(release_0.1.0$created_at) < parse_datetime(release_latest$created_at))
+})
+
+#  FUNCTION: gh_asset -------------------------------------------------------------------------
+test_that("gh_asset returns a list describing the release asset", {
+  asset <- gh_asset(4759932, "ChadGoymer/githapi")
+  expect_is(asset, "list")
+  expect_identical(
+    names(asset),
+    c("url", "id", "name", "label", "uploader", "content_type", "state", "size",
+      "download_count", "created_at", "updated_at", "browser_download_url"))
+  expect_identical(asset$name, "githapi-v0.3.0.zip")
+})
+
+#  FUNCTION: gh_assets ------------------------------------------------------------------------
+test_that("gh_assets returns a tibble describing the assets for a release", {
+    assets <- gh_assets(7657161, "ChadGoymer/githapi")
+    expect_is(assets, "tbl")
+    expect_identical(
+      names(assets),
+      c("id", "name", "label", "content_type", "state", "size", "download_count",
+        "created_at", "updated_at", "uploader_login", "url"))
+    expect_true("githapi-v0.3.0.zip" %in% assets$name)
+})
