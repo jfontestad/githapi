@@ -14,8 +14,8 @@ test_that("gh_user returns an error is the specified user does not exist", {
 
 #  FUNCTION: gh_users -------------------------------------------------------------------------
 test_that("gh_users returns a tibble describing all the users", {
-  users <- gh_users(page_size = 10L, max_pages  = 10L)
-  expect_true(is_tibble(users))
+  users <- gh_users(n_max = 100)
+  expect_is(users, "tbl")
   expect_identical(nrow(users), 100L)
   expect_named(users, c("login", "type", "html_url", "url"))
 })

@@ -4,13 +4,15 @@
 \alias{gh_pull_reviews}
 \title{List reviews on a pull request}
 \usage{
-gh_pull_reviews(pull_request, repo, token = gh_token(),
+gh_pull_reviews(pull_request, repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
 \item{pull_request}{(integer) The number assigned to the pull request.}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

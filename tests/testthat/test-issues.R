@@ -15,7 +15,7 @@ test_that("gh_issues returns a tibble of information about all the issues", {
   expect_is(issues, "tbl")
   expect_identical(
     names(issues),
-    c("number", "title", "body", "state", "user_login", "labels", "assignee_login",
+    c("number", "title", "body", "state", "user_login", "labels", "assignees",
       "milestone_number", "milestone_title", "created_at", "updated_at", "closed_at"))
   expect_true("Test issue" %in% issues$title)
   expect_true("This issue has been created for testing the issues API.\r\n" %in% issues$body)
@@ -123,4 +123,24 @@ test_that("gh_milestones returns a tibble describing the milestones", {
       "closed_issues", "state", "created_at", "updated_at", "url"))
   expect_true(1L %in% milestones$number)
   expect_true("v0.2.0" %in% milestones$title)
+})
+
+#  FUNCTION: gh_event -------------------------------------------------------------------------
+test_that("gh_event returns a list describing the event", {
+  event <- gh_event(1227046339, "ChadGoymer/githapi")
+  expect_is(event, "list")
+  expect_identical(
+    names(event),
+    c("id", "url", "actor", "event", "commit_id", "commit_url", "created_at", "issue"))
+  expect_identical(event$issue$number, 29L)
+})
+
+#  FUNCTION: gh_events ------------------------------------------------------------------------
+test_that("gh_events returns a tibble describing the issue events", {
+  events <- gh_events("ChadGoymer/githapi", n_max = 10)
+  expect_is(events, "tbl")
+  expect_identical(
+    names(events),
+    c("id", "event", "issue_number", "issue_title", "created_at",
+      "actor_login", "commit_id", "url"))
 })

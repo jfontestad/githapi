@@ -1,7 +1,7 @@
 context("github api")
 
 #  FUNCTION: gh_url ----------------------------------------------------------------------------
-test_that("A suitable URL can be built for the GitHub API", {
+test_that("gh_url returns a valid URL for the GitHub API", {
   expect_identical(
     gh_url("repos"),
     file.path(getOption("github.api"), "repos"))
@@ -36,46 +36,44 @@ test_that("A suitable URL can be built for the GitHub API", {
 })
 
 # FUNCTION: gh_get ---------------------------------------------------------------------------
-test_that("getting something from github returns the correct result", {
-  repo_info <- gh_get(file.path(getOption("github.api"), "repos/ChadGoymer/githapi")) %>%
-    fromJSON(simplifyVector = FALSE)
+test_that("gh_get returns a parsed list by default", {
+  repo_info <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi") %>% gh_get()
+  expect_is(repo_info, "list")
   expect_identical(repo_info$name, "githapi")
-  expect_identical(repo_info$owner$login, "ChadGoymer")
+})
 
-  test_readme <- gh_get(
-    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/readme"))
-  expect_match(test_readme, "^# githapi\nUser-friendly access to the GitHub API for R")
+test_that("gh_get returns raw text when accept = raw", {
+  readme <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi/readme") %>%
+    gh_get(accept = "raw")
+  expect_true(is.string(readme))
+  expect_match(readme, "^# githapi\nUser-friendly access to the GitHub API for R")
+})
+
+test_that("gh_get returns a parsed tibble when simplify = TRUE", {
+  issues <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi/issues") %>%
+    gh_get(simplify = TRUE)
+  expect_is(issues, "tbl")
+  expect_true("Test issue" %in% issues$title)
+})
+
+test_that("gh_get returns a parsed tibble of a sublist when simplify = TRUE and sub_list is specified", {
+  tree <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi/git/trees/master") %>%
+    gh_get(sub_list = "tree", simplify = TRUE)
+  expect_is(tree, "tbl")
+  expect_true("README.md" %in% tree$path)
 })
 
 # FUNCTION: gh_page ---------------------------------------------------------------------------
-test_that("paging something from github returns the correct result", {
-  test_commits <- gh_page(
-    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits"))
-  expect_identical(
-    test_commits[[length(test_commits)]]$sha,
-    "d9fe50f8e31d7430df2c5b02442dffb68c854f08")
-  expect_identical(test_commits[[length(test_commits)]]$commit$author$name, "Chad Goymer")
-  expect_identical(test_commits[[length(test_commits)]]$commit$author$date, "2017-06-05T07:18:30Z")
-  expect_identical(test_commits[[length(test_commits)]]$commit$message, "Initial commit")
-
-  # TODO: Add a way to test paging - increase branches or commits in test repo
+test_that("gh_page returns a list of specified length", {
+  commits <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits") %>%
+    gh_page(n_max = 20)
+  expect_is(commits, "list")
+  expect_identical(length(commits), 20L)
 })
 
-#  FUNCTION: gh_post --------------------------------------------------------------------------
-# test_that("gh_post send a message to github", {
-#   file.path(getOption("github.api"), "repos/ChadGoymer/githapi-test/git/blobs") %>%
-#     gh_post(content = "This is a blob", encoding = "utf-8")
-#
-#   body_tag <- list(
-#     tag = "0.0.1",
-#     message = "initial version\n",
-#     object = "eb1d2ae3a6a43b144655a472cc20f1e4aea41d21",
-#     type = "commit",
-#     tagger = list(
-#       name = "Chad Goymer",
-#       email = "chad.goymer@gmail.com",
-#       date = "2017-05-30T18:39:35"))
-#
-#   file.path(getOption("github.api"), "repos/ChadGoymer/githapi-test/git/tags") %>%
-#     gh_post(body_tag)
-# })
+test_that("gh_page returns a tibble of specified number of rows when simplify = TRUE", {
+  commits <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi/commits") %>%
+    gh_page(simplify = TRUE, n_max = 20)
+  expect_is(commits, "tbl")
+  expect_identical(nrow(commits), 20L)
+})

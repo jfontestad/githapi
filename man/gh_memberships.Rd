@@ -4,10 +4,13 @@
 \alias{gh_memberships}
 \title{List your organization memberships}
 \usage{
-gh_memberships(org, token = gh_token(), api = getOption("github.api"), ...)
+gh_memberships(org, n_max = 1000L, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{org}{(string, optional) The name of the organization.}
+
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

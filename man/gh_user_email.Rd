@@ -13,7 +13,7 @@ string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PA
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link{gh_get}}.}
 }
 \value{
 A tibble describing the user's email addresses (see GitHub's API documentation for

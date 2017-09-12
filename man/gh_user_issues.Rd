@@ -5,8 +5,8 @@
 \title{List issues assigned to the authenticated user}
 \usage{
 gh_user_issues(org, filter = NULL, state = NULL, labels = NULL,
-  sort = NULL, direction = NULL, since = NULL, token = gh_token(),
-  api = getOption("github.api"), ...)
+  sort = NULL, direction = NULL, since = NULL, n_max = 1000L,
+  token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{org}{(string, optional) Filter the list to repositories owned by an organisation.}
@@ -33,6 +33,8 @@ Default: created.}
 
 \item{since}{(string) Only issues updated at or after this time are returned. This is a
 timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
+
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

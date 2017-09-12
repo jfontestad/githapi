@@ -4,10 +4,13 @@
 \alias{gh_assignees}
 \title{List assignees for issues in a repository}
 \usage{
-gh_assignees(repo, token = gh_token(), api = getOption("github.api"), ...)
+gh_assignees(repo, n_max = 1000L, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

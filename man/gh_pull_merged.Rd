@@ -18,7 +18,7 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link{gh_get}}.}
 }
 \value{
 TRUE if the pull request has been merged, FALSE otherwise (see GitHub's API

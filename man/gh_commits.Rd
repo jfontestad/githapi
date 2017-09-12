@@ -4,7 +4,7 @@
 \alias{gh_commits}
 \title{Get information about all the history of commits.}
 \usage{
-gh_commits(ref, repo, extended = FALSE, token = gh_token(),
+gh_commits(ref, repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -13,8 +13,7 @@ the head commit is used.}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
-\item{extended}{(logical, optional) Whether to return extended information for each branch.
-Warning: this may take some time for a lot of branches. Default: \code{FALSE}.}
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
@@ -23,9 +22,6 @@ value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_
 environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
 
 \item{...}{Parameters passed to \code{\link{gh_page}}.}
-
-\item{limit}{(integer, optional) The maximum number to return. Default: \code{Inf}, which
-returns all.}
 }
 \value{
 A tibble describing all the branches (see GitHub's API documentation for details).

@@ -5,7 +5,7 @@
 \title{List milestones for a repository}
 \usage{
 gh_milestones(repo, state = NULL, sort = NULL, direction = NULL,
-  token = gh_token(), api = getOption("github.api"), ...)
+  n_max = 1000L, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
@@ -15,6 +15,8 @@ gh_milestones(repo, state = NULL, sort = NULL, direction = NULL,
 \item{sort}{(string) What to sort results by. Either due_on or completeness. Default: due_on}
 
 \item{direction}{(string) The direction of the sort. Either asc or desc. Default: asc}
+
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

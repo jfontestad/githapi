@@ -8,7 +8,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the user (see GitHub's API documentation for details).
 #' @export
 gh_user <- function(
@@ -22,7 +22,8 @@ gh_user <- function(
   assert_that(is.string(api))
 
   response <- try(silent = TRUE, suppressMessages({
-    gh_url("users", user, api = api) %>% gh_page(token = token, ...)
+    gh_url("users", user, api = api) %>%
+      gh_get(token = token, ...)
   }))
 
   if (is(response, "try-error") || response == "") {
@@ -37,6 +38,7 @@ gh_user <- function(
 #'
 #' \url{https://developer.github.com/v3/users/#get-all-users}
 #'
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -45,17 +47,17 @@ gh_user <- function(
 #' @return A tibble describing the users (see GitHub's API documentation for more detail).
 #' @export
 gh_users <- function(
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
-  gh_url("users") %>%
-    gh_page(token = token, ...) %>%
-    .[] %>%
-    bind_rows %>%
+  gh_url("users", api = api) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     select(login, type, html_url, url)
 }
 
@@ -69,7 +71,7 @@ gh_users <- function(
 #'   string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A tibble describing the user's email addresses (see GitHub's API documentation for
 #'   more detail).
 #' @export
@@ -82,7 +84,5 @@ gh_user_email <- function(
   assert_that(is.string(api))
 
   gh_url("user/emails", api = api) %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows()
+    gh_get(simplify = TRUE, token = token, ...)
 }

@@ -9,7 +9,7 @@
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the pull request (see GitHub's API documentation for details).
 #' @export
 gh_pull_request <- function(
@@ -25,7 +25,7 @@ gh_pull_request <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, api = api) %>%
-    gh_page(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_pull_requests -----------------------------------------------------------------
@@ -43,6 +43,7 @@ gh_pull_request <- function(
 #'   Default: created
 #' @param direction (string) The direction of the sort. Can be either asc or desc.
 #'   Default: desc when sort is created or sort is not specified, otherwise asc."
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -57,6 +58,7 @@ gh_pull_requests <- function(
   base      = NULL,
   sort      = NULL,
   direction = NULL,
+  n_max     = 1000L,
   token     = gh_token(),
   api       = getOption("github.api"),
   ...)
@@ -67,15 +69,14 @@ gh_pull_requests <- function(
   assert_that(is.null(base) || is.string(base))
   assert_that(is.null(sort) || is.string(sort))
   assert_that(is.null(direction) || is.string(direction))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   gh_url(
     "repos", repo, "pulls", api = api,
     state = state, head = head, base = base, sort = sort, direction = direction) %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows() %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at),
@@ -93,6 +94,7 @@ gh_pull_requests <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -104,20 +106,22 @@ gh_pull_requests <- function(
 gh_pull_commits <- function(
   pull_request,
   repo,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.count(pull_request))
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, "commits", api = api) %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows() %>%
-    mutate(commit_date = parse_datetime(commit_author_date)) %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    mutate(
+      commit_date = parse_datetime(commit_author_date),
+      parents_sha = collapse_list(parents, "sha")) %>%
     select(sha, author_login, commit_date, commit_message, url, parents_sha)
 }
 
@@ -128,6 +132,7 @@ gh_pull_commits <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -139,19 +144,19 @@ gh_pull_commits <- function(
 gh_pull_files <- function(
   pull_request,
   repo,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.count(pull_request))
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, "files", api = api) %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows() %>%
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     select(sha, filename, status, additions, deletions, changes, blob_url, contents_url, patch)
 }
 
@@ -166,7 +171,7 @@ gh_pull_files <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return TRUE if the pull request has been merged, FALSE otherwise (see GitHub's API
 #'   documentation for details).
 #' @export
@@ -184,7 +189,7 @@ gh_pull_merged <- function(
 
   response <- try(silent = TRUE, suppressMessages({
     gh_url("repos", repo, "pulls", pull_request, "merge", api = api) %>%
-      gh_get(token = token, ...)
+      gh_get(accept = "raw", token = token, ...)
   }))
 
   if (identical(response, "")) {
@@ -206,7 +211,7 @@ gh_pull_merged <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the pull request review (see GitHub's API documentation for
 #'   details).
 #' @export
@@ -225,7 +230,7 @@ gh_pull_review <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, "reviews", review, api = api) %>%
-    gh_page(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_pull_reviews ------------------------------------------------------------------
@@ -235,6 +240,7 @@ gh_pull_review <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -246,19 +252,19 @@ gh_pull_review <- function(
 gh_pull_reviews <- function(
   pull_request,
   repo,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.count(pull_request))
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, "reviews", api = api) %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows()
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: gh_pull_comment ------------------------------------------------------------------
@@ -272,7 +278,7 @@ gh_pull_reviews <- function(
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
 #' @return A list describing the pull request review comment (see GitHub's API documentation
 #'   for details).
 #' @export
@@ -289,7 +295,7 @@ gh_pull_comment <- function(
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls/comments", comment, api = api) %>%
-    gh_page(token = token, ...)
+    gh_get(token = token, ...)
 }
 
 #  FUNCTION: gh_pull_comments -----------------------------------------------------------------
@@ -308,6 +314,7 @@ gh_pull_comment <- function(
 #' @param direction (string) Can be either asc or desc. Ignored without sort parameter.
 #' @param since (string) Only comments updated at or after this time are returned. This is a
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -323,11 +330,13 @@ gh_pull_comments <- function(
   sort      = NULL,
   direction = NULL,
   since     = NULL,
+  n_max     = 1000L,
   token     = gh_token(),
   api       = getOption("github.api"),
   ...)
 {
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -344,9 +353,7 @@ gh_pull_comments <- function(
   }
 
   url %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows()
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: gh_pull_review_requests ----------------------------------------------------------
@@ -356,6 +363,7 @@ gh_pull_comments <- function(
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
 #' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -367,17 +375,17 @@ gh_pull_comments <- function(
 gh_pull_review_requests <- function(
   pull_request,
   repo,
+  n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
   assert_that(is.count(pull_request))
   assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.count(n_max))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
   gh_url("repos", repo, "pulls", pull_request, "requested_reviewers", api = api) %>%
-    gh_page(token = token, ...) %>%
-    map(flatten_) %>%
-    bind_rows()
+    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
 }

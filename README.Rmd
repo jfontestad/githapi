@@ -1,0 +1,71 @@
+# githapi
+
+User-friendly access to the GitHub API for R, consistent with the tidyverse.
+
+## Overview
+
+GitHub is a wildly popular host for version controlled code, but also data. This package 
+provides a user-friendly way to access content within GitHub through v3 of its 
+[API](https://developer.github.com/v3/). The functions are also consistent with the 
+[tidyverse](http://www.tidyverse.org/) approach and return tibbles where possible.
+
+## Installation
+
+The easiest way to install githapi is with the devtools package:
+
+```r
+library(devtools)
+install_github("ChadGoymer/githapi")
+```
+
+## Usage
+
+Most of the functions in the package are prefixed by `gh_`, except for predicate functions which are 
+prefixed with `is_`.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(githapi)
+```
+
+### Getting information about a user's repositories
+
+The main reason for using githapi is to extract information from GitHub. For example to find all the 
+repositories a user has use the function `gh_repositories()`:
+
+```{r}
+gh_repositories("ChadGoymer")
+```
+
+Information on the branches in a particular repository can then be obtained using `gh_branches()`:
+
+```{r}
+gh_branches("ChadGoymer/githapi")
+```
+
+The history of a branch can be obtained using `gh_commits()`:
+
+```{r}
+gh_commits("master", "ChadGoymer/githapi") %>% head()
+```
+
+Finally, the contents of a particular file can be returned using `gh_contents()`:
+
+```{r}
+gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi") %>% cat()
+```
+
+### Authorisation
+
+In order to access repositories in GitHub authentication is required, by setting a 
+[Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+githapi identifies the personal token in two possible ways:
+
+ 1. On package load - if set as an environment variable named either "GITHUB_TOKEN" or "GITHUB_PAT"
+ 2. At any time - if set as an R option called "github.token"
+
+Setting an R option will override the environment variable.
+
+## Futher information
+
+Please see the help files for each function in the package for more details.

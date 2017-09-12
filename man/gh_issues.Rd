@@ -6,7 +6,7 @@
 \usage{
 gh_issues(repo, milestone = NULL, state = NULL, assignee = NULL,
   creator = NULL, mentioned = NULL, labels = NULL, sort = NULL,
-  direction = NULL, since = NULL, token = gh_token(),
+  direction = NULL, since = NULL, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -35,6 +35,8 @@ Default: created}
 
 \item{since}{(string) Only issues updated at or after this time are returned. This is a
 timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
+
+\item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}

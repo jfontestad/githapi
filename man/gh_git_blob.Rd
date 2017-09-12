@@ -21,7 +21,8 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_get}}.}
 }
 \value{
-A string containing the contents of the specified file.
+A string containing the contents of the specified file (see GitHub's API
+  documentation for details).
 }
 \description{
 url{https://developer.github.com/v3/git/blobs/#get-a-blob}
