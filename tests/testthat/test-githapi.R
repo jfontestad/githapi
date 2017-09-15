@@ -46,7 +46,7 @@ test_that("gh_get returns raw text when accept = raw", {
   readme <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi/readme") %>%
     gh_get(accept = "raw")
   expect_true(is.string(readme))
-  expect_match(readme, "^# githapi\nUser-friendly access to the GitHub API for R")
+  expect_match(readme, "^# githapi\n\nUser-friendly access to the GitHub API for R")
 })
 
 test_that("gh_get returns a parsed tibble when simplify = TRUE", {

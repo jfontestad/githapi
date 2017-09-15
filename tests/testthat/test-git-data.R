@@ -63,3 +63,31 @@ test_that("gh_git_tree returns a tibble of information about the files in a comm
     c("abb7f8ce52e6bdea33170ec8edbd6cfb1eca0722", "9b3517bffc7f42185b6f3465ac1f739547157943") %in%
       tree$sha))
 })
+
+#  FUNCTION: gh_save --------------------------------------------------------------------------
+test_that("github_save creates a local copy of a file in GitHub", {
+  temp_path <- tempdir()
+  on.exit(unlink(temp_path, recursive = TRUE))
+  desc_path <- file.path(temp_path, "DESCRIPTION")
+
+  current_wd <- getwd()
+  setwd(temp_path)
+
+  gh_save("DESCRIPTION", "ChadGoymer/githapi")
+  expect_true(file.exists(desc_path))
+  expect_identical(read_lines(desc_path, n_max = 1), "Package: githapi")
+
+  unlink(desc_path)
+  setwd(current_wd)
+
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", save_to = desc_path)
+  expect_true(file.exists(desc_path))
+  expect_identical(read_lines(desc_path, n_max = 1), "Package: githapi")
+
+  unlink(desc_path)
+
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", save_to = desc_path, ref = "v0.3.0")
+  expect_true(file.exists(desc_path))
+  desc_version <- read_lines(desc_path) %>% str_subset("Version")
+  expect_identical(desc_version, "Version: 0.3.0")
+})
