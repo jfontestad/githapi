@@ -210,8 +210,7 @@ gh_git_tree <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A string containing the contents of the specified file (see GitHub's API
-#'   documentation for details).
+#' @return The file path of the saved file (invisibly).
 #' @export
 gh_save <- function(
   path,
@@ -241,4 +240,51 @@ gh_save <- function(
     writeBin(save_to)
 
   invisible(save_to)
+}
+
+#  FUNCTION: gh_source ------------------------------------------------------------------------
+#' Source an R file
+#'
+#' url{https://developer.github.com/v3/git/blobs/#get-a-blob}
+#'
+#' @param path (string) The path to the file in the repository
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
+#'   is specified the head commit is used. Default: "master".
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{source}}.
+#' @return The result of sourcing the file.
+#' @export
+gh_source <- function(
+  path,
+  repo,
+  ref     = "master",
+  token   = gh_token(),
+  api     = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(path))
+  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+  assert_that(is.string(ref))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  save_to <- file.path(tempdir(), basename(path))
+  on.exit(unlink(save_to))
+
+  repo_files <- gh_git_tree(ref = ref, repo = repo, recursive = TRUE, token = token, api = api)
+
+  if (path %in% repo_files$path) {
+    blob_sha <- repo_files[repo_files$path == path,][["sha"]]
+  } else {
+    stop("Cannot find specified file path '", path, "' in repo '", repo)
+  }
+
+  gh_git_blob(sha = blob_sha, repo = repo, binary = TRUE, token = token, api = api) %>%
+    writeBin(save_to)
+
+  source(save_to, ...)
 }

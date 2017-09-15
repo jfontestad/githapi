@@ -91,3 +91,11 @@ test_that("github_save creates a local copy of a file in GitHub", {
   desc_version <- read_lines(desc_path) %>% str_subset("Version")
   expect_identical(desc_version, "Version: 0.3.0")
 })
+
+#  FUNCTION: gh_source ------------------------------------------------------------------------
+test_that("gh_source sources a file in GitHub", {
+  gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", ref = "develop")
+  expect_true(exists("test_source"))
+  expect_is(test_source, "function")
+  expect_identical(test_source(), "Testing gh_source")
+})
