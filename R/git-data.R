@@ -261,9 +261,9 @@ gh_save <- function(
 gh_source <- function(
   path,
   repo,
-  ref     = "master",
-  token   = gh_token(),
-  api     = getOption("github.api"),
+  ref   = "master",
+  token = gh_token(),
+  api   = getOption("github.api"),
   ...)
 {
   assert_that(is.string(path))

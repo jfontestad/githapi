@@ -266,3 +266,55 @@ gh_gist_comments <- function(
       updated_at = parse_datetime(updated_at)) %>%
     select(id, body, user_login, created_at, updated_at, url)
 }
+
+#  FUNCTION: gh_download_gist ---------------------------------------------------------------------
+#' Download files in a gist
+#'
+#' url{https://developer.github.com/v3/gists/#get-a-single-gist}
+#' url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+#'
+#' @param gist (string) The ID of the gist in GitHub.
+#' @param save_to (string) The file path to save the file to.
+#' @param files (character, optional) The name of the files to download. Default: all files in
+#'   the gist
+#' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return The file path of the saved file (invisibly).
+#' @export
+gh_download_gist <- function(
+  gist,
+  save_to,
+  files,
+  sha,
+  token   = gh_token(),
+  api     = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(gist))
+  assert_that(is.string(save_to))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  gist_files <- gh_gist(gist, sha = sha, token = token, api = api) %>%
+    .[["files"]] %>%
+    bind_rows()
+
+  if (!missing(files)) {
+    if (!all(files %in% gist_files$filename))
+      stop("Cannot find all specified files")
+    gist_files <- filter(gist_files, filename %in% files)
+  }
+
+  if (!dir.exists(save_to)) dir.create(save_to, recursive = TRUE)
+
+  map2(gist_files$filename, gist_files$raw_url, function(filename, url) {
+    gh_get(url, accept = "raw", binary = TRUE) %>%
+      writeBin(file.path(save_to, filename))
+  })
+
+  invisible(save_to)
+}

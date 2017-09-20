@@ -101,3 +101,21 @@ test_that("gh_gist_comments returns a tibble describing the gist comments", {
     c("id", "body", "user_login", "created_at", "updated_at", "url"))
   expect_true("This is a comment about the test gist." %in% comments$body)
 })
+
+#  FUNCTION: gh_download_gist ---------------------------------------------------------------------
+test_that("gh_download_gist downloads the specified files", {
+  temp_path <- file.path(tempdir(), "test-gist")
+  on.exit(unlink(temp_path))
+
+  gh_download_gist("806dca6b09a39e7b6326a0c8137583e6", temp_path, files = "test-gist.R")
+  expect_true(file.exists(file.path(temp_path, "test-gist.R")))
+  expect_identical(
+    read_lines(file.path(temp_path, "test-gist.R")),
+    c("test_gist <- function() {", "  \"this is a test gist\"", "}"))
+
+  gh_download_gist("806dca6b09a39e7b6326a0c8137583e6", temp_path)
+  expect_true(all(file.exists(file.path(temp_path, c("test-gist.R", "another-test-gist.R")))))
+  expect_identical(
+    read_lines(file.path(temp_path, "another-test-gist.R")),
+    c("test_gist <- function() {", "  \"this is another test gist\"", "}"))
+})
