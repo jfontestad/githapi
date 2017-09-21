@@ -274,7 +274,7 @@ gh_gist_comments <- function(
 #' url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
 #'
 #' @param gist (string) The ID of the gist in GitHub.
-#' @param save_to (string) The file path to save the file to.
+#' @param path (string) The file path to save the file to.
 #' @param files (character, optional) The name of the files to download. Default: all files in
 #'   the gist
 #' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
@@ -287,7 +287,7 @@ gh_gist_comments <- function(
 #' @export
 gh_download_gist <- function(
   gist,
-  save_to,
+  path,
   files,
   sha,
   token   = gh_token(),
@@ -295,7 +295,7 @@ gh_download_gist <- function(
   ...)
 {
   assert_that(is.string(gist))
-  assert_that(is.string(save_to))
+  assert_that(is.string(path))
   assert_that(is.string(token) && identical(str_length(token), 40L))
   assert_that(is.string(api))
 
@@ -304,17 +304,54 @@ gh_download_gist <- function(
     bind_rows()
 
   if (!missing(files)) {
+    assert_that(is.character(files))
     if (!all(files %in% gist_files$filename))
       stop("Cannot find all specified files")
     gist_files <- filter(gist_files, filename %in% files)
   }
 
-  if (!dir.exists(save_to)) dir.create(save_to, recursive = TRUE)
+  if (!dir.exists(path)) dir.create(path, recursive = TRUE)
 
   map2(gist_files$filename, gist_files$raw_url, function(filename, url) {
     gh_get(url, accept = "raw", binary = TRUE) %>%
-      writeBin(file.path(save_to, filename))
+      writeBin(file.path(path, filename))
   })
 
-  invisible(save_to)
+  invisible(path)
+}
+
+#  FUNCTION: gh_source_gist -------------------------------------------------------------------
+#' Source an R file from a gist
+#'
+#' url{https://developer.github.com/v3/gists/#get-a-single-gist}
+#' url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+#'
+#' @param file (string) The name of the file to source.
+#' @param gist (string) The ID of the gist in GitHub.
+#' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{source}}.
+#' @return Nothing. The file is sourced into global environment.
+#' @export
+gh_source_gist <- function(
+  file,
+  gist,
+  sha,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(file))
+  assert_that(is.string(gist))
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  temp_path <- tempdir()
+  on.exit(unlink(temp_path))
+
+  gh_download_gist(gist = gist, path = temp_path, files = file, sha = sha, token = token, api = api)
+  source(file.path(temp_path, file), ...)
 }

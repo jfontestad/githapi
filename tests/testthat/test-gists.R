@@ -119,3 +119,11 @@ test_that("gh_download_gist downloads the specified files", {
     read_lines(file.path(temp_path, "another-test-gist.R")),
     c("test_gist <- function() {", "  \"this is another test gist\"", "}"))
 })
+
+#  FUNCTION: gh_source_gist -------------------------------------------------------------------
+test_that("gh_source_gist sources a file in a gist", {
+  gh_source_gist("test-gist.R", "806dca6b09a39e7b6326a0c8137583e6")
+  expect_true(exists("test_gist"))
+  expect_is(test_gist, "function")
+  expect_identical(test_gist(), "this is a test gist")
+})
