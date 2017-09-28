@@ -2,18 +2,17 @@
 % Please edit documentation in R/git-data.R
 \name{gh_save}
 \alias{gh_save}
-\title{Download file and save it}
+\title{Download files and save them to a location}
 \usage{
-gh_save(path, repo, save_to = basename(path), ref = "master",
-  token = gh_token(), api = getOption("github.api"), ...)
+gh_save(files, repo, path, ref = "master", token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
-\item{path}{(string) The path to the file in the repository}
+\item{files}{(string) The paths to the files in the repository.}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
-\item{save_to}{(string, optional) The file path to save the file to. Default: file name
-specified in \code{path} in the current working directory.}
+\item{path}{(string) The location to save the files to.}
 
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch
 is specified the head commit is used. Default: "master".}

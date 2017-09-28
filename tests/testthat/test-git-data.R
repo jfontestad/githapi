@@ -65,31 +65,25 @@ test_that("gh_git_tree returns a tibble of information about the files in a comm
 })
 
 #  FUNCTION: gh_save --------------------------------------------------------------------------
-test_that("github_save creates a local copy of a file in GitHub", {
-  temp_path <- tempdir()
+test_that("gh_save creates a local copy of a file in GitHub", {
+  temp_path <- file.path(tempdir(), "test-gh_save")
   on.exit(unlink(temp_path, recursive = TRUE))
-  desc_path <- file.path(temp_path, "DESCRIPTION")
 
-  current_wd <- getwd()
-  setwd(temp_path)
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path)
+  expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
+  expect_identical(read_lines(file.path(temp_path, "DESCRIPTION"), n_max = 1), "Package: githapi")
 
-  gh_save("DESCRIPTION", "ChadGoymer/githapi")
-  expect_true(file.exists(desc_path))
-  expect_identical(read_lines(desc_path, n_max = 1), "Package: githapi")
+  unlink(temp_path, recursive = TRUE)
 
-  unlink(desc_path)
-  setwd(current_wd)
-
-  gh_save("DESCRIPTION", "ChadGoymer/githapi", save_to = desc_path)
-  expect_true(file.exists(desc_path))
-  expect_identical(read_lines(desc_path, n_max = 1), "Package: githapi")
-
-  unlink(desc_path)
-
-  gh_save("DESCRIPTION", "ChadGoymer/githapi", save_to = desc_path, ref = "v0.3.0")
-  expect_true(file.exists(desc_path))
-  desc_version <- read_lines(desc_path) %>% str_subset("Version")
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
+  desc_version <- read_lines(file.path(temp_path, "DESCRIPTION")) %>% str_subset("Version")
   expect_identical(desc_version, "Version: 0.3.0")
+
+  unlink(temp_path, recursive = TRUE)
+
+  gh_save(c("DESCRIPTION", "README.md"), "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  expect_true(all(file.exists(file.path(temp_path, "DESCRIPTION"), file.path(temp_path, "README.md"))))
 })
 
 #  FUNCTION: gh_source ------------------------------------------------------------------------

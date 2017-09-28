@@ -4,11 +4,11 @@
 \alias{gh_source}
 \title{Source an R file}
 \usage{
-gh_source(path, repo, ref = "master", token = gh_token(),
+gh_source(file, repo, ref = "master", token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{path}{(string) The path to the file in the repository}
+\item{file}{(string) The path to the file in the repository}
 
 \item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
 
