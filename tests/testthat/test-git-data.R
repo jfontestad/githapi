@@ -63,3 +63,33 @@ test_that("gh_git_tree returns a tibble of information about the files in a comm
     c("abb7f8ce52e6bdea33170ec8edbd6cfb1eca0722", "9b3517bffc7f42185b6f3465ac1f739547157943") %in%
       tree$sha))
 })
+
+#  FUNCTION: gh_save --------------------------------------------------------------------------
+test_that("gh_save creates a local copy of a file in GitHub", {
+  temp_path <- file.path(tempdir(), "test-gh_save")
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path)
+  expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
+  expect_identical(read_lines(file.path(temp_path, "DESCRIPTION"), n_max = 1), "Package: githapi")
+
+  unlink(temp_path, recursive = TRUE)
+
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
+  desc_version <- read_lines(file.path(temp_path, "DESCRIPTION")) %>% str_subset("Version")
+  expect_identical(desc_version, "Version: 0.3.0")
+
+  unlink(temp_path, recursive = TRUE)
+
+  gh_save(c("DESCRIPTION", "README.md"), "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  expect_true(all(file.exists(file.path(temp_path, "DESCRIPTION"), file.path(temp_path, "README.md"))))
+})
+
+#  FUNCTION: gh_source ------------------------------------------------------------------------
+test_that("gh_source sources a file in GitHub", {
+  gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", ref = "develop")
+  expect_true(exists("test_source"))
+  expect_is(test_source, "function")
+  expect_identical(test_source(), "Testing gh_source")
+})

@@ -103,6 +103,8 @@ gh_issues <- function(
     mutate(
       labels = collapse_list(labels, "name"),
       assignees = collapse_list(assignees, "login"),
+      milestone_number = ifelse(has_name(., "milestone_number"), milestone_number, NA),
+      milestone_title = ifelse(has_name(., "milestone_title"), milestone_title, NA),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at),
       closed_at  = parse_datetime(closed_at)) %>%
@@ -184,6 +186,8 @@ gh_user_issues <- function(
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
       labels = collapse_list(labels, "name"),
+      milestone_number = ifelse(has_name(., "milestone_number"), milestone_number, NA),
+      milestone_title = ifelse(has_name(., "milestone_title"), milestone_title, NA),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at)) %>%
     select(

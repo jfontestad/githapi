@@ -460,8 +460,9 @@ gh_download <- function(
   assert_that(is.string(api))
 
   if (!file.exists(path)) dir.create(path)
+
   archive_path <- file.path(path, str_c(str_replace(repo, "/", "-"), "-", ref, ".zip"))
-  on.exit(unlink(archive_path), add = TRUE)
+  on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
 
   gh_url("repos", repo, "zipball", ref, api = api) %>%
     gh_get(binary = TRUE, token = token, ...) %>%
