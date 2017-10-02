@@ -12,6 +12,21 @@ test_that("gh_repository returns an error is the specified repo does not exist",
   expect_error(gh_repository("SomeNameThatDoesNotExist/repo"))
 })
 
+#  FUNCTION: is_repository --------------------------------------------------------------------
+test_that("is_repository returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_repository("ChadGoymer/githapi"))
+
+  expect_false(is_repository("githapi"))
+  expect_identical(
+    attr(is_repository("githapi"), "errors"),
+    "Specified 'repo', 'githapi', is not a string in the format 'owner/repo'")
+
+  expect_false(is_repository("DoesNotExist/githapi"))
+  expect_identical(
+    attr(is_repository("DoesNotExist/githapi"), "errors"),
+    "Specified 'repo', 'DoesNotExist/githapi', does not exist in GitHub")
+})
+
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
 test_that("gh_repositories returns a tibble describing all the repositories a user has", {
   repos <- gh_repositories("ChadGoymer")
@@ -108,7 +123,6 @@ test_that("is_sha returns a boolean, with attributes describing the errors, if t
   expect_identical(
     attr(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"), "errors"),
     "Specified 'sha', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', does not exist in the supplied repository, 'ChadGoymer/githapi'")
-
 })
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------

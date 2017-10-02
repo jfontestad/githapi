@@ -25,6 +25,46 @@ gh_repository <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: is_repository --------------------------------------------------------------------
+#' Check whether the input is a valid repository
+#'
+#' \url{https://developer.github.com/v3/repos/#get}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A boolean, with attributes describing the errors, if there are any.
+#' @export
+is_repository <- function(
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert_that(is.string(token) && identical(str_length(token), 40L))
+  assert_that(is.string(api))
+
+  if (!is.string(repo) || !identical(str_count(repo, "/"), 1L)) {
+    return(
+      FALSE %>%
+      set_attrs(errors = str_c("Specified 'repo', '", repo, "', is not a string in the format 'owner/repo'"))
+    )
+  }
+
+  result <- try(silent = TRUE, gh_repository(repo = repo, token = token, api = api, ...))
+  if (is(result, "try-error")) {
+    return(
+      FALSE %>%
+      set_attrs(errors = str_c("Specified 'repo', '", repo, "', does not exist in GitHub"))
+    )
+  }
+
+  TRUE
+}
+
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
 #' Get information about a user's, organisation's or team's repositories.
 #'
@@ -234,8 +274,7 @@ gh_commit <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A boolean, with attributes describing the errors, if there are any (see GitHub's
-#'   API documentation for details).
+#' @return A boolean, with attributes describing the errors, if there are any.
 #' @export
 is_sha <- function(
   sha,
