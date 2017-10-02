@@ -88,6 +88,29 @@ test_that("gh_commit returns an error is the specified commit or repo does not e
   expect_error(gh_commit("master", "SomeNameThatDoesNotExist/repo"))
 })
 
+#  FUNCTION: is_sha ---------------------------------------------------------------------------
+test_that("is_sha returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08"))
+  expect_true(is_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
+  expect_false(is_sha("aaaaa"))
+  expect_identical(
+    attr(is_sha("aaaaa"), "errors"),
+    "Specified 'sha', 'aaaaa', is not a 40 character string")
+
+  expect_false(is_sha("Waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+  expect_identical(
+    attr(is_sha("Waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), "errors"),
+    "Specified 'sha', 'Waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', is not a valid hexadecimal string")
+
+  expect_true(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+  expect_false(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"), "errors"),
+    "Specified 'sha', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', does not exist in the supplied repository, 'ChadGoymer/githapi'")
+
+})
+
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 test_that("gh_commit_sha returns a string with the SHA-1", {
   commit_sha <- gh_commit_sha("v0.0.0", "ChadGoymer/githapi")

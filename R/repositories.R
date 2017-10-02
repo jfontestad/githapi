@@ -221,6 +221,60 @@ gh_commit <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: is_sha ---------------------------------------------------------------------------
+#' Check whether the input is a valid SHA-1
+#'
+#' \url{https://developer.github.com/v3/repos/commits/#get-a-single-commit}
+#'
+#' @param sha (string) A commit SHA-1.
+#' @param repo (string, optional) The repository specified in the format: \code{"owner/repo"}.
+#'   If not supplied existence of the commit is not checked, only the format of the string.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A boolean, with attributes describing the errors, if there are any (see GitHub's
+#'   API documentation for details).
+#' @export
+is_sha <- function(
+  sha,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  errors <- character()
+
+  if (!is.string(sha) || !identical(str_length(sha), 40L)) {
+    errors <- c(
+      errors,
+      str_c("Specified 'sha', '", sha, "', is not a 40 character string"))
+  }
+
+  if (!identical(str_replace(sha, "[0-9a-fA-F]+", ""), "")) {
+    errors <- c(
+      errors,
+      str_c("Specified 'sha', '", sha, "', is not a valid hexadecimal string"))
+  }
+
+  if (!missing(repo)) {
+    assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+    commit <- try(silent = TRUE, gh_commit(ref = sha, repo = repo, token = token, api = api, ...))
+    if (is(commit, "try-error")) {
+      errors <- c(
+        errors,
+        str_c("Specified 'sha', '", sha, "', does not exist in the supplied repository, '", repo, "'"))
+    }
+  }
+
+  if (identical(length(errors), 0L)) {
+    TRUE
+  } else {
+    FALSE %>% set_attrs(errors = errors)
+  }
+}
+
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 #' Get the SHA-1 of a commit reference
 #'
