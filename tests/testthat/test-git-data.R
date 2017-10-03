@@ -32,6 +32,21 @@ test_that("gh_git_reference returns information about a git reference", {
   expect_identical(tag_v0.1.0$ref, "refs/tags/v0.1.0")
 })
 
+#  FUNCTION: is_tag ---------------------------------------------------------------------------
+test_that("is_tag returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_tag("v0.1.0", "ChadGoymer/githapi"))
+
+  expect_false(is_tag(list(x = "alist"), "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_tag(list(x = "alist"), "ChadGoymer/githapi"), "error"),
+    "Specified 'tag', 'alist', is not a string")
+
+  expect_false(is_tag("0.0.9000", "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_tag("0.0.9000", "ChadGoymer/githapi"), "error"),
+    "Specified 'tag', '0.0.9000', does not exist in the 'repo' 'ChadGoymer/githapi'")
+})
+
 #  FUNCTION: gh_git_references ----------------------------------------------------------------
 test_that("gh_git_references returns a tibble of information about references", {
   references <- gh_git_references("ChadGoymer/githapi")

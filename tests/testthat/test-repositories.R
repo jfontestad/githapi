@@ -12,6 +12,21 @@ test_that("gh_repository returns an error is the specified repo does not exist",
   expect_error(gh_repository("SomeNameThatDoesNotExist/repo"))
 })
 
+#  FUNCTION: is_repository --------------------------------------------------------------------
+test_that("is_repository returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_repository("ChadGoymer/githapi"))
+
+  expect_false(is_repository("githapi"))
+  expect_identical(
+    attr(is_repository("githapi"), "error"),
+    "Specified 'repo', 'githapi', is not a string in the format 'owner/repo'")
+
+  expect_false(is_repository("DoesNotExist/githapi"))
+  expect_identical(
+    attr(is_repository("DoesNotExist/githapi"), "error"),
+    "Specified 'repo', 'DoesNotExist/githapi', does not exist in GitHub")
+})
+
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
 test_that("gh_repositories returns a tibble describing all the repositories a user has", {
   repos <- gh_repositories("ChadGoymer")
@@ -57,6 +72,21 @@ test_that("gh_branch returns an error is the specified branch or repo does not e
   expect_error(gh_branch("master", "SomeNameThatDoesNotExist/repo"))
 })
 
+#  FUNCTION: is_branch ------------------------------------------------------------------------
+test_that("is_branch returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_branch("master", "ChadGoymer/githapi"))
+
+  expect_false(is_branch(list(x = "alist"), "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_branch(list(x = "alist"), "ChadGoymer/githapi"), "error"),
+    "Specified 'branch', 'alist', is not a string")
+
+  expect_false(is_branch("no_branch", "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_branch("no_branch", "ChadGoymer/githapi"), "error"),
+    "Specified 'branch', 'no_branch', does not exist in the 'repo' 'ChadGoymer/githapi'")
+})
+
 #  FUNCTION: gh_branches ------------------------------------------------------------------
 test_that("gh_branches returns a tibble describing all the branches", {
   branches <- gh_branches("ChadGoymer/githapi")
@@ -86,6 +116,21 @@ test_that("gh_commit returns a list describing the commit", {
 test_that("gh_commit returns an error is the specified commit or repo does not exist", {
   expect_error(gh_commit("no_commit", "ChadGoymer/githapi"))
   expect_error(gh_commit("master", "SomeNameThatDoesNotExist/repo"))
+})
+
+#  FUNCTION: is_sha ---------------------------------------------------------------------------
+test_that("is_sha returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
+  expect_false(is_sha("aaaaa", "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_sha("aaaaa", "ChadGoymer/githapi"), "error"),
+    "Specified 'sha', 'aaaaa', is not a valid 40 character string")
+
+  expect_false(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"), "error"),
+    "Specified 'sha', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', does not exist in the supplied repository, 'ChadGoymer/githapi'")
 })
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------

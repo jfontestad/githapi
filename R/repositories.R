@@ -25,6 +25,48 @@ gh_repository <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: is_repository --------------------------------------------------------------------
+#' Check whether the input is a valid repository
+#'
+#' \url{https://developer.github.com/v3/repos/#get}
+#'
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A boolean, with attributes describing the errors, if there are any.
+#' @export
+is_repository <- function(
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  if (!is.string(repo) || !identical(str_count(repo, "/"), 1L)) {
+    return(
+      FALSE %>%
+        set_attrs(error = str_c("Specified 'repo', '", repo, "', is not a string in the format 'owner/repo'")))
+  }
+
+  result <- try(
+    gh_repository(repo = repo, token = token, api = api, ...),
+    silent = TRUE)
+
+  if (is(result, "try-error")) {
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'repo', '", repo, "', does not exist in GitHub")))
+    } else {
+      stop(result)
+    }
+  }
+
+  TRUE
+}
+
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
 #' Get information about a user's, organisation's or team's repositories.
 #'
@@ -160,6 +202,50 @@ gh_branch <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: is_branch ------------------------------------------------------------------------
+#' Checks whether the input is a valid branch.
+#'
+#' \url{https://developer.github.com/v3/repos/branches/#get-branch}
+#'
+#' @param branch (string) The branch name.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A boolean, with attributes describing the errors, if there are any.
+#' @export
+is_branch <- function(
+  branch,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  if (!is.string(branch)) {
+    return(
+      FALSE %>%
+        set_attrs(error = str_c("Specified 'branch', '", branch, "', is not a string")))
+  }
+
+  result <- try(
+    gh_branch(branch = branch, repo = repo, token = token, api = api, ...),
+    silent = TRUE)
+
+  if (is (result, "try-error")) {
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'branch', '", branch, "', does not exist in the 'repo' '", repo, "'")))
+    } else {
+      stop(result)
+    }
+  }
+
+  TRUE
+}
+
 #  FUNCTION: gh_branches ----------------------------------------------------------------------
 #' Get information about all the head commits in each branch.
 #'
@@ -219,6 +305,51 @@ gh_commit <- function(
 
   gh_url("repos", repo, "commits", ref, api = api) %>%
     gh_get(token = token, ...)
+}
+
+#  FUNCTION: is_sha ---------------------------------------------------------------------------
+#' Check whether the input is a valid SHA-1
+#'
+#' \url{https://developer.github.com/v3/repos/commits/#get-a-single-commit}
+#'
+#' @param sha (string) A commit SHA-1.
+#' @param repo (string, optional) The repository specified in the format: \code{"owner/repo"}.
+#'   If not supplied existence of the commit is not checked, only the format of the string.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A boolean, with attributes describing the errors, if there are any.
+#' @export
+is_sha <- function(
+  sha,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  if (!is.string(sha) || !identical(str_length(sha), 40L) || !identical(str_replace(sha, "[0-9a-fA-F]+", ""), "")) {
+    return(
+      FALSE %>%
+        set_attrs(error = str_c("Specified 'sha', '", sha, "', is not a valid 40 character string")))
+  }
+
+  result <- try(
+    gh_commit(ref = sha, repo = repo, token = token, api = api, ...),
+    silent = TRUE)
+
+  if (is(result, "try-error")) {
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'sha', '", sha, "', does not exist in the supplied repository, '", repo, "'")))
+    } else {
+      stop(result)
+    }
+  }
+
+  TRUE
 }
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------

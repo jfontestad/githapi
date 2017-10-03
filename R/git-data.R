@@ -90,6 +90,50 @@ gh_git_reference <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: is_tag ---------------------------------------------------------------------------
+#' Check whether the input is a valid tag.
+#'
+#' url{https://developer.github.com/v3/git/refs/#get-a-reference}
+#'
+#' @param tag (string) tag name.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_page}}.
+#' @return A boolean, with attributes describing the errors, if there are any.
+#' @export
+is_tag <- function(
+  tag,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  if (!is.string(tag)) {
+    return(
+      FALSE %>%
+        set_attrs(error = str_c("Specified 'tag', '", tag, "', is not a string")))
+  }
+
+  result <- try(
+    gh_git_reference(ref = str_c("tags/", tag), repo = repo, token = token, api = api, ...),
+    silent = TRUE)
+
+  if (is (result, "try-error")) {
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'tag', '", tag, "', does not exist in the 'repo' '", repo, "'")))
+    } else {
+      stop(result)
+    }
+  }
+
+  TRUE
+}
+
 #  FUNCTION: gh_git_references ----------------------------------------------------------------
 #' Get all references
 #'
