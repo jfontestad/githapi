@@ -55,9 +55,13 @@ is_repository <- function(
     silent = TRUE)
 
   if (is(result, "try-error")) {
-    return(
-      FALSE %>%
-        set_attrs(error = str_c("Specified 'repo', '", repo, "', does not exist in GitHub")))
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'repo', '", repo, "', does not exist in GitHub")))
+    } else {
+      stop(result)
+    }
   }
 
   TRUE
@@ -336,9 +340,13 @@ is_sha <- function(
     silent = TRUE)
 
   if (is(result, "try-error")) {
-    return(
-      FALSE %>%
-        set_attrs(error = str_c("Specified 'sha', '", sha, "', does not exist in the supplied repository, '", repo, "'")))
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'sha', '", sha, "', does not exist in the supplied repository, '", repo, "'")))
+    } else {
+      stop(result)
+    }
   }
 
   TRUE

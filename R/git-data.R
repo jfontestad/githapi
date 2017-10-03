@@ -122,9 +122,13 @@ is_tag <- function(
     silent = TRUE)
 
   if (is (result, "try-error")) {
-    return(
-      FALSE %>%
-        set_attrs(error = str_c("Specified 'tag', '", tag, "', does not exist in the 'repo' '", repo, "'")))
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'tag', '", tag, "', does not exist in the 'repo' '", repo, "'")))
+    } else {
+      stop(result)
+    }
   }
 
   TRUE
