@@ -72,6 +72,21 @@ test_that("gh_branch returns an error is the specified branch or repo does not e
   expect_error(gh_branch("master", "SomeNameThatDoesNotExist/repo"))
 })
 
+#  FUNCTION: is_branch ------------------------------------------------------------------------
+test_that("is_branch returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_branch("master", "ChadGoymer/githapi"))
+
+  expect_false(is_branch(list(x = "alist"), "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_branch(list(x = "alist"), "ChadGoymer/githapi"), "error"),
+    "Specified 'branch', 'alist', is not a string")
+
+  expect_false(is_branch("no_branch", "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_branch("no_branch", "ChadGoymer/githapi"), "error"),
+    "Specified 'branch', 'no_branch', does not exist in the 'repo' 'ChadGoymer/githapi'")
+})
+
 #  FUNCTION: gh_branches ------------------------------------------------------------------
 test_that("gh_branches returns a tibble describing all the branches", {
   branches <- gh_branches("ChadGoymer/githapi")

@@ -198,6 +198,50 @@ gh_branch <- function(
     gh_get(token = token, ...)
 }
 
+#  FUNCTION: is_branch ------------------------------------------------------------------------
+#' Checks whether the input is a valid branch.
+#'
+#' \url{https://developer.github.com/v3/repos/branches/#get-branch}
+#'
+#' @param branch (string) The branch name.
+#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
+#' @param ... Parameters passed to \code{\link{gh_get}}.
+#' @return A boolean, with attributes describing the errors, if there are any.
+#' @export
+is_branch <- function(
+  branch,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  if (!is.string(branch)) {
+    return(
+      FALSE %>%
+        set_attrs(error = str_c("Specified 'branch', '", branch, "', is not a string")))
+  }
+
+  result <- try(
+    gh_branch(branch = branch, repo = repo, token = token, api = api, ...),
+    silent = TRUE)
+
+  if (is (result, "try-error")) {
+    if (is(attr(result, "condition"), "http_404")) {
+      return(
+        FALSE %>%
+          set_attrs(error = str_c("Specified 'branch', '", branch, "', does not exist in the 'repo' '", repo, "'")))
+    } else {
+      stop(result)
+    }
+  }
+
+  TRUE
+}
+
 #  FUNCTION: gh_branches ----------------------------------------------------------------------
 #' Get information about all the head commits in each branch.
 #'
