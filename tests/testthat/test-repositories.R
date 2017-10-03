@@ -18,12 +18,12 @@ test_that("is_repository returns a boolean, with attributes describing the error
 
   expect_false(is_repository("githapi"))
   expect_identical(
-    attr(is_repository("githapi"), "errors"),
+    attr(is_repository("githapi"), "error"),
     "Specified 'repo', 'githapi', is not a string in the format 'owner/repo'")
 
   expect_false(is_repository("DoesNotExist/githapi"))
   expect_identical(
-    attr(is_repository("DoesNotExist/githapi"), "errors"),
+    attr(is_repository("DoesNotExist/githapi"), "error"),
     "Specified 'repo', 'DoesNotExist/githapi', does not exist in GitHub")
 })
 
@@ -105,23 +105,16 @@ test_that("gh_commit returns an error is the specified commit or repo does not e
 
 #  FUNCTION: is_sha ---------------------------------------------------------------------------
 test_that("is_sha returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08"))
   expect_true(is_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
 
-  expect_false(is_sha("aaaaa"))
+  expect_false(is_sha("aaaaa", "ChadGoymer/githapi"))
   expect_identical(
-    attr(is_sha("aaaaa"), "errors"),
-    "Specified 'sha', 'aaaaa', is not a 40 character string")
+    attr(is_sha("aaaaa", "ChadGoymer/githapi"), "error"),
+    "Specified 'sha', 'aaaaa', is not a valid 40 character string")
 
-  expect_false(is_sha("Waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
-  expect_identical(
-    attr(is_sha("Waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), "errors"),
-    "Specified 'sha', 'Waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', is not a valid hexadecimal string")
-
-  expect_true(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
   expect_false(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"))
   expect_identical(
-    attr(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"), "errors"),
+    attr(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"), "error"),
     "Specified 'sha', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', does not exist in the supplied repository, 'ChadGoymer/githapi'")
 })
 

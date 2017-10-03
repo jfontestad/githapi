@@ -44,22 +44,20 @@ is_repository <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
-
   if (!is.string(repo) || !identical(str_count(repo, "/"), 1L)) {
     return(
       FALSE %>%
-      set_attrs(errors = str_c("Specified 'repo', '", repo, "', is not a string in the format 'owner/repo'"))
-    )
+        set_attrs(error = str_c("Specified 'repo', '", repo, "', is not a string in the format 'owner/repo'")))
   }
 
-  result <- try(silent = TRUE, gh_repository(repo = repo, token = token, api = api, ...))
+  result <- try(
+    gh_repository(repo = repo, token = token, api = api, ...),
+    silent = TRUE)
+
   if (is(result, "try-error")) {
     return(
       FALSE %>%
-      set_attrs(errors = str_c("Specified 'repo', '", repo, "', does not exist in GitHub"))
-    )
+        set_attrs(error = str_c("Specified 'repo', '", repo, "', does not exist in GitHub")))
   }
 
   TRUE
@@ -283,35 +281,23 @@ is_sha <- function(
   api   = getOption("github.api"),
   ...)
 {
-  errors <- character()
-
-  if (!is.string(sha) || !identical(str_length(sha), 40L)) {
-    errors <- c(
-      errors,
-      str_c("Specified 'sha', '", sha, "', is not a 40 character string"))
+  if (!is.string(sha) || !identical(str_length(sha), 40L) || !identical(str_replace(sha, "[0-9a-fA-F]+", ""), "")) {
+    return(
+      FALSE %>%
+        set_attrs(error = str_c("Specified 'sha', '", sha, "', is not a valid 40 character string")))
   }
 
-  if (!identical(str_replace(sha, "[0-9a-fA-F]+", ""), "")) {
-    errors <- c(
-      errors,
-      str_c("Specified 'sha', '", sha, "', is not a valid hexadecimal string"))
+  result <- try(
+    gh_commit(ref = sha, repo = repo, token = token, api = api, ...),
+    silent = TRUE)
+
+  if (is(result, "try-error")) {
+    return(
+      FALSE %>%
+        set_attrs(error = str_c("Specified 'sha', '", sha, "', does not exist in the supplied repository, '", repo, "'")))
   }
 
-  if (!missing(repo)) {
-    assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-    commit <- try(silent = TRUE, gh_commit(ref = sha, repo = repo, token = token, api = api, ...))
-    if (is(commit, "try-error")) {
-      errors <- c(
-        errors,
-        str_c("Specified 'sha', '", sha, "', does not exist in the supplied repository, '", repo, "'"))
-    }
-  }
-
-  if (identical(length(errors), 0L)) {
-    TRUE
-  } else {
-    FALSE %>% set_attrs(errors = errors)
-  }
+  TRUE
 }
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------

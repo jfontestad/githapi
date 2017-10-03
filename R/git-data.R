@@ -111,23 +111,20 @@ is_tag <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
-
   if (!is.string(tag)) {
     return(
       FALSE %>%
-        set_attrs(errors = str_c("Specified 'tag', '", tag, "', is not a string")))
+        set_attrs(error = str_c("Specified 'tag', '", tag, "', is not a string")))
   }
 
   result <- try(
     gh_git_reference(ref = str_c("tags/", tag), repo = repo, token = token, api = api, ...),
     silent = TRUE)
+
   if (is (result, "try-error")) {
     return(
       FALSE %>%
-        set_attrs(errors = str_c("Specified 'tag', '", tag, "', does not exist in the 'repo' '", repo, "'")))
+        set_attrs(error = str_c("Specified 'tag', '", tag, "', does not exist in the 'repo' '", repo, "'")))
   }
 
   TRUE

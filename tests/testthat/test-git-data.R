@@ -38,12 +38,12 @@ test_that("is_tag returns a boolean, with attributes describing the errors, if t
 
   expect_false(is_tag(list(x = "alist"), "ChadGoymer/githapi"))
   expect_identical(
-    attr(is_tag(list(x = "alist"), "ChadGoymer/githapi"), "errors"),
+    attr(is_tag(list(x = "alist"), "ChadGoymer/githapi"), "error"),
     "Specified 'tag', 'alist', is not a string")
 
   expect_false(is_tag("0.0.9000", "ChadGoymer/githapi"))
   expect_identical(
-    attr(is_tag("0.0.9000", "ChadGoymer/githapi"), "errors"),
+    attr(is_tag("0.0.9000", "ChadGoymer/githapi"), "error"),
     "Specified 'tag', '0.0.9000', does not exist in the 'repo' 'ChadGoymer/githapi'")
 })
 
