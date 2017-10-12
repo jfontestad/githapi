@@ -237,3 +237,28 @@ collapse_list <- function(x, element, sep = ",") {
     NA,
     str_c(.[[element]], collapse = sep)))
 }
+
+# FUNCTION: select_safe -----------------------------------------------------------------------
+# Similar to dplyr::select except it guarantees a tibble with the selected columns
+#
+# @param .data (tibble) The table to select columns from
+# @param ... One or more unquoted expressions separated by commas. You can treat variable
+#   names like they are positions (see dplyr::select()).
+# @return A tibble with the selected columns
+select_safe <- function(.data, ...) {
+  dots <- quos(...)
+  columns <- set_names(dots, map_chr(dots, quo_name))
+
+  if (identical(nrow(.data), 0L)) {
+    .data <- as_tibble(map(columns, ~NA_character_))
+  }
+
+  if (!all(names(columns) %in% names(.data))) {
+    .data <- columns %>%
+      discard(names(columns) %in% names(.data)) %>%
+      map(~rep(NA_character_, nrow(.data))) %>%
+      bind_cols(.data)
+  }
+
+  select(.data, !!!dots)
+}
