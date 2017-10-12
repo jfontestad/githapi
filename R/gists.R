@@ -88,13 +88,12 @@ gh_gists <- function(
     set_names(str_replace_all(names(.), "\\.", "_")) %>%
     mutate(
       description = ifelse(as.character(description) == "list()", NA, as.character(description)),
-      owner_login = ifelse(has_name(., "owner_login"), owner_login, NA_character_),
       filenames   = collapse_list(files, "filename"),
       languages   = collapse_list(files, "language"),
       file_sizes  = collapse_list(files, "size"),
       created_at  = parse_datetime(created_at),
       updated_at  = parse_datetime(updated_at)) %>%
-    select(
+    select_safe(
       id, description, owner_login, created_at, updated_at, comments,
       filenames, languages, file_sizes, public, url)
 }
@@ -128,7 +127,7 @@ gh_gist_commits <- function(
   gh_url("gists", gist, "commits", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(committed_at = parse_datetime(committed_at)) %>%
-    select(
+    select_safe(
       version, user_login, committed_at, change_status_total,
       change_status_additions, change_status_deletions, url)
 }
@@ -197,10 +196,8 @@ gh_gist_forks <- function(
 
   gh_url("gists", gist, "forks", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(
-      created_at = parse_datetime(created_at),
-      updated_at = parse_datetime(updated_at)) %>%
-    select(id, description, owner_login, created_at, updated_at, public, comments, url)
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
+    select_safe(id, description, owner_login, created_at, updated_at, public, comments, url)
 }
 
 #  FUNCTION: gh_gist_comment ------------------------------------------------------------------
@@ -261,10 +258,8 @@ gh_gist_comments <- function(
 
   gh_url("gists", gist, "comments", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(
-      created_at = parse_datetime(created_at),
-      updated_at = parse_datetime(updated_at)) %>%
-    select(id, body, user_login, created_at, updated_at, url)
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
+    select_safe(id, body, user_login, created_at, updated_at, url)
 }
 
 #  FUNCTION: gh_save_gist -------------------------------------------------------------------------

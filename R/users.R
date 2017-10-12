@@ -58,7 +58,7 @@ gh_users <- function(
 
   gh_url("users", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select(login, type, html_url, url)
+    select_safe(login, type, html_url, url)
 }
 
 #  FUNCTION: gh_user_email --------------------------------------------------------------------

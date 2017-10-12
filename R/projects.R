@@ -76,8 +76,8 @@ gh_projects <- function(
     gh_page(
       simplify = TRUE, accept = "application/vnd.github.inertia-preview+json",
       n_max = n_max, token = token, ...) %>%
-    select(id, number, name, body, state, creator_login, created_at, updated_at, url) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
+    select_safe(id, number, name, body, state, creator_login, created_at, updated_at, url)
 }
 
 #  FUNCTION: gh_column ------------------------------------------------------------------------
@@ -139,8 +139,8 @@ gh_columns <- function(
     gh_page(
       simplify = TRUE, accept = "application/vnd.github.inertia-preview+json",
       n_max = n_max, token = token, ...) %>%
-    select(id, name, created_at, updated_at, url) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
+    select_safe(id, name, created_at, updated_at, url)
 }
 
 #  FUNCTION: gh_card --------------------------------------------------------------------------
@@ -202,6 +202,6 @@ gh_cards <- function(
     gh_page(
       simplify = TRUE, accept = "application/vnd.github.inertia-preview+json",
       n_max = n_max, token = token, ...) %>%
-    select(id, creator_login, created_at, updated_at, content_url, url) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
+    select_safe(id, creator_login, created_at, updated_at, content_url, url)
 }

@@ -171,7 +171,7 @@ gh_git_references <- function(
     mutate(
       name = ifelse(str_detect(ref, "pull"), basename(dirname(ref)), basename(ref)),
       type = ifelse(str_detect(ref, "pull"), ref_map[basename(ref)], ref_map[dirname(ref)])) %>%
-    select(name, type, object_type, object_sha, ref, url)
+    select_safe(name, type, object_type, object_sha, ref, url)
 }
 
 #  FUNCTION: gh_git_tag -----------------------------------------------------------------------
@@ -235,7 +235,7 @@ gh_git_tree <- function(
 
   gh_url("repos", repo, "git/trees", ref, recursive = as.integer(recursive), api = api) %>%
     gh_get(sub_list = "tree", simplify = TRUE, token = token, ...) %>%
-    select(path, type, sha, size, url)
+    select_safe(path, type, sha, size, url)
 }
 
 #  FUNCTION: gh_save --------------------------------------------------------------------------
@@ -274,7 +274,7 @@ gh_save <- function(
   repo_files <- gh_git_tree(ref = ref, repo = repo, recursive = TRUE, token = token, api = api)
 
   if (all(files %in% repo_files$path)) {
-    blob_shas <- repo_files %>% filter(path %in% files) %>% select(path, sha)
+    blob_shas <- repo_files %>% filter(path %in% files) %>% select_safe(path, sha)
   } else {
     stop(
       "Cannot find specified files in repo '", repo, "':\n\n  ",
