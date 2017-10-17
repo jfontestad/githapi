@@ -82,7 +82,7 @@ gh_pull_requests <- function(
       updated_at = parse_datetime(updated_at),
       closed_at  = parse_datetime(closed_at),
       merged_at  = parse_datetime(merged_at)) %>%
-    select(
+    select_safe(
       id, number, title, body, user_login, state, created_at, updated_at, closed_at, merged_at,
       merge_commit_sha, head_ref, head_sha, head_user_login, head_repo_full_name, locked, url)
 }
@@ -122,7 +122,7 @@ gh_pull_commits <- function(
     mutate(
       commit_date = parse_datetime(commit_author_date),
       parents_sha = collapse_list(parents, "sha")) %>%
-    select(sha, author_login, commit_date, commit_message, url, parents_sha)
+    select_safe(sha, author_login, commit_date, commit_message, url, parents_sha)
 }
 
 #  FUNCTION: gh_pull_files --------------------------------------------------------------------
@@ -157,7 +157,7 @@ gh_pull_files <- function(
 
   gh_url("repos", repo, "pulls", pull_request, "files", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select(sha, filename, status, additions, deletions, changes, blob_url, contents_url, patch)
+    select_safe(sha, filename, status, additions, deletions, changes, blob_url, contents_url, patch)
 }
 
 #  FUNCTION: gh_pull_merged -------------------------------------------------------------------

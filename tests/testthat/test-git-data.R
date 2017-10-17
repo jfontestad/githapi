@@ -32,6 +32,21 @@ test_that("gh_git_reference returns information about a git reference", {
   expect_identical(tag_v0.1.0$ref, "refs/tags/v0.1.0")
 })
 
+#  FUNCTION: is_tag ---------------------------------------------------------------------------
+test_that("is_tag returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_tag("v0.1.0", "ChadGoymer/githapi"))
+
+  expect_false(is_tag(list(x = "alist"), "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_tag(list(x = "alist"), "ChadGoymer/githapi"), "error"),
+    "Specified 'tag', 'alist', is not a string")
+
+  expect_false(is_tag("0.0.9000", "ChadGoymer/githapi"))
+  expect_identical(
+    attr(is_tag("0.0.9000", "ChadGoymer/githapi"), "error"),
+    "Specified 'tag', '0.0.9000', does not exist in the 'repo' 'ChadGoymer/githapi'")
+})
+
 #  FUNCTION: gh_git_references ----------------------------------------------------------------
 test_that("gh_git_references returns a tibble of information about references", {
   references <- gh_git_references("ChadGoymer/githapi")
@@ -62,4 +77,34 @@ test_that("gh_git_tree returns a tibble of information about the files in a comm
   expect_true(all(
     c("abb7f8ce52e6bdea33170ec8edbd6cfb1eca0722", "9b3517bffc7f42185b6f3465ac1f739547157943") %in%
       tree$sha))
+})
+
+#  FUNCTION: gh_save --------------------------------------------------------------------------
+test_that("gh_save creates a local copy of a file in GitHub", {
+  temp_path <- file.path(tempdir(), "test-gh_save")
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path)
+  expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
+  expect_identical(read_lines(file.path(temp_path, "DESCRIPTION"), n_max = 1), "Package: githapi")
+
+  unlink(temp_path, recursive = TRUE)
+
+  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
+  desc_version <- read_lines(file.path(temp_path, "DESCRIPTION")) %>% str_subset("Version")
+  expect_identical(desc_version, "Version: 0.3.0")
+
+  unlink(temp_path, recursive = TRUE)
+
+  gh_save(c("DESCRIPTION", "README.md"), "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  expect_true(all(file.exists(file.path(temp_path, "DESCRIPTION"), file.path(temp_path, "README.md"))))
+})
+
+#  FUNCTION: gh_source ------------------------------------------------------------------------
+test_that("gh_source sources a file in GitHub", {
+  gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", ref = "develop")
+  expect_true(exists("test_source"))
+  expect_is(test_source, "function")
+  expect_identical(test_source(), "Testing gh_source")
 })

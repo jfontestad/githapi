@@ -101,3 +101,29 @@ test_that("gh_gist_comments returns a tibble describing the gist comments", {
     c("id", "body", "user_login", "created_at", "updated_at", "url"))
   expect_true("This is a comment about the test gist." %in% comments$body)
 })
+
+#  FUNCTION: gh_save_gist -------------------------------------------------------------------------
+test_that("gh_save_gist downloads the specified files", {
+  temp_path <- file.path(tempdir(), "test-gh_save_gist")
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  gh_save_gist("806dca6b09a39e7b6326a0c8137583e6", temp_path, files = "test-gist.R")
+  expect_true(file.exists(file.path(temp_path, "test-gist.R")))
+  expect_identical(
+    read_lines(file.path(temp_path, "test-gist.R")),
+    c("test_gist <- function() {", "  \"this is a test gist\"", "}"))
+
+  gh_save_gist("806dca6b09a39e7b6326a0c8137583e6", temp_path)
+  expect_true(all(file.exists(file.path(temp_path, c("test-gist.R", "another-test-gist.R")))))
+  expect_identical(
+    read_lines(file.path(temp_path, "another-test-gist.R")),
+    c("test_gist <- function() {", "  \"this is another test gist\"", "}"))
+})
+
+#  FUNCTION: gh_source_gist -------------------------------------------------------------------
+test_that("gh_source_gist sources a file in a gist", {
+  gh_source_gist("test-gist.R", "806dca6b09a39e7b6326a0c8137583e6")
+  expect_true(exists("test_gist"))
+  expect_is(test_gist, "function")
+  expect_identical(test_gist(), "this is a test gist")
+})

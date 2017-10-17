@@ -61,7 +61,7 @@ gh_organizations <- function(
 
   url %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select(id, name = login, description, url)
+    select_safe(id, name = login, description, url)
 }
 
 #  FUNCTION: is_member ------------------------------------------------------------------------
@@ -166,7 +166,7 @@ gh_members <- function(
 
   url %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select(id, login, type, site_admin, url)
+    select_safe(id, login, type, site_admin, url)
 }
 
 #  FUNCTION: gh_membership --------------------------------------------------------------------

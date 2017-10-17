@@ -46,7 +46,7 @@ test_that("gh_get returns raw text when accept = raw", {
   readme <- file.path(getOption("github.api"), "repos/ChadGoymer/githapi/readme") %>%
     gh_get(accept = "raw")
   expect_true(is.string(readme))
-  expect_match(readme, "^# githapi\nUser-friendly access to the GitHub API for R")
+  expect_match(readme, "^# githapi\n\nUser-friendly access to the GitHub API for R")
 })
 
 test_that("gh_get returns a parsed tibble when simplify = TRUE", {
@@ -76,4 +76,31 @@ test_that("gh_page returns a tibble of specified number of rows when simplify = 
     gh_page(simplify = TRUE, n_max = 20)
   expect_is(commits, "tbl")
   expect_identical(nrow(commits), 20L)
+})
+
+# FUNCTION: select_safe -----------------------------------------------------------------------
+test_that("select_safe returns a tibble with the selected columns", {
+  expect_identical(
+    select_safe(tibble(), new_name = name, login),
+    tibble(new_name = NA_character_, login = NA_character_))
+
+  valid_tbl <- tibble(name = c("bob", "jane"), login = c("smithb", "brownj"), job = c("actuary", "engineer"))
+  expect_identical(
+    select_safe(valid_tbl, new_name = name, login),
+    tibble(new_name = c("bob", "jane"), login = c("smithb", "brownj")))
+
+  missing_column <- tibble(name = c("bob", "jane"), job = c("actuary", "engineer"))
+  expect_identical(
+    select_safe(missing_column, new_name = name, login),
+    tibble(new_name = c("bob", "jane"), login = as.character(NA, NA)))
+
+  missing_column2 <- tibble(login = c("smithb", "brownj"), job = c("actuary", "engineer"))
+  expect_identical(
+    select_safe(missing_column2, new_name = name, login),
+    tibble(new_name = as.character(NA, NA), login = c("smithb", "brownj")))
+
+  missing_column3 <- tibble(name = c("bob", "jane"), job = c("actuary", "engineer"))
+  expect_identical(
+    select_safe(missing_column3, new_name = name, login, email),
+    tibble(new_name = c("bob", "jane"), login = as.character(NA, NA), email = as.character(NA, NA)))
 })

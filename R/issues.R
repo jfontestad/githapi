@@ -101,12 +101,12 @@ gh_issues <- function(
     since     = since) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
-      labels = collapse_list(labels, "name"),
-      assignees = collapse_list(assignees, "login"),
+      labels     = collapse_list(labels, "name"),
+      assignees  = collapse_list(assignees, "login"),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at),
       closed_at  = parse_datetime(closed_at)) %>%
-    select(
+    select_safe(
       number, title, body, state, user_login, labels, assignees,
       milestone_number, milestone_title, created_at, updated_at, closed_at)
 }
@@ -183,10 +183,10 @@ gh_user_issues <- function(
     since     = since) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(
-      labels = collapse_list(labels, "name"),
+      labels     = collapse_list(labels, "name"),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at)) %>%
-    select(
+    select_safe(
       number, title, body, state, user_login, labels, assignee_login,
       milestone_number, milestone_title, created_at, updated_at, repository_name)
 }
@@ -220,7 +220,7 @@ gh_assignees <- function(
 
   gh_url("repos", repo, "assignees", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select(login, type, site_admin)
+    select_safe(login, type, site_admin)
 }
 
 #  FUNCTION: gh_issue_comments ----------------------------------------------------------------
@@ -274,7 +274,7 @@ gh_issue_comments <- function(
   } else {
     comments %>%
       mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
-      select(id, body, user_login, created_at, updated_at, html_url)
+      select_safe(id, body, user_login, created_at, updated_at, html_url)
   }
 }
 
@@ -387,7 +387,7 @@ gh_labels <- function(
 
   url %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select(id, name, color, default, url)
+    select_safe(id, name, color, default, url)
 }
 
 #  FUNCTION: gh_milestone ---------------------------------------------------------------------
@@ -463,7 +463,7 @@ gh_milestones <- function(
       number     = as.integer(number),
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at)) %>%
-    select(
+    select_safe(
       id, number, title, description, creator_login, open_issues,
       closed_issues, state, created_at, updated_at, url)
 }
@@ -538,5 +538,5 @@ gh_events <- function(
   url %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(created_at = parse_datetime(created_at)) %>%
-    select(id, event, issue_number, issue_title, created_at, actor_login, commit_id, url)
+    select_safe(id, event, issue_number, issue_title, created_at, actor_login, commit_id, url)
 }
