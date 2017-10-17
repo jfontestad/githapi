@@ -1,4 +1,7 @@
-# githapi
+---
+title: "githapi"
+output: md_document
+---
 
 User-friendly access to the GitHub API for R, consistent with the tidyverse.
 
@@ -17,6 +20,17 @@ The easiest way to install githapi is with the devtools package:
 library(devtools)
 install_github("ChadGoymer/githapi")
 ```
+
+## Authorisation
+
+In order to access repositories in GitHub authentication is required, by setting a 
+[Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+githapi identifies the personal token in two possible ways:
+
+ 1. On package load - if set as an environment variable named either "GITHUB_TOKEN" or "GITHUB_PAT"
+ 2. At any time - if set as an R option called "github.token"
+
+Setting an R option will override the environment variable.
 
 ## Usage
 
@@ -49,22 +63,40 @@ The history of a branch can be obtained using `gh_commits()`:
 gh_commits("master", "ChadGoymer/githapi") %>% head()
 ```
 
-Finally, the contents of a particular file can be returned using `gh_contents()`:
+### Getting the contents of files
+
+There are a few ways of getting the content of a text file in GitHub. For files of less than 
+1 MB, you can use `gh_contents()`:
 
 ```{r}
 gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi") %>% cat()
 ```
 
-### Authorisation
+The README file can be downloaded using `gh_readme()`:
 
-In order to access repositories in GitHub authentication is required, by setting a 
-[Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
-githapi identifies the personal token in two possible ways:
+```r
+gh_readme("master", "ChadGoymer/githapi")
+```
 
- 1. On package load - if set as an environment variable named either "GITHUB_TOKEN" or "GITHUB_PAT"
- 2. At any time - if set as an R option called "github.token"
+For larger files, up to 100 MB, you can use the `gh_git_blob()` function, or the move convenient
+`gh_save()`, which downloads the file as a binary blob and writes it to disk:
 
-Setting an R option will override the environment variable.
+```r
+gh_save("DESCRIPTION", "ChadGoymer/githapi", "develop", path = "/tmp")
+```
+
+If you wish to read an R script from GitHub you can use the `gh_source()` which downloads and 
+`source`'s the script.
+
+```r
+gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", "develop")
+```
+
+Finally, you can download the entire contents of a commit using the `gh_download()` function:
+
+```r
+gh_download("master", "ChadGoymer/githapi", "/tmp")
+```
 
 ## Futher information
 
