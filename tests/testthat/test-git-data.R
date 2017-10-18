@@ -15,7 +15,7 @@ test_that("gh_git_commit returns a list of information about a commit", {
   expect_is(git_commit, "list")
   expect_identical(
     names(git_commit),
-    c("sha", "url", "html_url", "author", "committer", "tree", "message", "parents"))
+    c("sha", "url", "html_url", "author", "committer", "tree", "message", "parents", "verification"))
   expect_identical(git_commit$sha, "7ca61bb71f877f462c0b6132759d7c5e507c921f")
   expect_identical(git_commit$author$name, "Chad Goymer")
   expect_identical(git_commit$message, "removed reference to github_url\n\nAlso added gh_readme and gh_commit_sha")
@@ -62,7 +62,9 @@ test_that("gh_git_references returns a tibble of information about references", 
 test_that("gh_git_tags returns a list of information about a tag", {
   test_tag <- gh_git_tag("30426b4f967d8c253b1bb5a67c5838dc306aab50", "ChadGoymer/githapi")
   expect_is(test_tag, "list")
-  expect_identical(names(test_tag), c("sha", "url", "tagger", "object", "tag", "message"))
+  expect_identical(
+    names(test_tag),
+    c("sha", "url", "tagger", "object", "tag", "message", "verification"))
   expect_identical(test_tag$sha, "30426b4f967d8c253b1bb5a67c5838dc306aab50")
   expect_identical(test_tag$tagger$name, "Chad Goymer")
   expect_identical(test_tag$object$sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
