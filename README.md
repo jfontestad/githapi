@@ -1,3 +1,6 @@
+githapi
+=======
+
 User-friendly access to the GitHub API for R, consistent with the
 tidyverse.
 
@@ -79,8 +82,8 @@ obtained using `gh_branches()`:
     ##            name                               commit_sha
     ##           <chr>                                    <chr>
     ## 1 0-test-branch e93edf23e95b59d08853e2515ce9296c77d09712
-    ## 2       develop 01aea2754a11e8f28bf391e95c1bacf8cf93c840
-    ## 3        master 7a22d6dd5520f5238677483689b5f255944b6764
+    ## 2       develop dcf71d189010f4ad7ef9630200cf432c61ffa04b
+    ## 3        master dcf71d189010f4ad7ef9630200cf432c61ffa04b
     ## # ... with 1 more variables: commit_url <chr>
 
 The history of a branch can be obtained using `gh_commits()`:
@@ -90,12 +93,12 @@ The history of a branch can be obtained using `gh_commits()`:
     ## # A tibble: 6 x 10
     ##                                        sha                date
     ##                                      <chr>              <dttm>
-    ## 1 7a22d6dd5520f5238677483689b5f255944b6764 2017-09-12 07:21:08
-    ## 2 5fe600654fe92a558ddf84888e0705a30415190d 2017-09-12 07:19:22
-    ## 3 bd661671b43b0c3773c79f7d27538e4182884d62 2017-09-11 07:39:01
-    ## 4 e4de9a52004fed41846aa1ca876dd4a79449be1a 2017-09-07 17:23:34
-    ## 5 6c47834905c79d50ae1b6cbeba186227ca406c3f 2017-09-07 17:21:11
-    ## 6 f1b2d3911eb5df74a22894b4090dd437db21f08f 2017-09-07 06:50:27
+    ## 1 dcf71d189010f4ad7ef9630200cf432c61ffa04b 2017-10-17 07:41:53
+    ## 2 129bb138feeaef8707a293c3da679ef88e142443 2017-10-17 07:36:29
+    ## 3 467d3edf21dd83d333081aab2d84fbf1424c57cb 2017-10-17 07:34:54
+    ## 4 7f6e7287e25a42d0d65d8275e1362b2b0ab8c5bc 2017-10-17 07:34:19
+    ## 5 01aea2754a11e8f28bf391e95c1bacf8cf93c840 2017-10-12 17:23:49
+    ## 6 8efe2a88da3eb015254110b122235263e2ac5e53 2017-10-12 17:20:05
     ## # ... with 8 more variables: message <chr>, url <chr>, author_name <chr>,
     ## #   author_email <chr>, committer_name <chr>, committer_email <chr>,
     ## #   tree_sha <chr>, tree_url <chr>
@@ -109,7 +112,7 @@ For files of less than 1 MB, you can use `gh_contents()`:
 
     ## Package: githapi
     ## Title: User-friendly access to the GitHub API for R, consistent with the tidyverse.
-    ## Version: 0.4.0
+    ## Version: 0.5.0
     ## Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("aut", "cre"))
     ## Description: Provides a suite of functions which simplify working with GitHub's API.
     ## Imports:
@@ -120,6 +123,7 @@ For files of less than 1 MB, you can use `gh_contents()`:
     ##     tibble,
     ##     readr,
     ##     purrr,
+    ##     rlang,
     ##     dplyr
     ## License: None
     ## Encoding: UTF-8
