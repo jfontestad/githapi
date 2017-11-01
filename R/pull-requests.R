@@ -77,14 +77,14 @@ gh_pull_requests <- function(
     "repos", repo, "pulls", api = api,
     state = state, head = head, base = base, sort = sort, direction = direction) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    select_safe(
+      id, number, title, body, user_login, state, created_at, updated_at, closed_at, merged_at,
+      merge_commit_sha, head_ref, head_sha, head_user_login, head_repo_full_name, locked, url) %>%
     mutate(
       created_at = parse_datetime(created_at),
       updated_at = parse_datetime(updated_at),
       closed_at  = parse_datetime(closed_at),
-      merged_at  = parse_datetime(merged_at)) %>%
-    select_safe(
-      id, number, title, body, user_login, state, created_at, updated_at, closed_at, merged_at,
-      merge_commit_sha, head_ref, head_sha, head_user_login, head_repo_full_name, locked, url)
+      merged_at  = parse_datetime(merged_at))
 }
 
 #  FUNCTION: gh_pull_commits ------------------------------------------------------------------
@@ -119,10 +119,9 @@ gh_pull_commits <- function(
 
   gh_url("repos", repo, "pulls", pull_request, "commits", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(
-      commit_date = parse_datetime(commit_author_date),
-      parents_sha = collapse_list(parents, "sha")) %>%
-    select_safe(sha, author_login, commit_date, commit_message, url, parents_sha)
+    mutate(parents_sha = collapse_list(parents, "sha")) %>%
+    select_safe(sha, author_login, commit_date, commit_message, url, parents_sha) %>%
+    mutate(commit_date = parse_datetime(commit_author_date))
 }
 
 #  FUNCTION: gh_pull_files --------------------------------------------------------------------
