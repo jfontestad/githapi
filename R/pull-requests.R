@@ -120,8 +120,8 @@ gh_pull_commits <- function(
   gh_url("repos", repo, "pulls", pull_request, "commits", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     mutate(parents_sha = collapse_list(parents, "sha")) %>%
-    select_safe(sha, author_login, commit_date, commit_message, url, parents_sha) %>%
-    mutate(commit_date = parse_datetime(commit_author_date))
+    select_safe(sha, author_login, commit_date = commit_author_date, commit_message, url, parents_sha) %>%
+    mutate(commit_date = parse_datetime(commit_date))
 }
 
 #  FUNCTION: gh_pull_files --------------------------------------------------------------------

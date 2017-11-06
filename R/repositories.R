@@ -417,10 +417,9 @@ gh_commits <- function(
     select(starts_with("commit_")) %>%
     set_names(str_replace(names(.), "^commit_", "")) %>%
     select_safe(
-      message, url, author_name, author_email, committer_name,
-      committer_email, tree_sha, tree_url) %>%
-    mutate(sha = basename(url), date = parse_datetime(author_date)) %>%
-    select(sha, date, everything())
+      sha, date = author_date, message, url, author_name, author_email,
+      committer_name, committer_email, tree_sha, tree_url) %>%
+    mutate(sha = basename(url), date = parse_datetime(date))
 }
 
 #  FUNCTION: gh_compare_commits ---------------------------------------------------------------
@@ -458,10 +457,9 @@ gh_compare_commits <- function(
     select(starts_with("commit_")) %>%
     set_names(str_replace(names(.), "^commit_", "")) %>%
     select_safe(
-      message, url, author_name,author_email,
-      committer_name, committer_email) %>%
-    mutate(sha = basename(url), date = parse_datetime(author_date)) %>%
-    select(sha, date, everything())
+      sha, date = author_date, message, url, author_name,
+      author_email, committer_name, committer_email) %>%
+    mutate(sha = basename(url), date = parse_datetime(date))
 }
 
 #  FUNCTION: gh_compare_files -----------------------------------------------------------------
