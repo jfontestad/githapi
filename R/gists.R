@@ -90,12 +90,11 @@ gh_gists <- function(
       description = ifelse(as.character(description) == "list()", NA, as.character(description)),
       filenames   = collapse_list(files, "filename"),
       languages   = collapse_list(files, "language"),
-      file_sizes  = collapse_list(files, "size"),
-      created_at  = parse_datetime(created_at),
-      updated_at  = parse_datetime(updated_at)) %>%
+      file_sizes  = collapse_list(files, "size")) %>%
     select_safe(
       id, description, owner_login, created_at, updated_at, comments,
-      filenames, languages, file_sizes, public, url)
+      filenames, languages, file_sizes, public, url) %>%
+    mutate(created_at  = parse_datetime(created_at), updated_at  = parse_datetime(updated_at))
 }
 
 #  FUNCTION: gh_gist_commits ------------------------------------------------------------------
@@ -126,10 +125,10 @@ gh_gist_commits <- function(
 
   gh_url("gists", gist, "commits", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(committed_at = parse_datetime(committed_at)) %>%
     select_safe(
       version, user_login, committed_at, change_status_total,
-      change_status_additions, change_status_deletions, url)
+      change_status_additions, change_status_deletions, url) %>%
+    mutate(committed_at = parse_datetime(committed_at))
 }
 
 #  FUNCTION: is_gist_starred ------------------------------------------------------------------
@@ -196,8 +195,8 @@ gh_gist_forks <- function(
 
   gh_url("gists", gist, "forks", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
-    select_safe(id, description, owner_login, created_at, updated_at, public, comments, url)
+    select_safe(id, description, owner_login, created_at, updated_at, public, comments, url) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
 
 #  FUNCTION: gh_gist_comment ------------------------------------------------------------------
@@ -258,8 +257,8 @@ gh_gist_comments <- function(
 
   gh_url("gists", gist, "comments", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
-    select_safe(id, body, user_login, created_at, updated_at, url)
+    select_safe(id, body, user_login, created_at, updated_at, url) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
 
 #  FUNCTION: gh_save_gist -------------------------------------------------------------------------

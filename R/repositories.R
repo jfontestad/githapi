@@ -133,12 +133,10 @@ gh_repositories <- function(
   }
 
   repos %>%
-    mutate(
-      created_at = parse_datetime(created_at),
-      updated_at = parse_datetime(updated_at)) %>%
     select_safe(
       name, owner_login, owner_type, description, html_url, url,
-      created_at, updated_at, size, open_issues, default_branch)
+      created_at, updated_at, size, open_issues, default_branch) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
 
 #  FUNCTION: gh_tags --------------------------------------------------------------------------
@@ -418,10 +416,10 @@ gh_commits <- function(
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
     select(starts_with("commit_")) %>%
     set_names(str_replace(names(.), "^commit_", "")) %>%
-    mutate(sha = basename(url), date = parse_datetime(author_date)) %>%
     select_safe(
-      sha, date, message, url, author_name, author_email,
-      committer_name, committer_email, tree_sha, tree_url)
+      sha, date = author_date, message, url, author_name, author_email,
+      committer_name, committer_email, tree_sha, tree_url) %>%
+    mutate(sha = basename(url), date = parse_datetime(date))
 }
 
 #  FUNCTION: gh_compare_commits ---------------------------------------------------------------
@@ -458,10 +456,10 @@ gh_compare_commits <- function(
     gh_get(sub_list = "commits", simplify = TRUE, token = token, ...) %>%
     select(starts_with("commit_")) %>%
     set_names(str_replace(names(.), "^commit_", "")) %>%
-    mutate(sha = basename(url), date = parse_datetime(author_date)) %>%
     select_safe(
-      sha, date, message, url, author_name,
-      author_email, committer_name, committer_email)
+      sha, date = author_date, message, url, author_name,
+      author_email, committer_name, committer_email) %>%
+    mutate(sha = basename(url), date = parse_datetime(date))
 }
 
 #  FUNCTION: gh_compare_files -----------------------------------------------------------------
@@ -799,8 +797,8 @@ gh_commit_comments <- function(
 
   url %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
-    select_safe(id, commit_id, body, user_login, created_at, updated_at, position, line, path, url)
+    select_safe(id, commit_id, body, user_login, created_at, updated_at, position, line, path, url) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
 
 #  FUNCTION: gh_contributers ------------------------------------------------------------------
@@ -936,13 +934,11 @@ gh_releases <- function(
 
   gh_url("repos", repo, "releases", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(
-      assets = collapse_list(assets, "name"),
-      created_at = parse_datetime(created_at),
-      published_at = parse_datetime(published_at)) %>%
+    mutate(assets = collapse_list(assets, "name")) %>%
     select_safe(
       id, tag_name, name, body, author_login, draft, prerelease, target_commitish,
-      created_at, published_at, assets, zipball_url, url)
+      created_at, published_at, assets, zipball_url, url) %>%
+    mutate(created_at = parse_datetime(created_at), published_at = parse_datetime(published_at))
 }
 
 #  FUNCTION: gh_asset -------------------------------------------------------------------------
@@ -1007,8 +1003,8 @@ gh_assets <- function(
 
   gh_url("repos", repo, "releases", release, "assets", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at)) %>%
     select_safe(
       id, name, label, content_type, state, size, download_count,
-      created_at, updated_at, uploader_login, url)
+      created_at, updated_at, uploader_login, url) %>%
+    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
 }
