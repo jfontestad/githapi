@@ -168,10 +168,10 @@ gh_git_references <- function(
 
   gh_url("repos", repo, "git/refs", api = api) %>%
     gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    select_safe(name, type, object_type, object_sha, ref, url) %>%
     mutate(
       name = ifelse(str_detect(ref, "pull"), basename(dirname(ref)), basename(ref)),
-      type = ifelse(str_detect(ref, "pull"), ref_map[basename(ref)], ref_map[dirname(ref)])) %>%
-    select_safe(name, type, object_type, object_sha, ref, url)
+      type = ifelse(str_detect(ref, "pull"), ref_map[basename(ref)], ref_map[dirname(ref)]))
 }
 
 #  FUNCTION: gh_git_tag -----------------------------------------------------------------------
