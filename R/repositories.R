@@ -1,4 +1,5 @@
 #  FUNCTION: gh_repository --------------------------------------------------------------------
+#
 #' Get information about a repository.
 #'
 #' \url{https://developer.github.com/v3/repos/#get}
@@ -9,20 +10,24 @@
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the repository (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_repository <- function(
   repo,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, api = api),
+    token = token, ...)
 }
 
 #  FUNCTION: is_repository --------------------------------------------------------------------
@@ -36,18 +41,19 @@ gh_repository <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A boolean, with attributes describing the errors, if there are any.
+#'
+#' @return TRUE or FALSE.
+#'
 #' @export
+#'
 is_repository <- function(
   repo,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  if (!is.string(repo) || !identical(str_count(repo, "/"), 1L)) {
-    return(
-      FALSE %>%
-        set_attrs(error = str_c("Specified 'repo', '", repo, "', is not a string in the format 'owner/repo'")))
+  if (!is_repo(repo)) {
+    return(FALSE)
   }
 
   result <- try(
@@ -55,19 +61,14 @@ is_repository <- function(
     silent = TRUE)
 
   if (is(result, "try-error")) {
-    if (is(attr(result, "condition"), "http_404")) {
-      return(
-        FALSE %>%
-          set_attrs(error = str_c("Specified 'repo', '", repo, "', does not exist in GitHub")))
-    } else {
-      stop(result)
-    }
+    return(FALSE)
   }
 
   TRUE
 }
 
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
+#
 #' Get information about a user's, organisation's or team's repositories.
 #'
 #' \url{https://developer.github.com/v3/repos/#list-user-repositories}
@@ -90,9 +91,12 @@ is_repository <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the repositories a user or organisation has (see GitHub's
 #'   API documentation for more detail).
+#'
 #' @export
+#'
 gh_repositories <- function(
   owner,
   team,
@@ -104,39 +108,50 @@ gh_repositories <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.null(type) || is.string(type) && type %in% c("owner", "member"))
-  assert_that(is.null(sort) || is.string(sort) && sort %in% c("created", "updated", "pushed", "full_name"))
-  assert_that(is.null(direction) || is.string(direction) && direction %in% c("asc", "desc"))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is.null(type) || is_string(type), type %in% c("owner", "member"))
+  stopifnot(is.null(sort) || is_string(sort), sort %in% c("created", "updated", "pushed", "full_name"))
+  stopifnot(is.null(direction) || is_string(direction), direction %in% c("asc", "desc"))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (!missing(owner) && !missing(team))
     stop("Must specify either owner or team, not both!")
 
   if (!missing(owner)) {
-    assert_that(is.string(owner) && identical(str_count(owner, "/"), 0L))
+    stopifnot(is_string(owner))
 
     repos <- try(silent = TRUE, suppressMessages({
-      gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
-        gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+      gh_page(
+        gh_url("orgs", owner, "repos", type = type, sort = sort, direction = direction, api = api),
+        n_max = n_max, token = token, ...)
     }))
 
     if (is(repos, "try-error")) {
-      repos <- gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api) %>%
-        gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+      repos <- gh_page(
+        gh_url("users", owner, "repos", type = type, sort = sort, direction = direction, api = api),
+        n_max = n_max, token = token, ...)
     }
   } else if (!missing(team)) {
-    assert_that(is.string(team))
-    repos <- gh_url("teams", team, "repos", api = api) %>%
-      gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+    stopifnot(is_string(team))
+
+    repos <- gh_page(
+      gh_url("teams", team, "repos", api = api),
+      n_max = n_max, token = token, ...)
   }
 
-  repos %>%
-    select_safe(
-      name, owner_login, owner_type, description, html_url, url,
-      created_at, updated_at, size, open_issues, default_branch) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+  bind_fields(repos, list(
+    name           = c("name",           as = "character"),
+    description    = c("description",    as = "character"),
+    owner_login    = c("owner", "login", as = "character"),
+    owner_type     = c("owner", "type",  as = "character"),
+    default_branch = c("default_branch", as = "character"),
+    open_issues    = c("open_issues",    as = "integer"),
+    size           = c("size",           as = "integer"),
+    url            = c("url",            as = "character"),
+    html_url       = c("html_url",       as = "character"),
+    created_at     = c("created_at",     as = "datetime"),
+    updated_at     = c("updated_at",     as = "datetime")))
 }
 
 #  FUNCTION: gh_tags --------------------------------------------------------------------------
@@ -151,8 +166,11 @@ gh_repositories <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the tags (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_tags <- function(
   repo,
   n_max = 1000L,
@@ -160,17 +178,25 @@ gh_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "tags", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(name, commit_sha, commit_url, zipball_url, tarball_url)
+  tags <- gh_page(
+    gh_url("repos", repo, "tags", api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(tags, list(
+    name        = c("name",          as = "character"),
+    commit_sha  = c("commit", "sha", as = "character"),
+    commit_url  = c("commit", "url", as = "character"),
+    zipball_url = c("zipball_url",   as = "character"),
+    tarball_url = c("tarball_url",   as = "character")))
 }
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
+#
 #' Get information about a branch.
 #'
 #' \url{https://developer.github.com/v3/repos/branches/#get-branch}
@@ -182,8 +208,11 @@ gh_tags <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the branch (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_branch <- function(
   branch,
   repo,
@@ -191,16 +220,18 @@ gh_branch <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(branch))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(branch))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "branches", branch, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, "branches", branch, api = api),
+    token = token, ...)
 }
 
 #  FUNCTION: is_branch ------------------------------------------------------------------------
+#
 #' Checks whether the input is a valid branch.
 #'
 #' \url{https://developer.github.com/v3/repos/branches/#get-branch}
@@ -212,8 +243,11 @@ gh_branch <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A boolean, with attributes describing the errors, if there are any.
+#'
+#' @return TRUE or FALSE.
+#'
 #' @export
+#'
 is_branch <- function(
   branch,
   repo,
@@ -221,30 +255,23 @@ is_branch <- function(
   api   = getOption("github.api"),
   ...)
 {
-  if (!is.string(branch)) {
-    return(
-      FALSE %>%
-        set_attrs(error = str_c("Specified 'branch', '", branch, "', is not a string")))
+  if (!is_string(branch)) {
+    return(FALSE)
   }
 
   result <- try(
     gh_branch(branch = branch, repo = repo, token = token, api = api, ...),
     silent = TRUE)
 
-  if (is (result, "try-error")) {
-    if (is(attr(result, "condition"), "http_404")) {
-      return(
-        FALSE %>%
-          set_attrs(error = str_c("Specified 'branch', '", branch, "', does not exist in the 'repo' '", repo, "'")))
-    } else {
-      stop(result)
-    }
+  if (is(result, "try-error")) {
+    return(FALSE)
   }
 
   TRUE
 }
 
 #  FUNCTION: gh_branches ----------------------------------------------------------------------
+#
 #' Get information about all the head commits in each branch.
 #'
 #' \url{https://developer.github.com/v3/repos/branches/#list-branches}
@@ -256,8 +283,11 @@ is_branch <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_branches <- function(
   repo,
   n_max = 1000L,
@@ -265,17 +295,23 @@ gh_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "branches", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(name, commit_sha, commit_url)
+  branches <- gh_page(
+    gh_url("repos", repo, "branches", api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(branches, list(
+    name       = c("name",          as = "character"),
+    commit_sha = c("commit", "sha", as = "character"),
+    commit_url = c("commit", "url", as = "character")))
 }
 
 #  FUNCTION: gh_commit ------------------------------------------------------------------------
+#
 #' Get information about a commit.
 #'
 #' \url{https://developer.github.com/v3/repos/commits/#get-a-single-commit}
@@ -288,8 +324,11 @@ gh_branches <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the commit (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_commit <- function(
   ref,
   repo,
@@ -297,16 +336,18 @@ gh_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(ref))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(ref))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "commits", ref, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, "commits", ref, api = api),
+    token = token, ...)
 }
 
-#  FUNCTION: is_sha ---------------------------------------------------------------------------
+#  FUNCTION: is_valid_sha ---------------------------------------------------------------------
+#
 #' Check whether the input is a valid SHA-1
 #'
 #' \url{https://developer.github.com/v3/repos/commits/#get-a-single-commit}
@@ -319,19 +360,20 @@ gh_commit <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
-#' @return A boolean, with attributes describing the errors, if there are any.
+#'
+#' @return TRUE or FALSE.
+#'
 #' @export
-is_sha <- function(
+#'
+is_valid_sha <- function(
   sha,
   repo,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  if (!is.string(sha) || !identical(str_length(sha), 40L) || !identical(str_replace(sha, "[0-9a-fA-F]+", ""), "")) {
-    return(
-      FALSE %>%
-        set_attrs(error = str_c("Specified 'sha', '", sha, "', is not a valid 40 character string")))
+  if (!is_sha(sha)) {
+    return(FALSE)
   }
 
   result <- try(
@@ -339,19 +381,14 @@ is_sha <- function(
     silent = TRUE)
 
   if (is(result, "try-error")) {
-    if (is(attr(result, "condition"), "http_404")) {
-      return(
-        FALSE %>%
-          set_attrs(error = str_c("Specified 'sha', '", sha, "', does not exist in the supplied repository, '", repo, "'")))
-    } else {
-      stop(result)
-    }
+    return(FALSE)
   }
 
   TRUE
 }
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
+#
 #' Get the SHA-1 of a commit reference
 #'
 #' \url{https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference}
@@ -364,8 +401,11 @@ is_sha <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the branch (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_commit_sha <- function(
   ref,
   repo,
@@ -373,16 +413,21 @@ gh_commit_sha <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(ref))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(ref))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "commits", ref, api = api) %>%
-    gh_get(accept = "application/vnd.github.VERSION.sha", token = token, ...)
+  sha <- gh_get(
+    gh_url("repos", repo, "commits", ref, api = api),
+    accept = "application/vnd.github.VERSION.sha", token = token, ...)
+
+  attr(sha, "header") <- NULL
+  sha
 }
 
 #  FUNCTION: gh_commits -----------------------------------------------------------------------
+#
 #' Get information about all the history of commits.
 #'
 #' \url{https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository}
@@ -396,8 +441,11 @@ gh_commit_sha <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_commits <- function(
   ref,
   repo,
@@ -406,23 +454,31 @@ gh_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(ref))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(ref))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "commits", sha = ref, api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select(starts_with("commit_")) %>%
-    set_names(str_replace(names(.), "^commit_", "")) %>%
-    select_safe(
-      sha, date = author_date, message, url, author_name, author_email,
-      committer_name, committer_email, tree_sha, tree_url) %>%
-    mutate(sha = basename(url), date = parse_datetime(date))
+  commits <- gh_page(
+    gh_url("repos", repo, "commits", sha = ref, api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(commits, list(
+    sha             = c("sha",                          as = "character"),
+    message         = c("commit", "message",            as = "character"),
+    author_name     = c("commit", "author", "name",     as = "character"),
+    author_email    = c("commit", "author", "email",    as = "character"),
+    committer_name  = c("commit", "committer", "name",  as = "character"),
+    committer_email = c("commit", "committer", "email", as = "character"),
+    date            = c("commit", "author", "date",     as = "datetime"),
+    url             = c("commit", "url",                as = "character"),
+    tree_sha        = c("commit", "tree", "sha",        as = "character"),
+    tree_url        = c("commit", "tree", "url",        as = "character")))
 }
 
 #  FUNCTION: gh_compare_commits ---------------------------------------------------------------
+#
 #' Compare two commits
 #'
 #' \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
@@ -435,9 +491,12 @@ gh_commits <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A tibble describing the commits and the differences (see GitHub's API documentation for
 #'   details).
+#'
 #' @export
+#'
 gh_compare_commits <- function(
   base,
   head,
@@ -446,23 +505,31 @@ gh_compare_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(base))
-  assert_that(is.string(head))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(base))
+  stopifnot(is_string(head))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "compare", str_c(base, "...", head), api = api) %>%
-    gh_get(sub_list = "commits", simplify = TRUE, token = token, ...) %>%
-    select(starts_with("commit_")) %>%
-    set_names(str_replace(names(.), "^commit_", "")) %>%
-    select_safe(
-      sha, date = author_date, message, url, author_name,
-      author_email, committer_name, committer_email) %>%
-    mutate(sha = basename(url), date = parse_datetime(date))
+  comparison <- gh_get(
+    gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+    token = token, ...)
+
+  bind_fields(comparison$commits, list(
+    sha             = c("sha",                          as = "character"),
+    message         = c("commit", "message",            as = "character"),
+    author_name     = c("commit", "author", "name",     as = "character"),
+    author_email    = c("commit", "author", "email",    as = "character"),
+    committer_name  = c("commit", "committer", "name",  as = "character"),
+    committer_email = c("commit", "committer", "email", as = "character"),
+    date            = c("commit", "author", "date",     as = "datetime"),
+    url             = c("commit", "url",                as = "character"),
+    tree_sha        = c("commit", "tree", "sha",        as = "character"),
+    tree_url        = c("commit", "tree", "url",        as = "character")))
 }
 
 #  FUNCTION: gh_compare_files -----------------------------------------------------------------
+#
 #' Compare the files of two commits
 #'
 #' \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
@@ -476,9 +543,12 @@ gh_compare_commits <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A tibble describing the files and the differences (see GitHub's API documentation
 #'   for details).
+#'
 #' @export
+#'
 gh_compare_files <- function(
   base,
   head,
@@ -487,18 +557,27 @@ gh_compare_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(base))
-  assert_that(is.string(head))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(base))
+  stopifnot(is_string(head))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "compare", str_c(base, "...", head), api = api) %>%
-    gh_get(sub_list = "files", simplify = TRUE, token = token, ...) %>%
-    select_safe(filename, status, additions, deletions, changes, contents_url)
+  comparison <- gh_get(
+    gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+    token = token, ...)
+
+  bind_fields(comparison$files, list(
+    filename     = c("filename",     as = "character"),
+    status       = c("status",       as = "character"),
+    additions    = c("additions",    as = "integer"),
+    deletions    = c("deletions",    as = "integer"),
+    changes      = c("changes",      as = "integer"),
+    contents_url = c("contents_url", as = "character")))
 }
 
 #  FUNCTION: gh_readme ------------------------------------------------------------------------
+#
 #' Get the README
 #'
 #' url{https://developer.github.com/v3/repos/contents/#get-the-readme}
@@ -511,8 +590,11 @@ gh_compare_files <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A string containing the contents of the README.
+#'
 #' @export
+#'
 gh_readme <- function(
   ref,
   repo,
@@ -520,16 +602,21 @@ gh_readme <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(ref))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(ref))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "readme", ref = ref, api = api) %>%
-    gh_get(accept = "raw", token = token, ...)
+  readme <- gh_get(
+    gh_url("repos", repo, "readme", ref = ref, api = api),
+    accept = "raw", token = token, ...)
+
+  attr(readme, "header") <- NULL
+  readme
 }
 
 #  FUNCTION: gh_contents ----------------------------------------------------------------------
+#
 #' Get contents of a file.
 #'
 #' url{https://developer.github.com/v3/repos/contents/#get-contents}
@@ -546,8 +633,11 @@ gh_readme <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A string containing the contents of the specified file.
+#'
 #' @export
+#'
 gh_contents <- function(
   path,
   ref,
@@ -556,14 +646,18 @@ gh_contents <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(path))
-  assert_that(is.string(ref))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(path))
+  stopifnot(is_string(ref))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "contents", path, ref = ref, api = api) %>%
-    gh_get(accept = "raw", token = token, ...)
+  content <- gh_get(
+    gh_url("repos", repo, "contents", path, ref = ref, api = api),
+    accept = "raw", token = token, ...)
+
+  attr(content, "header") <- NULL
+  content
 }
 
 #  FUNCTION: gh_download ----------------------------------------------------------------------
@@ -588,19 +682,20 @@ gh_download <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(ref))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(ref))
+  stopifnot(is_repo(repo))
+  stopifnot(is_string(path))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  if (!file.exists(path)) dir.create(path)
+  if (!file.exists(path)) dir.create(path, recursive = TRUE)
 
-  archive_path <- file.path(path, str_c(str_replace(repo, "/", "-"), "-", ref, ".zip"))
+  archive_path <- file.path(path, paste0(sub("/", "-", repo), "-", ref, ".zip"))
   on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
 
-  gh_url("repos", repo, "zipball", ref, api = api) %>%
-    gh_get(binary = TRUE, token = token, ...) %>%
-    writeBin(archive_path)
+  gh_download_binary(
+    gh_url("repos", repo, "zipball", ref, api = api),
+    path = archive_path, token = token, ...)
 
   unzip(archive_path, exdir = path)
 
@@ -609,7 +704,7 @@ gh_download <- function(
   on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
 
   subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
-  map(file.path(path, subfolders[subfolders != ""]), dir.create)
+  lapply(file.path(path, subfolders[subfolders != ""]), dir.create)
 
   files <- list.files(archive_folder, recursive = TRUE)
   file.rename(file.path(archive_folder, files), file.path(path, files))
@@ -618,6 +713,7 @@ gh_download <- function(
 }
 
 #  FUNCTION: is_collaborator ------------------------------------------------------------------
+#
 #' Check if a user is a collaborator
 #'
 #' url{https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator}
@@ -629,9 +725,12 @@ gh_download <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return TRUE if the user is a collaborator, FALSE otherwise (see GitHub's API
 #'   documentation for details).
+#'
 #' @export
+#'
 is_collaborator <- function(
   user,
   repo,
@@ -639,16 +738,18 @@ is_collaborator <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(user))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(user))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
-    gh_url("repos", repo, "collaborators", user, api = api) %>%
-      gh_get(accept = "raw", token = token, ...)
+    gh_get(
+      gh_url("repos", repo, "collaborators", user, api = api),
+      accept = "raw", token = token, ...)
   }))
 
+  attributes(response) <- NULL
   if (identical(response, "")) {
     TRUE
   } else {
@@ -657,6 +758,7 @@ is_collaborator <- function(
 }
 
 #  FUNCTION: gh_collaborators -----------------------------------------------------------------
+#
 #' List collaborators
 #'
 #' url{https://developer.github.com/v3/repos/collaborators/#list-collaborators}
@@ -677,8 +779,11 @@ is_collaborator <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the collaborators (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_collaborators <- function(
   repo,
   affiliation = NULL,
@@ -687,17 +792,28 @@ gh_collaborators <- function(
   api         = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "collaborators", affiliation = affiliation, api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(id, login, type, site_admin, permissions_admin, permissions_push, permissions_pull, url)
+  collaborators <- gh_page(
+    gh_url("repos", repo, "collaborators", affiliation = affiliation, api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(collaborators, list(
+    id                = c("id",                   as = "integer"),
+    login             = c("login",                as = "character"),
+    type              = c("type",                 as = "character"),
+    site_admin        = c("site_admin",           as = "logical"),
+    permissions_admin = c("permissions", "admin", as = "logical"),
+    permissions_push  = c("permissions", "push",  as = "logical"),
+    permissions_pull  = c("permissions", "pull",  as = "logical"),
+    url               = c("url",                  as = "character")))
 }
 
 #  FUNCTION: gh_permissions -------------------------------------------------------------------
+#
 #' Review a user's permission level
 #'
 #' url{https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level}
@@ -709,9 +825,12 @@ gh_collaborators <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the user's permissions (see GitHub's API documentation for
 #'   details).
+#'
 #' @export
+#'
 gh_permissions <- function(
   user,
   repo,
@@ -719,16 +838,18 @@ gh_permissions <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(user))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(user))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "collaborators", user, "permission", api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, "collaborators", user, "permission", api = api),
+    token = token, ...)
 }
 
 #  FUNCTION: gh_commit_comment ----------------------------------------------------------------
+#
 #' Get a single commit comment
 #'
 #' url{https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment}
@@ -740,8 +861,11 @@ gh_permissions <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the commit comment (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_commit_comment <- function(
   comment,
   repo,
@@ -749,16 +873,18 @@ gh_commit_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(comment))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(comment))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "comments", comment, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, "comments", comment, api = api),
+    token = token, ...)
 }
 
 #  FUNCTION: gh_commit_comments ---------------------------------------------------------------
+#
 #' List comments for a single commit or entire repository
 #'
 #' url{https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit}
@@ -773,8 +899,11 @@ gh_commit_comment <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the commit comments (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_commit_comments <- function(
   repo,
   ref,
@@ -783,25 +912,35 @@ gh_commit_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (missing(ref)) {
     url <- gh_url("repos", repo, "comments", api = api)
   } else {
-    assert_that(is.string(ref))
+    stopifnot(is_string(ref))
     url <- gh_url("repos", repo, "commits", ref, "comments", api = api)
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(id, commit_id, body, user_login, created_at, updated_at, position, line, path, url) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+  comments <- gh_page(url, n_max = n_max, token = token, ...)
+
+  bind_fields(comments, list(
+    id         = c("id",            as = "integer"),
+    commit_id  = c("commit_id",     as = "character"),
+    body       = c("body",          as = "character"),
+    user_login = c("user", "login", as = "character"),
+    created_at = c("created_at",    as = "datetime"),
+    updated_at = c("updated_at",    as = "datetime"),
+    position   = c("position",      as = "character"),
+    line       = c("line",          as = "character"),
+    path       = c("path",          as = "character"),
+    url        = c("url",           as = "character")))
 }
 
 #  FUNCTION: gh_contributers ------------------------------------------------------------------
+#
 #' List contributors
 #'
 #' url{https://developer.github.com/v3/repos/#list-contributors}
@@ -814,8 +953,11 @@ gh_commit_comments <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the contributers (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_contributers <- function(
   repo,
   anon  = NULL,
@@ -824,18 +966,27 @@ gh_contributers <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.null(anon) || is.flag(anon))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is.null(anon) || is_flag(anon))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "contributors", anon = as.integer(anon), api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(id, login, contributions, type, site_admin, url)
+  contributers <- gh_page(
+    gh_url("repos", repo, "contributors", anon = as.integer(anon), api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(contributers, list(
+    id            = c("id",            as = "integer"),
+    login         = c("login",         as = "character"),
+    contributions = c("contributions", as = "integer"),
+    type          = c("type",          as = "character"),
+    site_admin    = c("site_admin",    as = "logical"),
+    url           = c("url",           as = "character")))
 }
 
 #  FUNCTION: gh_languages ---------------------------------------------------------------------
+#
 #' List languages
 #'
 #' url{https://developer.github.com/v3/repos/#list-languages}
@@ -846,24 +997,29 @@ gh_contributers <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the number of bytes written in each language (see GitHub's API
 #'   documentation for details).
+#'
 #' @export
+#'
 gh_languages <- function(
   repo,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "languages", api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, "languages", api = api),
+    token = token, ...)
 }
 
 #  FUNCTION: gh_release -----------------------------------------------------------------------
+#
 #' Get a single release
 #'
 #' url{https://developer.github.com/v3/repos/releases/#get-a-single-release}
@@ -878,8 +1034,11 @@ gh_languages <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the release (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_release <- function(
   tag,
   repo,
@@ -887,26 +1046,28 @@ gh_release <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (missing(tag)) {
     url <- gh_url("repos", repo, "releases/latest", api = api)
   } else {
-    assert_that(is.string(tag) || is.count(tag))
-    if (is.string(tag)) {
+    stopifnot(is_string(tag) || is_count(tag))
+    if (is_string(tag)) {
       url <- gh_url("repos", repo, "releases/tags", tag, api = api)
     } else {
       url <- gh_url("repos", repo, "releases", tag, api = api)
     }
   }
 
-  url %>%
-    gh_get(token = token, ...)
+  release <- gh_get(url, token = token, ...)
+  attr(release, "header") <- NULL
+  release
 }
 
 #  FUNCTION: gh_releases ----------------------------------------------------------------------
+#
 #' List releases for a repository
 #'
 #' url{https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository}
@@ -918,8 +1079,11 @@ gh_release <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A tibble describing the releases (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_releases <- function(
   repo,
   n_max = 1000L,
@@ -927,21 +1091,36 @@ gh_releases <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "releases", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(assets = collapse_list(assets, "name")) %>%
-    select_safe(
-      id, tag_name, name, body, author_login, draft, prerelease, target_commitish,
-      created_at, published_at, assets, zipball_url, url) %>%
-    mutate(created_at = parse_datetime(created_at), published_at = parse_datetime(published_at))
+  releases <- gh_page(
+    gh_url("repos", repo, "releases", api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(releases, list(
+    id               = c("id",               as = "integer"),
+    tag_name         = c("tag_name",         as = "character"),
+    name             = c("name",             as = "character"),
+    body             = c("body",             as = "character"),
+    author_login     = c("author", "login",  as = "character"),
+    draft            = c("draft",            as = "logical"),
+    prerelease       = c("prerelease",       as = "logical"),
+    target_commitish = c("target_commitish", as = "character"),
+    created_at       = c("created_at",       as = "datetime"),
+    published_at     = c("published_at",     as = "datetime"),
+    assets           = "",
+    zipball_url      = c("zipball_url",      as = "character"),
+    url              = c("url",              as = "character"))) %>%
+    mutate(assets = lapply(releases, function(r) {
+      sapply(r$assets, getElement, "name")
+    }))
 }
 
 #  FUNCTION: gh_asset -------------------------------------------------------------------------
+#
 #' Get a single release asset
 #'
 #' url{https://developer.github.com/v3/repos/releases/#get-a-single-release-asset}
@@ -953,8 +1132,11 @@ gh_releases <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the release asset (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_asset <- function(
   asset,
   repo,
@@ -962,17 +1144,18 @@ gh_asset <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(asset))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(asset))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  # GET /repos/:owner/:repo/releases/assets/:id
-  gh_url("repos", repo, "releases/assets", asset, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, "releases/assets", asset, api = api),
+    token = token, ...)
 }
 
 #  FUNCTION: gh_assets ------------------------------------------------------------------------
+#
 #' List assets for a release
 #'
 #' url{https://developer.github.com/v3/repos/releases/#list-assets-for-a-release}
@@ -985,8 +1168,11 @@ gh_asset <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A tibble describing the assets for a release (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_assets <- function(
   release,
   repo,
@@ -995,16 +1181,26 @@ gh_assets <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(release))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(release))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "releases", release, "assets", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(
-      id, name, label, content_type, state, size, download_count,
-      created_at, updated_at, uploader_login, url) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+  assets <- gh_page(
+    gh_url("repos", repo, "releases", release, "assets", api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(assets, list(
+    id             = c("id",                as = "integer"),
+    name           = c("name",              as = "character"),
+    label          = c("label",             as = "character"),
+    content_type   = c("content_type",      as = "character"),
+    state          = c("state",             as = "character"),
+    size           = c("size",              as = "integer"),
+    download_count = c("download_count",    as = "integer"),
+    created_at     = c("created_at",        as = "datetime"),
+    updated_at     = c("updated_at",        as = "datetime"),
+    uploader_login = c("uploader", "login", as = "character"),
+    url            = c("url",               as = "character")))
 }

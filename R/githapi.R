@@ -2,11 +2,52 @@
 #'
 #' Provides a suite of functions which simplify working with GitHub's API.
 #'
-#' @import assertthat httr jsonlite stringr tibble readr purrr dplyr
-#' @importFrom rlang set_attrs
+#' @import curl jsonlite dplyr
 #' @docType package
 #' @name githapi
 NULL
+
+#  FUNCTION: is_url ---------------------------------------------------------------------------
+#
+#' Checks whether the supplied object is a valid URL
+#'
+#' @param x Object to check
+#'
+#' @return TRUE if x is a valid URL, FALSE otherwise
+#'
+#' @export
+#'
+is_url <- function(x) {
+  is_string(x) && grepl("^http", x)
+}
+
+#  FUNCTION: is_sha ---------------------------------------------------------------------------
+#
+#' Checks whether the supplied object is a valid SHA
+#'
+#' @param x Object to check
+#'
+#' @return TRUE if x is a valid SHA, FALSE otherwise
+#'
+#' @export
+#'
+is_sha <- function(x) {
+  is_string(x) && identical(nchar(x), 40L) && grepl("[0-9a-f]", x)
+}
+
+#  FUNCTION: is_repo --------------------------------------------------------------------------
+#
+#' Checks whether the supplied object is a valid repo name
+#'
+#' @param x Object to check
+#'
+#' @return TRUE if x is a valid repo, FALSE otherwise
+#'
+#' @export
+#'
+is_repo <- function(x) {
+  is_string(x) && identical(length(strsplit(x, "/")[[1]]), 2L)
+}
 
 # FUNCTION: gh_token --------------------------------------------------------------------------
 # Retrieve the GitHub personal access token from the following locations:
@@ -29,236 +70,202 @@ gh_token <- function() {
   token
 }
 
-# FUNCTION: gh_rate_limit ---------------------------------------------------------------------
-# Get your current rate limit status
-#
-# url{https://developer.github.com/v3/rate_limit/#get-your-current-rate-limit-status}
-#
-# @param warning_limit (numeric) The fraction of calls remaining below which a warning is made.
-# @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
-# @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-# @return A tibble describing the rate limits (see GitHub's API documentation for details).
-gh_rate_limit <- function(
-  warning_limit = 0.1,
-  token         = gh_token(),
-  api           = getOption("github.api"))
-{
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
-
-  request <- gh_url("rate_limit", api = api) %>%
-    GET(add_headers(Accept = "application/vnd.github.v3+json", Authorization = paste("token", token)))
-  stop_for_status(request)
-
-  rate <- content(request, "text") %>%
-    fromJSON(simplifyDataFrame = FALSE) %>%
-    pull(resources)
-
-  if (rate$core$remaining < 1) {
-    stop(
-      "GitHub rate limit reached: no more API calls until reset time: ",
-      as.POSIXct(rate$core$reset, origin = "1970-01-01", tz = "GMT"))
-  } else if (rate$core$remaining / rate$core$limit < warning_limit) {
-    warning(
-      "GitHub rate limit nearly reached: ", rate$core$remaining, " API calls remaining.\n  Reset time: ",
-      as.POSIXct(rate$core$reset, origin = "1970-01-01", tz = "GMT"))
-  }
-
-  bind_rows(rate) %>%
-    bind_cols(type = names(rate)) %>%
-    mutate(reset = as.POSIXct(reset, origin = "1970-01-01", tz = "GMT")) %>%
-    select(type, everything())
-}
-
 # FUNCTION: gh_url -----------------------------------------------------------------------------
 # Build the URL for the github API
 #
 # @param ... (strings, optional) unnamed strings are built up into a URL path and named
 #   parameters are added as queries.
-# @param api (string, optional) the base address of GitHub's API. Default:
+# @param api (string, optional) the base URL of GitHub's API. Default:
 #   \code{getOption("github.api")}
+#
 # @return Valid URL (string)
-# @export
+#
 gh_url <- function(
   ...,
   api = getOption("github.api"))
 {
-  assert_that(is.string(api))
+  stopifnot(is_url(api))
 
-  address <- parse_url(api)
-  dots <- flatten(list(...))
+  url  <- api
+  dots <- unlist(list(...))
 
   if (is.null(names(dots))) {
-    path <- str_c(dots, collapse = "/")
+    path <- paste(dots, collapse = "/")
   } else {
-    path <- str_c(dots[names(dots) == ""], collapse = "/")
+    path <- paste(dots[names(dots) == ""], collapse = "/")
   }
   if (!identical(length(path), 0L))
-    address$path <- file.path(address$path, path)
+    url <- file.path(url, path)
 
-  query <- dots[names(dots) != "" & !map_lgl(dots, is.null)]
-  if (!identical(length(query), 0L))
-    address$query <- c(address$query, query)
+  query <- dots[names(dots) != "" & !sapply(dots, is.null)]
+  if (!identical(length(query), 0L)) {
+    url <- paste0(url, "?", paste(names(query), query, sep = "=", collapse = "&"))
+  }
 
-  build_url(address)
+  url
 }
 
 # FUNCTION: gh_get ----------------------------------------------------------------------------
-# Get the contents of a github http request.
 #
-# @param address (string) URL for GitHub API endpoint.
-# @param sub_list (string) A sub-list of the returned list.
-# @param simplify (boolean) Whether to simplify the parsed JSON into tibbles.
-# @param binary (boolean) Whether to return binary format.
+# Send a http GET request to the specified GitHub url.
+#
+# @param url (string) URL to the GitHub API.
 # @param accept (string) The format of the returned result. Either "json", "raw" or other
 #   GitHub accepted format. Default: "json".
+# @param parse (boolean) Whether to parse the response.
 # @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
-# @return Either a binary, text string or a list / tibbles from a parsed JSON string.
-# @export
+#
+# @return A list of the parsed response
+#
 gh_get <- function(
-  address,
-  sub_list = NULL,
-  simplify = FALSE,
-  binary   = FALSE,
-  accept   = "json",
-  token    = gh_token())
+  url,
+  accept = "json",
+  parse  = TRUE,
+  token  = gh_token())
 {
-  if (identical(accept, "raw") || binary) {
+  stopifnot(is_url(url))
+  stopifnot(is_string(accept))
+  stopifnot(is_flag(parse))
+  stopifnot(is_string(token))
+
+  if (identical(accept, "raw")) {
     accept <- "application/vnd.github.raw"
   } else if (identical(accept, "json")) {
     accept <- "application/vnd.github.v3+json"
   }
 
-  request <- GET(
-    address,
-    add_headers(
-      Accept = accept,
-      Authorization = paste("token", token)))
-  stop_for_status(request)
+  msg("> GET: ", url)
+  response <- curl_fetch_memory(url, handle = handle_setheaders(
+    new_handle(),
+    Authorization = paste("token", token),
+    Accept        = accept))
 
-  header <- headers(request)
-  if (!is.null(header$`x-ratelimit-limit`) &&
-    as.numeric(header$`x-ratelimit-remaining`) / as.numeric(header$`x-ratelimit-limit`) < 0.1) {
-    warning(
-      "GitHub rate limit nearly reached: ", header$`x-ratelimit-remaining`, " API calls remaining.\n  Reset time: ",
-      as.POSIXct(as.numeric(header$`x-ratelimit-reset`), origin = "1970-01-01", tz = "GMT"))
+  response_content <- response$content
+  message <- NULL
+
+  response_header  <- strsplit(parse_headers(response$header), ": ")
+  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]]))
+  names(header_values) <- sapply(response_header, function(h) h[[1]])
+
+  if (parse) {
+    msg("> Parsing content")
+    response_content <- rawToChar(response$content)
+    if (grepl("json$", tolower(accept))) {
+      response_content <- fromJSON(response_content, simplifyVector = FALSE)
+      message <- response_content$message
+    }
   }
 
-  if (binary) {
-    result <- content(request, "raw")
-  } else if (identical(accept %>% str_sub(., nchar(.) - 3, nchar(.)), "json")) {
-    result <- content(request, "text") %>%
-      fromJSON(simplifyDataFrame = simplify, flatten = simplify)
-
-    if (!missing(sub_list)) {
-      result <- result[[sub_list]]
-    }
-
-    if (simplify) {
-      result <- result %>%
-        as_tibble() %>%
-        set_names(str_replace_all(names(.), "\\.", "_"))
-    }
-  } else {
-    result <- content(request, "text")
+  if (response$status_code >= 400) {
+    stop(
+      "\nGitHub GET request failed\n",
+      "\n[Status]: ", header_values$Status,
+      "\n[URL]: ", url,
+      "\n[Message]: ", message)
   }
 
-  result
+  attributes(response_content) <- c(attributes(response_content), list(header = header_values))
+
+  msg("> Done")
+  response_content
 }
 
-#  FUNCTION: gh_page ---------------------------------------------------------------------------
+# FUNCTION: gh_page ---------------------------------------------------------------------------
+#
 # Get and parse the contents of a github http request, including multiple pages.
 #
-# @param address (string) URL for GitHub API endpoint.
-# @param sub_list (string) A sub-list of the returned list.
-# @param simplify (boolean) Whether to simplify the parsed JSON into tibbles.
+# @param url (string) URL for GitHub API endpoint.
 # @param accept (string) The format of the returned result. Either "json", "raw" or other
 #   GitHub accepted format. Default: "json".
 # @param n_max (integer, optional) Maximum number to return. Default: 1000.
 # @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
-# @return A list if simplify = FALSE, or a tibble if TRUE.
+#
+# @return A list of the combined parsed responses
+#
 # @export
+#
 gh_page <- function(
-  address,
-  sub_list = NULL,
-  simplify = FALSE,
-  accept   = "json",
-  n_max    = 1000L,
-  token    = gh_token())
+  url,
+  accept = "json",
+  n_max  = 1000L,
+  token  = gh_token())
 {
-  if (n_max <= 100) {
-    pages <- n_max
+  stopifnot(is_url(url))
+  stopifnot(is_string(accept))
+  stopifnot(is_integer(n_max), n_max > 0)
+  stopifnot(is_string(token))
+
+  per_page <- min(n_max, 100)
+  if (grepl("\\?", url)) {
+    url <- paste0(url, "&per_page=", per_page)
   } else {
-    pages <- c(rep(100L, floor(n_max/100)), n_max %% 100L)
+    url <- paste0(url, "?per_page=", per_page)
   }
 
-  page_url <- parse_url(address)
+  response <- list()
 
-  if (simplify) {
-    result <- tibble()
-  } else {
-    result <- list()
-  }
-
-  for (page in seq_along(pages)) {
-    page_url$query <- c(page_url$query, list(per_page = pages[page], page = page))
-    if (simplify) {
-      result <- bind_rows(
-        result,
-        build_url(page_url) %>% gh_get(token = token, simplify = simplify, accept = accept))
-    } else {
-      result <- c(
-        result,
-        build_url(page_url) %>% gh_get(token = token, simplify = simplify, accept = accept))
+  while (length(response) < n_max) {
+    page <- gh_get(url = url, accept = accept, token = token)
+    response <- c(response, page)
+    if (length(response) >= n_max) {
+      return(response[1:n_max])
     }
+    if (is.null(attributes(page)[["header"]][["Link"]])) {
+      return(response)
+    }
+    links <- strsplit(attributes(page)[["header"]][["Link"]], ", ")[[1]]
+    if (!any(grepl("next", links))) {
+      return(response)
+    }
+    url <- sub("<", "", strsplit(links[grepl("next", links)], ">")[[1]][[1]])
   }
-
-  result
 }
 
-# FUNCTION: collapse_list ---------------------------------------------------------------------
-# Collapse a list by extracting elements and combining them into a single string
+# FUNCTION: gh_download_binary ----------------------------------------------------------------
 #
-# @param x (list) The list to collapse
-# @param element (string) the element of the list to extract
-# @param sep (string) The separator between elements
-# @return A character vector of combined elements
-collapse_list <- function(x, element, sep = ",") {
-  assert_that(is.list(x))
-  assert_that(is.string(element))
-  assert_that(is.string(sep))
-
-  map_chr(x, ~ifelse(
-    is.null(.[[element]]) | identical(.[[element]], list()),
-    NA,
-    str_c(.[[element]], collapse = sep)))
-}
-
-# FUNCTION: select_safe -----------------------------------------------------------------------
-# Similar to dplyr::select except it guarantees a tibble with the selected columns
+# Download a binary file from GitHub
 #
-# @param .data (tibble) The table to select columns from
-# @param ... One or more unquoted expressions separated by commas. You can treat variable
-#   names like they are positions (see dplyr::select()).
-# @return A tibble with the selected columns
-select_safe <- function(.data, ...) {
-  dots <- quos(...)
-  columns <- set_names(dots, map_chr(dots, quo_name))
+# @param url (string) URL to the GitHub API.
+# @param path (string) The location to download the file to.
+# @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#
+# @return A list of the parsed response
+#
+gh_download_binary <- function(
+  url,
+  path,
+  token = gh_token())
+{
+  stopifnot(is_url(url))
+  stopifnot(is_writeable(dirname(path)))
+  stopifnot(is_string(token))
 
-  if (identical(nrow(.data), 0L)) {
-    .data <- as_tibble(map(columns, ~NA_character_))
+  path <- normalizePath(path, winslash = "/", mustWork = FALSE)
+
+  msg("> DOWNLOAD: ", url)
+  response <- curl_fetch_disk(url, path, handle = handle_setheaders(
+    new_handle(),
+    Authorization = paste("token", token),
+    Accept = "application/vnd.github.raw"))
+
+  msg("> Parsing response")
+  response_header  <- strsplit(parse_headers(response$header), ": ")
+  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]]))
+  names(header_values) <- sapply(response_header, function(h) h[[1]])
+
+  if (!is.null(response$status) && response$status >= 400) {
+    stop(
+      "\nGitHub GET request failed\n",
+      "\n[Status]:  ", header_values[[1]],
+      "\n[URL]:     ", url,
+      "\n[Path]:    ", path)
   }
 
-  if (!all(names(columns) %in% names(.data))) {
-    .data <- columns %>%
-      discard(names(columns) %in% names(.data)) %>%
-      map(~rep(NA_character_, nrow(.data))) %>%
-      bind_cols(.data)
-  }
+  attributes(path) <- c(attributes(path), list(header = header_values))
 
-  select(.data, !!!dots)
+  msg("> Done")
+  path
 }

@@ -13,10 +13,22 @@ test_that("gh_issue returns a list of information about the issue", {
 test_that("gh_issues returns a tibble of information about all the issues", {
   issues <- gh_issues("ChadGoymer/githapi")
   expect_is(issues, "tbl")
+
   expect_identical(
-    names(issues),
-    c("number", "title", "body", "state", "user_login", "labels", "assignees",
-      "milestone_number", "milestone_title", "created_at", "updated_at", "closed_at"))
+    sapply(issues, function(field) class(field)[[1]]),
+    c(number           = "integer",
+      title            = "character",
+      body             = "character",
+      state            = "character",
+      user_login       = "character",
+      labels           = "list",
+      assignees        = "list",
+      milestone_number = "integer",
+      milestone_title  = "character",
+      created_at       = "POSIXct",
+      updated_at       = "POSIXct",
+      closed_at        = "POSIXct"))
+
   expect_true("Test issue" %in% issues$title)
   expect_true("This issue has been created for testing the issues API.\r\n" %in% issues$body)
   expect_true("ChadGoymer" %in% issues$user_login)
@@ -26,10 +38,22 @@ test_that("gh_issues returns a tibble of information about all the issues", {
 test_that("gh_user_issues returns a tibble describing all the issues assigned to the user", {
   my_issues <- gh_user_issues()
   expect_is(my_issues, "tbl")
+
   expect_identical(
-    names(my_issues),
-    c("number", "title", "body", "state", "user_login", "labels", "assignee_login",
-      "milestone_number", "milestone_title", "created_at", "updated_at", "repository_name"))
+    sapply(my_issues, function(field) class(field)[[1]]),
+    c(number           = "integer",
+      title            = "character",
+      body             = "character",
+      state            = "character",
+      repository_name  = "character",
+      labels           = "list",
+      user_login       = "character",
+      assignee_login   = "character",
+      milestone_number = "integer",
+      milestone_title  = "character",
+      created_at       = "POSIXct",
+      updated_at       = "POSIXct"))
+
   expect_true("Test issue" %in% my_issues$title)
   expect_true("This issue has been created for testing the issues API.\r\n" %in% my_issues$body)
   expect_true("ChadGoymer" %in% my_issues$user_login)
@@ -39,7 +63,13 @@ test_that("gh_user_issues returns a tibble describing all the issues assigned to
 test_that("gh_assignees returns a tibble describing all the assignees of issues", {
   assignees <- gh_assignees("ChadGoymer/githapi")
   expect_is(assignees, "tbl")
-  expect_identical(names(assignees), c("login", "type", "site_admin"))
+
+  expect_identical(
+    sapply(assignees, function(field) class(field)[[1]]),
+    c(login      = "character",
+      type       = "character",
+      site_admin = "logical"))
+
   expect_true("ChadGoymer" %in% assignees$login)
 })
 
@@ -47,16 +77,30 @@ test_that("gh_assignees returns a tibble describing all the assignees of issues"
 test_that("gh_issue_comments returns a tibble of comments", {
   issue_1_comments <- gh_issue_comments(1, "ChadGoymer/githapi")
   expect_is(issue_1_comments, "tbl")
+
   expect_identical(
-    names(issue_1_comments),
-    c("id", "body", "user_login", "created_at", "updated_at", "html_url"))
+    sapply(issue_1_comments, function(field) class(field)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user_login = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
   expect_true("This is the first comment" %in% issue_1_comments$body)
 
   all_issue_comments <- gh_issue_comments(repo = "ChadGoymer/githapi")
   expect_is(all_issue_comments, "tbl")
+
   expect_identical(
-    names(all_issue_comments),
-    c("id", "body", "user_login", "created_at", "updated_at", "html_url"))
+    sapply(all_issue_comments, function(field) class(field)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user_login = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
   expect_true("This is the first comment" %in% all_issue_comments$body)
 })
 
@@ -75,7 +119,7 @@ test_that("gh_issue_comment returns a list describing the comment", {
 test_that("gh_label returns a list describing the label", {
   label <- gh_label("bug", "ChadGoymer/githapi")
   expect_is(label, "list")
-  expect_identical(names(label), c("id", "url", "name", "color", "default"))
+  expect_named(label, c("id", "node_id", "url", "name", "color", "default"))
   expect_identical(label$name, "bug")
   expect_identical(label$color, "b60205")
 })
@@ -84,19 +128,43 @@ test_that("gh_label returns a list describing the label", {
 test_that("gh_labels returns a tibble of information about the labels", {
   labels <- gh_labels("ChadGoymer/githapi")
   expect_is(labels, "tbl")
-  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+
+  expect_identical(
+    sapply(labels, function(field) class(field)[[1]]),
+    c(id      = "integer",
+      name    = "character",
+      color   = "character",
+      default = "logical",
+      url     = "character"))
+
   expect_true("bug" %in% labels$name)
   expect_true("b60205" %in% labels$color)
 
   issue_labels <- gh_labels("ChadGoymer/githapi", issue = 1)
   expect_is(labels, "tbl")
-  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+
+  expect_identical(
+    sapply(issue_labels, function(field) class(field)[[1]]),
+    c(id      = "integer",
+      name    = "character",
+      color   = "character",
+      default = "logical",
+      url     = "character"))
+
   expect_true("test" %in% labels$name)
   expect_true("fbca04" %in% labels$color)
 
   milestone_labels <- gh_labels("ChadGoymer/githapi", milestone = 1)
   expect_is(labels, "tbl")
-  expect_identical(names(labels), c("id", "name", "color", "default", "url"))
+
+  expect_identical(
+    sapply(milestone_labels, function(field) class(field)[[1]]),
+    c(id      = "integer",
+      name    = "character",
+      color   = "character",
+      default = "logical",
+      url     = "character"))
+
   expect_true("enhancement" %in% labels$name)
   expect_true("1d76db" %in% labels$color)
 })
@@ -105,9 +173,9 @@ test_that("gh_labels returns a tibble of information about the labels", {
 test_that("gh_milestone returns a list describing a milestone", {
   milestone <- gh_milestone(1, "ChadGoymer/githapi")
   expect_is(milestone, "list")
-  expect_identical(
-    names(milestone),
-    c("url", "html_url", "labels_url", "id", "number", "title", "description", "creator",
+  expect_named(
+    milestone,
+    c("url", "html_url", "labels_url", "id", "node_id", "number", "title", "description", "creator",
       "open_issues", "closed_issues", "state", "created_at", "updated_at", "due_on", "closed_at"))
   expect_identical(milestone$number, 1L)
   expect_identical(milestone$title, "v0.2.0")
@@ -117,10 +185,21 @@ test_that("gh_milestone returns a list describing a milestone", {
 test_that("gh_milestones returns a tibble describing the milestones", {
   milestones <- gh_milestones("ChadGoymer/githapi", state = "all")
   expect_is(milestones, "tbl")
+
   expect_identical(
-    names(milestones),
-    c("id", "number", "title", "description", "creator_login", "open_issues",
-      "closed_issues", "state", "created_at", "updated_at", "url"))
+    sapply(milestones, function(field) class(field)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      title         = "character",
+      description   = "character",
+      creator_login = "character",
+      open_issues   = "integer",
+      closed_issues = "integer",
+      state         = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      url           = "character"))
+
   expect_true(1L %in% milestones$number)
   expect_true("v0.2.0" %in% milestones$title)
 })
@@ -129,9 +208,9 @@ test_that("gh_milestones returns a tibble describing the milestones", {
 test_that("gh_event returns a list describing the event", {
   event <- gh_event(1227046339, "ChadGoymer/githapi")
   expect_is(event, "list")
-  expect_identical(
-    names(event),
-    c("id", "url", "actor", "event", "commit_id", "commit_url", "created_at", "issue"))
+  expect_named(
+    event,
+    c("id", "node_id", "url", "actor", "event", "commit_id", "commit_url", "created_at", "issue"))
   expect_identical(event$issue$number, 29L)
 })
 
@@ -139,8 +218,15 @@ test_that("gh_event returns a list describing the event", {
 test_that("gh_events returns a tibble describing the issue events", {
   events <- gh_events("ChadGoymer/githapi", n_max = 10)
   expect_is(events, "tbl")
+
   expect_identical(
-    names(events),
-    c("id", "event", "issue_number", "issue_title", "created_at",
-      "actor_login", "commit_id", "url"))
+    sapply(events, function(field) class(field)[[1]]),
+    c(id           = "integer",
+      event        = "character",
+      issue_number = "integer",
+      issue_title  = "character",
+      created_at   = "POSIXct",
+      actor_login  = "character",
+      commit_id    = "character",
+      url          = "character"))
 })

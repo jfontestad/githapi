@@ -1,4 +1,5 @@
 #  FUNCTION: gh_issue -------------------------------------------------------------------------
+#
 #' Get a single issue
 #'
 #' \url{https://developer.github.com/v3/issues/#get-a-single-issue}
@@ -10,8 +11,11 @@
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the issue (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_issue <- function(
   issue,
   repo,
@@ -19,16 +23,16 @@ gh_issue <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(issue))
-  assert_that(is.string(repo))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(issue))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "issues", issue, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("repos", repo, "issues", issue, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_issues ------------------------------------------------------------------------
+#
 #' List issues for a repository
 #'
 #' \url{https://developer.github.com/v3/issues/#list-issues-for-a-repository}
@@ -55,9 +59,12 @@ gh_issue <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the issues a repository has (see GitHub's API documentation for
 #'   more detail)
+#'
 #' @export
+#'
 gh_issues <- function(
   repo,
   milestone = NULL,
@@ -74,19 +81,19 @@ gh_issues <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo))
-  assert_that(is.null(milestone) || is.string(milestone))
-  assert_that(is.null(state) || is.string(state))
-  assert_that(is.null(assignee) || is.string(assignee))
-  assert_that(is.null(creator) || is.string(creator))
-  assert_that(is.null(mentioned) || is.string(mentioned))
-  assert_that(is.null(labels) || is.string(labels))
-  assert_that(is.null(sort) || is.string(sort))
-  assert_that(is.null(direction) || is.string(direction))
-  assert_that(is.null(since) || is.string(since))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is.null(milestone) || is_string(milestone))
+  stopifnot(is.null(state) || is_string(state))
+  stopifnot(is.null(assignee) || is_string(assignee))
+  stopifnot(is.null(creator) || is_string(creator))
+  stopifnot(is.null(mentioned) || is_string(mentioned))
+  stopifnot(is.null(labels) || is_string(labels))
+  stopifnot(is.null(sort) || is_string(sort))
+  stopifnot(is.null(direction) || is_string(direction))
+  stopifnot(is.null(since) || is_string(since))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   issues <- gh_url(
     "repos", repo, "issues", api = api,
@@ -99,20 +106,28 @@ gh_issues <- function(
     sort      = sort,
     direction = direction,
     since     = since) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
+    gh_page(n_max = n_max, token = token, ...)
+
+  bind_fields(issues, list(
+    number           = c("number",              as = "integer"),
+    title            = c("title",               as = "character"),
+    body             = c("body",                as = "character"),
+    state            = c("state",               as = "character"),
+    user_login       = c("user", "login",       as = "character"),
+    labels           = "",
+    assignees        = "",
+    milestone_number = c("milestone", "number", as = "integer"),
+    milestone_title  = c("milestone", "title",  as = "character"),
+    created_at       = c("created_at",          as = "datetime"),
+    updated_at       = c("updated_at",          as = "datetime"),
+    closed_at        = c("closed_at",           as = "datetime"))) %>%
     mutate(
-      labels     = collapse_list(labels, "name"),
-      assignees  = collapse_list(assignees, "login")) %>%
-    select_safe(
-      number, title, body, state, user_login, labels, assignees,
-      milestone_number, milestone_title, created_at, updated_at, closed_at) %>%
-    mutate(
-      created_at = parse_datetime(created_at),
-      updated_at = parse_datetime(updated_at),
-      closed_at  = parse_datetime(closed_at))
+      labels    = lapply(issues, function(i) sapply(i[["labels"]], getElement, "name")),
+      assignees = lapply(issues, function(i) sapply(i[["assignees"]], getElement, "login")))
 }
 
 #  FUNCTION: gh_user_issues -------------------------------------------------------------------
+#
 #' List issues assigned to the authenticated user
 #'
 #' \url{https://developer.github.com/v3/issues/#list-issues}
@@ -141,9 +156,12 @@ gh_issues <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the issues a user has assigned to them (see GitHub's API
 #'   documentation for more detail)
+#'
 #' @export
+#'
 gh_user_issues <- function(
   org,
   filter    = NULL,
@@ -157,20 +175,20 @@ gh_user_issues <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.null(filter) || is.string(filter))
-  assert_that(is.null(state) || is.string(state))
-  assert_that(is.null(labels) || is.string(labels))
-  assert_that(is.null(sort) || is.string(sort))
-  assert_that(is.null(direction) || is.string(direction))
-  assert_that(is.null(since) || is.string(since))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is.null(filter) || is_string(filter))
+  stopifnot(is.null(state) || is_string(state))
+  stopifnot(is.null(labels) || is_string(labels))
+  stopifnot(is.null(sort) || is_string(sort))
+  stopifnot(is.null(direction) || is_string(direction))
+  stopifnot(is.null(since) || is_string(since))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (missing(org)) {
     path <- "issues"
   } else {
-    assert_that(is.string(org))
+    stopifnot(is_string(org))
     path <- file.path("orgs", org, "issues")
   }
 
@@ -182,15 +200,26 @@ gh_user_issues <- function(
     sort      = sort,
     direction = direction,
     since     = since) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(labels = collapse_list(labels, "name")) %>%
-    select_safe(
-      number, title, body, state, user_login, labels, assignee_login,
-      milestone_number, milestone_title, created_at, updated_at, repository_name) %>%
-    mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
+    gh_page(n_max = n_max, token = token, ...)
+
+  bind_fields(issues, list(
+    number           = c("number",              as = "integer"),
+    title            = c("title",               as = "character"),
+    body             = c("body",                as = "character"),
+    state            = c("state",               as = "character"),
+    repository_name  = c("repository", "name",  as = "character"),
+    labels           = "",
+    user_login       = c("user", "login",       as = "character"),
+    assignee_login   = c("assignee", "login",   as = "character"),
+    milestone_number = c("milestone", "number", as = "integer"),
+    milestone_title  = c("milestone", "title",  as = "character"),
+    created_at       = c("created_at",          as = "datetime"),
+    updated_at       = c("updated_at",          as = "datetime"))) %>%
+    mutate(labels = lapply(issues, function(i) sapply(i[["labels"]], getElement, "name")))
 }
 
 #  FUNCTION: gh_assignees ---------------------------------------------------------------------
+#
 #' List assignees for issues in a repository
 #'
 #' \url{https://developer.github.com/v3/issues/assignees/#list-assignees}
@@ -202,9 +231,12 @@ gh_user_issues <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing all the assignees (see GitHub's API documentation for
 #'   more detail)
+#'
 #' @export
+#'
 gh_assignees <- function(
   repo,
   n_max = 1000L,
@@ -212,17 +244,23 @@ gh_assignees <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "assignees", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(login, type, site_admin)
+  assignees <- gh_page(
+    gh_url("repos", repo, "assignees", api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(assignees, list(
+    login      = c("login",      as = "character"),
+    type       = c("type",       as = "character"),
+    site_admin = c("site_admin", as = "logical")))
 }
 
 #  FUNCTION: gh_issue_comments ----------------------------------------------------------------
+#
 #' List comments on an issue
 #'
 #' \url{https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue}
@@ -237,8 +275,11 @@ gh_assignees <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the issue comments (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_issue_comments <- function(
   issue,
   repo,
@@ -248,36 +289,34 @@ gh_issue_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo))
-  assert_that(is.null(since) || is.string(since))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is.null(since) || is_string(since))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (missing(issue)) {
-    comments <- gh_url("repos", repo, "issues/comments", since = since, api = api) %>%
-      gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+    comments <- gh_page(
+      gh_url("repos", repo, "issues/comments", since = since, api = api),
+      n_max = n_max, token = token, ...)
   } else {
-    assert_that(is.count(issue))
-    comments <- gh_url("repos", repo, "issues", issue, "comments", since = since, api = api) %>%
-      gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+    stopifnot(is_count(issue))
+    comments <- gh_page(
+      gh_url("repos", repo, "issues", issue, "comments", since = since, api = api),
+      n_max = n_max, token = token, ...)
   }
 
-  if (identical(nrow(comments), 0L)) {
-    tibble(
-      body       = character(),
-      user_login = character(),
-      created_at = parse_datetime(character()),
-      updated_at = parse_datetime(character()),
-      html_url   = character())
-  } else {
-    comments %>%
-      select_safe(id, body, user_login, created_at, updated_at, html_url) %>%
-      mutate(created_at = parse_datetime(created_at), updated_at = parse_datetime(updated_at))
-  }
+  bind_fields(comments, list(
+    id         = c("id",            as = "integer"),
+    body       = c("body",          as = "character"),
+    user_login = c("user", "login", as = "character"),
+    created_at = c("created_at",    as = "datetime"),
+    updated_at = c("updated_at",    as = "datetime"),
+    html_url   = c("html_url",      as = "character")))
 }
 
 #  FUNCTION: gh_issue_comment -----------------------------------------------------------------
+#
 #' Get a single issue comment
 #'
 #' \url{https://developer.github.com/v3/issues/comments/#get-a-single-comment}
@@ -289,8 +328,11 @@ gh_issue_comments <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the issue comment (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_issue_comment <- function(
   comment,
   repo,
@@ -298,16 +340,16 @@ gh_issue_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(comment))
-  assert_that(is.string(repo))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(comment))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "issues/comments", comment, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("repos", repo, "issues/comments", comment, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_label -------------------------------------------------------------------------
+#
 #' Get a single label
 #'
 #' url{https://developer.github.com/v3/issues/labels/#get-a-single-label}
@@ -319,8 +361,11 @@ gh_issue_comment <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the label (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_label <- function(
   name,
   repo,
@@ -328,16 +373,16 @@ gh_label <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(name))
-  assert_that(is.string(repo))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(name))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "labels", name, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("repos", repo, "labels", name, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_labels ------------------------------------------------------------------------
+#
 #' List all labels for an issue, milestone or repository
 #'
 #' url{https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue}
@@ -355,8 +400,11 @@ gh_label <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the labels (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_labels <- function(
   repo,
   issue,
@@ -366,30 +414,36 @@ gh_labels <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (!missing(issue) && !missing(milestone))
     stop("Must specify either issue or milestone, not both!")
 
   if (!missing(issue)) {
-    assert_that(is.count(issue))
+    stopifnot(is_count(issue))
     url <- gh_url("repos", repo, "issues", issue, "labels", api = api)
   } else if (!missing(milestone)) {
-    assert_that(is.count(milestone))
+    stopifnot(is_count(milestone))
     url <- gh_url("repos", repo, "milestones", milestone, "labels", api = api)
   } else {
     url <- gh_url("repos", repo, "labels", api = api)
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(id, name, color, default, url)
+  labels <- gh_page(url, n_max = n_max, token = token, ...)
+
+  bind_fields(labels, list(
+    id      = c("id",      as = "integer"),
+    name    = c("name",    as = "character"),
+    color   = c("color",   as = "character"),
+    default = c("default", as = "logical"),
+    url     = c("url",     as = "character")))
 }
 
 #  FUNCTION: gh_milestone ---------------------------------------------------------------------
+#
 #' Get a single milestone
 #'
 #' url{https://developer.github.com/v3/issues/milestones/#get-a-single-milestone}
@@ -401,8 +455,11 @@ gh_labels <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the milestone (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_milestone <- function(
   milestone,
   repo,
@@ -410,16 +467,16 @@ gh_milestone <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(milestone))
-  assert_that(is.string(repo))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(milestone))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "milestones", milestone, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("repos", repo, "milestones", milestone, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_milestones --------------------------------------------------------------------
+#
 #' List milestones for a repository
 #'
 #' url{https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository}
@@ -434,8 +491,11 @@ gh_milestone <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the milestones (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_milestones <- function(
   repo,
   state     = NULL,
@@ -446,28 +506,35 @@ gh_milestones <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo))
-  assert_that(is.null(state) || is.string(state))
-  assert_that(is.null(sort) || is.string(sort))
-  assert_that(is.null(direction) || is.string(direction))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is.null(state) || is_string(state))
+  stopifnot(is.null(sort) || is_string(sort))
+  stopifnot(is.null(direction) || is_string(direction))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url(
+  milestones <- gh_url(
     "repos", repo, "milestones", api = api,
     state = state, sort = sort, direction = direction) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(
-      id, number, title, description, creator_login, open_issues,
-      closed_issues, state, created_at, updated_at, url) %>%
-    mutate(
-      number     = as.integer(number),
-      created_at = parse_datetime(created_at),
-      updated_at = parse_datetime(updated_at))
+    gh_page(n_max = n_max, token = token, ...)
+
+  bind_fields(milestones, list(
+    id            = c("id",               as = "integer"),
+    number        = c("number",           as = "integer"),
+    title         = c("title",            as = "character"),
+    description   = c("description",      as = "character"),
+    creator_login = c("creator", "login", as = "character"),
+    open_issues   = c("open_issues",      as = "integer"),
+    closed_issues = c("closed_issues",    as = "integer"),
+    state         = c("state",            as = "character"),
+    created_at    = c("created_at",       as = "datetime"),
+    updated_at    = c("updated_at",       as = "datetime"),
+    url           = c("url",              as = "character")))
 }
 
 #  FUNCTION: gh_event -------------------------------------------------------------------------
+#
 #' Get a single event
 #'
 #' url{https://developer.github.com/v3/issues/events/#get-a-single-event}
@@ -479,8 +546,11 @@ gh_milestones <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the event (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_event <- function(
   event,
   repo,
@@ -488,17 +558,16 @@ gh_event <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(event))
-  assert_that(is.string(repo))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(event))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  # GET /repos/:owner/:repo/issues/events/:id
-  gh_url("repos", repo, "issues/events", event, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("repos", repo, "issues/events", event, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_events ------------------------------------------------------------------------
+#
 #' List events for an issue or all issues in a repository
 #'
 #' url{https://developer.github.com/v3/issues/events/#list-events-for-a-repository}
@@ -512,8 +581,11 @@ gh_event <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A tibble describing the issue events (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_events <- function(
   repo,
   issue,
@@ -522,20 +594,27 @@ gh_events <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (missing(issue)) {
     url <- gh_url("repos", repo, "issues/events", api = api)
   } else {
-    assert_that(is.count(issue))
+    stopifnot(is_count(issue))
     url <- gh_url("repos", repo, "issues", issue, "events", api = api)
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(id, event, issue_number, issue_title, created_at, actor_login, commit_id, url) %>%
-    mutate(created_at = parse_datetime(created_at))
+  events <- gh_page(url, n_max = n_max, token = token, ...)
+
+  bind_fields(events, list(
+    id           = c("id",              as = "integer"),
+    event        = c("event",           as = "character"),
+    issue_number = c("issue", "number", as = "integer"),
+    issue_title  = c("issue", "title",  as = "character"),
+    created_at   = c("created_at",      as = "datetime"),
+    actor_login  = c("actor", "login",  as = "character"),
+    commit_id    = c("commit", "id",    as = "character"),
+    url          = c("url",             as = "character")))
 }

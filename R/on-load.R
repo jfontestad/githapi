@@ -15,4 +15,8 @@
   github_options <- as.list(Sys.getenv(names(github_env)))
   names(github_options) <- tolower(sub("_", "\\.", names(github_env)))
   do.call(options, github_options)
+
+  options(
+    githapi.debug_messages = TRUE,  # Whether to output debug messages
+    githapi.log_path = "~")
 }

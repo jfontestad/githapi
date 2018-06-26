@@ -1,4 +1,4 @@
-context("repositories api")
+context("repositories")
 
 #  FUNCTION: gh_repository --------------------------------------------------------------------
 test_that("gh_repository returns a list describing the repository", {
@@ -15,16 +15,8 @@ test_that("gh_repository returns an error is the specified repo does not exist",
 #  FUNCTION: is_repository --------------------------------------------------------------------
 test_that("is_repository returns a boolean, with attributes describing the errors, if there are any", {
   expect_true(is_repository("ChadGoymer/githapi"))
-
   expect_false(is_repository("githapi"))
-  expect_identical(
-    attr(is_repository("githapi"), "error"),
-    "Specified 'repo', 'githapi', is not a string in the format 'owner/repo'")
-
   expect_false(is_repository("DoesNotExist/githapi"))
-  expect_identical(
-    attr(is_repository("DoesNotExist/githapi"), "error"),
-    "Specified 'repo', 'DoesNotExist/githapi', does not exist in GitHub")
 })
 
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
@@ -33,6 +25,20 @@ test_that("gh_repositories returns a tibble describing all the repositories a us
   expect_is(repos, "tbl")
   expect_true("githapi" %in% repos$name)
   expect_identical(repos$name, sort(repos$name))
+
+  expect_identical(
+    sapply(repos, function(field) class(field)[[1]]),
+    c(name           = "character",
+      description    = "character",
+      owner_login    = "character",
+      owner_type     = "character",
+      default_branch = "character",
+      open_issues    = "integer",
+      size           = "integer",
+      url            = "character",
+      html_url       = "character",
+      created_at     = "POSIXct",
+      updated_at     = "POSIXct"))
 
   repos <- gh_repositories("ChadGoymer", sort = "updated")
   expect_identical(repos$updated_at, sort(repos$updated_at, decreasing = TRUE))
@@ -53,7 +59,13 @@ test_that("gh_tags returns a tibble describing all the tags", {
   tags <- gh_tags("ChadGoymer/githapi")
   expect_is(tags, "tbl")
   expect_true("v0.0.0" %in% tags$name)
-  expect_identical(names(tags), c("name", "commit_sha", "commit_url", "zipball_url", "tarball_url"))
+  expect_identical(
+    sapply(tags, function(field) class(field)[[1]]),
+    c(name        = "character",
+      commit_sha  = "character",
+      commit_url  = "character",
+      zipball_url = "character",
+      tarball_url = "character"))
 })
 
 test_that("gh_tags returns an error is the specified repo does not exist", {
@@ -75,16 +87,8 @@ test_that("gh_branch returns an error is the specified branch or repo does not e
 #  FUNCTION: is_branch ------------------------------------------------------------------------
 test_that("is_branch returns a boolean, with attributes describing the errors, if there are any", {
   expect_true(is_branch("master", "ChadGoymer/githapi"))
-
   expect_false(is_branch(list(x = "alist"), "ChadGoymer/githapi"))
-  expect_identical(
-    attr(is_branch(list(x = "alist"), "ChadGoymer/githapi"), "error"),
-    "Specified 'branch', 'alist', is not a string")
-
   expect_false(is_branch("no_branch", "ChadGoymer/githapi"))
-  expect_identical(
-    attr(is_branch("no_branch", "ChadGoymer/githapi"), "error"),
-    "Specified 'branch', 'no_branch', does not exist in the 'repo' 'ChadGoymer/githapi'")
 })
 
 #  FUNCTION: gh_branches ------------------------------------------------------------------
@@ -92,7 +96,11 @@ test_that("gh_branches returns a tibble describing all the branches", {
   branches <- gh_branches("ChadGoymer/githapi")
   expect_is(branches, "tbl")
   expect_true("master" %in% branches$name)
-  expect_identical(names(branches), c("name", "commit_sha", "commit_url"))
+  expect_identical(
+    sapply(branches, function(field) class(field)[[1]]),
+    c(name       = "character",
+      commit_sha = "character",
+      commit_url = "character"))
 })
 
 test_that("gh_branches returns an error is the specified repo does not exist", {
@@ -118,25 +126,17 @@ test_that("gh_commit returns an error is the specified commit or repo does not e
   expect_error(gh_commit("master", "SomeNameThatDoesNotExist/repo"))
 })
 
-#  FUNCTION: is_sha ---------------------------------------------------------------------------
-test_that("is_sha returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
-
-  expect_false(is_sha("aaaaa", "ChadGoymer/githapi"))
-  expect_identical(
-    attr(is_sha("aaaaa", "ChadGoymer/githapi"), "error"),
-    "Specified 'sha', 'aaaaa', is not a valid 40 character string")
-
-  expect_false(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"))
-  expect_identical(
-    attr(is_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"), "error"),
-    "Specified 'sha', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', does not exist in the supplied repository, 'ChadGoymer/githapi'")
+#  FUNCTION: is_valid_sha ---------------------------------------------------------------------
+test_that("is_valid_sha returns a boolean, with attributes describing the errors, if there are any", {
+  expect_true(is_valid_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+  expect_false(is_valid_sha("aaaaa", "ChadGoymer/githapi"))
+  expect_false(is_valid_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"))
 })
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 test_that("gh_commit_sha returns a string with the SHA-1", {
   commit_sha <- gh_commit_sha("v0.0.0", "ChadGoymer/githapi")
-  expect_true(is.string(commit_sha))
+  expect_true(is_string(commit_sha))
   expect_identical(commit_sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
 })
 
@@ -146,9 +146,17 @@ test_that("gh_commits returns a tibble describing all the commits on a branch", 
   expect_is(commits, "tbl")
   expect_true("d9fe50f8e31d7430df2c5b02442dffb68c854f08" %in% commits$sha)
   expect_identical(
-    names(commits),
-    c("sha", "date", "message", "url", "author_name", "author_email",
-      "committer_name", "committer_email", "tree_sha", "tree_url"))
+    sapply(commits, function(field) class(field)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      date            = "POSIXct",
+      url             = "character",
+      tree_sha        = "character",
+      tree_url        = "character"))
 })
 
 test_that("gh_commits returns an error is the specified repo does not exist", {
@@ -162,12 +170,20 @@ test_that("gh_compare_commits returns information on the differences between two
     "d8a62ccdc3df3e002dbac55390772424b136844a",
     "ChadGoymer/githapi")
 
-  expect_true(is.tibble(comparison))
+  expect_is(comparison, "tbl")
 
   expect_identical(
-    names(comparison),
-    c("sha", "date", "message", "url", "author_name", "author_email",
-      "committer_name", "committer_email"))
+    sapply(comparison, function(field) class(field)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      date            = "POSIXct",
+      url             = "character",
+      tree_sha        = "character",
+      tree_url        = "character"))
 
   expect_identical(
     comparison$sha,
@@ -184,8 +200,13 @@ test_that("gh_compare_files returns a tibble of information of file differences 
   expect_is(comparison, "tbl")
 
   expect_identical(
-    names(comparison),
-    c("filename", "status", "additions", "deletions", "changes", "contents_url"))
+    sapply(comparison, function(field) class(field)[[1]]),
+    c(filename     = "character",
+      status       = "character",
+      additions    = "integer",
+      deletions    = "integer",
+      changes      = "integer",
+      contents_url = "character"))
 
   expect_identical(
     comparison$filename,
@@ -207,7 +228,7 @@ test_that("gh_compare_files returns a tibble of information of file differences 
 #  FUNCTION: gh_readme ------------------------------------------------------------------------
 test_that("gh_readme returns the text in the README file", {
   readme_d9fe50f <- gh_readme("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
-  expect_true(is.string(readme_d9fe50f))
+  expect_true(is_string(readme_d9fe50f))
   expect_identical(
     readme_d9fe50f,
     "# githapi\nUser-friendly access to the GitHub API for R, consistent with the tidyverse.\n")
@@ -216,7 +237,7 @@ test_that("gh_readme returns the text in the README file", {
 #  FUNCTION: gh_contents ----------------------------------------------------------------------
 test_that("gh_contents returns the text in a specified file", {
   description_master <- gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi")
-  expect_true(is.string(description_master))
+  expect_true(is_string(description_master))
 
   readme_d9fe50f <- gh_contents("README.md", "d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
   expect_identical(
@@ -235,7 +256,7 @@ test_that("gh_download saves the contents of a commit to the specified location"
 })
 
 #  FUNCTION: is_collaborator ------------------------------------------------------------------
-test_that("gh_collaborator return TRUE if the user is a collaborator, FALSE otherwise", {
+test_that("is_collaborator return TRUE if the user is a collaborator, FALSE otherwise", {
   expect_true(is_collaborator("ChadGoymer", "ChadGoymer/githapi"))
   expect_false(is_collaborator("Batman", "ChadGoymer/githapi"))
 })
@@ -244,10 +265,18 @@ test_that("gh_collaborator return TRUE if the user is a collaborator, FALSE othe
 test_that("gh_collaborators returns a tibble describing the collaborators", {
   collaborators <- gh_collaborators("ChadGoymer/githapi")
   expect_is(collaborators, "tbl")
+
   expect_identical(
-    names(collaborators),
-    c("id", "login", "type", "site_admin", "permissions_admin", "permissions_push",
-      "permissions_pull", "url"))
+    sapply(collaborators, function(field) class(field)[[1]]),
+    c(id                = "integer",
+      login             = "character",
+      type              = "character",
+      site_admin        = "logical",
+      permissions_admin = "logical",
+      permissions_push  = "logical",
+      permissions_pull  = "logical",
+      url               = "character"))
+
   expect_true("ChadGoymer" %in% collaborators$login)
 })
 
@@ -255,7 +284,7 @@ test_that("gh_collaborators returns a tibble describing the collaborators", {
 test_that("gh_permissions returns a list describing the user's permissions", {
   permissions <- gh_permissions("ChadGoymer", "ChadGoymer/githapi")
   expect_is(permissions, "list")
-  expect_identical(names(permissions), c("permission", "user"))
+  expect_named(permissions, c("permission", "user"))
   expect_identical(permissions$permission, "admin")
   expect_identical(permissions$user$login, "ChadGoymer")
 })
@@ -264,10 +293,10 @@ test_that("gh_permissions returns a list describing the user's permissions", {
 test_that("gh_commit_comment returns a list describing the commit comment", {
   comment <- gh_commit_comment(24028377, "ChadGoymer/githapi")
   expect_is(comment, "list")
-  expect_identical(
-    names(comment),
-    c("url", "html_url", "id", "user", "position", "line", "path", "commit_id", "created_at",
-      "updated_at", "author_association", "body"))
+  expect_named(
+    comment,
+    c("url", "html_url", "id", "node_id", "user", "position", "line", "path", "commit_id",
+      "created_at", "updated_at", "author_association", "body"))
   expect_identical(comment$body, "Wow, This is a cool commit!")
 })
 
@@ -276,15 +305,23 @@ test_that("gh_commit_comments returns a tibble describing all the commit comment
   repo_comments <- gh_commit_comments("ChadGoymer/githapi")
   expect_is(repo_comments, "tbl")
   expect_identical(
-    names(repo_comments),
-    c("id", "commit_id", "body", "user_login", "created_at",
-      "updated_at", "position", "line", "path", "url"))
+    sapply(repo_comments, function(field) class(field)[[1]]),
+    c(id         = "integer",
+      commit_id  = "character",
+      body       = "character",
+      user_login = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      position   = "character",
+      line       = "character",
+      path       = "character",
+      url        = "character"))
   expect_true("Wow, This is a cool commit!" %in% repo_comments$body)
 
   commit_comments <- gh_commit_comments("ChadGoymer/githapi", "d378328243626794ca725946c4e0662622aeb933")
   expect_is(commit_comments, "tbl")
-  expect_identical(
-    names(commit_comments),
+  expect_named(
+    commit_comments,
     c("id", "commit_id", "body", "user_login", "created_at",
       "updated_at", "position", "line", "path", "url"))
   expect_true("Wow, This is a cool commit!" %in% commit_comments$body)
@@ -295,8 +332,13 @@ test_that("gh_contributers returns a tibble describing the contributers", {
   contributers <- gh_contributers("ChadGoymer/githapi")
   expect_is(contributers, "tbl")
   expect_identical(
-    names(contributers),
-    c("id", "login", "contributions", "type", "site_admin", "url"))
+    sapply(contributers, function(field) class(field)[[1]]),
+    c(id            = "integer",
+      login         = "character",
+      contributions = "integer",
+      type          = "character",
+      site_admin    = "logical",
+      url           = "character"))
   expect_true("ChadGoymer" %in% contributers$login)
 })
 
@@ -304,7 +346,7 @@ test_that("gh_contributers returns a tibble describing the contributers", {
 test_that("gh_languages returns a tibble describing the languages", {
   languages <- gh_languages("ChadGoymer/githapi")
   expect_is(languages, "list")
-  expect_identical(names(languages), "R")
+  expect_named(languages, "R")
 })
 
 #  FUNCTION: gh_releases ----------------------------------------------------------------------
@@ -312,9 +354,20 @@ test_that("gh_releases returns a tibble describing the releases", {
   releases <- gh_releases("ChadGoymer/githapi")
   expect_is(releases, "tbl")
   expect_identical(
-    names(releases),
-    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease",
-      "target_commitish", "created_at", "published_at", "assets", "zipball_url", "url"))
+    sapply(releases, function(field) class(field)[[1]]),
+    c(id               = "integer",
+      tag_name         = "character",
+      name             = "character",
+      body             = "character",
+      author_login     = "character",
+      draft            = "logical",
+      prerelease       = "logical",
+      target_commitish = "character",
+      created_at       = "POSIXct",
+      published_at     = "POSIXct",
+      assets           = "list",
+      zipball_url      = "character",
+      url              = "character"))
   expect_true("v0.1.0" %in% releases$tag_name)
 })
 
@@ -322,11 +375,11 @@ test_that("gh_releases returns a tibble describing the releases", {
 test_that("gh_release returns a list describing the release", {
   release_0.1.0 <- gh_release("v0.1.0", "ChadGoymer/githapi")
   expect_is(release_0.1.0, "list")
-  expect_identical(
-    names(release_0.1.0),
-    c("url", "assets_url", "upload_url", "html_url", "id", "tag_name", "target_commitish",
-      "name", "draft", "author", "prerelease", "created_at", "published_at", "assets",
-      "tarball_url", "zipball_url", "body"))
+  expect_named(
+    release_0.1.0,
+    c("url", "assets_url", "upload_url", "html_url", "id", "node_id", "tag_name",
+      "target_commitish", "name", "draft", "author", "prerelease", "created_at", "published_at",
+      "assets", "tarball_url", "zipball_url", "body"))
   expect_identical(release_0.1.0$tag_name, "v0.1.0")
 
   release_by_id <- gh_release(7210389, "ChadGoymer/githapi")
@@ -334,16 +387,16 @@ test_that("gh_release returns a list describing the release", {
 
   release_latest <- gh_release(repo = "ChadGoymer/githapi")
   expect_is(release_latest, "list")
-  expect_true(parse_datetime(release_0.1.0$created_at) < parse_datetime(release_latest$created_at))
+  expect_true(as.POSIXct(release_0.1.0$created_at) < as.POSIXct(release_latest$created_at))
 })
 
 #  FUNCTION: gh_asset -------------------------------------------------------------------------
 test_that("gh_asset returns a list describing the release asset", {
   asset <- gh_asset(4759932, "ChadGoymer/githapi")
   expect_is(asset, "list")
-  expect_identical(
-    names(asset),
-    c("url", "id", "name", "label", "uploader", "content_type", "state", "size",
+  expect_named(
+    asset,
+    c("url", "id", "node_id", "name", "label", "uploader", "content_type", "state", "size",
       "download_count", "created_at", "updated_at", "browser_download_url"))
   expect_identical(asset$name, "githapi-v0.3.0.zip")
 })
@@ -353,8 +406,17 @@ test_that("gh_assets returns a tibble describing the assets for a release", {
     assets <- gh_assets(7657161, "ChadGoymer/githapi")
     expect_is(assets, "tbl")
     expect_identical(
-      names(assets),
-      c("id", "name", "label", "content_type", "state", "size", "download_count",
-        "created_at", "updated_at", "uploader_login", "url"))
+      sapply(assets, function(field) class(field)[[1]]),
+      c(id             = "integer",
+        name           = "character",
+        label          = "character",
+        content_type   = "character",
+        state          = "character",
+        size           = "integer",
+        download_count = "integer",
+        created_at     = "POSIXct",
+        updated_at     = "POSIXct",
+        uploader_login = "character",
+        url            = "character"))
     expect_true("githapi-v0.3.0.zip" %in% assets$name)
 })
