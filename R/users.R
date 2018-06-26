@@ -1,4 +1,5 @@
 #  FUNCTION: gh_user --------------------------------------------------------------------------
+#
 #' Get a single user
 #'
 #' \url{https://developer.github.com/v3/users/#get-a-single-user}
@@ -9,21 +10,23 @@
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the user (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_user <- function(
   user,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(user))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(user))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
-    gh_url("users", user, api = api) %>%
-      gh_get(token = token, ...)
+    gh_get(gh_url("users", user, api = api), token = token, ...)
   }))
 
   if (is(response, "try-error") || response == "") {
@@ -34,6 +37,7 @@ gh_user <- function(
 }
 
 #  FUNCTION: gh_users -------------------------------------------------------------------------
+#
 #' Get all users
 #'
 #' \url{https://developer.github.com/v3/users/#get-all-users}
@@ -44,24 +48,32 @@ gh_user <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the users (see GitHub's API documentation for more detail).
+#'
 #' @export
+#'
 gh_users <- function(
   n_max = 1000L,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("users", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(login, type, html_url, url)
+  users <- gh_page(gh_url("users", api = api), n_max = n_max, token = token, ...)
+
+  bind_fields(users, list(
+    login    = c("login",    as = "character"),
+    type     = c("type",     as = "character"),
+    html_url = c("html_url", as = "character"),
+    url      = c("url",      as = "character")))
 }
 
 #  FUNCTION: gh_user_email --------------------------------------------------------------------
+#
 #' List email addresses for the authenticated user
 #'
 #' url{https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user}
@@ -72,17 +84,25 @@ gh_users <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A tibble describing the user's email addresses (see GitHub's API documentation for
 #'   more detail).
+#'
 #' @export
+#'
 gh_user_email <- function(
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("user/emails", api = api) %>%
-    gh_get(simplify = TRUE, token = token, ...)
+  emails <- gh_get(gh_url("user/emails", api = api), token = token, ...)
+
+  bind_fields(emails, list(
+    email      = c("email",      as = "character"),
+    primary    = c("primary",    as = "logical"),
+    verified   = c("verified",   as = "logical"),
+    visibility = c("visibility", as = "character")))
 }
