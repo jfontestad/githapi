@@ -1,4 +1,5 @@
 #  FUNCTION: gh_organization ------------------------------------------------------------------
+#
 #' Get an organization
 #'
 #' url{https://developer.github.com/v3/orgs/#get-an-organization}
@@ -9,23 +10,26 @@
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the organization (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_organization <- function(
   org,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(org))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(org))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("orgs", org, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("orgs", org, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_organizations -----------------------------------------------------------------
+#
 #' List organizations
 #'
 #' url{https://developer.github.com/v3/orgs/#list-all-organizations}
@@ -39,8 +43,11 @@ gh_organization <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the organizations (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_organizations <- function(
   user,
   n_max = 1000L,
@@ -48,23 +55,28 @@ gh_organizations <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (!missing(user)) {
-    assert_that(is.string(user))
+    stopifnot(is_string(user))
     url <- gh_url("users", user, "orgs", api = api)
   } else {
     url <- gh_url("organizations", api = api)
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(id, name = login, description, url)
+  organizations <- gh_page(url, n_max = n_max, token = token, ...)
+
+  bind_fields(organizations, list(
+    id          = c("id",          as = "integer"),
+    name        = c("login",       as = "character"),
+    description = c("description", as = "character"),
+    url         = c("url",         as = "character")))
 }
 
 #  FUNCTION: is_member ------------------------------------------------------------------------
+#
 #' Check membership
 #'
 #' url{https://developer.github.com/v3/orgs/members/#check-membership}
@@ -76,9 +88,12 @@ gh_organizations <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return TRUE if the user is a member, FALSE otherwise (see GitHub's API documentation for
 #'   details).
+#'
 #' @export
+#'
 is_member <- function(
   user,
   org,
@@ -86,16 +101,18 @@ is_member <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(user))
-  assert_that(is.string(org))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(user))
+  stopifnot(is_string(org))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
-    gh_url("orgs", org, "members", user, api = api) %>%
-      gh_get(accept = "raw", token = token, ...)
+    gh_get(
+      gh_url("orgs", org, "members", user, api = api),
+      accept = "raw", token = token, ...)
   }))
 
+  attributes(response) <- NULL
   if (identical(response, "")) {
     TRUE
   } else {
@@ -104,6 +121,7 @@ is_member <- function(
 }
 
 #  FUNCTION: gh_members -----------------------------------------------------------------------
+#
 #' Get Organization or team members list
 #'
 #' url{https://developer.github.com/v3/orgs/members/#members-list}
@@ -133,8 +151,11 @@ is_member <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the members (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_members <- function(
   org,
   team,
@@ -145,31 +166,37 @@ gh_members <- function(
   api    = getOption("github.api"),
   ...)
 {
-  assert_that(is.null(filter) | is.string(filter))
-  assert_that(is.null(role) | is.string(role))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is.null(filter) | is_string(filter))
+  stopifnot(is.null(role) | is_string(role))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (!missing(org) && !missing(team))
     stop("Must specify either org or team, not both!")
 
   if (!missing(org)) {
-    assert_that(is.string(org))
+    stopifnot(is_string(org))
     url <- gh_url("orgs", org, "members", filter = filter, role = role, api = api)
   } else if (!missing(team)) {
-    assert_that(is.count(team))
+    stopifnot(is_count(team))
     url <- gh_url("teams", team, "members", org, role = role, api = api)
   } else {
     stop("Must specify either org or team!")
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(id, login, type, site_admin, url)
+  members <- gh_page(url, n_max = n_max, token = token, ...)
+
+  bind_fields(members, list(
+    id         = c("id",         as = "integer"),
+    login      = c("login",      as = "character"),
+    type       = c("type",       as = "character"),
+    site_admin = c("site_admin", as = "logical"),
+    url        = c("url",        as = "character")))
 }
 
 #  FUNCTION: gh_membership --------------------------------------------------------------------
+#
 #' Get organization and team membership
 #'
 #' url{https://developer.github.com/v3/orgs/members/#get-organization-membership}
@@ -185,8 +212,11 @@ gh_members <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the membership (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_membership <- function(
   user,
   org,
@@ -195,29 +225,29 @@ gh_membership <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(user))
-  assert_that(is.string(org))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_string(user))
+  stopifnot(is_string(org))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (!missing(org) && !missing(team))
     stop("Must specify either org or team, not both!")
 
   if (!missing(org)) {
-    assert_that(is.string(org))
+    stopifnot(is_string(org))
     url <- gh_url("orgs", org, "memberships", user, api = api)
   } else if (!missing(team)) {
-    assert_that(is.count(team))
+    stopifnot(is_count(team))
     url <- gh_url("teams", team, "memberships", user, api = api)
   } else {
     stop("Must specify either org or team!")
   }
 
-  url %>%
-    gh_get(token = token, ...)
+  gh_get(url, token = token, ...)
 }
 
 #  FUNCTION: gh_memberships -------------------------------------------------------------------
+#
 #' List your organization memberships
 #'
 #' url{https://developer.github.com/v3/orgs/members/#list-your-organization-memberships}
@@ -230,8 +260,11 @@ gh_membership <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing your memberships (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_memberships <- function(
   org,
   n_max = 1000L,
@@ -239,22 +272,22 @@ gh_memberships <- function(
   api    = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (missing(org)) {
     url <- gh_url("user/memberships/orgs", api = api)
   } else {
-    assert_that(is.string(org))
+    stopifnot(is_string(org))
     url <- gh_url("user/memberships/orgs", org, api = api)
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+  gh_page(url, n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: gh_team --------------------------------------------------------------------------
+#
 #' Get team
 #'
 #' url{https://developer.github.com/v3/orgs/teams/#get-team}
@@ -265,23 +298,26 @@ gh_memberships <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the team (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_team <- function(
   team,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(team))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(team))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("teams", team, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("teams", team, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_teams -------------------------------------------------------------------------
+#
 #' List teams
 #'
 #' url{https://developer.github.com/v3/orgs/teams/#list-teams}
@@ -296,8 +332,11 @@ gh_team <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the teams (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_teams <- function(
   org,
   repo,
@@ -306,9 +345,9 @@ gh_teams <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (!missing(org) && !missing(repo))
     stop("Must specify either org or repo, not both!")
@@ -317,19 +356,19 @@ gh_teams <- function(
     if (missing(repo)) {
       url <- gh_url("user/teams", api = api)
     } else {
-      assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
+      stopifnot(is_string(repo) && identical(str_count(repo, "/"), 1L))
       url <- gh_url("repos", repo, "teams", api = api)
     }
   } else {
-    assert_that(is.string(org))
+    stopifnot(is_string(org))
     url <- gh_url("orgs", org, "teams", api = api)
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+  gh_page(url, n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: is_manager -----------------------------------------------------------------------
+#
 #' Check if a team manages a repository
 #'
 #' url{https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository}
@@ -341,9 +380,12 @@ gh_teams <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return TRUE if the team is a manager, FALSE otherwise (see GitHub's API documentation for
 #'   details).
+#'
 #' @export
+#'
 is_manager <- function(
   team,
   repo,
@@ -351,16 +393,18 @@ is_manager <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(team))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(team))
+  stopifnot(is_string(repo) && identical(str_count(repo, "/"), 1L))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
-    gh_url("teams", team, "repos", repo, api = api) %>%
-      gh_get(accept = "raw", token = token, ...)
+    gh_get(
+      gh_url("teams", team, "repos", repo, api = api),
+      accept = "raw", token = token, ...)
   }))
 
+  attributes(response) <- NULL
   if (identical(response, "")) {
     TRUE
   } else {
