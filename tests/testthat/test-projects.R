@@ -4,9 +4,9 @@ context("projects api")
 test_that("gh_project returns a list describing the project", {
   project <- gh_project(747228)
   expect_is(project, "list")
-  expect_identical(
-    names(project),
-    c("owner_url", "url", "html_url", "columns_url", "id", "name", "body",
+  expect_named(
+    project,
+    c("owner_url", "url", "html_url", "columns_url", "id", "node_id", "name", "body",
       "number", "state", "creator", "created_at", "updated_at"))
   expect_identical(project$name, "githapi")
 })
@@ -15,9 +15,19 @@ test_that("gh_project returns a list describing the project", {
 test_that("gh_projects returns a tibble describing the projects", {
   projects <- gh_projects("ChadGoymer/githapi")
   expect_is(projects, "tbl")
+
   expect_identical(
-    names(projects),
-    c("id", "number", "name", "body", "state", "creator_login", "created_at", "updated_at", "url"))
+    sapply(projects, function(field) class(field)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      name          = "character",
+      body          = "character",
+      state         = "character",
+      creator_login = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      url           = "character"))
+
   expect_true("githapi" %in% projects$name)
 })
 
@@ -25,9 +35,9 @@ test_that("gh_projects returns a tibble describing the projects", {
 test_that("gh_column returns a list describing the column", {
   column <- gh_column(1310204)
   expect_is(column, "list")
-  expect_identical(
-    names(column),
-    c("url", "project_url", "cards_url", "id", "name", "created_at", "updated_at"))
+  expect_named(
+    column,
+    c("url", "project_url", "cards_url", "id", "node_id", "name", "created_at", "updated_at"))
   expect_identical(column$name, "To do")
 })
 
@@ -35,7 +45,15 @@ test_that("gh_column returns a list describing the column", {
 test_that("gh_columns returns a tibble describing the columns", {
   columns <- gh_columns(747228)
   expect_is(columns, "tbl")
-  expect_identical(names(columns), c("id", "name", "created_at", "updated_at", "url"))
+
+  expect_identical(
+    sapply(columns, function(field) class(field)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      url        = "character"))
+
   expect_true(all(c("To do", "In progress", "Done") %in% columns$name))
 })
 
@@ -43,9 +61,10 @@ test_that("gh_columns returns a tibble describing the columns", {
 test_that("gh_card returns a list describing the card", {
   card <- gh_card(4211067)
   expect_is(card, "list")
-  expect_identical(
-    names(card),
-    c("url", "column_url", "id", "note", "creator", "created_at", "updated_at", "content_url"))
+  expect_named(
+    card,
+    c("url", "id", "node_id", "note", "creator", "created_at",
+      "updated_at", "column_url", "content_url"))
   expect_identical(
     card$content_url,
     "https://api.github.com/repos/ChadGoymer/githapi/issues/16")
@@ -55,8 +74,15 @@ test_that("gh_card returns a list describing the card", {
 test_that("gh_cards returns a tibble describing the cards", {
   cards <- gh_cards(1310204)
   expect_is(cards, "tbl")
+
   expect_identical(
-    names(cards),
-    c("id", "creator_login", "created_at", "updated_at", "content_url", "url"))
+    sapply(cards, function(field) class(field)[[1]]),
+    c(id            = "integer",
+      creator_login = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      content_url   = "character",
+      url           = "character"))
+
   expect_true("ChadGoymer" %in% cards$creator_login)
 })
