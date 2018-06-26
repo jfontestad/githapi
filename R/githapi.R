@@ -2,8 +2,7 @@
 #'
 #' Provides a suite of functions which simplify working with GitHub's API.
 #'
-#' @import assertthat httr jsonlite stringr tibble readr purrr dplyr
-#' @importFrom rlang set_attrs
+#' @import curl jsonlite dplyr
 #' @docType package
 #' @name githapi
 NULL
