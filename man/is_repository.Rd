@@ -18,7 +18,7 @@ environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 \item{...}{Parameters passed to \code{\link{gh_get}}.}
 }
 \value{
-A boolean, with attributes describing the errors, if there are any.
+TRUE or FALSE.
 }
 \description{
 \url{https://developer.github.com/v3/repos/#get}

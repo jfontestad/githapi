@@ -4,9 +4,9 @@ context("organizations api")
 test_that("gh_organization returns a list describing the organization", {
   tidyverse <- gh_organization("tidyverse")
   expect_is(tidyverse, "list")
-  expect_identical(
-    names(tidyverse),
-    c("login", "id", "url", "repos_url", "events_url", "hooks_url", "issues_url",
+  expect_named(
+    tidyverse,
+    c("login", "id", "node_id", "url", "repos_url", "events_url", "hooks_url", "issues_url",
       "members_url", "public_members_url", "avatar_url", "description", "name", "company",
       "blog", "location", "email", "has_organization_projects", "has_repository_projects",
       "public_repos", "public_gists", "followers", "following", "html_url", "created_at",
@@ -18,7 +18,14 @@ test_that("gh_organization returns a list describing the organization", {
 test_that("gh_organizations returns a tibble describing the organizations", {
   hadley_orgs <- gh_organizations("hadley")
   expect_is(hadley_orgs, "tbl")
-  expect_identical(names(hadley_orgs), c("id", "name", "description", "url"))
+
+  expect_identical(
+    sapply(hadley_orgs, function(field) class(field)[[1]]),
+    c(id          = "integer",
+      name        = "character",
+      description = "character",
+      url         = "character"))
+
   expect_true("tidyverse" %in% hadley_orgs$name)
 })
 
@@ -32,7 +39,15 @@ test_that("gh_member returns TRUE if user is a member and FALSE otherwise", {
 test_that("gh_members returns a tibble describing the members", {
   tidy_members <- gh_members("tidyverse")
   expect_is(tidy_members, "tbl")
-  expect_identical(names(tidy_members), c("id", "login", "type", "site_admin", "url"))
+
+  expect_identical(
+    sapply(tidy_members, function(field) class(field)[[1]]),
+    c(id         = "integer",
+      login      = "character",
+      type       = "character",
+      site_admin = "logical",
+      url        = "character"))
+
   expect_true("hadley" %in% tidy_members$login)
 })
 
