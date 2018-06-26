@@ -1,4 +1,5 @@
 #  FUNCTION: gh_pull_request ------------------------------------------------------------------
+#
 #' Get a single pull request
 #'
 #' url{https://developer.github.com/v3/pulls/#get-a-single-pull-request}
@@ -10,8 +11,11 @@
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the pull request (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_pull_request <- function(
   pull_request,
   repo,
@@ -19,16 +23,16 @@ gh_pull_request <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(pull_request))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(pull_request))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "pulls", pull_request, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("repos", repo, "pulls", pull_request, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_pull_requests -----------------------------------------------------------------
+#
 #' List pull requests
 #'
 #' url{https://developer.github.com/v3/pulls/#list-pull-requests}
@@ -49,8 +53,11 @@ gh_pull_request <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the pull requests (see GitHub's API documentation for details).
+#'
 #' @export
+#'
 gh_pull_requests <- function(
   repo,
   state     = NULL,
@@ -63,31 +70,43 @@ gh_pull_requests <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.null(state) || is.string(state))
-  assert_that(is.null(head) || is.string(head))
-  assert_that(is.null(base) || is.string(base))
-  assert_that(is.null(sort) || is.string(sort))
-  assert_that(is.null(direction) || is.string(direction))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is.null(state) || is_string(state))
+  stopifnot(is.null(head) || is_string(head))
+  stopifnot(is.null(base) || is_string(base))
+  stopifnot(is.null(sort) || is_string(sort))
+  stopifnot(is.null(direction) || is_string(direction))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url(
+  pull_requests <- gh_url(
     "repos", repo, "pulls", api = api,
     state = state, head = head, base = base, sort = sort, direction = direction) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(
-      id, number, title, body, user_login, state, created_at, updated_at, closed_at, merged_at,
-      merge_commit_sha, head_ref, head_sha, head_user_login, head_repo_full_name, locked, url) %>%
-    mutate(
-      created_at = parse_datetime(created_at),
-      updated_at = parse_datetime(updated_at),
-      closed_at  = parse_datetime(closed_at),
-      merged_at  = parse_datetime(merged_at))
+    gh_page(n_max = n_max, token = token, ...)
+
+  bind_fields(pull_requests, list(
+    id                  = c("id",                        as = "integer"),
+    number              = c("number",                    as = "integer"),
+    title               = c("title",                     as = "character"),
+    body                = c("body",                      as = "character"),
+    user_login          = c("user", "login",             as = "character"),
+    state               = c("state",                     as = "character"),
+    created_at          = c("created_at",                as = "datetime"),
+    updated_at          = c("updated_at",                as = "datetime"),
+    closed_at           = c("closed_at",                 as = "datetime"),
+    merged_at           = c("merged_at",                 as = "datetime"),
+    merge_commit_sha    = c("merge_commit_sha",          as = "character"),
+    head_ref            = c("head", "ref",               as = "character"),
+    head_sha            = c("head", "sha",               as = "character"),
+    head_user_login     = c("head", "user", "login",     as = "character"),
+    head_repo_full_name = c("head", "repo", "full_name", as = "character"),
+    locked              = c("locked",                    as = "logical"),
+    url                 = c("url",                       as = "character")))
 }
 
 #  FUNCTION: gh_pull_commits ------------------------------------------------------------------
+#
 #' List commits on a pull request
 #'
 #' url{https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request}
@@ -100,9 +119,12 @@ gh_pull_requests <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the commits on a pull request (see GitHub's API documentation
 #'   for details).
+#'
 #' @export
+#'
 gh_pull_commits <- function(
   pull_request,
   repo,
@@ -111,20 +133,30 @@ gh_pull_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(pull_request))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(pull_request))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "pulls", pull_request, "commits", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    mutate(parents_sha = collapse_list(parents, "sha")) %>%
-    select_safe(sha, author_login, commit_date = commit_author_date, commit_message, url, parents_sha) %>%
-    mutate(commit_date = parse_datetime(commit_date))
+  commits <- gh_page(
+    gh_url("repos", repo, "pulls", pull_request, "commits", api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(commits, list(
+    sha            = c("sha",                      as = "character"),
+    author_login   = c("author", "login",          as = "character"),
+    commit_date    = c("commit", "author", "date", as = "datetime"),
+    commit_message = c("commit", "message",        as = "character"),
+    url            = c("url",                      as = "character"),
+    parents_sha    = "")) %>%
+    mutate(parents_sha = sapply(commits, function(commit) {
+      sapply(commit[["parents"]], getElement, "sha")
+    }))
 }
 
 #  FUNCTION: gh_pull_files --------------------------------------------------------------------
+#
 #' List pull requests files
 #'
 #' url{https://developer.github.com/v3/pulls/#list-pull-requests-files}
@@ -137,9 +169,12 @@ gh_pull_commits <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the files changed on a pull request (see GitHub's API
 #'   documentation for details).
+#'
 #' @export
+#'
 gh_pull_files <- function(
   pull_request,
   repo,
@@ -148,18 +183,30 @@ gh_pull_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(pull_request))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(pull_request))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "pulls", pull_request, "files", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...) %>%
-    select_safe(sha, filename, status, additions, deletions, changes, blob_url, contents_url, patch)
+  files <- gh_page(
+    gh_url("repos", repo, "pulls", pull_request, "files", api = api),
+    n_max = n_max, token = token, ...)
+
+  bind_fields(files, list(
+    sha          = c("sha",          as = "character"),
+    filename     = c("filename",     as = "character"),
+    status       = c("status",       as = "character"),
+    additions    = c("additions",    as = "integer"),
+    deletions    = c("deletions",    as = "integer"),
+    changes      = c("changes",      as = "integer"),
+    blob_url     = c("blob_url",     as = "character"),
+    contents_url = c("contents_url", as = "character"),
+    patch        = c("patch",        as = "character")))
 }
 
-#  FUNCTION: gh_pull_merged -------------------------------------------------------------------
+#  FUNCTION: is_pull_merged -------------------------------------------------------------------
+#
 #' Get if a pull request has been merged
 #'
 #' url{https://developer.github.com/v3/pulls/#get-if-a-pull-request-has-been-merged}
@@ -171,26 +218,31 @@ gh_pull_files <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return TRUE if the pull request has been merged, FALSE otherwise (see GitHub's API
 #'   documentation for details).
+#'
 #' @export
-gh_pull_merged <- function(
+#'
+is_pull_merged <- function(
   pull_request,
   repo,
   token = gh_token(),
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(pull_request))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(pull_request))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
-    gh_url("repos", repo, "pulls", pull_request, "merge", api = api) %>%
-      gh_get(accept = "raw", token = token, ...)
+    gh_get(
+      gh_url("repos", repo, "pulls", pull_request, "merge", api = api),
+      accept = "raw", token = token, ...)
   }))
 
+  attributes(response) <- NULL
   if (identical(response, "")) {
     TRUE
   } else {
@@ -199,6 +251,7 @@ gh_pull_merged <- function(
 }
 
 #  FUNCTION: gh_pull_review -------------------------------------------------------------------
+#
 #' Get a single review
 #'
 #' url{https://developer.github.com/v3/pulls/reviews/#get-a-single-review}
@@ -211,9 +264,12 @@ gh_pull_merged <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the pull request review (see GitHub's API documentation for
 #'   details).
+#'
 #' @export
+#'
 gh_pull_review <- function(
   review,
   pull_request,
@@ -222,17 +278,19 @@ gh_pull_review <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(review))
-  assert_that(is.count(pull_request))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(review))
+  stopifnot(is_count(pull_request))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "pulls", pull_request, "reviews", review, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(
+    gh_url("repos", repo, "pulls", pull_request, "reviews", review, api = api),
+    token = token, ...)
 }
 
 #  FUNCTION: gh_pull_reviews ------------------------------------------------------------------
+#
 #' List reviews on a pull request
 #'
 #' url{https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request}
@@ -245,9 +303,12 @@ gh_pull_review <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the pull request reviews (see GitHub's API documentation for
 #'   details).
+#'
 #' @export
+#'
 gh_pull_reviews <- function(
   pull_request,
   repo,
@@ -256,17 +317,19 @@ gh_pull_reviews <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(pull_request))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(pull_request))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "pulls", pull_request, "reviews", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+  gh_page(
+    gh_url("repos", repo, "pulls", pull_request, "reviews", api = api),
+    n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: gh_pull_comment ------------------------------------------------------------------
+#
 #' Get a single pull request review comment
 #'
 #' url{https://developer.github.com/v3/pulls/comments/#get-a-single-comment}
@@ -278,9 +341,12 @@ gh_pull_reviews <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_get}}.
+#'
 #' @return A list describing the pull request review comment (see GitHub's API documentation
 #'   for details).
+#'
 #' @export
+#'
 gh_pull_comment <- function(
   comment,
   repo,
@@ -288,16 +354,16 @@ gh_pull_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(comment))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(comment))
+  stopifnot(is_repo(repo))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "pulls/comments", comment, api = api) %>%
-    gh_get(token = token, ...)
+  gh_get(gh_url("repos", repo, "pulls/comments", comment, api = api), token = token, ...)
 }
 
 #  FUNCTION: gh_pull_comments -----------------------------------------------------------------
+#
 #' List review comments on a pull request or all pull requests in a repository.
 #'
 #' url{https://developer.github.com/v3/pulls/reviews/#get-comments-for-a-single-review}
@@ -319,9 +385,12 @@ gh_pull_comment <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the pull request comments (see GitHub's API documentation for
 #'   details).
+#'
 #' @export
+#'
 gh_pull_comments <- function(
   repo,
   pull_request,
@@ -334,28 +403,28 @@ gh_pull_comments <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
   if (missing(pull_request)) {
     url <- gh_url(
       "repos", repo, "pulls/comments", api = api,
       sort = sort, direction = direction, since = since)
   } else if (missing(review)) {
-    assert_that(is.count(pull_request))
+    stopifnot(is_count(pull_request))
     url <- gh_url("repos", repo, "pulls", pull_request, "comments", api = api)
   } else {
-    assert_that(is.count(review))
+    stopifnot(is_count(review))
     url <- gh_url("repos", repo, "pulls", pull_request, "reviews", review, "comments", api = api)
   }
 
-  url %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+  gh_page(url, n_max = n_max, token = token, ...)
 }
 
 #  FUNCTION: gh_pull_review_requests ----------------------------------------------------------
+#
 #' List pull request review requests
 #'
 #' url{https://developer.github.com/v3/pulls/review_requests/#list-review-requests}
@@ -368,9 +437,12 @@ gh_pull_comments <- function(
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
 #' @param ... Parameters passed to \code{\link{gh_page}}.
+#'
 #' @return A tibble describing the pull request review requests (see GitHub's API
 #'   documentation for details).
+#'
 #' @export
+#'
 gh_pull_review_requests <- function(
   pull_request,
   repo,
@@ -379,12 +451,13 @@ gh_pull_review_requests <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert_that(is.count(pull_request))
-  assert_that(is.string(repo) && identical(str_count(repo, "/"), 1L))
-  assert_that(is.count(n_max))
-  assert_that(is.string(token) && identical(str_length(token), 40L))
-  assert_that(is.string(api))
+  stopifnot(is_count(pull_request))
+  stopifnot(is_repo(repo))
+  stopifnot(is_count(n_max))
+  stopifnot(is_sha(token))
+  stopifnot(is_url(api))
 
-  gh_url("repos", repo, "pulls", pull_request, "requested_reviewers", api = api) %>%
-    gh_page(simplify = TRUE, n_max = n_max, token = token, ...)
+  gh_page(
+    gh_url("repos", repo, "pulls", pull_request, "requested_reviewers", api = api),
+    n_max = n_max, token = token, ...)
 }
