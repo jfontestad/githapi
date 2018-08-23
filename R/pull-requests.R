@@ -2,15 +2,15 @@
 #
 #' Get a single pull request
 #'
-#' url{https://developer.github.com/v3/pulls/#get-a-single-pull-request}
+#' <https://developer.github.com/v3/pulls/#get-a-single-pull-request>
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the pull request (see GitHub's API documentation for details).
 #'
@@ -35,12 +35,12 @@ gh_pull_request <- function(
 #
 #' List pull requests
 #'
-#' url{https://developer.github.com/v3/pulls/#list-pull-requests}
+#' <https://developer.github.com/v3/pulls/#list-pull-requests>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param state (string) Either open, closed, or all to filter by state. Default: open
 #' @param head (string) Filter pulls by head user and branch name in the format of
-#'   \code{user:ref-name}. Example: \code{github:new-script-format}.
+#'   `user:ref-name`. Example: `github:new-script-format`.
 #' @param base (string) Filter pulls by base branch name. Example: gh-pages.
 #' @param sort (string) What to sort results by. Can be either created, updated, popularity
 #'   (comment count) or long-running (age, filtering by pulls updated in the last month).
@@ -49,10 +49,10 @@ gh_pull_request <- function(
 #'   Default: desc when sort is created or sort is not specified, otherwise asc."
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the pull requests (see GitHub's API documentation for details).
 #'
@@ -109,16 +109,16 @@ gh_pull_requests <- function(
 #
 #' List commits on a pull request
 #'
-#' url{https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request}
+#' <https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request>
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the commits on a pull request (see GitHub's API documentation
 #'   for details).
@@ -159,16 +159,16 @@ gh_pull_commits <- function(
 #
 #' List pull requests files
 #'
-#' url{https://developer.github.com/v3/pulls/#list-pull-requests-files}
+#' <https://developer.github.com/v3/pulls/#list-pull-requests-files>
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the files changed on a pull request (see GitHub's API
 #'   documentation for details).
@@ -209,15 +209,15 @@ gh_pull_files <- function(
 #
 #' Get if a pull request has been merged
 #'
-#' url{https://developer.github.com/v3/pulls/#get-if-a-pull-request-has-been-merged}
+#' <https://developer.github.com/v3/pulls/#get-if-a-pull-request-has-been-merged>
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE if the pull request has been merged, FALSE otherwise (see GitHub's API
 #'   documentation for details).
@@ -254,16 +254,16 @@ is_pull_merged <- function(
 #
 #' Get a single review
 #'
-#' url{https://developer.github.com/v3/pulls/reviews/#get-a-single-review}
+#' <https://developer.github.com/v3/pulls/reviews/#get-a-single-review>
 #'
 #' @param review (integer) The number assigned to the review.
 #' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the pull request review (see GitHub's API documentation for
 #'   details).
@@ -293,16 +293,16 @@ gh_pull_review <- function(
 #
 #' List reviews on a pull request
 #'
-#' url{https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request}
+#' <https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request>
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the pull request reviews (see GitHub's API documentation for
 #'   details).
@@ -332,15 +332,15 @@ gh_pull_reviews <- function(
 #
 #' Get a single pull request review comment
 #'
-#' url{https://developer.github.com/v3/pulls/comments/#get-a-single-comment}
+#' <https://developer.github.com/v3/pulls/comments/#get-a-single-comment>
 #'
 #' @param comment (integer) The number assigned to the review comment.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the pull request review comment (see GitHub's API documentation
 #'   for details).
@@ -366,25 +366,25 @@ gh_pull_comment <- function(
 #
 #' List review comments on a pull request or all pull requests in a repository.
 #'
-#' url{https://developer.github.com/v3/pulls/reviews/#get-comments-for-a-single-review}
-#' url{https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request}
-#' url{https://developer.github.com/v3/pulls/comments/#list-comments-in-a-repository}
+#' <https://developer.github.com/v3/pulls/reviews/#get-comments-for-a-single-review>
+#' <https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request>
+#' <https://developer.github.com/v3/pulls/comments/#list-comments-in-a-repository>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param pull_request (integer, optional) The number assigned to the pull request. If
 #'   not specified, the comments on all pull requests are listed.
 #' @param review (integer, optional) The number assigned to the review. If specified,
-#'   along with a \code{pull_request}, only the comments on this review are returned.
+#'   along with a `pull_request`, only the comments on this review are returned.
 #' @param sort (string) Can be either created or updated. Default: created
 #' @param direction (string) Can be either asc or desc. Ignored without sort parameter.
 #' @param since (string) Only comments updated at or after this time are returned. This is a
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the pull request comments (see GitHub's API documentation for
 #'   details).
@@ -427,16 +427,16 @@ gh_pull_comments <- function(
 #
 #' List pull request review requests
 #'
-#' url{https://developer.github.com/v3/pulls/review_requests/#list-review-requests}
+#' <https://developer.github.com/v3/pulls/review_requests/#list-review-requests>
 #'
 #' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the pull request review requests (see GitHub's API
 #'   documentation for details).
