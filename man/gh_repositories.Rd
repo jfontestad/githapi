@@ -4,36 +4,37 @@
 \alias{gh_repositories}
 \title{Get information about a user's, organisation's or team's repositories.}
 \usage{
-gh_repositories(owner, team, type = NULL, sort = NULL, direction = NULL,
-  n_max = 1000L, token = gh_token(), api = getOption("github.api"), ...)
+gh_repositories(owner, team, type = NULL, sort = NULL,
+  direction = NULL, n_max = 1000L, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{owner}{(string) The user or organisation owning the repository.}
 
 \item{team}{(string) The team owning the repository.}
 
-\item{type}{(string, optional) Can be one of \code{"all"}, \code{"owner"}, \code{"member"}.
-Default: \code{"owner"}.}
+\item{type}{(string, optional) Can be one of \code{all}, \code{owner}, \code{member}.
+Default: \code{owner}.}
 
-\item{sort}{(string, optional) Can be one of \code{"created"}, \code{"updated"},
-\code{"pushed"}, \code{"full_name"}. Default: \code{"full_name"}.}
+\item{sort}{(string, optional) Can be one of \code{created}, \code{updated}, \code{pushed}, \code{full_name}.
+Default: \code{full_name}.}
 
-\item{direction}{(string, optional) Can be one of \code{"asc"} or \code{"desc"}. Default:
-when using \code{"full_name"}: \code{"asc"}, otherwise \code{"desc"}.}
+\item{direction}{(string, optional) Can be one of \code{asc} or \code{desc}. Default: when using
+\code{full_name}: \code{asc}, otherwise \code{desc}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing all the repositories a user or organisation has (see GitHub's
-  API documentation for more detail).
+API documentation for more detail).
 }
 \description{
 \url{https://developer.github.com/v3/repos/#list-user-repositories}

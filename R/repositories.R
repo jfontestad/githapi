@@ -2,14 +2,14 @@
 #
 #' Get information about a repository.
 #'
-#' \url{https://developer.github.com/v3/repos/#get}
+#' <https://developer.github.com/v3/repos/#get>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the repository (see GitHub's API documentation for details).
 #'
@@ -33,14 +33,14 @@ gh_repository <- function(
 #  FUNCTION: is_repository --------------------------------------------------------------------
 #' Check whether the input is a valid repository
 #'
-#' \url{https://developer.github.com/v3/repos/#get}
+#' <https://developer.github.com/v3/repos/#get>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE or FALSE.
 #'
@@ -71,26 +71,26 @@ is_repository <- function(
 #
 #' Get information about a user's, organisation's or team's repositories.
 #'
-#' \url{https://developer.github.com/v3/repos/#list-user-repositories}
-#' \url{https://developer.github.com/v3/repos/#list-organization-repositories}
-#' \url{https://developer.github.com/v3/orgs/teams/#list-team-repos}
+#' <https://developer.github.com/v3/repos/#list-user-repositories>
+#' <https://developer.github.com/v3/repos/#list-organization-repositories>
+#' <https://developer.github.com/v3/orgs/teams/#list-team-repos>
 #'
-#' Note: Must specify either \code{owner} or \code{team}, but not both.
+#' Note: Must specify either `owner` or `team`, but not both.
 #'
 #' @param owner (string) The user or organisation owning the repository.
 #' @param team (string) The team owning the repository.
-#' @param type (string, optional) Can be one of \code{"all"}, \code{"owner"}, \code{"member"}.
-#'   Default: \code{"owner"}.
-#' @param sort (string, optional) Can be one of \code{"created"}, \code{"updated"},
-#'   \code{"pushed"}, \code{"full_name"}. Default: \code{"full_name"}.
-#' @param direction (string, optional) Can be one of \code{"asc"} or \code{"desc"}. Default:
-#'   when using \code{"full_name"}: \code{"asc"}, otherwise \code{"desc"}.
+#' @param type (string, optional) Can be one of `all`, `owner`, `member`.
+#'   Default: `owner`.
+#' @param sort (string, optional) Can be one of `created`, `updated`, `pushed`, `full_name`.
+#'   Default: `full_name`.
+#' @param direction (string, optional) Can be one of `asc` or `desc`. Default: when using
+#'   `full_name`: `asc`, otherwise `desc`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the repositories a user or organisation has (see GitHub's
 #'   API documentation for more detail).
@@ -157,15 +157,15 @@ gh_repositories <- function(
 #  FUNCTION: gh_tags --------------------------------------------------------------------------
 #' Get information about all the tags in a repository.
 #'
-#' \url{https://developer.github.com/v3/repos/#list-tags}
+#' <https://developer.github.com/v3/repos/#list-tags>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the tags (see GitHub's API documentation for details).
 #'
@@ -199,15 +199,15 @@ gh_tags <- function(
 #
 #' Get information about a branch.
 #'
-#' \url{https://developer.github.com/v3/repos/branches/#get-branch}
+#' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
 #' @param branch (string) The branch name.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the branch (see GitHub's API documentation for details).
 #'
@@ -234,15 +234,15 @@ gh_branch <- function(
 #
 #' Checks whether the input is a valid branch.
 #'
-#' \url{https://developer.github.com/v3/repos/branches/#get-branch}
+#' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
 #' @param branch (string) The branch name.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE or FALSE.
 #'
@@ -274,15 +274,15 @@ is_branch <- function(
 #
 #' Get information about all the head commits in each branch.
 #'
-#' \url{https://developer.github.com/v3/repos/branches/#list-branches}
+#' <https://developer.github.com/v3/repos/branches/#list-branches>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
 #'
@@ -314,16 +314,16 @@ gh_branches <- function(
 #
 #' Get information about a commit.
 #'
-#' \url{https://developer.github.com/v3/repos/commits/#get-a-single-commit}
+#' <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the commit (see GitHub's API documentation for details).
 #'
@@ -350,16 +350,16 @@ gh_commit <- function(
 #
 #' Check whether the input is a valid SHA-1
 #'
-#' \url{https://developer.github.com/v3/repos/commits/#get-a-single-commit}
+#' <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
 #'
 #' @param sha (string) A commit SHA-1.
-#' @param repo (string, optional) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #'   If not supplied existence of the commit is not checked, only the format of the string.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE or FALSE.
 #'
@@ -391,16 +391,16 @@ is_valid_sha <- function(
 #
 #' Get the SHA-1 of a commit reference
 #'
-#' \url{https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference}
+#' <https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the branch (see GitHub's API documentation for details).
 #'
@@ -430,17 +430,17 @@ gh_commit_sha <- function(
 #
 #' Get information about all the history of commits.
 #'
-#' \url{https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository}
+#' <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the branches (see GitHub's API documentation for details).
 #'
@@ -481,16 +481,16 @@ gh_commits <- function(
 #
 #' Compare two commits
 #'
-#' \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
+#' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
 #' @param base (string) The base branch name.
 #' @param head (string) The branch to compare to the base.
 #' @param repo (string) The repository specified as "owner/repo".
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A tibble describing the commits and the differences (see GitHub's API documentation for
 #'   details).
@@ -532,17 +532,17 @@ gh_compare_commits <- function(
 #
 #' Compare the files of two commits
 #'
-#' \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
+#' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
 #' @param base (string) The base branch name.
 #' @param head (string) The branch to compare to the base.
 #' @param repo (string) The repository specified as "owner/repo".
 #' @param token (string, optional) The personal access token for GitHub authorisation.
-#'   Default: value stored in the environment variable \code{"GITHUB_TOKEN"} or
-#'   \code{"GITHUB_PAT"}.
+#'   Default: value stored in the environment variable `GITHUB_TOKEN` or
+#'   `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A tibble describing the files and the differences (see GitHub's API documentation
 #'   for details).
@@ -580,16 +580,16 @@ gh_compare_files <- function(
 #
 #' Get the README
 #'
-#' url{https://developer.github.com/v3/repos/contents/#get-the-readme}
+#' <https://developer.github.com/v3/repos/contents/#get-the-readme>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A string containing the contents of the README.
 #'
@@ -619,20 +619,20 @@ gh_readme <- function(
 #
 #' Get contents of a file.
 #'
-#' url{https://developer.github.com/v3/repos/contents/#get-contents}
+#' <https://developer.github.com/v3/repos/contents/#get-contents>
 #'
 #' Note: This function can only get the contents of files less than 1MB. For larger files use
-#' \code{gh_git_blob}.
+#' [gh_git_blob()].
 #'
 #' @param path (string) The path to the file in the repository
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A string containing the contents of the specified file.
 #'
@@ -661,19 +661,23 @@ gh_contents <- function(
 }
 
 #  FUNCTION: gh_download ----------------------------------------------------------------------
+#
 #' Download the entire tree from a commit.
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param path (string) The path to save to.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_download_binary()].
+#'
 #' @return Full tree of files in specified location.
+#'
 #' @export
+#'
 gh_download <- function(
   ref,
   repo,
@@ -716,15 +720,15 @@ gh_download <- function(
 #
 #' Check if a user is a collaborator
 #'
-#' url{https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator}
+#' <https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator>
 #'
 #' @param user (string) The GitHub username of the user.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE if the user is a collaborator, FALSE otherwise (see GitHub's API
 #'   documentation for details).
@@ -761,24 +765,22 @@ is_collaborator <- function(
 #
 #' List collaborators
 #'
-#' url{https://developer.github.com/v3/repos/collaborators/#list-collaborators}
+#' <https://developer.github.com/v3/repos/collaborators/#list-collaborators>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param affiliation (string) Filter collaborators returned by their affiliation.
 #'   Can be one of:
-#'   \itemize{
-#'     \item outside: All outside collaborators of an organization-owned repository.
-#'     \item direct: All collaborators with permissions to an organization-owned repository,
+#'   - `outside`: All outside collaborators of an organization-owned repository.
+#'   - `direct`: All collaborators with permissions to an organization-owned repository,
 #'       regardless of organization membership status.
-#'     \item all: All collaborators the authenticated user can see.
-#'     \item Default: all.
-#'   }
+#'   - `all`: All collaborators the authenticated user can see.
+#'   - `Default`: all.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the collaborators (see GitHub's API documentation for details).
 #'
@@ -816,15 +818,15 @@ gh_collaborators <- function(
 #
 #' Review a user's permission level
 #'
-#' url{https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level}
+#' <https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level>
 #'
 #' @param user (string) The GitHub username of the user.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the user's permissions (see GitHub's API documentation for
 #'   details).
@@ -852,15 +854,15 @@ gh_permissions <- function(
 #
 #' Get a single commit comment
 #'
-#' url{https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment}
+#' <https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment>
 #'
 #' @param comment (integer) The ID assigned to the comment in GitHub.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the commit comment (see GitHub's API documentation for details).
 #'
@@ -887,18 +889,18 @@ gh_commit_comment <- function(
 #
 #' List comments for a single commit or entire repository
 #'
-#' url{https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit}
-#' url{https://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository}
+#' <https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit>
+#' <https://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
 #'   specified the head commit is used.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the commit comments (see GitHub's API documentation for details).
 #'
@@ -943,16 +945,16 @@ gh_commit_comments <- function(
 #
 #' List contributors
 #'
-#' url{https://developer.github.com/v3/repos/#list-contributors}
+#' <https://developer.github.com/v3/repos/#list-contributors>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param anon (boolean) Set to TRUE to include anonymous contributors in results.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the contributers (see GitHub's API documentation for details).
 #'
@@ -989,14 +991,14 @@ gh_contributers <- function(
 #
 #' List languages
 #'
-#' url{https://developer.github.com/v3/repos/#list-languages}
+#' <https://developer.github.com/v3/repos/#list-languages>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the number of bytes written in each language (see GitHub's API
 #'   documentation for details).
@@ -1022,18 +1024,18 @@ gh_languages <- function(
 #
 #' Get a single release
 #'
-#' url{https://developer.github.com/v3/repos/releases/#get-a-single-release}
-#' url{https://developer.github.com/v3/repos/releases/#get-the-latest-release}
-#' url{https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name}
+#' <https://developer.github.com/v3/repos/releases/#get-a-single-release>
+#' <https://developer.github.com/v3/repos/releases/#get-the-latest-release>
+#' <https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name>
 #'
 #' @param tag (string, optional) The tag associated with a release. If not supplied the latest
 #'   release is returned.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the release (see GitHub's API documentation for details).
 #'
@@ -1070,15 +1072,15 @@ gh_release <- function(
 #
 #' List releases for a repository
 #'
-#' url{https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository}
+#' <https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the releases (see GitHub's API documentation for details).
 #'
@@ -1123,15 +1125,15 @@ gh_releases <- function(
 #
 #' Get a single release asset
 #'
-#' url{https://developer.github.com/v3/repos/releases/#get-a-single-release-asset}
+#' <https://developer.github.com/v3/repos/releases/#get-a-single-release-asset>
 #'
 #' @param asset (integer) The ID assigned to the asset by GitHub
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the release asset (see GitHub's API documentation for details).
 #'
@@ -1158,16 +1160,16 @@ gh_asset <- function(
 #
 #' List assets for a release
 #'
-#' url{https://developer.github.com/v3/repos/releases/#list-assets-for-a-release}
+#' <https://developer.github.com/v3/repos/releases/#list-assets-for-a-release>
 #'
 #' @param release (integer) The ID assigned to the release by GitHub.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the assets for a release (see GitHub's API documentation for details).
 #'
