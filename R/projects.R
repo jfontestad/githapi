@@ -2,14 +2,14 @@
 #
 #' Get a project
 #'
-#' url{https://developer.github.com/v3/projects/#get-a-project}
+#' <https://developer.github.com/v3/projects/#get-a-project>
 #'
 #' @param project (integer) The ID of the project in GitHub.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the project (see GitHub's API documentation for details).
 #'
@@ -35,19 +35,19 @@ gh_project <- function(
 #
 #' List organisation or repository projects
 #'
-#' url{https://developer.github.com/v3/projects/#list-repository-projects}
-#' url{https://developer.github.com/v3/projects/#list-organization-projects}
+#' <https://developer.github.com/v3/projects/#list-repository-projects>
+#' <https://developer.github.com/v3/projects/#list-organization-projects>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param org (string) The name of the organization.
 #' @param state (string, optional) Indicates the state of the projects to return. Can be either open,
 #'   closed, or all. Default: open
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the projects (see GitHub's API documentation for details).
 #'
@@ -101,14 +101,14 @@ gh_projects <- function(
 #
 #' Get a project column
 #'
-#' url{https://developer.github.com/v3/projects/columns/#get-a-project-column}
+#' <https://developer.github.com/v3/projects/columns/#get-a-project-column>
 #'
 #' @param column (integer) The ID of the column in GitHub.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the column (see GitHub's API documentation for details).
 #'
@@ -134,15 +134,15 @@ gh_column <- function(
 #
 #' List project columns
 #'
-#' url{https://developer.github.com/v3/projects/columns/#list-project-columns}
+#' <https://developer.github.com/v3/projects/columns/#list-project-columns>
 #'
 #' @param project (integer) The ID of the project in GitHub.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the columns (see GitHub's API documentation for details).
 #'
@@ -177,14 +177,14 @@ gh_columns <- function(
 #
 #' Get a project card
 #'
-#' url{https://developer.github.com/v3/projects/cards/#get-a-project-card}
+#' <https://developer.github.com/v3/projects/cards/#get-a-project-card>
 #'
 #' @param card (integer) The ID of the card in GitHub.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the card (see GitHub's API documentation for details).
 #'
@@ -210,15 +210,15 @@ gh_card <- function(
 #
 #' List project cards
 #'
-#' url{https://developer.github.com/v3/projects/cards/#list-project-cards}
+#' <https://developer.github.com/v3/projects/cards/#list-project-cards>
 #'
 #' @param column (integer) The ID of the column in GitHub.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the cards (see GitHub's API documentation for details).
 #'

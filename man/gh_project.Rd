@@ -4,22 +4,23 @@
 \alias{gh_project}
 \title{Get a project}
 \usage{
-gh_project(project, token = gh_token(), api = getOption("github.api"), ...)
+gh_project(project, token = gh_token(), api = getOption("github.api"),
+  ...)
 }
 \arguments{
 \item{project}{(integer) The ID of the project in GitHub.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 A list describing the project (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/projects/#get-a-project}
+\url{https://developer.github.com/v3/projects/#get-a-project}
 }
