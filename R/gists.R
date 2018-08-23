@@ -2,16 +2,16 @@
 #
 #' Get a single gist
 #'
-#' url{https://developer.github.com/v3/gists/#get-a-single-gist}
-#' url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+#' <https://developer.github.com/v3/gists/#get-a-single-gist>
+#' <https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist>
 #'
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the gist (see GitHub's API documentation for details).
 #'
@@ -42,22 +42,22 @@ gh_gist <- function(
 #
 #' List a user's gists, or all public or starred gists.
 #'
-#' url{https://developer.github.com/v3/gists/#list-a-users-gists}
-#' url{https://developer.github.com/v3/gists/#list-a-users-gists}
-#' url{https://developer.github.com/v3/gists/#list-all-public-gists}
-#' url{https://developer.github.com/v3/gists/#list-starred-gists}
+#' <https://developer.github.com/v3/gists/#list-a-users-gists>
+#' <https://developer.github.com/v3/gists/#list-a-users-gists>
+#' <https://developer.github.com/v3/gists/#list-all-public-gists>
+#' <https://developer.github.com/v3/gists/#list-starred-gists>
 #'
 #' @param user (string) The GitHub username of the user. If user set to 'public' all public
 #'   gists are returned; and if user is set to 'starred' all the starred repositories for the
 #'   authenticated user are returned.
-#' @param since (string) A timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. Only gists
+#' @param since (string) A timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. Only gists
 #'   updated at or after this time are returned."
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `"https://api.github.com"`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the gists (see GitHub's API documentation for details).
 #'
@@ -111,15 +111,15 @@ gh_gists <- function(
 #
 #' List gist commits
 #'
-#' url{https://developer.github.com/v3/gists/#list-gist-commits}
+#' <https://developer.github.com/v3/gists/#list-gist-commits>
 #'
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the gist commits (see GitHub's API documentation for details).
 #'
@@ -155,14 +155,14 @@ gh_gist_commits <- function(
 #
 #' Check if a gist is starred
 #'
-#' url{https://developer.github.com/v3/gists/#check-if-a-gist-is-starred}
+#' <https://developer.github.com/v3/gists/#check-if-a-gist-is-starred>
 #'
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE if the gist has been starred, FALSE otherwise (see GitHub's API documentation
 #'   for details).
@@ -197,15 +197,15 @@ is_gist_starred <- function(
 #
 #' List gist forks
 #'
-#' url{https://developer.github.com/v3/gists/#list-gist-forks}
+#' <https://developer.github.com/v3/gists/#list-gist-forks>
 #'
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the forks (see GitHub's API documentation for details).
 #'
@@ -242,15 +242,15 @@ gh_gist_forks <- function(
 #
 #' Get a single comment
 #'
-#' url{https://developer.github.com/v3/gists/comments/#get-a-single-comment}
+#' <https://developer.github.com/v3/gists/comments/#get-a-single-comment>
 #'
 #' @param comment (integer) The ID of the comment in GitHub.
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the gist comment (see GitHub's API documentation for details).
 #'
@@ -277,15 +277,15 @@ gh_gist_comment <- function(
 #
 #' List comments on a gist
 #'
-#' url{https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist}
+#' <https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist>
 #'
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the gist comments (see GitHub's API documentation for details).
 #'
@@ -320,8 +320,8 @@ gh_gist_comments <- function(
 #
 #' Save files in a gist
 #'
-#' url{https://developer.github.com/v3/gists/#get-a-single-gist}
-#' url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+#' <https://developer.github.com/v3/gists/#get-a-single-gist>
+#' <https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist>
 #'
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param path (string) The location to save the files to.
@@ -329,10 +329,9 @@ gh_gist_comments <- function(
 #'   the gist
 #' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
 #'
 #' @return The file path of the saved file (invisibly).
 #'
@@ -375,17 +374,17 @@ gh_save_gist <- function(
 #
 #' Source an R file from a gist
 #'
-#' url{https://developer.github.com/v3/gists/#get-a-single-gist}
-#' url{https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist}
+#' <https://developer.github.com/v3/gists/#get-a-single-gist>
+#' <https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist>
 #'
 #' @param file (string) The name of the file to source.
 #' @param gist (string) The ID of the gist in GitHub.
 #' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{source}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [base::source()].
 #'
 #' @return Nothing. The file is sourced into global environment.
 #'

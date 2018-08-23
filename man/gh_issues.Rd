@@ -6,11 +6,11 @@
 \usage{
 gh_issues(repo, milestone = NULL, state = NULL, assignee = NULL,
   creator = NULL, mentioned = NULL, labels = NULL, sort = NULL,
-  direction = NULL, since = NULL, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+  direction = NULL, since = NULL, n_max = 1000L,
+  token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{milestone}{(string)    If an integer is passed, it should refer to a milestone by its number
 field. If the string * is passed, issues with any milestone are accepted. If the string none
@@ -26,7 +26,7 @@ user, and * for issues assigned to any user.}
 
 \item{mentioned}{(string) A user that's mentioned in the issue.}
 
-\item{labels}{(string) A list of comma separated label names. Example: bug,ui,@high}
+\item{labels}{(string) A list of comma separated label names. Example: bug,ui, high}
 
 \item{sort}{(string) What to sort results by. Can be either created, updated, comments.
 Default: created}
@@ -39,16 +39,16 @@ timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing all the issues a repository has (see GitHub's API documentation for
-  more detail)
+more detail)
 }
 \description{
 \url{https://developer.github.com/v3/issues/#list-issues-for-a-repository}

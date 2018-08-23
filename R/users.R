@@ -2,14 +2,14 @@
 #
 #' Get a single user
 #'
-#' \url{https://developer.github.com/v3/users/#get-a-single-user}
+#' <https://developer.github.com/v3/users/#get-a-single-user>
 #'
 #' @param user (string) The GitHub username of the user.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the user (see GitHub's API documentation for details).
 #'
@@ -40,14 +40,14 @@ gh_user <- function(
 #
 #' Get all users
 #'
-#' \url{https://developer.github.com/v3/users/#get-all-users}
+#' <https://developer.github.com/v3/users/#get-all-users>
 #'
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.
+#'   string stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the users (see GitHub's API documentation for more detail).
 #'
@@ -76,14 +76,14 @@ gh_users <- function(
 #
 #' List email addresses for the authenticated user
 #'
-#' url{https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user}
-#' url{https://developer.github.com/v3/users/emails/#list-public-email-addresses-for-a-user}
+#' <https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user>
+#' <https://developer.github.com/v3/users/emails/#list-public-email-addresses-for-a-user>
 #'
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   string stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.
+#'   string stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{GITHUB_API_URL} or \code{https://api.github.com}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A tibble describing the user's email addresses (see GitHub's API documentation for
 #'   more detail).

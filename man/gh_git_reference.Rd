@@ -11,19 +11,19 @@ gh_git_reference(ref, repo, token = gh_token(),
 \item{ref}{(string) tags, specified as \code{tags/<tag_name>}, or branches, specified as
 \code{heads/<branch_name>}}
 
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 A list describing the reference (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/git/refs/#get-a-reference}
+\url{https://developer.github.com/v3/git/refs/#get-a-reference}
 }

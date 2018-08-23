@@ -4,7 +4,8 @@
 \alias{is_member}
 \title{Check membership}
 \usage{
-is_member(user, org, token = gh_token(), api = getOption("github.api"), ...)
+is_member(user, org, token = gh_token(), api = getOption("github.api"),
+  ...)
 }
 \arguments{
 \item{user}{(string) The GitHub username of the user.}
@@ -12,17 +13,17 @@ is_member(user, org, token = gh_token(), api = getOption("github.api"), ...)
 \item{org}{(string) The name of the organization.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 TRUE if the user is a member, FALSE otherwise (see GitHub's API documentation for
-  details).
+details).
 }
 \description{
-url{https://developer.github.com/v3/orgs/members/#check-membership}
+\url{https://developer.github.com/v3/orgs/members/#check-membership}
 }

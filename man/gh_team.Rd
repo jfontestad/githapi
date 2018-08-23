@@ -10,16 +10,16 @@ gh_team(team, token = gh_token(), api = getOption("github.api"), ...)
 \item{team}{(integer) The GitHub ID of the team.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 A list describing the team (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/orgs/teams/#get-team}
+\url{https://developer.github.com/v3/orgs/teams/#get-team}
 }

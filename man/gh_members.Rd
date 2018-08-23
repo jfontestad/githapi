@@ -14,36 +14,36 @@ gh_members(org, team, filter = NULL, role = NULL, n_max = 1000L,
 
 \item{filter}{(string) Filter members returned in the list. Can be one of:
 \itemize{
-  \item 2fa_disabled: Members without two-factor authentication enabled. Available for
-    organization owners.
-  \item all: All members the authenticated user can see.
-  \item Default: all.
+\item \code{2fa_disabled}: Members without two-factor authentication enabled. Available for
+organization owners.
+\item \code{all}: All members the authenticated user can see.
+\item \code{Default}: all.
 }}
 
 \item{role}{(string) Filter members returned by their role. Can be one of:
 \itemize{
-  \item all: All members of the organization, regardless of role.
-  \item admin: Organization owners.
-  \item member: Non-owner organization members.
-  \item Default: all.
+\item \code{all}: All members of the organization, regardless of role.
+\item \code{admin}: Organization owners.
+\item \code{member}: Non-owner organization members.
+\item \code{Default}: all.
 }}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing the members (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/orgs/members/#members-list}
-url{https://developer.github.com/v3/orgs/teams/#list-team-members}
+\url{https://developer.github.com/v3/orgs/members/#members-list}
+\url{https://developer.github.com/v3/orgs/teams/#list-team-members}
 }
 \details{
 Note: Must specify either \code{org} or \code{team}, but not both.

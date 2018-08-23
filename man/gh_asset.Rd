@@ -4,25 +4,25 @@
 \alias{gh_asset}
 \title{Get a single release asset}
 \usage{
-gh_asset(asset, repo, token = gh_token(), api = getOption("github.api"),
-  ...)
+gh_asset(asset, repo, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{asset}{(integer) The ID assigned to the asset by GitHub}
 
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 A list describing the release asset (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/repos/releases/#get-a-single-release-asset}
+\url{https://developer.github.com/v3/repos/releases/#get-a-single-release-asset}
 }

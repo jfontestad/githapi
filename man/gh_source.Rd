@@ -10,22 +10,22 @@ gh_source(file, repo, ref = "master", token = gh_token(),
 \arguments{
 \item{file}{(string) The path to the file in the repository}
 
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch
 is specified the head commit is used. Default: "master".}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{source}}.}
+\item{...}{Parameters passed to \code{\link[base:source]{base::source()}}.}
 }
 \value{
 The result of sourcing the file.
 }
 \description{
-url{https://developer.github.com/v3/git/blobs/#get-a-blob}
+\url{https://developer.github.com/v3/git/blobs/#get-a-blob}
 }

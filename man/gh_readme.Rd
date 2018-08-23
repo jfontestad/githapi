@@ -4,25 +4,26 @@
 \alias{gh_readme}
 \title{Get the README}
 \usage{
-gh_readme(ref, repo, token = gh_token(), api = getOption("github.api"), ...)
+gh_readme(ref, repo, token = gh_token(), api = getOption("github.api"),
+  ...)
 }
 \arguments{
 \item{ref}{(string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 the head commit is used.}
 
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 A string containing the contents of the README.
 }
 \description{
-url{https://developer.github.com/v3/repos/contents/#get-the-readme}
+\url{https://developer.github.com/v3/repos/contents/#get-the-readme}
 }

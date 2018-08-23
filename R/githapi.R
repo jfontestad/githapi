@@ -1,3 +1,5 @@
+#  PACKAGE: githapi ---------------------------------------------------------------------------
+#
 #' User-friendly access to the GitHub API for R, consistent with the tidyverse.
 #'
 #' Provides a suite of functions which simplify working with GitHub's API.
@@ -50,12 +52,14 @@ is_repo <- function(x) {
 }
 
 # FUNCTION: gh_token --------------------------------------------------------------------------
+#
 # Retrieve the GitHub personal access token from the following locations:
 #  - github.token option
 #  - GITHUB_TOKEN environment variable
 #  - GITHUB_PAT environment variable
 #
 # @return The token as a string
+#
 gh_token <- function() {
   token <- getOption("github.token")
   if (is.null(token)) {
@@ -71,15 +75,18 @@ gh_token <- function() {
 }
 
 # FUNCTION: gh_url -----------------------------------------------------------------------------
-# Build the URL for the github API
 #
-# @param ... (strings, optional) unnamed strings are built up into a URL path and named
-#   parameters are added as queries.
-# @param api (string, optional) the base URL of GitHub's API. Default:
-#   \code{getOption("github.api")}
-#
-# @return Valid URL (string)
-#
+#' Build the URL for the github API
+#'
+#' @param ... (strings, optional) unnamed strings are built up into a URL path and named
+#'   parameters are added as queries.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'
+#' @return Valid URL (string)
+#'
+#' @export
+#'
 gh_url <- function(
   ...,
   api = getOption("github.api"))
@@ -107,17 +114,19 @@ gh_url <- function(
 
 # FUNCTION: gh_get ----------------------------------------------------------------------------
 #
-# Send a http GET request to the specified GitHub url.
-#
-# @param url (string) URL to the GitHub API.
-# @param accept (string) The format of the returned result. Either "json", "raw" or other
-#   GitHub accepted format. Default: "json".
-# @param parse (boolean) Whether to parse the response.
-# @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
-#
-# @return A list of the parsed response
-#
+#' Send a http GET request to the specified GitHub url.
+#'
+#' @param url (string) URL to the GitHub API.
+#' @param accept (string) The format of the returned result. Either "json", "raw" or other
+#'   GitHub accepted format. Default: "json".
+#' @param parse (boolean) Whether to parse the response.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'
+#' @return A list of the parsed response
+#'
+#' @export
+#'
 gh_get <- function(
   url,
   accept = "json",
@@ -173,24 +182,26 @@ gh_get <- function(
 
 # FUNCTION: gh_page ---------------------------------------------------------------------------
 #
-# Get and parse the contents of a github http request, including multiple pages.
-#
-# @param url (string) URL for GitHub API endpoint.
-# @param accept (string) The format of the returned result. Either "json", "raw" or other
-#   GitHub accepted format. Default: "json".
-# @param n_max (integer, optional) Maximum number to return. Default: 1000.
-# @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
-#
-# @return A list of the combined parsed responses
-#
-# @export
-#
+#' Get and parse the contents of a github http request, including multiple pages.
+#'
+#' @param url (string) URL for GitHub API endpoint.
+#' @param accept (string) The format of the returned result. Either "json", "raw" or other
+#'   GitHub accepted format. Default: "json".
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#' @param ... Parameters passed to [gh_get()].
+#'
+#' @return A list of the combined parsed responses
+#'
+#' @export
+#'
 gh_page <- function(
   url,
   accept = "json",
   n_max  = 1000L,
-  token  = gh_token())
+  token  = gh_token(),
+  ...)
 {
   stopifnot(is_url(url))
   stopifnot(is_string(accept))
@@ -207,7 +218,7 @@ gh_page <- function(
   response <- list()
 
   while (length(response) < n_max) {
-    page <- gh_get(url = url, accept = accept, token = token)
+    page <- gh_get(url = url, accept = accept, token = token, ...)
     response <- c(response, page)
     if (length(response) >= n_max) {
       return(response[1:n_max])
@@ -225,15 +236,17 @@ gh_page <- function(
 
 # FUNCTION: gh_download_binary ----------------------------------------------------------------
 #
-# Download a binary file from GitHub
-#
-# @param url (string) URL to the GitHub API.
-# @param path (string) The location to download the file to.
-# @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
-#
-# @return A list of the parsed response
-#
+#' Download a binary file from GitHub
+#'
+#' @param url (string) URL to the GitHub API.
+#' @param path (string) The location to download the file to.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'
+#' @return The path to the download location
+#'
+#' @export
+#'
 gh_download_binary <- function(
   url,
   path,

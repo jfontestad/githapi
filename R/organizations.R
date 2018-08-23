@@ -2,14 +2,14 @@
 #
 #' Get an organization
 #'
-#' url{https://developer.github.com/v3/orgs/#get-an-organization}
+#' <https://developer.github.com/v3/orgs/#get-an-organization>
 #'
 #' @param org (string) The name of the organization.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the organization (see GitHub's API documentation for details).
 #'
@@ -32,17 +32,17 @@ gh_organization <- function(
 #
 #' List organizations
 #'
-#' url{https://developer.github.com/v3/orgs/#list-all-organizations}
-#' url{https://developer.github.com/v3/orgs/#list-user-organizations}
+#' <https://developer.github.com/v3/orgs/#list-all-organizations>
+#' <https://developer.github.com/v3/orgs/#list-user-organizations>
 #'
 #' @param user (string, optional) The GitHub username of the user. If not specified, all
 #'   organizations are returned.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the organizations (see GitHub's API documentation for details).
 #'
@@ -79,15 +79,15 @@ gh_organizations <- function(
 #
 #' Check membership
 #'
-#' url{https://developer.github.com/v3/orgs/members/#check-membership}
+#' <https://developer.github.com/v3/orgs/members/#check-membership>
 #'
 #' @param user (string) The GitHub username of the user.
 #' @param org (string) The name of the organization.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE if the user is a member, FALSE otherwise (see GitHub's API documentation for
 #'   details).
@@ -124,33 +124,29 @@ is_member <- function(
 #
 #' Get Organization or team members list
 #'
-#' url{https://developer.github.com/v3/orgs/members/#members-list}
-#' url{https://developer.github.com/v3/orgs/teams/#list-team-members}
+#' <https://developer.github.com/v3/orgs/members/#members-list>
+#' <https://developer.github.com/v3/orgs/teams/#list-team-members>
 #'
-#' Note: Must specify either \code{org} or \code{team}, but not both.
+#' Note: Must specify either `org` or `team`, but not both.
 #'
 #' @param org (string) The name of the organization.
 #' @param team (integer) The GitHub ID of the team.
 #' @param filter (string) Filter members returned in the list. Can be one of:
-#'   \itemize{
-#'     \item 2fa_disabled: Members without two-factor authentication enabled. Available for
-#'       organization owners.
-#'     \item all: All members the authenticated user can see.
-#'     \item Default: all.
-#'   }
+#'  - `2fa_disabled`: Members without two-factor authentication enabled. Available for
+#'    organization owners.
+#'  - `all`: All members the authenticated user can see.
+#'  - `Default`: all.
 #' @param role (string) Filter members returned by their role. Can be one of:
-#'   \itemize{
-#'     \item all: All members of the organization, regardless of role.
-#'     \item admin: Organization owners.
-#'     \item member: Non-owner organization members.
-#'     \item Default: all.
-#'   }
+#'  - `all`: All members of the organization, regardless of role.
+#'  - `admin`: Organization owners.
+#'  - `member`: Non-owner organization members.
+#'  - `Default`: all.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the members (see GitHub's API documentation for details).
 #'
@@ -199,19 +195,19 @@ gh_members <- function(
 #
 #' Get organization and team membership
 #'
-#' url{https://developer.github.com/v3/orgs/members/#get-organization-membership}
-#' url{https://developer.github.com/v3/orgs/teams/#get-team-membership}
+#' <https://developer.github.com/v3/orgs/members/#get-organization-membership>
+#' <https://developer.github.com/v3/orgs/teams/#get-team-membership>
 #'
-#' Note: Must specify either \code{org} or \code{team}, but not both.
+#' Note: Must specify either `org` or `team`, but not both.
 #'
 #' @param user (string, optional) The GitHub username of the user.
 #' @param org (string) The name of the organization.
 #' @param team (integer) The GitHub ID of the team.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the membership (see GitHub's API documentation for details).
 #'
@@ -250,16 +246,16 @@ gh_membership <- function(
 #
 #' List your organization memberships
 #'
-#' url{https://developer.github.com/v3/orgs/members/#list-your-organization-memberships}
-#' url{https://developer.github.com/v3/orgs/members/#get-your-organization-membership}
+#' <https://developer.github.com/v3/orgs/members/#list-your-organization-memberships>
+#' <https://developer.github.com/v3/orgs/members/#get-your-organization-membership>
 #'
 #' @param org (string, optional) The name of the organization.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing your memberships (see GitHub's API documentation for details).
 #'
@@ -290,14 +286,14 @@ gh_memberships <- function(
 #
 #' Get team
 #'
-#' url{https://developer.github.com/v3/orgs/teams/#get-team}
+#' <https://developer.github.com/v3/orgs/teams/#get-team>
 #'
 #' @param team (integer) The GitHub ID of the team.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the team (see GitHub's API documentation for details).
 #'
@@ -320,18 +316,18 @@ gh_team <- function(
 #
 #' List teams
 #'
-#' url{https://developer.github.com/v3/orgs/teams/#list-teams}
-#' url{https://developer.github.com/v3/orgs/teams/#list-user-teams}
+#' <https://developer.github.com/v3/orgs/teams/#list-teams>
+#' <https://developer.github.com/v3/orgs/teams/#list-user-teams>
 #'
 #' @param org (string, optional) The name of the organization. If org and repo are not
 #'   specified, the teams of the authenticated user are returned.
-#' @param repo (string, optional) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the teams (see GitHub's API documentation for details).
 #'
@@ -371,15 +367,15 @@ gh_teams <- function(
 #
 #' Check if a team manages a repository
 #'
-#' url{https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository}
+#' <https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository>
 #'
 #' @param team (integer) The GitHub ID of the team.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return TRUE if the team is a manager, FALSE otherwise (see GitHub's API documentation for
 #'   details).

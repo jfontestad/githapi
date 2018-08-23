@@ -13,18 +13,18 @@ gh_user_issues(org, filter = NULL, state = NULL, labels = NULL,
 
 \item{filter}{(string) Indicates which sorts of issues to return. Can be one of:
 \itemize{
-  \item assigned: Issues assigned to you
-  \item created: Issues created by you
-  \item mentioned: Issues mentioning you
-  \item subscribed: Issues you're subscribed to updates for
-  \item all: All issues the authenticated user can see, regardless of participation or creation
-  \item Default: assigned.
+\item \code{assigned}: Issues assigned to you
+\item \code{created}: Issues created by you
+\item \code{mentioned}: Issues mentioning you
+\item \code{subscribed}: Issues you're subscribed to updates for
+\item \code{all}: All issues the authenticated user can see, regardless of participation or creation
+\item \code{Default}: assigned.
 }}
 
 \item{state}{(string) Indicates the state of the issues to return. Can be either open, closed,
 or all. Default: open.}
 
-\item{labels}{(string) A list of comma separated label names. Example: bug,ui,@high.}
+\item{labels}{(string) A list of comma separated label names. Example: bug,ui, high.}
 
 \item{sort}{(string) What to sort results by. Can be either created, updated, comments.
 Default: created.}
@@ -37,16 +37,16 @@ timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing all the issues a user has assigned to them (see GitHub's API
-  documentation for more detail)
+documentation for more detail)
 }
 \description{
 \url{https://developer.github.com/v3/issues/#list-issues}
