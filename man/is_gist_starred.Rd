@@ -4,24 +4,24 @@
 \alias{is_gist_starred}
 \title{Check if a gist is starred}
 \usage{
-is_gist_starred(gist, token = gh_token(), api = getOption("github.api"),
-  ...)
+is_gist_starred(gist, token = gh_token(),
+  api = getOption("github.api"), ...)
 }
 \arguments{
 \item{gist}{(string) The ID of the gist in GitHub.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 TRUE if the gist has been starred, FALSE otherwise (see GitHub's API documentation
-  for details).
+for details).
 }
 \description{
-url{https://developer.github.com/v3/gists/#check-if-a-gist-is-starred}
+\url{https://developer.github.com/v3/gists/#check-if-a-gist-is-starred}
 }

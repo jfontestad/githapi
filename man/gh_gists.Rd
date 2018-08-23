@@ -12,25 +12,25 @@ gh_gists(user, since = NULL, n_max = 1000L, token = gh_token(),
 gists are returned; and if user is set to 'starred' all the starred repositories for the
 authenticated user are returned.}
 
-\item{since}{(string) A timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. Only gists
+\item{since}{(string) A timestamp in ISO 8601 format: \code{YYYY-MM-DDTHH:MM:SSZ}. Only gists
 updated at or after this time are returned."}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{"https://api.github.com"}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing the gists (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/gists/#list-a-users-gists}
-url{https://developer.github.com/v3/gists/#list-a-users-gists}
-url{https://developer.github.com/v3/gists/#list-all-public-gists}
-url{https://developer.github.com/v3/gists/#list-starred-gists}
+\url{https://developer.github.com/v3/gists/#list-a-users-gists}
+\url{https://developer.github.com/v3/gists/#list-a-users-gists}
+\url{https://developer.github.com/v3/gists/#list-all-public-gists}
+\url{https://developer.github.com/v3/gists/#list-starred-gists}
 }
