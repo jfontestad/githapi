@@ -10,7 +10,7 @@ gh_save(files, repo, path, ref = "master", token = gh_token(),
 \arguments{
 \item{files}{(string) The paths to the files in the repository.}
 
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{path}{(string) The location to save the files to.}
 
@@ -18,16 +18,14 @@ gh_save(files, repo, path, ref = "master", token = gh_token(),
 is specified the head commit is used. Default: "master".}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
-
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 }
 \value{
 The file path of the saved file (invisibly).
 }
 \description{
-url{https://developer.github.com/v3/git/blobs/#get-a-blob}
+\url{https://developer.github.com/v3/git/blobs/#get-a-blob}
 }
