@@ -1,3 +1,5 @@
+navbar:
+  type: inverse
 reference:
 - title: Repositories
   desc: Functions for accessing information about repositories and their content.
