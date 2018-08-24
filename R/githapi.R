@@ -51,15 +51,18 @@ is_repo <- function(x) {
   is_string(x) && identical(length(strsplit(x, "/")[[1]]), 2L)
 }
 
-# FUNCTION: gh_token --------------------------------------------------------------------------
+#  FUNCTION: gh_token -------------------------------------------------------------------------
 #
-# Retrieve the GitHub personal access token from the following locations:
-#  - github.token option
-#  - GITHUB_TOKEN environment variable
-#  - GITHUB_PAT environment variable
-#
-# @return The token as a string
-#
+#' Retrieve the GitHub personal access token
+#'
+#' The token is retreived by looking in the following locations, in order:
+#'
+#' 1. `github.token` option
+#' 2. `GITHUB_TOKEN` environment variable
+#' 3. `GITHUB_PAT` environment variable
+#'
+#' @return The token as a string
+#'
 gh_token <- function() {
   token <- getOption("github.token")
   if (is.null(token)) {
@@ -74,7 +77,7 @@ gh_token <- function() {
   token
 }
 
-# FUNCTION: gh_url -----------------------------------------------------------------------------
+#  FUNCTION: gh_url ----------------------------------------------------------------------------
 #
 #' Build the URL for the github API
 #'
@@ -112,7 +115,7 @@ gh_url <- function(
   url
 }
 
-# FUNCTION: gh_get ----------------------------------------------------------------------------
+#  FUNCTION: gh_get ---------------------------------------------------------------------------
 #
 #' Send a http GET request to the specified GitHub url.
 #'
@@ -180,7 +183,7 @@ gh_get <- function(
   response_content
 }
 
-# FUNCTION: gh_page ---------------------------------------------------------------------------
+#  FUNCTION: gh_page --------------------------------------------------------------------------
 #
 #' Get and parse the contents of a github http request, including multiple pages.
 #'
@@ -234,7 +237,7 @@ gh_page <- function(
   }
 }
 
-# FUNCTION: gh_download_binary ----------------------------------------------------------------
+#  FUNCTION: gh_download_binary ---------------------------------------------------------------
 #
 #' Download a binary file from GitHub
 #'
