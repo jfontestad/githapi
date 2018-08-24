@@ -1,0 +1,123 @@
+navbar:
+  type: inverse
+reference:
+- title: Repositories
+  desc: Functions for accessing information about repositories and their content.
+  contents:
+    - '`gh_repository`'
+    - '`is_repository`'
+    - '`gh_repositories`'
+    - '`gh_tags`'
+    - '`gh_branch`'
+    - '`is_branch`'
+    - '`gh_branches`'
+    - '`gh_commit`'
+    - '`is_valid_sha`'
+    - '`gh_commit_sha`'
+    - '`gh_commits`'
+    - '`gh_compare_commits`'
+    - '`gh_compare_files`'
+    - '`gh_readme`'
+    - '`gh_contents`'
+    - '`gh_download`'
+    - '`is_collaborator`'
+    - '`gh_collaborators`'
+    - '`gh_permissions`'
+    - '`gh_commit_comment`'
+    - '`gh_commit_comments`'
+    - '`gh_contributers`'
+    - '`gh_languages`'
+    - '`gh_release`'
+    - '`gh_releases`'
+    - '`gh_asset`'
+    - '`gh_assets`'
+- title: Gists
+  desc: Functions for accessing information about gists and their contents.
+  contents:
+    - '`gh_gist`'
+    - '`gh_gists`'
+    - '`gh_gist_commits`'
+    - '`is_gist_starred`'
+    - '`gh_gist_forks`'
+    - '`gh_gist_comment`'
+    - '`gh_gist_comments`'
+    - '`gh_save_gist`'
+    - '`gh_source_gist`'
+- title: Git Data
+  desc: Functions for accessing git data directly.
+  contents:
+    - '`gh_git_blob`'
+    - '`gh_git_commit`'
+    - '`gh_git_reference`'
+    - '`is_tag`'
+    - '`gh_git_references`'
+    - '`gh_git_tag`'
+    - '`gh_git_tree`'
+    - '`gh_save`'
+    - '`gh_source`'
+- title: Issues
+  desc: Functions for accessing information about issues and their contents.
+  contents:
+    - '`gh_issue`'
+    - '`gh_issues`'
+    - '`gh_user_issues`'
+    - '`gh_assignees`'
+    - '`gh_issue_comments`'
+    - '`gh_issue_comment`'
+    - '`gh_label`'
+    - '`gh_labels`'
+    - '`gh_milestone`'
+    - '`gh_milestones`'
+    - '`gh_event`'
+    - '`gh_events`'
+- title: Pull Requests
+  desc: Functions for accessing information about pull requests and their contents.
+  contents:
+    - '`gh_pull_request`'
+    - '`gh_pull_requests`'
+    - '`gh_pull_commits`'
+    - '`gh_pull_files`'
+    - '`is_pull_merged`'
+    - '`gh_pull_review`'
+    - '`gh_pull_reviews`'
+    - '`gh_pull_comment`'
+    - '`gh_pull_comments`'
+    - '`gh_pull_review_requests`'
+- title: Projects
+  desc: Functions for accessing information about projects and their contents.
+  contents:
+    - '`gh_project`'
+    - '`gh_projects`'
+    - '`gh_column`'
+    - '`gh_columns`'
+    - '`gh_card`'
+    - '`gh_cards`'
+- title: Organizations
+  desc: Functions for accessing information about organizations.
+  contents:
+    - '`gh_organization`'
+    - '`gh_organizations`'
+    - '`is_member`'
+    - '`gh_members`'
+    - '`gh_membership`'
+    - '`gh_memberships`'
+    - '`gh_team`'
+    - '`gh_teams`'
+    - '`is_manager`'
+- title: Users
+  desc: Functions for accessing information about users.
+  contents:
+    - '`gh_user`'
+    - '`gh_users`'
+    - '`gh_user_email`'
+- title: GitHub API
+  desc: Functions for accessing the GitHub API.
+  contents:
+    - '`is_url`'
+    - '`is_sha`'
+    - '`is_repo`'
+    - '`gh_token`'
+    - '`gh_url`'
+    - '`gh_get`'
+    - '`gh_page`'
+    - '`gh_download_binary`'

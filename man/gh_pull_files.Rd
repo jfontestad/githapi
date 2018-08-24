@@ -10,22 +10,22 @@ gh_pull_files(pull_request, repo, n_max = 1000L, token = gh_token(),
 \arguments{
 \item{pull_request}{(integer) The number assigned to the pull request.}
 
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing the files changed on a pull request (see GitHub's API
-  documentation for details).
+documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/pulls/#list-pull-requests-files}
+\url{https://developer.github.com/v3/pulls/#list-pull-requests-files}
 }

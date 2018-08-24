@@ -2,15 +2,15 @@
 #
 #' Get a single issue
 #'
-#' \url{https://developer.github.com/v3/issues/#get-a-single-issue}
+#' <https://developer.github.com/v3/issues/#get-a-single-issue>
 #'
 #' @param issue (integer) The number assigned to the issue.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the issue (see GitHub's API documentation for details).
 #'
@@ -35,9 +35,9 @@ gh_issue <- function(
 #
 #' List issues for a repository
 #'
-#' \url{https://developer.github.com/v3/issues/#list-issues-for-a-repository}
+#' <https://developer.github.com/v3/issues/#list-issues-for-a-repository>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param milestone	(string)	If an integer is passed, it should refer to a milestone by its number
 #'   field. If the string * is passed, issues with any milestone are accepted. If the string none
 #'   is passed, issues without milestones are returned.
@@ -47,7 +47,7 @@ gh_issue <- function(
 #'   user, and * for issues assigned to any user.
 #' @param creator	(string) The user that created the issue.
 #' @param mentioned	(string) A user that's mentioned in the issue.
-#' @param labels	(string) A list of comma separated label names. Example: bug,ui,@high
+#' @param labels	(string) A list of comma separated label names. Example: bug,ui, high
 #' @param sort	(string) What to sort results by. Can be either created, updated, comments.
 #'   Default: created
 #' @param direction	(string) The direction of the sort. Can be either asc or desc. Default: desc
@@ -55,10 +55,10 @@ gh_issue <- function(
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the issues a repository has (see GitHub's API documentation for
 #'   more detail)
@@ -130,21 +130,19 @@ gh_issues <- function(
 #
 #' List issues assigned to the authenticated user
 #'
-#' \url{https://developer.github.com/v3/issues/#list-issues}
+#' <https://developer.github.com/v3/issues/#list-issues>
 #'
 #' @param org (string, optional) Filter the list to repositories owned by an organisation.
 #' @param filter (string) Indicates which sorts of issues to return. Can be one of:
-#'   \itemize{
-#'     \item assigned: Issues assigned to you
-#'     \item created: Issues created by you
-#'     \item mentioned: Issues mentioning you
-#'     \item subscribed: Issues you're subscribed to updates for
-#'     \item all: All issues the authenticated user can see, regardless of participation or creation
-#'     \item Default: assigned.
-#'   }
+#'  - `assigned`: Issues assigned to you
+#'  - `created`: Issues created by you
+#'  - `mentioned`: Issues mentioning you
+#'  - `subscribed`: Issues you're subscribed to updates for
+#'  - `all`: All issues the authenticated user can see, regardless of participation or creation
+#'  - `Default`: assigned.
 #' @param state (string) Indicates the state of the issues to return. Can be either open, closed,
 #'   or all. Default: open.
-#' @param labels (string) A list of comma separated label names. Example: bug,ui,@high.
+#' @param labels (string) A list of comma separated label names. Example: bug,ui, high.
 #' @param sort (string) What to sort results by. Can be either created, updated, comments.
 #'   Default: created.
 #' @param direction (string) The direction of the sort. Can be either asc or desc. Default: desc.
@@ -152,10 +150,10 @@ gh_issues <- function(
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the issues a user has assigned to them (see GitHub's API
 #'   documentation for more detail)
@@ -222,15 +220,15 @@ gh_user_issues <- function(
 #
 #' List assignees for issues in a repository
 #'
-#' \url{https://developer.github.com/v3/issues/assignees/#list-assignees}
+#' <https://developer.github.com/v3/issues/assignees/#list-assignees>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing all the assignees (see GitHub's API documentation for
 #'   more detail)
@@ -263,18 +261,18 @@ gh_assignees <- function(
 #
 #' List comments on an issue
 #'
-#' \url{https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue}
+#' <https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue>
 #'
 #' @param issue (integer) The number assigned to the issue.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param since (string) Only issues updated at or after this time are returned. This is a
 #'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the issue comments (see GitHub's API documentation for details).
 #'
@@ -319,15 +317,15 @@ gh_issue_comments <- function(
 #
 #' Get a single issue comment
 #'
-#' \url{https://developer.github.com/v3/issues/comments/#get-a-single-comment}
+#' <https://developer.github.com/v3/issues/comments/#get-a-single-comment>
 #'
 #' @param comment (integer) The number assigned to the comment.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the issue comment (see GitHub's API documentation for details).
 #'
@@ -352,15 +350,15 @@ gh_issue_comment <- function(
 #
 #' Get a single label
 #'
-#' url{https://developer.github.com/v3/issues/labels/#get-a-single-label}
+#' <https://developer.github.com/v3/issues/labels/#get-a-single-label>
 #'
 #' @param name (string) The name of the label.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the label (see GitHub's API documentation for details).
 #'
@@ -385,21 +383,21 @@ gh_label <- function(
 #
 #' List all labels for an issue, milestone or repository
 #'
-#' url{https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue}
-#' url{https://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone}
-#' url{https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository}
+#' <https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue>
+#' <https://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone>
+#' <https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository>
 #'
-#' Note: Must specify either \code{issue} or \code{milestone}, but not both.
+#' Note: Must specify either `issue` or `milestone`, but not both.
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param issue (integer) The number assigned to the issue.
 #' @param milestone (integer) The number assigned to the milestone.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the labels (see GitHub's API documentation for details).
 #'
@@ -446,15 +444,15 @@ gh_labels <- function(
 #
 #' Get a single milestone
 #'
-#' url{https://developer.github.com/v3/issues/milestones/#get-a-single-milestone}
+#' <https://developer.github.com/v3/issues/milestones/#get-a-single-milestone>
 #'
 #' @param milestone (integer) The number assigned to the milestone.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the milestone (see GitHub's API documentation for details).
 #'
@@ -479,18 +477,18 @@ gh_milestone <- function(
 #
 #' List milestones for a repository
 #'
-#' url{https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository}
+#' <https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param state (string) The state of the milestone. Either open, closed, or all. Default: open
 #' @param sort (string) What to sort results by. Either due_on or completeness. Default: due_on
 #' @param direction (string) The direction of the sort. Either asc or desc. Default: asc
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_page}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_page()].
 #'
 #' @return A tibble describing the milestones (see GitHub's API documentation for details).
 #'
@@ -537,15 +535,15 @@ gh_milestones <- function(
 #
 #' Get a single event
 #'
-#' url{https://developer.github.com/v3/issues/events/#get-a-single-event}
+#' <https://developer.github.com/v3/issues/events/#get-a-single-event>
 #'
 #' @param event (integer) The ID assigned to the event in GitHub.
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A list describing the event (see GitHub's API documentation for details).
 #'
@@ -570,17 +568,17 @@ gh_event <- function(
 #
 #' List events for an issue or all issues in a repository
 #'
-#' url{https://developer.github.com/v3/issues/events/#list-events-for-a-repository}
-#' url{https://developer.github.com/v3/issues/events/#list-events-for-an-issue}
+#' <https://developer.github.com/v3/issues/events/#list-events-for-a-repository>
+#' <https://developer.github.com/v3/issues/events/#list-events-for-an-issue>
 #'
-#' @param repo (string) The repository specified in the format: \code{"owner/repo"}.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param issue (integer, optional) The number assigned to the issue.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.
-#' @param ... Parameters passed to \code{\link{gh_get}}.
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_get()].
 #'
 #' @return A tibble describing the issue events (see GitHub's API documentation for details).
 #'

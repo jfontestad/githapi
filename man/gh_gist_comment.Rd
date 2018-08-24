@@ -13,16 +13,16 @@ gh_gist_comment(comment, gist, token = gh_token(),
 \item{gist}{(string) The ID of the gist in GitHub.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_get}}.}
+\item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }
 \value{
 A list describing the gist comment (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/gists/comments/#get-a-single-comment}
+\url{https://developer.github.com/v3/gists/comments/#get-a-single-comment}
 }

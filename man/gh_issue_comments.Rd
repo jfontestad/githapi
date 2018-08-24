@@ -10,7 +10,7 @@ gh_issue_comments(issue, repo, since = NULL, n_max = 1000L,
 \arguments{
 \item{issue}{(integer) The number assigned to the issue.}
 
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{since}{(string) Only issues updated at or after this time are returned. This is a
 timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
@@ -18,12 +18,12 @@ timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing the issue comments (see GitHub's API documentation for details).

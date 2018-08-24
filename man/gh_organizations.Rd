@@ -14,17 +14,17 @@ organizations are returned.}
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing the organizations (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/orgs/#list-all-organizations}
-url{https://developer.github.com/v3/orgs/#list-user-organizations}
+\url{https://developer.github.com/v3/orgs/#list-all-organizations}
+\url{https://developer.github.com/v3/orgs/#list-user-organizations}
 }

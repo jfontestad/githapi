@@ -8,7 +8,7 @@ gh_commit_comments(repo, ref, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{"owner/repo"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
 specified the head commit is used.}
@@ -16,17 +16,17 @@ specified the head commit is used.}
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{"GITHUB_TOKEN"} or \code{"GITHUB_PAT"}.}
+value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{"GITHUB_API_URL"} or \code{"https://api.github.com"}.}
+environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 
-\item{...}{Parameters passed to \code{\link{gh_page}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
 A tibble describing all the commit comments (see GitHub's API documentation for details).
 }
 \description{
-url{https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit}
-url{https://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository}
+\url{https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit}
+\url{https://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository}
 }
