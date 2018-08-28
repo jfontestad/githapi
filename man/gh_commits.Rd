@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_commits}
 \alias{gh_commits}
-\title{Get information about all the history of commits.}
+\title{Get information about all the history of commits}
 \usage{
 gh_commits(ref, repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)

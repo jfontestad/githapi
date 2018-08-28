@@ -352,7 +352,7 @@ gh_teams <- function(
     if (missing(repo)) {
       url <- gh_url("user/teams", api = api)
     } else {
-      stopifnot(is_string(repo) && identical(str_count(repo, "/"), 1L))
+      stopifnot(is_repo(repo))
       url <- gh_url("repos", repo, "teams", api = api)
     }
   } else {
@@ -390,7 +390,7 @@ is_manager <- function(
   ...)
 {
   stopifnot(is_count(team))
-  stopifnot(is_string(repo) && identical(str_count(repo, "/"), 1L))
+  stopifnot(is_repo(repo))
   stopifnot(is_sha(token))
   stopifnot(is_url(api))
 

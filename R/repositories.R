@@ -1,6 +1,6 @@
 #  FUNCTION: gh_repository --------------------------------------------------------------------
 #
-#' Get information about a repository.
+#' Get information about a repository
 #'
 #' <https://developer.github.com/v3/repos/#get>
 #'
@@ -31,6 +31,7 @@ gh_repository <- function(
 }
 
 #  FUNCTION: is_repository --------------------------------------------------------------------
+#
 #' Check whether the input is a valid repository
 #'
 #' <https://developer.github.com/v3/repos/#get>
@@ -155,7 +156,8 @@ gh_repositories <- function(
 }
 
 #  FUNCTION: gh_tags --------------------------------------------------------------------------
-#' Get information about all the tags in a repository.
+#
+#' Get information about all the tags in a repository
 #'
 #' <https://developer.github.com/v3/repos/#list-tags>
 #'
@@ -197,7 +199,7 @@ gh_tags <- function(
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
 #
-#' Get information about a branch.
+#' Get information about a branch
 #'
 #' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
@@ -232,7 +234,7 @@ gh_branch <- function(
 
 #  FUNCTION: is_branch ------------------------------------------------------------------------
 #
-#' Checks whether the input is a valid branch.
+#' Checks whether the input is a valid branch
 #'
 #' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
@@ -272,7 +274,7 @@ is_branch <- function(
 
 #  FUNCTION: gh_branches ----------------------------------------------------------------------
 #
-#' Get information about all the head commits in each branch.
+#' Get information about all the head commits in each branch
 #'
 #' <https://developer.github.com/v3/repos/branches/#list-branches>
 #'
@@ -312,7 +314,7 @@ gh_branches <- function(
 
 #  FUNCTION: gh_commit ------------------------------------------------------------------------
 #
-#' Get information about a commit.
+#' Get information about a commit
 #'
 #' <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
 #'
@@ -428,7 +430,7 @@ gh_commit_sha <- function(
 
 #  FUNCTION: gh_commits -----------------------------------------------------------------------
 #
-#' Get information about all the history of commits.
+#' Get information about all the history of commits
 #'
 #' <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
 #'
@@ -617,7 +619,7 @@ gh_readme <- function(
 
 #  FUNCTION: gh_contents ----------------------------------------------------------------------
 #
-#' Get contents of a file.
+#' Get contents of a file
 #'
 #' <https://developer.github.com/v3/repos/contents/#get-contents>
 #'
@@ -662,7 +664,7 @@ gh_contents <- function(
 
 #  FUNCTION: gh_download ----------------------------------------------------------------------
 #
-#' Download the entire tree from a commit.
+#' Download the entire tree from a commit
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.

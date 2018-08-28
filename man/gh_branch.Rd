@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_branch}
 \alias{gh_branch}
-\title{Get information about a branch.}
+\title{Get information about a branch}
 \usage{
 gh_branch(branch, repo, token = gh_token(),
   api = getOption("github.api"), ...)

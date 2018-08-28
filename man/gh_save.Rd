@@ -22,6 +22,8 @@ value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
 environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+
+\item{...}{Parameters passed to \code{\link[=gh_git_tree]{gh_git_tree()}}.}
 }
 \value{
 The file path of the saved file (invisibly).

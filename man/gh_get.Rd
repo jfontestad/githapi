@@ -2,7 +2,7 @@
 % Please edit documentation in R/githapi.R
 \name{gh_get}
 \alias{gh_get}
-\title{Send a http GET request to the specified GitHub url.}
+\title{Send a http GET request to the specified GitHub url}
 \usage{
 gh_get(url, accept = "json", parse = TRUE, token = gh_token())
 }
@@ -21,5 +21,5 @@ value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT
 A list of the parsed response
 }
 \description{
-Send a http GET request to the specified GitHub url.
+Send a http GET request to the specified GitHub url
 }

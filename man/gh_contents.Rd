@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_contents}
 \alias{gh_contents}
-\title{Get contents of a file.}
+\title{Get contents of a file}
 \usage{
 gh_contents(path, ref, repo, token = gh_token(),
   api = getOption("github.api"), ...)

@@ -364,7 +364,7 @@ gh_pull_comment <- function(
 
 #  FUNCTION: gh_pull_comments -----------------------------------------------------------------
 #
-#' List review comments on a pull request or all pull requests in a repository.
+#' List review comments on a pull request or all pull requests in a repository
 #'
 #' <https://developer.github.com/v3/pulls/reviews/#get-comments-for-a-single-review>
 #' <https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request>

@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User-friendly access to the GitHub API for R, consistent with the tidyverse. • githapi</title>
+<title>User-friendly access to the GitHub API for R, consistent with the tidyverse • githapi</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="User-friendly access to the GitHub API for R, consistent with the tidyverse.">
+<script src="pkgdown.js"></script><meta property="og:title" content="User-friendly access to the GitHub API for R, consistent with the tidyverse">
 <meta property="og:description" content="Provides a suite of functions which simplify working with GitHub's API.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -70,6 +70,7 @@
 <div id="githapi" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#githapi" class="anchor"></a>githapi</h1></div>
+
 <p>User-friendly access to the GitHub API for R, consistent with the tidyverse.</p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
@@ -104,15 +105,15 @@
 <a href="#getting-information-about-a-users-repositories" class="anchor"></a>Getting information about a user’s repositories</h3>
 <p>The main reason for using githapi is to extract information from GitHub. For example to find all the repositories a user has use the function <code><a href="reference/gh_repositories.html">gh_repositories()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_repositories.html">gh_repositories</a></span>(<span class="st">"ChadGoymer"</span>)</code></pre></div>
-<pre><code>## [08:52:06] &gt; GET: https://api.github.com/users/ChadGoymer/repos?per_page=100</code></pre>
-<pre><code>## [08:52:06] &gt; Parsing content</code></pre>
-<pre><code>## [08:52:06] &gt; Done</code></pre>
+<pre><code>## [18:13:35] &gt; GET: https://api.github.com/users/ChadGoymer/repos?per_page=100</code></pre>
+<pre><code>## [18:13:36] &gt; Parsing content</code></pre>
+<pre><code>## [18:13:36] &gt; Done</code></pre>
 <pre><code>## # A tibble: 9 x 11
 ##   name  description owner_login owner_type default_branch open_issues  size
 ##   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                &lt;int&gt; &lt;int&gt;
 ## 1 chad~ My persona~ ChadGoymer  User       master                   0   156
 ## 2 git-~ Simple gui~ ChadGoymer  User       master                   0     2
-## 3 gith~ User-frien~ ChadGoymer  User       master                   5   564
+## 3 gith~ User-frien~ ChadGoymer  User       master                   8   724
 ## 4 logr  &lt;NA&gt;        ChadGoymer  User       master                   0     0
 ## 5 r-be~ A set of g~ ChadGoymer  User       master                   0 11306
 ## 6 r-py~ &lt;NA&gt;        ChadGoymer  User       master                   0  1172
@@ -123,32 +124,33 @@
 ## #   updated_at &lt;dttm&gt;</code></pre>
 <p>Information on the branches in a particular repository can then be obtained using <code><a href="reference/gh_branches.html">gh_branches()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_branches.html">gh_branches</a></span>(<span class="st">"ChadGoymer/githapi"</span>)</code></pre></div>
-<pre><code>## [08:52:06] &gt; GET: https://api.github.com/repos/ChadGoymer/githapi/branches?per_page=100</code></pre>
-<pre><code>## [08:52:06] &gt; Parsing content</code></pre>
-<pre><code>## [08:52:06] &gt; Done</code></pre>
-<pre><code>## # A tibble: 3 x 3
-##   name      commit_sha              commit_url                            
-##   &lt;chr&gt;     &lt;chr&gt;                   &lt;chr&gt;                                 
-## 1 0-test-b~ e93edf23e95b59d08853e2~ https://api.github.com/repos/ChadGoym~
-## 2 develop   27097e72c1cba202c23901~ https://api.github.com/repos/ChadGoym~
-## 3 master    702c033f59081cd12b364d~ https://api.github.com/repos/ChadGoym~</code></pre>
+<pre><code>## [18:13:36] &gt; GET: https://api.github.com/repos/ChadGoymer/githapi/branches?per_page=100</code></pre>
+<pre><code>## [18:13:37] &gt; Parsing content</code></pre>
+<pre><code>## [18:13:37] &gt; Done</code></pre>
+<pre><code>## # A tibble: 4 x 3
+##   name        commit_sha             commit_url                           
+##   &lt;chr&gt;       &lt;chr&gt;                  &lt;chr&gt;                                
+## 1 0-test-bra~ e93edf23e95b59d08853e~ https://api.github.com/repos/ChadGoy~
+## 2 65-hook-up~ 5db96593332e004c30122~ https://api.github.com/repos/ChadGoy~
+## 3 develop     27097e72c1cba202c2390~ https://api.github.com/repos/ChadGoy~
+## 4 master      dc7da99ef557f362d5f2c~ https://api.github.com/repos/ChadGoy~</code></pre>
 <p>The history of a branch can be obtained using <code><a href="reference/gh_commits.html">gh_commits()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_commits.html">gh_commits</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
-<pre><code>## [08:52:06] &gt; GET: https://api.github.com/repos/ChadGoymer/githapi/commits?sha=master&amp;per_page=100</code></pre>
-<pre><code>## [08:52:07] &gt; Parsing content</code></pre>
-<pre><code>## [08:52:07] &gt; Done</code></pre>
-<pre><code>## [08:52:07] &gt; GET: https://api.github.com/repositories/93376315/commits?sha=master&amp;per_page=100&amp;page=2</code></pre>
-<pre><code>## [08:52:07] &gt; Parsing content</code></pre>
-<pre><code>## [08:52:07] &gt; Done</code></pre>
+<pre><code>## [18:13:37] &gt; GET: https://api.github.com/repos/ChadGoymer/githapi/commits?sha=master&amp;per_page=100</code></pre>
+<pre><code>## [18:13:38] &gt; Parsing content</code></pre>
+<pre><code>## [18:13:38] &gt; Done</code></pre>
+<pre><code>## [18:13:38] &gt; GET: https://api.github.com/repositories/93376315/commits?sha=master&amp;per_page=100&amp;page=2</code></pre>
+<pre><code>## [18:13:40] &gt; Parsing content</code></pre>
+<pre><code>## [18:13:40] &gt; Done</code></pre>
 <pre><code>## # A tibble: 6 x 10
 ##   sha   message author_name author_email committer_name committer_email
 ##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;          
-## 1 702c~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-## 2 b390~ update~ Unknown     chad.goymer~ Unknown        chad.goymer@ll~
-## 3 5e05~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-## 4 27c0~ added ~ Unknown     chad.goymer~ Unknown        chad.goymer@ll~
-## 5 9631~ update~ Unknown     chad.goymer~ Unknown        chad.goymer@ll~
-## 6 26fd~ update~ Unknown     chad.goymer~ Unknown        chad.goymer@ll~
+## 1 dc7d~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+## 2 9b31~ Merge ~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+## 3 abcc~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 4 2709~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+## 5 0262~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 6 00fd~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
 ## # ... with 4 more variables: date &lt;dttm&gt;, url &lt;chr&gt;, tree_sha &lt;chr&gt;,
 ## #   tree_url &lt;chr&gt;</code></pre>
 </div>
@@ -157,23 +159,26 @@
 <a href="#getting-the-contents-of-files" class="anchor"></a>Getting the contents of files</h3>
 <p>There are a few ways of getting the content of a text file in GitHub. For files of less than 1 MB, you can use <code><a href="reference/gh_contents.html">gh_contents()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_contents.html">gh_contents</a></span>(<span class="st">"DESCRIPTION"</span>, <span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</code></pre></div>
-<pre><code>## [08:52:07] &gt; GET: https://api.github.com/repos/ChadGoymer/githapi/contents/DESCRIPTION?ref=master</code></pre>
-<pre><code>## [08:52:07] &gt; Parsing content</code></pre>
-<pre><code>## [08:52:07] &gt; Done</code></pre>
+<pre><code>## [18:13:40] &gt; GET: https://api.github.com/repos/ChadGoymer/githapi/contents/DESCRIPTION?ref=master</code></pre>
+<pre><code>## [18:13:40] &gt; Parsing content</code></pre>
+<pre><code>## [18:13:40] &gt; Done</code></pre>
 <pre><code>## Package: githapi
 ## Title: User-friendly access to the GitHub API for R, consistent with the tidyverse.
-## Version: 0.6.0
+## Version: 0.6.1
 ## Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("aut", "cre"))
 ## Description: Provides a suite of functions which simplify working with GitHub's API.
 ## Imports:
 ##     curl,
 ##     jsonlite,
 ##     dplyr
-## License: None
+## Roxygen: list(markdown = TRUE)
+## License: MIT + file LICENSE
 ## Encoding: UTF-8
 ## LazyData: true
 ## Suggests: testthat
-## RoxygenNote: 6.0.1</code></pre>
+## RoxygenNote: 6.1.0
+## URL: https://github.com/ChadGoymer/githapi
+## BugReports: https://github.com/ChadGoymer/githapi/issues</code></pre>
 <p>The README file can be downloaded using <code><a href="reference/gh_readme.html">gh_readme()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_readme.html">gh_readme</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>)</code></pre></div>
 <p>For larger files, up to 100 MB, you can use the <code><a href="reference/gh_git_blob.html">gh_git_blob()</a></code> function, or the move convenient <code><a href="reference/gh_save.html">gh_save()</a></code>, which downloads the file as a binary blob and writes it to disk:</p>
@@ -216,7 +221,13 @@
 </ul>
 </div>
 
-      </div>
+      <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/ChadGoymer/githapi"><img src="https://travis-ci.org/ChadGoymer/githapi.svg?branch=master" alt="Build Status"></a></li>
+</ul>
+</div>
+</div>
 
 </div>
 

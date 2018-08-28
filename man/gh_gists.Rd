@@ -2,7 +2,7 @@
 % Please edit documentation in R/gists.R
 \name{gh_gists}
 \alias{gh_gists}
-\title{List a user's gists, or all public or starred gists.}
+\title{List a user's gists, or all public or starred gists}
 \usage{
 gh_gists(user, since = NULL, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)

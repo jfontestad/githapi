@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_download}
 \alias{gh_download}
-\title{Download the entire tree from a commit.}
+\title{Download the entire tree from a commit}
 \usage{
 gh_download(ref, repo, path, token = gh_token(),
   api = getOption("github.api"), ...)
@@ -27,5 +27,5 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 Full tree of files in specified location.
 }
 \description{
-Download the entire tree from a commit.
+Download the entire tree from a commit
 }
