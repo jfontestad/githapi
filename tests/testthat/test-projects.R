@@ -63,7 +63,7 @@ test_that("gh_card returns a list describing the card", {
   expect_is(card, "list")
   expect_named(
     card,
-    c("url", "id", "node_id", "note", "creator", "created_at",
+    c("url", "project_url", "id", "node_id", "note", "archived", "creator", "created_at",
       "updated_at", "column_url", "content_url"))
   expect_identical(
     card$content_url,
