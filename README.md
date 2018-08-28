@@ -1,6 +1,9 @@
 githapi
 =======
 
+[![Build
+Status](https://travis-ci.org/ChadGoymer/githapi.svg?branch=master)](https://travis-ci.org/ChadGoymer/githapi)
+
 User-friendly access to the GitHub API for R, consistent with the
 tidyverse.
 
@@ -53,55 +56,73 @@ For example to find all the repositories a user has use the function
 
     gh_repositories("ChadGoymer")
 
-    ## # A tibble: 13 x 11
-    ##                    name owner_login owner_type
-    ##                   <chr>       <chr>      <chr>
-    ##  1 chadgoymer.github.io  ChadGoymer       User
-    ##  2         git-training  ChadGoymer       User
-    ##  3              githapi  ChadGoymer       User
-    ##  4               githug  ChadGoymer       User
-    ##  5               inputs  ChadGoymer       User
-    ##  6                 logr  ChadGoymer       User
-    ##  7                model  ChadGoymer       User
-    ##  8              outputs  ChadGoymer       User
-    ##  9            r-project  ChadGoymer       User
-    ## 10    r-python-workshop  ChadGoymer       User
-    ## 11           r-training  ChadGoymer       User
-    ## 12               rfiles  ChadGoymer       User
-    ## 13       shiny-workshop  ChadGoymer       User
-    ## # ... with 8 more variables: description <chr>, html_url <chr>, url <chr>,
-    ## #   created_at <dttm>, updated_at <dttm>, size <int>, open_issues <int>,
-    ## #   default_branch <chr>
+    ## [18:12:03] > GET: https://api.github.com/users/ChadGoymer/repos?per_page=100
+
+    ## [18:12:03] > Parsing content
+
+    ## [18:12:03] > Done
+
+    ## # A tibble: 9 x 11
+    ##   name  description owner_login owner_type default_branch open_issues  size
+    ##   <chr> <chr>       <chr>       <chr>      <chr>                <int> <int>
+    ## 1 chad~ My persona~ ChadGoymer  User       master                   0   156
+    ## 2 git-~ Simple gui~ ChadGoymer  User       master                   0     2
+    ## 3 gith~ User-frien~ ChadGoymer  User       master                   8   724
+    ## 4 logr  <NA>        ChadGoymer  User       master                   0     0
+    ## 5 r-be~ A set of g~ ChadGoymer  User       master                   0 11306
+    ## 6 r-py~ <NA>        ChadGoymer  User       master                   0  1172
+    ## 7 r-tr~ Training m~ ChadGoymer  User       master                   0  1229
+    ## 8 rfil~ An R packa~ ChadGoymer  User       master                   0     2
+    ## 9 shin~ <NA>        ChadGoymer  User       master                   0 13408
+    ## # ... with 4 more variables: url <chr>, html_url <chr>, created_at <dttm>,
+    ## #   updated_at <dttm>
 
 Information on the branches in a particular repository can then be
 obtained using `gh_branches()`:
 
     gh_branches("ChadGoymer/githapi")
 
-    ## # A tibble: 3 x 3
-    ##            name                               commit_sha
-    ##           <chr>                                    <chr>
-    ## 1 0-test-branch e93edf23e95b59d08853e2515ce9296c77d09712
-    ## 2       develop dcf71d189010f4ad7ef9630200cf432c61ffa04b
-    ## 3        master dcf71d189010f4ad7ef9630200cf432c61ffa04b
-    ## # ... with 1 more variables: commit_url <chr>
+    ## [18:12:04] > GET: https://api.github.com/repos/ChadGoymer/githapi/branches?per_page=100
+
+    ## [18:12:05] > Parsing content
+
+    ## [18:12:05] > Done
+
+    ## # A tibble: 4 x 3
+    ##   name        commit_sha             commit_url                           
+    ##   <chr>       <chr>                  <chr>                                
+    ## 1 0-test-bra~ e93edf23e95b59d08853e~ https://api.github.com/repos/ChadGoy~
+    ## 2 65-hook-up~ 5db96593332e004c30122~ https://api.github.com/repos/ChadGoy~
+    ## 3 develop     27097e72c1cba202c2390~ https://api.github.com/repos/ChadGoy~
+    ## 4 master      dc7da99ef557f362d5f2c~ https://api.github.com/repos/ChadGoy~
 
 The history of a branch can be obtained using `gh_commits()`:
 
     gh_commits("master", "ChadGoymer/githapi") %>% head()
 
+    ## [18:12:05] > GET: https://api.github.com/repos/ChadGoymer/githapi/commits?sha=master&per_page=100
+
+    ## [18:12:14] > Parsing content
+
+    ## [18:12:14] > Done
+
+    ## [18:12:14] > GET: https://api.github.com/repositories/93376315/commits?sha=master&per_page=100&page=2
+
+    ## [18:12:15] > Parsing content
+
+    ## [18:12:15] > Done
+
     ## # A tibble: 6 x 10
-    ##                                        sha                date
-    ##                                      <chr>              <dttm>
-    ## 1 dcf71d189010f4ad7ef9630200cf432c61ffa04b 2017-10-17 07:41:53
-    ## 2 129bb138feeaef8707a293c3da679ef88e142443 2017-10-17 07:36:29
-    ## 3 467d3edf21dd83d333081aab2d84fbf1424c57cb 2017-10-17 07:34:54
-    ## 4 7f6e7287e25a42d0d65d8275e1362b2b0ab8c5bc 2017-10-17 07:34:19
-    ## 5 01aea2754a11e8f28bf391e95c1bacf8cf93c840 2017-10-12 17:23:49
-    ## 6 8efe2a88da3eb015254110b122235263e2ac5e53 2017-10-12 17:20:05
-    ## # ... with 8 more variables: message <chr>, url <chr>, author_name <chr>,
-    ## #   author_email <chr>, committer_name <chr>, committer_email <chr>,
-    ## #   tree_sha <chr>, tree_url <chr>
+    ##   sha   message author_name author_email committer_name committer_email
+    ##   <chr> <chr>   <chr>       <chr>        <chr>          <chr>          
+    ## 1 dc7d~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+    ## 2 9b31~ Merge ~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+    ## 3 abcc~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+    ## 4 2709~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+    ## 5 0262~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+    ## 6 00fd~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+    ## # ... with 4 more variables: date <dttm>, url <chr>, tree_sha <chr>,
+    ## #   tree_url <chr>
 
 ### Getting the contents of files
 
@@ -110,26 +131,29 @@ For files of less than 1 MB, you can use `gh_contents()`:
 
     gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi") %>% cat()
 
+    ## [18:12:15] > GET: https://api.github.com/repos/ChadGoymer/githapi/contents/DESCRIPTION?ref=master
+
+    ## [18:12:15] > Parsing content
+
+    ## [18:12:15] > Done
+
     ## Package: githapi
     ## Title: User-friendly access to the GitHub API for R, consistent with the tidyverse.
-    ## Version: 0.5.0
+    ## Version: 0.6.1
     ## Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("aut", "cre"))
     ## Description: Provides a suite of functions which simplify working with GitHub's API.
     ## Imports:
-    ##     assertthat,
-    ##     httr,
+    ##     curl,
     ##     jsonlite,
-    ##     stringr,
-    ##     tibble,
-    ##     readr,
-    ##     purrr,
-    ##     rlang,
     ##     dplyr
-    ## License: None
+    ## Roxygen: list(markdown = TRUE)
+    ## License: MIT + file LICENSE
     ## Encoding: UTF-8
     ## LazyData: true
     ## Suggests: testthat
-    ## RoxygenNote: 6.0.1
+    ## RoxygenNote: 6.1.0
+    ## URL: https://github.com/ChadGoymer/githapi
+    ## BugReports: https://github.com/ChadGoymer/githapi/issues
 
 The README file can be downloaded using `gh_readme()`:
 
