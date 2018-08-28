@@ -13,6 +13,8 @@ the head commit is used.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
+\item{recursive}{(logical) Whether to list files recursively. Default: TRUE.}
+
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 

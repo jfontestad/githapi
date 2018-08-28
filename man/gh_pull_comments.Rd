@@ -2,7 +2,7 @@
 % Please edit documentation in R/pull-requests.R
 \name{gh_pull_comments}
 \alias{gh_pull_comments}
-\title{List review comments on a pull request or all pull requests in a repository.}
+\title{List review comments on a pull request or all pull requests in a repository}
 \usage{
 gh_pull_comments(repo, pull_request, review, sort = NULL,
   direction = NULL, since = NULL, n_max = 1000L,

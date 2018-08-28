@@ -40,7 +40,7 @@ gh_gist <- function(
 
 #  FUNCTION: gh_gists -------------------------------------------------------------------------
 #
-#' List a user's gists, or all public or starred gists.
+#' List a user's gists, or all public or starred gists
 #'
 #' <https://developer.github.com/v3/gists/#list-a-users-gists>
 #' <https://developer.github.com/v3/gists/#list-a-users-gists>
@@ -332,6 +332,7 @@ gh_gist_comments <- function(
 #'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_gist()].
 #'
 #' @return The file path of the saved file (invisibly).
 #'
@@ -351,7 +352,7 @@ gh_save_gist <- function(
   stopifnot(is_sha(token))
   stopifnot(is_url(api))
 
-  gist_files <- gh_gist(gist, sha = sha, token = token, api = api)[["files"]]
+  gist_files <- gh_gist(gist, sha = sha, token = token, api = api, ...)[["files"]]
   gist_urls <- sapply(gist_files, getElement, "raw_url")
 
   if (!missing(files)) {

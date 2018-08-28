@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_branches}
 \alias{gh_branches}
-\title{Get information about all the head commits in each branch.}
+\title{Get information about all the head commits in each branch}
 \usage{
 gh_branches(repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_tags}
 \alias{gh_tags}
-\title{Get information about all the tags in a repository.}
+\title{Get information about all the tags in a repository}
 \usage{
 gh_tags(repo, n_max = 1000L, token = gh_token(),
   api = getOption("github.api"), ...)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{is_branch}
 \alias{is_branch}
-\title{Checks whether the input is a valid branch.}
+\title{Checks whether the input is a valid branch}
 \usage{
 is_branch(branch, repo, token = gh_token(),
   api = getOption("github.api"), ...)

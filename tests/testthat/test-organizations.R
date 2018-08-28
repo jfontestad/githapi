@@ -8,9 +8,9 @@ test_that("gh_organization returns a list describing the organization", {
     tidyverse,
     c("login", "id", "node_id", "url", "repos_url", "events_url", "hooks_url", "issues_url",
       "members_url", "public_members_url", "avatar_url", "description", "name", "company",
-      "blog", "location", "email", "has_organization_projects", "has_repository_projects",
-      "public_repos", "public_gists", "followers", "following", "html_url", "created_at",
-      "updated_at", "type"))
+      "blog", "location", "email", "is_verified", "has_organization_projects",
+      "has_repository_projects", "public_repos", "public_gists", "followers", "following",
+      "html_url", "created_at", "updated_at", "type"))
   expect_identical(tidyverse$login, "tidyverse")
 })
 

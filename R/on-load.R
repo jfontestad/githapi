@@ -3,7 +3,7 @@
   if (identical(token, ""))
     token <- Sys.getenv("GITHUB_PAT")
   if (identical(token, ""))
-    message("Cannot find a GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
+    packageStartupMessage("Cannot find a GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
 
   github_env <- list(
     GITHUB_API = "https://api.github.com",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/git-data.R
 \name{is_tag}
 \alias{is_tag}
-\title{Check whether the input is a valid tag.}
+\title{Check whether the input is a valid tag}
 \usage{
 is_tag(tag, repo, token = gh_token(), api = getOption("github.api"),
   ...)

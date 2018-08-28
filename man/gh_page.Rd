@@ -2,7 +2,7 @@
 % Please edit documentation in R/githapi.R
 \name{gh_page}
 \alias{gh_page}
-\title{Get and parse the contents of a github http request, including multiple pages.}
+\title{Get and parse the contents of multiple pages from a github http request}
 \usage{
 gh_page(url, accept = "json", n_max = 1000L, token = gh_token(), ...)
 }
@@ -23,5 +23,5 @@ value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT
 A list of the combined parsed responses
 }
 \description{
-Get and parse the contents of a github http request, including multiple pages.
+Get and parse the contents of multiple pages from a github http request
 }

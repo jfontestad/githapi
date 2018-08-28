@@ -110,7 +110,7 @@ gh_git_reference <- function(
 
 #  FUNCTION: is_tag ---------------------------------------------------------------------------
 #
-#' Check whether the input is a valid tag.
+#' Check whether the input is a valid tag
 #'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
@@ -196,8 +196,8 @@ gh_git_references <- function(
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"))) %>%
     mutate(
-      name = ifelse(grepl("pull", ref), basename(dirname(ref)), basename(ref)),
-      type = ifelse(grepl("pull", ref), ref_map[basename(ref)], ref_map[dirname(ref)]))
+      name = ifelse(grepl("pull", .data$ref), basename(dirname(.data$ref)), basename(.data$ref)),
+      type = ifelse(grepl("pull", .data$ref), ref_map[basename(.data$ref)], ref_map[dirname(.data$ref)]))
 }
 
 #  FUNCTION: gh_git_tag -----------------------------------------------------------------------
@@ -244,6 +244,7 @@ gh_git_tag <- function(
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param recursive (logical) Whether to list files recursively. Default: TRUE.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -296,6 +297,7 @@ gh_git_tree <- function(
 #'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
 #'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_git_tree()].
 #'
 #' @return The file path of the saved file (invisibly).
 #'
@@ -317,7 +319,7 @@ gh_save <- function(
   stopifnot(is_sha(token))
   stopifnot(is_url(api))
 
-  repo_files <- gh_git_tree(ref = ref, repo = repo, recursive = TRUE, token = token, api = api)
+  repo_files <- gh_git_tree(ref = ref, repo = repo, recursive = TRUE, token = token, api = api, ...)
 
   if (all(files %in% repo_files$path)) {
     blob_paths <- repo_files[repo_files$path %in% files,][["path"]]
