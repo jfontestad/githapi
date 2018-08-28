@@ -117,7 +117,7 @@ gh_url <- function(
 
 #  FUNCTION: gh_get ---------------------------------------------------------------------------
 #
-#' Send a http GET request to the specified GitHub url.
+#' Send a http GET request to the specified GitHub url
 #'
 #' @param url (string) URL to the GitHub API.
 #' @param accept (string) The format of the returned result. Either "json", "raw" or other
@@ -185,7 +185,7 @@ gh_get <- function(
 
 #  FUNCTION: gh_page --------------------------------------------------------------------------
 #
-#' Get and parse the contents of a github http request, including multiple pages.
+#' Get and parse the contents of multiple pages from a github http request
 #'
 #' @param url (string) URL for GitHub API endpoint.
 #' @param accept (string) The format of the returned result. Either "json", "raw" or other

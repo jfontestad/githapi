@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_commit}
 \alias{gh_commit}
-\title{Get information about a commit.}
+\title{Get information about a commit}
 \usage{
 gh_commit(ref, repo, token = gh_token(), api = getOption("github.api"),
   ...)
