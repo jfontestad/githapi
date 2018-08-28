@@ -196,8 +196,8 @@ gh_git_references <- function(
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"))) %>%
     mutate(
-      name = ifelse(grepl("pull", ref), basename(dirname(ref)), basename(ref)),
-      type = ifelse(grepl("pull", ref), ref_map[basename(ref)], ref_map[dirname(ref)]))
+      name = ifelse(grepl("pull", .data$ref), basename(dirname(.data$ref)), basename(.data$ref)),
+      type = ifelse(grepl("pull", .data$ref), ref_map[basename(.data$ref)], ref_map[dirname(.data$ref)]))
 }
 
 #  FUNCTION: gh_git_tag -----------------------------------------------------------------------

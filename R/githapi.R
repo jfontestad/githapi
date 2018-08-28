@@ -5,6 +5,9 @@
 #' Provides a suite of functions which simplify working with GitHub's API.
 #'
 #' @import curl jsonlite dplyr
+#' @importFrom methods as is
+#' @importFrom utils unzip
+#'
 #' @docType package
 #' @name githapi
 NULL
