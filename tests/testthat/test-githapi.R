@@ -47,7 +47,7 @@ test_that("gh_get returns raw text when accept = raw", {
     file.path(getOption("github.api"), "repos/ChadGoymer/githapi/readme"),
     accept = "raw")
   expect_true(is.character(readme) && identical(length(readme), 1L))
-  expect_match(readme, "^githapi\n=======\n\nUser-friendly access to the GitHub API for R")
+  expect_match(readme, "^githapi")
 })
 
 # FUNCTION: gh_page ---------------------------------------------------------------------------
