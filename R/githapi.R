@@ -12,20 +12,6 @@
 #' @name githapi
 NULL
 
-#  FUNCTION: is_url ---------------------------------------------------------------------------
-#
-#' Checks whether the supplied object is a valid URL
-#'
-#' @param x Object to check
-#'
-#' @return TRUE if x is a valid URL, FALSE otherwise
-#'
-#' @export
-#'
-is_url <- function(x) {
-  is_string(x) && grepl("^http", x)
-}
-
 #  FUNCTION: is_sha ---------------------------------------------------------------------------
 #
 #' Checks whether the supplied object is a valid SHA
@@ -68,14 +54,14 @@ is_repo <- function(x) {
 #'
 gh_token <- function() {
   token <- getOption("github.token")
-  if (is.null(token)) {
+  if (is_null(token)) {
     token <- Sys.getenv("GITHUB_TOKEN")
   }
   if (identical(token, "")) {
     token <- Sys.getenv("GITHUB_PAT")
   }
   if (identical(token, "")) {
-    stop("Cannot find GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
+    error("Cannot find GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
   }
   token
 }
@@ -97,12 +83,12 @@ gh_url <- function(
   ...,
   api = getOption("github.api"))
 {
-  stopifnot(is_url(api))
+  assert(is_url(api))
 
   url  <- api
   dots <- unlist(list(...))
 
-  if (is.null(names(dots))) {
+  if (is_null(names(dots))) {
     path <- paste(dots, collapse = "/")
   } else {
     path <- paste(dots[names(dots) == ""], collapse = "/")
@@ -110,7 +96,7 @@ gh_url <- function(
   if (!identical(length(path), 0L))
     url <- file.path(url, path)
 
-  query <- dots[names(dots) != "" & !sapply(dots, is.null)]
+  query <- dots[names(dots) != "" & !sapply(dots, is_null)]
   if (!identical(length(query), 0L)) {
     url <- paste0(url, "?", paste(names(query), query, sep = "=", collapse = "&"))
   }
@@ -139,10 +125,10 @@ gh_get <- function(
   parse  = TRUE,
   token  = gh_token())
 {
-  stopifnot(is_url(url))
-  stopifnot(is_string(accept))
-  stopifnot(is_flag(parse))
-  stopifnot(is_string(token))
+  assert(is_url(url))
+  assert(is_string(accept))
+  assert(is_boolean(parse))
+  assert(is_string(token))
 
   if (identical(accept, "raw")) {
     accept <- "application/vnd.github.raw"
@@ -150,7 +136,7 @@ gh_get <- function(
     accept <- "application/vnd.github.v3+json"
   }
 
-  msg("> GET: ", url)
+  info("> GET: ", url, level = 2)
   response <- curl_fetch_memory(url, handle = handle_setheaders(
     new_handle(),
     Authorization = paste("token", token),
@@ -164,7 +150,7 @@ gh_get <- function(
   names(header_values) <- sapply(response_header, function(h) h[[1]])
 
   if (parse) {
-    msg("> Parsing content")
+    info("> Parsing response", level = 2)
     response_content <- rawToChar(response$content)
     if (grepl("json$", tolower(accept))) {
       response_content <- fromJSON(response_content, simplifyVector = FALSE)
@@ -173,7 +159,7 @@ gh_get <- function(
   }
 
   if (response$status_code >= 400) {
-    stop(
+    error(
       "\nGitHub GET request failed\n",
       "\n[Status]: ", header_values$Status,
       "\n[URL]: ", url,
@@ -182,7 +168,7 @@ gh_get <- function(
 
   attributes(response_content) <- c(attributes(response_content), list(header = header_values))
 
-  msg("> Done")
+  info("> Done", level = 2)
   response_content
 }
 
@@ -209,10 +195,10 @@ gh_page <- function(
   token  = gh_token(),
   ...)
 {
-  stopifnot(is_url(url))
-  stopifnot(is_string(accept))
-  stopifnot(is_integer(n_max), n_max > 0)
-  stopifnot(is_string(token))
+  assert(is_url(url))
+  assert(is_string(accept))
+  assert(is_integer(n_max), n_max > 0)
+  assert(is_string(token))
 
   per_page <- min(n_max, 100)
   if (grepl("\\?", url)) {
@@ -227,13 +213,16 @@ gh_page <- function(
     page <- gh_get(url = url, accept = accept, token = token, ...)
     response <- c(response, page)
     if (length(response) >= n_max) {
+      info("> Returned ", length(response), level = 2)
       return(response[1:n_max])
     }
-    if (is.null(attributes(page)[["header"]][["Link"]])) {
+    if (is_null(attributes(page)[["header"]][["Link"]])) {
+      info("> Returned ", length(response), level = 2)
       return(response)
     }
     links <- strsplit(attributes(page)[["header"]][["Link"]], ", ")[[1]]
     if (!any(grepl("next", links))) {
+      info("> Returned ", length(response), level = 2)
       return(response)
     }
     url <- sub("<", "", strsplit(links[grepl("next", links)], ">")[[1]][[1]])
@@ -258,25 +247,25 @@ gh_download_binary <- function(
   path,
   token = gh_token())
 {
-  stopifnot(is_url(url))
-  stopifnot(is_writeable(dirname(path)))
-  stopifnot(is_string(token))
+  assert(is_url(url))
+  assert(is_writeable(dirname(path)))
+  assert(is_string(token))
 
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
-  msg("> DOWNLOAD: ", url)
+  info("> DOWNLOAD: ", url, level = 2)
   response <- curl_fetch_disk(url, path, handle = handle_setheaders(
     new_handle(),
     Authorization = paste("token", token),
     Accept = "application/vnd.github.raw"))
 
-  msg("> Parsing response")
+  info("> Parsing response", level = 2)
   response_header  <- strsplit(parse_headers(response$header), ": ")
   header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]]))
   names(header_values) <- sapply(response_header, function(h) h[[1]])
 
-  if (!is.null(response$status) && response$status >= 400) {
-    stop(
+  if (!is_null(response$status) && response$status >= 400) {
+    error(
       "\nGitHub GET request failed\n",
       "\n[Status]:  ", header_values[[1]],
       "\n[URL]:     ", url,
@@ -285,6 +274,6 @@ gh_download_binary <- function(
 
   attributes(path) <- c(attributes(path), list(header = header_values))
 
-  msg("> Done")
+  info("> Done", level = 2)
   path
 }

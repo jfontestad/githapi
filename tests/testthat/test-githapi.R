@@ -46,7 +46,7 @@ test_that("gh_get returns raw text when accept = raw", {
   readme <- gh_get(
     file.path(getOption("github.api"), "repos/ChadGoymer/githapi/readme"),
     accept = "raw")
-  expect_true(is.character(readme) && identical(length(readme), 1L))
+  expect_true(is_character(readme) && identical(length(readme), 1L))
   expect_match(readme, "^githapi")
 })
 
