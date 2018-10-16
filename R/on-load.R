@@ -6,8 +6,9 @@
     packageStartupMessage("Cannot find a GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
 
   github_env <- list(
-    GITHUB_API = "https://api.github.com",
-    GITHUB_TOKEN = token)
+    GITHUB_API   = "https://api.github.com",
+    GITHUB_TOKEN = token,
+    GITHAPI_LOGS = "")
 
   toset <- sapply(names(github_env), function(e) identical(Sys.getenv(e), ""))
   if (any(toset)) do.call(Sys.setenv, github_env[toset])
@@ -17,6 +18,6 @@
   do.call(options, github_options)
 
   options(
-    githapi.debug_messages = TRUE,  # Whether to output debug messages
-    githapi.log_path = "~")
+    githapi.debug_types  = c("INFO", "WARNING", "ERROR"),  # The type of debug messages to report
+    githapi.debug_level = 1)                              # The level of debug messages to report
 }

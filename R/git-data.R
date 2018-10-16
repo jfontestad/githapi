@@ -24,10 +24,10 @@ gh_git_blob <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_sha(sha))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_sha(sha))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   blob <- gh_get(
     gh_url("repos", repo, "git/blobs", sha, api = api),
@@ -62,10 +62,10 @@ gh_git_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_sha(sha))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_sha(sha))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("repos", repo, "git/commits", sha, api = api),
@@ -98,10 +98,10 @@ gh_git_reference <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(ref))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(ref))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("repos", repo, "git/refs", ref, api = api),
@@ -173,10 +173,10 @@ gh_git_references <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   ref_map <- c(
     "refs/heads" = "branch",
@@ -225,10 +225,10 @@ gh_git_tag <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_sha(sha))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_sha(sha))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("repos", repo, "git/tags", sha, api = api),
@@ -264,11 +264,11 @@ gh_git_tree <- function(
   api       = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(ref))
-  stopifnot(is_repo(repo))
-  stopifnot(is_flag(recursive))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(ref))
+  assert(is_repo(repo))
+  assert(is_boolean(recursive))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   tree <- gh_get(
     gh_url("repos", repo, "git/trees", ref, recursive = as.integer(recursive), api = api),
@@ -312,12 +312,12 @@ gh_save <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is.character(files))
-  stopifnot(is_repo(repo))
-  stopifnot(is_string(path))
-  stopifnot(is_string(ref))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_character(files))
+  assert(is_repo(repo))
+  assert(is_string(path))
+  assert(is_string(ref))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   repo_files <- gh_git_tree(ref = ref, repo = repo, recursive = TRUE, token = token, api = api, ...)
 
@@ -325,7 +325,7 @@ gh_save <- function(
     blob_paths <- repo_files[repo_files$path %in% files,][["path"]]
     names(blob_paths) <- repo_files[repo_files$path %in% files,][["sha"]]
   } else {
-    stop(
+    error(
       "Cannot find specified files in repo '", repo, "':\n\n  ",
       paste(files, collapse = "\n  "))
   }
@@ -369,11 +369,11 @@ gh_source <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(file))
-  stopifnot(is_repo(repo))
-  stopifnot(is_string(ref))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(file))
+  assert(is_repo(repo))
+  assert(is_string(ref))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   path <- file.path(tempdir(), "gh_source")
   on.exit(unlink(path, recursive = TRUE))
