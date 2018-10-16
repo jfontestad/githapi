@@ -1,6 +1,6 @@
 field_names <- function(fields) {
   names <- sapply(fields, paste, collapse = "_")
-  if (!is.null(names(fields))) {
+  if (!is_null(names(fields))) {
     for (field in seq_along(fields)) {
       if (!identical(names(fields)[[field]], "")) {
         names[[field]] <- names(fields)[[field]]
@@ -11,7 +11,7 @@ field_names <- function(fields) {
 }
 
 convert_field <- function(field, as) {
-  if (is.na(as)) {
+  if (is_na(as)) {
     field
   } else if (identical(as, "POSIXct")) {
     as.POSIXct(field)
@@ -21,13 +21,13 @@ convert_field <- function(field, as) {
 }
 
 select_fields <- function(x, fields) {
-  stopifnot(is.list(x))
-  stopifnot(is.list(fields), length(fields) > 0)
+  assert(is_list(x))
+  assert(is_list(fields), length(fields) > 0)
 
   selected_fields <- lapply(fields, x, FUN = function(field, x) {
     selected_field <- x
     for (level in seq_along(field)) {
-      if (is.null(selected_field[[field[[level]]]]))
+      if (is_null(selected_field[[field[[level]]]]))
         return(NA)
       else
         selected_field <- selected_field[[field[[level]]]]
@@ -40,11 +40,11 @@ select_fields <- function(x, fields) {
 }
 
 bind_fields <- function(x, fields) {
-  stopifnot(is.list(x))
-  stopifnot(is.list(fields), length(fields) > 0)
+  assert(is_list(x))
+  assert(is_list(fields), length(fields) > 0)
 
   conversions <- sapply(fields, function(f) f["as"])
-  raw_fields <- lapply(fields, function(f) if (is.null(names(f))) f else f[names(f) != "as"])
+  raw_fields <- lapply(fields, function(f) if (is_null(names(f))) f else f[names(f) != "as"])
 
   if (identical(length(x), 0L)) {
     names(fields) <- field_names(fields)
@@ -54,7 +54,7 @@ bind_fields <- function(x, fields) {
   }
 
   for (col in 1:ncol(binded_fields)) {
-    if (!is.na(conversions[[col]])) {
+    if (!is_na(conversions[[col]])) {
       if (identical(conversions[[col]], "datetime"))
         binded_fields[[col]] <- as.POSIXct(binded_fields[[col]])
       else
