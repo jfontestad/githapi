@@ -1,29 +1,3 @@
-parse_vector <- function(v, sep = ",\n") {
-  if (!is.null(names(v))) {
-    padded_names <- format(names(v), width = max(nchar(names(v))))
-    v <- paste0(padded_names, " = \"", v, "\"")
-  } else {
-    v <- paste0("\"", v, "\"")
-  }
-  cat(paste(v, collapse = sep))
-}
-
-msg <- function(
-  ...,
-  show_msg = getOption("githapi.debug_messages"),
-  log_path = getOption("githapi.log_path"))
-{
-  if (show_msg) {
-    message(paste0("[", format(Sys.time(), "%H:%M:%S"), "] ", ...))
-  }
-  if (!is.null(log_path) && is_writeable(log_path)) {
-    log_name <- paste0("githapi-", Sys.info()[["login"]], "-", format(Sys.time(), "%Y-%m-%d"), ".log")
-    write(paste0("[", Sys.time(), "] INFO: ", ...), file.path(log_path, log_name), append = TRUE)
-  }
-}
-
-}
-
 field_names <- function(fields) {
   names <- sapply(fields, paste, collapse = "_")
   if (!is.null(names(fields))) {
