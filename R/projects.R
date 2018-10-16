@@ -21,9 +21,9 @@ gh_project <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(project))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(project))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_get(
@@ -62,22 +62,22 @@ gh_projects <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is.null(state) || is_string(state))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_null(state) || is_string(state))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (!missing(repo) && !missing(org))
-    stop("Must specify either repo or org, not both!")
+    error("Must specify either repo or org, not both!")
 
   if (!missing(repo)) {
-    stopifnot(is_repo(repo))
+    assert(is_repo(repo))
     url <- gh_url("repos", repo, "projects", state = state, api = api)
   } else if (!missing(org)) {
-    stopifnot(is_string(org))
+    assert(is_string(org))
     url <- gh_url("orgs", org, "projects", state = state, api = api)
   } else {
-    stop("Must specify either repo or org!")
+    error("Must specify either repo or org!")
   }
 
   # NOTE: Projects is currently in beta, so requires preview accept header
@@ -120,9 +120,9 @@ gh_column <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(column))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(column))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_get(
@@ -155,10 +155,10 @@ gh_columns <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(project))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(project))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   columns <- gh_page(
@@ -196,9 +196,9 @@ gh_card <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(card))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(card))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   gh_get(
@@ -231,10 +231,10 @@ gh_cards <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(column))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(column))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   # NOTE: Projects is currently in beta, so requires preview accept header
   cards <- gh_page(
