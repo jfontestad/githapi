@@ -59,7 +59,7 @@ is_file <- function(x) {
 }
 
 is_readable <- function(x) {
-  is_string(x) && file.exists(x) && file.access(path, mode = 4)[[1]] == 0
+  is_string(x) && file.exists(x) && file.access(x, mode = 4)[[1]] == 0
 }
 
 is_writeable <- function(x) {
