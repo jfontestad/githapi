@@ -11,7 +11,7 @@
 # @return The printed result of parsing the input
 #
 parse_vector <- function(v, sep = ",\n") {
-  assert(is.vector(v))
+  assert(is_vector(v))
   assert(is_string(sep))
 
   if (!is_null(names(v))) {
@@ -336,7 +336,7 @@ assert <- function(
 #
 collate_errors <- function(x, msg, on_error = "error")
 {
-  stopifnot(is.list(x))
+  stopifnot(is_list(x))
   stopifnot(is_string(msg))
   stopifnot(is_string(on_error) && on_error %in% c("info", "warn", "error"))
 
