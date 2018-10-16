@@ -22,33 +22,6 @@ msg <- function(
   }
 }
 
-is_scalar <- function(x) {
-  identical(length(x), 1L)
-}
-
-is_flag <- function(x) {
-  is.logical(x) && is_scalar(x)
-}
-
-is_number <- function(x) {
-  is.numeric(x) && is_scalar(x)
-}
-
-is_integer <- function(x) {
-  is.numeric(x) && all(x == as.integer(x)) && is_scalar(x)
-}
-
-is_count <- function(x) {
-  is_integer(x) && (x > 0)
-}
-
-is_string <- function(x) {
-  is.character(x) && is_scalar(x)
-}
-
-is_writeable <- function(path) {
-  stopifnot(is_string(path), file.exists(path))
-  file.access(path, mode = 2)[[1]] == 0
 }
 
 field_names <- function(fields) {
