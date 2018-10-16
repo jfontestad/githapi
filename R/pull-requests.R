@@ -23,10 +23,10 @@ gh_pull_request <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(pull_request))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(pull_request))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(gh_url("repos", repo, "pulls", pull_request, api = api), token = token, ...)
 }
@@ -70,15 +70,15 @@ gh_pull_requests <- function(
   api       = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is.null(state) || is_string(state))
-  stopifnot(is.null(head) || is_string(head))
-  stopifnot(is.null(base) || is_string(base))
-  stopifnot(is.null(sort) || is_string(sort))
-  stopifnot(is.null(direction) || is_string(direction))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_null(state) || is_string(state))
+  assert(is_null(head) || is_string(head))
+  assert(is_null(base) || is_string(base))
+  assert(is_null(sort) || is_string(sort))
+  assert(is_null(direction) || is_string(direction))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   pull_requests <- gh_url(
     "repos", repo, "pulls", api = api,
@@ -133,11 +133,11 @@ gh_pull_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(pull_request))
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(pull_request))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   commits <- gh_page(
     gh_url("repos", repo, "pulls", pull_request, "commits", api = api),
@@ -183,11 +183,11 @@ gh_pull_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(pull_request))
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(pull_request))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   files <- gh_page(
     gh_url("repos", repo, "pulls", pull_request, "files", api = api),
@@ -231,10 +231,10 @@ is_pull_merged <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(pull_request))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(pull_request))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
     gh_get(
@@ -278,11 +278,11 @@ gh_pull_review <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(review))
-  stopifnot(is_count(pull_request))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(review))
+  assert(is_count(pull_request))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("repos", repo, "pulls", pull_request, "reviews", review, api = api),
@@ -317,11 +317,11 @@ gh_pull_reviews <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(pull_request))
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(pull_request))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_page(
     gh_url("repos", repo, "pulls", pull_request, "reviews", api = api),
@@ -354,10 +354,10 @@ gh_pull_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(comment))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(comment))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(gh_url("repos", repo, "pulls/comments", comment, api = api), token = token, ...)
 }
@@ -403,20 +403,20 @@ gh_pull_comments <- function(
   api       = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (missing(pull_request)) {
     url <- gh_url(
       "repos", repo, "pulls/comments", api = api,
       sort = sort, direction = direction, since = since)
   } else if (missing(review)) {
-    stopifnot(is_count(pull_request))
+    assert(is_count(pull_request))
     url <- gh_url("repos", repo, "pulls", pull_request, "comments", api = api)
   } else {
-    stopifnot(is_count(review))
+    assert(is_count(review))
     url <- gh_url("repos", repo, "pulls", pull_request, "reviews", review, "comments", api = api)
   }
 
@@ -451,11 +451,11 @@ gh_pull_review_requests <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(pull_request))
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(pull_request))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_page(
     gh_url("repos", repo, "pulls", pull_request, "requested_reviewers", api = api),
