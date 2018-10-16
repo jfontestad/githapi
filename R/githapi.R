@@ -210,7 +210,7 @@ gh_page <- function(
   response <- list()
 
   while (length(response) < n_max) {
-    page <- gh_get(url = url, accept = accept, token = token, ...)
+    page <- gh_request("GET", url = url, accept = accept, token = token, ...)
     response <- c(response, page)
     if (length(response) >= n_max) {
       info("> Returned ", length(response), level = 2)
@@ -227,6 +227,87 @@ gh_page <- function(
     }
     url <- sub("<", "", strsplit(links[grepl("next", links)], ">")[[1]][[1]])
   }
+}
+
+#  FUNCTION: gh_request -----------------------------------------------------------------------
+#
+#' Send a http request to the specified GitHub url
+#'
+#' @param type (string) The type of the request. Either "GET", "POST", "DELETE" or "PATCH".
+#' @param url (string) URL to the GitHub API.
+#' @param payload (list) The information to send, which is converted to JSON.
+#' @param accept (string) The format of the returned result. Either "json", "raw" or other
+#'   GitHub accepted format. Default: "json".
+#' @param parse (boolean) Whether to parse the response.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'
+#' @return A list of the parsed response
+#'
+#' @export
+#'
+gh_request <- function(
+  type,
+  url,
+  payload = NULL,
+  accept  = "json",
+  parse   = TRUE,
+  token   = gh_token())
+{
+  assert(is_string(type) && type %in% c("GET", "POST", "DELETE", "PATCH"))
+  assert(is_url(url))
+  assert(is_string(accept))
+  assert(is_boolean(parse))
+  assert(is_string(token))
+
+  if (identical(accept, "raw")) {
+    accept <- "application/vnd.github.raw"
+  } else if (identical(accept, "json")) {
+    accept <- "application/vnd.github.v3+json"
+  }
+
+  info("> ", type, ": ", url, level = 2)
+  h <- new_handle()
+  if (!identical(type, "GET")) {
+    h <- handle_setopt(h, customrequest = type)
+  }
+  if (!is_null(payload)) {
+    assert(is_list(payload))
+    h <- handle_setopt(h, COPYPOSTFIELDS = jsonlite::toJSON(payload, auto_unbox = TRUE))
+  }
+  h <- handle_setheaders(h, Authorization = paste("token", token), Accept = accept)
+
+  response <- curl_fetch_memory(url, handle = h)
+  response_content <- response$content
+  message <- NULL
+
+  response_header  <- strsplit(parse_headers(response$header), ": ")
+  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]]))
+  names(header_values) <- sapply(response_header, function(h) h[[1]])
+
+  if (parse) {
+    info("> Parsing response", level = 2)
+    response_content <- rawToChar(response$content)
+    if (!identical(response_content, "") && grepl("json$", tolower(accept))) {
+      response_content <- fromJSON(response_content, simplifyVector = FALSE)
+      message <- response_content$message
+    } else {
+      message <- "None"
+    }
+  }
+
+  if (response$status_code >= 400) {
+    error(
+      "\nGitHub GET request failed\n",
+      "\n[Status]:  ", header_values$Status,
+      "\n[URL]:     ", url,
+      "\n[Message]: ", message)
+  }
+
+  attributes(response_content) <- c(attributes(response_content), list(header = header_values))
+
+  info("> Done", level = 2)
+  response_content
 }
 
 #  FUNCTION: gh_download_binary ---------------------------------------------------------------
