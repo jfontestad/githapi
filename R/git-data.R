@@ -24,10 +24,10 @@ gh_git_blob <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_sha(sha))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_sha(sha))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   blob <- gh_get(
     gh_url("repos", repo, "git/blobs", sha, api = api),
@@ -62,10 +62,10 @@ gh_git_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_sha(sha))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_sha(sha))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("repos", repo, "git/commits", sha, api = api),
@@ -98,10 +98,10 @@ gh_git_reference <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(ref))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(ref))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("repos", repo, "git/refs", ref, api = api),
@@ -173,10 +173,10 @@ gh_git_references <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   ref_map <- c(
     "refs/heads" = "branch",
@@ -225,10 +225,10 @@ gh_git_tag <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_sha(sha))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_sha(sha))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("repos", repo, "git/tags", sha, api = api),
@@ -264,11 +264,11 @@ gh_git_tree <- function(
   api       = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(ref))
-  stopifnot(is_repo(repo))
-  stopifnot(is_flag(recursive))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(ref))
+  assert(is_repo(repo))
+  assert(is_boolean(recursive))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   tree <- gh_get(
     gh_url("repos", repo, "git/trees", ref, recursive = as.integer(recursive), api = api),
@@ -312,12 +312,12 @@ gh_save <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is.character(files))
-  stopifnot(is_repo(repo))
-  stopifnot(is_string(path))
-  stopifnot(is_string(ref))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_character(files))
+  assert(is_repo(repo))
+  assert(is_string(path))
+  assert(is_string(ref))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   repo_files <- gh_git_tree(ref = ref, repo = repo, recursive = TRUE, token = token, api = api, ...)
 
@@ -325,7 +325,7 @@ gh_save <- function(
     blob_paths <- repo_files[repo_files$path %in% files,][["path"]]
     names(blob_paths) <- repo_files[repo_files$path %in% files,][["sha"]]
   } else {
-    stop(
+    error(
       "Cannot find specified files in repo '", repo, "':\n\n  ",
       paste(files, collapse = "\n  "))
   }
@@ -369,15 +369,306 @@ gh_source <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(file))
-  stopifnot(is_repo(repo))
-  stopifnot(is_string(ref))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(file))
+  assert(is_repo(repo))
+  assert(is_string(ref))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   path <- file.path(tempdir(), "gh_source")
   on.exit(unlink(path, recursive = TRUE))
 
   gh_save(files = file, repo = repo, path = path, ref = ref, token = token, api = api)
   source(file.path(path, basename(file)), ...)
+}
+
+#  FUNCTION: view_tags ------------------------------------------------------------------------
+#
+#' View information about a tags
+#'
+#' This function returns details about the tags for the specified repository in GitHub. If no
+#' tags are supplied then details about all the tags are returned. If tags are supplied then only
+#' information about those ones is returned.
+#'
+#' <https://developer.github.com/v3/git/refs/#get-a-reference>
+#'
+#' <https://developer.github.com/v3/git/refs/#get-all-references>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param tags (character, optional) The tag names. If missing or `NULL` all the tags are
+#'   requested.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the tags, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/git/refs/) for more details):
+#'   - **name**: The name of the tag.
+#'   - **ref**: The full git reference for the tag.
+#'   - **url**: The URL to get the tag details from GitHub.
+#'   - **object_sha**: The SHA of the object tagged.
+#'   - **object_type**: The type of the object tagged.
+#'   - **object_url**: The URL to get the object details from GitHub
+#'
+#' @export
+#'
+view_tags <- function(
+  repo,
+  tags,
+  n_max = 1000L,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  if (missing(tags) || is_null(tags)) {
+    info("Getting up to ", n_max, " tags from GitHub")
+    tags_list <- tryCatch({
+      gh_page(
+        gh_url("repos", repo, "git/refs/tags", api = api),
+        n_max = n_max, token = token, ...)
+    }, error = function(e) {
+      info("Failed!")
+      list(e)
+    })
+  } else {
+    assert(is_character(tags))
+    info("Getting tags '", paste(tags, collapse = "', '"), "' from GitHub")
+    tags_list <- sapply(tags, simplify = FALSE, USE.NAMES = TRUE, function(tag) {
+      tryCatch({
+        gh_request(
+          "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+          token = token, ...)
+      }, error = function(e) {
+        info("Tag '", tag, "' failed!")
+        e
+      })
+    })
+  }
+
+  if (any(sapply(tags_list, is, "error"))) {
+    collate_errors(tags_list, "view_tags() failed!")
+  }
+
+  info("Transforming results")
+  tags_tbl <- bind_fields(tags_list[!sapply(tags_list, is_null)], list(
+    name        = "",
+    ref         = c("ref",            as = "character"),
+    url         = c("url",            as = "character"),
+    object_sha  = c("object", "sha",  as = "character"),
+    object_type = c("object", "type", as = "character"),
+    object_url  = c("object", "url",  as = "character"))) %>%
+    mutate(name = basename(.data$ref))
+
+  info("Done")
+  tags_tbl
+}
+
+#  FUNCTION: create_tags ----------------------------------------------------------------------
+#
+#' Create tags at specified commits.
+#'
+#' This function creates the specified tags at the specified commits within a repository in
+#' GitHub.
+#'
+#' <https://developer.github.com/v3/git/refs/#create-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param tags (character) The tag names.
+#' @param shas (character) The SHAs of the commits to tag.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the tags, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/git/refs/) for more details):
+#'   - **name**: The name of the tag.
+#'   - **ref**: The full git reference for the tag.
+#'   - **url**: The URL to get the tag details from GitHub.
+#'   - **object_sha**: The SHA of the object tagged.
+#'   - **object_type**: The type of the object tagged.
+#'   - **object_url**: The URL to get the object details from GitHub
+#'
+#' @export
+#'
+create_tags <- function(
+  repo,
+  tags,
+  shas,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(tags))
+  assert(is_character(shas))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Posting tags '", paste(tags, collapse = "', '"), "' to GitHub")
+  tags_list <- mapply(tags, shas, USE.NAMES = TRUE, SIMPLIFY = FALSE, FUN = function(tag, sha) {
+    tryCatch({
+      gh_request(
+        "POST", gh_url("repos", repo, "git/refs", api = api),
+        payload = list(ref = paste0("refs/tags/", tag), sha = sha),
+        token = token, ...)
+    }, error = function(e) {
+      info("Tag '", tag, "' failed!")
+      e
+    })
+  })
+
+  if (any(sapply(tags_list, is, "error"))) {
+    collate_errors(tags_list, "create_tags() failed!")
+  }
+
+  info("Transforming results")
+  tags_tbl <- bind_fields(tags_list[!sapply(tags_list, is_null)], list(
+    name        = "",
+    ref         = c("ref",            as = "character"),
+    url         = c("url",            as = "character"),
+    object_sha  = c("object", "sha",  as = "character"),
+    object_type = c("object", "type", as = "character"),
+    object_url  = c("object", "url",  as = "character"))) %>%
+    mutate(name = basename(.data$ref))
+
+  info("Done")
+  tags_tbl
+}
+
+#  FUNCTION: update_tags ----------------------------------------------------------------------
+#
+#' Update tags to new commits.
+#'
+#' This function updates the specified tags to point at new commits within a repository in
+#' GitHub.
+#'
+#' <https://developer.github.com/v3/git/refs/#update-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param tags (character) The tag names.
+#' @param shas (character) Ths SHAs of the commits to tag.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the tags, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/git/refs/) for more details):
+#'   - **name**: The name of the tag.
+#'   - **ref**: The full git reference for the tag.
+#'   - **url**: The URL to get the tag details from GitHub.
+#'   - **object_sha**: The SHA of the object tagged.
+#'   - **object_type**: The type of the object tagged.
+#'   - **object_url**: The URL to get the object details from GitHub
+#'
+#' @export
+#'
+update_tags <- function(
+  repo,
+  tags,
+  shas,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(tags))
+  assert(is_character(shas))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Patching tags '", paste(tags, collapse = "', '"), "' in GitHub")
+  tags_list <- mapply(tags, shas, USE.NAMES = TRUE, SIMPLIFY = FALSE, FUN = function(tag, sha) {
+    tryCatch({
+      gh_request(
+        "PATCH", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        payload = list(sha = sha, force = TRUE),
+        token = token, ...)
+    }, error = function(e) {
+      info("Tag '", tag, "' failed!")
+      e
+    })
+  })
+
+  if (any(sapply(tags_list, is, "error"))) {
+    collate_errors(tags_list, "update_tags() failed!")
+  }
+
+  info("Transforming results")
+  tags_tbl <- bind_fields(tags_list[!sapply(tags_list, is_null)], list(
+    name        = "",
+    ref         = c("ref",            as = "character"),
+    url         = c("url",            as = "character"),
+    object_sha  = c("object", "sha",  as = "character"),
+    object_type = c("object", "type", as = "character"),
+    object_url  = c("object", "url",  as = "character"))) %>%
+    mutate(name = basename(.data$ref))
+
+  info("Done")
+  tags_tbl
+}
+
+#  FUNCTION: delete_tags ----------------------------------------------------------------------
+#
+#' Delete tags.
+#'
+#' This function deletes the specified tags from a repository in GitHub.
+#'
+#' <https://developer.github.com/v3/git/refs/#delete-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param tags (character) The tag names.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A named list containing `TRUE` if the tag was deleted. An error is thrown otherwise.
+#'
+#' @export
+#'
+delete_tags <- function(
+  repo,
+  tags,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_character(tags))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Deleting tags '", paste(tags, collapse = "', '"), "' from GitHub")
+  tags_list <- sapply(tags, simplify = FALSE, USE.NAMES = TRUE, function(tag) {
+    tryCatch({
+      gh_request(
+        "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        token = token, parse = FALSE, ...)
+      TRUE
+    }, error = function(e) {
+      info(e$message)
+      e
+    })
+  })
+
+  if (any(sapply(tags_list, is, "error"))) {
+    collate_errors(tags_list, "delete_tags() failed!")
+    tags_list[sapply(tags_list, is, "error")] <- FALSE
+  }
+
+  info("Done")
+  tags_list
 }

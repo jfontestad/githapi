@@ -4,6 +4,10 @@ reference:
 - title: Repositories
   desc: Functions for accessing information about repositories and their content.
   contents:
+    - '`view_releases`'
+    - '`create_releases`'
+    - '`update_releases`'
+    - '`delete_releases`'
     - '`gh_repository`'
     - '`is_repository`'
     - '`gh_repositories`'
@@ -46,6 +50,10 @@ reference:
 - title: Git Data
   desc: Functions for accessing git data directly.
   contents:
+    - '`view_tags`'
+    - '`create_tags`'
+    - '`update_tags`'
+    - '`delete_tags`'
     - '`gh_git_blob`'
     - '`gh_git_commit`'
     - '`gh_git_reference`'
@@ -113,11 +121,11 @@ reference:
 - title: GitHub API
   desc: Functions for accessing the GitHub API.
   contents:
-    - '`is_url`'
     - '`is_sha`'
     - '`is_repo`'
     - '`gh_token`'
     - '`gh_url`'
     - '`gh_get`'
+    - '`gh_request`'
     - '`gh_page`'
     - '`gh_download_binary`'

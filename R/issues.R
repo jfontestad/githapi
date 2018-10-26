@@ -23,10 +23,10 @@ gh_issue <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(issue))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(issue))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(gh_url("repos", repo, "issues", issue, api = api), token = token, ...)
 }
@@ -81,19 +81,19 @@ gh_issues <- function(
   api       = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is.null(milestone) || is_string(milestone))
-  stopifnot(is.null(state) || is_string(state))
-  stopifnot(is.null(assignee) || is_string(assignee))
-  stopifnot(is.null(creator) || is_string(creator))
-  stopifnot(is.null(mentioned) || is_string(mentioned))
-  stopifnot(is.null(labels) || is_string(labels))
-  stopifnot(is.null(sort) || is_string(sort))
-  stopifnot(is.null(direction) || is_string(direction))
-  stopifnot(is.null(since) || is_string(since))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_null(milestone) || is_string(milestone))
+  assert(is_null(state) || is_string(state))
+  assert(is_null(assignee) || is_string(assignee))
+  assert(is_null(creator) || is_string(creator))
+  assert(is_null(mentioned) || is_string(mentioned))
+  assert(is_null(labels) || is_string(labels))
+  assert(is_null(sort) || is_string(sort))
+  assert(is_null(direction) || is_string(direction))
+  assert(is_null(since) || is_string(since))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   issues <- gh_url(
     "repos", repo, "issues", api = api,
@@ -173,20 +173,20 @@ gh_user_issues <- function(
   api       = getOption("github.api"),
   ...)
 {
-  stopifnot(is.null(filter) || is_string(filter))
-  stopifnot(is.null(state) || is_string(state))
-  stopifnot(is.null(labels) || is_string(labels))
-  stopifnot(is.null(sort) || is_string(sort))
-  stopifnot(is.null(direction) || is_string(direction))
-  stopifnot(is.null(since) || is_string(since))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_null(filter) || is_string(filter))
+  assert(is_null(state) || is_string(state))
+  assert(is_null(labels) || is_string(labels))
+  assert(is_null(sort) || is_string(sort))
+  assert(is_null(direction) || is_string(direction))
+  assert(is_null(since) || is_string(since))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (missing(org)) {
     path <- "issues"
   } else {
-    stopifnot(is_string(org))
+    assert(is_string(org))
     path <- file.path("orgs", org, "issues")
   }
 
@@ -242,10 +242,10 @@ gh_assignees <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   assignees <- gh_page(
     gh_url("repos", repo, "assignees", api = api),
@@ -287,18 +287,18 @@ gh_issue_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is.null(since) || is_string(since))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_null(since) || is_string(since))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (missing(issue)) {
     comments <- gh_page(
       gh_url("repos", repo, "issues/comments", since = since, api = api),
       n_max = n_max, token = token, ...)
   } else {
-    stopifnot(is_count(issue))
+    assert(is_count(issue))
     comments <- gh_page(
       gh_url("repos", repo, "issues", issue, "comments", since = since, api = api),
       n_max = n_max, token = token, ...)
@@ -338,10 +338,10 @@ gh_issue_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(comment))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(comment))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(gh_url("repos", repo, "issues/comments", comment, api = api), token = token, ...)
 }
@@ -371,10 +371,10 @@ gh_label <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(name))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(name))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(gh_url("repos", repo, "labels", name, api = api), token = token, ...)
 }
@@ -412,19 +412,19 @@ gh_labels <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (!missing(issue) && !missing(milestone))
-    stop("Must specify either issue or milestone, not both!")
+    error("Must specify either issue or milestone, not both!")
 
   if (!missing(issue)) {
-    stopifnot(is_count(issue))
+    assert(is_count(issue))
     url <- gh_url("repos", repo, "issues", issue, "labels", api = api)
   } else if (!missing(milestone)) {
-    stopifnot(is_count(milestone))
+    assert(is_count(milestone))
     url <- gh_url("repos", repo, "milestones", milestone, "labels", api = api)
   } else {
     url <- gh_url("repos", repo, "labels", api = api)
@@ -465,10 +465,10 @@ gh_milestone <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(milestone))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(milestone))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(gh_url("repos", repo, "milestones", milestone, api = api), token = token, ...)
 }
@@ -504,13 +504,13 @@ gh_milestones <- function(
   api       = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is.null(state) || is_string(state))
-  stopifnot(is.null(sort) || is_string(sort))
-  stopifnot(is.null(direction) || is_string(direction))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_null(state) || is_string(state))
+  assert(is_null(sort) || is_string(sort))
+  assert(is_null(direction) || is_string(direction))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   milestones <- gh_url(
     "repos", repo, "milestones", api = api,
@@ -556,10 +556,10 @@ gh_event <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(event))
-  stopifnot(is_repo(repo))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(event))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(gh_url("repos", repo, "issues/events", event, api = api), token = token, ...)
 }
@@ -592,15 +592,15 @@ gh_events <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_repo(repo))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_repo(repo))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (missing(issue)) {
     url <- gh_url("repos", repo, "issues/events", api = api)
   } else {
-    stopifnot(is_count(issue))
+    assert(is_count(issue))
     url <- gh_url("repos", repo, "issues", issue, "events", api = api)
   }
 

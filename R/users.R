@@ -21,16 +21,16 @@ gh_user <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(user))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(user))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
     gh_get(gh_url("users", user, api = api), token = token, ...)
   }))
 
   if (is(response, "try-error") || response == "") {
-    stop("Specified user does not exist in GitHub: '", user, "'")
+    error("Specified user does not exist in GitHub: '", user, "'")
   }
 
   response
@@ -59,9 +59,9 @@ gh_users <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   users <- gh_page(gh_url("users", api = api), n_max = n_max, token = token, ...)
 
@@ -95,8 +95,8 @@ gh_user_email <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   emails <- gh_get(gh_url("user/emails", api = api), token = token, ...)
 

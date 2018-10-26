@@ -98,3 +98,11 @@ test_that("bind_rows returns the specified columns with correct names and types"
     author = logical(),
     email = logical()))
 })
+
+
+# TEST: remove_missing ------------------------------------------------------------------------
+
+test_that("remove_missing removes all empty elements from a list", {
+  x <- list(1, a = NULL, b = list(), c = NA, d = 42)
+  expect_identical(remove_missing(x), list(1, d = 42))
+})

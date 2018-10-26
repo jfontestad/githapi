@@ -24,14 +24,14 @@ gh_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(gist))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(gist))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (missing(sha)) {
     url <- gh_url("gists", gist, api = api)
   } else {
-    stopifnot(is_sha(sha))
+    assert(is_sha(sha))
     url <- gh_url("gists", gist, sha, api = api)
   }
 
@@ -71,15 +71,15 @@ gh_gists <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is.null(since) || is_string(since))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_null(since) || is_string(since))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   if (missing(user)) {
     url <- gh_url("gists", since = since, api = api)
   } else {
-    stopifnot(is_string(user))
+    assert(is_string(user))
     if (user %in% c("public", "starred")) {
       url <- gh_url("gists", user, since = since, api = api)
     } else {
@@ -132,10 +132,10 @@ gh_gist_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(gist))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(gist))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   commits <- gh_page(
     gh_url("gists", gist, "commits", api = api),
@@ -175,9 +175,9 @@ is_gist_starred <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(gist))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(gist))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   response <- try(silent = TRUE, suppressMessages({
     gh_get(
@@ -218,10 +218,10 @@ gh_gist_forks <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(gist))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(gist))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   forks <- gh_page(
     gh_url("gists", gist, "forks", api = api),
@@ -263,10 +263,10 @@ gh_gist_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_count(comment))
-  stopifnot(is_string(gist))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_count(comment))
+  assert(is_string(gist))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gh_get(
     gh_url("gists", gist, "comments", comment, api = api),
@@ -298,10 +298,10 @@ gh_gist_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(gist))
-  stopifnot(is_count(n_max))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(gist))
+  assert(is_count(n_max))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   comments <- gh_page(
     gh_url("gists", gist, "comments", api = api),
@@ -347,18 +347,18 @@ gh_save_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(gist))
-  stopifnot(is_string(path))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(gist))
+  assert(is_string(path))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   gist_files <- gh_gist(gist, sha = sha, token = token, api = api, ...)[["files"]]
   gist_urls <- sapply(gist_files, getElement, "raw_url")
 
   if (!missing(files)) {
-    stopifnot(is.character(files))
+    assert(is_character(files))
     if (!all(files %in% names(gist_urls)))
-      stop("Cannot find all specified files")
+      error("Cannot find all specified files")
     gist_urls <- gist_urls[names(gist_urls) %in% files]
   }
 
@@ -399,10 +399,10 @@ gh_source_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  stopifnot(is_string(file))
-  stopifnot(is_string(gist))
-  stopifnot(is_sha(token))
-  stopifnot(is_url(api))
+  assert(is_string(file))
+  assert(is_string(gist))
+  assert(is_sha(token))
+  assert(is_url(api))
 
   temp_path <- tempdir()
   on.exit(unlink(file.path(tempdir(), basename(file)), recursive = TRUE))
