@@ -420,3 +420,80 @@ test_that("gh_assets returns a tibble describing the assets for a release", {
         url            = "character"))
     expect_true("githapi-v0.3.0.zip" %in% assets$name)
 })
+
+# TEST: view_releases, create_releases & delete_releases --------------------------------------
+
+test_that("create_releases creates some releases, view_releases retreives them and delete_releases deletes them", {
+  all_releases <- view_releases("ChadGoymer/githapi")
+
+  expect_is(all_releases, "tbl")
+  expect_identical(
+    names(all_releases),
+    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
+      "created_at", "published_at", "assets", "zipball_url", "url"))
+  expect_true("test-release" %in% all_releases$tag_name)
+  expect_identical(
+    filter(all_releases, name == "Test Release") %>% pull(target_commitish),
+    "9bb32a0c6ce901ceeab1f08870bb06781d16e756")
+
+  latest_release <- view_releases("latest", repo = "ChadGoymer/githapi")
+
+  expect_is(all_releases, "tbl")
+  expect_identical(
+    names(all_releases),
+    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
+      "created_at", "published_at", "assets", "zipball_url", "url"))
+  latest_full_release <- filter(all_releases, draft == FALSE, prerelease == FALSE) %>% head(1)
+  expect_identical(latest_release, latest_full_release)
+
+  created_releases <- create_releases(
+    tags    = c("aaa", "bbb"),
+    commits = c("dc7da99ef557f362d5f2c0f006a240f84927a8a9", "47c2562fe0800a997fa3ed595edaac926b6c7f8a"),
+    names   = c("AAA", "BBB"),
+    bodies  = c("Created for testing: aaa", "Created for testing: bbb"),
+    repo    = "ChadGoymer/githapi")
+
+  expect_is(created_releases, "tbl")
+  expect_identical(
+    names(created_releases),
+    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
+      "created_at", "published_at", "assets", "zipball_url", "url"))
+  expect_identical(created_releases$tag_name, c("aaa", "bbb"))
+  expect_identical(
+    created_releases$target_commitish,
+    c("dc7da99ef557f362d5f2c0f006a240f84927a8a9", "47c2562fe0800a997fa3ed595edaac926b6c7f8a"))
+
+  viewed_releases <- view_releases("ChadGoymer/githapi", c("aaa", "bbb"))
+
+  expect_is(viewed_releases, "tbl")
+  expect_identical(
+    names(viewed_releases),
+    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
+      "created_at", "published_at", "assets", "zipball_url", "url"))
+  expect_identical(viewed_releases$name, c("AAA", "BBB"))
+  expect_identical(
+    viewed_releases$body,
+    c("Created for testing: aaa", "Created for testing: bbb"))
+
+  updated_releases <- update_releases(
+    tags    = c("aaa", "bbb"),
+    commits = c("dc7da99ef557f362d5f2c0f006a240f84927a8a9", "47c2562fe0800a997fa3ed595edaac926b6c7f8a"),
+    names   = c("AAA updated", "BBB updated"),
+    repo    = "ChadGoymer/githapi")
+
+  expect_is(updated_releases, "tbl")
+  expect_identical(
+    names(updated_releases),
+    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
+      "created_at", "published_at", "assets", "zipball_url", "url"))
+  expect_identical(updated_releases$name, c("AAA updated", "BBB updated"))
+  expect_identical(
+    updated_releases$body,
+    c("Created for testing: aaa", "Created for testing: bbb"))
+
+  delete_results <- delete_releases("ChadGoymer/githapi", c("aaa", "bbb"))
+
+  expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
+  expect_error(view_releases("ChadGoymer/githapi", "aaa"), "Not Found")
+  expect_error(view_releases("ChadGoymer/githapi", "bbb"), "Not Found")
+})
