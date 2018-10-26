@@ -64,3 +64,11 @@ bind_fields <- function(x, fields) {
 
   binded_fields
 }
+
+remove_missing <- function(x) {
+  assert(is_list(x))
+  is_empty <- sapply(x, FUN = function(e) {
+    is_null(e) || is_na(e) || identical(length(e), 0L)
+  })
+  x[!is_empty]
+}

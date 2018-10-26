@@ -340,10 +340,16 @@ collate_errors <- function(x, msg, on_error = "error")
   stopifnot(is_string(msg))
   stopifnot(is_string(on_error) && on_error %in% c("info", "warn", "error"))
 
+  if (is.null(names(x))) {
+    prefix <- ""
+  } else {
+    prefix <- paste0("'", names(x)[sapply(x, is, "error")], "': ")
+  }
+
   error_msg <- x[sapply(x, is, "error")] %>%
     sapply(getElement, "message") %>%
-    sub("^\n", "", .) %>%
-    paste0("\n'", names(x)[sapply(x, is, "error")], "': ", .) %>%
+    sub("^(.*?)\n", "", .) %>%
+    paste0("\n", prefix, .) %>%
     paste(collapse = "\n")
 
   if (!missing(msg)) {
