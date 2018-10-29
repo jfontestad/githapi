@@ -113,7 +113,7 @@ test_that("gh_save creates a local copy of a file in GitHub", {
 
 #  FUNCTION: gh_source ------------------------------------------------------------------------
 test_that("gh_source sources a file in GitHub", {
-  gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", ref = "develop")
+  gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", ref = "master")
   expect_true(exists("test_source"))
   expect_is(test_source, "function")
   expect_identical(test_source(), "Testing gh_source")

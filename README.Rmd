@@ -86,14 +86,14 @@ For larger files, up to 100 MB, you can use the `gh_git_blob()` function, or the
 `gh_save()`, which downloads the file as a binary blob and writes it to disk:
 
 ```r
-gh_save("DESCRIPTION", "ChadGoymer/githapi", "develop", path = "/tmp")
+gh_save("DESCRIPTION", "ChadGoymer/githapi", "master", path = "/tmp")
 ```
 
 If you wish to read an R script from GitHub you can use the `gh_source()` which downloads and 
 `source`'s the script.
 
 ```r
-gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", "develop")
+gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", "master")
 ```
 
 Finally, you can download the entire contents of a commit using the `gh_download()` function:
