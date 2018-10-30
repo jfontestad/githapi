@@ -1,0 +1,61 @@
+context("git data tags")
+
+# TEST: view_tags, create_tags & delete_tags --------------------------------------------------
+
+test_that("create_tags creates some tags, view_tags retreives them and delete_tags deletes them", {
+  all_tags <- view_tags(repo = "ChadGoymer/test-githapi")
+
+  expect_is(all_tags, "tbl")
+  expect_identical(
+    names(all_tags),
+    c("name", "ref", "url", "object_sha", "object_type", "object_url"))
+  expect_true("0.0.0" %in% all_tags$name)
+  expect_identical(
+    filter(all_tags, name == "0.0.0") %>% pull(object_sha),
+    "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d")
+
+  created_tags <- create_tags(
+    tags = c("aaa", "bbb"),
+    shas = c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"),
+    repo = "ChadGoymer/test-githapi")
+
+  expect_is(created_tags, "tbl")
+  expect_identical(
+    names(created_tags),
+    c("name", "ref", "url", "object_sha", "object_type", "object_url"))
+  expect_identical(created_tags$ref, c("refs/tags/aaa", "refs/tags/bbb"))
+  expect_identical(
+    created_tags$object_sha,
+    c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
+
+  viewed_tags <- view_tags("ChadGoymer/test-githapi", c("aaa", "bbb"))
+
+  expect_is(viewed_tags, "tbl")
+  expect_identical(
+    names(viewed_tags),
+    c("name", "ref", "url", "object_sha", "object_type", "object_url"))
+  expect_identical(viewed_tags$name, c("aaa", "bbb"))
+  expect_identical(
+    viewed_tags$object_sha,
+    c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
+
+  updated_tags <- update_tags(
+    tags = c("aaa", "bbb"),
+    shas = c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"),
+    repo = "ChadGoymer/test-githapi")
+
+  expect_is(updated_tags, "tbl")
+  expect_identical(
+    names(updated_tags),
+    c("name", "ref", "url", "object_sha", "object_type", "object_url"))
+  expect_identical(updated_tags$ref, c("refs/tags/aaa", "refs/tags/bbb"))
+  expect_identical(
+    updated_tags$object_sha,
+    c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"))
+
+  delete_results <- delete_tags("ChadGoymer/test-githapi", c("aaa", "bbb"))
+
+  expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
+  expect_error(view_tags("ChadGoymer/test-githapi", "aaa"), "Not Found")
+  expect_error(view_tags("ChadGoymer/test-githapi", "bbb"), "Not Found")
+})
