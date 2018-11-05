@@ -15,9 +15,10 @@
 #'   requested.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A tibble describing the tags, with the following columns
@@ -35,7 +36,7 @@ view_tags <- function(
   repo,
   tags,
   n_max = 1000L,
-  token = gh_token(),
+  token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
@@ -100,9 +101,10 @@ view_tags <- function(
 #' @param tags (character) The tag names.
 #' @param shas (character) The SHAs of the commits to tag.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A tibble describing the tags, with the following columns
@@ -120,7 +122,7 @@ create_tags <- function(
   repo,
   tags,
   shas,
-  token = gh_token(),
+  token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
@@ -174,9 +176,10 @@ create_tags <- function(
 #' @param tags (character) The tag names.
 #' @param shas (character) Ths SHAs of the commits to tag.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A tibble describing the tags, with the following columns
@@ -194,7 +197,7 @@ update_tags <- function(
   repo,
   tags,
   shas,
-  token = gh_token(),
+  token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
@@ -246,9 +249,10 @@ update_tags <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A named list containing `TRUE` if the tag was deleted. An error is thrown otherwise.
@@ -258,12 +262,12 @@ update_tags <- function(
 delete_tags <- function(
   repo,
   tags,
-  token = gh_token(),
+  token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(tags))
   assert(is_repo(repo))
+  assert(is_character(tags))
   assert(is_sha(token))
   assert(is_url(api))
 

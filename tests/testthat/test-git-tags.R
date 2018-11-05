@@ -1,4 +1,4 @@
-context("git data tags")
+context("git tags")
 
 # TEST: view_tags, create_tags & delete_tags --------------------------------------------------
 
