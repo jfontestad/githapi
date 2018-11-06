@@ -56,7 +56,7 @@ view_releases <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  if (missing(tags) || is_null(tags)) {
+  if (missing(tags) || is_null(tags) || is_na(tags)) {
     info("Getting up to ", n_max, " releases from repository '", repo, "'")
     releases_list <- tryCatch({
       gh_page(
