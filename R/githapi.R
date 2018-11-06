@@ -86,7 +86,7 @@ gh_url <- function(
   assert(is_url(api))
 
   url  <- api
-  dots <- unlist(list(...))
+  dots <- list(...) %>% remove_missing() %>% unlist()
 
   if (is_null(names(dots))) {
     path <- paste(dots, collapse = "/")
@@ -254,7 +254,7 @@ gh_request <- function(
   parse   = TRUE,
   token   = gh_token())
 {
-  assert(is_string(type) && type %in% c("GET", "POST", "DELETE", "PATCH"))
+  assert(is_string(type) && type %in% c("GET", "POST", "DELETE", "PATCH", "PUT"))
   assert(is_url(url))
   assert(is_string(accept))
   assert(is_boolean(parse))
@@ -298,7 +298,7 @@ gh_request <- function(
 
   if (response$status_code >= 400) {
     error(
-      "\nGitHub GET request failed\n",
+      "\nGitHub ", type, " request failed\n",
       "\n[Status]:  ", header_values$Status,
       "\n[URL]:     ", url,
       "\n[Message]: ", message)

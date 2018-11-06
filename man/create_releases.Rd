@@ -5,7 +5,7 @@
 \title{Create releases at specified commits.}
 \usage{
 create_releases(repo, tags, commits, names, bodies, draft = FALSE,
-  prerelease = FALSE, token = gh_token(),
+  prerelease = FALSE, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -24,10 +24,11 @@ create_releases(repo, tags, commits, names, bodies, draft = FALSE,
 \item{prerelease}{(logical, optional) Whether the releases are a prerelease. Default: \code{FALSE}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
+value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
+R option \code{"github.token"}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or in the R option \code{"github.api"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }

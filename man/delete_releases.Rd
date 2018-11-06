@@ -4,7 +4,7 @@
 \alias{delete_releases}
 \title{Delete releases.}
 \usage{
-delete_releases(repo, tags, token = gh_token(),
+delete_releases(repo, tags, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -13,10 +13,11 @@ delete_releases(repo, tags, token = gh_token(),
 \item{tags}{(character) The tag names associated with the releases.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
+value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
+R option \code{"github.token"}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or in the R option \code{"github.api"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }

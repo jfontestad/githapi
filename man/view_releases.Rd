@@ -4,8 +4,9 @@
 \alias{view_releases}
 \title{View information about a releases}
 \usage{
-view_releases(repo, tags, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+view_releases(repo, tags, n_max = 1000L,
+  token = getOption("github.token"), api = getOption("github.api"),
+  ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
@@ -16,10 +17,11 @@ requested. If set to \code{"latest"}, then the latest non-draft, non-prerelease 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
+value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
+R option \code{"github.token"}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or in the R option \code{"github.api"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }

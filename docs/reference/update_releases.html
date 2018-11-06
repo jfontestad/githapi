@@ -32,9 +32,9 @@
 
 <meta property="og:title" content="Update releases to new commits. — update_releases" />
 
-<meta property="og:description" content="This function updates an existing releases. It can point the releases at new commits or just
-update the names or bodies for the releases. You can also change whether the releases are
-draft and whether they are pre-releases." />
+<meta property="og:description" content="This function updates an existing releases. It can update the names or bodies (description) of
+the releases. You can also change whether the releases are draft and whether they are
+pre-releases." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +63,7 @@ draft and whether they are pre-releases." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.2</span>
       </span>
     </div>
 
@@ -100,20 +100,20 @@ draft and whether they are pre-releases." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Update releases to new commits.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories.R'><code>R/repositories.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-releases.R'><code>R/repositories-releases.R</code></a></small>
     <div class="hidden name"><code>update_releases.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function updates an existing releases. It can point the releases at new commits or just
-update the names or bodies for the releases. You can also change whether the releases are
-draft and whether they are pre-releases.</p>
+    <p>This function updates an existing releases. It can update the names or bodies (description) of
+the releases. You can also change whether the releases are draft and whether they are
+pre-releases.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>update_releases</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='kw'>commits</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>bodies</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>draft</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>prerelease</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
+    <pre class="usage"><span class='fu'>update_releases</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>bodies</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>draft</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>prerelease</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -126,11 +126,6 @@ draft and whether they are pre-releases.</p>
     <tr>
       <th>tags</th>
       <td><p>(character) The tag names.</p></td>
-    </tr>
-    <tr>
-      <th>commits</th>
-      <td><p>(character, optional) The commits to tag. Can be either a SHA or a branch name.
-If missing or <code>NA</code> then the commit is not changed. Default: <code>NA</code>.</p></td>
     </tr>
     <tr>
       <th>names</th>
@@ -153,12 +148,13 @@ body is not changed. Default: <code>NA</code>.</p></td>
     <tr>
       <th>token</th>
       <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
+R option <code>"github.token"</code>.</p></td>
     </tr>
     <tr>
       <th>api</th>
       <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>

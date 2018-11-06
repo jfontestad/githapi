@@ -18,9 +18,10 @@
 #'   requested. If set to `"latest"`, then the latest non-draft, non-prerelease is returned.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A tibble describing the releases, with the following columns
@@ -46,7 +47,7 @@ view_releases <- function(
   repo,
   tags,
   n_max = 1000L,
-  token = gh_token(),
+  token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
@@ -55,7 +56,7 @@ view_releases <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  if (missing(tags) || is_null(tags)) {
+  if (missing(tags) || is_null(tags) || is_na(tags)) {
     info("Getting up to ", n_max, " releases from repository '", repo, "'")
     releases_list <- tryCatch({
       gh_page(
@@ -135,9 +136,10 @@ view_releases <- function(
 #' @param draft (logical, optional) Whether the releases are draft. Default: `FALSE`.
 #' @param prerelease (logical, optional) Whether the releases are a prerelease. Default: `FALSE`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A tibble describing the releases, with the following columns
@@ -167,17 +169,17 @@ create_releases <- function(
   bodies,
   draft      = FALSE,
   prerelease = FALSE,
-  token      = gh_token(),
+  token      = getOption("github.token"),
   api        = getOption("github.api"),
   ...)
 {
   assert(is_repo(repo))
   assert(is_character(tags))
   assert(is_character(commits) && identical(length(commits), length(tags)))
-  assert(is_character(names) && identical(length(commits), length(names)))
-  assert(is_character(bodies) && identical(length(commits), length(bodies)))
-  assert(is_logical(draft) && (is_scalar(draft) || identical(length(commits), length(draft))))
-  assert(is_logical(prerelease) && (is_scalar(prerelease) || identical(length(commits), length(prerelease))))
+  assert(is_character(names) && identical(length(names), length(tags)))
+  assert(is_character(bodies) && identical(length(bodies), length(tags)))
+  assert(is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags))))
+  assert(is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags))))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -257,9 +259,10 @@ create_releases <- function(
 #' @param draft (logical, optional) Whether the releases are draft. Default: `FALSE`.
 #' @param prerelease (logical, optional) Whether the releases are a prerelease. Default: `FALSE`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A tibble describing the releases, with the following columns
@@ -288,16 +291,16 @@ update_releases <- function(
   bodies     = NA,
   draft      = NA,
   prerelease = NA,
-  token      = gh_token(),
+  token      = getOption("github.token"),
   api        = getOption("github.api"),
   ...)
 {
   assert(is_repo(repo))
   assert(is_character(tags))
-  assert(is_na(names) || (is_character(names) && identical(length(tags), length(names))))
-  assert(is_na(bodies) || (is_character(bodies) && identical(length(tags), length(bodies))))
-  assert(is_na(draft) || (is_logical(draft) && (is_scalar(draft) || identical(length(tags), length(draft)))))
-  assert(is_na(prerelease) || (is_logical(prerelease) && (is_scalar(prerelease) || identical(length(tags), length(prerelease)))))
+  assert(is_na(names) || (is_character(names) && identical(length(names), length(tags))))
+  assert(is_na(bodies) || (is_character(bodies) && identical(length(bodies), length(tags))))
+  assert(is_na(draft) || (is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags)))))
+  assert(is_na(prerelease) || (is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags)))))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -374,9 +377,10 @@ update_releases <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names associated with the releases.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A named list containing `TRUE` if the release was deleted. An error is thrown otherwise.
@@ -386,7 +390,7 @@ update_releases <- function(
 delete_releases <- function(
   repo,
   tags,
-  token = gh_token(),
+  token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
