@@ -1,5 +1,19 @@
 context("repositories contents")
 
+# TEST: view_readme ---------------------------------------------------------------------------
+
+test_that("view_readme returns the contents of the readme file", {
+  readme <- view_readme("ChadGoymer/test-githapi")
+
+  expect_true(is_string(readme))
+  expect_match(readme, "^# test-githapi")
+
+  readme_88f7769 <- view_readme("ChadGoymer/test-githapi", ref = "88f77699b1d592e1d5338f04a88ea1218975cba8")
+
+  expect_true(is_string(readme_88f7769))
+  expect_identical(readme_88f7769, "# test-githapi\nThis repo is used to test the githapi R package\n")
+})
+
 # TEST: view_file, create_file, update_file & delete_file -------------------------------------
 
 test_that("view_files, create_files, update_files and delete files on the default branch works", {
