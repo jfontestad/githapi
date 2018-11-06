@@ -4,7 +4,7 @@
 \alias{view_files}
 \title{View information about a files}
 \usage{
-view_files(repo, paths, ref = NULL, token = getOption("github.token"),
+view_files(repo, paths, ref = NA, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -13,8 +13,8 @@ view_files(repo, paths, ref = NULL, token = getOption("github.token"),
 \item{paths}{(string, optional) The paths to the files or directories in the repository.}
 
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-is specified the head commit is used. If \code{NULL} the head of the default branch is used.
-Default: \code{NULL}.}
+is specified the head commit is used. If \code{NA} the head of the default branch is used.
+Default: \code{NA}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

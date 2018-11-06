@@ -117,8 +117,8 @@ view_contents <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param paths (string, optional) The paths to the files or directories in the repository.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-#'   is specified the head commit is used. If `NULL` the head of the default branch is used.
-#'   Default: `NULL`.
+#'   is specified the head commit is used. If `NA` the head of the default branch is used.
+#'   Default: `NA`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -144,17 +144,17 @@ view_contents <- function(
 view_files <- function(
   repo,
   paths,
-  ref   = NULL,
+  ref   = NA,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
   assert(is_repo(repo))
-  assert(is_null(ref) || is_string(ref))
+  assert(is_na(ref) || is_string(ref))
   assert(is_sha(token))
   assert(is_url(api))
 
-  if (missing(paths) || is_null(paths)) {
+  if (missing(paths) || is_na(paths)) {
     info("Getting files from repository '", repo, "'")
     files_list <- tryCatch({
       gh_request(
@@ -184,7 +184,7 @@ view_files <- function(
   }
 
   info("Transforming results")
-  files_tbl <- bind_fields(files_list[!sapply(files_list, is_null)], list(
+  files_tbl <- bind_fields(files_list, list(
     name         = c("name",         as = "character"),
     path         = c("path",         as = "character"),
     sha          = c("sha",          as = "character"),
@@ -219,10 +219,10 @@ view_files <- function(
 #'   is used. Default: `NA`.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NULL` then the authenticated user is used. Default: `NULL`
+#'   If `NA` then the authenticated user is used. Default: `NA`
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NULL` then the authenticated user is used. Default: `NULL`
+#'   If `NA` then the authenticated user is used. Default: `NA`
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -260,8 +260,8 @@ create_files <- function(
   contents,
   messages,
   branches  = NA,
-  committer = NULL,
-  author    = NULL,
+  committer = NA,
+  author    = NA,
   token     = getOption("github.token"),
   api       = getOption("github.api"),
   ...)
@@ -273,10 +273,10 @@ create_files <- function(
   assert(
     (is_na(branches) || is_character(branches)) &&
       (is_scalar(branches) || identical(length(branches), length(paths))))
-  assert(is_null(committer) || (
+  assert(is_na(committer) || (
     is_list(committer) && identical(names(committer), c("name", "email")) &&
       is_string(committer$name) && is_string(committer$email)))
-  assert(is_null(author) || (
+  assert(is_na(author) || (
     is_list(author) && identical(names(author), c("name", "email")) &&
       is_string(author$name) && is_string(author$email)))
   assert(is_sha(token))
@@ -318,7 +318,7 @@ create_files <- function(
   }
 
   info("Transforming results")
-  files_tbl <- bind_fields(files_list[!sapply(files_list, is_null)], list(
+  files_tbl <- bind_fields(files_list, list(
     name              = c("content", "name",              as = "character"),
     path              = c("content", "path",              as = "character"),
     sha               = c("content", "sha",               as = "character"),
@@ -335,8 +335,8 @@ create_files <- function(
     commit_committer  = c("commit",  "committer", "name", as = "character"),
     commit_tree_sha   = c("commit",  "tree", "sha",       as = "character"),
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
-    commit_parent_sha = c("",                             as = "character"),
-    commit_parent_url = c("",                             as = "character"))) %>%
+    commit_parent_sha = "",
+    commit_parent_url = "")) %>%
     mutate(commit_parent_sha = sapply(files_list, function(f) {
       sapply(f$commit$parents, getElement, "sha")
     })) %>%
@@ -368,10 +368,10 @@ create_files <- function(
 #'   is used. Default: `NA`.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NULL` then the authenticated user is used. Default: `NULL`
+#'   If `NA` then the authenticated user is used. Default: `NA`
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NULL` then the authenticated user is used. Default: `NULL`
+#'   If `NA` then the authenticated user is used. Default: `NA`
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -409,8 +409,8 @@ update_files <- function(
   contents,
   messages,
   branches  = NA,
-  committer = NULL,
-  author    = NULL,
+  committer = NA,
+  author    = NA,
   token     = getOption("github.token"),
   api       = getOption("github.api"),
   ...)
@@ -422,10 +422,10 @@ update_files <- function(
   assert(
     (is_na(branches) || is_character(branches)) &&
       (is_scalar(branches) || identical(length(branches), length(paths))))
-  assert(is_null(committer) || (
+  assert(is_na(committer) || (
     is_list(committer) && identical(names(committer), c("name", "email")) &&
       is_string(committer$name) && is_string(committer$email)))
-  assert(is_null(author) || (
+  assert(is_na(author) || (
     is_list(author) && identical(names(author), c("name", "email")) &&
       is_string(author$name) && is_string(author$email)))
   assert(is_sha(token))
@@ -470,7 +470,7 @@ update_files <- function(
   }
 
   info("Transforming results")
-  files_tbl <- bind_fields(files_list[!sapply(files_list, is_null)], list(
+  files_tbl <- bind_fields(files_list, list(
     name              = c("content", "name",              as = "character"),
     path              = c("content", "path",              as = "character"),
     sha               = c("content", "sha",               as = "character"),
@@ -487,8 +487,8 @@ update_files <- function(
     commit_committer  = c("commit",  "committer", "name", as = "character"),
     commit_tree_sha   = c("commit",  "tree", "sha",       as = "character"),
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
-    commit_parent_sha = c("",                             as = "character"),
-    commit_parent_url = c("",                             as = "character"))) %>%
+    commit_parent_sha = "",
+    commit_parent_url = "")) %>%
     mutate(commit_parent_sha = sapply(files_list, function(f) {
       sapply(f$commit$parents, getElement, "sha")
     })) %>%
@@ -519,10 +519,10 @@ update_files <- function(
 #'   is used. Default: `NA`.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NULL` then the authenticated user is used. Default: `NULL`
+#'   If `NA` then the authenticated user is used. Default: `NA`
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NULL` then the authenticated user is used. Default: `NULL`
+#'   If `NA` then the authenticated user is used. Default: `NA`
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -550,8 +550,8 @@ delete_files <- function(
   paths,
   messages,
   branches  = NA,
-  committer = NULL,
-  author    = NULL,
+  committer = NA,
+  author    = NA,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
@@ -562,10 +562,10 @@ delete_files <- function(
   assert(
     (is_na(branches) || is_character(branches)) &&
       (is_scalar(branches) || identical(length(branches), length(paths))))
-  assert(is_null(committer) || (
+  assert(is_na(committer) || (
     is_list(committer) && identical(names(committer), c("name", "email")) &&
       is_string(committer$name) && is_string(committer$email)))
-  assert(is_null(author) || (
+  assert(is_na(author) || (
     is_list(author) && identical(names(author), c("name", "email")) &&
       is_string(author$name) && is_string(author$email)))
   assert(is_sha(token))
@@ -609,7 +609,7 @@ delete_files <- function(
   }
 
   info("Transforming results")
-  files_tbl <- bind_fields(files_list[!sapply(files_list, is_null)], list(
+  files_tbl <- bind_fields(files_list, list(
     commit_message    = c("commit", "message",            as = "character"),
     commit_sha        = c("commit",  "sha",               as = "character"),
     commit_url        = c("commit",  "url",               as = "character"),
@@ -617,8 +617,8 @@ delete_files <- function(
     commit_committer  = c("commit",  "committer", "name", as = "character"),
     commit_tree_sha   = c("commit",  "tree", "sha",       as = "character"),
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
-    commit_parent_sha = c("",                             as = "character"),
-    commit_parent_url = c("",                             as = "character"))) %>%
+    commit_parent_sha = "",
+    commit_parent_url = "")) %>%
     mutate(commit_parent_sha = sapply(files_list, function(f) {
       sapply(f$commit$parents, getElement, "sha")
     })) %>%

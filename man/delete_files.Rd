@@ -4,8 +4,8 @@
 \alias{delete_files}
 \title{Delete files.}
 \usage{
-delete_files(repo, paths, messages, branches = NA, committer = NULL,
-  author = NULL, token = getOption("github.token"),
+delete_files(repo, paths, messages, branches = NA, committer = NA,
+  author = NA, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
@@ -22,11 +22,11 @@ is used. Default: \code{NA}.}
 
 \item{committer}{(list, optional) The name and email address of the committer. This needs
 to be specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NULL} then the authenticated user is used. Default: \code{NULL}}
+If \code{NA} then the authenticated user is used. Default: \code{NA}}
 
 \item{author}{(list, optional) The name and email address of the author. This needs to be
 specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NULL} then the authenticated user is used. Default: \code{NULL}}
+If \code{NA} then the authenticated user is used. Default: \code{NA}}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
