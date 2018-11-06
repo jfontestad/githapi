@@ -46,6 +46,63 @@ view_readme <- function(
   readme
 }
 
+#  FUNCTION: view_contents --------------------------------------------------------------------
+#
+#' View the contents of files
+#'
+#' This function reads the contents of the specified files from a repository in GitHub.
+#'
+#' <https://developer.github.com/v3/repos/contents/#get-contents>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param paths (string) The paths to the files.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
+#'   is specified the head commit is used. If `NA` the head of the default branch is used.
+#'   Default: `NA`.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A named character vector with each element containing a file's contents.
+#'
+#' @export
+#'
+view_contents <- function(
+  repo,
+  paths,
+  ref   = NA,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(paths))
+  assert(is_na(ref) || is_string(ref))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Getting files '", paste(paths, collapse = "', '"), "' from repository '", repo, "'")
+  files <- sapply(paths, simplify = TRUE, USE.NAMES = TRUE, function(path) {
+    tryCatch({
+      file <- gh_request(
+        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
+        accept  = "raw", token = token, ...)
+
+      attr(file, "header") <- NULL
+      file
+    }, error = function(e) {
+      info("File '", path, "' failed!")
+      e
+    })
+  })
+
+  info("Done")
+  files
+}
+
 #  FUNCTION: view_files -----------------------------------------------------------------------
 #
 #' View information about a files
