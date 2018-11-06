@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">githapi</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.2</span>
       </span>
     </div>
 
@@ -81,8 +81,8 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The easiest way to install githapi is with the devtools package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
-<span class="kw">install_github</span>(<span class="st">"ChadGoymer/githapi"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(devtools)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install_github</span>(<span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
 </div>
 <div id="authorisation" class="section level2">
 <h2 class="hasAnchor">
@@ -98,45 +98,46 @@
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>Most of the functions in the package are prefixed by <code>gh_</code>, except for predicate functions which are prefixed with <code>is_</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(githapi)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(githapi)</a></code></pre></div>
 <div id="getting-information-about-a-users-repositories" class="section level3">
 <h3 class="hasAnchor">
 <a href="#getting-information-about-a-users-repositories" class="anchor"></a>Getting information about a user’s repositories</h3>
 <p>The main reason for using githapi is to extract information from GitHub. For example to find all the repositories a user has use the function <code><a href="reference/gh_repositories.html">gh_repositories()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_repositories.html">gh_repositories</a></span>(<span class="st">"ChadGoymer"</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/gh_repositories.html">gh_repositories</a></span>(<span class="st">"ChadGoymer"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 9 x 11
 ##   name  description owner_login owner_type default_branch open_issues  size
 ##   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                &lt;int&gt; &lt;int&gt;
 ## 1 chad~ My persona~ ChadGoymer  User       master                   0   156
 ## 2 git-~ Simple gui~ ChadGoymer  User       master                   0     2
-## 3 gith~ User-frien~ ChadGoymer  User       master                   5   783
+## 3 gith~ User-frien~ ChadGoymer  User       master                   6   844
 ## 4 logr  &lt;NA&gt;        ChadGoymer  User       master                   0     0
 ## 5 r-be~ A set of g~ ChadGoymer  User       master                   0 11306
 ## 6 r-py~ &lt;NA&gt;        ChadGoymer  User       master                   0  1172
 ## 7 r-tr~ Training m~ ChadGoymer  User       master                   0  1229
-## 8 rfil~ An R packa~ ChadGoymer  User       master                   0     2
-## 9 shin~ &lt;NA&gt;        ChadGoymer  User       master                   0 13408
+## 8 shin~ &lt;NA&gt;        ChadGoymer  User       master                   0 13408
+## 9 test~ This repo ~ ChadGoymer  User       master                   0    30
 ## # ... with 4 more variables: url &lt;chr&gt;, html_url &lt;chr&gt;, created_at &lt;dttm&gt;,
 ## #   updated_at &lt;dttm&gt;</code></pre>
 <p>Information on the branches in a particular repository can then be obtained using <code><a href="reference/gh_branches.html">gh_branches()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_branches.html">gh_branches</a></span>(<span class="st">"ChadGoymer/githapi"</span>)</code></pre></div>
-<pre><code>## # A tibble: 2 x 3
-##   name      commit_sha              commit_url                            
-##   &lt;chr&gt;     &lt;chr&gt;                   &lt;chr&gt;                                 
-## 1 0-test-b~ e93edf23e95b59d08853e2~ https://api.github.com/repos/ChadGoym~
-## 2 master    59ef513869b4548d651111~ https://api.github.com/repos/ChadGoym~</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/gh_branches.html">gh_branches</a></span>(<span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 3 x 3
+##   name       commit_sha              commit_url                           
+##   &lt;chr&gt;      &lt;chr&gt;                   &lt;chr&gt;                                
+## 1 0-test-br~ e93edf23e95b59d08853e2~ https://api.github.com/repos/ChadGoy~
+## 2 81-file-c~ 3883fafc315d19064f6baa~ https://api.github.com/repos/ChadGoy~
+## 3 master     31142dfed0353aac9dab8c~ https://api.github.com/repos/ChadGoy~</code></pre>
 <p>The history of a branch can be obtained using <code><a href="reference/gh_commits.html">gh_commits()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_commits.html">gh_commits</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/gh_commits.html">gh_commits</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>## # A tibble: 6 x 10
 ##   sha   message author_name author_email committer_name committer_email
 ##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;          
-## 1 59ef~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-## 2 4e89~ Merge ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-## 3 bc74~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-## 4 8b90~ regene~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-## 5 b757~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-## 6 37e5~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+## 1 3114~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+## 2 42ac~ regene~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 3 0ae1~ moved ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 4 aedf~ moved ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 5 d589~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+## 6 79c1~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
 ## # ... with 4 more variables: date &lt;dttm&gt;, url &lt;chr&gt;, tree_sha &lt;chr&gt;,
 ## #   tree_url &lt;chr&gt;</code></pre>
 </div>
@@ -144,10 +145,10 @@
 <h3 class="hasAnchor">
 <a href="#getting-the-contents-of-files" class="anchor"></a>Getting the contents of files</h3>
 <p>There are a few ways of getting the content of a text file in GitHub. For files of less than 1 MB, you can use <code><a href="reference/gh_contents.html">gh_contents()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_contents.html">gh_contents</a></span>(<span class="st">"DESCRIPTION"</span>, <span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="reference/gh_contents.html">gh_contents</a></span>(<span class="st">"DESCRIPTION"</span>, <span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</a></code></pre></div>
 <pre><code>## Package: githapi
 ## Title: User-friendly access to the GitHub API for R, consistent with the tidyverse
-## Version: 0.7.0
+## Version: 0.7.1
 ## Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("aut", "cre"))
 ## Description: Provides a suite of functions which simplify working with GitHub's API.
 ## Imports:
@@ -165,13 +166,13 @@
 ## URL: https://github.com/ChadGoymer/githapi
 ## BugReports: https://github.com/ChadGoymer/githapi/issues</code></pre>
 <p>The README file can be downloaded using <code><a href="reference/gh_readme.html">gh_readme()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_readme.html">gh_readme</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="reference/gh_readme.html">gh_readme</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
 <p>For larger files, up to 100 MB, you can use the <code><a href="reference/gh_git_blob.html">gh_git_blob()</a></code> function, or the move convenient <code><a href="reference/gh_save.html">gh_save()</a></code>, which downloads the file as a binary blob and writes it to disk:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_save.html">gh_save</a></span>(<span class="st">"DESCRIPTION"</span>, <span class="st">"ChadGoymer/githapi"</span>, <span class="st">"master"</span>, <span class="dt">path =</span> <span class="st">"/tmp"</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="reference/gh_save.html">gh_save</a></span>(<span class="st">"DESCRIPTION"</span>, <span class="st">"ChadGoymer/githapi"</span>, <span class="st">"master"</span>, <span class="dt">path =</span> <span class="st">"/tmp"</span>)</a></code></pre></div>
 <p>If you wish to read an R script from GitHub you can use the <code><a href="reference/gh_source.html">gh_source()</a></code> which downloads and <code>source</code>’s the script.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_source.html">gh_source</a></span>(<span class="st">"inst/test-data/test-source.R"</span>, <span class="st">"ChadGoymer/githapi"</span>, <span class="st">"master"</span>)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="reference/gh_source.html">gh_source</a></span>(<span class="st">"inst/test-data/test-source.R"</span>, <span class="st">"ChadGoymer/githapi"</span>, <span class="st">"master"</span>)</a></code></pre></div>
 <p>Finally, you can download the entire contents of a commit using the <code><a href="reference/gh_download.html">gh_download()</a></code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/gh_download.html">gh_download</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>, <span class="st">"/tmp"</span>)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="reference/gh_download.html">gh_download</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>, <span class="st">"/tmp"</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="futher-information" class="section level2">

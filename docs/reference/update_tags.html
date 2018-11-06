@@ -62,7 +62,7 @@ GitHub." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.2</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@ GitHub." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Update tags to new commits.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-data.R'><code>R/git-data.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-tags.R'><code>R/git-tags.R</code></a></small>
     <div class="hidden name"><code>update_tags.Rd</code></div>
     </div>
 
@@ -110,7 +110,7 @@ GitHub.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>update_tags</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='no'>shas</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
+    <pre class="usage"><span class='fu'>update_tags</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='no'>shas</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -131,12 +131,13 @@ GitHub.</p>
     <tr>
       <th>token</th>
       <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
+R option <code>"github.token"</code>.</p></td>
     </tr>
     <tr>
       <th>api</th>
       <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>

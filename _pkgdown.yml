@@ -4,6 +4,12 @@ reference:
 - title: Repositories
   desc: Functions for accessing information about repositories and their content.
   contents:
+    - '`view_readme`'
+    - '`view_contents`'
+    - '`view_files`'
+    - '`create_files`'
+    - '`update_files`'
+    - '`delete_files`'
     - '`view_releases`'
     - '`create_releases`'
     - '`update_releases`'
@@ -35,18 +41,6 @@ reference:
     - '`gh_releases`'
     - '`gh_asset`'
     - '`gh_assets`'
-- title: Gists
-  desc: Functions for accessing information about gists and their contents.
-  contents:
-    - '`gh_gist`'
-    - '`gh_gists`'
-    - '`gh_gist_commits`'
-    - '`is_gist_starred`'
-    - '`gh_gist_forks`'
-    - '`gh_gist_comment`'
-    - '`gh_gist_comments`'
-    - '`gh_save_gist`'
-    - '`gh_source_gist`'
 - title: Git Data
   desc: Functions for accessing git data directly.
   contents:
@@ -63,6 +57,18 @@ reference:
     - '`gh_git_tree`'
     - '`gh_save`'
     - '`gh_source`'
+- title: Gists
+  desc: Functions for accessing information about gists and their contents.
+  contents:
+    - '`gh_gist`'
+    - '`gh_gists`'
+    - '`gh_gist_commits`'
+    - '`is_gist_starred`'
+    - '`gh_gist_forks`'
+    - '`gh_gist_comment`'
+    - '`gh_gist_comments`'
+    - '`gh_save_gist`'
+    - '`gh_source_gist`'
 - title: Issues
   desc: Functions for accessing information about issues and their contents.
   contents:

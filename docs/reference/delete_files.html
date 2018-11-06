@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get a single gist — gh_gist • githapi</title>
+<title>Delete files. — delete_files • githapi</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Get a single gist — gh_gist" />
+<meta property="og:title" content="Delete files. — delete_files" />
 
-<meta property="og:description" content="https://developer.github.com/v3/gists/#get-a-single-gist
-https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist" />
+<meta property="og:description" content="This function deletes the specified files from a repository in GitHub. It adds a new commit
+for each file deleted with the specifed commit message and on the specified branch. The
+committer and author can be set explicitly if necessary." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -98,51 +99,94 @@ https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get a single gist</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/gists.R'><code>R/gists.R</code></a></small>
-    <div class="hidden name"><code>gh_gist.Rd</code></div>
+    <h1>Delete files.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-contents.R'><code>R/repositories-contents.R</code></a></small>
+    <div class="hidden name"><code>delete_files.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><a href='https://developer.github.com/v3/gists/#get-a-single-gist'>https://developer.github.com/v3/gists/#get-a-single-gist</a>
-<a href='https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist'>https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist</a></p>
+    <p>This function deletes the specified files from a repository in GitHub. It adds a new commit
+for each file deleted with the specifed commit message and on the specified branch. The
+committer and author can be set explicitly if necessary.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>gh_gist</span>(<span class='no'>gist</span>, <span class='no'>sha</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(), <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_files</span>(<span class='no'>repo</span>, <span class='no'>paths</span>, <span class='no'>messages</span>, <span class='kw'>branches</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>author</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.token"</span>),
+  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>gist</th>
-      <td><p>(string) The ID of the gist in GitHub.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>sha</th>
-      <td><p>(string, optional) The SHA-1 of the version required. Default: latest version.</p></td>
+      <th>paths</th>
+      <td><p>(character) The paths to the files in the repository.</p></td>
+    </tr>
+    <tr>
+      <th>messages</th>
+      <td><p>(character) The commit messages to use. If a single message is provided it
+is used for all commits with the file added as a suffix.</p></td>
+    </tr>
+    <tr>
+      <th>branches</th>
+      <td><p>(character, optional) The branches to make the commits on. If a single branch
+is provided all commits are made on it. If <code>NA</code> the default branch for the repository
+is used. Default: <code>NA</code>.</p></td>
+    </tr>
+    <tr>
+      <th>committer</th>
+      <td><p>(list, optional) The name and email address of the committer. This needs
+to be specified as a named list, e.g. <code>list(name = "Bob Smith", email = "bob.smith@acme.com")</code>.
+If <code>NA</code> then the authenticated user is used. Default: <code>NA</code></p></td>
+    </tr>
+    <tr>
+      <th>author</th>
+      <td><p>(list, optional) The name and email address of the author. This needs to be
+specified as a named list, e.g. <code>list(name = "Bob Smith", email = "bob.smith@acme.com")</code>.
+If <code>NA</code> then the authenticated user is used. Default: <code>NA</code></p></td>
     </tr>
     <tr>
       <th>token</th>
       <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
+R option <code>"github.token"</code>.</p></td>
     </tr>
     <tr>
       <th>api</th>
       <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_get.html'>gh_get()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list describing the gist (see GitHub's API documentation for details).</p>
+    <p>A tibble describing the files, with the following columns
+(see <a href='https://developer.github.com/v3/repos/contents/'>GitHub's documentation</a>
+for more details):</p><ul>
+<li><p><strong>commit_message</strong>: The commit message recorded in GitHub.</p></li>
+<li><p><strong>commit_sha</strong>: The SHA of the commit.</p></li>
+<li><p><strong>commit_url</strong>: The URL to the commit.</p></li>
+<li><p><strong>commit_author</strong>: The author of the commit.</p></li>
+<li><p><strong>commit_committer</strong>: The committer of the commit.</p></li>
+<li><p><strong>commit_tree_sha</strong>: The SHA for the git tree.</p></li>
+<li><p><strong>commit_tree_url</strong>: The URL for the git tree.</p></li>
+<li><p><strong>commit_parent_sha</strong>: The SHA of the parent commit.</p></li>
+<li><p><strong>commit_parent_url</strong>: The URL to the parent commit.</p></li>
+</ul>
+
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><a href='https://developer.github.com/v3/repos/contents/#delete-a-file'>https://developer.github.com/v3/repos/contents/#delete-a-file</a></p>
     
 
   </div>
@@ -152,6 +196,8 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

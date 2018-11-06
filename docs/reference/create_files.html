@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update releases to new commits. — update_releases • githapi</title>
+<title>Create a new files — create_files • githapi</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,11 +30,11 @@
 
 
 
-<meta property="og:title" content="Update releases to new commits. — update_releases" />
+<meta property="og:title" content="Create a new files — create_files" />
 
-<meta property="og:description" content="This function updates an existing releases. It can update the names or bodies (description) of
-the releases. You can also change whether the releases are draft and whether they are
-pre-releases." />
+<meta property="og:description" content="This function creates a new text files in a GitHub repository. It adds a new commit for
+each file created with the specifed commit message and on the specified branch. The
+committer and author can be set explicitly if necessary." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -99,21 +99,21 @@ pre-releases." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update releases to new commits.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-releases.R'><code>R/repositories-releases.R</code></a></small>
-    <div class="hidden name"><code>update_releases.Rd</code></div>
+    <h1>Create a new files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-contents.R'><code>R/repositories-contents.R</code></a></small>
+    <div class="hidden name"><code>create_files.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function updates an existing releases. It can update the names or bodies (description) of
-the releases. You can also change whether the releases are draft and whether they are
-pre-releases.</p>
+    <p>This function creates a new text files in a GitHub repository. It adds a new commit for
+each file created with the specifed commit message and on the specified branch. The
+committer and author can be set explicitly if necessary.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>update_releases</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>bodies</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>draft</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>prerelease</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.token"</span>),
+    <pre class="usage"><span class='fu'>create_files</span>(<span class='no'>repo</span>, <span class='no'>paths</span>, <span class='no'>contents</span>, <span class='no'>messages</span>, <span class='kw'>branches</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>author</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -124,26 +124,35 @@ pre-releases.</p>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>tags</th>
-      <td><p>(character) The tag names.</p></td>
+      <th>paths</th>
+      <td><p>(character) The paths to the files in the repository.</p></td>
     </tr>
     <tr>
-      <th>names</th>
-      <td><p>(character, optional) The names of the releases. If missing or <code>NA</code> then the
-name is not changed. Default: <code>NA</code>.</p></td>
+      <th>contents</th>
+      <td><p>(character) The text to add to the files.</p></td>
     </tr>
     <tr>
-      <th>bodies</th>
-      <td><p>(character, optional) The bodies for the releases. If missing or <code>NA</code> then the
-body is not changed. Default: <code>NA</code>.</p></td>
+      <th>messages</th>
+      <td><p>(character) The commit messages to use. If a single message is provided it
+is used for all commits with the file added as a suffix.</p></td>
     </tr>
     <tr>
-      <th>draft</th>
-      <td><p>(logical, optional) Whether the releases are draft. Default: <code>FALSE</code>.</p></td>
+      <th>branches</th>
+      <td><p>(character, optional) The branches to make the commits on. If a single branch
+is provided all commits are made on it. If <code>NA</code> the default branch for the repository
+is used. Default: <code>NA</code>.</p></td>
     </tr>
     <tr>
-      <th>prerelease</th>
-      <td><p>(logical, optional) Whether the releases are a prerelease. Default: <code>FALSE</code>.</p></td>
+      <th>committer</th>
+      <td><p>(list, optional) The name and email address of the committer. This needs
+to be specified as a named list, e.g. <code>list(name = "Bob Smith", email = "bob.smith@acme.com")</code>.
+If <code>NA</code> then the authenticated user is used. Default: <code>NA</code></p></td>
+    </tr>
+    <tr>
+      <th>author</th>
+      <td><p>(list, optional) The name and email address of the author. This needs to be
+specified as a named list, e.g. <code>list(name = "Bob Smith", email = "bob.smith@acme.com")</code>.
+If <code>NA</code> then the authenticated user is used. Default: <code>NA</code></p></td>
     </tr>
     <tr>
       <th>token</th>
@@ -164,28 +173,33 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the releases, with the following columns
-(see <a href='https://developer.github.com/v3/repos/releases/'>GitHub's documentation</a>
+    <p>A tibble describing the files, with the following columns
+(see <a href='https://developer.github.com/v3/repos/contents/'>GitHub's documentation</a>
 for more details):</p><ul>
-<li><p><strong>id</strong>: The unique ID assigned by GitHub.</p></li>
-<li><p><strong>tag_name</strong>: The name of the tag associated with the release.</p></li>
-<li><p><strong>name</strong>: The name, or title, of the release.</p></li>
-<li><p><strong>body</strong>: The body, or description, of the release.</p></li>
-<li><p><strong>author_login</strong>: The author of the release.</p></li>
-<li><p><strong>draft</strong>: Whether the release is a draft.</p></li>
-<li><p><strong>prerelease</strong>: Whether the release is a pre-release.</p></li>
-<li><p><strong>target_commitish</strong>: The commit or branch the release was applied to.</p></li>
-<li><p><strong>created_at</strong>: The date and time of creation.</p></li>
-<li><p><strong>published_at</strong>: The date and time of publication.</p></li>
-<li><p><strong>assets</strong>: The names of any assets associated with the release.</p></li>
-<li><p><strong>zipball_url</strong>: The URL to download a zip file of the release commit.</p></li>
-<li><p><strong>url</strong>: The URL to view the release details on GitHub.</p></li>
+<li><p><strong>name</strong>: The name of the file.</p></li>
+<li><p><strong>path</strong>: The path to the file.</p></li>
+<li><p><strong>sha</strong>: The SHA of the file.</p></li>
+<li><p><strong>size</strong>: The size of the file in bytes.</p></li>
+<li><p><strong>type</strong>: Either <code>"file"</code>, <code>"dir"</code>, <code>"symlink"</code> or <code>"submodule"</code>.</p></li>
+<li><p><strong>url</strong>: The URL to the file contents.</p></li>
+<li><p><strong>html_url</strong>: The URL to view the file in GitHub.</p></li>
+<li><p><strong>git_url</strong>: The URL to the Git blob.</p></li>
+<li><p><strong>download_url</strong>: The URL to download the file.</p></li>
+<li><p><strong>commit_message</strong>: The commit message recorded in GitHub.</p></li>
+<li><p><strong>commit_sha</strong>: The SHA of the commit.</p></li>
+<li><p><strong>commit_url</strong>: The URL to the commit.</p></li>
+<li><p><strong>commit_author</strong>: The author of the commit.</p></li>
+<li><p><strong>commit_committer</strong>: The committer of the commit.</p></li>
+<li><p><strong>commit_tree_sha</strong>: The SHA for the git tree.</p></li>
+<li><p><strong>commit_tree_url</strong>: The URL for the git tree.</p></li>
+<li><p><strong>commit_parent_sha</strong>: The SHA of the parent commit.</p></li>
+<li><p><strong>commit_parent_url</strong>: The URL to the parent commit.</p></li>
 </ul>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/repos/releases/#edit-a-release'>https://developer.github.com/v3/repos/releases/#edit-a-release</a></p>
+    <p><a href='https://developer.github.com/v3/repos/contents/#create-a-file'>https://developer.github.com/v3/repos/contents/#create-a-file</a></p>
     
 
   </div>

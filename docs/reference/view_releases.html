@@ -64,7 +64,7 @@ of a tag the latest non-draft, non-prerelease release is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.2</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ of a tag the latest non-draft, non-prerelease release is returned." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>View information about a releases</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories.R'><code>R/repositories.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-releases.R'><code>R/repositories-releases.R</code></a></small>
     <div class="hidden name"><code>view_releases.Rd</code></div>
     </div>
 
@@ -114,8 +114,9 @@ of a tag the latest non-draft, non-prerelease release is returned.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>view_releases</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>view_releases</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.token"</span>), <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"github.api"</span>),
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,12 +137,13 @@ requested. If set to <code>"latest"</code>, then the latest non-draft, non-prere
     <tr>
       <th>token</th>
       <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
+R option <code>"github.token"</code>.</p></td>
     </tr>
     <tr>
       <th>api</th>
       <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
