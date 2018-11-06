@@ -63,8 +63,6 @@ test_that("view_files, create_files, update_files and delete files on the defaul
     contents = c("Created to test:\n\n  `create_files()`", "Created to test:\n\n  `create_files()`"),
     messages = "Testing create_files()")
 
-  # TODO: Add a test to check contents
-
   expect_is(created_files, "tbl")
   expect_identical(
     sapply(created_files, function(col) class(col)[[1]]),
@@ -90,6 +88,9 @@ test_that("view_files, create_files, update_files and delete files on the defaul
   expect_identical(
     created_files$commit_message,
     c("Testing create_files() - added aaaa.txt", "Testing create_files() - added bbbb.txt"))
+  expect_identical(
+    view_contents("ChadGoymer/test-githapi", c("aaaa.txt", "bbbb.txt")),
+    c(aaaa.txt = "Created to test:\n\n  `create_files()`", bbbb.txt = "Created to test:\n\n  `create_files()`"))
 
   viewed_files <- view_files("ChadGoymer/test-githapi", c("aaaa.txt", "bbbb.txt"))
 
@@ -139,6 +140,9 @@ test_that("view_files, create_files, update_files and delete files on the defaul
   expect_identical(
     updated_files$commit_message,
     c("Testing update_files() - updated aaaa.txt", "Testing update_files() - updated bbbb.txt"))
+  expect_identical(
+    view_contents("ChadGoymer/test-githapi", c("aaaa.txt", "bbbb.txt")),
+    c(aaaa.txt = "Updated to test:\n\n  `update_files()`", bbbb.txt = "Updated to test:\n\n  `update_files()`"))
 
   deleted_files <- delete_files(
     repo     = "ChadGoymer/test-githapi",
