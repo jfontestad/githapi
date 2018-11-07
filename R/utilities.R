@@ -56,7 +56,7 @@ bind_fields <- function(x, fields) {
   for (col in 1:ncol(binded_fields)) {
     if (!is_na(conversions[[col]])) {
       if (identical(conversions[[col]], "datetime"))
-        binded_fields[[col]] <- as.POSIXct(binded_fields[[col]])
+        binded_fields[[col]] <- as.POSIXct(binded_fields[[col]], format = "%Y-%m-%dT%H:%M:%OSZ")
       else
         binded_fields[[col]] <- as(binded_fields[[col]], conversions[[col]])
     }
