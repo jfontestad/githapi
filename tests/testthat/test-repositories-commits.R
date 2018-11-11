@@ -42,3 +42,13 @@ test_that("view_commits returns a tibble describing the history of commits", {
     first_commits$sha,
     c("310c21d3f1601a46e014e68e94814b23406bf574", "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d"))
 })
+
+# TEST: view_shas -----------------------------------------------------------------------------
+
+test_that("view_shas returns a named character vector with the SHAs", {
+  shas <- view_shas("ChadGoymer/test-githapi", c("0.0.0", "master"))
+
+  expect_is(shas, "character")
+  expect_identical(names(shas), c("0.0.0", "master"))
+  expect_identical(shas[["0.0.0"]], "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d")
+})

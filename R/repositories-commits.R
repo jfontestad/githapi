@@ -79,3 +79,58 @@ view_commits <- function(
   info("Done")
   commits_tbl
 }
+
+#  FUNCTION: view_shas ------------------------------------------------------------------------
+#
+#' Look up the SHA-1 of commit references
+#'
+#' This function looks up the SHA for the commit associated with the specified git references.
+#' A reference can be either a branch or a tag (or a SHA, but the function will return the
+#' same SHA). If a branch is specified the function returns the SHA of the head commit.
+#'
+#' <https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param refs (character) Git references: either tags or branches. If a branch is specified
+#'   the SHA of the head commit is returned.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A named character vector with the supplied refs as names and the SHA as the value.
+#'
+#' @export
+#'
+view_shas <- function(
+  repo,
+  refs,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(refs))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  shas <- sapply(refs, simplify = TRUE, USE.NAMES = TRUE, function(ref) {
+    info("Getting SHA for ref '", ref, "' from repository '", repo, "'")
+    tryCatch({
+      sha <- gh_request(
+        "GET", gh_url("repos", repo, "commits", ref, api = api),
+        accept = "application/vnd.github.VERSION.sha", token = token, ...)
+
+      attr(sha, "header") <- NULL
+      sha
+    }, error = function(e) {
+      info("Ref '", ref, "' failed!")
+      e
+    })
+  })
+
+  info("Done")
+  shas
+}
