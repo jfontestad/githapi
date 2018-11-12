@@ -217,3 +217,72 @@ compare_commits <- function(
   info("Done")
   comparison_tbl
 }
+
+#  FUNCTION: compare_files --------------------------------------------------------------------
+#
+#' Compare the files of two commits
+#'
+#' This function returns information on all the files that have been changed between two
+#' commits. The commits can be specifed by any git reference, i.e. branch, tag or SHA.
+#'
+#' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
+#'
+#' @param repo (string) The repository specified as "owner/repo".
+#' @param base (string) The reference of the base commit.
+#' @param head (string) The reference of the commit to compare.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the commits, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/repos/commits/)
+#'   for more details):
+#'   - **filename**: The name of the file.
+#'   - **sha**: The SHA of the file blob.
+#'   - **status**: Whether the file was "added", "deleted" or "changed".
+#'   - **additions**: The number of lines added.
+#'   - **deletions**: The number of lines deleted.
+#'   - **changes**: The number of lines changed.
+#'   - **raw_url**: The URL to the raw file.
+#'   - **contents_url**: The URL to retrieve the contents
+#'   - **patch**: The patch to apply to change the file.
+#'
+#' @export
+#'
+compare_files <- function(
+  repo,
+  base,
+  head,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_string(base))
+  assert(is_string(head))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Getting comparion of commits from repository '", repo, "'")
+  comparison_list <- gh_request(
+    "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+    token = token, ...)
+
+  info("Transforming results")
+  comparison_tbl <- bind_fields(comparison_list$files, list(
+    filename     = c("filename",     as = "character"),
+    sha          = c("sha",          as = "character"),
+    status       = c("status",       as = "character"),
+    additions    = c("additions",    as = "integer"),
+    deletions    = c("deletions",    as = "integer"),
+    changes      = c("changes",      as = "integer"),
+    raw_url      = c("raw_url",      as = "character"),
+    contents_url = c("contents_url", as = "character"),
+    patch        = c("patch",        as = "character")))
+
+  info("Done")
+  comparison_tbl
+}

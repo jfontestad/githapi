@@ -90,3 +90,35 @@ test_that("compare_commits returns information on the differences between two co
       "trying to commit a new file",
       "Testing create_files() - added aaaa.txt"))
 })
+
+# TEST: compare_files -------------------------------------------------------------------------
+
+test_that("compare_files returns a tibble of information of file differences between commits", {
+  comparison <- compare_files(
+    repo = "ChadGoymer/test-githapi",
+    base = "0.0.0",
+    head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44")
+
+  expect_is(comparison, "tbl")
+
+  expect_identical(
+    sapply(comparison, function(field) class(field)[[1]]),
+    c(filename     = "character",
+      sha          = "character",
+      status       = "character",
+      additions    = "integer",
+      deletions    = "integer",
+      changes      = "integer",
+      raw_url      = "character",
+      contents_url = "character",
+      patch        = "character"))
+
+  expect_identical(comparison$filename, c("aaaa.txt", "test-file.txt"))
+  expect_identical(
+    comparison$sha,
+    c("a743ebf5f42459a2f59eb85b92184c6f0fef4634", "5c3ff51b2f189a42016557ef6c1c0c79acca8fc7"))
+  expect_identical(comparison$status, c("added", "added"))
+  expect_identical(comparison$additions, c(3L, 30L))
+  expect_identical(comparison$deletions, c(0L, 0L))
+  expect_identical(comparison$changes, c(3L, 30L))
+})
