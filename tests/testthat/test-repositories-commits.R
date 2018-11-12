@@ -52,3 +52,41 @@ test_that("view_shas returns a named character vector with the SHAs", {
   expect_identical(names(shas), c("0.0.0", "master"))
   expect_identical(shas[["0.0.0"]], "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d")
 })
+
+# TEST: compare_commits -----------------------------------------------------------------------
+
+test_that("compare_commits returns information on the differences between two commits", {
+  comparison <- compare_commits(
+    repo = "ChadGoymer/test-githapi",
+    base = "0.0.0",
+    head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44")
+
+  expect_is(comparison, "tbl")
+  expect_identical(
+    sapply(comparison, function(field) class(field)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      date            = "POSIXct",
+      url             = "character",
+      tree_sha        = "character",
+      tree_url        = "character",
+      parent_sha      = "character",
+      parent_url      = "character"))
+
+  expect_identical(
+    comparison$sha,
+    c("310c21d3f1601a46e014e68e94814b23406bf574",
+      "32d3c5c4f6aba7ae9679480407e1b9f94ad04843",
+      "68f01be0dad53f366337c9d87fad939b2a2853c8",
+      "ccb62ec75de7e40c689be427cd038c8a1a9d3c44"))
+  expect_identical(
+    comparison$message,
+    c("trying to commit a new file",
+      "trying to commit a new file",
+      "trying to commit a new file",
+      "Testing create_files() - added aaaa.txt"))
+})
