@@ -629,3 +629,67 @@ delete_files <- function(
   info("Done")
   files_tbl
 }
+
+#  FUNCTION: download_commit ------------------------------------------------------------------
+#
+#' Download the contents of a commit
+#'
+#' This function downloads the entire commit to the specified location. The commit is
+#' downloaded as a zip file, which is then unzipped into the desired location. The commit may
+#' be specified by a branch, tag or SHA.
+#'
+#' <https://developer.github.com/v3/repos/contents/#get-archive-link>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param path (string, optional) The path to save to. If `NA` the current working directory is
+#'   used. Default: `NA`.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
+#'   specified the head commit is used. If `NA` the default branch is used, Default: `NA`.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param ... Parameters passed to [gh_download_binary()].
+#'
+#' @return A string containing the path. Also, all the files in the commit are downloaded to
+#'   the specified location.
+#'
+#' @export
+#'
+download_commit <- function(
+  repo,
+  path  = getwd(),
+  ref   = NA,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_na(ref) || is_string(ref))
+  assert(is_string(path))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  if (!file.exists(path)) dir.create(path, recursive = TRUE)
+
+  archive_path <- file.path(path, paste0(sub("/", "-", repo), "-", ref, ".zip"))
+  on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
+
+  gh_download_binary(
+    gh_url("repos", repo, "zipball", ref, api = api),
+    path = archive_path, token = token, ...)
+
+  unzip(archive_path, exdir = path)
+
+  # Tidy up by moving files up a directory level
+  archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
+  on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
+
+  subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
+  lapply(file.path(path, subfolders[subfolders != ""]), dir.create)
+
+  files <- list.files(archive_folder, recursive = TRUE)
+  file.rename(file.path(archive_folder, files), file.path(path, files))
+
+  invisible(path)
+}

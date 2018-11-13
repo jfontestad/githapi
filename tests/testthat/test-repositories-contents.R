@@ -452,3 +452,28 @@ test_that("author and committer can be set when creating, updating and deleting 
   expect_identical(deleted_files$commit_author, "Jane Jones")
   expect_identical(deleted_files$commit_committer, "Bob Smith")
 })
+
+# TEST: download_commit -----------------------------------------------------------------------
+
+test_that("download_commit saves all the files in a commit to a directory", {
+  temp_path <- file.path(tempdir(), "test-repo", fsep = "\\")
+  on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
+
+  path <- download_commit("ChadGoymer/test-githapi", path = temp_path)
+
+  expect_identical(path, temp_path)
+  commit_files <- list.files(temp_path)
+  expect_true(length(commit_files) >= 1L)
+  expect_true("README.md" %in% commit_files)
+
+  temp_path_dd72be1 <- file.path(tempdir(), "test-repo-dd72be1", fsep = "\\")
+  on.exit(unlink(temp_path_dd72be1, recursive = TRUE), add = TRUE)
+
+  path_dd72be1 <- download_commit(
+    repo = "ChadGoymer/test-githapi",
+    ref  = "dd72be153e9edae67a659f1cb441f8dfe4486f1f",
+    path = temp_path_dd72be1)
+
+  expect_identical(path_dd72be1, temp_path_dd72be1)
+  expect_identical(list.files(temp_path_dd72be1), c("README.md", "test-file.txt"))
+})
