@@ -2,6 +2,7 @@
 
 export(compare_commits)
 export(compare_files)
+export(create_blobs)
 export(create_files)
 export(create_releases)
 export(create_tags)

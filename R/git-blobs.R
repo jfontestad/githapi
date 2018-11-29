@@ -65,3 +65,75 @@ view_blobs <- function(
   info("Done")
   blobs_tbl
 }
+
+#  FUNCTION: create_blobs ---------------------------------------------------------------------
+#
+#' Create blobs (files).
+#'
+#' This function creates the specified blobs within a repository in GitHub.
+#'
+#' <https://developer.github.com/v3/git/blobs/#create-a-blob>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param contents (character) The contents of the files.
+#' @param encoding (character, optional) The encoding used for the content. Currently,
+#'   `"utf-8"` and `"base64"` are supported. Can supply either a single string, which will apply
+#'   to every blob, or a character vector the same length as the contents, specifying the
+#'   encoding for each blob separately. Default: `"utf-8"`.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the blobs, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/git/refs/) for more details):
+#'   - **sha**: The SHA of the blob.
+#'   - **url**: The URL to get the blob details from GitHub.
+#'
+#' @export
+#'
+create_blobs <- function(
+  repo,
+  contents,
+  encoding = "utf-8",
+  token    = getOption("github.token"),
+  api      = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(contents))
+  assert(is_character(encoding) && (identical(length(encoding), 1L)) || identical(length(encoding), length(contents)))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  params <- tibble(
+    content  = contents,
+    encoding = encoding)
+
+  info("Posting ", length(contents), " blob(s) to repository '", repo, "'")
+  blobs_list <- pmap(params, function(content, encoding) {
+    tryCatch({
+      gh_request(
+        "POST", gh_url("repos", repo, "git/blobs", api = api),
+        payload = list(content = content, encoding = encoding),
+        token = token, ...)
+    }, error = function(e) {
+      info("blob failed!")
+      e
+    })
+  })
+
+  if (any(map_vec(blobs_list, is, "error"))) {
+    collate_errors(blobs_list, "create_blobs() failed!")
+  }
+
+  info("Transforming results")
+  blobs_tbl <- bind_fields(blobs_list, list(
+    sha = c("sha", as = "character"),
+    url = c("url", as = "character")))
+
+  info("Done")
+  blobs_tbl
+}

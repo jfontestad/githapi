@@ -21,3 +21,22 @@ test_that("view_blobs returns information about files in the repository", {
     c("IyB0ZXN0LWdpdGhhcGkKVGhpcyByZXBvIGlzIHVzZWQgdG8gdGVzdCB0aGUg\nZ2l0aGFwaSBSIHBhY2thZ2UK\n",
       "VGhpcyBpcyBhIHRlc3QgZmlsZS4K\n"))
 })
+
+# TEST: create_blobs --------------------------------------------------------------------------
+
+test_that("create_blobs creates files in the repository and returns the SHA", {
+  random_contents <- c(
+    paste(sample(LETTERS, 40, replace = TRUE), collapse = ""),
+    paste(sample(LETTERS, 40, replace = TRUE), collapse = ""))
+
+  blobs <- create_blobs(
+    repo = "ChadGoymer/test-githapi",
+    contents = random_contents)
+
+  expect_is(blobs, "tbl")
+  expect_identical(
+    map_vec(blobs, function(col) class(col)[[1]]),
+    c(sha      = "character",
+      url      = "character"))
+  expect_true(all(map_vec(blobs$sha, is_sha)))
+})
