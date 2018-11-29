@@ -40,3 +40,36 @@ test_that("create_blobs creates files in the repository and returns the SHA", {
       url      = "character"))
   expect_true(all(map_vec(blobs$sha, is_sha)))
 })
+
+# TEST: upload_blobs --------------------------------------------------------------------------
+
+test_that("upload_blobs reads the specified files and uploads them to specified repository", {
+  temp_file1 <- tempfile()
+  temp_file2 <- tempfile()
+
+  write("This is the first test file", temp_file1)
+  write("This is the second test file", temp_file2)
+
+  blobs <- upload_blobs(
+    repo = "ChadGoymer/test-githapi",
+    paths = c(temp_file1, temp_file2))
+
+  expect_is(blobs, "tbl")
+  expect_identical(
+    map_vec(blobs, function(col) class(col)[[1]]),
+    c(name = "character",
+      sha  = "character",
+      url  = "character"))
+  expect_true(all(map_vec(blobs$sha, is_sha)))
+
+  created_blobs <- view_blobs(
+    repo = "ChadGoymer/test-githapi",
+    shas = blobs$sha)
+
+  expect_match(
+    base64_dec(created_blobs$content[[1]]) %>% readBin("character"),
+    "^This is the first test file")
+  expect_match(
+    base64_dec(created_blobs$content[[2]]) %>% readBin("character"),
+    "^This is the second test file")
+})

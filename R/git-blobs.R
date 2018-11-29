@@ -137,3 +137,70 @@ create_blobs <- function(
   info("Done")
   blobs_tbl
 }
+
+#  FUNCTION: upload_blobs ---------------------------------------------------------------------
+#
+#' Upload blobs (files).
+#'
+#' This function uploads blobs from the specified file paths into a repository in GitHub.
+#'
+#' <https://developer.github.com/v3/git/blobs/#create-a-blob>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param paths (character) The paths to the files.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the blobs, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/git/refs/) for more details):
+#'   - **name**: The name of the file.
+#'   - **sha**: The SHA of the blob.
+#'   - **url**: The URL to get the blob details from GitHub.
+#'
+#' @export
+#'
+upload_blobs <- function(
+  repo,
+  paths,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(all(map_vec(paths, is_readable)))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  blobs_list <- map(paths, function(path) {
+    info("Uploading file '", basename(path), "' to repository '", repo, "'")
+    tryCatch({
+      content <- readBin(path, "raw", file.info(path)$size) %>% base64_enc()
+
+      gh_request(
+        "POST", gh_url("repos", repo, "git/blobs", api = api),
+        payload = list(content = content, encoding = "base64"),
+        token = token, ...)
+    }, error = function(e) {
+      info("Blob '", path, "' failed!")
+      e
+    })
+  })
+
+  if (any(map_vec(blobs_list, is, "error"))) {
+    collate_errors(blobs_list, "upload_blobs() failed!")
+  }
+
+  info("Transforming results")
+  blobs_tbl <- bind_fields(blobs_list, list(
+    name = "",
+    sha  = c("sha", as = "character"),
+    url  = c("url", as = "character"))) %>%
+    mutate(name = basename(paths))
+
+  info("Done")
+  blobs_tbl
+}
