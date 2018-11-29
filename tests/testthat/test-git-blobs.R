@@ -73,3 +73,26 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
     base64_dec(created_blobs$content[[2]]) %>% readBin("character"),
     "^This is the second test file")
 })
+
+# TEST: read_files ----------------------------------------------------------------------------
+
+test_that("read_files returns the contents of the specified files", {
+  files <- read_files("ChadGoymer/test-githapi", c("README.md", "test-file.txt"))
+
+  expect_is(files, "character")
+  expect_match(files["README.md"], "^# test-githapi")
+  expect_match(files["test-file.txt"], "This is a test file.\n")
+
+  files_dd72be1 <- read_files(
+    repo  = "ChadGoymer/test-githapi",
+    paths = c("README.md", "test-file.txt"),
+    ref   = "dd72be153e9edae67a659f1cb441f8dfe4486f1f")
+
+  expect_is(files_dd72be1, "character")
+  expect_identical(
+    files_dd72be1["README.md"],
+    c(README.md = "# test-githapi\nThis repo is used to test the githapi R package\n"))
+  expect_identical(
+    files_dd72be1["test-file.txt"],
+    c(`test-file.txt` = "This is a test file.\n"))
+})

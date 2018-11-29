@@ -204,3 +204,72 @@ upload_blobs <- function(
   info("Done")
   blobs_tbl
 }
+
+#  FUNCTION: read_files -----------------------------------------------------------------------
+#
+#' Read the contents of text files
+#'
+#' This function reads the contents of the specified files from a repository in GitHub.
+#' Note: This API supports files up to 100 megabytes in size.
+#'
+#' <https://developer.github.com/v3/git/blobs/#get-a-blob>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param paths (string) The paths to the files.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
+#'   is specified the head commit is used. If `NA` the head of the default branch is used.
+#'   Default: `NA`.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A named character vector with each element containing a file's contents.
+#'
+#' @export
+#'
+read_files <- function(
+  repo,
+  paths,
+  ref   = NA,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(paths))
+  assert(is_na(ref) || is_string(ref))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  all_files <- view_files(repo = repo, ref = ref, token = token, api = api)
+  file_shas <- setNames(all_files$sha, all_files$path)
+
+  files <- map_vec(paths, function(path) {
+    info("Reading file '", path, "' from repository '", repo, "'")
+    tryCatch({
+      error_if(
+        !path %in% names(file_shas),
+        "Cannot find specified file path '", path, "' in repository '", repo, "'")
+
+      file <- gh_request(
+        "GET", gh_url("repos", repo, "git/blobs", file_shas[[path]], api = api),
+        accept = "raw", token = token, ...)
+
+      attr(file, "header") <- NULL
+      file
+    }, error = function(e) {
+      info("File '", path, "' failed!")
+      e
+    })
+  })
+
+  if (any(map_vec(files, is, "error"))) {
+    collate_errors(files, "read_files() failed!")
+  }
+
+  info("Done")
+  files
+}
