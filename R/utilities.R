@@ -1,5 +1,37 @@
+map <- function(x, f, ..., use_names = TRUE) {
+  result <- sapply(X = x, FUN = f, ..., simplify = FALSE, USE.NAMES = use_names)
+  if (!use_names) {
+    names(result) <- NULL
+  }
+  result
+}
+
+map_vec <- function(x, f, ..., use_names = TRUE) {
+  result <- sapply(X = x, FUN = f, ..., simplify = TRUE, USE.NAMES = use_names)
+  if (!use_names) {
+    names(result) <- NULL
+  }
+  result
+}
+
+pmap <- function(l, f, ..., use_names = TRUE) {
+  result <- do.call(mapply, c(FUN = f, l, list(MoreArgs = list(...)), SIMPLIFY = FALSE, USE.NAMES = use_names))
+  if (!use_names) {
+    names(result) <- NULL
+  }
+  result
+}
+
+pmap_vec <- function(l, f, ..., use_names = TRUE) {
+  result <- do.call(mapply, c(FUN = f, l, list(MoreArgs = list(...)), SIMPLIFY = TRUE, USE.NAMES = use_names))
+  if (!use_names) {
+    names(result) <- NULL
+  }
+  result
+}
+
 field_names <- function(fields) {
-  names <- sapply(fields, paste, collapse = "_")
+  names <- map_vec(fields, paste, collapse = "_")
   if (!is_null(names(fields))) {
     for (field in seq_along(fields)) {
       if (!identical(names(fields)[[field]], "")) {
@@ -24,8 +56,8 @@ select_fields <- function(x, fields) {
   assert(is_list(x))
   assert(is_list(fields), length(fields) > 0)
 
-  selected_fields <- lapply(fields, x, FUN = function(field, x) {
-    selected_field <- x
+  selected_fields <- map(fields, .x = x, function(field, .x) {
+    selected_field <- .x
     for (level in seq_along(field)) {
       if (is_null(selected_field[[field[[level]]]]))
         return(NA)
@@ -43,14 +75,14 @@ bind_fields <- function(x, fields) {
   assert(is_list(x))
   assert(is_list(fields), length(fields) > 0)
 
-  conversions <- sapply(fields, function(f) f["as"])
-  raw_fields <- lapply(fields, function(f) if (is_null(names(f))) f else f[names(f) != "as"])
+  conversions <- map_vec(fields, function(f) f["as"])
+  raw_fields <- map(fields, function(f) if (is_null(names(f))) f else f[names(f) != "as"])
 
   if (identical(length(x), 0L)) {
     names(fields) <- field_names(fields)
-    binded_fields <- bind_rows(lapply(field_names(fields), function(f) logical()))
+    binded_fields <- bind_rows(map(field_names(fields), function(f) logical()))
   } else {
-    binded_fields <- bind_rows(lapply(x, select_fields, fields = raw_fields))
+    binded_fields <- bind_rows(map(x, select_fields, fields = raw_fields))
   }
 
   for (col in 1:ncol(binded_fields)) {
@@ -67,7 +99,7 @@ bind_fields <- function(x, fields) {
 
 remove_missing <- function(x) {
   assert(is_list(x))
-  is_empty <- sapply(x, FUN = function(e) {
+  is_empty <- map_vec(x, function(e) {
     is_null(e) || is_na(e) || identical(length(e), 0L)
   })
   x[!is_empty]
