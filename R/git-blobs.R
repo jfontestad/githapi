@@ -273,3 +273,77 @@ read_files <- function(
   info("Done")
   files
 }
+
+#  FUNCTION: download_files -------------------------------------------------------------------
+#
+#' Download files and save them to a location
+#'
+#' This function downloads the contents of the specified files from a repository in GitHub and
+#' saves them to a specified location. Note: This API supports files up to 100 megabytes in
+#' size.
+#'
+#' <https://developer.github.com/v3/git/blobs/#get-a-blob>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param paths (string) The paths to the files in the repository.
+#' @param location (string) The location to save the files to.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
+#'   is specified the head commit is used. Default: "master".
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_download_binary()].
+#'
+#' @return A named character vector with each element containing a file's contents (invisibly).
+#'
+#' @export
+#'
+download_files <- function(
+  repo,
+  paths,
+  location,
+  ref   = NA,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(paths))
+  assert(is_string(location))
+  assert(is_na(ref) || is_string(ref))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  all_files <- view_files(repo = repo, ref = ref, token = token, api = api)
+  file_shas <- setNames(all_files$sha, all_files$path)
+
+  files <- map_vec(paths, function(path) {
+    info("Downloading file '", path, "' from repository '", repo, "'")
+    tryCatch({
+      error_if(
+        !path %in% names(file_shas),
+        "Cannot find specified file path '", path, "' in repository '", repo, "'")
+
+      file_path <- file.path(location, path) %>% normalizePath(winslash = "/", mustWork = FALSE)
+      if (!dir.exists(dirname(file_path))) dir.create(dirname(file_path), recursive = TRUE)
+
+      gh_download_binary(
+        gh_url("repos", repo, "git/blobs", file_shas[[path]], api = api),
+        path = file_path, token = token, ...)
+
+      file_path
+    }, error = function(e) {
+      info("File '", path, "' failed!")
+      e
+    })
+  })
+
+  if (any(map_vec(files, is, "error"))) {
+    collate_errors(files, "download_files() failed!")
+  }
+
+  info("Done")
+  invisible(files)
+}

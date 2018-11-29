@@ -96,3 +96,40 @@ test_that("read_files returns the contents of the specified files", {
     files_dd72be1["test-file.txt"],
     c(`test-file.txt` = "This is a test file.\n"))
 })
+
+# TEST: download_files ------------------------------------------------------------------------
+
+test_that("download_files saves the specified files to disk", {
+  temp_path <- file.path(tempdir(), "test-download-files") %>%
+    normalizePath(winslash = "/", mustWork = FALSE)
+  on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
+
+  paths <- download_files(
+    repo = "ChadGoymer/test-githapi",
+    paths = c("README.md", "test-file.txt"),
+    location = temp_path)
+
+  expect_is(paths, "character")
+  expect_true(all(file.exists(paths)))
+  expect_true("README.md" %in% names(paths))
+
+  temp_path_dd72be1 <- file.path(tempdir(), "test-download-files-dd72be1") %>%
+    normalizePath(winslash = "/", mustWork = FALSE)
+  on.exit(unlink(temp_path_dd72be1, recursive = TRUE), add = TRUE)
+
+  paths_dd72be1 <- download_files(
+    repo = "ChadGoymer/test-githapi",
+    paths = c("README.md", "test-file.txt"),
+    ref  = "dd72be153e9edae67a659f1cb441f8dfe4486f1f",
+    location = temp_path_dd72be1)
+
+  expect_identical(
+    paths_dd72be1,
+    setNames(file.path(temp_path_dd72be1, c("README.md", "test-file.txt")), c("README.md", "test-file.txt")))
+  expect_identical(
+    readLines(paths_dd72be1[["README.md"]]),
+    c("# test-githapi", "This repo is used to test the githapi R package"))
+  expect_identical(
+    readLines(paths_dd72be1[["test-file.txt"]]),
+    "This is a test file.")
+})
