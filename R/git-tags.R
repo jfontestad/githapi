@@ -57,8 +57,8 @@ view_tags <- function(
     })
   } else {
     assert(is_character(tags))
-    info("Getting tags '", paste(tags, collapse = "', '"), "' from repository '", repo, "'")
-    tags_list <- sapply(tags, simplify = FALSE, USE.NAMES = TRUE, function(tag) {
+    tags_list <- map(tags, function(tag) {
+      info("Getting tag '", tag, "' from repository '", repo, "'")
       tryCatch({
         gh_request(
           "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
@@ -70,12 +70,12 @@ view_tags <- function(
     })
   }
 
-  if (any(sapply(tags_list, is, "error"))) {
+  if (any(map_vec(tags_list, is, "error"))) {
     collate_errors(tags_list, "view_tags() failed!")
   }
 
   info("Transforming results")
-  tags_tbl <- bind_fields(tags_list[!sapply(tags_list, is_null)], list(
+  tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -132,8 +132,8 @@ create_tags <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Posting tags '", paste(tags, collapse = "', '"), "' to repository '", repo, "'")
-  tags_list <- mapply(tags, shas, USE.NAMES = TRUE, SIMPLIFY = FALSE, FUN = function(tag, sha) {
+  tags_list <- pmap(list(tags, shas), function(tag, sha) {
+    info("Posting tag '", tag, "' to repository '", repo, "'")
     tryCatch({
       gh_request(
         "POST", gh_url("repos", repo, "git/refs", api = api),
@@ -145,12 +145,12 @@ create_tags <- function(
     })
   })
 
-  if (any(sapply(tags_list, is, "error"))) {
+  if (any(map_vec(tags_list, is, "error"))) {
     collate_errors(tags_list, "create_tags() failed!")
   }
 
   info("Transforming results")
-  tags_tbl <- bind_fields(tags_list[!sapply(tags_list, is_null)], list(
+  tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -207,8 +207,8 @@ update_tags <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Patching tags '", paste(tags, collapse = "', '"), "' in repository '", repo, "'")
-  tags_list <- mapply(tags, shas, USE.NAMES = TRUE, SIMPLIFY = FALSE, FUN = function(tag, sha) {
+  tags_list <- pmap(list(tags, shas), function(tag, sha) {
+    info("Updating tag '", tag, "' in repository '", repo, "'")
     tryCatch({
       gh_request(
         "PATCH", gh_url("repos", repo, "git/refs/tags", tag, api = api),
@@ -220,12 +220,12 @@ update_tags <- function(
     })
   })
 
-  if (any(sapply(tags_list, is, "error"))) {
+  if (any(map_vec(tags_list, is, "error"))) {
     collate_errors(tags_list, "update_tags() failed!")
   }
 
   info("Transforming results")
-  tags_tbl <- bind_fields(tags_list[!sapply(tags_list, is_null)], list(
+  tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -271,8 +271,8 @@ delete_tags <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Deleting tags '", paste(tags, collapse = "', '"), "' from repository '", repo, "'")
-  tags_list <- sapply(tags, simplify = FALSE, USE.NAMES = TRUE, function(tag) {
+  tags_list <- map(tags, function(tag) {
+    info("Deleting tag '", tag, "' from repository '", repo, "'")
     tryCatch({
       gh_request(
         "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
@@ -284,9 +284,9 @@ delete_tags <- function(
     })
   })
 
-  if (any(sapply(tags_list, is, "error"))) {
+  if (any(map_vec(tags_list, is, "error"))) {
     collate_errors(tags_list, "delete_tags() failed!")
-    tags_list[sapply(tags_list, is, "error")] <- FALSE
+    tags_list[map_vec(tags_list, is, "error")] <- FALSE
   }
 
   info("Done")
