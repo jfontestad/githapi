@@ -237,3 +237,58 @@ update_branches <- function(
   info("Done")
   branches_tbl
 }
+
+#  FUNCTION: delete_branches ----------------------------------------------------------------------
+#
+#' Delete branches.
+#'
+#' This function deletes the specified branches from a repository in GitHub.
+#'
+#' <https://developer.github.com/v3/git/refs/#delete-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param branches (character) The branch names.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A named list containing `TRUE` if the branch was deleted. An error is thrown otherwise.
+#'
+#' @export
+#'
+delete_branches <- function(
+  repo,
+  branches,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(branches))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  branches_list <- map(branches, function(branch) {
+    info("Deleting branch '", branch, "' from repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "DELETE", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+        token = token, parse = FALSE, ...)
+      TRUE
+    }, error = function(e) {
+      info(e$message)
+      e
+    })
+  })
+
+  if (any(map_vec(branches_list, is, "error"))) {
+    collate_errors(branches_list, "delete_branches() failed!")
+    branches_list[map_vec(branches_list, is, "error")] <- FALSE
+  }
+
+  info("Done")
+  branches_list
+}

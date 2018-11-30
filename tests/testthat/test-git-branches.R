@@ -73,4 +73,10 @@ test_that("create_branches creates some branches, view_branches retreives them a
   expect_identical(
     updated_branches$object_sha,
     c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"))
+
+  delete_results <- delete_branches("ChadGoymer/test-githapi", c("aaa", "bbb"))
+
+  expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
+  expect_error(view_branches("ChadGoymer/test-githapi", "aaa"), "Not Found")
+  expect_error(view_branches("ChadGoymer/test-githapi", "bbb"), "Not Found")
 })
