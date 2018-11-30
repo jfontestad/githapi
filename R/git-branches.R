@@ -87,3 +87,78 @@ view_branches <- function(
   info("Done")
   branches_tbl
 }
+
+#  FUNCTION: create_branches ------------------------------------------------------------------
+#
+#' Create branches at specified commits.
+#'
+#' This function creates the specified branches at the specified commits within a repository in
+#' GitHub.
+#'
+#' <https://developer.github.com/v3/git/refs/#create-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param branches (character) The branch names.
+#' @param shas (character) The SHAs of the commits to create a branch at.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the branches, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/git/refs/) for more details):
+#'   - **name**: The name of the branch.
+#'   - **ref**: The full git reference for the branch.
+#'   - **url**: The URL to get the branch details from GitHub.
+#'   - **object_sha**: The SHA of the object at the HEAD of the branch.
+#'   - **object_type**: The type of the object at the HEAD of the branch.
+#'   - **object_url**: The URL to get the object details from GitHub.
+#'
+#' @export
+#'
+create_branches <- function(
+  repo,
+  branches,
+  shas,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_character(branches))
+  assert(is_character(shas))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  branches_list <- pmap(list(branches, shas), function(branch, sha) {
+    info("Posting branch '", branch, "' to repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "POST", gh_url("repos", repo, "git/refs", api = api),
+        payload = list(ref = paste0("refs/heads/", branch), sha = sha),
+        token = token, ...)
+    }, error = function(e) {
+      info("Branch '", branch, "' failed!")
+      e
+    })
+  })
+
+  if (any(map_vec(branches_list, is, "error"))) {
+    collate_errors(branches_list, "create_branches() failed!")
+  }
+
+  info("Transforming results")
+  branches_tbl <- bind_fields(branches_list[!map_vec(branches_list, is_null)], list(
+    name        = "",
+    ref         = c("ref",            as = "character"),
+    url         = c("url",            as = "character"),
+    object_sha  = c("object", "sha",  as = "character"),
+    object_type = c("object", "type", as = "character"),
+    object_url  = c("object", "url",  as = "character"))) %>%
+    mutate(name = basename(.data$ref))
+
+  info("Done")
+  branches_tbl
+}
