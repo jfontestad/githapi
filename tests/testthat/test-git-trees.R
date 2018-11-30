@@ -90,3 +90,45 @@ test_that("create_tree creates a new tree of the specified structure", {
     viewed_one_tree_two_objects %>% filter(path == "test-dir") %>% pull(sha),
     created_one_tree_one_object$tree_sha)
 })
+
+# TEST: upload_tree ---------------------------------------------------------------------------
+
+test_that("upload_tree uploads files and directory structure to github", {
+  skip("Does not work in Travis")
+
+  flat_tree <- upload_tree(
+    repo = "ChadGoymer/test-githapi",
+    path = system.file("test-data/upload-tree/test-dir", package = "githapi"))
+
+  expect_is(flat_tree, "tbl")
+  expect_identical(
+    map_vec(flat_tree, function(field) class(field)[[1]]),
+    c(tree_sha = "character",
+      tree_url = "character",
+      path     = "character",
+      type     = "character",
+      sha      = "character",
+      size     = "integer",
+      url      = "character"))
+
+  expect_identical(flat_tree$path, c("file-in-dir-1.txt", "file-in-dir-2.txt"))
+  expect_identical(flat_tree$type, c("blob", "blob"))
+
+  recursive_tree <- upload_tree(
+    repo = "ChadGoymer/test-githapi",
+    path = system.file("test-data/upload-tree", package = "githapi"))
+
+  expect_is(recursive_tree, "tbl")
+  expect_identical(
+    map_vec(recursive_tree, function(field) class(field)[[1]]),
+    c(tree_sha = "character",
+      tree_url = "character",
+      path     = "character",
+      type     = "character",
+      sha      = "character",
+      size     = "integer",
+      url      = "character"))
+
+  expect_identical(recursive_tree$path, c("README.md", "test-dir", "test-file.txt"))
+  expect_identical(recursive_tree$type, c("blob", "tree", "blob"))
+})

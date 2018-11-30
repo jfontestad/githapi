@@ -180,3 +180,83 @@ create_tree <- function(
   info("Done")
   tree_tbl
 }
+
+#  FUNCTION: upload_tree ----------------------------------------------------------------------
+#
+#' Upload a tree from a directory
+#'
+#' This function uploads the tree structure from a specified directory into a repository in
+#' GitHub. Files are uploaded as blobs (see [upload_blobs()]) and sub-directories are
+#' uploaded as nested trees [create_tree()].
+#'
+#' <https://developer.github.com/v3/git/trees/#create-a-tree>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param path (string) The path to the directory, which is to be uploaded as a tree.
+#' @param base_tree (string, optional) The SHAs of the tree you want to update with new data.
+#'   Default: `NA`.
+#' @param ignore (character) A character vector of regular expressions. If any of these are
+#'   detected in a file name they are not uploaded. Default: `"\\.git"`, `"\\.Rproj\\.user"`,
+#'   `"\\.Rhistory"`, `"\\.RData"` & `"\\.Ruserdata"`
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A tibble describing the tree, with the following columns
+#'   (see [GitHub's documentation](https://developer.github.com/v3/git/refs/) for more details):
+#'   - **sha**: The SHA of the tree.
+#'   - **url**: The URL to get the tree details from GitHub.
+#'
+#' @export
+#'
+upload_tree <- function(
+  repo,
+  path,
+  base_tree = NA,
+  ignore    = c("\\.git", "\\.Rproj\\.user", "\\.Rhistory", "\\.RData", "\\.Ruserdata"),
+  token     = getOption("github.token"),
+  api       = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_readable(path))
+  assert(is_na(base_tree) || is_sha(base_tree))
+  assert(is_character(ignore))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  ignore <- unique(c("^\\.$", "^\\.\\.$", ignore))
+
+  file_paths <- list.files(path, all.files = TRUE, include.dirs = TRUE, full.names = TRUE)
+  file_paths <- file_paths[!map(ignore, grepl, basename(file_paths)) %>% pmap_vec(any)]
+
+  tree <- file.info(file_paths) %>%
+    mutate(path = row.names(.)) %>%
+    select(path, everything()) %>%
+    as_tibble() %>%
+    mutate(sha = pmap_vec(list(path, isdir), function(p, isdir) {
+      if (isdir) {
+        upload_tree(repo = repo, path = p, token = token, api = api)[["tree_sha"]][[1]]
+      } else {
+        upload_blobs(repo = repo, paths = p, token = token, api = api)[["sha"]]
+      }
+    })) %>%
+    mutate(
+      type = ifelse(isdir, "tree", "blob"),
+      mode = ifelse(isdir, "040000", ifelse(exe == "no", "100644", "100755")),
+      path = basename(path)) %>%
+    select(path, mode, type, sha)
+
+  create_tree(
+    repo      = repo,
+    paths     = tree$path,
+    modes     = tree$mode,
+    types     = tree$type,
+    shas      = tree$sha,
+    base_tree = base_tree,
+    token     = token,
+    api       = api)
+}
