@@ -230,14 +230,13 @@ upload_tree <- function(
 
   ignore <- unique(c("^\\.$", "^\\.\\.$", ignore))
 
-  file_paths <- list.files(path, all.files = TRUE, include.dirs = TRUE, full.names = TRUE)
-  file_paths <- file_paths[!map(ignore, grepl, basename(file_paths)) %>% pmap_vec(any)]
+  all_files <- list.files(path, all.files = TRUE, include.dirs = TRUE, full.names = TRUE)
+  file_path <- all_files[!map(ignore, grepl, basename(all_files)) %>% pmap_vec(any)]
+  file_info <- file.info(file_path)
 
-  tree <- file.info(file_paths) %>%
-    mutate(path = row.names(.)) %>%
-    select(path, everything()) %>%
-    as_tibble() %>%
-    mutate(sha = pmap_vec(list(path, isdir), function(p, isdir) {
+  tree <- file_info %>%
+    mutate(path = file_path) %>%
+    mutate(sha = pmap_vec(list(file_path, file_info$isdir), function(p, isdir) {
       if (isdir) {
         upload_tree(repo = repo, path = p, token = token, api = api)[["tree_sha"]][[1]]
       } else {
@@ -245,10 +244,10 @@ upload_tree <- function(
       }
     })) %>%
     mutate(
-      type = ifelse(isdir, "tree", "blob"),
-      mode = ifelse(isdir, "040000", ifelse(exe == "no", "100644", "100755")),
-      path = basename(path)) %>%
-    select(path, mode, type, sha)
+      type = ifelse(file_info$isdir, "tree", "blob"),
+      mode = ifelse(file_info$isdir, "040000", ifelse(file_info$exe == "no", "100644", "100755")),
+      path = basename(file_path)) %>%
+    select("path", "mode", "type", "sha")
 
   create_tree(
     repo      = repo,
