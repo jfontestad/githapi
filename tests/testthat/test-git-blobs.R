@@ -133,3 +133,10 @@ test_that("download_files saves the specified files to disk", {
     readLines(paths_dd72be1[["test-file.txt"]]),
     "This is a test file.")
 })
+
+# TEST: blob_exists ---------------------------------------------------------------------------
+
+test_that("blob_exists returns TRUE or FALSE depending on whether the blob exists in the repo", {
+  expect_true(blob_exists("ChadGoymer/test-githapi", "72b5faa9dc9e4bba87108bf302a5b453e985feec"))
+  expect_false(blob_exists("ChadGoymer/test-githapi", "0000000000000000000000000000000000000000"))
+})
