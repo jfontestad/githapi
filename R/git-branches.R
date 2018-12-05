@@ -302,7 +302,7 @@ delete_branches <- function(
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param branch (character) The name pf the branch.
+#' @param branch (character) The name of the branch.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.

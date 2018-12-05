@@ -292,3 +292,47 @@ delete_tags <- function(
   info("Done")
   tags_list
 }
+
+#  FUNCTION: tag_exists -----------------------------------------------------------------------
+#
+#' Determine whether a tag exists in the specified repository.
+#'
+#' This function returns `TRUE` if the tag exists and `FALSE` otherwise.
+#'
+#' <https://developer.github.com/v3/git/refs/#get-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param tag (character) The name of the tag.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `TRUE` or `FALSE`
+#'
+#' @export
+#'
+tag_exists <- function(
+  repo,
+  tag,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_string(tag))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Checking tag '", tag, "' exists in repository '", repo, "'")
+  tryCatch({
+    gh_request(
+      "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      token = token, ...)
+    TRUE
+  }, error = function(e) {
+    FALSE
+  })
+}
