@@ -132,3 +132,10 @@ test_that("upload_tree uploads files and directory structure to github", {
   expect_identical(recursive_tree$path, c("README.md", "test-dir", "test-file.txt"))
   expect_identical(recursive_tree$type, c("blob", "tree", "blob"))
 })
+
+# TEST: tree_exists ---------------------------------------------------------------------------
+
+test_that("tree_exists returns TRUE or FALSE depending on whether the tree exists in the repo", {
+  expect_true(tree_exists("ChadGoymer/test-githapi", "3f5c0749c85cc4a3cbd240762b61276ad2bfbba2"))
+  expect_false(tree_exists("ChadGoymer/test-githapi", "0000000000000000000000000000000000000000"))
+})

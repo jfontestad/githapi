@@ -259,3 +259,47 @@ upload_tree <- function(
     token     = token,
     api       = api)
 }
+
+#  FUNCTION: tree_exists ----------------------------------------------------------------------
+#
+#' Determine whether a tree exists in the specified repository.
+#'
+#' This function returns `TRUE` if the tree exists and `FALSE` otherwise.
+#'
+#' <https://developer.github.com/v3/git/refs/#get-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param sha (character) The SHA of the tree.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `TRUE` or `FALSE`
+#'
+#' @export
+#'
+tree_exists <- function(
+  repo,
+  sha,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_sha(sha))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Checking tree '", sha, "' exists in repository '", repo, "'")
+  tryCatch({
+    gh_request(
+      "GET", gh_url("repos", repo, "git/trees", sha, api = api),
+      token = token, ...)
+    TRUE
+  }, error = function(e) {
+    FALSE
+  })
+}
