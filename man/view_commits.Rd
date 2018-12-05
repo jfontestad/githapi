@@ -10,7 +10,7 @@ view_commits(repo, shas, token = getOption("github.token"),
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{shas}{(character, optional) The SHAs of the commits.}
+\item{shas}{(character) The SHAs of the commits.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

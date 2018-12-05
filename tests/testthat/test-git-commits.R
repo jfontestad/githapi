@@ -205,3 +205,10 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_identical(new_branch_commit$message, c("Commit made on new branch with upload_commit"))
 })
+
+# TEST: commit_exists -------------------------------------------------------------------------
+
+test_that("commit_exists returns TRUE or FALSE depending on whether the commit exists in the repo", {
+  expect_true(commit_exists("ChadGoymer/test-githapi", "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d"))
+  expect_false(commit_exists("ChadGoymer/test-githapi", "0000000000000000000000000000000000000000"))
+})

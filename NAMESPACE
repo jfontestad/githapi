@@ -2,6 +2,7 @@
 
 export(blob_exists)
 export(branch_exists)
+export(commit_exists)
 export(compare_commits)
 export(compare_files)
 export(create_blobs)
