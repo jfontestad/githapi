@@ -81,7 +81,7 @@ test_that("read_files returns the contents of the specified files", {
 
   expect_is(files, "character")
   expect_match(files["README.md"], "^# test-githapi")
-  expect_match(files["test-file.txt"], "This is a test file.\n")
+  expect_match(files["test-file.txt"], "This is a test file.")
 
   files_dd72be1 <- read_files(
     repo  = "ChadGoymer/test-githapi",

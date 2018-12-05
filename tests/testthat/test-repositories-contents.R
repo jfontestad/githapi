@@ -21,7 +21,7 @@ test_that("view_contents returns a list of the file contents", {
 
   expect_is(files, "character")
   expect_match(files["README.md"], "^# test-githapi")
-  expect_match(files["test-file.txt"], "This is a test file.\n")
+  expect_match(files["test-file.txt"], "This is a test file")
 
   files_dd72be1 <- view_contents(
     repo  = "ChadGoymer/test-githapi",
