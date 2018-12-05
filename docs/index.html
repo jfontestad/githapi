@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">githapi</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.3</span>
       </span>
     </div>
 
@@ -110,34 +110,33 @@
 ##   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                &lt;int&gt; &lt;int&gt;
 ## 1 chad~ My persona~ ChadGoymer  User       master                   0   156
 ## 2 git-~ Simple gui~ ChadGoymer  User       master                   0     2
-## 3 gith~ User-frien~ ChadGoymer  User       master                   6   844
+## 3 gith~ User-frien~ ChadGoymer  User       master                   8   945
 ## 4 logr  &lt;NA&gt;        ChadGoymer  User       master                   0     0
 ## 5 r-be~ A set of g~ ChadGoymer  User       master                   0 11306
 ## 6 r-py~ &lt;NA&gt;        ChadGoymer  User       master                   0  1172
 ## 7 r-tr~ Training m~ ChadGoymer  User       master                   0  1229
 ## 8 shin~ &lt;NA&gt;        ChadGoymer  User       master                   0 13408
-## 9 test~ This repo ~ ChadGoymer  User       master                   0    30
+## 9 test~ This repo ~ ChadGoymer  User       master                   0   134
 ## # ... with 4 more variables: url &lt;chr&gt;, html_url &lt;chr&gt;, created_at &lt;dttm&gt;,
 ## #   updated_at &lt;dttm&gt;</code></pre>
 <p>Information on the branches in a particular repository can then be obtained using <code><a href="reference/gh_branches.html">gh_branches()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/gh_branches.html">gh_branches</a></span>(<span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 3 x 3
-##   name       commit_sha              commit_url                           
-##   &lt;chr&gt;      &lt;chr&gt;                   &lt;chr&gt;                                
-## 1 0-test-br~ e93edf23e95b59d08853e2~ https://api.github.com/repos/ChadGoy~
-## 2 81-file-c~ 3883fafc315d19064f6baa~ https://api.github.com/repos/ChadGoy~
-## 3 master     31142dfed0353aac9dab8c~ https://api.github.com/repos/ChadGoy~</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   name      commit_sha              commit_url                            
+##   &lt;chr&gt;     &lt;chr&gt;                   &lt;chr&gt;                                 
+## 1 0-test-b~ e93edf23e95b59d08853e2~ https://api.github.com/repos/ChadGoym~
+## 2 master    cf95cf9fa29670a97a16d0~ https://api.github.com/repos/ChadGoym~</code></pre>
 <p>The history of a branch can be obtained using <code><a href="reference/gh_commits.html">gh_commits()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/gh_commits.html">gh_commits</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>## # A tibble: 6 x 10
 ##   sha   message author_name author_email committer_name committer_email
 ##   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;          
-## 1 3114~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-## 2 42ac~ regene~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-## 3 0ae1~ moved ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-## 4 aedf~ moved ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-## 5 d589~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-## 6 79c1~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 1 cf95~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
+## 2 2840~ added ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 3 129b~ added ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 4 653b~ added ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 5 8eb7~ added ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
+## 6 6c1e~ avoid ~ Chad        chad.goymer~ Chad           chad.goymer@gm~
 ## # ... with 4 more variables: date &lt;dttm&gt;, url &lt;chr&gt;, tree_sha &lt;chr&gt;,
 ## #   tree_url &lt;chr&gt;</code></pre>
 </div>
@@ -148,7 +147,7 @@
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="reference/gh_contents.html">gh_contents</a></span>(<span class="st">"DESCRIPTION"</span>, <span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</a></code></pre></div>
 <pre><code>## Package: githapi
 ## Title: User-friendly access to the GitHub API for R, consistent with the tidyverse
-## Version: 0.7.1
+## Version: 0.7.2
 ## Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("aut", "cre"))
 ## Description: Provides a suite of functions which simplify working with GitHub's API.
 ## Imports:
