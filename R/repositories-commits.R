@@ -1,4 +1,4 @@
-#  FUNCTION: view_commits ---------------------------------------------------------------------
+#  FUNCTION: view_history ---------------------------------------------------------------------
 #
 #' Get information about the history of commits
 #'
@@ -36,7 +36,7 @@
 #'
 #' @export
 #'
-view_commits <- function(
+view_history <- function(
   repo,
   ref   = NA,
   n_max = 1000L,
@@ -69,11 +69,11 @@ view_commits <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = sapply(commits_list, function(cm) {
-      sapply(cm$parents, getElement, "sha")
+    mutate(parent_sha = map(commits_list, use_names = FALSE, function(cm) {
+      map_vec(cm$parents, getElement, "sha")
     })) %>%
-    mutate(parent_url = sapply(commits_list, function(cm) {
-      sapply(cm$parents, getElement, "url")
+    mutate(parent_url = map(commits_list, use_names = FALSE, function(cm) {
+      map_vec(cm$parents, getElement, "url")
     }))
 
   info("Done")
@@ -116,7 +116,7 @@ view_shas <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  shas <- sapply(refs, simplify = TRUE, USE.NAMES = TRUE, function(ref) {
+  shas <- map_vec(refs, function(ref) {
     info("Getting SHA for ref '", ref, "' from repository '", repo, "'")
     tryCatch({
       sha <- gh_request(
@@ -188,7 +188,7 @@ compare_commits <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Getting comparion of commits from repository '", repo, "'")
+  info("Getting comparison of commits from repository '", repo, "'")
   comparison_list <- gh_request(
     "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
     token = token, ...)
@@ -207,11 +207,11 @@ compare_commits <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = sapply(comparison_list$commits, function(cm) {
-      sapply(cm$parents, getElement, "sha")
+    mutate(parent_sha = map(comparison_list$commits, use_names = FALSE, function(cm) {
+      map_vec(cm$parents, getElement, "sha")
     })) %>%
-    mutate(parent_url = sapply(comparison_list$commits, function(cm) {
-      sapply(cm$parents, getElement, "url")
+    mutate(parent_url = map(comparison_list$commits, use_names = FALSE, function(cm) {
+      map_vec(cm$parents, getElement, "url")
     }))
 
   info("Done")
@@ -266,7 +266,7 @@ compare_files <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Getting comparion of commits from repository '", repo, "'")
+  info("Getting comparison of commits from repository '", repo, "'")
   comparison_list <- gh_request(
     "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
     token = token, ...)

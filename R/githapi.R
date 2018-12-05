@@ -146,8 +146,8 @@ gh_get <- function(
   message <- NULL
 
   response_header  <- strsplit(parse_headers(response$header), ": ")
-  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]]))
-  names(header_values) <- sapply(response_header, function(h) h[[1]])
+  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]])) %>%
+    set_names(sapply(response_header, function(h) h[[1]]))
 
   if (parse) {
     info("> Parsing response", level = 2)
@@ -282,8 +282,8 @@ gh_request <- function(
   message <- NULL
 
   response_header  <- strsplit(parse_headers(response$header), ": ")
-  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]]))
-  names(header_values) <- sapply(response_header, function(h) h[[1]])
+  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]])) %>%
+    set_names(sapply(response_header, function(h) h[[1]]))
 
   if (parse) {
     info("> Parsing response", level = 2)
@@ -342,8 +342,8 @@ gh_download_binary <- function(
 
   info("> Parsing response", level = 2)
   response_header  <- strsplit(parse_headers(response$header), ": ")
-  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]]))
-  names(header_values) <- sapply(response_header, function(h) h[[1]])
+  header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]])) %>%
+    set_names(sapply(response_header, function(h) h[[1]]))
 
   if (!is_null(response$status) && response$status >= 400) {
     error(

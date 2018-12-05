@@ -78,8 +78,8 @@ view_releases <- function(
     }))
   } else {
     assert(is_character(tags))
-    info("Getting releases '", paste(tags, collapse = "', '"), "' from repository '", repo, "'")
-    releases_list <- sapply(tags, simplify = FALSE, USE.NAMES = TRUE, function(tag) {
+    releases_list <- map(tags, function(tag) {
+      info("Getting release '", tag, "' from repository '", repo, "'")
       tryCatch({
         gh_request(
           "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
@@ -91,7 +91,7 @@ view_releases <- function(
     })
   }
 
-  if (any(sapply(releases_list, is, "error"))) {
+  if (any(map_vec(releases_list, is, "error"))) {
     collate_errors(releases_list, "view_releases() failed!")
   }
 
@@ -110,8 +110,8 @@ view_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = lapply(releases_list, function(r) {
-      sapply(r$assets, getElement, "name")
+    mutate(assets = map(releases_list, use_names = FALSE, function(r) {
+      map_vec(r$assets, getElement, "name")
     }))
 
   info("Done")
@@ -184,36 +184,33 @@ create_releases <- function(
   assert(is_url(api))
 
   params <- tibble(
-    tags       = tags,
-    commits    = commits,
-    names      = names,
-    bodies     = bodies,
+    tag        = tags,
+    commit     = commits,
+    name       = names,
+    body       = bodies,
     draft      = draft,
     prerelease = prerelease)
 
-  info("Posting releases '", paste(tags, collapse = "', '"), "' to repository '", repo, "'")
-  releases_list <- mapply(
-    params$tags, params$commits, params$names, params$bodies, params$draft, params$prerelease,
-    USE.NAMES = TRUE, SIMPLIFY = FALSE,
-    FUN = function(tag, commit, name, body, draft, prerelease) {
-      tryCatch({
-        gh_request(
-          "POST", gh_url("repos", repo, "releases", api = api),
-          payload = list(
-            tag_name         = tag,
-            target_commitish = commit,
-            name             = name,
-            body             = body,
-            draft            = draft,
-            prerelease       = prerelease),
-          token = token, ...)
-      }, error = function(e) {
-        info("Tag '", tag, "' failed!")
-        e
-      })
+  releases_list <- pmap(params, function(tag, commit, name, body, draft, prerelease) {
+    info("Posting release '", tag, "' to repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "POST", gh_url("repos", repo, "releases", api = api),
+        payload = list(
+          tag_name         = tag,
+          target_commitish = commit,
+          name             = name,
+          body             = body,
+          draft            = draft,
+          prerelease       = prerelease),
+        token = token, ...)
+    }, error = function(e) {
+      info("Tag '", tag, "' failed!")
+      e
     })
+  })
 
-  if (any(sapply(releases_list, is, "error"))) {
+  if (any(map_vec(releases_list, is, "error"))) {
     collate_errors(releases_list, "create_releases() failed!")
   }
 
@@ -232,8 +229,8 @@ create_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = lapply(releases_list, function(r) {
-      sapply(r$assets, getElement, "name")
+    mutate(assets = map(releases_list, use_names = FALSE, function(r) {
+      map_vec(r$assets, getElement, "name")
     }))
 
   info("Done")
@@ -305,40 +302,37 @@ update_releases <- function(
   assert(is_url(api))
 
   params <- tibble(
-    tags       = tags,
-    names      = names,
-    bodies     = bodies,
+    tag        = tags,
+    name       = names,
+    body       = bodies,
     draft      = draft,
     prerelease = prerelease)
 
-  info("Patching releases '", paste(tags, collapse = "', '"), "' to repository '", repo, "'")
-  releases_list <- mapply(
-    params$tags, params$names, params$bodies, params$draft, params$prerelease,
-    USE.NAMES = TRUE, SIMPLIFY = FALSE,
-    FUN = function(tag, name, body, draft, prerelease) {
-      tryCatch({
-        release <- gh_request(
-          "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
-          token = token, ...)
+  releases_list <- pmap(params, function(tag, name, body, draft, prerelease) {
+    info("Updating release '", tag, "' to repository '", repo, "'")
+    tryCatch({
+      release <- gh_request(
+        "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+        token = token, ...)
 
-        payload <- list(
-          tag_name         = tag,
-          name             = name,
-          body             = body,
-          draft            = draft,
-          prerelease       = prerelease) %>%
-          remove_missing()
+      payload <- list(
+        tag_name         = tag,
+        name             = name,
+        body             = body,
+        draft            = draft,
+        prerelease       = prerelease) %>%
+        remove_missing()
 
-        gh_request(
-          "PATCH", gh_url("repos", repo, "releases", release$id, api = api),
-          payload = payload, token = token, ...)
-      }, error = function(e) {
-        info("Tag '", tag, "' failed!")
-        e
-      })
+      gh_request(
+        "PATCH", gh_url("repos", repo, "releases", release$id, api = api),
+        payload = payload, token = token, ...)
+    }, error = function(e) {
+      info("Tag '", tag, "' failed!")
+      e
     })
+  })
 
-  if (any(sapply(releases_list, is, "error"))) {
+  if (any(map_vec(releases_list, is, "error"))) {
     collate_errors(releases_list, "update_releases() failed!")
   }
 
@@ -357,8 +351,8 @@ update_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = lapply(releases_list, function(r) {
-      sapply(r$assets, getElement, "name")
+    mutate(assets = map(releases_list, use_names = FALSE, function(r) {
+      map_vec(r$assets, getElement, "name")
     }))
 
   info("Done")
@@ -399,8 +393,8 @@ delete_releases <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Deleting releases '", paste(tags, collapse = "', '"), "' from repository '", repo, "'")
-  releases_list <- sapply(tags, simplify = FALSE, USE.NAMES = TRUE, function(tag) {
+  releases_list <- map(tags, function(tag) {
+    info("Deleting release '", tag, "' from repository '", repo, "'")
     tryCatch({
       release <- gh_request(
         "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
@@ -421,9 +415,9 @@ delete_releases <- function(
     })
   })
 
-  if (any(sapply(releases_list, is, "error"))) {
+  if (any(map_vec(releases_list, is, "error"))) {
     collate_errors(releases_list, "delete_releases() failed!")
-    releases_list[sapply(releases_list, is, "error")] <- FALSE
+    releases_list[map_vec(releases_list, is, "error")] <- FALSE
   }
 
   info("Done")

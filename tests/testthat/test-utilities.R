@@ -1,5 +1,156 @@
 context("utilities")
 
+# TEST: map -----------------------------------------------------------------------------------
+
+test_that("map applies a function over a list", {
+  one_letter <- map("D", function(l) which(LETTERS == l))
+
+  expect_is(one_letter, "list")
+  expect_identical(one_letter, list(D = 4L))
+
+  some_letters <- map(c("D", "G", "W"), function(l) which(LETTERS == l))
+
+  expect_is(some_letters, "list")
+  expect_identical(some_letters, list(D = 4L, G = 7L, W = 23L))
+
+  indexed_letters <- map(c("D", "G", "W"), idx = 0, function(l, idx) paste0(idx, which(LETTERS == l)))
+
+  expect_is(indexed_letters, "list")
+  expect_identical(indexed_letters, list(D = "04", G = "07", W = "023"))
+
+  named_list <- map(list(bob = "manager", mary = "analyst"), function(p) p == "manager")
+
+  expect_is(named_list, "list")
+  expect_identical(named_list, list(bob = TRUE, mary = FALSE))
+
+  unnamed_list <- map(list(bob = "manager", mary = "analyst"), function(p) p == "manager", use_names = FALSE)
+
+  expect_is(unnamed_list, "list")
+  expect_identical(unnamed_list, list(TRUE, FALSE))
+})
+
+# TEST: map_vec -------------------------------------------------------------------------------
+
+test_that("map_vec applies a function over a list and returns a vector", {
+  one_letter <- map_vec("D", function(l) which(LETTERS == l))
+
+  expect_is(one_letter, "integer")
+  expect_identical(one_letter, c(D = 4L))
+
+  some_letters <- map_vec(c("D", "G", "W"), function(l) which(LETTERS == l))
+
+  expect_is(some_letters, "integer")
+  expect_identical(some_letters, c(D = 4L, G = 7L, W = 23L))
+
+  indexed_letters <- map_vec(c("D", "G", "W"), idx = 0, function(l, idx) paste0(idx, which(LETTERS == l)))
+
+  expect_is(indexed_letters, "character")
+  expect_identical(indexed_letters, c(D = "04", G = "07", W = "023"))
+
+  named_vec <- map_vec(list(bob = "manager", mary = "analyst"), function(p) p == "manager")
+
+  expect_is(named_vec, "logical")
+  expect_identical(named_vec, c(bob = TRUE, mary = FALSE))
+
+  unnamed_vec <- map_vec(list(bob = "manager", mary = "analyst"), function(p) p == "manager", use_names = FALSE)
+
+  expect_is(unnamed_vec, "logical")
+  expect_identical(unnamed_vec, c(TRUE, FALSE))
+})
+
+# TEST: pmap ----------------------------------------------------------------------------------
+
+test_that("pmap applies a function over a list of lists", {
+  one_letter <- pmap(list(a = "A", b = 1), function(a, b) paste0(a, b))
+
+  expect_is(one_letter, "list")
+  expect_identical(one_letter, list(A = "A1"))
+
+  some_letters <- pmap(list(a = c("D", "G", "W"), b = 1:3), function(a, b) paste0(a, b))
+
+  expect_is(some_letters, "list")
+  expect_identical(some_letters, list(D = "D1", G = "G2", W = "W3"))
+
+  indexed_letters <- pmap(
+    list(a = c("D", "G", "W"), b = 1:3),
+    idx = 0,
+    function(a, b, idx) paste0(idx, a, b))
+
+  expect_is(indexed_letters, "list")
+  expect_identical(indexed_letters, list(D = "0D1", G = "0G2", W = "0W3"))
+
+  named_list <- pmap(
+    list(role = c(bob = "manager", mary = "analyst"), level = c(bob = 1, mary = 2)),
+    function(role, level) paste(role, level))
+
+  expect_is(named_list, "list")
+  expect_identical(named_list, list(bob = "manager 1", mary = "analyst 2"))
+
+  unnamed_list <- pmap(
+    list(role = c(bob = "manager", mary = "analyst"), level = c(bob = 1, mary = 2)),
+    function(role, level) paste(role, level),
+    use_names = FALSE)
+
+  expect_is(unnamed_list, "list")
+  expect_identical(unnamed_list, list("manager 1", "analyst 2"))
+})
+
+# TEST: pmap_vec ------------------------------------------------------------------------------
+
+test_that("pmap_vec applies a function over a list of lists and returns a vector", {
+  one_letter <- pmap_vec(list(a = "A", b = 1), function(a, b) paste0(a, b))
+
+  expect_is(one_letter, "character")
+  expect_identical(one_letter, c(A = "A1"))
+
+  some_letters <- pmap_vec(list(a = c("D", "G", "W"), b = 1:3), function(a, b) paste0(a, b))
+
+  expect_is(some_letters, "character")
+  expect_identical(some_letters, c(D = "D1", G = "G2", W = "W3"))
+
+  indexed_letters <- pmap_vec(
+    list(a = c("D", "G", "W"), b = 1:3),
+    idx = 0,
+    function(a, b, idx) paste0(idx, a, b))
+
+  expect_is(indexed_letters, "character")
+  expect_identical(indexed_letters, c(D = "0D1", G = "0G2", W = "0W3"))
+
+  named_list <- pmap_vec(
+    list(role = c(bob = "manager", mary = "analyst"), level = c(bob = 1, mary = 2)),
+    function(role, level) paste(role, level))
+
+  expect_is(named_list, "character")
+  expect_identical(named_list, c(bob = "manager 1", mary = "analyst 2"))
+
+  unnamed_list <- pmap_vec(
+    list(role = c(bob = "manager", mary = "analyst"), level = c(bob = 1, mary = 2)),
+    function(role, level) paste(role, level),
+    use_names = FALSE)
+
+  expect_is(unnamed_list, "character")
+  expect_identical(unnamed_list, c("manager 1", "analyst 2"))
+})
+
+
+# TEST: set_names -----------------------------------------------------------------------------
+
+test_that("set_names adds or replaces the names of an object", {
+  expect_identical(
+    set_names(c(1, 2, 3), "A", "B", "C"),
+    c(A = 1, B = 2, C = 3))
+
+  expect_identical(
+    set_names(c(1, 2, 3), c("A", "B", "C")),
+    c(A = 1, B = 2, C = 3))
+
+  expect_identical(
+    set_names(c(1, 2, 3), list("A", "B", "C")),
+    c(A = 1, B = 2, C = 3))
+})
+
+# TEST: select_fields -------------------------------------------------------------------------
+
 test_that("select_fields returns the specified fields with correct names", {
   data <- list(
     list(name = "A", is_ok = TRUE, date = "2018-06-21T08:56:23Z", value = 23, author = list(
@@ -46,7 +197,9 @@ test_that("select_fields returns the specified fields with correct names", {
 
 })
 
-test_that("bind_rows returns the specified columns with correct names and types", {
+# TEST: bind_fields ---------------------------------------------------------------------------
+
+test_that("bind_fields returns the specified columns with correct names and types", {
   data <- list(
     list(name = "A", is_ok = TRUE, date = "2018-06-21T08:56:23Z", value = 23, author = list(
       name = "Bob Wilson", email = "bob.wilson@acme.com")),

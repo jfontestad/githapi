@@ -84,8 +84,8 @@ view_contents <- function(
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Getting files '", paste(paths, collapse = "', '"), "' from repository '", repo, "'")
-  files <- sapply(paths, simplify = TRUE, USE.NAMES = TRUE, function(path) {
+  files <- map_vec(paths, function(path) {
+    info("Getting contents of file '", path, "' from repository '", repo, "'")
     tryCatch({
       file <- gh_request(
         "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
@@ -158,7 +158,7 @@ view_files <- function(
     info("Getting files from repository '", repo, "'")
     files_list <- tryCatch({
       gh_request(
-        "GET", gh_url("repos", repo, "contents", api = api),
+        "GET", gh_url("repos", repo, "contents", ref = ref, api = api),
         token = token, ...)
     }, error = function(e) {
       info("Failed!")
@@ -166,8 +166,8 @@ view_files <- function(
     })
   } else {
     assert(is_character(paths))
-    info("Getting files '", paste(paths, collapse = "', '"), "' from repository '", repo, "'")
-    files_list <- sapply(paths, simplify = FALSE, USE.NAMES = TRUE, function(path) {
+    files_list <- map(paths, function(path) {
+      info("Getting file '", path, "' from repository '", repo, "'")
       tryCatch({
         gh_request(
           "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
@@ -179,7 +179,7 @@ view_files <- function(
     })
   }
 
-  if (any(sapply(files_list, is, "error"))) {
+  if (any(map_vec(files_list, is, "error"))) {
     collate_errors(files_list, "view_files() failed!")
   }
 
@@ -283,37 +283,34 @@ create_files <- function(
   assert(is_url(api))
 
   params <- tibble(
-    paths    = paths,
-    contents = contents,
-    messages = messages,
-    branches = branches)
+    path    = paths,
+    content = contents,
+    message = messages,
+    branch  = branches)
 
   # TODO: If branches do not exist, create them
 
-  info("Posting files '", paste(paths, collapse = "', '"), "' to repository '", repo, "'")
-  files_list <- mapply(
-    params$paths, params$contents, params$messages, params$branches,
-    USE.NAMES = TRUE, SIMPLIFY = FALSE,
-    FUN = function(path, content, message, branch) {
-      tryCatch({
-        payload <- list(
-          message   = paste(message, "- added", path),
-          content   = base64_enc(content),
-          branch    = branch,
-          committer = committer,
-          author    = author) %>%
-          remove_missing()
+  files_list <- pmap(params, function(path, content, message, branch) {
+    info("Posting file '", path, "' to repository '", repo, "'")
+    tryCatch({
+      payload <- list(
+        message   = paste(message, "- added", path),
+        content   = base64_enc(content),
+        branch    = branch,
+        committer = committer,
+        author    = author) %>%
+        remove_missing()
 
-        gh_request(
-          "PUT", gh_url("repos", repo, "contents", path, api = api),
-          payload = payload, token = token, ...)
-      }, error = function(e) {
-        info("File '", path, "' failed!")
-        e
-      })
+      gh_request(
+        "PUT", gh_url("repos", repo, "contents", path, api = api),
+        payload = payload, token = token, ...)
+    }, error = function(e) {
+      info("File '", path, "' failed!")
+      e
     })
+  })
 
-  if (any(sapply(files_list, is, "error"))) {
+  if (any(map_vec(files_list, is, "error"))) {
     collate_errors(files_list, "create_files() failed!")
   }
 
@@ -337,11 +334,11 @@ create_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = sapply(files_list, function(f) {
-      sapply(f$commit$parents, getElement, "sha")
+    mutate(commit_parent_sha = map(files_list, use_names = TRUE, function(f) {
+      map_vec(f$commit$parents, getElement, "sha")
     })) %>%
-    mutate(commit_parent_url = sapply(files_list, function(f) {
-      sapply(f$commit$parents, getElement, "url")
+    mutate(commit_parent_url = map(files_list, use_names = TRUE, function(f) {
+      map_vec(f$commit$parents, getElement, "url")
     }))
 
   info("Done")
@@ -432,40 +429,37 @@ update_files <- function(
   assert(is_url(api))
 
   params <- tibble(
-    paths    = paths,
-    contents = contents,
-    messages = messages,
-    branches = branches)
+    path    = paths,
+    content = contents,
+    message = messages,
+    branch  = branches)
 
-  info("Posting files '", paste(paths, collapse = "', '"), "' to repository '", repo, "'")
-  files_list <- mapply(
-    params$paths, params$contents, params$messages, params$branches,
-    USE.NAMES = TRUE, SIMPLIFY = FALSE,
-    FUN = function(path, content, message, branch) {
-      tryCatch({
-        old_file <- gh_request(
-          "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
-          token = token, ...)
+  files_list <- pmap(params, function(path, content, message, branch) {
+    info("Posting file '", path, "' to repository '", repo, "'")
+    tryCatch({
+      old_file <- gh_request(
+        "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
+        token = token, ...)
 
-        payload <- list(
-          message   = paste(message, "- updated", path),
-          content   = base64_enc(content),
-          sha       = old_file$sha,
-          branch    = branch,
-          committer = committer,
-          author    = author) %>%
-          remove_missing()
+      payload <- list(
+        message   = paste(message, "- updated", path),
+        content   = base64_enc(content),
+        sha       = old_file$sha,
+        branch    = branch,
+        committer = committer,
+        author    = author) %>%
+        remove_missing()
 
-        gh_request(
-          "PUT", gh_url("repos", repo, "contents", path, api = api),
-          payload = payload, token = token, ...)
-      }, error = function(e) {
-        info("File '", path, "' failed!")
-        e
-      })
+      gh_request(
+        "PUT", gh_url("repos", repo, "contents", path, api = api),
+        payload = payload, token = token, ...)
+    }, error = function(e) {
+      info("File '", path, "' failed!")
+      e
     })
+  })
 
-  if (any(sapply(files_list, is, "error"))) {
+  if (any(map_vec(files_list, is, "error"))) {
     collate_errors(files_list, "update_files() failed!")
   }
 
@@ -489,11 +483,11 @@ update_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = sapply(files_list, function(f) {
-      sapply(f$commit$parents, getElement, "sha")
+    mutate(commit_parent_sha = map(files_list, use_names = FALSE, function(f) {
+      map_vec(f$commit$parents, getElement, "sha")
     })) %>%
-    mutate(commit_parent_url = sapply(files_list, function(f) {
-      sapply(f$commit$parents, getElement, "url")
+    mutate(commit_parent_url = map(files_list, use_names = FALSE, function(f) {
+      map_vec(f$commit$parents, getElement, "url")
     }))
 
   info("Done")
@@ -572,16 +566,13 @@ delete_files <- function(
   assert(is_url(api))
 
   params <- tibble(
-    paths    = paths,
-    messages = messages,
-    branches = branches)
+    path    = paths,
+    message = messages,
+    branch  = branches)
 
-  info("Deleting files '", paste(paths, collapse = "', '"), "' from repository '", repo, "'")
-  files_list <- mapply(
-    params$paths, params$messages, params$branches,
-    USE.NAMES = TRUE, SIMPLIFY = FALSE,
-    FUN = function(path, message, branch) {
-      tryCatch({
+  files_list <- pmap(params, function(path, message, branch) {
+    info("Deleting file '", path, "' from repository '", repo, "'")
+    tryCatch({
       old_file <- gh_request(
         "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
         token = token, ...)
@@ -603,9 +594,9 @@ delete_files <- function(
     })
   })
 
-  if (any(sapply(files_list, is, "error"))) {
+  if (any(map_vec(files_list, is, "error"))) {
     collate_errors(files_list, "delete_files() failed!")
-    files_list[sapply(files_list, is, "error")] <- FALSE
+    files_list[map_vec(files_list, is, "error")] <- FALSE
   }
 
   info("Transforming results")
@@ -619,11 +610,11 @@ delete_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = sapply(files_list, function(f) {
-      sapply(f$commit$parents, getElement, "sha")
+    mutate(commit_parent_sha = map(files_list, use_names = FALSE, function(f) {
+      map_vec(f$commit$parents, getElement, "sha")
     })) %>%
-    mutate(commit_parent_url = sapply(files_list, function(f) {
-      sapply(f$commit$parents, getElement, "url")
+    mutate(commit_parent_url = map(files_list, use_names = FALSE, function(f) {
+      map_vec(f$commit$parents, getElement, "url")
     }))
 
   info("Done")
@@ -675,21 +666,23 @@ download_commit <- function(
   archive_path <- file.path(path, paste0(sub("/", "-", repo), "-", ref, ".zip"))
   on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
 
+  info("Downloading commit")
   gh_download_binary(
     gh_url("repos", repo, "zipball", ref, api = api),
     path = archive_path, token = token, ...)
 
+  info("Unpacking commit into '", path, "'")
   unzip(archive_path, exdir = path)
 
-  # Tidy up by moving files up a directory level
   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
   on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
 
   subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
-  lapply(file.path(path, subfolders[subfolders != ""]), dir.create)
+  map(file.path(path, subfolders[subfolders != ""]), dir.create)
 
   files <- list.files(archive_folder, recursive = TRUE)
   file.rename(file.path(archive_folder, files), file.path(path, files))
 
+  info("Done")
   invisible(path)
 }

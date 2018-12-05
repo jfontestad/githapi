@@ -21,7 +21,7 @@ test_that("view_contents returns a list of the file contents", {
 
   expect_is(files, "character")
   expect_match(files["README.md"], "^# test-githapi")
-  expect_match(files["test-file.txt"], "This is a test file.\n")
+  expect_match(files["test-file.txt"], "This is a test file")
 
   files_dd72be1 <- view_contents(
     repo  = "ChadGoymer/test-githapi",
@@ -44,7 +44,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(all_files, "tbl")
   expect_identical(
-    sapply(all_files, function(col) class(col)[[1]]),
+    map_vec(all_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -65,7 +65,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(created_files, "tbl")
   expect_identical(
-    sapply(created_files, function(col) class(col)[[1]]),
+    map_vec(created_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -82,8 +82,8 @@ test_that("view_files, create_files, update_files and delete files on the defaul
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(created_files$name, c("aaaa.txt", "bbbb.txt"))
   expect_identical(
     created_files$commit_message,
@@ -96,7 +96,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(viewed_files, "tbl")
   expect_identical(
-    sapply(viewed_files, function(col) class(col)[[1]]),
+    map_vec(viewed_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -117,7 +117,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    sapply(updated_files, function(col) class(col)[[1]]),
+    map_vec(updated_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -134,8 +134,8 @@ test_that("view_files, create_files, update_files and delete files on the defaul
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(updated_files$name, c("aaaa.txt", "bbbb.txt"))
   expect_identical(
     updated_files$commit_message,
@@ -151,7 +151,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    sapply(deleted_files, function(col) class(col)[[1]]),
+    map_vec(deleted_files, function(col) class(col)[[1]]),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",
@@ -159,8 +159,8 @@ test_that("view_files, create_files, update_files and delete files on the defaul
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(
     deleted_files$commit_message,
     c("Testing delete_files() - deleted aaaa.txt", "Testing delete_files() - deleted bbbb.txt"))
@@ -177,7 +177,7 @@ test_that("view_files, create_files, update_files and delete files in the specif
 
   expect_is(created_files, "tbl")
   expect_identical(
-    sapply(created_files, function(col) class(col)[[1]]),
+    map_vec(created_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -194,15 +194,15 @@ test_that("view_files, create_files, update_files and delete files in the specif
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(created_files$commit_message, "Testing create_files() - added test-dir/aaaa.txt")
 
   viewed_files <- view_files("ChadGoymer/test-githapi", "test-dir/aaaa.txt")
 
   expect_is(viewed_files, "tbl")
   expect_identical(
-    sapply(viewed_files, function(col) class(col)[[1]]),
+    map_vec(viewed_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -222,7 +222,7 @@ test_that("view_files, create_files, update_files and delete files in the specif
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    sapply(updated_files, function(col) class(col)[[1]]),
+    map_vec(updated_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -239,8 +239,8 @@ test_that("view_files, create_files, update_files and delete files in the specif
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(updated_files$commit_message, "Testing update_files() - updated test-dir/aaaa.txt")
 
   deleted_files <- delete_files(
@@ -250,7 +250,7 @@ test_that("view_files, create_files, update_files and delete files in the specif
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    sapply(deleted_files, function(col) class(col)[[1]]),
+    map_vec(deleted_files, function(col) class(col)[[1]]),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",
@@ -258,8 +258,8 @@ test_that("view_files, create_files, update_files and delete files in the specif
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(deleted_files$commit_message, "Testing delete_files() - deleted test-dir/aaaa.txt")
   expect_error(view_files("ChadGoymer/test-githapi", "aaaa.txt"), "Not Found")
 })
@@ -276,7 +276,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_is(created_files, "tbl")
   expect_identical(
-    sapply(created_files, function(col) class(col)[[1]]),
+    map_vec(created_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -293,15 +293,15 @@ test_that("view_files, create_files, update_files and delete files on the specif
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(created_files$name, "aaaa.txt")
 
   viewed_files <- view_files("ChadGoymer/test-githapi", "aaaa.txt", ref = "test-branch")
 
   expect_is(viewed_files, "tbl")
   expect_identical(
-    sapply(viewed_files, function(col) class(col)[[1]]),
+    map_vec(viewed_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -322,7 +322,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    sapply(updated_files, function(col) class(col)[[1]]),
+    map_vec(updated_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -339,8 +339,8 @@ test_that("view_files, create_files, update_files and delete files on the specif
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(updated_files$commit_message, "Testing update_files() - updated aaaa.txt")
 
   deleted_files <- delete_files(
@@ -351,7 +351,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    sapply(deleted_files, function(col) class(col)[[1]]),
+    map_vec(deleted_files, function(col) class(col)[[1]]),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",
@@ -359,8 +359,8 @@ test_that("view_files, create_files, update_files and delete files on the specif
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(deleted_files$commit_message, "Testing delete_files() - deleted aaaa.txt")
   expect_error(view_files("ChadGoymer/test-githapi", "aaaa.txt", ref = "test-branch"), "Not Found")
 })
@@ -376,7 +376,7 @@ test_that("author and committer can be set when creating, updating and deleting 
 
   expect_is(created_files, "tbl")
   expect_identical(
-    sapply(created_files, function(col) class(col)[[1]]),
+    map_vec(created_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -393,8 +393,8 @@ test_that("author and committer can be set when creating, updating and deleting 
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(created_files$commit_author, "Bob Smith")
   expect_identical(created_files$commit_committer, "Jane Jones")
 
@@ -408,7 +408,7 @@ test_that("author and committer can be set when creating, updating and deleting 
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    sapply(updated_files, function(col) class(col)[[1]]),
+    map_vec(updated_files, function(col) class(col)[[1]]),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -425,8 +425,8 @@ test_that("author and committer can be set when creating, updating and deleting 
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(updated_files$commit_author, "Jane Jones")
   expect_identical(updated_files$commit_committer, "Bob Smith")
 
@@ -439,7 +439,7 @@ test_that("author and committer can be set when creating, updating and deleting 
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    sapply(deleted_files, function(col) class(col)[[1]]),
+    map_vec(deleted_files, function(col) class(col)[[1]]),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",
@@ -447,8 +447,8 @@ test_that("author and committer can be set when creating, updating and deleting 
       commit_committer  = "character",
       commit_tree_sha   = "character",
       commit_tree_url   = "character",
-      commit_parent_sha = "character",
-      commit_parent_url = "character"))
+      commit_parent_sha = "list",
+      commit_parent_url = "list"))
   expect_identical(deleted_files$commit_author, "Jane Jones")
   expect_identical(deleted_files$commit_committer, "Bob Smith")
 })

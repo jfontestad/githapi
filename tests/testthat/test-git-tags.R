@@ -59,3 +59,10 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
   expect_error(view_tags("ChadGoymer/test-githapi", "aaa"), "Not Found")
   expect_error(view_tags("ChadGoymer/test-githapi", "bbb"), "Not Found")
 })
+
+# TEST: tag_exists ----------------------------------------------------------------------------
+
+test_that("tag_exists returns TRUE or FALSE depending on whether the tag exists in the repo", {
+  expect_true(tag_exists("ChadGoymer/test-githapi", "0.0.0"))
+  expect_false(tag_exists("ChadGoymer/test-githapi", "no-such-tag"))
+})

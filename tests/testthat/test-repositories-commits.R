@@ -1,13 +1,13 @@
 context("repositories commits")
 
-# TEST: view_commits --------------------------------------------------------------------------
+# TEST: view_history --------------------------------------------------------------------------
 
-test_that("view_commits returns a tibble describing the history of commits", {
-  commits <- view_commits("ChadGoymer/test-githapi", n_max = 10)
+test_that("view_history returns a tibble describing the history of commits", {
+  commits <- view_history("ChadGoymer/test-githapi", n_max = 10)
 
   expect_is(commits, "tbl")
   expect_identical(
-    sapply(commits, function(field) class(field)[[1]]),
+    map_vec(commits, function(field) class(field)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -18,14 +18,14 @@ test_that("view_commits returns a tibble describing the history of commits", {
       url             = "character",
       tree_sha        = "character",
       tree_url        = "character",
-      parent_sha      = "character",
-      parent_url      = "character"))
+      parent_sha      = "list",
+      parent_url      = "list"))
 
-  first_commits <- view_commits("ChadGoymer/test-githapi", ref = "310c21d3f1601a46e014e68e94814b23406bf574")
+  first_commits <- view_history("ChadGoymer/test-githapi", ref = "310c21d3f1601a46e014e68e94814b23406bf574")
 
   expect_is(commits, "tbl")
   expect_identical(
-    sapply(commits, function(field) class(field)[[1]]),
+    map_vec(commits, function(field) class(field)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -36,8 +36,8 @@ test_that("view_commits returns a tibble describing the history of commits", {
       url             = "character",
       tree_sha        = "character",
       tree_url        = "character",
-      parent_sha      = "character",
-      parent_url      = "character"))
+      parent_sha      = "list",
+      parent_url      = "list"))
   expect_identical(
     first_commits$sha,
     c("310c21d3f1601a46e014e68e94814b23406bf574", "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d"))
@@ -63,7 +63,7 @@ test_that("compare_commits returns information on the differences between two co
 
   expect_is(comparison, "tbl")
   expect_identical(
-    sapply(comparison, function(field) class(field)[[1]]),
+    map_vec(comparison, function(field) class(field)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -74,8 +74,8 @@ test_that("compare_commits returns information on the differences between two co
       url             = "character",
       tree_sha        = "character",
       tree_url        = "character",
-      parent_sha      = "character",
-      parent_url      = "character"))
+      parent_sha      = "list",
+      parent_url      = "list"))
 
   expect_identical(
     comparison$sha,
@@ -102,7 +102,7 @@ test_that("compare_files returns a tibble of information of file differences bet
   expect_is(comparison, "tbl")
 
   expect_identical(
-    sapply(comparison, function(field) class(field)[[1]]),
+    map_vec(comparison, function(field) class(field)[[1]]),
     c(filename     = "character",
       sha          = "character",
       status       = "character",
