@@ -80,3 +80,10 @@ test_that("create_branches creates some branches, view_branches retreives them a
   expect_error(view_branches("ChadGoymer/test-githapi", "aaa"), "Not Found")
   expect_error(view_branches("ChadGoymer/test-githapi", "bbb"), "Not Found")
 })
+
+# TEST: branch_exists -------------------------------------------------------------------------
+
+test_that("branch_exists returns TRUE or FALSE depending on whether the branch exists in the repo", {
+  expect_true(branch_exists("ChadGoymer/test-githapi", "master"))
+  expect_false(branch_exists("ChadGoymer/test-githapi", "no-such-branch"))
+})

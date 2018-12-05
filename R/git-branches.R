@@ -292,3 +292,47 @@ delete_branches <- function(
   info("Done")
   branches_list
 }
+
+#  FUNCTION: branch_exists --------------------------------------------------------------------
+#
+#' Determine whether a branch exists in the specified repository.
+#'
+#' This function returns `TRUE` if the branch exists and `FALSE` otherwise.
+#'
+#' <https://developer.github.com/v3/git/refs/#get-a-reference>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param branch (character) The name pf the branch.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `TRUE` or `FALSE`
+#'
+#' @export
+#'
+branch_exists <- function(
+  repo,
+  branch,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_repo(repo))
+  assert(is_string(branch))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  info("Checking branch '", branch, "' exists in repository '", repo, "'")
+  tryCatch({
+    gh_request(
+      "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+      token = token, ...)
+    TRUE
+  }, error = function(e) {
+    FALSE
+  })
+}
