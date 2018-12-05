@@ -132,6 +132,23 @@ test_that("pmap_vec applies a function over a list of lists and returns a vector
   expect_identical(unnamed_list, c("manager 1", "analyst 2"))
 })
 
+
+# TEST: set_names -----------------------------------------------------------------------------
+
+test_that("set_names adds or replaces the names of an object", {
+  expect_identical(
+    set_names(c(1, 2, 3), "A", "B", "C"),
+    c(A = 1, B = 2, C = 3))
+
+  expect_identical(
+    set_names(c(1, 2, 3), c("A", "B", "C")),
+    c(A = 1, B = 2, C = 3))
+
+  expect_identical(
+    set_names(c(1, 2, 3), list("A", "B", "C")),
+    c(A = 1, B = 2, C = 3))
+})
+
 # TEST: select_fields -------------------------------------------------------------------------
 
 test_that("select_fields returns the specified fields with correct names", {

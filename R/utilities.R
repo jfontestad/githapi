@@ -30,6 +30,11 @@ pmap_vec <- function(l, f, ..., use_names = TRUE) {
   result
 }
 
+set_names <- function(x, ...) {
+  names(x) <- as.character(unlist(list(...)))
+  x
+}
+
 field_names <- function(fields) {
   names <- map_vec(fields, paste, collapse = "_")
   if (!is_null(names(fields))) {
@@ -67,8 +72,7 @@ select_fields <- function(x, fields) {
     selected_field
   })
 
-  names(selected_fields) <- field_names(fields)
-  selected_fields
+  set_names(selected_fields, field_names(fields))
 }
 
 bind_fields <- function(x, fields) {
@@ -79,7 +83,7 @@ bind_fields <- function(x, fields) {
   raw_fields <- map(fields, function(f) if (is_null(names(f))) f else f[names(f) != "as"])
 
   if (identical(length(x), 0L)) {
-    names(fields) <- field_names(fields)
+    fields <- set_names(fields, field_names(fields))
     binded_fields <- bind_rows(map(field_names(fields), function(f) logical()))
   } else {
     binded_fields <- bind_rows(map(x, select_fields, fields = raw_fields))

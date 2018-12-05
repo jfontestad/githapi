@@ -322,8 +322,8 @@ gh_save <- function(
   repo_files <- gh_git_tree(ref = ref, repo = repo, recursive = TRUE, token = token, api = api, ...)
 
   if (all(files %in% repo_files$path)) {
-    blob_paths <- repo_files[repo_files$path %in% files,][["path"]]
-    names(blob_paths) <- repo_files[repo_files$path %in% files,][["sha"]]
+    blob_paths <- repo_files[repo_files$path %in% files,][["path"]] %>%
+      set_names(repo_files[repo_files$path %in% files,][["sha"]])
   } else {
     error(
       "Cannot find specified files in repo '", repo, "':\n\n  ",

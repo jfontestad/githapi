@@ -125,7 +125,7 @@ test_that("download_files saves the specified files to disk", {
 
   expect_identical(
     paths_dd72be1,
-    setNames(file.path(temp_path_dd72be1, c("README.md", "test-file.txt")), c("README.md", "test-file.txt")))
+    set_names(file.path(temp_path_dd72be1, c("README.md", "test-file.txt")), c("README.md", "test-file.txt")))
   expect_identical(
     readLines(paths_dd72be1[["README.md"]]),
     c("# test-githapi", "This repo is used to test the githapi R package"))

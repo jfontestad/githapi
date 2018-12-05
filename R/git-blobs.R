@@ -245,7 +245,7 @@ read_files <- function(
   assert(is_url(api))
 
   all_files <- view_files(repo = repo, ref = ref, token = token, api = api)
-  file_shas <- setNames(all_files$sha, all_files$path)
+  file_shas <- set_names(all_files$sha, all_files$path)
 
   files <- map_vec(paths, function(path) {
     info("Reading file '", path, "' from repository '", repo, "'")
@@ -317,7 +317,7 @@ download_files <- function(
   assert(is_url(api))
 
   all_files <- view_files(repo = repo, ref = ref, token = token, api = api)
-  file_shas <- setNames(all_files$sha, all_files$path)
+  file_shas <- set_names(all_files$sha, all_files$path)
 
   files <- map_vec(paths, function(path) {
     info("Downloading file '", path, "' from repository '", repo, "'")
