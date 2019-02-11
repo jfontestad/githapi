@@ -4,14 +4,14 @@
 \alias{create_blobs}
 \title{Create blobs (files).}
 \usage{
-create_blobs(repo, contents, encoding = "utf-8",
+create_blobs(contents, repo, encoding = "utf-8",
   token = getOption("github.token"), api = getOption("github.api"),
   ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{contents}{(character) The contents of the files.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{encoding}{(character, optional) The encoding used for the content. Currently,
 \code{"utf-8"} and \code{"base64"} are supported. Can supply either a single string, which will apply
