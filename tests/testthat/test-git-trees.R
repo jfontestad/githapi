@@ -4,8 +4,8 @@ context("git trees")
 
 test_that("view_trees returns a tibble of information about the files in commits", {
   trees <- view_trees(
-    repo = "ChadGoymer/test-githapi",
-    shas = c("3f5c0749c85cc4a3cbd240762b61276ad2bfbba2", "3d1b16c8e39c0776010ab8c6dc6d304ff75b1a61"))
+    shas = c("3f5c0749c85cc4a3cbd240762b61276ad2bfbba2", "3d1b16c8e39c0776010ab8c6dc6d304ff75b1a61"),
+    repo = "ChadGoymer/test-githapi")
 
   expect_is(trees, "tbl")
   expect_identical(
@@ -30,11 +30,11 @@ test_that("view_trees returns a tibble of information about the files in commits
 
 test_that("create_tree creates a new tree of the specified structure", {
   created_one_tree_one_object <- create_tree(
-    repo  = "ChadGoymer/test-githapi",
     paths = "README-copy.md",
     modes = "100644",
     types = "blob",
-    shas  = "72b5faa9dc9e4bba87108bf302a5b453e985feec")
+    shas  = "72b5faa9dc9e4bba87108bf302a5b453e985feec",
+    repo  = "ChadGoymer/test-githapi")
 
   expect_is(created_one_tree_one_object, "tbl")
   expect_identical(
@@ -47,18 +47,18 @@ test_that("create_tree creates a new tree of the specified structure", {
       size     = "integer",
       url      = "character"))
 
-  viewed_one_tree_one_object <- view_trees("ChadGoymer/test-githapi", created_one_tree_one_object$tree_sha)
+  viewed_one_tree_one_object <- view_trees(created_one_tree_one_object$tree_sha, "ChadGoymer/test-githapi")
 
   expect_identical(viewed_one_tree_one_object$path, "README-copy.md")
   expect_identical(viewed_one_tree_one_object$type, "blob")
   expect_identical(viewed_one_tree_one_object$sha, "72b5faa9dc9e4bba87108bf302a5b453e985feec")
 
   created_one_tree_two_objects <- create_tree(
-    repo  = "ChadGoymer/test-githapi",
     paths = c("test-root.txt", "test-dir"),
     modes = c("100644", "040000"),
     types = c("blob", "tree"),
-    shas  = c("fea7e317e8d40f5de939e9d183a964a72f14b2c1", created_one_tree_one_object$tree_sha))
+    shas  = c("fea7e317e8d40f5de939e9d183a964a72f14b2c1", created_one_tree_one_object$tree_sha),
+    repo  = "ChadGoymer/test-githapi")
 
   expect_is(created_one_tree_two_objects, "tbl")
   expect_identical(
@@ -72,8 +72,8 @@ test_that("create_tree creates a new tree of the specified structure", {
       url      = "character"))
 
   viewed_one_tree_two_objects <- view_trees(
-    repo = "ChadGoymer/test-githapi",
-    created_one_tree_two_objects$tree_sha[[1]])
+    created_one_tree_two_objects$tree_sha[[1]],
+    repo = "ChadGoymer/test-githapi")
 
   expect_true(all(c("test-root.txt", "test-dir") %in% viewed_one_tree_two_objects$path))
 
@@ -97,8 +97,8 @@ test_that("upload_tree uploads files and directory structure to github", {
   skip("Does not work in Travis")
 
   flat_tree <- upload_tree(
-    repo = "ChadGoymer/test-githapi",
-    path = system.file("test-data/upload-tree/test-dir", package = "githapi"))
+    path = system.file("test-data/upload-tree/test-dir", package = "githapi"),
+    repo = "ChadGoymer/test-githapi")
 
   expect_is(flat_tree, "tbl")
   expect_identical(
@@ -115,8 +115,8 @@ test_that("upload_tree uploads files and directory structure to github", {
   expect_identical(flat_tree$type, c("blob", "blob"))
 
   recursive_tree <- upload_tree(
-    repo = "ChadGoymer/test-githapi",
-    path = system.file("test-data/upload-tree", package = "githapi"))
+    path = system.file("test-data/upload-tree", package = "githapi"),
+    repo = "ChadGoymer/test-githapi")
 
   expect_is(recursive_tree, "tbl")
   expect_identical(
@@ -133,9 +133,13 @@ test_that("upload_tree uploads files and directory structure to github", {
   expect_identical(recursive_tree$type, c("blob", "tree", "blob"))
 })
 
-# TEST: tree_exists ---------------------------------------------------------------------------
+# TEST: trees_exist ---------------------------------------------------------------------------
 
-test_that("tree_exists returns TRUE or FALSE depending on whether the tree exists in the repo", {
-  expect_true(tree_exists("ChadGoymer/test-githapi", "3f5c0749c85cc4a3cbd240762b61276ad2bfbba2"))
-  expect_false(tree_exists("ChadGoymer/test-githapi", "0000000000000000000000000000000000000000"))
+test_that("trees_exist returns TRUE or FALSE depending on whether the tree exists in the repo", {
+  expect_true(trees_exist("3f5c0749c85cc4a3cbd240762b61276ad2bfbba2", "ChadGoymer/test-githapi"))
+  expect_false(trees_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi"))
+
+  expect_identical(
+    trees_exist(c("3f5c0749c85cc4a3cbd240762b61276ad2bfbba2", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi"),
+    c(`3f5c0749c85cc4a3cbd240762b61276ad2bfbba2` = TRUE, `0000000000000000000000000000000000000000` = FALSE))
 })

@@ -4,13 +4,11 @@
 \alias{create_tree}
 \title{Create a tree.}
 \usage{
-create_tree(repo, paths, modes, types, shas = NA, contents = NA,
-  base_tree = NA, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+create_tree(paths, modes, types, shas, repo, base_tree,
+  token = getOption("github.token"), api = getOption("github.api"),
+  ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{paths}{(character) The paths to the files or directories.}
 
 \item{modes}{(character) The file modes; one of \code{"100644"} for file (blob), \code{"100755"} for
@@ -21,8 +19,7 @@ executable (blob), \code{"040000"} for subdirectory (tree), \code{"160000"} for 
 
 \item{shas}{(character) The SHAs of the objects in the tree.}
 
-\item{contents}{(character) The contents of each file. GitHub will write this blob out and use
-that SHA for this entry. Use either this, or sha.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{base_tree}{(string, optional) The SHAs of the tree you want to update with new data.
 Default: \code{NA}.}
@@ -45,9 +42,10 @@ A tibble describing the trees, with the following columns
 }
 }
 \description{
-This function creates the specified tree within a repository in GitHub. The tree is either
-specified by supplying SHAs of existing blobs and trees, or by specifying the text contents
-of files, which are uploaded as blobs.
+This function creates the specified tree within a repository in GitHub. The tree is
+specified by supplying SHAs of existing blobs and trees. Therefore, new blobs have to be
+created first using \code{\link[=create_blobs]{create_blobs()}} and directories have to be created by recursively
+using this function to create trees.
 }
 \details{
 \url{https://developer.github.com/v3/git/trees/#create-a-tree}

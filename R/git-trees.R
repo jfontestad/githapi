@@ -7,8 +7,8 @@
 #'
 #' <https://developer.github.com/v3/git/trees/#get-a-tree>
 #'
+#' @param shas (character) The SHAs of the trees.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param shas (character, optional) The SHAs of the trees.
 #' @param recursive (logical) Whether to list files recursively. Default: TRUE.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
@@ -30,15 +30,15 @@
 #' @export
 #'
 view_trees <- function(
-  repo,
   shas,
+  repo,
   recursive = TRUE,
   token     = getOption("github.token"),
   api       = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(shas) && all(map_vec(shas, is_sha)))
+  assert(is_repo(repo))
   assert(is_boolean(recursive))
   assert(is_sha(token))
   assert(is_url(api))
@@ -50,7 +50,7 @@ view_trees <- function(
         "GET", gh_url("repos", repo, "git/trees", sha, recursive = as.integer(recursive), api = api),
         token = token, ...)
 
-      info("Transforming results")
+      info("Transforming results", level = 2)
       trees_tbl <- bind_fields(tree$tree, list(
         tree_sha = "",
         tree_url = "",
@@ -61,22 +61,22 @@ view_trees <- function(
         url      = c("url",  as = "character"))) %>%
         mutate(tree_sha = tree$sha, tree_url = tree$url)
 
-      info("Done")
+      info("Done", level = 2)
       trees_tbl
     }, error = function(e) {
-      info("sha '", sha, "' failed!")
+      warn("sha '", sha, "' failed!", level = 2)
       e
     })
   })
 
   if (any(map_vec(trees_list, is, "error"))) {
-    collate_errors(trees_list, "view_tags() failed!")
+    collate_errors(trees_list, "view_trees() failed!")
   }
 
-  info("Combining results")
+  info("Combining results", level = 2)
   trees_tbl <- bind_rows(trees_list)
 
-  info("Done")
+  info("Done", level = 2)
   trees_tbl
 }
 
@@ -84,9 +84,10 @@ view_trees <- function(
 #
 #' Create a tree.
 #'
-#' This function creates the specified tree within a repository in GitHub. The tree is either
-#' specified by supplying SHAs of existing blobs and trees, or by specifying the text contents
-#' of files, which are uploaded as blobs.
+#' This function creates the specified tree within a repository in GitHub. The tree is
+#' specified by supplying SHAs of existing blobs and trees. Therefore, new blobs have to be
+#' created first using [create_blobs()] and directories have to be created by recursively
+#' using this function to create trees.
 #'
 #' <https://developer.github.com/v3/git/trees/#create-a-tree>
 #'
@@ -97,8 +98,6 @@ view_trees <- function(
 #'   `"120000"` for a blob that specifies the path of a symlink.
 #' @param types (character) The object types. Either `"blob"`, `"tree"`, or `"commit"`.
 #' @param shas (character) The SHAs of the objects in the tree.
-#' @param contents (character) The contents of each file. GitHub will write this blob out and use
-#'   that SHA for this entry. Use either this, or sha.
 #' @param base_tree (string, optional) The SHAs of the tree you want to update with new data.
 #'   Default: `NA`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
@@ -116,18 +115,16 @@ view_trees <- function(
 #' @export
 #'
 create_tree <- function(
-  repo,
   paths,
   modes,
   types,
-  shas      = NA,
-  contents  = NA,
-  base_tree = NA,
-  token     = getOption("github.token"),
-  api       = getOption("github.api"),
+  shas,
+  repo,
+  base_tree,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(paths))
   assert(is_character(modes) && all(modes %in% c("100644", "100755", "040000", "160000", "120000")))
   assert(identical(length(modes), 1L) || identical(length(modes), length(paths)))
@@ -135,10 +132,12 @@ create_tree <- function(
   assert(identical(length(types), 1L) || identical(length(types), length(paths)))
   assert(is_na(shas) || all(map_vec(shas, is_sha)))
   assert(is_na(shas) || (identical(length(shas), 1L) || identical(length(shas), length(paths))))
-  assert(is_na(contents) || is_character(contents))
-  assert(is_na(contents) || (identical(length(contents), 1L) || identical(length(contents), length(paths))))
+  if (missing(base_tree)) {
+    base_tree <- NA
+  }
   assert(is_na(base_tree) || all(map_vec(base_tree, is_sha)))
   assert(is_na(base_tree) || (identical(length(base_tree), 1L)) || identical(length(base_tree), length(paths)))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -147,7 +146,6 @@ create_tree <- function(
     mode      = modes,
     type      = types,
     sha       = shas,
-    content   = contents,
     base_tree = base_tree)
 
   tree <- pmap(params, use_names = FALSE, function(...) remove_missing(list(...)))
@@ -166,7 +164,7 @@ create_tree <- function(
     error("Creation of tree failed: ", e$message)
   })
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   tree_tbl <- bind_fields(tree_list$tree, list(
     tree_sha = "",
     tree_url = "",
@@ -177,7 +175,7 @@ create_tree <- function(
     url      = c("url",  as = "character"))) %>%
     mutate(tree_sha = tree_list$sha, tree_url = tree_list$url)
 
-  info("Done")
+  info("Done", level = 2)
   tree_tbl
 }
 
@@ -191,10 +189,10 @@ create_tree <- function(
 #'
 #' <https://developer.github.com/v3/git/trees/#create-a-tree>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param path (string) The path to the directory, which is to be uploaded as a tree.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param base_tree (string, optional) The SHAs of the tree you want to update with new data.
-#'   Default: `NA`.
+#'   If not specified, a new tree will be created.
 #' @param ignore (character) A character vector of regular expressions. If any of these are
 #'   detected in a file name they are not uploaded. Default: `"\\.git"`, `"\\.Rproj\\.user"`,
 #'   `"\\.Rhistory"`, `"\\.RData"` & `"\\.Ruserdata"`
@@ -213,16 +211,19 @@ create_tree <- function(
 #' @export
 #'
 upload_tree <- function(
-  repo,
   path,
-  base_tree = NA,
-  ignore    = c("\\.git", "\\.Rproj\\.user", "\\.Rhistory", "\\.RData", "\\.Ruserdata"),
-  token     = getOption("github.token"),
-  api       = getOption("github.api"),
+  repo,
+  base_tree,
+  ignore = c("\\.git", "\\.Rproj\\.user", "\\.Rhistory", "\\.RData", "\\.Ruserdata"),
+  token  = getOption("github.token"),
+  api    = getOption("github.api"),
   ...)
 {
+  assert(is_dir(path) && is_readable(path))
   assert(is_repo(repo))
-  assert(is_readable(path))
+  if (missing(base_tree)) {
+    base_tree <- NA
+  }
   assert(is_na(base_tree) || is_sha(base_tree))
   assert(is_character(ignore))
   assert(is_sha(token))
@@ -230,6 +231,7 @@ upload_tree <- function(
 
   ignore <- unique(c("^\\.$", "^\\.\\.$", ignore))
 
+  info("Getting file information from '", path, "'")
   all_files <- list.files(path, all.files = TRUE, include.dirs = TRUE, full.names = TRUE)
   file_path <- all_files[!map(ignore, grepl, basename(all_files)) %>% pmap_vec(any)]
   file_info <- file.info(file_path)
@@ -238,9 +240,9 @@ upload_tree <- function(
     mutate(path = file_path) %>%
     mutate(sha = pmap_vec(list(file_path, file_info$isdir), function(p, isdir) {
       if (isdir) {
-        upload_tree(repo = repo, path = p, token = token, api = api)[["tree_sha"]][[1]]
+        upload_tree(path = p, repo = repo, token = token, api = api)[["tree_sha"]][[1]]
       } else {
-        upload_blobs(repo = repo, paths = p, token = token, api = api)[["sha"]]
+        upload_blobs(paths = p, repo = repo, token = token, api = api)[["sha"]]
       }
     })) %>%
     mutate(
@@ -250,17 +252,17 @@ upload_tree <- function(
     select("path", "mode", "type", "sha")
 
   create_tree(
-    repo      = repo,
     paths     = tree$path,
     modes     = tree$mode,
     types     = tree$type,
     shas      = tree$sha,
+    repo      = repo,
     base_tree = base_tree,
     token     = token,
     api       = api)
 }
 
-#  FUNCTION: tree_exists ----------------------------------------------------------------------
+#  FUNCTION: trees_exist ----------------------------------------------------------------------
 #
 #' Determine whether a tree exists in the specified repository.
 #'
@@ -268,8 +270,8 @@ upload_tree <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
+#' @param shas (character) The SHAs of the trees.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param sha (character) The SHA of the tree.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -281,25 +283,27 @@ upload_tree <- function(
 #'
 #' @export
 #'
-tree_exists <- function(
+trees_exist <- function(
+  shas,
   repo,
-  sha,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  assert(is_character(shas) && all(map_vec(shas, is_sha)))
   assert(is_repo(repo))
-  assert(is_sha(sha))
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Checking tree '", sha, "' exists in repository '", repo, "'")
-  tryCatch({
-    gh_request(
-      "GET", gh_url("repos", repo, "git/trees", sha, api = api),
-      token = token, ...)
-    TRUE
-  }, error = function(e) {
-    FALSE
+  map_vec(shas, function(sha) {
+    info("Checking tree '", sha, "' exists in repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "GET", gh_url("repos", repo, "git/trees", sha, api = api),
+        token = token, ...)
+      TRUE
+    }, error = function(e) {
+      FALSE
+    })
   })
 }

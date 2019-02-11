@@ -4,14 +4,14 @@
 \alias{view_trees}
 \title{View information about Git trees}
 \usage{
-view_trees(repo, shas, recursive = TRUE,
+view_trees(shas, repo, recursive = TRUE,
   token = getOption("github.token"), api = getOption("github.api"),
   ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
+\item{shas}{(character) The SHAs of the trees.}
 
-\item{shas}{(character, optional) The SHAs of the trees.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{recursive}{(logical) Whether to list files recursively. Default: TRUE.}
 
