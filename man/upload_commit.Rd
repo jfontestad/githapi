@@ -4,36 +4,36 @@
 \alias{upload_commit}
 \title{Upload a directory of files and create a commit on a branch}
 \usage{
-upload_commit(repo, branch, message, path, parents = NA,
-  replace = TRUE, committer = NA, author = NA,
-  ignore = c("\\\\.git", "\\\\.Rproj\\\\.user", "\\\\.Rhistory",
-  "\\\\.RData", "\\\\.Ruserdata"), token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+upload_commit(branch, message, path, parents, committer, author, repo,
+  replace = TRUE, ignore = c("\\\\.git", "\\\\.Rproj\\\\.user",
+  "\\\\.Rhistory", "\\\\.RData", "\\\\.Ruserdata"),
+  token = getOption("github.token"), api = getOption("github.api"),
+  ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{branch}{(string) The name of the branch to set the commit as head.}
 
 \item{message}{(string) The commit message}
 
 \item{path}{(string) The path to the directory, which is to be uploaded as a tree.}
 
-\item{parents}{(character) The SHAs of the commits that were the parents of this commit. If
-\code{NA}, the commit will be written as a root commit. For a single parent, one SHA should be
-provided; for a merge commit, a character vector of more than one should be provided.
-Default: \code{NA}.}
-
-\item{replace}{(logical, optional) Whether the commit should replace the previous one or
-just update the files within the directory (see description). Default: \code{TRUE}.}
+\item{parents}{(character, optional) The SHAs of the commits that were the parents of this
+commit. If not specified the commit will be written as a root commit. For a single parent,
+one SHA should be provided; for a merge commit, a character vector of more than one should be
+provided.}
 
 \item{committer}{(list, optional) The name and email address of the committer. This needs
 to be specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NA} then the authenticated user is used. Default: \code{NA}}
+If not specified then the authenticated user is used.}
 
 \item{author}{(list, optional) The name and email address of the author. This needs to be
 specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NA} then the authenticated user is used. Default: \code{NA}}
+If not specified then the authenticated user is used.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
+
+\item{replace}{(logical, optional) Whether the commit should replace the previous one or
+just update the files within the directory (see description). Default: \code{TRUE}.}
 
 \item{ignore}{(character) A character vector of regular expressions. If any of these are
 detected in a file name they are not uploaded. Default: \code{"\\.git"}, \code{"\\.Rproj\\.user"},
