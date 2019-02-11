@@ -4,8 +4,8 @@ context("git blobs")
 
 test_that("view_blobs returns information about files in the repository", {
   blobs <- view_blobs(
-    repo = "ChadGoymer/test-githapi",
-    shas = c("72b5faa9dc9e4bba87108bf302a5b453e985feec", "6de7b8c69d65923eb48b10a560f3d72939df256a"))
+    shas = c("72b5faa9dc9e4bba87108bf302a5b453e985feec", "6de7b8c69d65923eb48b10a560f3d72939df256a"),
+    repo = "ChadGoymer/test-githapi")
 
   expect_is(blobs, "tbl")
   expect_identical(
@@ -30,8 +30,8 @@ test_that("create_blobs creates files in the repository and returns the SHA", {
     paste(sample(LETTERS, 40, replace = TRUE), collapse = ""))
 
   blobs <- create_blobs(
-    repo = "ChadGoymer/test-githapi",
-    contents = random_contents)
+    contents = random_contents,
+    repo = "ChadGoymer/test-githapi")
 
   expect_is(blobs, "tbl")
   expect_identical(
@@ -51,8 +51,8 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
   write("This is the second test file", temp_file2)
 
   blobs <- upload_blobs(
-    repo = "ChadGoymer/test-githapi",
-    paths = c(temp_file1, temp_file2))
+    paths = c(temp_file1, temp_file2),
+    repo  = "ChadGoymer/test-githapi")
 
   expect_is(blobs, "tbl")
   expect_identical(
@@ -63,8 +63,8 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
   expect_true(all(map_vec(blobs$sha, is_sha)))
 
   created_blobs <- view_blobs(
-    repo = "ChadGoymer/test-githapi",
-    shas = blobs$sha)
+    shas = blobs$sha,
+    repo = "ChadGoymer/test-githapi")
 
   expect_match(
     base64_dec(created_blobs$content[[1]]) %>% readBin("character"),
@@ -77,16 +77,16 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
 # TEST: read_files ----------------------------------------------------------------------------
 
 test_that("read_files returns the contents of the specified files", {
-  files <- read_files("ChadGoymer/test-githapi", c("README.md", "test-file.txt"))
+  files <- read_files(c("README.md", "test-file.txt"), "ChadGoymer/test-githapi")
 
   expect_is(files, "character")
   expect_match(files["README.md"], "^# test-githapi")
   expect_match(files["test-file.txt"], "This is a test file.")
 
   files_dd72be1 <- read_files(
-    repo  = "ChadGoymer/test-githapi",
     paths = c("README.md", "test-file.txt"),
-    ref   = "dd72be153e9edae67a659f1cb441f8dfe4486f1f")
+    ref   = "dd72be153e9edae67a659f1cb441f8dfe4486f1f",
+    repo  = "ChadGoymer/test-githapi")
 
   expect_is(files_dd72be1, "character")
   expect_identical(
@@ -105,9 +105,9 @@ test_that("download_files saves the specified files to disk", {
   on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 
   paths <- download_files(
-    repo = "ChadGoymer/test-githapi",
-    paths = c("README.md", "test-file.txt"),
-    location = temp_path)
+    paths    = c("README.md", "test-file.txt"),
+    location = temp_path,
+    repo     = "ChadGoymer/test-githapi")
 
   expect_is(paths, "character")
   expect_true(all(file.exists(paths)))
@@ -118,10 +118,10 @@ test_that("download_files saves the specified files to disk", {
   on.exit(unlink(temp_path_dd72be1, recursive = TRUE), add = TRUE)
 
   paths_dd72be1 <- download_files(
-    repo = "ChadGoymer/test-githapi",
-    paths = c("README.md", "test-file.txt"),
-    ref  = "dd72be153e9edae67a659f1cb441f8dfe4486f1f",
-    location = temp_path_dd72be1)
+    paths    = c("README.md", "test-file.txt"),
+    location = temp_path_dd72be1,
+    ref      = "dd72be153e9edae67a659f1cb441f8dfe4486f1f",
+    repo     = "ChadGoymer/test-githapi")
 
   expect_identical(
     paths_dd72be1,
@@ -134,9 +134,13 @@ test_that("download_files saves the specified files to disk", {
     "This is a test file.")
 })
 
-# TEST: blob_exists ---------------------------------------------------------------------------
+# TEST: blobs_exist ---------------------------------------------------------------------------
 
-test_that("blob_exists returns TRUE or FALSE depending on whether the blob exists in the repo", {
-  expect_true(blob_exists("ChadGoymer/test-githapi", "72b5faa9dc9e4bba87108bf302a5b453e985feec"))
-  expect_false(blob_exists("ChadGoymer/test-githapi", "0000000000000000000000000000000000000000"))
+test_that("blobs_exist returns TRUE or FALSE depending on whether the blob exists in the repo", {
+  expect_true(blobs_exist("72b5faa9dc9e4bba87108bf302a5b453e985feec", "ChadGoymer/test-githapi"))
+  expect_false(blobs_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi"))
+
+  expect_identical(
+    blobs_exist(c("72b5faa9dc9e4bba87108bf302a5b453e985feec", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi"),
+    c(`72b5faa9dc9e4bba87108bf302a5b453e985feec` = TRUE, `0000000000000000000000000000000000000000` = FALSE))
 })

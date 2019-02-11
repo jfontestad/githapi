@@ -10,9 +10,9 @@
 #'
 #' <https://developer.github.com/v3/git/refs/#get-all-references>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character, optional) The tag names. If missing or `NULL` all the tags are
 #'   requested.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
@@ -33,13 +33,19 @@
 #' @export
 #'
 view_tags <- function(
-  repo,
   tags,
+  repo,
   n_max = 1000L,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
+    repo <- tags
+    tags <- NULL
+  }
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
@@ -52,7 +58,7 @@ view_tags <- function(
         gh_url("repos", repo, "git/refs/tags", api = api),
         n_max = n_max, token = token, ...)
     }, error = function(e) {
-      info("Failed!")
+      warn("Failed!", level = 2)
       list(e)
     })
   } else {
@@ -64,7 +70,7 @@ view_tags <- function(
           "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
           token = token, ...)
       }, error = function(e) {
-        info("Tag '", tag, "' failed!")
+        warn("Tag '", tag, "' failed!", level = 2)
         e
       })
     })
@@ -74,7 +80,7 @@ view_tags <- function(
     collate_errors(tags_list, "view_tags() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
@@ -84,7 +90,7 @@ view_tags <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done")
+  info("Done", level = 2)
   tags_tbl
 }
 
@@ -97,9 +103,9 @@ view_tags <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#create-a-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names.
 #' @param shas (character) The SHAs of the commits to tag.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -119,16 +125,16 @@ view_tags <- function(
 #' @export
 #'
 create_tags <- function(
-  repo,
   tags,
   shas,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(tags))
-  assert(is_character(shas))
+  assert(is_character(shas) && all(map_vec(shas, is_sha)))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -140,7 +146,7 @@ create_tags <- function(
         payload = list(ref = paste0("refs/tags/", tag), sha = sha),
         token = token, ...)
     }, error = function(e) {
-      info("Tag '", tag, "' failed!")
+      warn("Tag '", tag, "' failed!", level = 2)
       e
     })
   })
@@ -149,7 +155,7 @@ create_tags <- function(
     collate_errors(tags_list, "create_tags() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
@@ -159,7 +165,7 @@ create_tags <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done")
+  info("Done", level = 2)
   tags_tbl
 }
 
@@ -172,9 +178,9 @@ create_tags <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#update-a-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names.
 #' @param shas (character) Ths SHAs of the commits to tag.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -194,16 +200,16 @@ create_tags <- function(
 #' @export
 #'
 update_tags <- function(
-  repo,
   tags,
   shas,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(tags))
-  assert(is_character(shas))
+  assert(is_character(shas) && all(map_vec(shas, is_sha)))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -215,7 +221,7 @@ update_tags <- function(
         payload = list(sha = sha, force = TRUE),
         token = token, ...)
     }, error = function(e) {
-      info("Tag '", tag, "' failed!")
+      warn("Tag '", tag, "' failed!", level = 2)
       e
     })
   })
@@ -224,7 +230,7 @@ update_tags <- function(
     collate_errors(tags_list, "update_tags() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
@@ -234,7 +240,7 @@ update_tags <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done")
+  info("Done", level = 2)
   tags_tbl
 }
 
@@ -246,8 +252,8 @@ update_tags <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#delete-a-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -260,14 +266,14 @@ update_tags <- function(
 #' @export
 #'
 delete_tags <- function(
-  repo,
   tags,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(tags))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -279,30 +285,29 @@ delete_tags <- function(
         token = token, parse = FALSE, ...)
       TRUE
     }, error = function(e) {
-      info(e$message)
+      warn("Tag '", tag, "' failed!", level = 2)
       e
     })
   })
 
   if (any(map_vec(tags_list, is, "error"))) {
     collate_errors(tags_list, "delete_tags() failed!")
-    tags_list[map_vec(tags_list, is, "error")] <- FALSE
   }
 
-  info("Done")
+  info("Done", level = 2)
   tags_list
 }
 
-#  FUNCTION: tag_exists -----------------------------------------------------------------------
+#  FUNCTION: tags_exist -----------------------------------------------------------------------
 #
-#' Determine whether a tag exists in the specified repository.
+#' Determine whether a tags exist in the specified repository.
 #'
 #' This function returns `TRUE` if the tag exists and `FALSE` otherwise.
 #'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
+#' @param tags (character) The names of the tags.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param tag (character) The name of the tag.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -310,29 +315,31 @@ delete_tags <- function(
 #'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `TRUE` or `FALSE`
+#' @return A logical vector containing `TRUE` or `FALSE` for each tag specified.
 #'
 #' @export
 #'
-tag_exists <- function(
+tags_exist <- function(
+  tags,
   repo,
-  tag,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  assert(is_character(tags))
   assert(is_repo(repo))
-  assert(is_string(tag))
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Checking tag '", tag, "' exists in repository '", repo, "'")
-  tryCatch({
-    gh_request(
-      "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-      token = token, ...)
-    TRUE
-  }, error = function(e) {
-    FALSE
+  map_vec(tags, function(tag) {
+    info("Checking tag '", tag, "' exists in repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        token = token, ...)
+      TRUE
+    }, error = function(e) {
+      FALSE
+    })
   })
 }

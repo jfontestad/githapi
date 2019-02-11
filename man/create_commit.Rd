@@ -4,29 +4,29 @@
 \alias{create_commit}
 \title{Create a commit}
 \usage{
-create_commit(repo, message, tree, parents = NA, committer = NA,
-  author = NA, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+create_commit(message, tree, parents, committer, author, repo,
+  token = getOption("github.token"), api = getOption("github.api"),
+  ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{message}{(string) The commit message}
 
 \item{tree}{(string) The SHA of the tree object this commit points to}
 
-\item{parents}{(character) The SHAs of the commits that were the parents of this commit. If
-\code{NA}, the commit will be written as a root commit. For a single parent, one SHA should be
-provided; for a merge commit, a character vector of more than one should be provided.
-Default: \code{NA}.}
+\item{parents}{(character, optional) The SHAs of the commits that were the parents of this
+commit. If not specified the commit will be written as a root commit. For a single parent,
+one SHA should be provided; for a merge commit, a character vector of more than one should be
+provided.}
 
 \item{committer}{(list, optional) The name and email address of the committer. This needs
 to be specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NA} then the authenticated user is used. Default: \code{NA}}
+If not specified then the authenticated user is used.}
 
 \item{author}{(list, optional) The name and email address of the author. This needs to be
 specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NA} then the authenticated user is used. Default: \code{NA}}
+If not specified then the authenticated user is used.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

@@ -4,13 +4,13 @@
 \alias{upload_blobs}
 \title{Upload blobs (files).}
 \usage{
-upload_blobs(repo, paths, token = getOption("github.token"),
+upload_blobs(paths, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{paths}{(character) The paths to the files.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

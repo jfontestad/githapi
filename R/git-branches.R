@@ -10,8 +10,8 @@
 #'
 #' <https://developer.github.com/v3/git/refs/#get-all-references>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param branches (character, optional) The branch names. If missing or `NULL` all the
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #'   branches are requested.
 #' @param n_max (integer, optional) Maximum number to return. Default: 1000.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
@@ -33,13 +33,19 @@
 #' @export
 #'
 view_branches <- function(
-  repo,
   branches,
+  repo,
   n_max = 1000L,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'branches' argument: ", branches, level = 2)
+    repo <- branches
+    branches <- NULL
+  }
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
@@ -52,7 +58,7 @@ view_branches <- function(
         gh_url("repos", repo, "git/refs/heads", api = api),
         n_max = n_max, token = token, ...)
     }, error = function(e) {
-      info("Failed!")
+      warn("Failed!", level = 2)
       list(e)
     })
   } else {
@@ -64,7 +70,7 @@ view_branches <- function(
           "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
           token = token, ...)
       }, error = function(e) {
-        info("Branch '", branch, "' failed!")
+        warn("Branch '", branch, "' failed!", level = 2)
         e
       })
     })
@@ -74,7 +80,7 @@ view_branches <- function(
     collate_errors(branches_list, "view_branches() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   branches_tbl <- bind_fields(branches_list[!map_vec(branches_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
@@ -84,7 +90,7 @@ view_branches <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done")
+  info("Done", level = 2)
   branches_tbl
 }
 
@@ -97,9 +103,9 @@ view_branches <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#create-a-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param branches (character) The branch names.
 #' @param shas (character) The SHAs of the commits to create a branch at.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -119,16 +125,16 @@ view_branches <- function(
 #' @export
 #'
 create_branches <- function(
-  repo,
   branches,
   shas,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(branches))
-  assert(is_character(shas))
+  assert(is_character(shas) && all(map_vec(shas, is_sha)))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -140,7 +146,7 @@ create_branches <- function(
         payload = list(ref = paste0("refs/heads/", branch), sha = sha),
         token = token, ...)
     }, error = function(e) {
-      info("Branch '", branch, "' failed!")
+      warn("Branch '", branch, "' failed!", level = 2)
       e
     })
   })
@@ -149,7 +155,7 @@ create_branches <- function(
     collate_errors(branches_list, "create_branches() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   branches_tbl <- bind_fields(branches_list[!map_vec(branches_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
@@ -159,7 +165,7 @@ create_branches <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done")
+  info("Done", level = 2)
   branches_tbl
 }
 
@@ -172,9 +178,9 @@ create_branches <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#update-a-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param branches (character) The branch names.
 #' @param shas (character) The SHAs of the commits to update the branch to.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -194,16 +200,16 @@ create_branches <- function(
 #' @export
 #'
 update_branches <- function(
-  repo,
   branches,
   shas,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(branches))
-  assert(is_character(shas))
+  assert(is_character(shas) && all(map_vec(shas, is_sha)))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -215,7 +221,7 @@ update_branches <- function(
         payload = list(sha = sha, force = TRUE),
         token = token, ...)
     }, error = function(e) {
-      info("Branch '", branch, "' failed!")
+      warn("Branch '", branch, "' failed!", level = 2)
       e
     })
   })
@@ -224,7 +230,7 @@ update_branches <- function(
     collate_errors(branches_list, "update_branches() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   branches_tbl <- bind_fields(branches_list[!map_vec(branches_list, is_null)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
@@ -234,7 +240,7 @@ update_branches <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done")
+  info("Done", level = 2)
   branches_tbl
 }
 
@@ -246,8 +252,8 @@ update_branches <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#delete-a-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param branches (character) The branch names.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -260,14 +266,14 @@ update_branches <- function(
 #' @export
 #'
 delete_branches <- function(
-  repo,
   branches,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(branches))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -279,30 +285,29 @@ delete_branches <- function(
         token = token, parse = FALSE, ...)
       TRUE
     }, error = function(e) {
-      info(e$message)
+      warn("Branch '", branch, "' failed!", level = 2)
       e
     })
   })
 
   if (any(map_vec(branches_list, is, "error"))) {
     collate_errors(branches_list, "delete_branches() failed!")
-    branches_list[map_vec(branches_list, is, "error")] <- FALSE
   }
 
-  info("Done")
+  info("Done", level = 2)
   branches_list
 }
 
-#  FUNCTION: branch_exists --------------------------------------------------------------------
+#  FUNCTION: branches_exist -------------------------------------------------------------------
 #
-#' Determine whether a branch exists in the specified repository.
+#' Determine whether branches exist in the specified repository.
 #'
 #' This function returns `TRUE` if the branch exists and `FALSE` otherwise.
 #'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
+#' @param branches (character) The name of the branch.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param branch (character) The name of the branch.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -310,29 +315,31 @@ delete_branches <- function(
 #'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `TRUE` or `FALSE`
+#' @return A logical vector containing `TRUE` or `FALSE` for each branch specified.
 #'
 #' @export
 #'
-branch_exists <- function(
+branches_exist <- function(
+  branches,
   repo,
-  branch,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  assert(is_character(branches))
   assert(is_repo(repo))
-  assert(is_string(branch))
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Checking branch '", branch, "' exists in repository '", repo, "'")
-  tryCatch({
-    gh_request(
-      "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
-      token = token, ...)
-    TRUE
-  }, error = function(e) {
-    FALSE
+  map_vec(branches, function(branch) {
+    info("Checking branch '", branch, "' exists in repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+        token = token, ...)
+      TRUE
+    }, error = function(e) {
+      FALSE
+    })
   })
 }

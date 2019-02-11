@@ -115,7 +115,7 @@ warn <- function(
       log_name <- paste0("githapi-", Sys.info()[["login"]], "-", format(Sys.time(), "%Y-%m-%d"), ".log")
       write(paste0("[", Sys.time(), "] ", "WARNING", ": ", ...), file.path(log_path, log_name), append = TRUE)
     }
-    warning(paste0("[", format(Sys.time(), "%H:%M:%S"), "] ", ...), call. = FALSE)
+    warning(paste0("[", format(Sys.time(), "%H:%M:%S"), "] ", ...), call. = FALSE, immediate. = TRUE)
   }
 
   invisible()
@@ -327,6 +327,7 @@ assert <- function(
 #
 # @param x (list) List of things to check for errors.
 # @param msg (string) Message to prepend to the error message.
+# @param level (integer, optional) The level of the message, from 1 to 5. Default: 1.
 # @param on_error (string, optional) The action to take when an error occurs. Options are:
 #  - `error`: Throw an error and stop (default).
 #  - `warn`: Show a warning and continue.
@@ -334,7 +335,7 @@ assert <- function(
 #
 # @return NULL - produces an error, warning or message as a side effect.
 #
-collate_errors <- function(x, msg, on_error = "error")
+collate_errors <- function(x, msg, level = 1, on_error = "error")
 {
   stopifnot(is_list(x))
   stopifnot(is_string(msg))
@@ -355,7 +356,7 @@ collate_errors <- function(x, msg, on_error = "error")
 
   switch(
     on_error,
-    error = error(error_msg),
-    warn = warn(error_msg),
-    info = msg(error_msg))
+    error = error(error_msg, level = level),
+    warn = warn(error_msg, level = level),
+    info = msg(error_msg, level = level))
 }

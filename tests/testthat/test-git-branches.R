@@ -3,7 +3,7 @@ context("git branches")
 # TEST: view_branches, create_branches & delete_branches --------------------------------------
 
 test_that("create_branches creates some branches, view_branches retreives them and delete_branches deletes them", {
-  all_branches <- view_branches(repo = "ChadGoymer/test-githapi")
+  all_branches <- view_branches("ChadGoymer/test-githapi")
 
   expect_is(all_branches, "tbl")
   expect_identical(
@@ -37,7 +37,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
     created_branches$object_sha,
     c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
 
-  viewed_branches <- view_branches("ChadGoymer/test-githapi", c("aaa", "bbb"))
+  viewed_branches <- view_branches(c("aaa", "bbb"), "ChadGoymer/test-githapi")
 
   expect_is(viewed_branches, "tbl")
   expect_identical(
@@ -74,16 +74,20 @@ test_that("create_branches creates some branches, view_branches retreives them a
     updated_branches$object_sha,
     c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"))
 
-  delete_results <- delete_branches("ChadGoymer/test-githapi", c("aaa", "bbb"))
+  delete_results <- delete_branches(c("aaa", "bbb"), "ChadGoymer/test-githapi")
 
   expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
-  expect_error(view_branches("ChadGoymer/test-githapi", "aaa"), "Not Found")
-  expect_error(view_branches("ChadGoymer/test-githapi", "bbb"), "Not Found")
+  expect_error(suppressWarnings(view_branches("aaa", "ChadGoymer/test-githapi")), "Not Found")
+  expect_error(suppressWarnings(view_branches("bbb", "ChadGoymer/test-githapi")), "Not Found")
 })
 
-# TEST: branch_exists -------------------------------------------------------------------------
+# TEST: branches_exist ------------------------------------------------------------------------
 
-test_that("branch_exists returns TRUE or FALSE depending on whether the branch exists in the repo", {
-  expect_true(branch_exists("ChadGoymer/test-githapi", "master"))
-  expect_false(branch_exists("ChadGoymer/test-githapi", "no-such-branch"))
+test_that("branches_exist returns TRUE or FALSE depending on whether the branch exists in the repo", {
+  expect_true(branches_exist("master", "ChadGoymer/test-githapi"))
+  expect_false(branches_exist("no-such-branch", "ChadGoymer/test-githapi"))
+
+  expect_identical(
+    branches_exist(c("master", "no-such-branch"), "ChadGoymer/test-githapi"),
+    c(master = TRUE, `no-such-branch` = FALSE))
 })

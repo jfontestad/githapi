@@ -4,13 +4,13 @@
 \alias{delete_branches}
 \title{Delete branches.}
 \usage{
-delete_branches(repo, branches, token = getOption("github.token"),
+delete_branches(branches, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{branches}{(character) The branch names.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

@@ -4,15 +4,15 @@
 \alias{create_branches}
 \title{Create branches at specified commits.}
 \usage{
-create_branches(repo, branches, shas, token = getOption("github.token"),
+create_branches(branches, shas, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{branches}{(character) The branch names.}
 
 \item{shas}{(character) The SHAs of the commits to create a branch at.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

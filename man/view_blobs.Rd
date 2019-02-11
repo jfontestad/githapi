@@ -4,13 +4,13 @@
 \alias{view_blobs}
 \title{View information about Git blobs (files)}
 \usage{
-view_blobs(repo, shas, token = getOption("github.token"),
+view_blobs(shas, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
+\item{shas}{(character) The SHAs of the blobs (files).}
 
-\item{shas}{(character, optional) The SHAs of the blobs (files).}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
@@ -34,7 +34,7 @@ A tibble describing the blobs, with the following columns
 }
 \description{
 This function returns details about the blobs (files) for the specified repository in
-GitHub. Note: This API supports blobs up to 100 megabytes in size.
+GitHub.
 }
 \details{
 \url{https://developer.github.com/v3/git/blobs/#get-a-blob}

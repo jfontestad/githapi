@@ -4,13 +4,13 @@
 \alias{view_commits}
 \title{View information about Git commits.}
 \usage{
-view_commits(repo, shas, token = getOption("github.token"),
+view_commits(shas, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{shas}{(character) The SHAs of the commits.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

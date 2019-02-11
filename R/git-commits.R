@@ -6,8 +6,8 @@
 #'
 #' <https://developer.github.com/v3/git/commits/#get-a-commit>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param shas (character) The SHAs of the commits.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -34,14 +34,14 @@
 #' @export
 #'
 view_commits <- function(
-  repo,
   shas,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(shas) && all(map_vec(shas, is_sha)))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -52,7 +52,7 @@ view_commits <- function(
         "GET", gh_url("repos", repo, "git/commits", sha, api = api),
         token = token, ...)
     }, error = function(e) {
-      info("sha '", sha, "' failed!")
+      warn("sha '", sha, "' failed!", level = 2)
       e
     })
   })
@@ -61,7 +61,7 @@ view_commits <- function(
     collate_errors(commits_list, "view_commits() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   commits_tbl <- bind_fields(commits_list, list(
     sha             = c("sha",                as = "character"),
     message         = c("message",            as = "character"),
@@ -76,13 +76,21 @@ view_commits <- function(
     parent_sha      = "",
     parent_url      = "")) %>%
     mutate(parent_sha = map(commits_list, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "sha")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "sha")
+      }
     })) %>%
     mutate(parent_url = map(commits_list, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "url")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "url")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   commits_tbl
 }
 
@@ -96,19 +104,19 @@ view_commits <- function(
 #'
 #' <https://developer.github.com/v3/git/commits/#create-a-commit>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param message (string) The commit message
 #' @param tree (string) The SHA of the tree object this commit points to
-#' @param parents (character) The SHAs of the commits that were the parents of this commit. If
-#'   `NA`, the commit will be written as a root commit. For a single parent, one SHA should be
-#'   provided; for a merge commit, a character vector of more than one should be provided.
-#'   Default: `NA`.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param parents (character, optional) The SHAs of the commits that were the parents of this
+#'   commit. If not specified the commit will be written as a root commit. For a single parent,
+#'   one SHA should be provided; for a merge commit, a character vector of more than one should be
+#'   provided.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -135,41 +143,51 @@ view_commits <- function(
 #' @export
 #'
 create_commit <- function(
-  repo,
   message,
   tree,
-  parents   = NA,
-  committer = NA,
-  author    = NA,
-  token     = getOption("github.token"),
-  api       = getOption("github.api"),
+  parents,
+  committer,
+  author,
+  repo,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_string(message))
   assert(is_sha(tree))
-  assert(is_character(parents))
-  assert(is_na(committer) || (
-    is_list(committer) && identical(names(committer), c("name", "email")) &&
-      is_string(committer$name) && is_string(committer$email)))
-  assert(is_na(author) || (
-    is_list(author) && identical(names(author), c("name", "email")) &&
-      is_string(author$name) && is_string(author$email)))
+
+  if (missing(parents) || is_null(parents)) {
+    parents <- NA
+  }
+  assert(is_na(parents) || is_character(parents))
+
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
+
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
+
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
-  if (!all(map_vec(parents, is_sha))) {
-    parents <- view_shas(repo = repo, refs = parents) %>% unname() %>% as.list()
-  } else {
-    parents <- parents %>% unname() %>% as.list()
-  }
+  parents <- map(parents, use_names = FALSE, function(p) {
+    if (!is_na(p) && !is_sha(p)) {
+      p <- view_shas(p, repo = repo) %>% unname()
+    }
+    p
+  })
 
   payload <- list(
-    message = message,
-    tree = tree,
-    parents = parents,
+    message   = message,
+    tree      = tree,
+    parents   = parents,
     committer = committer,
-    author = author) %>%
+    author    = author) %>%
     remove_missing()
 
   info("Posting commit to repo '", repo, "'")
@@ -178,7 +196,7 @@ create_commit <- function(
     payload = payload, token = token, ...) %>%
     list()
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   commit_tbl <- bind_fields(commit_list, list(
     sha             = c("sha",                as = "character"),
     message         = c("message",            as = "character"),
@@ -193,13 +211,21 @@ create_commit <- function(
     parent_sha      = "",
     parent_url      = "")) %>%
     mutate(parent_sha = map(commit_list, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "sha")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "sha")
+      }
     })) %>%
     mutate(parent_url = map(commit_list, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "url")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "url")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   commit_tbl
 }
 
@@ -226,22 +252,22 @@ create_commit <- function(
 #'
 #' <https://developer.github.com/v3/git/refs/#create-a-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param branch (string) The name of the branch to set the commit as head.
 #' @param message (string) The commit message
 #' @param path (string) The path to the directory, which is to be uploaded as a tree.
-#' @param parents (character) The SHAs of the commits that were the parents of this commit. If
-#'   `NA`, the commit will be written as a root commit. For a single parent, one SHA should be
-#'   provided; for a merge commit, a character vector of more than one should be provided.
-#'   Default: `NA`.
-#' @param replace (logical, optional) Whether the commit should replace the previous one or
-#'   just update the files within the directory (see description). Default: `TRUE`.
+#' @param parents (character, optional) The SHAs of the commits that were the parents of this
+#'   commit. If not specified the commit will be written as a root commit. For a single parent,
+#'   one SHA should be provided; for a merge commit, a character vector of more than one should be
+#'   provided.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param replace (logical, optional) Whether the commit should replace the previous one or
+#'   just update the files within the directory (see description). Default: `TRUE`.
 #' @param ignore (character) A character vector of regular expressions. If any of these are
 #'   detected in a file name they are not uploaded. Default: `"\\.git"`, `"\\.Rproj\\.user"`,
 #'   `"\\.Rhistory"`, `"\\.RData"` & `"\\.Ruserdata"`
@@ -271,31 +297,40 @@ create_commit <- function(
 #' @export
 #'
 upload_commit <- function(
-  repo,
   branch,
   message,
   path,
-  parents   = NA,
-  replace   = TRUE,
-  committer = NA,
-  author    = NA,
-  ignore    = c("\\.git", "\\.Rproj\\.user", "\\.Rhistory", "\\.RData", "\\.Ruserdata"),
-  token     = getOption("github.token"),
-  api       = getOption("github.api"),
+  parents,
+  committer,
+  author,
+  repo,
+  replace = TRUE,
+  ignore  = c("\\.git", "\\.Rproj\\.user", "\\.Rhistory", "\\.RData", "\\.Ruserdata"),
+  token   = getOption("github.token"),
+  api     = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_string(branch))
   assert(is_string(message))
-  assert(is_readable(path))
-  assert(is_character(parents))
+  assert(is_dir(path) && is_readable(path))
+
+  if (missing(parents) || is_null(parents)) {
+    parents <- NA
+  }
+  assert(is_na(parents) || is_character(parents))
+
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
+
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
+
+  assert(is_repo(repo))
   assert(is_boolean(replace))
-  assert(is_na(committer) || (
-    is_list(committer) && identical(names(committer), c("name", "email")) &&
-      is_string(committer$name) && is_string(committer$email)))
-  assert(is_na(author) || (
-    is_list(author) && identical(names(author), c("name", "email")) &&
-      is_string(author$name) && is_string(author$email)))
   assert(is_character(ignore))
   assert(is_sha(token))
   assert(is_url(api))
@@ -303,40 +338,40 @@ upload_commit <- function(
   if (replace) {
     base_tree <- NA
   } else {
-    parent_commit <- view_history(repo, parents[[1]], n_max = 1)
+    parent_commit <- view_history(ref = parents[[1]], repo = repo, n_max = 1)
     base_tree <- parent_commit$tree_sha
   }
 
   tree <- upload_tree(
-    repo      = repo,
     path      = path,
     base_tree = base_tree,
+    repo      = repo,
     ignore    = ignore,
     token     = token,
     api       = api)
 
   commit <- create_commit(
-    repo      = repo,
     message   = message,
     tree      = tree$tree_sha[[1]],
     parents   = parents,
     committer = committer,
     author    = author,
+    repo      = repo,
     token     = token,
     api       = api)
 
-  if (branch_exists(repo = repo, branch = branch, token = token, api = api)) {
+  if (branches_exist(branch = branch, repo = repo, token = token, api = api)) {
     update_branches(
-      repo      = repo,
       branches  = branch,
       shas      = commit$sha,
+      repo      = repo,
       token     = token,
       api       = api)
   } else {
     create_branches(
-      repo      = repo,
       branches  = branch,
       shas      = commit$sha,
+      repo      = repo,
       token     = token,
       api       = api)
   }
@@ -344,16 +379,16 @@ upload_commit <- function(
   commit
 }
 
-#  FUNCTION: commit_exists --------------------------------------------------------------------
+#  FUNCTION: commits_exist --------------------------------------------------------------------
 #
-#' Determine whether a commit exists in the specified repository.
+#' Determine whether commits exist in the specified repository.
 #'
 #' This function returns `TRUE` if the commit exists and `FALSE` otherwise.
 #'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
+#' @param shas (character) The SHAs of the commits.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param sha (character) The SHA of the commit.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -361,29 +396,31 @@ upload_commit <- function(
 #'   environment variable `GITHUB_API` or in the R option `"github.api"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `TRUE` or `FALSE`
+#' @return A logical vector containing `TRUE` or `FALSE` for each commit specified.
 #'
 #' @export
 #'
-commit_exists <- function(
+commits_exist <- function(
+  shas,
   repo,
-  sha,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  assert(is_character(shas) && all(map_vec(shas, is_sha)))
   assert(is_repo(repo))
-  assert(is_sha(sha))
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Checking commit '", sha, "' exists in repository '", repo, "'")
-  tryCatch({
-    gh_request(
-      "GET", gh_url("repos", repo, "git/commits", sha, api = api),
-      token = token, ...)
-    TRUE
-  }, error = function(e) {
-    FALSE
+  map_vec(shas, function(sha) {
+    info("Checking commit '", sha, "' exists in repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "GET", gh_url("repos", repo, "git/commits", sha, api = api),
+        token = token, ...)
+      TRUE
+    }, error = function(e) {
+      FALSE
+    })
   })
 }
