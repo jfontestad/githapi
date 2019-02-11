@@ -4,13 +4,13 @@
 \alias{delete_tags}
 \title{Delete tags.}
 \usage{
-delete_tags(repo, tags, token = getOption("github.token"),
+delete_tags(tags, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{tags}{(character) The tag names.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

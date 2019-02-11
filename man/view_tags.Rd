@@ -4,14 +4,14 @@
 \alias{view_tags}
 \title{View information about a tags}
 \usage{
-view_tags(repo, tags, n_max = 1000L, token = getOption("github.token"),
+view_tags(tags, repo, n_max = 1000L, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{tags}{(character, optional) The tag names. If missing or \code{NULL} all the tags are
 requested.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
