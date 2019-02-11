@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check if a team manages a repository — is_manager • githapi</title>
+<title>Determine whether branches exist in the specified repository. — branches_exist • githapi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Check if a team manages a repository — is_manager" />
+<meta property="og:title" content="Determine whether branches exist in the specified repository. — branches_exist" />
 
-<meta property="og:description" content="https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository" />
+<meta property="og:description" content="This function returns TRUE if the branch exists and FALSE otherwise." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -99,26 +99,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check if a team manages a repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/organizations.R'><code>R/organizations.R</code></a></small>
-    <div class="hidden name"><code>is_manager.Rd</code></div>
+    <h1>Determine whether branches exist in the specified repository.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-branches.R'><code>R/git-branches.R</code></a></small>
+    <div class="hidden name"><code>branches_exist.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><a href='https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository'>https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository</a></p>
+    <p>This function returns <code>TRUE</code> if the branch exists and <code>FALSE</code> otherwise.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>is_manager</span>(<span class='no'>team</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
+    <pre class="usage"><span class='fu'>branches_exist</span>(<span class='no'>branches</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>team</th>
-      <td><p>(integer) The GitHub ID of the team.</p></td>
+      <th>branches</th>
+      <td><p>(character) The name of the branch.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -127,23 +127,27 @@
     <tr>
       <th>token</th>
       <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
+R option <code>"github.token"</code>.</p></td>
     </tr>
     <tr>
       <th>api</th>
       <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_get.html'>gh_get()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>TRUE if the team is a manager, FALSE otherwise (see GitHub's API documentation for
-details).</p>
+    <p>A logical vector containing <code>TRUE</code> or <code>FALSE</code> for each branch specified.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><a href='https://developer.github.com/v3/git/refs/#get-a-reference'>https://developer.github.com/v3/git/refs/#get-a-reference</a></p>
     
 
   </div>
@@ -153,6 +157,8 @@ details).</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>
