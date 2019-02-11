@@ -4,14 +4,14 @@
 \alias{view_branches}
 \title{View information about branches}
 \usage{
-view_branches(repo, branches, n_max = 1000L,
+view_branches(branches, repo, n_max = 1000L,
   token = getOption("github.token"), api = getOption("github.api"),
   ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
+\item{branches}{(character, optional) The branch names. If missing or \code{NULL} all the}
 
-\item{branches}{(character, optional) The branch names. If missing or \code{NULL} all the
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.
 branches are requested.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}

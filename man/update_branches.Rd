@@ -4,15 +4,15 @@
 \alias{update_branches}
 \title{Update branches to new commits.}
 \usage{
-update_branches(repo, branches, shas, token = getOption("github.token"),
+update_branches(branches, shas, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{branches}{(character) The branch names.}
 
 \item{shas}{(character) The SHAs of the commits to update the branch to.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
