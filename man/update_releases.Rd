@@ -4,13 +4,11 @@
 \alias{update_releases}
 \title{Update releases to new commits.}
 \usage{
-update_releases(repo, tags, names = NA, bodies = NA, draft = NA,
-  prerelease = NA, token = getOption("github.token"),
+update_releases(tags, names, bodies, repo, draft = FALSE,
+  prerelease = FALSE, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{tags}{(character) The tag names.}
 
 \item{names}{(character, optional) The names of the releases. If missing or \code{NA} then the
@@ -18,6 +16,8 @@ name is not changed. Default: \code{NA}.}
 
 \item{bodies}{(character, optional) The bodies for the releases. If missing or \code{NA} then the
 body is not changed. Default: \code{NA}.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{draft}{(logical, optional) Whether the releases are draft. Default: \code{FALSE}.}
 
