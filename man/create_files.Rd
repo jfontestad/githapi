@@ -4,13 +4,11 @@
 \alias{create_files}
 \title{Create a new files}
 \usage{
-create_files(repo, paths, contents, messages, branches = NA,
-  committer = NA, author = NA, token = getOption("github.token"),
+create_files(paths, contents, messages, branches, parents, committer,
+  author, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{paths}{(character) The paths to the files in the repository.}
 
 \item{contents}{(character) The text to add to the files.}
@@ -19,16 +17,23 @@ create_files(repo, paths, contents, messages, branches = NA,
 is used for all commits with the file added as a suffix.}
 
 \item{branches}{(character, optional) The branches to make the commits on. If a single branch
-is provided all commits are made on it. If \code{NA} the default branch for the repository
-is used. Default: \code{NA}.}
+is provided all commits are made on it. If not specified the default branch for the repository
+is used.}
+
+\item{parents}{(character, optional) SHAs, branches or tags of the commits to use as parents if
+creating a new branch. Not required if making a new commit on an existing branch. A character
+vector can be supplied corresponding to a different parent for each file, or a string can be
+provided if the same parent is used for all files.}
 
 \item{committer}{(list, optional) The name and email address of the committer. This needs
 to be specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NA} then the authenticated user is used. Default: \code{NA}}
+If not specified then the authenticated user is used.}
 
 \item{author}{(list, optional) The name and email address of the author. This needs to be
 specified as a named list, e.g. \code{list(name = "Bob Smith", email = "bob.smith@acme.com")}.
-If \code{NA} then the authenticated user is used. Default: \code{NA}}
+If not specified then the authenticated user is used.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
