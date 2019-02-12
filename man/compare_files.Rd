@@ -4,15 +4,15 @@
 \alias{compare_files}
 \title{Compare the files of two commits}
 \usage{
-compare_files(repo, base, head, token = getOption("github.token"),
+compare_files(base, head, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified as "owner/repo".}
-
 \item{base}{(string) The reference of the base commit.}
 
 \item{head}{(string) The reference of the commit to compare.}
+
+\item{repo}{(string) The repository specified as "owner/repo".}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

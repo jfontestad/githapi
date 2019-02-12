@@ -21,7 +21,7 @@ test_that("view_history returns a tibble describing the history of commits", {
       parent_sha      = "list",
       parent_url      = "list"))
 
-  first_commits <- view_history("ChadGoymer/test-githapi", ref = "310c21d3f1601a46e014e68e94814b23406bf574")
+  first_commits <- view_history("310c21d3f1601a46e014e68e94814b23406bf574", "ChadGoymer/test-githapi")
 
   expect_is(commits, "tbl")
   expect_identical(
@@ -46,7 +46,7 @@ test_that("view_history returns a tibble describing the history of commits", {
 # TEST: view_shas -----------------------------------------------------------------------------
 
 test_that("view_shas returns a named character vector with the SHAs", {
-  shas <- view_shas("ChadGoymer/test-githapi", c("0.0.0", "master"))
+  shas <- view_shas(c("0.0.0", "master"), "ChadGoymer/test-githapi")
 
   expect_is(shas, "character")
   expect_identical(names(shas), c("0.0.0", "master"))
@@ -57,9 +57,9 @@ test_that("view_shas returns a named character vector with the SHAs", {
 
 test_that("compare_commits returns information on the differences between two commits", {
   comparison <- compare_commits(
-    repo = "ChadGoymer/test-githapi",
     base = "0.0.0",
-    head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44")
+    head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44",
+    repo = "ChadGoymer/test-githapi")
 
   expect_is(comparison, "tbl")
   expect_identical(
@@ -95,9 +95,9 @@ test_that("compare_commits returns information on the differences between two co
 
 test_that("compare_files returns a tibble of information of file differences between commits", {
   comparison <- compare_files(
-    repo = "ChadGoymer/test-githapi",
     base = "0.0.0",
-    head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44")
+    head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44",
+    repo = "ChadGoymer/test-githapi")
 
   expect_is(comparison, "tbl")
 
