@@ -64,7 +64,7 @@ commits. The commits can be specifed by any git reference, i.e. branch, tag or S
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -112,16 +112,12 @@ commits. The commits can be specifed by any git reference, i.e. branch, tag or S
     
     </div>
 
-    <pre class="usage"><span class='fu'>compare_files</span>(<span class='no'>repo</span>, <span class='no'>base</span>, <span class='no'>head</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
+    <pre class="usage"><span class='fu'>compare_files</span>(<span class='no'>base</span>, <span class='no'>head</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified as "owner/repo".</p></td>
-    </tr>
     <tr>
       <th>base</th>
       <td><p>(string) The reference of the base commit.</p></td>
@@ -129,6 +125,10 @@ commits. The commits can be specifed by any git reference, i.e. branch, tag or S
     <tr>
       <th>head</th>
       <td><p>(string) The reference of the commit to compare.</p></td>
+    </tr>
+    <tr>
+      <th>repo</th>
+      <td><p>(string) The repository specified as "owner/repo".</p></td>
     </tr>
     <tr>
       <th>token</th>

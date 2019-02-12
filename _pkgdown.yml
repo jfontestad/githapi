@@ -5,7 +5,6 @@ reference:
   desc: Functions for accessing information about repositories and their content.
   contents:
     - '`view_readme`'
-    - '`view_contents`'
     - '`view_files`'
     - '`create_files`'
     - '`update_files`'

@@ -65,7 +65,7 @@ committer and author can be set explicitly if necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -114,17 +114,13 @@ committer and author can be set explicitly if necessary.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>create_files</span>(<span class='no'>repo</span>, <span class='no'>paths</span>, <span class='no'>contents</span>, <span class='no'>messages</span>, <span class='kw'>branches</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>author</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
+    <pre class="usage"><span class='fu'>create_files</span>(<span class='no'>paths</span>, <span class='no'>contents</span>, <span class='no'>messages</span>, <span class='no'>branches</span>, <span class='no'>parents</span>, <span class='no'>committer</span>,
+  <span class='no'>author</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
-    </tr>
     <tr>
       <th>paths</th>
       <td><p>(character) The paths to the files in the repository.</p></td>
@@ -141,20 +137,31 @@ is used for all commits with the file added as a suffix.</p></td>
     <tr>
       <th>branches</th>
       <td><p>(character, optional) The branches to make the commits on. If a single branch
-is provided all commits are made on it. If <code>NA</code> the default branch for the repository
-is used. Default: <code>NA</code>.</p></td>
+is provided all commits are made on it. If not specified the default branch for the repository
+is used.</p></td>
+    </tr>
+    <tr>
+      <th>parents</th>
+      <td><p>(character, optional) SHAs, branches or tags of the commits to use as parents if
+creating a new branch. Not required if making a new commit on an existing branch. A character
+vector can be supplied corresponding to a different parent for each file, or a string can be
+provided if the same parent is used for all files.</p></td>
     </tr>
     <tr>
       <th>committer</th>
       <td><p>(list, optional) The name and email address of the committer. This needs
 to be specified as a named list, e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>list(name = "Bob Smith", email = "bob.smith@acme.com")</a></code>.
-If <code>NA</code> then the authenticated user is used. Default: <code>NA</code></p></td>
+If not specified then the authenticated user is used.</p></td>
     </tr>
     <tr>
       <th>author</th>
       <td><p>(list, optional) The name and email address of the author. This needs to be
 specified as a named list, e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>list(name = "Bob Smith", email = "bob.smith@acme.com")</a></code>.
-If <code>NA</code> then the authenticated user is used. Default: <code>NA</code></p></td>
+If not specified then the authenticated user is used.</p></td>
+    </tr>
+    <tr>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>token</th>

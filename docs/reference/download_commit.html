@@ -65,7 +65,7 @@ be specified by a branch, tag or SHA." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -114,26 +114,25 @@ be specified by a branch, tag or SHA.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_commit</span>(<span class='no'>repo</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='kw'>ref</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>), <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>download_commit</span>(<span class='no'>path</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
+  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
-    </tr>
-    <tr>
       <th>path</th>
-      <td><p>(string, optional) The path to save to. If <code>NA</code> the current working directory is
-used. Default: <code>NA</code>.</p></td>
+      <td><p>(string, optional) The path to save to. If not specified the current working
+directory is used.</p></td>
     </tr>
     <tr>
       <th>ref</th>
       <td><p>(string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
-specified the head commit is used. If <code>NA</code> the default branch is used, Default: <code>NA</code>.</p></td>
+specified the head commit is used. If not specified the default branch is used.</p></td>
+    </tr>
+    <tr>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>token</th>
