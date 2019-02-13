@@ -42,7 +42,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
     created_releases$target_commitish,
     c("310c21d3f1601a46e014e68e94814b23406bf574", "32d3c5c4f6aba7ae9679480407e1b9f94ad04843"))
 
-  viewed_releases <- view_releases("ChadGoymer/test-githapi", c("aaa", "bbb"))
+  viewed_releases <- view_releases(c("aaa", "bbb"), "ChadGoymer/test-githapi")
 
   expect_is(viewed_releases, "tbl")
   expect_identical(
@@ -70,9 +70,9 @@ test_that("create_releases creates some releases, view_releases retreives them a
     updated_releases$body,
     c("Updated for testing: aaa", "Updated for testing: bbb"))
 
-  delete_results <- delete_releases("ChadGoymer/test-githapi", c("aaa", "bbb"))
+  delete_results <- delete_releases(c("aaa", "bbb"), "ChadGoymer/test-githapi")
 
   expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
-  expect_error(view_releases("ChadGoymer/test-githapi", "aaa"), "Not Found")
-  expect_error(view_releases("ChadGoymer/test-githapi", "bbb"), "Not Found")
+  expect_error(suppressWarnings(view_releases("aaa", "ChadGoymer/test-githapi")), "Not Found")
+  expect_error(suppressWarnings(view_releases("bbb", "ChadGoymer/test-githapi")), "Not Found")
 })

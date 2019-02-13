@@ -4,15 +4,15 @@
 \alias{view_readme}
 \title{View the contents of the README file}
 \usage{
-view_readme(repo, ref = NA, token = getOption("github.token"),
+view_readme(ref, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-is specified the head commit is used. If \code{NA} the head of the default branch is used.
-Default: \code{NA}.}
+is specified the head commit is used. If not supplied the head of the default branch is
+used.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

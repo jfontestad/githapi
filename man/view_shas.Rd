@@ -4,14 +4,14 @@
 \alias{view_shas}
 \title{Look up the SHA-1 of commit references}
 \usage{
-view_shas(repo, refs, token = getOption("github.token"),
+view_shas(refs, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{refs}{(character) Git references: either tags or branches. If a branch is specified
 the SHA of the head commit is returned.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

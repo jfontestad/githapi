@@ -13,9 +13,9 @@
 #'
 #' <https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character, optional) The tag names. If missing or `NULL` all the releases are
 #'   requested. If set to `"latest"`, then the latest non-draft, non-prerelease is returned.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
@@ -44,13 +44,19 @@
 #' @export
 #'
 view_releases <- function(
-  repo,
   tags,
+  repo,
   n_max = 1000L,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
+    repo <- tags
+    tags <- NULL
+  }
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
@@ -63,7 +69,7 @@ view_releases <- function(
         gh_url("repos", repo, "releases", api = api),
         n_max = n_max, token = token, ...)
     }, error = function(e) {
-      info("Failed!")
+      warn("Failed!", level = 2)
       list(e)
     })
   } else if (identical(tags, "latest")) {
@@ -73,7 +79,7 @@ view_releases <- function(
         "GET", gh_url("repos", repo, "releases/latest", api = api),
         token = token, ...)
     }, error = function(e) {
-      info("Release 'latest' failed!")
+      warn("Release 'latest' failed!", level = 2)
       e
     }))
   } else {
@@ -85,7 +91,7 @@ view_releases <- function(
           "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
           token = token, ...)
       }, error = function(e) {
-        info("Release '", tag, "' failed!")
+        warn("Release '", tag, "' failed!", level = 2)
         e
       })
     })
@@ -95,7 +101,7 @@ view_releases <- function(
     collate_errors(releases_list, "view_releases() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   releases_tbl <- bind_fields(releases_list, list(
     id               = c("id",               as = "integer"),
     tag_name         = c("tag_name",         as = "character"),
@@ -111,10 +117,14 @@ view_releases <- function(
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
     mutate(assets = map(releases_list, use_names = FALSE, function(r) {
-      map_vec(r$assets, getElement, "name")
+      if (is_null(r$assets) || identical(length(r$assets), 0L)) {
+        NULL
+      } else {
+        map_vec(r$assets, getElement, "name")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   releases_tbl
 }
 
@@ -128,11 +138,11 @@ view_releases <- function(
 #'
 #' <https://developer.github.com/v3/repos/releases/#create-a-release>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names.
 #' @param commits (character) The commits to tag. Can be either a SHA or a branch name.
 #' @param names (character) The names of the releases.
 #' @param bodies (character) The bodies for the releases.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param draft (logical, optional) Whether the releases are draft. Default: `FALSE`.
 #' @param prerelease (logical, optional) Whether the releases are a prerelease. Default: `FALSE`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
@@ -162,22 +172,22 @@ view_releases <- function(
 #' @export
 #'
 create_releases <- function(
-  repo,
   tags,
   commits,
   names,
   bodies,
+  repo,
   draft      = FALSE,
   prerelease = FALSE,
   token      = getOption("github.token"),
   api        = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(tags))
   assert(is_character(commits) && identical(length(commits), length(tags)))
   assert(is_character(names) && identical(length(names), length(tags)))
   assert(is_character(bodies) && identical(length(bodies), length(tags)))
+  assert(is_repo(repo))
   assert(is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags))))
   assert(is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags))))
   assert(is_sha(token))
@@ -205,7 +215,7 @@ create_releases <- function(
           prerelease       = prerelease),
         token = token, ...)
     }, error = function(e) {
-      info("Tag '", tag, "' failed!")
+      warn("Tag '", tag, "' failed!", level = 2)
       e
     })
   })
@@ -214,7 +224,7 @@ create_releases <- function(
     collate_errors(releases_list, "create_releases() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   releases_tbl <- bind_fields(releases_list, list(
     id               = c("id",               as = "integer"),
     tag_name         = c("tag_name",         as = "character"),
@@ -230,10 +240,14 @@ create_releases <- function(
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
     mutate(assets = map(releases_list, use_names = FALSE, function(r) {
-      map_vec(r$assets, getElement, "name")
+      if (is_null(r$assets) || identical(length(r$assets), 0L)) {
+        NULL
+      } else {
+        map_vec(r$assets, getElement, "name")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   releases_tbl
 }
 
@@ -247,12 +261,12 @@ create_releases <- function(
 #'
 #' <https://developer.github.com/v3/repos/releases/#edit-a-release>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names.
 #' @param names (character, optional) The names of the releases. If missing or `NA` then the
 #'   name is not changed. Default: `NA`.
 #' @param bodies (character, optional) The bodies for the releases. If missing or `NA` then the
 #'   body is not changed. Default: `NA`.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param draft (logical, optional) Whether the releases are draft. Default: `FALSE`.
 #' @param prerelease (logical, optional) Whether the releases are a prerelease. Default: `FALSE`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
@@ -282,22 +296,22 @@ create_releases <- function(
 #' @export
 #'
 update_releases <- function(
-  repo,
   tags,
-  names      = NA,
-  bodies     = NA,
-  draft      = NA,
-  prerelease = NA,
+  names,
+  bodies,
+  repo,
+  draft      = FALSE,
+  prerelease = FALSE,
   token      = getOption("github.token"),
   api        = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(tags))
   assert(is_na(names) || (is_character(names) && identical(length(names), length(tags))))
   assert(is_na(bodies) || (is_character(bodies) && identical(length(bodies), length(tags))))
-  assert(is_na(draft) || (is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags)))))
-  assert(is_na(prerelease) || (is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags)))))
+  assert(is_repo(repo))
+  assert(is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags))))
+  assert(is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags))))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -327,7 +341,7 @@ update_releases <- function(
         "PATCH", gh_url("repos", repo, "releases", release$id, api = api),
         payload = payload, token = token, ...)
     }, error = function(e) {
-      info("Tag '", tag, "' failed!")
+      warn("Tag '", tag, "' failed!", level = 2)
       e
     })
   })
@@ -336,7 +350,7 @@ update_releases <- function(
     collate_errors(releases_list, "update_releases() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   releases_tbl <- bind_fields(releases_list, list(
     id               = c("id",               as = "integer"),
     tag_name         = c("tag_name",         as = "character"),
@@ -352,10 +366,14 @@ update_releases <- function(
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
     mutate(assets = map(releases_list, use_names = FALSE, function(r) {
-      map_vec(r$assets, getElement, "name")
+      if (is_null(r$assets) || identical(length(r$assets), 0L)) {
+        NULL
+      } else {
+        map_vec(r$assets, getElement, "name")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   releases_tbl
 }
 
@@ -368,8 +386,8 @@ update_releases <- function(
 #'
 #' <https://developer.github.com/v3/repos/releases/#delete-a-release>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tags (character) The tag names associated with the releases.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -382,14 +400,14 @@ update_releases <- function(
 #' @export
 #'
 delete_releases <- function(
-  repo,
   tags,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(tags))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -410,16 +428,15 @@ delete_releases <- function(
 
       TRUE
     }, error = function(e) {
-      info(e$message)
+      warn("Release '", tag, "' failed!", level = 2)
       e
     })
   })
 
   if (any(map_vec(releases_list, is, "error"))) {
     collate_errors(releases_list, "delete_releases() failed!")
-    releases_list[map_vec(releases_list, is, "error")] <- FALSE
   }
 
-  info("Done")
+  info("Done", level = 2)
   releases_list
 }

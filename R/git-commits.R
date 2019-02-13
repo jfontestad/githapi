@@ -106,7 +106,6 @@ view_commits <- function(
 #'
 #' @param message (string) The commit message
 #' @param tree (string) The SHA of the tree object this commit points to
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param parents (character, optional) The SHAs of the commits that were the parents of this
 #'   commit. If not specified the commit will be written as a root commit. For a single parent,
 #'   one SHA should be provided; for a merge commit, a character vector of more than one should be
@@ -117,6 +116,7 @@ view_commits <- function(
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
 #'   If not specified then the authenticated user is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.

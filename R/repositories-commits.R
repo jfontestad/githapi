@@ -7,9 +7,9 @@
 #'
 #' <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
-#'   specified the head commit is used. If `NA` the default branch is used, Default: `NA`.
+#'   specified the head commit is used. If not specified the default branch is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
@@ -37,15 +37,25 @@
 #' @export
 #'
 view_history <- function(
+  ref,
   repo,
-  ref   = NA,
   n_max = 1000L,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+    repo <- ref
+    ref <- NA
+  }
   assert(is_repo(repo))
+
+  if (missing(ref) || is_null(ref)) {
+    ref <- NA
+  }
   assert(is_na(ref) || is_string(ref))
+
   assert(is_count(n_max))
   assert(is_sha(token))
   assert(is_url(api))
@@ -55,7 +65,7 @@ view_history <- function(
     gh_url("repos", repo, "commits", sha = ref, api = api),
     n_max = n_max, token = token, ...)
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   commits_tbl <- bind_fields(commits_list, list(
     sha             = c("sha",                          as = "character"),
     message         = c("commit", "message",            as = "character"),
@@ -70,13 +80,21 @@ view_history <- function(
     parent_sha      = "",
     parent_url      = "")) %>%
     mutate(parent_sha = map(commits_list, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "sha")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "sha")
+      }
     })) %>%
     mutate(parent_url = map(commits_list, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "url")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "url")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   commits_tbl
 }
 
@@ -90,9 +108,9 @@ view_history <- function(
 #'
 #' <https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param refs (character) Git references: either tags or branches. If a branch is specified
 #'   the SHA of the head commit is returned.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -105,14 +123,14 @@ view_history <- function(
 #' @export
 #'
 view_shas <- function(
-  repo,
   refs,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(refs))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -126,12 +144,16 @@ view_shas <- function(
       attr(sha, "header") <- NULL
       sha
     }, error = function(e) {
-      info("Ref '", ref, "' failed!")
+      warn("Ref '", ref, "' failed!", level = 2)
       e
     })
   })
 
-  info("Done")
+  if (any(map_vec(shas, is, "error"))) {
+    collate_errors(shas, "view_shas() failed!")
+  }
+
+  info("Done", level = 2)
   shas
 }
 
@@ -146,9 +168,9 @@ view_shas <- function(
 #'
 #' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
-#' @param repo (string) The repository specified as "owner/repo".
 #' @param base (string) The reference of the base commit.
 #' @param head (string) The reference of the commit to compare.
+#' @param repo (string) The repository specified as "owner/repo".
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -175,25 +197,25 @@ view_shas <- function(
 #' @export
 #'
 compare_commits <- function(
-  repo,
   base,
   head,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_string(base))
   assert(is_string(head))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Getting comparison of commits from repository '", repo, "'")
+  info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- gh_request(
     "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
     token = token, ...)
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   comparison_tbl <- bind_fields(comparison_list$commits, list(
     sha             = c("sha",                          as = "character"),
     message         = c("commit", "message",            as = "character"),
@@ -208,13 +230,21 @@ compare_commits <- function(
     parent_sha      = "",
     parent_url      = "")) %>%
     mutate(parent_sha = map(comparison_list$commits, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "sha")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "sha")
+      }
     })) %>%
     mutate(parent_url = map(comparison_list$commits, use_names = FALSE, function(cm) {
-      map_vec(cm$parents, getElement, "url")
+      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(cm$parents, getElement, "url")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   comparison_tbl
 }
 
@@ -227,9 +257,9 @@ compare_commits <- function(
 #'
 #' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
-#' @param repo (string) The repository specified as "owner/repo".
 #' @param base (string) The reference of the base commit.
 #' @param head (string) The reference of the commit to compare.
+#' @param repo (string) The repository specified as "owner/repo".
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -253,25 +283,25 @@ compare_commits <- function(
 #' @export
 #'
 compare_files <- function(
-  repo,
   base,
   head,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_string(base))
   assert(is_string(head))
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
-  info("Getting comparison of commits from repository '", repo, "'")
+  info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- gh_request(
     "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
     token = token, ...)
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   comparison_tbl <- bind_fields(comparison_list$files, list(
     filename     = c("filename",     as = "character"),
     sha          = c("sha",          as = "character"),
@@ -283,6 +313,6 @@ compare_files <- function(
     contents_url = c("contents_url", as = "character"),
     patch        = c("patch",        as = "character")))
 
-  info("Done")
+  info("Done", level = 2)
   comparison_tbl
 }

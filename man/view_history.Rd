@@ -4,15 +4,15 @@
 \alias{view_history}
 \title{Get information about the history of commits}
 \usage{
-view_history(repo, ref = NA, n_max = 1000L,
+view_history(ref, repo, n_max = 1000L,
   token = getOption("github.token"), api = getOption("github.api"),
   ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
-specified the head commit is used. If \code{NA} the default branch is used, Default: \code{NA}.}
+specified the head commit is used. If not specified the default branch is used.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 

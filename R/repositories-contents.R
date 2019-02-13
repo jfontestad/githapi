@@ -7,10 +7,10 @@
 #'
 #' <https://developer.github.com/v3/repos/contents/#get-the-readme>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-#'   is specified the head commit is used. If `NA` the head of the default branch is used.
-#'   Default: `NA`.
+#'   is specified the head commit is used. If not supplied the head of the default branch is
+#'   used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -23,14 +23,24 @@
 #' @export
 #'
 view_readme <- function(
+  ref,
   repo,
-  ref   = NA,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+    repo <- ref
+    ref <- NA
+  }
   assert(is_repo(repo))
+
+  if (missing(ref) || is_null(ref)) {
+    ref <- NA
+  }
   assert(is_na(ref) || is_string(ref))
+
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -39,68 +49,11 @@ view_readme <- function(
     "GET", gh_url("repos", repo, "readme", ref = ref, api = api),
     accept  = "raw", token = token, ...)
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   attr(readme, "header") <- NULL
 
-  info("Done")
+  info("Done", level = 2)
   readme
-}
-
-#  FUNCTION: view_contents --------------------------------------------------------------------
-#
-#' View the contents of files
-#'
-#' This function reads the contents of the specified files from a repository in GitHub.
-#'
-#' <https://developer.github.com/v3/repos/contents/#get-contents>
-#'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param paths (string) The paths to the files.
-#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-#'   is specified the head commit is used. If `NA` the head of the default branch is used.
-#'   Default: `NA`.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
-#'   R option `"github.token"`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
-#' @param ... Parameters passed to [gh_request()].
-#'
-#' @return A named character vector with each element containing a file's contents.
-#'
-#' @export
-#'
-view_contents <- function(
-  repo,
-  paths,
-  ref   = NA,
-  token = getOption("github.token"),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_repo(repo))
-  assert(is_character(paths))
-  assert(is_na(ref) || is_string(ref))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  files <- map_vec(paths, function(path) {
-    info("Getting contents of file '", path, "' from repository '", repo, "'")
-    tryCatch({
-      file <- gh_request(
-        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
-        accept  = "raw", token = token, ...)
-
-      attr(file, "header") <- NULL
-      file
-    }, error = function(e) {
-      info("File '", path, "' failed!")
-      e
-    })
-  })
-
-  info("Done")
-  files
 }
 
 #  FUNCTION: view_files -----------------------------------------------------------------------
@@ -114,11 +67,10 @@ view_contents <- function(
 #'
 #' <https://developer.github.com/v3/repos/contents/#get-contents>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param paths (string, optional) The paths to the files or directories in the repository.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-#'   is specified the head commit is used. If `NA` the head of the default branch is used.
-#'   Default: `NA`.
+#'   is specified the head commit is used. If not specified the head of the default branch is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -142,15 +94,31 @@ view_contents <- function(
 #' @export
 #'
 view_files <- function(
-  repo,
   paths,
-  ref   = NA,
+  ref,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  if (missing(repo)) {
+    if (missing(ref)) {
+      info("'repo' is missing, so using 'paths' argument: ", paths, level = 2)
+      repo <- paths
+      paths <- NA
+    } else {
+      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+      repo <- ref
+      ref <- NA
+    }
+  }
   assert(is_repo(repo))
+
+  if (missing(ref) || is_null(ref)) {
+    ref <- NA
+  }
   assert(is_na(ref) || is_string(ref))
+
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -161,7 +129,7 @@ view_files <- function(
         "GET", gh_url("repos", repo, "contents", ref = ref, api = api),
         token = token, ...)
     }, error = function(e) {
-      info("Failed!")
+      warn("Failed!", level = 2)
       list(e)
     })
   } else {
@@ -173,7 +141,7 @@ view_files <- function(
           "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
           token = token, ...)
       }, error = function(e) {
-        info("File '", path, "' failed!")
+        warn("File '", path, "' failed!", level = 2)
         e
       })
     })
@@ -183,7 +151,7 @@ view_files <- function(
     collate_errors(files_list, "view_files() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   files_tbl <- bind_fields(files_list, list(
     name         = c("name",         as = "character"),
     path         = c("path",         as = "character"),
@@ -195,7 +163,7 @@ view_files <- function(
     git_url      = c("git_url",      as = "character"),
     download_url = c("download_url", as = "character")))
 
-  info("Done")
+  info("Done", level = 2)
   files_tbl
 }
 
@@ -209,20 +177,24 @@ view_files <- function(
 #'
 #' <https://developer.github.com/v3/repos/contents/#create-a-file>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param paths (character) The paths to the files in the repository.
 #' @param contents (character) The text to add to the files.
 #' @param messages (character) The commit messages to use. If a single message is provided it
 #'   is used for all commits with the file added as a suffix.
 #' @param branches (character, optional) The branches to make the commits on. If a single branch
-#'   is provided all commits are made on it. If `NA` the default branch for the repository
-#'   is used. Default: `NA`.
+#'   is provided all commits are made on it. If not specified the default branch for the repository
+#'   is used.
+#' @param parents (character, optional) SHAs, branches or tags of the commits to use as parents if
+#'   creating a new branch. Not required if making a new commit on an existing branch. A character
+#'   vector can be supplied corresponding to a different parent for each file, or a string can be
+#'   provided if the same parent is used for all files.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -255,30 +227,43 @@ view_files <- function(
 #' @export
 #'
 create_files <- function(
-  repo,
   paths,
   contents,
   messages,
-  branches  = NA,
-  committer = NA,
-  author    = NA,
-  token     = getOption("github.token"),
-  api       = getOption("github.api"),
+  branches,
+  parents,
+  committer,
+  author,
+  repo,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(paths))
   assert(is_character(contents) && identical(length(contents), length(paths)))
   assert(is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths))))
-  assert(
-    (is_na(branches) || is_character(branches)) &&
-      (is_scalar(branches) || identical(length(branches), length(paths))))
-  assert(is_na(committer) || (
-    is_list(committer) && identical(names(committer), c("name", "email")) &&
-      is_string(committer$name) && is_string(committer$email)))
-  assert(is_na(author) || (
-    is_list(author) && identical(names(author), c("name", "email")) &&
-      is_string(author$name) && is_string(author$email)))
+
+  if (missing(branches) || is_null(branches)) {
+    branches <- NA
+  }
+  assert((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths))))
+
+  if (missing(parents) || is_null(parents)) {
+    parents <- NA
+  }
+  assert(is_na(parents) || is_character(parents))
+
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
+
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
+
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -286,26 +271,34 @@ create_files <- function(
     path    = paths,
     content = contents,
     message = messages,
-    branch  = branches)
+    branch  = branches,
+    parent  = parents)
 
-  # TODO: If branches do not exist, create them
-
-  files_list <- pmap(params, function(path, content, message, branch) {
-    info("Posting file '", path, "' to repository '", repo, "'")
+  files_list <- pmap(params, function(path, content, message, branch, parent) {
     tryCatch({
+      if (!is_na(branch) && !branches_exist(branches = branch, repo = repo, token = token, api = api)) {
+        if (is_na(parent)) {
+          error("Specified branch '", branch, "' does not exist. To create it a parent commit must be specified!")
+        } else if (!is_sha(parent)) {
+          parent <- view_shas(refs = parent, repo = repo, token = token, api = api)
+        }
+        create_branches(branches = branch, shas = parent, repo = repo, token = token, api = api)
+      }
+
       payload <- list(
-        message   = paste(message, "- added", path),
+        message   = message,
         content   = base64_enc(content),
         branch    = branch,
         committer = committer,
         author    = author) %>%
         remove_missing()
 
+      info("Posting file '", basename(path), "' to repository '", repo, "'")
       gh_request(
         "PUT", gh_url("repos", repo, "contents", path, api = api),
         payload = payload, token = token, ...)
     }, error = function(e) {
-      info("File '", path, "' failed!")
+      warn("File '", path, "' failed!", level = 2)
       e
     })
   })
@@ -314,7 +307,7 @@ create_files <- function(
     collate_errors(files_list, "create_files() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   files_tbl <- bind_fields(files_list, list(
     name              = c("content", "name",              as = "character"),
     path              = c("content", "path",              as = "character"),
@@ -335,13 +328,21 @@ create_files <- function(
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
     mutate(commit_parent_sha = map(files_list, use_names = TRUE, function(f) {
-      map_vec(f$commit$parents, getElement, "sha")
+      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(f$commit$parents, getElement, "sha")
+      }
     })) %>%
     mutate(commit_parent_url = map(files_list, use_names = TRUE, function(f) {
-      map_vec(f$commit$parents, getElement, "url")
+      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(f$commit$parents, getElement, "url")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   files_tbl
 }
 
@@ -355,20 +356,20 @@ create_files <- function(
 #'
 #' <https://developer.github.com/v3/repos/contents/#update-a-file>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param paths (character) The paths to the files in the repository.
 #' @param contents (character) The text to add to the files.
 #' @param messages (character) The commit messages to use. If a single message is provided it
 #'   is used for all commits with the file added as a suffix.
 #' @param branches (character, optional) The branches to make the commits on. If a single branch
-#'   is provided all commits are made on it. If `NA` the default branch for the repository
-#'   is used. Default: `NA`.
+#'   is provided all commits are made on it. If not specified the default branch for the repository
+#'   is used.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -401,30 +402,37 @@ create_files <- function(
 #' @export
 #'
 update_files <- function(
-  repo,
   paths,
   contents,
   messages,
-  branches  = NA,
-  committer = NA,
-  author    = NA,
-  token     = getOption("github.token"),
-  api       = getOption("github.api"),
+  branches,
+  committer,
+  author,
+  repo,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(paths))
   assert(is_character(contents) && identical(length(contents), length(paths)))
   assert(is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths))))
-  assert(
-    (is_na(branches) || is_character(branches)) &&
-      (is_scalar(branches) || identical(length(branches), length(paths))))
-  assert(is_na(committer) || (
-    is_list(committer) && identical(names(committer), c("name", "email")) &&
-      is_string(committer$name) && is_string(committer$email)))
-  assert(is_na(author) || (
-    is_list(author) && identical(names(author), c("name", "email")) &&
-      is_string(author$name) && is_string(author$email)))
+
+  if (missing(branches) || is_null(branches)) {
+    branches <- NA
+  }
+  assert((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths))))
+
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
+
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
+
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -435,7 +443,7 @@ update_files <- function(
     branch  = branches)
 
   files_list <- pmap(params, function(path, content, message, branch) {
-    info("Posting file '", path, "' to repository '", repo, "'")
+    info("Posting file '", basename(path), "' to repository '", repo, "'")
     tryCatch({
       old_file <- gh_request(
         "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
@@ -454,7 +462,7 @@ update_files <- function(
         "PUT", gh_url("repos", repo, "contents", path, api = api),
         payload = payload, token = token, ...)
     }, error = function(e) {
-      info("File '", path, "' failed!")
+      warn("File '", path, "' failed!", level = 2)
       e
     })
   })
@@ -463,7 +471,7 @@ update_files <- function(
     collate_errors(files_list, "update_files() failed!")
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   files_tbl <- bind_fields(files_list, list(
     name              = c("content", "name",              as = "character"),
     path              = c("content", "path",              as = "character"),
@@ -484,13 +492,21 @@ update_files <- function(
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
     mutate(commit_parent_sha = map(files_list, use_names = FALSE, function(f) {
-      map_vec(f$commit$parents, getElement, "sha")
+      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(f$commit$parents, getElement, "sha")
+      }
     })) %>%
     mutate(commit_parent_url = map(files_list, use_names = FALSE, function(f) {
-      map_vec(f$commit$parents, getElement, "url")
+      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(f$commit$parents, getElement, "url")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   files_tbl
 }
 
@@ -504,19 +520,19 @@ update_files <- function(
 #'
 #' <https://developer.github.com/v3/repos/contents/#delete-a-file>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param paths (character) The paths to the files in the repository.
 #' @param messages (character) The commit messages to use. If a single message is provided it
 #'   is used for all commits with the file added as a suffix.
 #' @param branches (character, optional) The branches to make the commits on. If a single branch
-#'   is provided all commits are made on it. If `NA` the default branch for the repository
-#'   is used. Default: `NA`.
+#'   is provided all commits are made on it. If not specified the default branch for the repository
+#'   is used.
 #' @param committer (list, optional) The name and email address of the committer. This needs
 #'   to be specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
 #' @param author (list, optional) The name and email address of the author. This needs to be
 #'   specified as a named list, e.g. `list(name = "Bob Smith", email = "bob.smith@acme.com")`.
-#'   If `NA` then the authenticated user is used. Default: `NA`
+#'   If not specified then the authenticated user is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -540,28 +556,35 @@ update_files <- function(
 #' @export
 #'
 delete_files <- function(
-  repo,
   paths,
   messages,
-  branches  = NA,
-  committer = NA,
-  author    = NA,
+  branches,
+  committer,
+  author,
+  repo,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_repo(repo))
   assert(is_character(paths))
   assert(is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths))))
-  assert(
-    (is_na(branches) || is_character(branches)) &&
-      (is_scalar(branches) || identical(length(branches), length(paths))))
-  assert(is_na(committer) || (
-    is_list(committer) && identical(names(committer), c("name", "email")) &&
-      is_string(committer$name) && is_string(committer$email)))
-  assert(is_na(author) || (
-    is_list(author) && identical(names(author), c("name", "email")) &&
-      is_string(author$name) && is_string(author$email)))
+
+  if (missing(branches) || is_null(branches)) {
+    branches <- NA
+  }
+  assert((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths))))
+
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
+
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
+
+  assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -571,7 +594,7 @@ delete_files <- function(
     branch  = branches)
 
   files_list <- pmap(params, function(path, message, branch) {
-    info("Deleting file '", path, "' from repository '", repo, "'")
+    info("Deleting file '", basename(path), "' from repository '", repo, "'")
     tryCatch({
       old_file <- gh_request(
         "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
@@ -589,17 +612,16 @@ delete_files <- function(
         "DELETE", gh_url("repos", repo, "contents", path, api = api),
         payload = payload, token = token, ...)
     }, error = function(e) {
-      info(e$message)
+      warn("File '", path, "' failed!", level = 2)
       e
     })
   })
 
   if (any(map_vec(files_list, is, "error"))) {
     collate_errors(files_list, "delete_files() failed!")
-    files_list[map_vec(files_list, is, "error")] <- FALSE
   }
 
-  info("Transforming results")
+  info("Transforming results", level = 2)
   files_tbl <- bind_fields(files_list, list(
     commit_message    = c("commit", "message",            as = "character"),
     commit_sha        = c("commit",  "sha",               as = "character"),
@@ -611,13 +633,21 @@ delete_files <- function(
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
     mutate(commit_parent_sha = map(files_list, use_names = FALSE, function(f) {
-      map_vec(f$commit$parents, getElement, "sha")
+      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(f$commit$parents, getElement, "sha")
+      }
     })) %>%
     mutate(commit_parent_url = map(files_list, use_names = FALSE, function(f) {
-      map_vec(f$commit$parents, getElement, "url")
+      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
+        NULL
+      } else {
+        map_vec(f$commit$parents, getElement, "url")
+      }
     }))
 
-  info("Done")
+  info("Done", level = 2)
   files_tbl
 }
 
@@ -631,11 +661,11 @@ delete_files <- function(
 #'
 #' <https://developer.github.com/v3/repos/contents/#get-archive-link>
 #'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param path (string, optional) The path to save to. If `NA` the current working directory is
-#'   used. Default: `NA`.
+#' @param path (string, optional) The path to save to. If not specified the current working
+#'   directory is used.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
-#'   specified the head commit is used. If `NA` the default branch is used, Default: `NA`.
+#'   specified the head commit is used. If not specified the default branch is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -648,16 +678,36 @@ delete_files <- function(
 #' @export
 #'
 download_commit <- function(
+  path,
+  ref,
   repo,
-  path  = getwd(),
-  ref   = NA,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
+  if (missing(repo)) {
+    if (missing(ref)) {
+      info("'repo' is missing, so using 'path' argument: ", path, level = 2)
+      repo <- path
+      path <- NA
+    } else {
+      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+      repo <- ref
+      ref <- NA
+    }
+  }
   assert(is_repo(repo))
-  assert(is_na(ref) || is_string(ref))
+
+  if (missing(path) || is_null(path) || is_na(path)) {
+    path <- getwd()
+  }
   assert(is_string(path))
+
+  if (missing(ref) || is_null(ref)) {
+    ref <- NA
+  }
+  assert(is_na(ref) || is_string(ref))
+
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -666,12 +716,12 @@ download_commit <- function(
   archive_path <- file.path(path, paste0(sub("/", "-", repo), "-", ref, ".zip"))
   on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
 
-  info("Downloading commit")
+  info("Downloading commit '", ref, "' from repository '", repo, "'")
   gh_download_binary(
     gh_url("repos", repo, "zipball", ref, api = api),
     path = archive_path, token = token, ...)
 
-  info("Unpacking commit into '", path, "'")
+  info("Unpacking commit into '", path, "'", level = 2)
   unzip(archive_path, exdir = path)
 
   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
@@ -683,6 +733,6 @@ download_commit <- function(
   files <- list.files(archive_folder, recursive = TRUE)
   file.rename(file.path(archive_folder, files), file.path(path, files))
 
-  info("Done")
+  info("Done", level = 2)
   invisible(path)
 }

@@ -4,13 +4,11 @@
 \alias{create_releases}
 \title{Create releases at specified commits.}
 \usage{
-create_releases(repo, tags, commits, names, bodies, draft = FALSE,
+create_releases(tags, commits, names, bodies, repo, draft = FALSE,
   prerelease = FALSE, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{tags}{(character) The tag names.}
 
 \item{commits}{(character) The commits to tag. Can be either a SHA or a branch name.}
@@ -18,6 +16,8 @@ create_releases(repo, tags, commits, names, bodies, draft = FALSE,
 \item{names}{(character) The names of the releases.}
 
 \item{bodies}{(character) The bodies for the releases.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{draft}{(logical, optional) Whether the releases are draft. Default: \code{FALSE}.}
 

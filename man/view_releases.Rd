@@ -4,15 +4,15 @@
 \alias{view_releases}
 \title{View information about a releases}
 \usage{
-view_releases(repo, tags, n_max = 1000L,
+view_releases(tags, repo, n_max = 1000L,
   token = getOption("github.token"), api = getOption("github.api"),
   ...)
 }
 \arguments{
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{tags}{(character, optional) The tag names. If missing or \code{NULL} all the releases are
 requested. If set to \code{"latest"}, then the latest non-draft, non-prerelease is returned.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 

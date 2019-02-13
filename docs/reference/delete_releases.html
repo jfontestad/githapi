@@ -64,7 +64,7 @@ releases from the repository." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -112,19 +112,19 @@ releases from the repository.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>delete_releases</span>(<span class='no'>repo</span>, <span class='no'>tags</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
+    <pre class="usage"><span class='fu'>delete_releases</span>(<span class='no'>tags</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
-    </tr>
-    <tr>
       <th>tags</th>
       <td><p>(character) The tag names associated with the releases.</p></td>
+    </tr>
+    <tr>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>token</th>
