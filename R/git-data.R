@@ -45,6 +45,8 @@ gh_git_blob <- function(
 #
 #' Get a commit
 #'
+#' NOTE: This function has been deprecated, please use [view_commits()] instead.
+#'
 #' <https://developer.github.com/v3/git/commits/#get-a-commit>
 #'
 #' @param sha (string) The SHA-1 of the commit.
@@ -66,6 +68,8 @@ gh_git_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_commits", package = "githapi")
+
   assert(is_sha(sha))
   assert(is_repo(repo))
   assert(is_sha(token))

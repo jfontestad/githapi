@@ -13,7 +13,9 @@ test_that("gh_git_blob returns the contents of a file in the repository", {
 
 #  FUNCTION: gh_git_commit --------------------------------------------------------------------
 test_that("gh_git_commit returns a list of information about a commit", {
-  git_commit <- gh_git_commit("7ca61bb71f877f462c0b6132759d7c5e507c921f", "ChadGoymer/githapi")
+  git_commit <- suppressWarnings(
+    gh_git_commit("7ca61bb71f877f462c0b6132759d7c5e507c921f", "ChadGoymer/githapi"))
+
   expect_is(git_commit, "list")
   expect_named(
     git_commit,

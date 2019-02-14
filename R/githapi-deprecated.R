@@ -9,5 +9,6 @@
 #' @section Git Data Functions:
 #'
 #' - [gh_git_blob()]: use [view_blobs()] instead.
+#' - [gh_git_commit()]: use [view_commits()] instead.
 #'
 NULL

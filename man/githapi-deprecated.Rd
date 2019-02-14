@@ -11,6 +11,7 @@ possible, alternative functions with similar functionality are also mentioned.
 
 \itemize{
 \item \code{\link[=gh_git_blob]{gh_git_blob()}}: use \code{\link[=view_blobs]{view_blobs()}} instead.
+\item \code{\link[=gh_git_commit]{gh_git_commit()}}: use \code{\link[=view_commits]{view_commits()}} instead.
 }
 }
 

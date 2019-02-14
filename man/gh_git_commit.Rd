@@ -24,5 +24,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A list describing the commit (see GitHub's API documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_commits]{view_commits()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/git/commits/#get-a-commit}
 }
