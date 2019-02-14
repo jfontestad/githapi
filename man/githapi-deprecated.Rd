@@ -12,7 +12,8 @@ possible, alternative functions with similar functionality are also mentioned.
 \itemize{
 \item \code{\link[=gh_git_blob]{gh_git_blob()}}: use \code{\link[=view_blobs]{view_blobs()}} instead.
 \item \code{\link[=gh_git_commit]{gh_git_commit()}}: use \code{\link[=view_commits]{view_commits()}} instead.
-\item \code{\link[=gh_git_reference]{gh_git_reference()}}: use \code{\link[=view_tags]{view_tags()}} or \code{\link[=view_branches]{view_branches()}}
+\item \code{\link[=gh_git_reference]{gh_git_reference()}}: use \code{\link[=view_tags]{view_tags()}} or \code{\link[=view_branches]{view_branches()}} instead.
+\item \code{\link[=is_tag]{is_tag()}}: use \code{\link[=tags_exist]{tags_exist()}} instead.
 }
 }
 

@@ -24,5 +24,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A boolean, with attributes describing the errors, if there are any.
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=tags_exist]{tags_exist()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/git/refs/#get-a-reference}
 }

@@ -124,6 +124,8 @@ gh_git_reference <- function(
 #
 #' Check whether the input is a valid tag
 #'
+#' NOTE: This function has been deprecated, please use [tags_exist()] instead.
+#'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
 #' @param tag (string) tag name.
@@ -145,6 +147,8 @@ is_tag <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(c("tags_exist"), package = "githapi")
+
   if (!is_string(tag)) {
     return(FALSE)
   }

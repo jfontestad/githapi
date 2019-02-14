@@ -44,7 +44,7 @@ test_that("gh_git_reference returns information about a git reference", {
 #  FUNCTION: is_tag ---------------------------------------------------------------------------
 test_that("is_tag returns a boolean, with attributes describing the errors, if there are any", {
   expect_true(suppressWarnings(is_tag("v0.1.0", "ChadGoymer/githapi")))
-  expect_false(is_tag(list(x = "alist"), "ChadGoymer/githapi"))
+  expect_false(suppressWarnings(is_tag(list(x = "alist"), "ChadGoymer/githapi")))
   expect_false(suppressWarnings(is_tag("0.0.9000", "ChadGoymer/githapi")))
 })
 
