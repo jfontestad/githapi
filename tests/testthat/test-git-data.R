@@ -28,20 +28,24 @@ test_that("gh_git_commit returns a list of information about a commit", {
 
 #  FUNCTION: gh_git_reference -----------------------------------------------------------------
 test_that("gh_git_reference returns information about a git reference", {
-  head_master <- gh_git_reference("heads/master", "ChadGoymer/githapi")
+  head_master <- suppressWarnings(
+    gh_git_reference("heads/master", "ChadGoymer/githapi"))
+
   expect_is(head_master, "list")
   expect_identical(head_master$ref, "refs/heads/master")
 
-  tag_v0.1.0 <- gh_git_reference("tags/v0.1.0", "ChadGoymer/githapi")
+  tag_v0.1.0 <- suppressWarnings(
+    gh_git_reference("tags/v0.1.0", "ChadGoymer/githapi"))
+
   expect_is(tag_v0.1.0, "list")
   expect_identical(tag_v0.1.0$ref, "refs/tags/v0.1.0")
 })
 
 #  FUNCTION: is_tag ---------------------------------------------------------------------------
 test_that("is_tag returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_tag("v0.1.0", "ChadGoymer/githapi"))
+  expect_true(suppressWarnings(is_tag("v0.1.0", "ChadGoymer/githapi")))
   expect_false(is_tag(list(x = "alist"), "ChadGoymer/githapi"))
-  expect_false(is_tag("0.0.9000", "ChadGoymer/githapi"))
+  expect_false(suppressWarnings(is_tag("0.0.9000", "ChadGoymer/githapi")))
 })
 
 #  FUNCTION: gh_git_references ----------------------------------------------------------------

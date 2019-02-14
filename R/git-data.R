@@ -84,6 +84,8 @@ gh_git_commit <- function(
 #
 #' Get a reference
 #'
+#' NOTE: This function has been deprecated, please use [view_tags()] or [view_branches()] instead.
+#'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
 #' @param ref (string) tags, specified as `tags/<tag_name>`, or branches, specified as
@@ -106,6 +108,8 @@ gh_git_reference <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(c("view_tags' or 'view_branches"), package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))
