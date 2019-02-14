@@ -2,7 +2,9 @@ context("git data api")
 
 #  FUNCTION: gh_git_blob ----------------------------------------------------------------------
 test_that("gh_git_blob returns the contents of a file in the repository", {
-  readme <- gh_git_blob("abb7f8ce52e6bdea33170ec8edbd6cfb1eca0722", "ChadGoymer/githapi")
+  readme <- suppressWarnings(
+    gh_git_blob("abb7f8ce52e6bdea33170ec8edbd6cfb1eca0722", "ChadGoymer/githapi"))
+
   expect_true(is_string(readme))
   expect_identical(
     readme,

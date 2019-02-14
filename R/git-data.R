@@ -2,6 +2,8 @@
 #
 #' Get a blob
 #'
+#' NOTE: This function has been deprecated, please use [view_blobs()] instead.
+#'
 #' <https://developer.github.com/v3/git/blobs/#get-a-blob>
 #'
 #' @param sha (string) SHA-1 of the blob
@@ -24,6 +26,8 @@ gh_git_blob <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_blobs", package = "githapi")
+
   assert(is_sha(sha))
   assert(is_repo(repo))
   assert(is_sha(token))
