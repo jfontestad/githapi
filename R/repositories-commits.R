@@ -157,6 +157,52 @@ view_shas <- function(
   shas
 }
 
+#  FUNCTION: shas_exist -----------------------------------------------------------------------
+#
+#' Determine whether commit SHAs exist in the specified repository.
+#'
+#' This function returns `TRUE` if the commit SHA exists and `FALSE` otherwise.
+#'
+#' <https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference>
+#'
+#' @param shas (character) The SHAs of the commits to check.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A logical vector containing `TRUE` or `FALSE` for each SHA specified.
+#'
+#' @export
+#'
+shas_exist <- function(
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_character(shas) && all(map_vec(shas, is_sha)))
+  assert(is_repo(repo))
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  map_vec(shas, function(sha) {
+    info("Checking commit SHA '", sha, "' exists in repository '", repo, "'")
+    tryCatch({
+      gh_request(
+        "GET", gh_url("repos", repo, "commits", sha, api = api),
+        token = token, ...)
+      TRUE
+    }, error = function(e) {
+      FALSE
+    })
+  })
+}
+
 #  FUNCTION: compare_commits ------------------------------------------------------------------
 #
 #' Compare two commits
