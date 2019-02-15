@@ -297,7 +297,7 @@ read_files <- function(
 #' @param paths (string) The paths to the files in the repository.
 #' @param location (string) The location to save the files to.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-#'   is specified the head commit is used.  If not specified the head of the default branch is
+#'   is specified the head commit is used. If not specified the head of the default branch is
 #'   used.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
@@ -414,4 +414,76 @@ blobs_exist <- function(
       FALSE
     })
   })
+}
+
+#  FUNCTION: source_files ---------------------------------------------------------------------
+#
+#' Source R files from a GitHub repository
+#'
+#' This function downloads the specified files from a repository in GitHub to a temporary
+#' location, and then executes [source()] on each of them. Note: This API supports files up
+#' to 100 megabytes in size.
+#'
+#' <https://developer.github.com/v3/git/blobs/#get-a-blob>
+#'
+#' @param paths (string) The paths to the files in the repository.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
+#'   is specified the head commit is used. If not specified the head of the default branch is
+#'   used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [source()].
+#'
+#' @return A list containing the results of sourcing each file.
+#'
+#' @export
+#'
+source_files <- function(
+  paths,
+  ref,
+  repo,
+  token = gh_token(),
+  api   = getOption("github.api"),
+  ...)
+{
+  assert(is_string(paths))
+
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+    repo <- ref
+    ref <- NA
+  }
+  assert(is_repo(repo))
+
+  if (missing(ref) || is_null(ref)) {
+    ref <- NA
+  }
+  assert(is_na(ref) || is_string(ref))
+
+  assert(is_sha(token))
+  assert(is_url(api))
+
+  temp_path <- tempfile("githapi")
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  download_files(paths = paths, location = temp_path, ref = ref, repo = repo, token = token, api = api)
+
+  source_list <- map(paths, function(path) {
+    tryCatch({
+      source(file.path(temp_path, path), ...)
+    }, error = function(e) {
+      warn("Sourcing '", path, "' failed!", level = 2)
+      e
+    })
+  })
+
+  if (any(map_vec(source_list, is, "error"))) {
+    collate_errors(source_list, "source_files() failed!")
+  }
+
+  invisible(source_list)
 }

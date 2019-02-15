@@ -144,3 +144,12 @@ test_that("blobs_exist returns TRUE or FALSE depending on whether the blob exist
     blobs_exist(c("72b5faa9dc9e4bba87108bf302a5b453e985feec", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi"),
     c(`72b5faa9dc9e4bba87108bf302a5b453e985feec` = TRUE, `0000000000000000000000000000000000000000` = FALSE))
 })
+
+# TEST: source_files --------------------------------------------------------------------------
+
+test_that("source_files sources a file in GitHub", {
+  source_files("test-source.R", "ChadGoymer/test-githapi")
+  expect_true(exists("test_source"))
+  expect_is(test_source, "function")
+  expect_identical(test_source(), "Testing source_files")
+})
