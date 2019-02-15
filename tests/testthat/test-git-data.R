@@ -50,7 +50,7 @@ test_that("is_tag returns a boolean, with attributes describing the errors, if t
 
 #  FUNCTION: gh_git_references ----------------------------------------------------------------
 test_that("gh_git_references returns a tibble of information about references", {
-  references <- gh_git_references("ChadGoymer/githapi")
+  references <- suppressWarnings(gh_git_references("ChadGoymer/githapi"))
   expect_is(references, "tbl")
 
   expect_identical(

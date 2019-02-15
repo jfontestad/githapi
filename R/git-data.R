@@ -168,6 +168,8 @@ is_tag <- function(
 #
 #' Get all references
 #'
+#' NOTE: This function has been deprecated, please use [view_tags()] or [view_branches()] instead.
+#'
 #' <https://developer.github.com/v3/git/refs/#get-all-references>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -189,6 +191,8 @@ gh_git_references <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(c("view_tags' or 'view_branches"), package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
