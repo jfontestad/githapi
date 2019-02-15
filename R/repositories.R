@@ -244,6 +244,8 @@ gh_branch <- function(
 #
 #' Checks whether the input is a valid branch
 #'
+#' NOTE: This function has been deprecated, please use [branches_exist()] instead.
+#'
 #' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
 #' @param branch (string) The branch name.
@@ -265,6 +267,8 @@ is_branch <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("branches_exist", package = "githapi")
+
   if (!is_string(branch)) {
     return(FALSE)
   }
