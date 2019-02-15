@@ -56,7 +56,8 @@ test_that("gh_repositories returns an error is the specified owner does not exis
 
 #  FUNCTION: gh_tags ----------------------------------------------------------------------
 test_that("gh_tags returns a tibble describing all the tags", {
-  tags <- gh_tags("ChadGoymer/githapi")
+  tags <- suppressWarnings(gh_tags("ChadGoymer/githapi"))
+
   expect_is(tags, "tbl")
   expect_true("v0.0.0" %in% tags$name)
   expect_identical(
@@ -69,7 +70,7 @@ test_that("gh_tags returns a tibble describing all the tags", {
 })
 
 test_that("gh_tags returns an error is the specified repo does not exist", {
-  expect_error(gh_tags("SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_tags("SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------

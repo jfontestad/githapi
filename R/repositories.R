@@ -159,6 +159,8 @@ gh_repositories <- function(
 #
 #' Get information about all the tags in a repository
 #'
+#' NOTE: This function has been deprecated, please use [view_tags()] instead.
+#'
 #' <https://developer.github.com/v3/repos/#list-tags>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -180,6 +182,8 @@ gh_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_tags", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))

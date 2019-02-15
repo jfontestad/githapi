@@ -22,4 +22,11 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
+\section{Repositories Functions}{
+
+\itemize{
+\item \code{\link[=gh_tags]{gh_tags()}}: replace with \code{\link[=view_tags]{view_tags()}}
+}
+}
+
 \keyword{internal}

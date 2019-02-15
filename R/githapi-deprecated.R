@@ -18,4 +18,8 @@
 #' - [gh_save()]: replace with [download_files()]
 #' - [gh_source()]: replace with [source_files()]
 #'
+#' @section Repositories Functions:
+#'
+#' - [gh_tags()]: replace with [view_tags()]
+#'
 NULL
