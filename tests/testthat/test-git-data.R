@@ -82,7 +82,9 @@ test_that("gh_git_tags returns a list of information about a tag", {
 
 #  FUNCTION: gh_git_tree ----------------------------------------------------------------------
 test_that("gh_git_tree returns a tibble of information about the files in a commit", {
-  tree <- gh_git_tree("ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964", "ChadGoymer/githapi")
+  tree <- suppressWarnings(
+    gh_git_tree("ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964", "ChadGoymer/githapi"))
+
   expect_is(tree, "tbl")
 
   expect_identical(

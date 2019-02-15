@@ -263,6 +263,8 @@ gh_git_tag <- function(
 #
 #' Get a tree
 #'
+#' NOTE: This function has been deprecated, please use [view_trees()] instead.
+#'
 #' <https://developer.github.com/v3/git/trees/#get-a-tree>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
@@ -288,6 +290,8 @@ gh_git_tree <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_trees", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_boolean(recursive))

@@ -14,5 +14,6 @@
 #' - [gh_git_references()]: use [view_tags()] or [view_branches()] instead.
 #' - [is_tag()]: use [tags_exist()] instead.
 #' - [gh_git_tag()]: is being removed
+#' - [gh_git_tree()]: replace with [view_trees()]
 #'
 NULL

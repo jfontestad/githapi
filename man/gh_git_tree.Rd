@@ -28,5 +28,8 @@ A tibble describing the files in a commit (see GitHub's API documentation for
 details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_trees]{view_trees()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/git/trees/#get-a-tree}
 }
