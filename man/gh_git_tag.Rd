@@ -24,5 +24,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A list describing the tag (see GitHub's API documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, it will be removed in a future version.
+}
+\details{
 \url{https://developer.github.com/v3/git/tags/#get-a-tag}
 }

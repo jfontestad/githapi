@@ -224,6 +224,8 @@ gh_git_references <- function(
 #
 #' Get an annotated tag
 #'
+#' NOTE: This function has been deprecated, it will be removed in a future version.
+#'
 #' <https://developer.github.com/v3/git/tags/#get-a-tag>
 #'
 #' @param sha (string) The SHA-1 of the tag.
@@ -245,6 +247,8 @@ gh_git_tag <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(package = "githapi")
+
   assert(is_sha(sha))
   assert(is_repo(repo))
   assert(is_sha(token))

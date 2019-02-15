@@ -68,7 +68,9 @@ test_that("gh_git_references returns a tibble of information about references", 
 
 #  FUNCTION: gh_git_tag -----------------------------------------------------------------------
 test_that("gh_git_tags returns a list of information about a tag", {
-  test_tag <- gh_git_tag("30426b4f967d8c253b1bb5a67c5838dc306aab50", "ChadGoymer/githapi")
+  test_tag <- suppressWarnings(
+    gh_git_tag("30426b4f967d8c253b1bb5a67c5838dc306aab50", "ChadGoymer/githapi"))
+
   expect_is(test_tag, "list")
   expect_named(
     test_tag,

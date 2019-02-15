@@ -15,6 +15,7 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_git_reference]{gh_git_reference()}}: use \code{\link[=view_tags]{view_tags()}} or \code{\link[=view_branches]{view_branches()}} instead.
 \item \code{\link[=gh_git_references]{gh_git_references()}}: use \code{\link[=view_tags]{view_tags()}} or \code{\link[=view_branches]{view_branches()}} instead.
 \item \code{\link[=is_tag]{is_tag()}}: use \code{\link[=tags_exist]{tags_exist()}} instead.
+\item \code{\link[=gh_git_tag]{gh_git_tag()}}: is being removed
 }
 }
 
