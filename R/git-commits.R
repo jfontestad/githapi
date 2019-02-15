@@ -360,7 +360,7 @@ upload_commit <- function(
     token     = token,
     api       = api)
 
-  if (branches_exist(branch = branch, repo = repo, token = token, api = api)) {
+  if (branches_exist(branches = branch, repo = repo, token = token, api = api)) {
     update_branches(
       branches  = branch,
       shas      = commit$sha,
