@@ -111,11 +111,14 @@ test_that("gh_branches returns an error is the specified repo does not exist", {
 
 #  FUNCTION: gh_commit ------------------------------------------------------------------------
 test_that("gh_commit returns a list describing the commit", {
-  commit_master <- gh_commit("master", "ChadGoymer/githapi")
+  commit_master <- suppressWarnings(gh_commit("master", "ChadGoymer/githapi"))
+
   expect_is(commit_master, "list")
   expect_true(all(c("sha", "commit", "author", "committer", "files") %in% names(commit_master)))
 
-  commit_d9fe50f <- gh_commit("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  commit_d9fe50f <- suppressWarnings(
+    gh_commit("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
   expect_identical(commit_d9fe50f$sha, "d9fe50f8e31d7430df2c5b02442dffb68c854f08")
   expect_identical(commit_d9fe50f$commit$message, "Initial commit")
   expect_identical(commit_d9fe50f$author$login, "ChadGoymer")
@@ -124,15 +127,15 @@ test_that("gh_commit returns a list describing the commit", {
 })
 
 test_that("gh_commit returns an error is the specified commit or repo does not exist", {
-  expect_error(gh_commit("no_commit", "ChadGoymer/githapi"))
-  expect_error(gh_commit("master", "SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_commit("no_commit", "ChadGoymer/githapi")))
+  expect_error(suppressWarnings(gh_commit("master", "SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: is_valid_sha ---------------------------------------------------------------------
 test_that("is_valid_sha returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_valid_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
-  expect_false(is_valid_sha("aaaaa", "ChadGoymer/githapi"))
-  expect_false(is_valid_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"))
+  expect_true(suppressWarnings(is_valid_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_valid_sha("aaaaa", "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_valid_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi")))
 })
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------

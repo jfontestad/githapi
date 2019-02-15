@@ -332,6 +332,8 @@ gh_branches <- function(
 #
 #' Get information about a commit
 #'
+#' NOTE: This function has been deprecated, please use [view_commits()] instead.
+#'
 #' <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
@@ -354,6 +356,8 @@ gh_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_commits", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))

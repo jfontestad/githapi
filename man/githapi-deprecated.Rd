@@ -29,6 +29,7 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_branch]{gh_branch()}}: replace with \code{\link[=view_branches]{view_branches()}}
 \item \code{\link[=gh_branches]{gh_branches()}}: replace with \code{\link[=view_branches]{view_branches()}}
 \item \code{\link[=is_branch]{is_branch()}}: replace with \code{\link[=branches_exist]{branches_exist()}}
+\item \code{\link[=gh_commit]{gh_commit()}}: replace with \code{\link[=view_commits]{view_commits()}}
 }
 }
 
