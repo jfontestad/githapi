@@ -15,5 +15,6 @@
 #' - [is_tag()]: use [tags_exist()] instead.
 #' - [gh_git_tag()]: is being removed
 #' - [gh_git_tree()]: replace with [view_trees()]
+#' - [gh_save()]: replace with [download_files()]
 #'
 NULL

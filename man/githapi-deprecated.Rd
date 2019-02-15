@@ -17,6 +17,7 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=is_tag]{is_tag()}}: use \code{\link[=tags_exist]{tags_exist()}} instead.
 \item \code{\link[=gh_git_tag]{gh_git_tag()}}: is being removed
 \item \code{\link[=gh_git_tree]{gh_git_tree()}}: replace with \code{\link[=view_trees]{view_trees()}}
+\item \code{\link[=gh_save]{gh_save()}}: replace with \code{\link[=download_files]{download_files()}}
 }
 }
 

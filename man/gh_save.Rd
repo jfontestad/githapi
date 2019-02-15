@@ -29,5 +29,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 The file path of the saved file (invisibly).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=download_files]{download_files()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/git/blobs/#get-a-blob}
 }

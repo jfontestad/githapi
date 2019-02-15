@@ -314,6 +314,8 @@ gh_git_tree <- function(
 #
 #' Download files and save them to a location
 #'
+#' NOTE: This function has been deprecated, please use [download_files()] instead.
+#'
 #' <https://developer.github.com/v3/git/blobs/#get-a-blob>
 #'
 #' @param files (string) The paths to the files in the repository.
@@ -340,6 +342,8 @@ gh_save <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("download_files", package = "githapi")
+
   assert(is_character(files))
   assert(is_repo(repo))
   assert(is_string(path))

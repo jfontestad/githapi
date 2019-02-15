@@ -106,26 +106,26 @@ test_that("gh_save creates a local copy of a file in GitHub", {
   temp_path <- file.path(tempdir(), "test-gh_save")
   on.exit(unlink(temp_path, recursive = TRUE))
 
-  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path)
+  suppressWarnings(gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path))
   expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
   expect_identical(readLines(file.path(temp_path, "DESCRIPTION"), n = 1), "Package: githapi")
 
   unlink(temp_path, recursive = TRUE)
 
-  gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  suppressWarnings(gh_save("DESCRIPTION", "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0"))
   expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
   desc_version <- readLines(file.path(temp_path, "DESCRIPTION")) %>% grep("Version", ., value = TRUE)
   expect_identical(desc_version, "Version: 0.3.0")
 
   unlink(temp_path, recursive = TRUE)
 
-  gh_save(c("DESCRIPTION", "README.md"), "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0")
+  suppressWarnings(gh_save(c("DESCRIPTION", "README.md"), "ChadGoymer/githapi", path = temp_path, ref = "v0.3.0"))
   expect_true(all(file.exists(file.path(temp_path, "DESCRIPTION"), file.path(temp_path, "README.md"))))
 })
 
 #  FUNCTION: gh_source ------------------------------------------------------------------------
 test_that("gh_source sources a file in GitHub", {
-  gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", ref = "master")
+  suppressWarnings(gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", ref = "master"))
   expect_true(exists("test_source"))
   expect_is(test_source, "function")
   expect_identical(test_source(), "Testing gh_source")
