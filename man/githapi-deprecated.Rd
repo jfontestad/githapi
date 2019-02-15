@@ -18,6 +18,7 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_git_tag]{gh_git_tag()}}: is being removed
 \item \code{\link[=gh_git_tree]{gh_git_tree()}}: replace with \code{\link[=view_trees]{view_trees()}}
 \item \code{\link[=gh_save]{gh_save()}}: replace with \code{\link[=download_files]{download_files()}}
+\item \code{\link[=gh_source]{gh_source()}}: replace with \code{\link[=source_files]{source_files()}}
 }
 }
 

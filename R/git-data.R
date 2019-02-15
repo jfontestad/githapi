@@ -377,6 +377,8 @@ gh_save <- function(
 #
 #' Source an R file
 #'
+#' NOTE: This function has been deprecated, please use [source_files()] instead.
+#'
 #' <https://developer.github.com/v3/git/blobs/#get-a-blob>
 #'
 #' @param file (string) The path to the file in the repository
@@ -401,6 +403,8 @@ gh_source <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("source_file", package = "githapi")
+
   assert(is_string(file))
   assert(is_repo(repo))
   assert(is_string(ref))
