@@ -26,6 +26,7 @@ possible, alternative functions with similar functionality are also mentioned.
 
 \itemize{
 \item \code{\link[=gh_tags]{gh_tags()}}: replace with \code{\link[=view_tags]{view_tags()}}
+\item \code{\link[=gh_branch]{gh_branch()}}: replace with \code{\link[=view_branches]{view_branches()}}
 }
 }
 

@@ -21,5 +21,6 @@
 #' @section Repositories Functions:
 #'
 #' - [gh_tags()]: replace with [view_tags()]
+#' - [gh_branch()]: replace with [view_branches()]
 #'
 NULL

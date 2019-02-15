@@ -75,21 +75,21 @@ test_that("gh_tags returns an error is the specified repo does not exist", {
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
 test_that("gh_branch returns a list describing the branch", {
-  branch <- gh_branch("master", "ChadGoymer/githapi")
+  branch <- suppressWarnings(gh_branch("master", "ChadGoymer/githapi"))
   expect_is(branch, "list")
   expect_identical(branch$name, "master")
 })
 
 test_that("gh_branch returns an error is the specified branch or repo does not exist", {
-  expect_error(gh_branch("no_branch", "ChadGoymer/githapi"))
-  expect_error(gh_branch("master", "SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_branch("no_branch", "ChadGoymer/githapi")))
+  expect_error(suppressWarnings(gh_branch("master", "SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: is_branch ------------------------------------------------------------------------
 test_that("is_branch returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_branch("master", "ChadGoymer/githapi"))
-  expect_false(is_branch(list(x = "alist"), "ChadGoymer/githapi"))
-  expect_false(is_branch("no_branch", "ChadGoymer/githapi"))
+  expect_true(suppressWarnings(is_branch("master", "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_branch(list(x = "alist"), "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_branch("no_branch", "ChadGoymer/githapi")))
 })
 
 #  FUNCTION: gh_branches ------------------------------------------------------------------

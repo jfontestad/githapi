@@ -205,6 +205,8 @@ gh_tags <- function(
 #
 #' Get information about a branch
 #'
+#' NOTE: This function has been deprecated, please use [view_branches()] instead.
+#'
 #' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
 #' @param branch (string) The branch name.
@@ -226,6 +228,8 @@ gh_branch <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_branches", package = "githapi")
+
   assert(is_string(branch))
   assert(is_repo(repo))
   assert(is_sha(token))
