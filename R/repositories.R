@@ -284,6 +284,8 @@ is_branch <- function(
 #
 #' Get information about all the head commits in each branch
 #'
+#' NOTE: This function has been deprecated, please use [view_branches()] instead.
+#'
 #' <https://developer.github.com/v3/repos/branches/#list-branches>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -305,6 +307,8 @@ gh_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_branches", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))

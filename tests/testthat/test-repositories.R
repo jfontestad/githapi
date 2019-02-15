@@ -94,7 +94,8 @@ test_that("is_branch returns a boolean, with attributes describing the errors, i
 
 #  FUNCTION: gh_branches ------------------------------------------------------------------
 test_that("gh_branches returns a tibble describing all the branches", {
-  branches <- gh_branches("ChadGoymer/githapi")
+  branches <- suppressWarnings(gh_branches("ChadGoymer/githapi"))
+
   expect_is(branches, "tbl")
   expect_true("master" %in% branches$name)
   expect_identical(
@@ -105,7 +106,7 @@ test_that("gh_branches returns a tibble describing all the branches", {
 })
 
 test_that("gh_branches returns an error is the specified repo does not exist", {
-  expect_error(gh_branches("SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_branches("SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: gh_commit ------------------------------------------------------------------------
