@@ -27,5 +27,6 @@
 #' - [gh_commit()]: replace with [view_commits()]
 #' - [is_valid_sha()]: replace with [shas_exist()]
 #' - [gh_commit_sha()]: replace with [view_shas()]
+#' - [gh_commits()]: replace with [view_history()]
 #'
 NULL

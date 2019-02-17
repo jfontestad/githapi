@@ -147,7 +147,7 @@ test_that("gh_commit_sha returns a string with the SHA-1", {
 
 #  FUNCTION: gh_commits -------------------------------------------------------------------
 test_that("gh_commits returns a tibble describing all the commits on a branch", {
-  commits <- gh_commits("master", "ChadGoymer/githapi", n_max = 1000)
+  commits <- suppressWarnings(gh_commits("master", "ChadGoymer/githapi", n_max = 1000))
   expect_is(commits, "tbl")
   expect_true("d9fe50f8e31d7430df2c5b02442dffb68c854f08" %in% commits$sha)
   expect_identical(
@@ -165,7 +165,7 @@ test_that("gh_commits returns a tibble describing all the commits on a branch", 
 })
 
 test_that("gh_commits returns an error is the specified repo does not exist", {
-  expect_error(gh_commits("master", "SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_commits("master", "SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: gh_compare_commits ---------------------------------------------------------------

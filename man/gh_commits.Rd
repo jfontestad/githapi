@@ -27,5 +27,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A tibble describing all the branches (see GitHub's API documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_history]{view_history()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository}
 }

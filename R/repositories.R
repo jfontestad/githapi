@@ -460,6 +460,8 @@ gh_commit_sha <- function(
 #
 #' Get information about all the history of commits
 #'
+#' NOTE: This function has been deprecated, please use [view_history()] instead.
+#'
 #' <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
@@ -484,6 +486,8 @@ gh_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_history", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_count(n_max))
