@@ -33,6 +33,7 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=is_valid_sha]{is_valid_sha()}}: replace with \code{\link[=shas_exist]{shas_exist()}}
 \item \code{\link[=gh_commit_sha]{gh_commit_sha()}}: replace with \code{\link[=view_shas]{view_shas()}}
 \item \code{\link[=gh_commits]{gh_commits()}}: replace with \code{\link[=view_history]{view_history()}}
+\item \code{\link[=gh_compare_commits]{gh_compare_commits()}}: replace with \code{\link[=compare_commits]{compare_commits()}}
 }
 }
 
