@@ -36,6 +36,7 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_compare_commits]{gh_compare_commits()}}: replace with \code{\link[=compare_commits]{compare_commits()}}
 \item \code{\link[=gh_compare_files]{gh_compare_files()}}: replace with \code{\link[=compare_files]{compare_files()}}
 \item \code{\link[=gh_readme]{gh_readme()}}: replace with \code{\link[=read_files]{read_files()}}
+\item \code{\link[=gh_contents]{gh_contents()}}: replace with \code{\link[=read_files]{read_files()}}
 }
 }
 

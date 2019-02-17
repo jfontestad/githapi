@@ -665,6 +665,8 @@ gh_readme <- function(
 #
 #' Get contents of a file
 #'
+#' NOTE: This function has been deprecated, please use [read_files()] instead.
+#'
 #' <https://developer.github.com/v3/repos/contents/#get-contents>
 #'
 #' Note: This function can only get the contents of files less than 1MB. For larger files use
@@ -692,6 +694,8 @@ gh_contents <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("read_files", package = "githapi")
+
   assert(is_string(path))
   assert(is_string(ref))
   assert(is_repo(repo))

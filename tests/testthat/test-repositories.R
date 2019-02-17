@@ -243,10 +243,14 @@ test_that("gh_readme returns the text in the README file", {
 
 #  FUNCTION: gh_contents ----------------------------------------------------------------------
 test_that("gh_contents returns the text in a specified file", {
-  description_master <- gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi")
+  description_master <- suppressWarnings(
+    gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi"))
+
   expect_true(is_string(description_master))
 
-  readme_d9fe50f <- gh_contents("README.md", "d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  readme_d9fe50f <- suppressWarnings(
+    gh_contents("README.md", "d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
   expect_identical(
     readme_d9fe50f,
     "# githapi\nUser-friendly access to the GitHub API for R, consistent with the tidyverse.\n")
