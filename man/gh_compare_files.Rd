@@ -28,5 +28,8 @@ A tibble describing the files and the differences (see GitHub's API documentatio
 for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=compare_files]{compare_files()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
 }

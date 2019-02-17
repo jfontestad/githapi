@@ -570,6 +570,8 @@ gh_compare_commits <- function(
 #
 #' Compare the files of two commits
 #'
+#' NOTE: This function has been deprecated, please use [compare_files()] instead.
+#'
 #' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
 #' @param base (string) The base branch name.
@@ -595,6 +597,8 @@ gh_compare_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("compare_files", package = "githapi")
+
   assert(is_string(base))
   assert(is_string(head))
   assert(is_repo(repo))

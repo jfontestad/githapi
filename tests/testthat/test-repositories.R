@@ -197,10 +197,10 @@ test_that("gh_compare_commits returns information on the differences between two
 
 #  FUNCTION: gh_compare_files -----------------------------------------------------------------
 test_that("gh_compare_files returns a tibble of information of file differences between commits", {
-  comparison <- gh_compare_files(
+  comparison <- suppressWarnings(gh_compare_files(
     "d9fe50f8e31d7430df2c5b02442dffb68c854f08",
     "d8a62ccdc3df3e002dbac55390772424b136844a",
-    "ChadGoymer/githapi")
+    "ChadGoymer/githapi"))
 
   expect_is(comparison, "tbl")
 

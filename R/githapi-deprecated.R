@@ -29,5 +29,6 @@
 #' - [gh_commit_sha()]: replace with [view_shas()]
 #' - [gh_commits()]: replace with [view_history()]
 #' - [gh_compare_commits()]: replace with [compare_commits()]
+#' - [gh_compare_files()]: replace with [compare_files()]
 #'
 NULL
