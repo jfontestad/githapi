@@ -372,6 +372,8 @@ gh_commit <- function(
 #
 #' Check whether the input is a valid SHA-1
 #'
+#' NOTE: This function has been deprecated, please use [shas_exist()] instead.
+#'
 #' <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
 #'
 #' @param sha (string) A commit SHA-1.
@@ -394,6 +396,8 @@ is_valid_sha <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("shas_exist", package = "githapi")
+
   if (!is_sha(sha)) {
     return(FALSE)
   }

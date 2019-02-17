@@ -25,5 +25,6 @@
 #' - [gh_branches()]: replace with [view_branches()]
 #' - [is_branch()]: replace with [branches_exist()]
 #' - [gh_commit()]: replace with [view_commits()]
+#' - [is_valid_sha()]: replace with [shas_exist()]
 #'
 NULL
