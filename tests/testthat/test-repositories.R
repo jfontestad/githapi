@@ -362,7 +362,7 @@ test_that("gh_languages returns a tibble describing the languages", {
 
 #  FUNCTION: gh_releases ----------------------------------------------------------------------
 test_that("gh_releases returns a tibble describing the releases", {
-  releases <- gh_releases("ChadGoymer/githapi")
+  releases <- suppressWarnings(gh_releases("ChadGoymer/githapi"))
   expect_is(releases, "tbl")
   expect_identical(
     sapply(releases, function(field) class(field)[[1]]),

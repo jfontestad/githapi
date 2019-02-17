@@ -24,5 +24,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A tibble describing the releases (see GitHub's API documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_releases]{view_releases()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository}
 }

@@ -1130,6 +1130,8 @@ gh_release <- function(
 #
 #' List releases for a repository
 #'
+#' NOTE: This function has been deprecated, please use [view_releases()] instead.
+#'
 #' <https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -1151,6 +1153,8 @@ gh_releases <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_releases", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
