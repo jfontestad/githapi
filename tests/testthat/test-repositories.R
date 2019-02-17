@@ -140,7 +140,7 @@ test_that("is_valid_sha returns a boolean, with attributes describing the errors
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 test_that("gh_commit_sha returns a string with the SHA-1", {
-  commit_sha <- gh_commit_sha("v0.0.0", "ChadGoymer/githapi")
+  commit_sha <- suppressWarnings(gh_commit_sha("v0.0.0", "ChadGoymer/githapi"))
   expect_true(is_string(commit_sha))
   expect_identical(commit_sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
 })

@@ -417,6 +417,8 @@ is_valid_sha <- function(
 #
 #' Get the SHA-1 of a commit reference
 #'
+#' NOTE: This function has been deprecated, please use [view_shas()] instead.
+#'
 #' <https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
@@ -439,6 +441,8 @@ gh_commit_sha <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_shas", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))
