@@ -622,6 +622,8 @@ gh_compare_files <- function(
 #
 #' Get the README
 #'
+#' NOTE: This function has been deprecated, please use [read_files()] instead.
+#'
 #' <https://developer.github.com/v3/repos/contents/#get-the-readme>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
@@ -644,6 +646,8 @@ gh_readme <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("read_files", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))

@@ -232,7 +232,9 @@ test_that("gh_compare_files returns a tibble of information of file differences 
 
 #  FUNCTION: gh_readme ------------------------------------------------------------------------
 test_that("gh_readme returns the text in the README file", {
-  readme_d9fe50f <- gh_readme("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  readme_d9fe50f <- suppressWarnings(
+    gh_readme("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
   expect_true(is_string(readme_d9fe50f))
   expect_identical(
     readme_d9fe50f,

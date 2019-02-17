@@ -25,5 +25,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A string containing the contents of the README.
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=read_files]{read_files()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/contents/#get-the-readme}
 }
