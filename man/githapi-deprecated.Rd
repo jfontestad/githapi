@@ -38,6 +38,7 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_readme]{gh_readme()}}: replace with \code{\link[=read_files]{read_files()}}
 \item \code{\link[=gh_contents]{gh_contents()}}: replace with \code{\link[=read_files]{read_files()}}
 \item \code{\link[=gh_download]{gh_download()}}: replace with \code{\link[=download_commit]{download_commit()}}
+\item \code{\link[=gh_release]{gh_release()}}: replace with \code{\link[=view_releases]{view_releases()}}
 }
 }
 

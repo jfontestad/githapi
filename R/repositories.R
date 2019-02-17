@@ -1078,6 +1078,8 @@ gh_languages <- function(
 #
 #' Get a single release
 #'
+#' NOTE: This function has been deprecated, please use [view_releases()] instead.
+#'
 #' <https://developer.github.com/v3/repos/releases/#get-a-single-release>
 #' <https://developer.github.com/v3/repos/releases/#get-the-latest-release>
 #' <https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name>
@@ -1102,6 +1104,8 @@ gh_release <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_releases", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))

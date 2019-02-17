@@ -384,7 +384,7 @@ test_that("gh_releases returns a tibble describing the releases", {
 
 #  FUNCTION: gh_release -----------------------------------------------------------------------
 test_that("gh_release returns a list describing the release", {
-  release_0.1.0 <- gh_release("v0.1.0", "ChadGoymer/githapi")
+  release_0.1.0 <- suppressWarnings(gh_release("v0.1.0", "ChadGoymer/githapi"))
   expect_is(release_0.1.0, "list")
   expect_named(
     release_0.1.0,
@@ -393,10 +393,10 @@ test_that("gh_release returns a list describing the release", {
       "assets", "tarball_url", "zipball_url", "body"))
   expect_identical(release_0.1.0$tag_name, "v0.1.0")
 
-  release_by_id <- gh_release(7210389, "ChadGoymer/githapi")
+  release_by_id <- suppressWarnings(gh_release(7210389, "ChadGoymer/githapi"))
   expect_identical(release_by_id, release_0.1.0)
 
-  release_latest <- gh_release(repo = "ChadGoymer/githapi")
+  release_latest <- suppressWarnings(gh_release(repo = "ChadGoymer/githapi"))
   expect_is(release_latest, "list")
   expect_true(as.POSIXct(release_0.1.0$created_at) < as.POSIXct(release_latest$created_at))
 })
