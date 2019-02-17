@@ -260,7 +260,7 @@ test_that("gh_contents returns the text in a specified file", {
 test_that("gh_download saves the contents of a commit to the specified location", {
   temp_path <- file.path(tempdir(), "gh_download")
   on.exit(unlink(temp_path, recursive = TRUE))
-  gh_download("master", "ChadGoymer/githapi", temp_path)
+  suppressWarnings(gh_download("master", "ChadGoymer/githapi", temp_path))
 
   expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
   expect_true(dir.exists(file.path(temp_path, "R")))

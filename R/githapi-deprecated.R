@@ -32,5 +32,6 @@
 #' - [gh_compare_files()]: replace with [compare_files()]
 #' - [gh_readme()]: replace with [read_files()]
 #' - [gh_contents()]: replace with [read_files()]
+#' - [gh_download()]: replace with [download_commit()]
 #'
 NULL

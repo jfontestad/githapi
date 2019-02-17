@@ -714,6 +714,8 @@ gh_contents <- function(
 #
 #' Download the entire tree from a commit
 #'
+#' NOTE: This function has been deprecated, please use [download_commit()] instead.
+#'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -736,6 +738,8 @@ gh_download <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("download_commit", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_string(path))
