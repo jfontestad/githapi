@@ -1,6 +1,6 @@
 context("repositories contents")
 
-# TEST: view_file, create_file, update_file & delete_file -------------------------------------
+# TEST: view_files, create_files, update_files & delete_files ---------------------------------
 
 test_that("view_files, create_files, update_files and delete files on the default branch works", {
   all_files <- view_files("ChadGoymer/test-githapi")
