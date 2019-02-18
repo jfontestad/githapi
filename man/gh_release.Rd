@@ -25,6 +25,9 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A list describing the release (see GitHub's API documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_releases]{view_releases()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/releases/#get-a-single-release}
 \url{https://developer.github.com/v3/repos/releases/#get-the-latest-release}
 \url{https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name}

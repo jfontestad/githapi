@@ -24,5 +24,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A tibble describing all the tags (see GitHub's API documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_tags]{view_tags()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/#list-tags}
 }

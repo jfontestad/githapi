@@ -27,5 +27,8 @@ A tibble describing the commits and the differences (see GitHub's API documentat
 details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=compare_commits]{compare_commits()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
 }

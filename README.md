@@ -1,40 +1,38 @@
 githapi
 =======
 
-[![Build
-Status](https://travis-ci.org/ChadGoymer/githapi.svg?branch=master)](https://travis-ci.org/ChadGoymer/githapi)
+[![Build Status](https://travis-ci.org/ChadGoymer/githapi.svg?branch=master)](https://travis-ci.org/ChadGoymer/githapi)
 
-User-friendly access to the GitHub API for R, consistent with the
-tidyverse.
+User-friendly access to the GitHub API for R, consistent with the tidyverse.
 
 Overview
 --------
 
-GitHub is a wildly popular host for version controlled code, but also
-data. This package provides a user-friendly way to access content within
-GitHub through v3 of its [API](https://developer.github.com/v3/). The
-functions are also consistent with the
-[tidyverse](http://www.tidyverse.org/) approach and return tibbles where
-possible.
+GitHub is a wildly popular host for version controlled code, but also data. This package 
+provides a user-friendly way to access content within GitHub through v3 of its 
+[API](https://developer.github.com/v3/). The functions are also consistent with the
+[tidyverse](http://www.tidyverse.org/) approach and return tibbles where possible.
+
+Detailed documentation can be found at: http://www.goymer.me.uk/githapi
 
 Installation
 ------------
 
 The easiest way to install githapi is with the devtools package:
 
-    library(devtools)
-    install_github("ChadGoymer/githapi")
+```r
+library(devtools)
+install_github("ChadGoymer/githapi")
+```
 
 Authorisation
 -------------
 
-In order to access repositories in GitHub authentication is required, by
-setting a [Personal Access
-Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+In order to access repositories in GitHub authentication is required, by setting a 
+[Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
 githapi identifies the personal token in two possible ways:
 
-1.  On package load - if set as an environment variable named either
-    "GITHUB\_TOKEN" or "GITHUB\_PAT"
+1.  On package load - if set as an environment variable named either "GITHUB_TOKEN" or "GITHUB_PAT"
 2.  At any time - if set as an R option called "github.token"
 
 Setting an R option will override the environment variable.
@@ -42,141 +40,200 @@ Setting an R option will override the environment variable.
 Usage
 -----
 
-Most of the functions in the package are prefixed by `gh_`, except for
-predicate functions which are prefixed with `is_`.
+`githapi` works best if used as part of the [tidyverse](http://www.tidyverse.org/).
 
-    library(tidyverse)
-    library(githapi)
+```r
+library(tidyverse)
+library(githapi)
+```
 
-### Getting information about a user's repositories
+### Getting information about a repository
 
-The main reason for using githapi is to extract information from GitHub.
-For example to find all the repositories a user has use the function
-`gh_repositories()`:
+`githapi` provides many functions for extracting information from a repository. For example, To 
+get information about the branches use 
+[`view_branches()`](http://www.goymer.me.uk/githapi/reference/view_branches.html):
 
-    gh_repositories("ChadGoymer")
+```r
+view_branches("ChadGoymer/test-githapi")
+```
+```r
+#> # A tibble: 4 x 6
+#>   name     ref        url                 object_sha      object_type object_url               
+#>   <chr>    <chr>      <chr>               <chr>           <chr>       <chr>                    
+#> 1 master   refs/head~ https://api.github~ bd1be3ea52d69d~ commit      https://api.github.com/r~
+#> 2 test-br~ refs/head~ https://api.github~ 244116707ad9e2~ commit      https://api.github.com/r~
+#> 3 test-up~ refs/head~ https://api.github~ 61c19d6edb1b9e~ commit      https://api.github.com/r~
+#> 4 unedite~ refs/head~ https://api.github~ 37d97bf9e93418~ commit      https://api.github.com/r~
+```
 
-    ## [18:12:03] > GET: https://api.github.com/users/ChadGoymer/repos?per_page=100
+Similarly, to get the history of commits for a particular branch use 
+[`view_history()`](http://www.goymer.me.uk/githapi/reference/view_history.html):
 
-    ## [18:12:03] > Parsing content
+```r
+view_history("master", "ChadGoymer/test-githapi")
+```
+```r
+#> # A tibble: 1,000 x 12
+#>    sha   message author_name author_email committer_name committer_email date               
+#>    <chr> <chr>   <chr>       <chr>        <chr>          <chr>           <dttm>             
+#>  1 bd1b~ Testin~ Jane Jones  jane.jones@~ Bob Smith      bob.smith@acme~ 2019-02-18 07:46:08
+#>  2 d12b~ Testin~ Jane Jones  jane.jones@~ Bob Smith      bob.smith@acme~ 2019-02-18 07:46:07
+#>  3 9d4c~ Testin~ Bob Smith   bob.smith@a~ Jane Jones     jane.jones@acm~ 2019-02-18 07:46:06
+#>  4 3cb8~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:59
+#>  5 06f3~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:58
+#>  6 aaec~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:58
+#>  7 523c~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:57
+#>  8 3a95~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:56
+#>  9 a032~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:53
+#> 10 9b77~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:52
+#> # ... with 990 more rows, and 5 more variables: url <chr>, tree_sha <chr>, tree_url <chr>,
+#> #   parent_sha <list>, parent_url <list>
+```
 
-    ## [18:12:03] > Done
+Note that, by default, when viewing many items, only the last 1000 are returned. If you wish to
+view more you can set the `n_max` parameter. To get information about the files in a particular 
+commit use [`view_files()`](http://www.goymer.me.uk/githapi/reference/view_files.html):
 
-    ## # A tibble: 9 x 11
-    ##   name  description owner_login owner_type default_branch open_issues  size
-    ##   <chr> <chr>       <chr>       <chr>      <chr>                <int> <int>
-    ## 1 chad~ My persona~ ChadGoymer  User       master                   0   156
-    ## 2 git-~ Simple gui~ ChadGoymer  User       master                   0     2
-    ## 3 gith~ User-frien~ ChadGoymer  User       master                   8   724
-    ## 4 logr  <NA>        ChadGoymer  User       master                   0     0
-    ## 5 r-be~ A set of g~ ChadGoymer  User       master                   0 11306
-    ## 6 r-py~ <NA>        ChadGoymer  User       master                   0  1172
-    ## 7 r-tr~ Training m~ ChadGoymer  User       master                   0  1229
-    ## 8 rfil~ An R packa~ ChadGoymer  User       master                   0     2
-    ## 9 shin~ <NA>        ChadGoymer  User       master                   0 13408
-    ## # ... with 4 more variables: url <chr>, html_url <chr>, created_at <dttm>,
-    ## #   updated_at <dttm>
+```r
+view_files(ref = "master", repo = "ChadGoymer/test-githapi")
+```
+```r
+#> # A tibble: 4 x 9
+#>   name   path   sha       size type  url          html_url     git_url        download_url     
+#>   <chr>  <chr>  <chr>    <int> <chr> <chr>        <chr>        <chr>          <chr>            
+#> 1 READM~ READM~ 75b08f1~    65 file  https://api~ https://git~ https://api.g~ https://raw.gith~
+#> 2 test-~ test-~ bbac77b~     0 dir   https://api~ https://git~ https://api.g~ NA               
+#> 3 test-~ test-~ f933c54~    22 file  https://api~ https://git~ https://api.g~ https://raw.gith~
+#> 4 test-~ test-~ 68f9ad1~    63 file  https://api~ https://git~ https://api.g~ https://raw.gith~
+```
 
-Information on the branches in a particular repository can then be
-obtained using `gh_branches()`:
+Note that we have used a branch name here rather than a commit. That is because most functions
+in `githapi` allow git references to identify commits. A git reference is either a branch, in 
+which case the head commit on the branch is used, a tag or a SHA-1 of the commit.
 
-    gh_branches("ChadGoymer/githapi")
+Information about tags and releases can also be viewed by using 
+[`view_tags()`](http://www.goymer.me.uk/githapi/reference/view_files.html) and 
+[`view_releases()`](http://www.goymer.me.uk/githapi/reference/view_releases.html).
 
-    ## [18:12:04] > GET: https://api.github.com/repos/ChadGoymer/githapi/branches?per_page=100
+```r
+view_tags("ChadGoymer/test-githapi")
+```
+```r
+#> # A tibble: 1 x 6
+#>   name  ref      url                  object_sha       object_type object_url                  
+#>   <chr> <chr>    <chr>                <chr>            <chr>       <chr>                       
+#> 1 0.0.0 refs/ta~ https://api.github.~ cbd94cf24a4c627~ commit      https://api.github.com/repo~
+```
 
-    ## [18:12:05] > Parsing content
+```r
+view_releases("ChadGoymer/test-githapi")
+```
+```r
+#> # A tibble: 1 x 13
+#>       id tag_name name  body  author_login draft prerelease target_commitish
+#>    <int> <chr>    <chr> <chr> <chr>        <lgl> <lgl>      <chr>           
+#> 1 1.37e7 0.0.0    Init~ This~ ChadGoymer   FALSE FALSE      cbd94cf24a4c627~
+#> # ... with 5 more variables: created_at <dttm>, published_at <dttm>, assets <list>,
+#> #   zipball_url <chr>, url <chr>
+```
 
-    ## [18:12:05] > Done
+### Downloading files from a repository
 
-    ## # A tibble: 4 x 3
-    ##   name        commit_sha             commit_url                           
-    ##   <chr>       <chr>                  <chr>                                
-    ## 1 0-test-bra~ e93edf23e95b59d08853e~ https://api.github.com/repos/ChadGoy~
-    ## 2 65-hook-up~ 5db96593332e004c30122~ https://api.github.com/repos/ChadGoy~
-    ## 3 develop     27097e72c1cba202c2390~ https://api.github.com/repos/ChadGoy~
-    ## 4 master      dc7da99ef557f362d5f2c~ https://api.github.com/repos/ChadGoy~
+In addition to getting information about the contents of a repository, `githapi` can also 
+download files and commits. To download individual files use
+[`download_files()`](http://www.goymer.me.uk/githapi/reference/download_files.html)
 
-The history of a branch can be obtained using `gh_commits()`:
+```r
+temp_path <- file.path(tempdir(), "githapi")
 
-    gh_commits("master", "ChadGoymer/githapi") %>% head()
+download_files(
+  paths    = c("README.md", "test-file.txt"),
+  location = temp_path,
+  repo     = "ChadGoymer/test-githapi")
+```
 
-    ## [18:12:05] > GET: https://api.github.com/repos/ChadGoymer/githapi/commits?sha=master&per_page=100
+To download an entire commit use
+[`download_commit()`](http://www.goymer.me.uk/githapi/reference/download_commit.html)
 
-    ## [18:12:14] > Parsing content
+```r
+download_commit(
+  ref  = "master",
+  path = temp_path,
+  repo = "ChadGoymer/test-githapi")
+```
 
-    ## [18:12:14] > Done
+You can also read text files from a commit directly using
+[`read_files()`](http://www.goymer.me.uk/githapi/reference/read_files.html)
 
-    ## [18:12:14] > GET: https://api.github.com/repositories/93376315/commits?sha=master&per_page=100&page=2
+```r
+files <- read_files(c("README.md", "test-file.txt"), "ChadGoymer/test-githapi")
+```
 
-    ## [18:12:15] > Parsing content
+and source R scripts directly from GitHub using
+[`source_files()`](http://www.goymer.me.uk/githapi/reference/source_files.html)
 
-    ## [18:12:15] > Done
+```r
+source_files("test-source.R", "ChadGoymer/test-githapi")
+```
 
-    ## # A tibble: 6 x 10
-    ##   sha   message author_name author_email committer_name committer_email
-    ##   <chr> <chr>   <chr>       <chr>        <chr>          <chr>          
-    ## 1 dc7d~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-    ## 2 9b31~ Merge ~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-    ## 3 abcc~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-    ## 4 2709~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-    ## 5 0262~ update~ Chad        chad.goymer~ Chad           chad.goymer@gm~
-    ## 6 00fd~ "Merge~ Chad Goymer chad.goymer~ GitHub         noreply@github~
-    ## # ... with 4 more variables: date <dttm>, url <chr>, tree_sha <chr>,
-    ## #   tree_url <chr>
+### Updating a repository
 
-### Getting the contents of files
+`githapi` also provides a set of functions for updating repsitories, for adding branches, tags as
+well as new commits.
 
-There are a few ways of getting the content of a text file in GitHub.
-For files of less than 1 MB, you can use `gh_contents()`:
+To create or update a file, or small number of text files, in a repository use
+[`create_files()`](http://www.goymer.me.uk/githapi/reference/create_files.html) or
+[`update_files()`](http://www.goymer.me.uk/githapi/reference/update_files.html)
 
-    gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi") %>% cat()
+```r
+create_files(
+  paths    = c("aaaa.txt", "bbbb.txt"),
+  contents = c("Created to test:\n\n  `create_files()`", "Created to test:\n\n  `create_files()`"),
+  messages = "Testing create_files()",
+  repo     = "ChadGoymer/test-githapi")
+```
 
-    ## [18:12:15] > GET: https://api.github.com/repos/ChadGoymer/githapi/contents/DESCRIPTION?ref=master
+```r
+update_files(
+  paths    = c("aaaa.txt", "bbbb.txt"),
+  contents = c("Updated to test:\n\n  `update_files()`", "Updated to test:\n\n  `update_files()`"),
+  messages = "Testing update_files()",
+  repo     = "ChadGoymer/test-githapi")
+```
 
-    ## [18:12:15] > Parsing content
+These functions create a new commit per file and specify the contents as strings. To upload many
+files, and/or binary files, use 
+[`upload_commit()`](http://www.goymer.me.uk/githapi/reference/upload_commit.html)
 
-    ## [18:12:15] > Done
+```r
+upload_commit(
+  branch  = "master",
+  message = "Commit made with upload_commit",
+  path    = system.file("test-data/upload-tree", package = "githapi"),
+  parents = "master",
+  repo    = "ChadGoymer/test-githapi")
+```
 
-    ## Package: githapi
-    ## Title: User-friendly access to the GitHub API for R, consistent with the tidyverse.
-    ## Version: 0.6.1
-    ## Authors@R: person("Chad", "Goymer", email = "chad.goymer@lloyds.com", role = c("aut", "cre"))
-    ## Description: Provides a suite of functions which simplify working with GitHub's API.
-    ## Imports:
-    ##     curl,
-    ##     jsonlite,
-    ##     dplyr
-    ## Roxygen: list(markdown = TRUE)
-    ## License: MIT + file LICENSE
-    ## Encoding: UTF-8
-    ## LazyData: true
-    ## Suggests: testthat
-    ## RoxygenNote: 6.1.0
-    ## URL: https://github.com/ChadGoymer/githapi
-    ## BugReports: https://github.com/ChadGoymer/githapi/issues
+This function, by default, makes a new commit containing the contents of the specified directory.
+If you wish to only specify the files to change then set the `replace` parameter to `FALSE` 
+(see documentation for details).
 
-The README file can be downloaded using `gh_readme()`:
+Finally, tags and releases can be created using 
+[`create_tags()`](http://www.goymer.me.uk/githapi/reference/create_tags.html) and
+[`create_releases()`](http://www.goymer.me.uk/githapi/reference/create_releases.html) respectively.
 
-    gh_readme("master", "ChadGoymer/githapi")
+```r
+create_tags(
+  tags = c("aaa", "bbb"),
+  shas = c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"),
+  repo = "ChadGoymer/test-githapi")
+```
 
-For larger files, up to 100 MB, you can use the `gh_git_blob()`
-function, or the move convenient `gh_save()`, which downloads the file
-as a binary blob and writes it to disk:
-
-    gh_save("DESCRIPTION", "ChadGoymer/githapi", "develop", path = "/tmp")
-
-If you wish to read an R script from GitHub you can use the
-`gh_source()` which downloads and `source`'s the script.
-
-    gh_source("inst/test-data/test-source.R", "ChadGoymer/githapi", "develop")
-
-Finally, you can download the entire contents of a commit using the
-`gh_download()` function:
-
-    gh_download("master", "ChadGoymer/githapi", "/tmp")
-
-Futher information
-------------------
-
-Please see the help files for each function in the package for more
-details.
+```r
+create_releases(
+  tags    = c("aaa", "bbb"),
+  commits = c("310c21d3f1601a46e014e68e94814b23406bf574", "32d3c5c4f6aba7ae9679480407e1b9f94ad04843"),
+  names   = c("AAA", "BBB"),
+  bodies  = c("Created for testing: aaa", "Created for testing: bbb"),
+  repo    = "ChadGoymer/test-githapi")
+```

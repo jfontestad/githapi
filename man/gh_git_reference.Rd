@@ -25,5 +25,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A list describing the reference (see GitHub's API documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_tags]{view_tags()}} or \code{\link[=view_branches]{view_branches()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/git/refs/#get-a-reference}
 }

@@ -27,9 +27,11 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 A string containing the contents of the specified file.
 }
 \description{
-\url{https://developer.github.com/v3/repos/contents/#get-contents}
+NOTE: This function has been deprecated, please use \code{\link[=read_files]{read_files()}} instead.
 }
 \details{
+\url{https://developer.github.com/v3/repos/contents/#get-contents}
+
 Note: This function can only get the contents of files less than 1MB. For larger files use
 \code{\link[=gh_git_blob]{gh_git_blob()}}.
 }

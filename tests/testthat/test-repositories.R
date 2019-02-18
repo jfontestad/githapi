@@ -56,7 +56,8 @@ test_that("gh_repositories returns an error is the specified owner does not exis
 
 #  FUNCTION: gh_tags ----------------------------------------------------------------------
 test_that("gh_tags returns a tibble describing all the tags", {
-  tags <- gh_tags("ChadGoymer/githapi")
+  tags <- suppressWarnings(gh_tags("ChadGoymer/githapi"))
+
   expect_is(tags, "tbl")
   expect_true("v0.0.0" %in% tags$name)
   expect_identical(
@@ -69,31 +70,32 @@ test_that("gh_tags returns a tibble describing all the tags", {
 })
 
 test_that("gh_tags returns an error is the specified repo does not exist", {
-  expect_error(gh_tags("SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_tags("SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
 test_that("gh_branch returns a list describing the branch", {
-  branch <- gh_branch("master", "ChadGoymer/githapi")
+  branch <- suppressWarnings(gh_branch("master", "ChadGoymer/githapi"))
   expect_is(branch, "list")
   expect_identical(branch$name, "master")
 })
 
 test_that("gh_branch returns an error is the specified branch or repo does not exist", {
-  expect_error(gh_branch("no_branch", "ChadGoymer/githapi"))
-  expect_error(gh_branch("master", "SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_branch("no_branch", "ChadGoymer/githapi")))
+  expect_error(suppressWarnings(gh_branch("master", "SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: is_branch ------------------------------------------------------------------------
 test_that("is_branch returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_branch("master", "ChadGoymer/githapi"))
-  expect_false(is_branch(list(x = "alist"), "ChadGoymer/githapi"))
-  expect_false(is_branch("no_branch", "ChadGoymer/githapi"))
+  expect_true(suppressWarnings(is_branch("master", "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_branch(list(x = "alist"), "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_branch("no_branch", "ChadGoymer/githapi")))
 })
 
 #  FUNCTION: gh_branches ------------------------------------------------------------------
 test_that("gh_branches returns a tibble describing all the branches", {
-  branches <- gh_branches("ChadGoymer/githapi")
+  branches <- suppressWarnings(gh_branches("ChadGoymer/githapi"))
+
   expect_is(branches, "tbl")
   expect_true("master" %in% branches$name)
   expect_identical(
@@ -104,16 +106,19 @@ test_that("gh_branches returns a tibble describing all the branches", {
 })
 
 test_that("gh_branches returns an error is the specified repo does not exist", {
-  expect_error(gh_branches("SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_branches("SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: gh_commit ------------------------------------------------------------------------
 test_that("gh_commit returns a list describing the commit", {
-  commit_master <- gh_commit("master", "ChadGoymer/githapi")
+  commit_master <- suppressWarnings(gh_commit("master", "ChadGoymer/githapi"))
+
   expect_is(commit_master, "list")
   expect_true(all(c("sha", "commit", "author", "committer", "files") %in% names(commit_master)))
 
-  commit_d9fe50f <- gh_commit("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  commit_d9fe50f <- suppressWarnings(
+    gh_commit("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
   expect_identical(commit_d9fe50f$sha, "d9fe50f8e31d7430df2c5b02442dffb68c854f08")
   expect_identical(commit_d9fe50f$commit$message, "Initial commit")
   expect_identical(commit_d9fe50f$author$login, "ChadGoymer")
@@ -122,27 +127,27 @@ test_that("gh_commit returns a list describing the commit", {
 })
 
 test_that("gh_commit returns an error is the specified commit or repo does not exist", {
-  expect_error(gh_commit("no_commit", "ChadGoymer/githapi"))
-  expect_error(gh_commit("master", "SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_commit("no_commit", "ChadGoymer/githapi")))
+  expect_error(suppressWarnings(gh_commit("master", "SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: is_valid_sha ---------------------------------------------------------------------
 test_that("is_valid_sha returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_valid_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
-  expect_false(is_valid_sha("aaaaa", "ChadGoymer/githapi"))
-  expect_false(is_valid_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi"))
+  expect_true(suppressWarnings(is_valid_sha("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_valid_sha("aaaaa", "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_valid_sha("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ChadGoymer/githapi")))
 })
 
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 test_that("gh_commit_sha returns a string with the SHA-1", {
-  commit_sha <- gh_commit_sha("v0.0.0", "ChadGoymer/githapi")
+  commit_sha <- suppressWarnings(gh_commit_sha("v0.0.0", "ChadGoymer/githapi"))
   expect_true(is_string(commit_sha))
   expect_identical(commit_sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
 })
 
 #  FUNCTION: gh_commits -------------------------------------------------------------------
 test_that("gh_commits returns a tibble describing all the commits on a branch", {
-  commits <- gh_commits("master", "ChadGoymer/githapi", n_max = 1000)
+  commits <- suppressWarnings(gh_commits("master", "ChadGoymer/githapi", n_max = 1000))
   expect_is(commits, "tbl")
   expect_true("d9fe50f8e31d7430df2c5b02442dffb68c854f08" %in% commits$sha)
   expect_identical(
@@ -160,15 +165,15 @@ test_that("gh_commits returns a tibble describing all the commits on a branch", 
 })
 
 test_that("gh_commits returns an error is the specified repo does not exist", {
-  expect_error(gh_commits("master", "SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_commits("master", "SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: gh_compare_commits ---------------------------------------------------------------
 test_that("gh_compare_commits returns information on the differences between two commits", {
-  comparison <- gh_compare_commits(
+  comparison <- suppressWarnings(gh_compare_commits(
     "d9fe50f8e31d7430df2c5b02442dffb68c854f08",
     "d8a62ccdc3df3e002dbac55390772424b136844a",
-    "ChadGoymer/githapi")
+    "ChadGoymer/githapi"))
 
   expect_is(comparison, "tbl")
 
@@ -192,10 +197,10 @@ test_that("gh_compare_commits returns information on the differences between two
 
 #  FUNCTION: gh_compare_files -----------------------------------------------------------------
 test_that("gh_compare_files returns a tibble of information of file differences between commits", {
-  comparison <- gh_compare_files(
+  comparison <- suppressWarnings(gh_compare_files(
     "d9fe50f8e31d7430df2c5b02442dffb68c854f08",
     "d8a62ccdc3df3e002dbac55390772424b136844a",
-    "ChadGoymer/githapi")
+    "ChadGoymer/githapi"))
 
   expect_is(comparison, "tbl")
 
@@ -227,7 +232,9 @@ test_that("gh_compare_files returns a tibble of information of file differences 
 
 #  FUNCTION: gh_readme ------------------------------------------------------------------------
 test_that("gh_readme returns the text in the README file", {
-  readme_d9fe50f <- gh_readme("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  readme_d9fe50f <- suppressWarnings(
+    gh_readme("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
   expect_true(is_string(readme_d9fe50f))
   expect_identical(
     readme_d9fe50f,
@@ -236,10 +243,14 @@ test_that("gh_readme returns the text in the README file", {
 
 #  FUNCTION: gh_contents ----------------------------------------------------------------------
 test_that("gh_contents returns the text in a specified file", {
-  description_master <- gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi")
+  description_master <- suppressWarnings(
+    gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi"))
+
   expect_true(is_string(description_master))
 
-  readme_d9fe50f <- gh_contents("README.md", "d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi")
+  readme_d9fe50f <- suppressWarnings(
+    gh_contents("README.md", "d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
+
   expect_identical(
     readme_d9fe50f,
     "# githapi\nUser-friendly access to the GitHub API for R, consistent with the tidyverse.\n")
@@ -249,7 +260,7 @@ test_that("gh_contents returns the text in a specified file", {
 test_that("gh_download saves the contents of a commit to the specified location", {
   temp_path <- file.path(tempdir(), "gh_download")
   on.exit(unlink(temp_path, recursive = TRUE))
-  gh_download("master", "ChadGoymer/githapi", temp_path)
+  suppressWarnings(gh_download("master", "ChadGoymer/githapi", temp_path))
 
   expect_true(file.exists(file.path(temp_path, "DESCRIPTION")))
   expect_true(dir.exists(file.path(temp_path, "R")))
@@ -351,7 +362,7 @@ test_that("gh_languages returns a tibble describing the languages", {
 
 #  FUNCTION: gh_releases ----------------------------------------------------------------------
 test_that("gh_releases returns a tibble describing the releases", {
-  releases <- gh_releases("ChadGoymer/githapi")
+  releases <- suppressWarnings(gh_releases("ChadGoymer/githapi"))
   expect_is(releases, "tbl")
   expect_identical(
     sapply(releases, function(field) class(field)[[1]]),
@@ -373,7 +384,7 @@ test_that("gh_releases returns a tibble describing the releases", {
 
 #  FUNCTION: gh_release -----------------------------------------------------------------------
 test_that("gh_release returns a list describing the release", {
-  release_0.1.0 <- gh_release("v0.1.0", "ChadGoymer/githapi")
+  release_0.1.0 <- suppressWarnings(gh_release("v0.1.0", "ChadGoymer/githapi"))
   expect_is(release_0.1.0, "list")
   expect_named(
     release_0.1.0,
@@ -382,10 +393,10 @@ test_that("gh_release returns a list describing the release", {
       "assets", "tarball_url", "zipball_url", "body"))
   expect_identical(release_0.1.0$tag_name, "v0.1.0")
 
-  release_by_id <- gh_release(7210389, "ChadGoymer/githapi")
+  release_by_id <- suppressWarnings(gh_release(7210389, "ChadGoymer/githapi"))
   expect_identical(release_by_id, release_0.1.0)
 
-  release_latest <- gh_release(repo = "ChadGoymer/githapi")
+  release_latest <- suppressWarnings(gh_release(repo = "ChadGoymer/githapi"))
   expect_is(release_latest, "list")
   expect_true(as.POSIXct(release_0.1.0$created_at) < as.POSIXct(release_latest$created_at))
 })

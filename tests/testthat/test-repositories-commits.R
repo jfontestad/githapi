@@ -53,6 +53,17 @@ test_that("view_shas returns a named character vector with the SHAs", {
   expect_identical(shas[["0.0.0"]], "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d")
 })
 
+# TEST: shas_exist ----------------------------------------------------------------------------
+
+test_that("shas_exist returns TRUE is the commit exists and FALSE otherwise", {
+  expect_true(shas_exist("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "ChadGoymer/test-githapi"))
+  expect_false(shas_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi"))
+
+  expect_identical(
+    shas_exist(c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi"),
+    c(`cbd94cf24a4c62761b3ae59ca3c69f868591cf7d` = TRUE, `0000000000000000000000000000000000000000` = FALSE))
+})
+
 # TEST: compare_commits -----------------------------------------------------------------------
 
 test_that("compare_commits returns information on the differences between two commits", {

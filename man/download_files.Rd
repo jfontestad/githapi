@@ -14,7 +14,7 @@ download_files(paths, location, ref, repo,
 \item{location}{(string) The location to save the files to.}
 
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch
-is specified the head commit is used.  If not specified the head of the default branch is
+is specified the head commit is used. If not specified the head of the default branch is
 used.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}

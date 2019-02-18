@@ -27,5 +27,5 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 Full tree of files in specified location.
 }
 \description{
-Download the entire tree from a commit
+NOTE: This function has been deprecated, please use \code{\link[=download_commit]{download_commit()}} instead.
 }

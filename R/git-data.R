@@ -2,6 +2,8 @@
 #
 #' Get a blob
 #'
+#' NOTE: This function has been deprecated, please use [view_blobs()] instead.
+#'
 #' <https://developer.github.com/v3/git/blobs/#get-a-blob>
 #'
 #' @param sha (string) SHA-1 of the blob
@@ -24,6 +26,8 @@ gh_git_blob <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_blobs", package = "githapi")
+
   assert(is_sha(sha))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -40,6 +44,8 @@ gh_git_blob <- function(
 #  FUNCTION: gh_git_commit --------------------------------------------------------------------
 #
 #' Get a commit
+#'
+#' NOTE: This function has been deprecated, please use [view_commits()] instead.
 #'
 #' <https://developer.github.com/v3/git/commits/#get-a-commit>
 #'
@@ -62,6 +68,8 @@ gh_git_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_commits", package = "githapi")
+
   assert(is_sha(sha))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -75,6 +83,8 @@ gh_git_commit <- function(
 #  FUNCTION: gh_git_reference -----------------------------------------------------------------
 #
 #' Get a reference
+#'
+#' NOTE: This function has been deprecated, please use [view_tags()] or [view_branches()] instead.
 #'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
@@ -98,6 +108,8 @@ gh_git_reference <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(c("view_tags' or 'view_branches"), package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -111,6 +123,8 @@ gh_git_reference <- function(
 #  FUNCTION: is_tag ---------------------------------------------------------------------------
 #
 #' Check whether the input is a valid tag
+#'
+#' NOTE: This function has been deprecated, please use [tags_exist()] instead.
 #'
 #' <https://developer.github.com/v3/git/refs/#get-a-reference>
 #'
@@ -133,6 +147,8 @@ is_tag <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(c("tags_exist"), package = "githapi")
+
   if (!is_string(tag)) {
     return(FALSE)
   }
@@ -151,6 +167,8 @@ is_tag <- function(
 #  FUNCTION: gh_git_references ----------------------------------------------------------------
 #
 #' Get all references
+#'
+#' NOTE: This function has been deprecated, please use [view_tags()] or [view_branches()] instead.
 #'
 #' <https://developer.github.com/v3/git/refs/#get-all-references>
 #'
@@ -173,6 +191,8 @@ gh_git_references <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(c("view_tags' or 'view_branches"), package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
@@ -204,6 +224,8 @@ gh_git_references <- function(
 #
 #' Get an annotated tag
 #'
+#' NOTE: This function has been deprecated, it will be removed in a future version.
+#'
 #' <https://developer.github.com/v3/git/tags/#get-a-tag>
 #'
 #' @param sha (string) The SHA-1 of the tag.
@@ -225,6 +247,8 @@ gh_git_tag <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(package = "githapi")
+
   assert(is_sha(sha))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -238,6 +262,8 @@ gh_git_tag <- function(
 #  FUNCTION: gh_git_tree ----------------------------------------------------------------------
 #
 #' Get a tree
+#'
+#' NOTE: This function has been deprecated, please use [view_trees()] instead.
 #'
 #' <https://developer.github.com/v3/git/trees/#get-a-tree>
 #'
@@ -264,6 +290,8 @@ gh_git_tree <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_trees", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_boolean(recursive))
@@ -285,6 +313,8 @@ gh_git_tree <- function(
 #  FUNCTION: gh_save --------------------------------------------------------------------------
 #
 #' Download files and save them to a location
+#'
+#' NOTE: This function has been deprecated, please use [download_files()] instead.
 #'
 #' <https://developer.github.com/v3/git/blobs/#get-a-blob>
 #'
@@ -312,6 +342,8 @@ gh_save <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("download_files", package = "githapi")
+
   assert(is_character(files))
   assert(is_repo(repo))
   assert(is_string(path))
@@ -345,6 +377,8 @@ gh_save <- function(
 #
 #' Source an R file
 #'
+#' NOTE: This function has been deprecated, please use [source_files()] instead.
+#'
 #' <https://developer.github.com/v3/git/blobs/#get-a-blob>
 #'
 #' @param file (string) The path to the file in the repository
@@ -369,6 +403,8 @@ gh_source <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("source_file", package = "githapi")
+
   assert(is_string(file))
   assert(is_repo(repo))
   assert(is_string(ref))

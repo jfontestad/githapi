@@ -24,5 +24,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 TRUE or FALSE.
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=branches_exist]{branches_exist()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/repos/branches/#get-branch}
 }

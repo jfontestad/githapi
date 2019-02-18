@@ -27,5 +27,8 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 The result of sourcing the file.
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=source_files]{source_files()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/git/blobs/#get-a-blob}
 }

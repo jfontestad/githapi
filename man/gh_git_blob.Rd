@@ -25,5 +25,8 @@ A string containing the contents of the specified file (see GitHub's API
 documentation for details).
 }
 \description{
+NOTE: This function has been deprecated, please use \code{\link[=view_blobs]{view_blobs()}} instead.
+}
+\details{
 \url{https://developer.github.com/v3/git/blobs/#get-a-blob}
 }

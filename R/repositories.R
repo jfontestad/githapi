@@ -159,6 +159,8 @@ gh_repositories <- function(
 #
 #' Get information about all the tags in a repository
 #'
+#' NOTE: This function has been deprecated, please use [view_tags()] instead.
+#'
 #' <https://developer.github.com/v3/repos/#list-tags>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -180,6 +182,8 @@ gh_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_tags", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
@@ -200,6 +204,8 @@ gh_tags <- function(
 #  FUNCTION: gh_branch ------------------------------------------------------------------------
 #
 #' Get information about a branch
+#'
+#' NOTE: This function has been deprecated, please use [view_branches()] instead.
 #'
 #' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
@@ -222,6 +228,8 @@ gh_branch <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_branches", package = "githapi")
+
   assert(is_string(branch))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -235,6 +243,8 @@ gh_branch <- function(
 #  FUNCTION: is_branch ------------------------------------------------------------------------
 #
 #' Checks whether the input is a valid branch
+#'
+#' NOTE: This function has been deprecated, please use [branches_exist()] instead.
 #'
 #' <https://developer.github.com/v3/repos/branches/#get-branch>
 #'
@@ -257,6 +267,8 @@ is_branch <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("branches_exist", package = "githapi")
+
   if (!is_string(branch)) {
     return(FALSE)
   }
@@ -275,6 +287,8 @@ is_branch <- function(
 #  FUNCTION: gh_branches ----------------------------------------------------------------------
 #
 #' Get information about all the head commits in each branch
+#'
+#' NOTE: This function has been deprecated, please use [view_branches()] instead.
 #'
 #' <https://developer.github.com/v3/repos/branches/#list-branches>
 #'
@@ -297,6 +311,8 @@ gh_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_branches", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
@@ -315,6 +331,8 @@ gh_branches <- function(
 #  FUNCTION: gh_commit ------------------------------------------------------------------------
 #
 #' Get information about a commit
+#'
+#' NOTE: This function has been deprecated, please use [view_commits()] instead.
 #'
 #' <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
 #'
@@ -338,6 +356,8 @@ gh_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_commits", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -351,6 +371,8 @@ gh_commit <- function(
 #  FUNCTION: is_valid_sha ---------------------------------------------------------------------
 #
 #' Check whether the input is a valid SHA-1
+#'
+#' NOTE: This function has been deprecated, please use [shas_exist()] instead.
 #'
 #' <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
 #'
@@ -374,6 +396,8 @@ is_valid_sha <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("shas_exist", package = "githapi")
+
   if (!is_sha(sha)) {
     return(FALSE)
   }
@@ -392,6 +416,8 @@ is_valid_sha <- function(
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 #
 #' Get the SHA-1 of a commit reference
+#'
+#' NOTE: This function has been deprecated, please use [view_shas()] instead.
 #'
 #' <https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference>
 #'
@@ -415,6 +441,8 @@ gh_commit_sha <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_shas", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -431,6 +459,8 @@ gh_commit_sha <- function(
 #  FUNCTION: gh_commits -----------------------------------------------------------------------
 #
 #' Get information about all the history of commits
+#'
+#' NOTE: This function has been deprecated, please use [view_history()] instead.
 #'
 #' <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
 #'
@@ -456,6 +486,8 @@ gh_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_history", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_count(n_max))
@@ -483,6 +515,8 @@ gh_commits <- function(
 #
 #' Compare two commits
 #'
+#' NOTE: This function has been deprecated, please use [compare_commits()] instead.
+#'
 #' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
 #' @param base (string) The base branch name.
@@ -507,6 +541,8 @@ gh_compare_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("compare_commits", package = "githapi")
+
   assert(is_string(base))
   assert(is_string(head))
   assert(is_repo(repo))
@@ -534,6 +570,8 @@ gh_compare_commits <- function(
 #
 #' Compare the files of two commits
 #'
+#' NOTE: This function has been deprecated, please use [compare_files()] instead.
+#'
 #' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
 #' @param base (string) The base branch name.
@@ -559,6 +597,8 @@ gh_compare_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("compare_files", package = "githapi")
+
   assert(is_string(base))
   assert(is_string(head))
   assert(is_repo(repo))
@@ -582,6 +622,8 @@ gh_compare_files <- function(
 #
 #' Get the README
 #'
+#' NOTE: This function has been deprecated, please use [read_files()] instead.
+#'
 #' <https://developer.github.com/v3/repos/contents/#get-the-readme>
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
@@ -604,6 +646,8 @@ gh_readme <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("read_files", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -620,6 +664,8 @@ gh_readme <- function(
 #  FUNCTION: gh_contents ----------------------------------------------------------------------
 #
 #' Get contents of a file
+#'
+#' NOTE: This function has been deprecated, please use [read_files()] instead.
 #'
 #' <https://developer.github.com/v3/repos/contents/#get-contents>
 #'
@@ -648,6 +694,8 @@ gh_contents <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("read_files", package = "githapi")
+
   assert(is_string(path))
   assert(is_string(ref))
   assert(is_repo(repo))
@@ -665,6 +713,8 @@ gh_contents <- function(
 #  FUNCTION: gh_download ----------------------------------------------------------------------
 #
 #' Download the entire tree from a commit
+#'
+#' NOTE: This function has been deprecated, please use [download_commit()] instead.
 #'
 #' @param ref (string) A git reference: either a SHA-1, tag or branch. If a branch is specified
 #'   the head commit is used.
@@ -688,6 +738,8 @@ gh_download <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("download_commit", package = "githapi")
+
   assert(is_string(ref))
   assert(is_repo(repo))
   assert(is_string(path))
@@ -1026,6 +1078,8 @@ gh_languages <- function(
 #
 #' Get a single release
 #'
+#' NOTE: This function has been deprecated, please use [view_releases()] instead.
+#'
 #' <https://developer.github.com/v3/repos/releases/#get-a-single-release>
 #' <https://developer.github.com/v3/repos/releases/#get-the-latest-release>
 #' <https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name>
@@ -1050,6 +1104,8 @@ gh_release <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_releases", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -1074,6 +1130,8 @@ gh_release <- function(
 #
 #' List releases for a repository
 #'
+#' NOTE: This function has been deprecated, please use [view_releases()] instead.
+#'
 #' <https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -1095,6 +1153,8 @@ gh_releases <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_releases", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_count(n_max))
   assert(is_sha(token))
