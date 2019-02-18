@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List assets for a release — gh_assets • githapi</title>
+<title>Determine whether commit SHAs exist in the specified repository. — shas_exist • githapi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="List assets for a release — gh_assets" />
+<meta property="og:title" content="Determine whether commit SHAs exist in the specified repository. — shas_exist" />
 
-<meta property="og:description" content="https://developer.github.com/v3/repos/releases/#list-assets-for-a-release" />
+<meta property="og:description" content="This function returns TRUE if the commit SHA exists and FALSE otherwise." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -99,54 +99,55 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List assets for a release</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories.R'><code>R/repositories.R</code></a></small>
-    <div class="hidden name"><code>gh_assets.Rd</code></div>
+    <h1>Determine whether commit SHAs exist in the specified repository.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-commits.R'><code>R/repositories-commits.R</code></a></small>
+    <div class="hidden name"><code>shas_exist.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><a href='https://developer.github.com/v3/repos/releases/#list-assets-for-a-release'>https://developer.github.com/v3/repos/releases/#list-assets-for-a-release</a></p>
+    <p>This function returns <code>TRUE</code> if the commit SHA exists and <code>FALSE</code> otherwise.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>gh_assets</span>(<span class='no'>release</span>, <span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
+    <pre class="usage"><span class='fu'>shas_exist</span>(<span class='no'>shas</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>release</th>
-      <td><p>(integer) The ID assigned to the release by GitHub.</p></td>
+      <th>shas</th>
+      <td><p>(character) The SHAs of the commits to check.</p></td>
     </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
       <th>token</th>
       <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
+R option <code>"github.token"</code>.</p></td>
     </tr>
     <tr>
       <th>api</th>
       <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the assets for a release (see GitHub's API documentation for details).</p>
+    <p>A logical vector containing <code>TRUE</code> or <code>FALSE</code> for each SHA specified.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><a href='https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference'>https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference</a></p>
     
 
   </div>
@@ -156,6 +157,8 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

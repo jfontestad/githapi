@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
       </span>
     </div>
 
@@ -117,12 +117,6 @@
       <tr>
         
         <td>
-          <p><code><a href="view_readme.html">view_readme()</a></code> </p>
-        </td>
-        <td><p>View the contents of the README file</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="view_files.html">view_files()</a></code> </p>
         </td>
         <td><p>View information about a files</p></td>
@@ -162,6 +156,12 @@
           <p><code><a href="view_shas.html">view_shas()</a></code> </p>
         </td>
         <td><p>Look up the SHA-1 of commit references</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shas_exist.html">shas_exist()</a></code> </p>
+        </td>
+        <td><p>Determine whether commit SHAs exist in the specified repository.</p></td>
       </tr><tr>
         
         <td>
@@ -219,84 +219,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="gh_tags.html">gh_tags()</a></code> </p>
-        </td>
-        <td><p>Get information about all the tags in a repository</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_branch.html">gh_branch()</a></code> </p>
-        </td>
-        <td><p>Get information about a branch</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_branch.html">is_branch()</a></code> </p>
-        </td>
-        <td><p>Checks whether the input is a valid branch</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_branches.html">gh_branches()</a></code> </p>
-        </td>
-        <td><p>Get information about all the head commits in each branch</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_commit.html">gh_commit()</a></code> </p>
-        </td>
-        <td><p>Get information about a commit</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_valid_sha.html">is_valid_sha()</a></code> </p>
-        </td>
-        <td><p>Check whether the input is a valid SHA-1</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_commit_sha.html">gh_commit_sha()</a></code> </p>
-        </td>
-        <td><p>Get the SHA-1 of a commit reference</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_commits.html">gh_commits()</a></code> </p>
-        </td>
-        <td><p>Get information about all the history of commits</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_compare_commits.html">gh_compare_commits()</a></code> </p>
-        </td>
-        <td><p>Compare two commits</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_compare_files.html">gh_compare_files()</a></code> </p>
-        </td>
-        <td><p>Compare the files of two commits</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_readme.html">gh_readme()</a></code> </p>
-        </td>
-        <td><p>Get the README</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_contents.html">gh_contents()</a></code> </p>
-        </td>
-        <td><p>Get contents of a file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_download.html">gh_download()</a></code> </p>
-        </td>
-        <td><p>Download the entire tree from a commit</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="is_collaborator.html">is_collaborator()</a></code> </p>
         </td>
         <td><p>Check if a user is a collaborator</p></td>
@@ -336,18 +258,6 @@
           <p><code><a href="gh_languages.html">gh_languages()</a></code> </p>
         </td>
         <td><p>List languages</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_release.html">gh_release()</a></code> </p>
-        </td>
-        <td><p>Get a single release</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_releases.html">gh_releases()</a></code> </p>
-        </td>
-        <td><p>List releases for a repository</p></td>
       </tr><tr>
         
         <td>
@@ -515,57 +425,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="gh_git_blob.html">gh_git_blob()</a></code> </p>
+          <p><code><a href="source_files.html">source_files()</a></code> </p>
         </td>
-        <td><p>Get a blob</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_git_commit.html">gh_git_commit()</a></code> </p>
-        </td>
-        <td><p>Get a commit</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_git_reference.html">gh_git_reference()</a></code> </p>
-        </td>
-        <td><p>Get a reference</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_tag.html">is_tag()</a></code> </p>
-        </td>
-        <td><p>Check whether the input is a valid tag</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_git_references.html">gh_git_references()</a></code> </p>
-        </td>
-        <td><p>Get all references</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_git_tag.html">gh_git_tag()</a></code> </p>
-        </td>
-        <td><p>Get an annotated tag</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_git_tree.html">gh_git_tree()</a></code> </p>
-        </td>
-        <td><p>Get a tree</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_save.html">gh_save()</a></code> </p>
-        </td>
-        <td><p>Download files and save them to a location</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_source.html">gh_source()</a></code> </p>
-        </td>
-        <td><p>Source an R file</p></td>
+        <td><p>Source R files from a GitHub repository</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -965,6 +827,158 @@
         </td>
         <td><p>Download a binary file from GitHub</p></td>
       </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-deprecated" class="hasAnchor"><a href="#section-deprecated" class="anchor"></a>Deprecated</h2>
+          <p class="section-desc"><p>These functions have been deprecated.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="gh_git_blob.html">gh_git_blob()</a></code> </p>
+        </td>
+        <td><p>Get a blob</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_git_commit.html">gh_git_commit()</a></code> </p>
+        </td>
+        <td><p>Get a commit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_git_reference.html">gh_git_reference()</a></code> </p>
+        </td>
+        <td><p>Get a reference</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_git_references.html">gh_git_references()</a></code> </p>
+        </td>
+        <td><p>Get all references</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_tag.html">is_tag()</a></code> </p>
+        </td>
+        <td><p>Check whether the input is a valid tag</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_git_tag.html">gh_git_tag()</a></code> </p>
+        </td>
+        <td><p>Get an annotated tag</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_git_tree.html">gh_git_tree()</a></code> </p>
+        </td>
+        <td><p>Get a tree</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_save.html">gh_save()</a></code> </p>
+        </td>
+        <td><p>Download files and save them to a location</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_source.html">gh_source()</a></code> </p>
+        </td>
+        <td><p>Source an R file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_tags.html">gh_tags()</a></code> </p>
+        </td>
+        <td><p>Get information about all the tags in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_branch.html">gh_branch()</a></code> </p>
+        </td>
+        <td><p>Get information about a branch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_branches.html">gh_branches()</a></code> </p>
+        </td>
+        <td><p>Get information about all the head commits in each branch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_branch.html">is_branch()</a></code> </p>
+        </td>
+        <td><p>Checks whether the input is a valid branch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_commit.html">gh_commit()</a></code> </p>
+        </td>
+        <td><p>Get information about a commit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_valid_sha.html">is_valid_sha()</a></code> </p>
+        </td>
+        <td><p>Check whether the input is a valid SHA-1</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_commit_sha.html">gh_commit_sha()</a></code> </p>
+        </td>
+        <td><p>Get the SHA-1 of a commit reference</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_commits.html">gh_commits()</a></code> </p>
+        </td>
+        <td><p>Get information about all the history of commits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_compare_commits.html">gh_compare_commits()</a></code> </p>
+        </td>
+        <td><p>Compare two commits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_compare_files.html">gh_compare_files()</a></code> </p>
+        </td>
+        <td><p>Compare the files of two commits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_readme.html">gh_readme()</a></code> </p>
+        </td>
+        <td><p>Get the README</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_contents.html">gh_contents()</a></code> </p>
+        </td>
+        <td><p>Get contents of a file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_download.html">gh_download()</a></code> </p>
+        </td>
+        <td><p>Download the entire tree from a commit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_release.html">gh_release()</a></code> </p>
+        </td>
+        <td><p>Get a single release</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_releases.html">gh_releases()</a></code> </p>
+        </td>
+        <td><p>List releases for a repository</p></td>
+      </tr>
     </tbody>
     </table>
   </div>
@@ -981,6 +995,7 @@
       <li><a href="#section-organizations">Organizations</a></li>
       <li><a href="#section-users">Users</a></li>
       <li><a href="#section-github-api">GitHub API</a></li>
+      <li><a href="#section-deprecated">Deprecated</a></li>
     </ul>
   </div>
 </div>
