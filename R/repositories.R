@@ -112,7 +112,7 @@ gh_repositories <- function(
   assert(is_null(type) || is_string(type), type %in% c("owner", "member"))
   assert(is_null(sort) || is_string(sort), sort %in% c("created", "updated", "pushed", "full_name"))
   assert(is_null(direction) || is_string(direction), direction %in% c("asc", "desc"))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -185,7 +185,7 @@ gh_tags <- function(
   .Deprecated("view_tags", package = "githapi")
 
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -314,7 +314,7 @@ gh_branches <- function(
   .Deprecated("view_branches", package = "githapi")
 
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -490,7 +490,7 @@ gh_commits <- function(
 
   assert(is_string(ref))
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -849,7 +849,7 @@ gh_collaborators <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -929,7 +929,7 @@ gh_commit_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(comment))
+  assert(is_natural(comment))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -969,7 +969,7 @@ gh_commit_comments <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -1024,7 +1024,7 @@ gh_contributers <- function(
 {
   assert(is_repo(repo))
   assert(is_null(anon) || is_boolean(anon))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -1113,7 +1113,7 @@ gh_release <- function(
   if (missing(tag)) {
     url <- gh_url("repos", repo, "releases/latest", api = api)
   } else {
-    assert(is_string(tag) || is_count(tag))
+    assert(is_string(tag) || is_natural(tag))
     if (is_string(tag)) {
       url <- gh_url("repos", repo, "releases/tags", tag, api = api)
     } else {
@@ -1156,7 +1156,7 @@ gh_releases <- function(
   .Deprecated("view_releases", package = "githapi")
 
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -1208,7 +1208,7 @@ gh_asset <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(asset))
+  assert(is_natural(asset))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -1245,9 +1245,9 @@ gh_assets <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(release))
+  assert(is_natural(release))
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 

@@ -72,7 +72,7 @@ gh_gists <- function(
   ...)
 {
   assert(is_null(since) || is_string(since))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -133,7 +133,7 @@ gh_gist_commits <- function(
   ...)
 {
   assert(is_string(gist))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -219,7 +219,7 @@ gh_gist_forks <- function(
   ...)
 {
   assert(is_string(gist))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -263,7 +263,7 @@ gh_gist_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(comment))
+  assert(is_natural(comment))
   assert(is_string(gist))
   assert(is_sha(token))
   assert(is_url(api))
@@ -299,7 +299,7 @@ gh_gist_comments <- function(
   ...)
 {
   assert(is_string(gist))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 

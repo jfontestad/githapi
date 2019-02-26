@@ -23,7 +23,7 @@ gh_issue <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(issue))
+  assert(is_natural(issue))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -91,7 +91,7 @@ gh_issues <- function(
   assert(is_null(sort) || is_string(sort))
   assert(is_null(direction) || is_string(direction))
   assert(is_null(since) || is_string(since))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -179,7 +179,7 @@ gh_user_issues <- function(
   assert(is_null(sort) || is_string(sort))
   assert(is_null(direction) || is_string(direction))
   assert(is_null(since) || is_string(since))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -243,7 +243,7 @@ gh_assignees <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -289,7 +289,7 @@ gh_issue_comments <- function(
 {
   assert(is_repo(repo))
   assert(is_null(since) || is_string(since))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -298,7 +298,7 @@ gh_issue_comments <- function(
       gh_url("repos", repo, "issues/comments", since = since, api = api),
       n_max = n_max, token = token, ...)
   } else {
-    assert(is_count(issue))
+    assert(is_natural(issue))
     comments <- gh_page(
       gh_url("repos", repo, "issues", issue, "comments", since = since, api = api),
       n_max = n_max, token = token, ...)
@@ -338,7 +338,7 @@ gh_issue_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(comment))
+  assert(is_natural(comment))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -413,7 +413,7 @@ gh_labels <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -421,10 +421,10 @@ gh_labels <- function(
     error("Must specify either issue or milestone, not both!")
 
   if (!missing(issue)) {
-    assert(is_count(issue))
+    assert(is_natural(issue))
     url <- gh_url("repos", repo, "issues", issue, "labels", api = api)
   } else if (!missing(milestone)) {
-    assert(is_count(milestone))
+    assert(is_natural(milestone))
     url <- gh_url("repos", repo, "milestones", milestone, "labels", api = api)
   } else {
     url <- gh_url("repos", repo, "labels", api = api)
@@ -465,7 +465,7 @@ gh_milestone <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(milestone))
+  assert(is_natural(milestone))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -508,7 +508,7 @@ gh_milestones <- function(
   assert(is_null(state) || is_string(state))
   assert(is_null(sort) || is_string(sort))
   assert(is_null(direction) || is_string(direction))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -556,7 +556,7 @@ gh_event <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(event))
+  assert(is_natural(event))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -593,14 +593,14 @@ gh_events <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
   if (missing(issue)) {
     url <- gh_url("repos", repo, "issues/events", api = api)
   } else {
-    assert(is_count(issue))
+    assert(is_natural(issue))
     url <- gh_url("repos", repo, "issues", issue, "events", api = api)
   }
 

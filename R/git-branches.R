@@ -47,7 +47,7 @@ view_branches <- function(
   }
 
   assert(is_repo(repo))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 

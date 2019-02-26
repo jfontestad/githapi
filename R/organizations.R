@@ -55,7 +55,7 @@ gh_organizations <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -164,7 +164,7 @@ gh_members <- function(
 {
   assert(is_null(filter) | is_string(filter))
   assert(is_null(role) | is_string(role))
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -175,7 +175,7 @@ gh_members <- function(
     assert(is_string(org))
     url <- gh_url("orgs", org, "members", filter = filter, role = role, api = api)
   } else if (!missing(team)) {
-    assert(is_count(team))
+    assert(is_natural(team))
     url <- gh_url("teams", team, "members", org, role = role, api = api)
   } else {
     error("Must specify either org or team!")
@@ -233,7 +233,7 @@ gh_membership <- function(
     assert(is_string(org))
     url <- gh_url("orgs", org, "memberships", user, api = api)
   } else if (!missing(team)) {
-    assert(is_count(team))
+    assert(is_natural(team))
     url <- gh_url("teams", team, "memberships", user, api = api)
   } else {
     error("Must specify either org or team!")
@@ -268,7 +268,7 @@ gh_memberships <- function(
   api    = getOption("github.api"),
   ...)
 {
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -305,7 +305,7 @@ gh_team <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(team))
+  assert(is_natural(team))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -341,7 +341,7 @@ gh_teams <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(n_max))
+  assert(is_natural(n_max))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -389,7 +389,7 @@ is_manager <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_count(team))
+  assert(is_natural(team))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
