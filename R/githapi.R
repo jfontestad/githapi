@@ -210,9 +210,9 @@
 #'   repo    = "ChadGoymer/test-githapi")
 #' ```
 #'
-#' @import curl jsonlite dplyr
 #' @importFrom methods as is
 #' @importFrom utils unzip
+#' @import msgr curl jsonlite dplyr
 #'
 #' @docType package
 #' @name githapi
@@ -504,7 +504,7 @@ gh_request <- function(
 
   if (response$status_code >= 400) {
     error(
-      "\nGitHub ", type, " request failed\n",
+      "GitHub ", type, " request failed\n",
       "\n[Status]:  ", header_values$Status,
       "\n[URL]:     ", url,
       "\n[Message]: ", message)
