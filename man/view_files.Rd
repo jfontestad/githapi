@@ -4,16 +4,16 @@
 \alias{view_files}
 \title{View information about a files}
 \usage{
-view_files(paths, ref, repo, token = getOption("github.token"),
+view_files(paths, repo, ref, token = getOption("github.token"),
   api = getOption("github.api"), ...)
 }
 \arguments{
 \item{paths}{(string, optional) The paths to the files or directories in the repository.}
 
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
+
 \item{ref}{(string, optional) A git reference: either a SHA-1, tag or branch. If a branch
 is specified the head commit is used. If not specified the head of the default branch is used.}
-
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the
