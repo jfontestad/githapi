@@ -40,28 +40,26 @@ view_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  commits_list <- map(shas, function(sha) {
-    info("Getting commit for sha '", sha, "' from repository '", repo, "'")
-    tryCatch({
-      gh_request(
-        "GET", gh_url("repos", repo, "git/commits", sha, api = api),
-        token = token, ...)
-    }, error = function(e) {
-      warn("sha '", sha, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(commits_list, is, "error"))) {
-    collate_errors(commits_list, "view_commits() failed!")
+  {
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Transforming results", level = 2)
+  commits_list <- try_map(shas, function(sha) {
+    info("Getting commit for sha '", sha, "' from repository '", repo, "'")
+
+    gh_request(
+      "GET", gh_url("repos", repo, "git/commits", sha, api = api),
+      token = token, ...)
+  })
+
+  info("Transforming results", level = 3)
   commits_tbl <- bind_fields(commits_list, list(
     sha             = c("sha",                as = "character"),
     message         = c("message",            as = "character"),
@@ -75,22 +73,10 @@ view_commits <- function(
     tree_url        = c("tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commits_list, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "sha")
-      }
-    })) %>%
-    mutate(parent_url = map(commits_list, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "url")
-      }
-    }))
+    mutate(parent_sha = map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   commits_tbl
 }
 
@@ -153,27 +139,34 @@ create_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(message))
-  assert(is_sha(tree))
+  {
+    if (missing(parents) || is_null(parents)) {
+      parents <- NA
+    }
+    if (missing(committer) || is_null(committer)) {
+      committer <- NA
+    }
+    if (missing(author) || is_null(author)) {
+      author <- NA
+    }
 
-  if (missing(parents) || is_null(parents)) {
-    parents <- NA
+    (is_string(message)) ||
+      error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
+    (is_sha(tree)) ||
+      error("'tree' must be a 40 character string:\n  '", paste(tree, collapse = "'\n  '"), "'")
+    (is_na(parents) || is_character(parents)) ||
+      error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert(is_na(parents) || is_character(parents))
-
-  if (missing(committer) || is_null(committer)) {
-    committer <- NA
-  }
-  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
-
-  if (missing(author) || is_null(author)) {
-    author <- NA
-  }
-  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
-
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   parents <- map(parents, use_names = FALSE, function(p) {
     if (!is_na(p) && !is_sha(p)) {
@@ -191,12 +184,14 @@ create_commit <- function(
     remove_missing()
 
   info("Posting commit to repo '", repo, "'")
-  commit_list <- gh_request(
-    "POST", gh_url("repos", repo, "git/commits", api = api),
-    payload = payload, token = token, ...) %>%
-    list()
+  commit_list <- try_catch({
+    gh_request(
+      "POST", gh_url("repos", repo, "git/commits", api = api),
+      payload = payload, token = token, ...) %>%
+      list()
+  })
 
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   commit_tbl <- bind_fields(commit_list, list(
     sha             = c("sha",                as = "character"),
     message         = c("message",            as = "character"),
@@ -210,22 +205,10 @@ create_commit <- function(
     tree_url        = c("tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commit_list, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "sha")
-      }
-    })) %>%
-    mutate(parent_url = map(commit_list, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "url")
-      }
-    }))
+    mutate(parent_sha = map(commit_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = map(commit_list, use_names = FALSE, list_fields, "parents", "url"))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   commit_tbl
 }
 
@@ -310,30 +293,40 @@ upload_commit <- function(
   api     = getOption("github.api"),
   ...)
 {
-  assert(is_string(branch))
-  assert(is_string(message))
-  assert(is_dir(path) && is_readable(path))
+  {
+    if (missing(parents) || is_null(parents)) {
+      parents <- NA
+    }
+    if (missing(committer) || is_null(committer)) {
+      committer <- NA
+    }
+    if (missing(author) || is_null(author)) {
+      author <- NA
+    }
 
-  if (missing(parents) || is_null(parents)) {
-    parents <- NA
+    (is_string(branch)) ||
+      error("'branch' must be a string:\n  '", paste(branch, collapse = "'\n  '"), "'")
+    (is_string(message)) ||
+      error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
+    (is_dir(path) && is_readable(path)) ||
+      error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
+    (is_na(parents) || is_character(parents)) ||
+      error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_boolean(replace)) ||
+      error("'replace' must be boolean:\n  '", paste(replace, collapse = "'\n  '"), "'")
+    (is_character(ignore)) ||
+      error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert(is_na(parents) || is_character(parents))
-
-  if (missing(committer) || is_null(committer)) {
-    committer <- NA
-  }
-  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
-
-  if (missing(author) || is_null(author)) {
-    author <- NA
-  }
-  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
-
-  assert(is_repo(repo))
-  assert(is_boolean(replace))
-  assert(is_character(ignore))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   if (replace) {
     base_tree <- NA
@@ -407,19 +400,27 @@ commits_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  {
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
-  map_vec(shas, function(sha) {
+  map(shas, simplify = TRUE, function(sha) {
     info("Checking commit '", sha, "' exists in repository '", repo, "'")
-    tryCatch({
+
+    try_catch({
       gh_request(
         "GET", gh_url("repos", repo, "git/commits", sha, api = api),
         token = token, ...)
       TRUE
-    }, error = function(e) {
+    },
+    on_error = function(e) {
       FALSE
     })
   })
