@@ -29,35 +29,6 @@ test_that("map applies a function over a list", {
   expect_identical(unnamed_list, list(TRUE, FALSE))
 })
 
-# TEST: map_vec -------------------------------------------------------------------------------
-
-test_that("map_vec applies a function over a list and returns a vector", {
-  one_letter <- map_vec("D", function(l) which(LETTERS == l))
-
-  expect_is(one_letter, "integer")
-  expect_identical(one_letter, c(D = 4L))
-
-  some_letters <- map_vec(c("D", "G", "W"), function(l) which(LETTERS == l))
-
-  expect_is(some_letters, "integer")
-  expect_identical(some_letters, c(D = 4L, G = 7L, W = 23L))
-
-  indexed_letters <- map_vec(c("D", "G", "W"), idx = 0, function(l, idx) paste0(idx, which(LETTERS == l)))
-
-  expect_is(indexed_letters, "character")
-  expect_identical(indexed_letters, c(D = "04", G = "07", W = "023"))
-
-  named_vec <- map_vec(list(bob = "manager", mary = "analyst"), function(p) p == "manager")
-
-  expect_is(named_vec, "logical")
-  expect_identical(named_vec, c(bob = TRUE, mary = FALSE))
-
-  unnamed_vec <- map_vec(list(bob = "manager", mary = "analyst"), function(p) p == "manager", use_names = FALSE)
-
-  expect_is(unnamed_vec, "logical")
-  expect_identical(unnamed_vec, c(TRUE, FALSE))
-})
-
 # TEST: pmap ----------------------------------------------------------------------------------
 
 test_that("pmap applies a function over a list of lists", {
@@ -94,44 +65,6 @@ test_that("pmap applies a function over a list of lists", {
   expect_is(unnamed_list, "list")
   expect_identical(unnamed_list, list("manager 1", "analyst 2"))
 })
-
-# TEST: pmap_vec ------------------------------------------------------------------------------
-
-test_that("pmap_vec applies a function over a list of lists and returns a vector", {
-  one_letter <- pmap_vec(list(a = "A", b = 1), function(a, b) paste0(a, b))
-
-  expect_is(one_letter, "character")
-  expect_identical(one_letter, c(A = "A1"))
-
-  some_letters <- pmap_vec(list(a = c("D", "G", "W"), b = 1:3), function(a, b) paste0(a, b))
-
-  expect_is(some_letters, "character")
-  expect_identical(some_letters, c(D = "D1", G = "G2", W = "W3"))
-
-  indexed_letters <- pmap_vec(
-    list(a = c("D", "G", "W"), b = 1:3),
-    idx = 0,
-    function(a, b, idx) paste0(idx, a, b))
-
-  expect_is(indexed_letters, "character")
-  expect_identical(indexed_letters, c(D = "0D1", G = "0G2", W = "0W3"))
-
-  named_list <- pmap_vec(
-    list(role = c(bob = "manager", mary = "analyst"), level = c(bob = 1, mary = 2)),
-    function(role, level) paste(role, level))
-
-  expect_is(named_list, "character")
-  expect_identical(named_list, c(bob = "manager 1", mary = "analyst 2"))
-
-  unnamed_list <- pmap_vec(
-    list(role = c(bob = "manager", mary = "analyst"), level = c(bob = 1, mary = 2)),
-    function(role, level) paste(role, level),
-    use_names = FALSE)
-
-  expect_is(unnamed_list, "character")
-  expect_identical(unnamed_list, c("manager 1", "analyst 2"))
-})
-
 
 # TEST: set_names -----------------------------------------------------------------------------
 
