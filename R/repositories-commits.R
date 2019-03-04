@@ -44,28 +44,36 @@ view_history <- function(
   api   = getOption("github.api"),
   ...)
 {
-  if (missing(repo)) {
-    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
-    repo <- ref
-    ref <- NA
-  }
-  assert(is_repo(repo))
+  {
+    if (missing(repo)) {
+      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+      repo <- ref
+      ref <- NA
+    }
+    if (missing(ref) || is_null(ref)) {
+      ref <- NA
+    }
 
-  if (missing(ref) || is_null(ref)) {
-    ref <- NA
+    (is_na(ref) || is_string(ref)) ||
+      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_natural(n_max)) ||
+      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert(is_na(ref) || is_string(ref))
-
-  assert(is_natural(n_max))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   info("Getting up to ", n_max, " commits from repository '", repo, "'")
-  commits_list <- gh_page(
-    gh_url("repos", repo, "commits", sha = ref, api = api),
-    n_max = n_max, token = token, ...)
+  commits_list <- try_catch({
+    gh_page(
+      gh_url("repos", repo, "commits", sha = ref, api = api),
+      n_max = n_max, token = token, ...)
+  })
 
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   commits_tbl <- bind_fields(commits_list, list(
     sha             = c("sha",                          as = "character"),
     message         = c("commit", "message",            as = "character"),
@@ -79,22 +87,10 @@ view_history <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commits_list, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "sha")
-      }
-    })) %>%
-    mutate(parent_url = map(commits_list, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "url")
-      }
-    }))
+    mutate(parent_sha = map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   commits_tbl
 }
 
@@ -129,31 +125,29 @@ view_shas <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(refs))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  shas <- map_vec(refs, function(ref) {
-    info("Getting SHA for ref '", ref, "' from repository '", repo, "'")
-    tryCatch({
-      sha <- gh_request(
-        "GET", gh_url("repos", repo, "commits", ref, api = api),
-        accept = "application/vnd.github.VERSION.sha", token = token, ...)
-
-      attr(sha, "header") <- NULL
-      sha
-    }, error = function(e) {
-      warn("Ref '", ref, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(shas, is, "error"))) {
-    collate_errors(shas, "view_shas() failed!")
+  {
+    (is_character(refs)) ||
+      error("'refs' must be a character vector:\n  '", paste(refs, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Done", level = 2)
+  shas <- try_map(refs, simplify = TRUE, function(ref) {
+    info("Getting SHA for ref '", ref, "' from repository '", repo, "'")
+
+    sha <- gh_request(
+      "GET", gh_url("repos", repo, "commits", ref, api = api),
+      accept = "application/vnd.github.VERSION.sha", token = token, ...)
+
+    attr(sha, "header") <- NULL
+    sha
+  })
+
+  info("Done", level = 3)
   shas
 }
 
@@ -185,19 +179,26 @@ shas_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  {
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
-  map_vec(shas, function(sha) {
+  map(shas, simplify = TRUE, function(sha) {
     info("Checking commit SHA '", sha, "' exists in repository '", repo, "'")
-    tryCatch({
+
+    try_catch({
       gh_request(
         "GET", gh_url("repos", repo, "commits", sha, api = api),
         token = token, ...)
       TRUE
-    }, error = function(e) {
+    }, on_error = function(e) {
       FALSE
     })
   })
@@ -250,18 +251,27 @@ compare_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(base))
-  assert(is_string(head))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  {
+    (is_string(base)) ||
+      error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
+    (is_string(head)) ||
+      error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
-  comparison_list <- gh_request(
-    "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
-    token = token, ...)
+  comparison_list <- try_catch({
+    gh_request(
+      "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+      token = token, ...)
+  })
 
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   comparison_tbl <- bind_fields(comparison_list$commits, list(
     sha             = c("sha",                          as = "character"),
     message         = c("commit", "message",            as = "character"),
@@ -275,22 +285,10 @@ compare_commits <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(comparison_list$commits, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "sha")
-      }
-    })) %>%
-    mutate(parent_url = map(comparison_list$commits, use_names = FALSE, function(cm) {
-      if (is_null(cm$parents) || identical(length(cm$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(cm$parents, getElement, "url")
-      }
-    }))
+    mutate(parent_sha = map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "url"))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   comparison_tbl
 }
 
@@ -336,18 +334,27 @@ compare_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(base))
-  assert(is_string(head))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  {
+    (is_string(base)) ||
+      error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
+    (is_string(head)) ||
+      error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
-  comparison_list <- gh_request(
-    "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
-    token = token, ...)
+  comparison_list <- try_catch({
+    gh_request(
+      "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+      token = token, ...)
+  })
 
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   comparison_tbl <- bind_fields(comparison_list$files, list(
     filename     = c("filename",     as = "character"),
     sha          = c("sha",          as = "character"),
@@ -359,6 +366,6 @@ compare_files <- function(
     contents_url = c("contents_url", as = "character"),
     patch        = c("patch",        as = "character")))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   comparison_tbl
 }

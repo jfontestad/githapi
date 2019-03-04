@@ -7,7 +7,7 @@ test_that("view_history returns a tibble describing the history of commits", {
 
   expect_is(commits, "tbl")
   expect_identical(
-    map_vec(commits, function(field) class(field)[[1]]),
+    map(commits, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -25,7 +25,7 @@ test_that("view_history returns a tibble describing the history of commits", {
 
   expect_is(commits, "tbl")
   expect_identical(
-    map_vec(commits, function(field) class(field)[[1]]),
+    map(commits, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -74,7 +74,7 @@ test_that("compare_commits returns information on the differences between two co
 
   expect_is(comparison, "tbl")
   expect_identical(
-    map_vec(comparison, function(field) class(field)[[1]]),
+    map(comparison, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -113,7 +113,7 @@ test_that("compare_files returns a tibble of information of file differences bet
   expect_is(comparison, "tbl")
 
   expect_identical(
-    map_vec(comparison, function(field) class(field)[[1]]),
+    map(comparison, function(field) class(field)[[1]], simplify = TRUE),
     c(filename     = "character",
       sha          = "character",
       status       = "character",
