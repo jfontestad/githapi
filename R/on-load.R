@@ -1,4 +1,5 @@
 .onLoad <- function(libname, pkgname) {
+
   token <- Sys.getenv("GITHUB_TOKEN")
   if (identical(token, ""))
     token <- Sys.getenv("GITHUB_PAT")
@@ -6,18 +7,25 @@
     packageStartupMessage("Cannot find a GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
 
   github_env <- list(
-    GITHUB_API   = "https://api.github.com",
-    GITHUB_TOKEN = token,
-    GITHAPI_LOGS = "")
+    GITHUB_API        = "https://api.github.com",
+    GITHUB_TOKEN      = token,
+    GITHAPI_MSG_LEVEL = "1",
+    GITHAPI_MSG_TYPES = "INFO|WARNING|ERROR",
+    GITHAPI_LOGS      = "")
 
   toset <- sapply(names(github_env), function(e) identical(Sys.getenv(e), ""))
   if (any(toset)) do.call(Sys.setenv, github_env[toset])
+  githapi_env <- as.list(Sys.getenv(names(github_env)))
 
-  github_options <- as.list(Sys.getenv(names(github_env)))
-  names(github_options) <- tolower(sub("_", "\\.", names(github_env)))
-  do.call(options, github_options)
+  if (!identical(githapi_env$GITHAPI_LOGS, "")) {
+    githapi_env$GITHAPI_LOGS <- paste0(githapi_env$GITHAPI_LOGS, "/", "githapi-", Sys.info()[["login"]], "-", Sys.Date(), ".log")
+  }
 
   options(
-    githapi.debug_types  = c("INFO", "WARNING", "ERROR"),  # The type of debug messages to report
-    githapi.debug_level = 1)                              # The level of debug messages to report
+    github.api    = githapi_env$GITHUB_API,
+    github.token  = githapi_env$GITHUB_TOKEN,
+    msgr.level    = suppressWarnings(as.integer(githapi_env$GITHAPI_MSG_LEVEL)),
+    msgr.types    = strsplit(githapi_env$GITHAPI_MSG_TYPES, split = "\\|")[[1]],
+    msgr.log_path = normalizePath(githapi_env$GITHAPI_LOGS, winslash = "/", mustWork = FALSE))
+
 }
