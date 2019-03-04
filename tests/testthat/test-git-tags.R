@@ -3,11 +3,12 @@ context("git tags")
 # TEST: view_tags, create_tags & delete_tags --------------------------------------------------
 
 test_that("create_tags creates some tags, view_tags retreives them and delete_tags deletes them", {
+
   all_tags <- view_tags("ChadGoymer/test-githapi")
 
   expect_is(all_tags, "tbl")
   expect_identical(
-    map_vec(all_tags, function(field) class(field)[[1]]),
+    map(all_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -27,7 +28,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(created_tags, "tbl")
   expect_identical(
-    map_vec(created_tags, function(field) class(field)[[1]]),
+    map(created_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -44,7 +45,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(viewed_tags, "tbl")
   expect_identical(
-    map_vec(viewed_tags, function(field) class(field)[[1]]),
+    map(viewed_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -64,7 +65,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(updated_tags, "tbl")
   expect_identical(
-    map_vec(updated_tags, function(field) class(field)[[1]]),
+    map(updated_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -82,15 +83,34 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
   expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
   expect_error(suppressWarnings(view_tags("aaa", "ChadGoymer/test-githapi")), "Not Found")
   expect_error(suppressWarnings(view_tags("bbb", "ChadGoymer/test-githapi")), "Not Found")
+
+})
+
+test_that("veiwing tags that do not exist throws an appropriate error", {
+
+  no_repo_error_msg <- tryCatch(view_tags("ChadGoymer/no-repo"), error = function(e) e$message)
+
+  expect_match(no_repo_error_msg, "In view_tags\\(\\): GitHub GET request failed")
+  expect_match(no_repo_error_msg, "\\[Status\\]:  404 Not Found")
+
+  no_tag_error_msg <- tryCatch(
+    suppressWarnings(view_tags("no-tag", "ChadGoymer/no-repo")),
+    error = function(e) e$message)
+
+  expect_match(no_tag_error_msg, "'no-tag': \\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\] GitHub GET request failed")
+  expect_match(no_tag_error_msg, "\\[Status\\]:  404 Not Found")
+
 })
 
 # TEST: tags_exist ----------------------------------------------------------------------------
 
 test_that("tags_exist returns TRUE or FALSE depending on whether the tag exists in the repo", {
+
   expect_true(tags_exist("0.0.0", "ChadGoymer/test-githapi"))
   expect_false(tags_exist("no-such-tag", "ChadGoymer/test-githapi"))
 
   expect_identical(
     tags_exist(c("0.0.0", "no-such-tag"), "ChadGoymer/test-githapi"),
     c(`0.0.0` = TRUE, `no-such-tag` = FALSE))
+
 })
