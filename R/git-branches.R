@@ -40,48 +40,46 @@ view_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
-  if (missing(repo)) {
-    info("'repo' is missing, so using 'branches' argument: ", branches, level = 2)
-    repo <- branches
-    branches <- NULL
-  }
+  {
+    if (missing(repo)) {
+      info("'repo' is missing, so using 'branches' argument: ", branches, level = 2)
+      repo <- branches
+      branches <- NULL
+    }
 
-  assert(is_repo(repo))
-  assert(is_natural(n_max))
-  assert(is_sha(token))
-  assert(is_url(api))
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_natural(n_max)) ||
+      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
   if (missing(branches) || is_null(branches) || is_na(branches)) {
     info("Getting up to ", n_max, " branches from repository '", repo, "'")
-    branches_list <- tryCatch({
+
+    branches_list <- try_catch({
       gh_page(
         gh_url("repos", repo, "git/refs/heads", api = api),
         n_max = n_max, token = token, ...)
-    }, error = function(e) {
-      warn("Failed!", level = 2)
-      list(e)
     })
   } else {
-    assert(is_character(branches))
-    branches_list <- map(branches, function(branch) {
+    (is_character(branches)) ||
+      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+
+    branches_list <- try_map(branches, function(branch) {
       info("Getting branch '", branch, "' from repository '", repo, "'")
-      tryCatch({
-        gh_request(
-          "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
-          token = token, ...)
-      }, error = function(e) {
-        warn("Branch '", branch, "' failed!", level = 2)
-        e
-      })
+
+      gh_request(
+        "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+        token = token, ...)
     })
   }
 
-  if (any(map_vec(branches_list, is, "error"))) {
-    collate_errors(branches_list, "view_branches() failed!")
-  }
-
-  info("Transforming results", level = 2)
-  branches_tbl <- bind_fields(branches_list[!map_vec(branches_list, is_null)], list(
+  info("Transforming results", level = 3)
+  branches_tbl <- bind_fields(branches_list[!map(branches_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -90,7 +88,7 @@ view_branches <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   branches_tbl
 }
 
@@ -132,31 +130,32 @@ create_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(branches))
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  branches_list <- pmap(list(branches, shas), function(branch, sha) {
-    info("Posting branch '", branch, "' to repository '", repo, "'")
-    tryCatch({
-      gh_request(
-        "POST", gh_url("repos", repo, "git/refs", api = api),
-        payload = list(ref = paste0("refs/heads/", branch), sha = sha),
-        token = token, ...)
-    }, error = function(e) {
-      warn("Branch '", branch, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(branches_list, is, "error"))) {
-    collate_errors(branches_list, "create_branches() failed!")
+  {
+    (is_character(branches)) ||
+      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (identical(length(branches), length(shas))) ||
+      error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Transforming results", level = 2)
-  branches_tbl <- bind_fields(branches_list[!map_vec(branches_list, is_null)], list(
+  branches_list <- try_pmap(list(branches, shas), function(branch, sha) {
+    info("Posting branch '", branch, "' to repository '", repo, "'")
+
+    gh_request(
+      "POST", gh_url("repos", repo, "git/refs", api = api),
+      payload = list(ref = paste0("refs/heads/", branch), sha = sha),
+      token = token, ...)
+  })
+
+  info("Transforming results", level = 3)
+  branches_tbl <- bind_fields(branches_list[!map(branches_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -165,7 +164,7 @@ create_branches <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   branches_tbl
 }
 
@@ -207,31 +206,32 @@ update_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(branches))
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  branches_list <- pmap(list(branches, shas), function(branch, sha) {
-    info("Updating branch '", branch, "' in repository '", repo, "'")
-    tryCatch({
-      gh_request(
-        "PATCH", gh_url("repos", repo, "git/refs/heads", branch, api = api),
-        payload = list(sha = sha, force = TRUE),
-        token = token, ...)
-    }, error = function(e) {
-      warn("Branch '", branch, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(branches_list, is, "error"))) {
-    collate_errors(branches_list, "update_branches() failed!")
+  {
+    (is_character(branches)) ||
+      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (identical(length(branches), length(shas))) ||
+      error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Transforming results", level = 2)
-  branches_tbl <- bind_fields(branches_list[!map_vec(branches_list, is_null)], list(
+  branches_list <- try_pmap(list(branches, shas), function(branch, sha) {
+    info("Updating branch '", branch, "' in repository '", repo, "'")
+
+    gh_request(
+      "PATCH", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+      payload = list(sha = sha, force = TRUE),
+      token = token, ...)
+  })
+
+  info("Transforming results", level = 3)
+  branches_tbl <- bind_fields(branches_list[!map(branches_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -240,7 +240,7 @@ update_branches <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   branches_tbl
 }
 
@@ -272,29 +272,27 @@ delete_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(branches))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  branches_list <- map(branches, function(branch) {
-    info("Deleting branch '", branch, "' from repository '", repo, "'")
-    tryCatch({
-      gh_request(
-        "DELETE", gh_url("repos", repo, "git/refs/heads", branch, api = api),
-        token = token, parse = FALSE, ...)
-      TRUE
-    }, error = function(e) {
-      warn("Branch '", branch, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(branches_list, is, "error"))) {
-    collate_errors(branches_list, "delete_branches() failed!")
+  {
+    (is_character(branches)) ||
+      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Done", level = 2)
+  branches_list <- try_map(branches, function(branch) {
+    info("Deleting branch '", branch, "' from repository '", repo, "'")
+
+    gh_request(
+      "DELETE", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+      token = token, parse = FALSE, ...)
+    TRUE
+  })
+
+  info("Done", level = 3)
   branches_list
 }
 
@@ -326,19 +324,27 @@ branches_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(branches))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  {
+    (is_character(branches)) ||
+      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
-  map_vec(branches, function(branch) {
+  map(branches, simplify = TRUE, function(branch) {
     info("Checking branch '", branch, "' exists in repository '", repo, "'")
-    tryCatch({
+
+    try_catch({
       gh_request(
         "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
         token = token, ...)
       TRUE
-    }, error = function(e) {
+    },
+    on_error = function(e) {
       FALSE
     })
   })

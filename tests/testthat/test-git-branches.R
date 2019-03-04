@@ -7,7 +7,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(all_branches, "tbl")
   expect_identical(
-    map_vec(all_branches, function(field) class(field)[[1]]),
+    map(all_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -24,7 +24,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(created_branches, "tbl")
   expect_identical(
-    map_vec(created_branches, function(field) class(field)[[1]]),
+    map(created_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -41,7 +41,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(viewed_branches, "tbl")
   expect_identical(
-    map_vec(viewed_branches, function(field) class(field)[[1]]),
+    map(viewed_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -61,7 +61,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(updated_branches, "tbl")
   expect_identical(
-    map_vec(updated_branches, function(field) class(field)[[1]]),
+    map(updated_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -79,6 +79,22 @@ test_that("create_branches creates some branches, view_branches retreives them a
   expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
   expect_error(suppressWarnings(view_branches("aaa", "ChadGoymer/test-githapi")), "Not Found")
   expect_error(suppressWarnings(view_branches("bbb", "ChadGoymer/test-githapi")), "Not Found")
+})
+
+test_that("veiwing tags that do not exist throws an appropriate error", {
+
+  no_repo_error_msg <- tryCatch(view_branches("ChadGoymer/no-repo"), error = function(e) e$message)
+
+  expect_match(no_repo_error_msg, "In view_branches\\(\\): GitHub GET request failed")
+  expect_match(no_repo_error_msg, "\\[Status\\]:  404 Not Found")
+
+  no_branch_error_msg <- tryCatch(
+    suppressWarnings(view_branches("no-branch", "ChadGoymer/test-githapi")),
+    error = function(e) e$message)
+
+  expect_match(no_branch_error_msg, "'no-branch': \\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\] GitHub GET request failed")
+  expect_match(no_branch_error_msg, "\\[Status\\]:  404 Not Found")
+
 })
 
 # TEST: branches_exist ------------------------------------------------------------------------
