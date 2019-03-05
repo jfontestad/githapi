@@ -4,7 +4,7 @@
 \alias{gh_download_binary}
 \title{Download a binary file from GitHub}
 \usage{
-gh_download_binary(url, path, token = gh_token())
+gh_download_binary(url, path, token = getOption("github.token"))
 }
 \arguments{
 \item{url}{(string) URL to the GitHub API.}
