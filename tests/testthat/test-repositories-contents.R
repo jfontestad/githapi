@@ -487,6 +487,19 @@ test_that("author and committer can be set when creating, updating and deleting 
   expect_identical(deleted_files$commit_committer, "Bob Smith")
 })
 
+# TEST: files_exist ---------------------------------------------------------------------------
+
+test_that("files_exist returns TRUE or FALSE depending on whether the file exists in the repo", {
+
+  expect_true(files_exist("README.md", "ChadGoymer/test-githapi"))
+  expect_false(files_exist("no-such-file", "ChadGoymer/test-githapi"))
+
+  expect_identical(
+    files_exist(c("README.md", "no-such-file"), "ChadGoymer/test-githapi"),
+    c(`README.md` = TRUE, `no-such-file` = FALSE))
+
+})
+
 # TEST: download_commit -----------------------------------------------------------------------
 
 test_that("download_commit saves all the files in a commit to a directory", {
