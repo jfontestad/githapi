@@ -548,6 +548,68 @@ delete_files <- function(
   files_tbl
 }
 
+#  FUNCTION: files_exist ----------------------------------------------------------------------
+#
+#' Determine whether files exist in the specified commit.
+#'
+#' This function returns `TRUE` if the file exists and `FALSE` otherwise.
+#'
+#' <https://developer.github.com/v3/repos/contents/#get-contents>
+#'
+#' @param paths (string, optional) The paths to the files or directories in the repository.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
+#'   is specified the head commit is used. If not specified the head of the default branch is used.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A logical vector containing `TRUE` or `FALSE` for each file specified.
+#'
+#' @export
+#'
+files_exist <- function(
+  paths,
+  repo,
+  ref,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  {
+    if (missing(ref) || is_null(ref)) {
+      ref <- NA
+    }
+
+    (is_character(paths)) ||
+      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_na(ref) || is_string(ref)) ||
+      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
+
+  map(paths, simplify = TRUE, function(path) {
+    info("Checking file '", path, "' exists in repository '", repo, "'")
+
+    try_catch({
+      gh_request(
+        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
+        token = token, ...)
+      TRUE
+    }, on_error = function(e) {
+      FALSE
+    })
+  })
+}
+
 #  FUNCTION: download_commit ------------------------------------------------------------------
 #
 #' Download the contents of a commit

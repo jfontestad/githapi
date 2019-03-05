@@ -298,7 +298,7 @@ delete_tags <- function(
 
 #  FUNCTION: tags_exist -----------------------------------------------------------------------
 #
-#' Determine whether a tags exist in the specified repository.
+#' Determine whether tags exist in the specified repository.
 #'
 #' This function returns `TRUE` if the tag exists and `FALSE` otherwise.
 #'

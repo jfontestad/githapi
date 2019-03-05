@@ -357,7 +357,7 @@ download_files <- function(
   invisible(files)
 }
 
-#  FUNCTION: blob_exists ----------------------------------------------------------------------
+#  FUNCTION: blobs_exist ----------------------------------------------------------------------
 #
 #' Determine whether blobs exist in the specified repository.
 #'
