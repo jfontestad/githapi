@@ -4,7 +4,8 @@
 \alias{gh_page}
 \title{Get and parse the contents of multiple pages from a github http request}
 \usage{
-gh_page(url, accept = "json", n_max = 1000L, token = gh_token(), ...)
+gh_page(url, accept = "json", n_max = 1000L,
+  token = getOption("github.token"), ...)
 }
 \arguments{
 \item{url}{(string) URL for GitHub API endpoint.}

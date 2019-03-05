@@ -210,9 +210,9 @@
 #'   repo    = "ChadGoymer/test-githapi")
 #' ```
 #'
-#' @import curl jsonlite dplyr
 #' @importFrom methods as is
 #' @importFrom utils unzip
+#' @import msgr curl jsonlite dplyr
 #'
 #' @docType package
 #' @name githapi
@@ -229,7 +229,7 @@ NULL
 #' @export
 #'
 is_sha <- function(x) {
-  is_string(x) && identical(nchar(x), 40L) && grepl("[0-9a-f]", x)
+  is_string(x) && (nchar(x) == 40) && grepl("[0-9a-f]", x)
 }
 
 #  FUNCTION: is_repo --------------------------------------------------------------------------
@@ -289,7 +289,8 @@ gh_url <- function(
   ...,
   api = getOption("github.api"))
 {
-  assert(is_url(api))
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   url  <- api
   dots <- list(...) %>% remove_missing() %>% unlist()
@@ -356,7 +357,7 @@ gh_get <- function(
     set_names(sapply(response_header, function(h) h[[1]]))
 
   if (parse) {
-    info("> Parsing response", level = 2)
+    info("> Parsing response", level = 4)
     response_content <- rawToChar(response$content)
     if (grepl("json$", tolower(accept))) {
       response_content <- fromJSON(response_content, simplifyVector = FALSE)
@@ -374,7 +375,7 @@ gh_get <- function(
 
   attributes(response_content) <- c(attributes(response_content), list(header = header_values))
 
-  info("> Done", level = 2)
+  info("> Done", level = 4)
   response_content
 }
 
@@ -398,13 +399,19 @@ gh_page <- function(
   url,
   accept = "json",
   n_max  = 1000L,
-  token  = gh_token(),
+  token  = getOption("github.token"),
   ...)
 {
-  assert(is_url(url))
-  assert(is_string(accept))
-  assert(is_integer(n_max), n_max > 0)
-  assert(is_string(token))
+  {
+    (is_url(url)) ||
+      error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
+    (is_string(accept)) ||
+      error("'accept' must be a string:\n  '", paste(accept, collapse = "'\n  '"), "'")
+    (is_natural(n_max)) ||
+      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  }
 
   per_page <- min(n_max, 100)
   if (grepl("\\?", url)) {
@@ -419,16 +426,16 @@ gh_page <- function(
     page <- gh_request("GET", url = url, accept = accept, token = token, ...)
     response <- c(response, page)
     if (length(response) >= n_max) {
-      info("> Returned ", length(response), level = 2)
+      info("> Returned ", length(response), level = 4)
       return(response[1:n_max])
     }
     if (is_null(attributes(page)[["header"]][["Link"]])) {
-      info("> Returned ", length(response), level = 2)
+      info("> Returned ", length(response), level = 4)
       return(response)
     }
     links <- strsplit(attributes(page)[["header"]][["Link"]], ", ")[[1]]
     if (!any(grepl("next", links))) {
-      info("> Returned ", length(response), level = 2)
+      info("> Returned ", length(response), level = 4)
       return(response)
     }
     url <- sub("<", "", strsplit(links[grepl("next", links)], ">")[[1]][[1]])
@@ -458,13 +465,20 @@ gh_request <- function(
   payload = NULL,
   accept  = "json",
   parse   = TRUE,
-  token   = gh_token())
+  token   = getOption("github.token"))
 {
-  assert(is_string(type) && type %in% c("GET", "POST", "DELETE", "PATCH", "PUT"))
-  assert(is_url(url))
-  assert(is_string(accept))
-  assert(is_boolean(parse))
-  assert(is_string(token))
+  {
+    (is_string(type) && type %in% c("GET", "POST", "DELETE", "PATCH", "PUT")) ||
+      error("'type' must be either 'GET', 'POST', 'DELETE', 'PATCH' or 'PUT':\n  '", paste(type, collapse = "'\n  '"), "'")
+    (is_url(url)) ||
+      error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
+    (is_string(accept)) ||
+      error("'accept' must be a string:\n  '", paste(accept, collapse = "'\n  '"), "'")
+    (is_boolean(parse)) ||
+      error("'parse' must be a boolean:\n  '", paste(parse, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  }
 
   if (identical(accept, "raw")) {
     accept <- "application/vnd.github.raw"
@@ -477,8 +491,11 @@ gh_request <- function(
   if (!identical(type, "GET")) {
     h <- handle_setopt(h, customrequest = type)
   }
+
   if (!is_null(payload)) {
-    assert(is_list(payload))
+    (is_list(payload)) ||
+      error("'payload' must be a list:\n  '", paste(payload, collapse = "'\n  '"), "'")
+
     h <- handle_setopt(h, COPYPOSTFIELDS = jsonlite::toJSON(payload, auto_unbox = TRUE))
   }
   h <- handle_setheaders(h, Authorization = paste("token", token), Accept = accept)
@@ -492,7 +509,7 @@ gh_request <- function(
     set_names(sapply(response_header, function(h) h[[1]]))
 
   if (parse) {
-    info("> Parsing response", level = 2)
+    info("> Parsing response", level = 4)
     response_content <- rawToChar(response$content)
     if (!identical(response_content, "") && grepl("json$", tolower(accept))) {
       response_content <- fromJSON(response_content, simplifyVector = FALSE)
@@ -504,7 +521,7 @@ gh_request <- function(
 
   if (response$status_code >= 400) {
     error(
-      "\nGitHub ", type, " request failed\n",
+      "GitHub ", type, " request failed\n",
       "\n[Status]:  ", header_values$Status,
       "\n[URL]:     ", url,
       "\n[Message]: ", message)
@@ -512,7 +529,7 @@ gh_request <- function(
 
   attributes(response_content) <- c(attributes(response_content), list(header = header_values))
 
-  info("> Done", level = 2)
+  info("> Done", level = 4)
   response_content
 }
 
@@ -532,11 +549,16 @@ gh_request <- function(
 gh_download_binary <- function(
   url,
   path,
-  token = gh_token())
+  token = getOption("github.token"))
 {
-  assert(is_url(url))
-  assert(is_writeable(dirname(path)))
-  assert(is_string(token))
+  {
+    (is_url(url)) ||
+      error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
+    (is_writeable(dirname(path))) ||
+      error("'path' must be a file path within a writeable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  }
 
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
@@ -546,7 +568,7 @@ gh_download_binary <- function(
     Authorization = paste("token", token),
     Accept = "application/vnd.github.raw"))
 
-  info("> Parsing response", level = 2)
+  info("> Parsing response", level = 4)
   response_header  <- strsplit(parse_headers(response$header), ": ")
   header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]])) %>%
     set_names(sapply(response_header, function(h) h[[1]]))
@@ -561,6 +583,6 @@ gh_download_binary <- function(
 
   attributes(path) <- c(attributes(path), list(header = header_values))
 
-  info("> Done", level = 2)
+  info("> Done", level = 4)
   path
 }

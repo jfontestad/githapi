@@ -9,7 +9,7 @@ test_that("view_blobs returns information about files in the repository", {
 
   expect_is(blobs, "tbl")
   expect_identical(
-    map_vec(blobs, function(col) class(col)[[1]]),
+    map(blobs, function(col) class(col)[[1]], simplify = TRUE),
     c(sha      = "character",
       content  = "character",
       encoding = "character",
@@ -31,14 +31,14 @@ test_that("create_blobs creates files in the repository and returns the SHA", {
 
   blobs <- create_blobs(
     contents = random_contents,
-    repo = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi")
 
   expect_is(blobs, "tbl")
   expect_identical(
-    map_vec(blobs, function(col) class(col)[[1]]),
-    c(sha      = "character",
-      url      = "character"))
-  expect_true(all(map_vec(blobs$sha, is_sha)))
+    map(blobs, function(col) class(col)[[1]], simplify = TRUE),
+    c(sha = "character",
+      url = "character"))
+  expect_true(all(map(blobs$sha, is_sha, simplify = TRUE)))
 })
 
 # TEST: upload_blobs --------------------------------------------------------------------------
@@ -56,11 +56,11 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
 
   expect_is(blobs, "tbl")
   expect_identical(
-    map_vec(blobs, function(col) class(col)[[1]]),
+    map(blobs, function(col) class(col)[[1]], simplify = TRUE),
     c(name = "character",
       sha  = "character",
       url  = "character"))
-  expect_true(all(map_vec(blobs$sha, is_sha)))
+  expect_true(all(map(blobs$sha, is_sha, simplify = TRUE)))
 
   created_blobs <- view_blobs(
     shas = blobs$sha,

@@ -10,9 +10,9 @@
 #' <https://developer.github.com/v3/repos/contents/#get-contents>
 #'
 #' @param paths (string, optional) The paths to the files or directories in the repository.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch
 #'   is specified the head commit is used. If not specified the head of the default branch is used.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
 #'   R option `"github.token"`.
@@ -37,63 +37,54 @@
 #'
 view_files <- function(
   paths,
-  ref,
   repo,
+  ref,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  if (missing(repo)) {
-    if (missing(ref)) {
+  {
+    if (missing(repo)) {
       info("'repo' is missing, so using 'paths' argument: ", paths, level = 2)
       repo <- paths
       paths <- NA
-    } else {
-      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
-      repo <- ref
+    }
+    if (missing(ref) || is_null(ref)) {
       ref <- NA
     }
-  }
-  assert(is_repo(repo))
 
-  if (missing(ref) || is_null(ref)) {
-    ref <- NA
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_na(ref) || is_string(ref)) ||
+      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert(is_na(ref) || is_string(ref))
-
-  assert(is_sha(token))
-  assert(is_url(api))
 
   if (missing(paths) || is_na(paths)) {
     info("Getting files from repository '", repo, "'")
-    files_list <- tryCatch({
+
+    files_list <- try_catch({
       gh_request(
         "GET", gh_url("repos", repo, "contents", ref = ref, api = api),
         token = token, ...)
-    }, error = function(e) {
-      warn("Failed!", level = 2)
-      list(e)
     })
   } else {
-    assert(is_character(paths))
-    files_list <- map(paths, function(path) {
+    (is_character(paths)) ||
+      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+
+    files_list <- try_map(paths, function(path) {
       info("Getting file '", path, "' from repository '", repo, "'")
-      tryCatch({
-        gh_request(
-          "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
-          token = token, ...)
-      }, error = function(e) {
-        warn("File '", path, "' failed!", level = 2)
-        e
-      })
+
+      gh_request(
+        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
+        token = token, ...)
     })
   }
 
-  if (any(map_vec(files_list, is, "error"))) {
-    collate_errors(files_list, "view_files() failed!")
-  }
-
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   files_tbl <- bind_fields(files_list, list(
     name         = c("name",         as = "character"),
     path         = c("path",         as = "character"),
@@ -105,7 +96,7 @@ view_files <- function(
     git_url      = c("git_url",      as = "character"),
     download_url = c("download_url", as = "character")))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   files_tbl
 }
 
@@ -181,33 +172,41 @@ create_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(paths))
-  assert(is_character(contents) && identical(length(contents), length(paths)))
-  assert(is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths))))
+  {
+    if (missing(branches) || is_null(branches)) {
+      branches <- NA
+    }
+    if (missing(parents) || is_null(parents)) {
+      parents <- NA
+    }
+    if (missing(committer) || is_null(committer)) {
+      committer <- NA
+    }
+    if (missing(author) || is_null(author)) {
+      author <- NA
+    }
 
-  if (missing(branches) || is_null(branches)) {
-    branches <- NA
+    (is_character(paths)) ||
+      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+    (is_character(contents) && identical(length(contents), length(paths))) ||
+      error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
+    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+      error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
+    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+      error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
+    (is_na(parents) || is_character(parents)) ||
+      error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths))))
-
-  if (missing(parents) || is_null(parents)) {
-    parents <- NA
-  }
-  assert(is_na(parents) || is_character(parents))
-
-  if (missing(committer) || is_null(committer)) {
-    committer <- NA
-  }
-  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
-
-  if (missing(author) || is_null(author)) {
-    author <- NA
-  }
-  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
-
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   params <- tibble(
     path    = paths,
@@ -216,40 +215,33 @@ create_files <- function(
     branch  = branches,
     parent  = parents)
 
-  files_list <- pmap(params, function(path, content, message, branch, parent) {
-    tryCatch({
-      if (!is_na(branch) && !branches_exist(branches = branch, repo = repo, token = token, api = api)) {
-        if (is_na(parent)) {
-          error("Specified branch '", branch, "' does not exist. To create it a parent commit must be specified!")
-        } else if (!is_sha(parent)) {
-          parent <- view_shas(refs = parent, repo = repo, token = token, api = api)
-        }
-        create_branches(branches = branch, shas = parent, repo = repo, token = token, api = api)
+  files_list <- try_pmap(params, function(path, content, message, branch, parent) {
+    if (!is_na(branch) && !branches_exist(branches = branch, repo = repo, token = token, api = api)) {
+      (!is_na(parent)) ||
+        error("Specified branch '", branch, "' does not exist. To create it a parent commit must be specified!")
+
+      if (!is_sha(parent)) {
+        parent <- view_shas(refs = parent, repo = repo, token = token, api = api)
       }
 
-      payload <- list(
-        message   = message,
-        content   = base64_enc(content),
-        branch    = branch,
-        committer = committer,
-        author    = author) %>%
-        remove_missing()
+      create_branches(branches = branch, shas = parent, repo = repo, token = token, api = api)
+    }
 
-      info("Posting file '", basename(path), "' to repository '", repo, "'")
-      gh_request(
-        "PUT", gh_url("repos", repo, "contents", path, api = api),
-        payload = payload, token = token, ...)
-    }, error = function(e) {
-      warn("File '", path, "' failed!", level = 2)
-      e
-    })
+    payload <- list(
+      message   = message,
+      content   = base64_enc(content),
+      branch    = branch,
+      committer = committer,
+      author    = author) %>%
+      remove_missing()
+
+    info("Posting file '", basename(path), "' to repository '", repo, "'")
+    gh_request(
+      "PUT", gh_url("repos", repo, "contents", path, api = api),
+      payload = payload, token = token, ...)
   })
 
-  if (any(map_vec(files_list, is, "error"))) {
-    collate_errors(files_list, "create_files() failed!")
-  }
-
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   files_tbl <- bind_fields(files_list, list(
     name              = c("content", "name",              as = "character"),
     path              = c("content", "path",              as = "character"),
@@ -269,22 +261,10 @@ create_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = TRUE, function(f) {
-      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(f$commit$parents, getElement, "sha")
-      }
-    })) %>%
-    mutate(commit_parent_url = map(files_list, use_names = TRUE, function(f) {
-      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(f$commit$parents, getElement, "url")
-      }
-    }))
+    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   files_tbl
 }
 
@@ -355,28 +335,36 @@ update_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(paths))
-  assert(is_character(contents) && identical(length(contents), length(paths)))
-  assert(is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths))))
+  {
+    if (missing(branches) || is_null(branches)) {
+      branches <- NA
+    }
+    if (missing(committer) || is_null(committer)) {
+      committer <- NA
+    }
+    if (missing(author) || is_null(author)) {
+      author <- NA
+    }
 
-  if (missing(branches) || is_null(branches)) {
-    branches <- NA
+    (is_character(paths)) ||
+      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+    (is_character(contents) && identical(length(contents), length(paths))) ||
+      error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
+    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+      error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
+    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+      error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths))))
-
-  if (missing(committer) || is_null(committer)) {
-    committer <- NA
-  }
-  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
-
-  if (missing(author) || is_null(author)) {
-    author <- NA
-  }
-  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
-
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   params <- tibble(
     path    = paths,
@@ -384,36 +372,28 @@ update_files <- function(
     message = messages,
     branch  = branches)
 
-  files_list <- pmap(params, function(path, content, message, branch) {
+  files_list <- try_pmap(params, function(path, content, message, branch) {
     info("Posting file '", basename(path), "' to repository '", repo, "'")
-    tryCatch({
-      old_file <- gh_request(
-        "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
-        token = token, ...)
 
-      payload <- list(
-        message   = paste(message, "- updated", path),
-        content   = base64_enc(content),
-        sha       = old_file$sha,
-        branch    = branch,
-        committer = committer,
-        author    = author) %>%
-        remove_missing()
+    old_file <- gh_request(
+      "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
+      token = token, ...)
 
-      gh_request(
-        "PUT", gh_url("repos", repo, "contents", path, api = api),
-        payload = payload, token = token, ...)
-    }, error = function(e) {
-      warn("File '", path, "' failed!", level = 2)
-      e
-    })
+    payload <- list(
+      message   = paste(message, "- updated", path),
+      content   = base64_enc(content),
+      sha       = old_file$sha,
+      branch    = branch,
+      committer = committer,
+      author    = author) %>%
+      remove_missing()
+
+    gh_request(
+      "PUT", gh_url("repos", repo, "contents", path, api = api),
+      payload = payload, token = token, ...)
   })
 
-  if (any(map_vec(files_list, is, "error"))) {
-    collate_errors(files_list, "update_files() failed!")
-  }
-
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   files_tbl <- bind_fields(files_list, list(
     name              = c("content", "name",              as = "character"),
     path              = c("content", "path",              as = "character"),
@@ -433,22 +413,10 @@ update_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, function(f) {
-      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(f$commit$parents, getElement, "sha")
-      }
-    })) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, function(f) {
-      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(f$commit$parents, getElement, "url")
-      }
-    }))
+    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   files_tbl
 }
 
@@ -508,62 +476,61 @@ delete_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(paths))
-  assert(is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths))))
+  {
+    if (missing(branches) || is_null(branches)) {
+      branches <- NA
+    }
+    if (missing(committer) || is_null(committer)) {
+      committer <- NA
+    }
+    if (missing(author) || is_null(author)) {
+      author <- NA
+    }
 
-  if (missing(branches) || is_null(branches)) {
-    branches <- NA
+    (is_character(paths)) ||
+      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+      error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
+    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+      error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths))))
-
-  if (missing(committer) || is_null(committer)) {
-    committer <- NA
-  }
-  assert(is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email)))
-
-  if (missing(author) || is_null(author)) {
-    author <- NA
-  }
-  assert(is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email)))
-
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   params <- tibble(
     path    = paths,
     message = messages,
     branch  = branches)
 
-  files_list <- pmap(params, function(path, message, branch) {
+  files_list <- try_pmap(params, function(path, message, branch) {
     info("Deleting file '", basename(path), "' from repository '", repo, "'")
-    tryCatch({
-      old_file <- gh_request(
-        "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
-        token = token, ...)
 
-      payload <- list(
-        message   = paste(message, "- deleted", path),
-        sha       = old_file$sha,
-        branch    = branch,
-        committer = committer,
-        author    = author) %>%
-        remove_missing()
+    old_file <- gh_request(
+      "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
+      token = token, ...)
 
-      gh_request(
-        "DELETE", gh_url("repos", repo, "contents", path, api = api),
-        payload = payload, token = token, ...)
-    }, error = function(e) {
-      warn("File '", path, "' failed!", level = 2)
-      e
-    })
+    payload <- list(
+      message   = paste(message, "- deleted", path),
+      sha       = old_file$sha,
+      branch    = branch,
+      committer = committer,
+      author    = author) %>%
+      remove_missing()
+
+    gh_request(
+      "DELETE", gh_url("repos", repo, "contents", path, api = api),
+      payload = payload, token = token, ...)
   })
 
-  if (any(map_vec(files_list, is, "error"))) {
-    collate_errors(files_list, "delete_files() failed!")
-  }
-
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   files_tbl <- bind_fields(files_list, list(
     commit_message    = c("commit", "message",            as = "character"),
     commit_sha        = c("commit",  "sha",               as = "character"),
@@ -574,22 +541,10 @@ delete_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, function(f) {
-      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(f$commit$parents, getElement, "sha")
-      }
-    })) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, function(f) {
-      if (is_null(f$commit$parents) || identical(length(f$commit$parents), 0L)) {
-        NULL
-      } else {
-        map_vec(f$commit$parents, getElement, "url")
-      }
-    }))
+    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   files_tbl
 }
 
@@ -605,9 +560,9 @@ delete_files <- function(
 #'
 #' @param path (string, optional) The path to save to. If not specified the current working
 #'   directory is used.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ref (string, optional) A git reference: either a SHA-1, tag or branch. If a branch is
 #'   specified the head commit is used. If not specified the default branch is used.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
 #' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
@@ -621,37 +576,36 @@ delete_files <- function(
 #'
 download_commit <- function(
   path,
-  ref,
   repo,
+  ref,
   token = getOption("github.token"),
   api   = getOption("github.api"),
   ...)
 {
-  if (missing(repo)) {
-    if (missing(ref)) {
+  {
+    if (missing(repo)) {
       info("'repo' is missing, so using 'path' argument: ", path, level = 2)
       repo <- path
       path <- NA
-    } else {
-      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
-      repo <- ref
+    }
+    if (missing(path) || is_null(path) || is_na(path)) {
+      path <- getwd()
+    }
+    if (missing(ref) || is_null(ref)) {
       ref <- NA
     }
-  }
-  assert(is_repo(repo))
 
-  if (missing(path) || is_null(path) || is_na(path)) {
-    path <- getwd()
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_string(path)) ||
+      error("'path' must be a string:\n  '", paste(path, collapse = "'\n  '"), "'")
+    (is_na(ref) || is_string(ref)) ||
+      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert(is_string(path))
-
-  if (missing(ref) || is_null(ref)) {
-    ref <- NA
-  }
-  assert(is_na(ref) || is_string(ref))
-
-  assert(is_sha(token))
-  assert(is_url(api))
 
   if (!file.exists(path)) dir.create(path, recursive = TRUE)
 
@@ -663,7 +617,7 @@ download_commit <- function(
     gh_url("repos", repo, "zipball", ref, api = api),
     path = archive_path, token = token, ...)
 
-  info("Unpacking commit into '", path, "'", level = 2)
+  info("Unpacking commit into '", path, "'", level = 3)
   unzip(archive_path, exdir = path)
 
   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
@@ -675,6 +629,6 @@ download_commit <- function(
   files <- list.files(archive_folder, recursive = TRUE)
   file.rename(file.path(archive_folder, files), file.path(path, files))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   invisible(path)
 }

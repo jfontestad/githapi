@@ -40,48 +40,46 @@ view_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
-  if (missing(repo)) {
-    info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
-    repo <- tags
-    tags <- NULL
-  }
+  {
+    if (missing(repo)) {
+      info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
+      repo <- tags
+      tags <- NULL
+    }
 
-  assert(is_repo(repo))
-  assert(is_count(n_max))
-  assert(is_sha(token))
-  assert(is_url(api))
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_natural(n_max)) ||
+      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
   if (missing(tags) || is_null(tags) || is_na(tags)) {
     info("Getting up to ", n_max, " tags from repository '", repo, "'")
-    tags_list <- tryCatch({
+
+    tags_list <- try_catch({
       gh_page(
         gh_url("repos", repo, "git/refs/tags", api = api),
         n_max = n_max, token = token, ...)
-    }, error = function(e) {
-      warn("Failed!", level = 2)
-      list(e)
     })
   } else {
-    assert(is_character(tags))
-    tags_list <- map(tags, function(tag) {
+    (is_character(tags)) ||
+      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+
+    tags_list <- try_map(tags, function(tag) {
       info("Getting tag '", tag, "' from repository '", repo, "'")
-      tryCatch({
-        gh_request(
-          "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-          token = token, ...)
-      }, error = function(e) {
-        warn("Tag '", tag, "' failed!", level = 2)
-        e
-      })
+
+      gh_request(
+        "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        token = token, ...)
     })
   }
 
-  if (any(map_vec(tags_list, is, "error"))) {
-    collate_errors(tags_list, "view_tags() failed!")
-  }
-
-  info("Transforming results", level = 2)
-  tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
+  info("Transforming results", level = 3)
+  tags_tbl <- bind_fields(tags_list[!map(tags_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -90,7 +88,7 @@ view_tags <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   tags_tbl
 }
 
@@ -132,31 +130,32 @@ create_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(tags))
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  tags_list <- pmap(list(tags, shas), function(tag, sha) {
-    info("Posting tag '", tag, "' to repository '", repo, "'")
-    tryCatch({
-      gh_request(
-        "POST", gh_url("repos", repo, "git/refs", api = api),
-        payload = list(ref = paste0("refs/tags/", tag), sha = sha),
-        token = token, ...)
-    }, error = function(e) {
-      warn("Tag '", tag, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(tags_list, is, "error"))) {
-    collate_errors(tags_list, "create_tags() failed!")
+  {
+    (is_character(tags)) ||
+      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (identical(length(tags), length(shas))) ||
+      error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Transforming results", level = 2)
-  tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
+  tags_list <- try_pmap(list(tags, shas), function(tag, sha) {
+    info("Posting tag '", tag, "' to repository '", repo, "'")
+
+    gh_request(
+      "POST", gh_url("repos", repo, "git/refs", api = api),
+      payload = list(ref = paste0("refs/tags/", tag), sha = sha),
+      token = token, ...)
+  })
+
+  info("Transforming results", level = 3)
+  tags_tbl <- bind_fields(tags_list[!map(tags_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -165,7 +164,7 @@ create_tags <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   tags_tbl
 }
 
@@ -207,31 +206,32 @@ update_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(tags))
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  tags_list <- pmap(list(tags, shas), function(tag, sha) {
-    info("Updating tag '", tag, "' in repository '", repo, "'")
-    tryCatch({
-      gh_request(
-        "PATCH", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-        payload = list(sha = sha, force = TRUE),
-        token = token, ...)
-    }, error = function(e) {
-      warn("Tag '", tag, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(tags_list, is, "error"))) {
-    collate_errors(tags_list, "update_tags() failed!")
+  {
+    (is_character(tags)) ||
+      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (identical(length(tags), length(shas))) ||
+      error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Transforming results", level = 2)
-  tags_tbl <- bind_fields(tags_list[!map_vec(tags_list, is_null)], list(
+  tags_list <- try_pmap(list(tags, shas), function(tag, sha) {
+    info("Updating tag '", tag, "' in repository '", repo, "'")
+
+    gh_request(
+      "PATCH", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      payload = list(sha = sha, force = TRUE),
+      token = token, ...)
+  })
+
+  info("Transforming results", level = 3)
+  tags_tbl <- bind_fields(tags_list[!map(tags_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -240,7 +240,7 @@ update_tags <- function(
     object_url  = c("object", "url",  as = "character"))) %>%
     mutate(name = basename(.data$ref))
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   tags_tbl
 }
 
@@ -272,29 +272,27 @@ delete_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(tags))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  tags_list <- map(tags, function(tag) {
-    info("Deleting tag '", tag, "' from repository '", repo, "'")
-    tryCatch({
-      gh_request(
-        "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-        token = token, parse = FALSE, ...)
-      TRUE
-    }, error = function(e) {
-      warn("Tag '", tag, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(tags_list, is, "error"))) {
-    collate_errors(tags_list, "delete_tags() failed!")
+  {
+    (is_character(tags)) ||
+      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Done", level = 2)
+  tags_list <- try_map(tags, function(tag) {
+    info("Deleting tag '", tag, "' from repository '", repo, "'")
+
+    gh_request(
+      "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      token = token, parse = FALSE, ...)
+    TRUE
+  })
+
+  info("Done", level = 3)
   tags_list
 }
 
@@ -326,19 +324,26 @@ tags_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(tags))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  {
+    (is_character(tags)) ||
+      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
-  map_vec(tags, function(tag) {
+  map(tags, simplify = TRUE, function(tag) {
     info("Checking tag '", tag, "' exists in repository '", repo, "'")
-    tryCatch({
+
+    try_catch({
       gh_request(
         "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
         token = token, ...)
       TRUE
-    }, error = function(e) {
+    }, on_error = function(e) {
       FALSE
     })
   })

@@ -37,46 +37,45 @@ view_trees <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_boolean(recursive))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  trees_list <- map(shas, function(sha) {
-    info("Getting tree for sha '", sha, "' from repository '", repo, "'")
-    tryCatch({
-      tree <- gh_request(
-        "GET", gh_url("repos", repo, "git/trees", sha, recursive = as.integer(recursive), api = api),
-        token = token, ...)
-
-      info("Transforming results", level = 2)
-      trees_tbl <- bind_fields(tree$tree, list(
-        tree_sha = "",
-        tree_url = "",
-        path     = c("path", as = "character"),
-        type     = c("type", as = "character"),
-        sha      = c("sha",  as = "character"),
-        size     = c("size", as = "integer"),
-        url      = c("url",  as = "character"))) %>%
-        mutate(tree_sha = tree$sha, tree_url = tree$url)
-
-      info("Done", level = 2)
-      trees_tbl
-    }, error = function(e) {
-      warn("sha '", sha, "' failed!", level = 2)
-      e
-    })
-  })
-
-  if (any(map_vec(trees_list, is, "error"))) {
-    collate_errors(trees_list, "view_trees() failed!")
+  {
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_boolean(recursive)) ||
+      error("'recursive' must be boolean:\n  '", paste(recursive, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  info("Combining results", level = 2)
+  trees_list <- try_map(shas, function(sha) {
+    info("Getting tree for sha '", sha, "' from repository '", repo, "'")
+
+    tree <- gh_request(
+      "GET", gh_url("repos", repo, "git/trees", sha, recursive = as.integer(recursive), api = api),
+      token = token, ...)
+
+    info("Transforming results", level = 3)
+    trees_tbl <- bind_fields(tree$tree, list(
+      tree_sha = "",
+      tree_url = "",
+      path     = c("path", as = "character"),
+      type     = c("type", as = "character"),
+      sha      = c("sha",  as = "character"),
+      size     = c("size", as = "integer"),
+      url      = c("url",  as = "character"))) %>%
+      mutate(tree_sha = tree$sha, tree_url = tree$url)
+
+    info("Done", level = 3)
+    trees_tbl
+  })
+
+  info("Combining results", level = 3)
   trees_tbl <- bind_rows(trees_list)
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   trees_tbl
 }
 
@@ -125,21 +124,36 @@ create_tree <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(paths))
-  assert(is_character(modes) && all(modes %in% c("100644", "100755", "040000", "160000", "120000")))
-  assert(identical(length(modes), 1L) || identical(length(modes), length(paths)))
-  assert(is_character(types) && all(types %in% c("blob", "tree", "commit")))
-  assert(identical(length(types), 1L) || identical(length(types), length(paths)))
-  assert(is_na(shas) || all(map_vec(shas, is_sha)))
-  assert(is_na(shas) || (identical(length(shas), 1L) || identical(length(shas), length(paths))))
-  if (missing(base_tree)) {
-    base_tree <- NA
+  {
+    if (missing(base_tree)) {
+      base_tree <- NA
+    }
+
+    (is_character(paths)) ||
+      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+    (is_character(modes) && all(modes %in% c("100644", "100755", "040000", "160000", "120000"))) ||
+      error("'modes' must be a character vector of valid modes (see ?create_tree):\n  '", paste(modes, collapse = "'\n  '"), "'")
+    (identical(length(modes), 1L) || identical(length(modes), length(paths))) ||
+      error("'modes' must be a string or the same length as paths:\n  'modes': ", length(modes), "\n  'paths': ", length(paths))
+    (is_character(types) && all(types %in% c("blob", "tree", "commit"))) ||
+      error("'types' must be a character vector of valid types (see ?create_tree):\n  '", paste(types, collapse = "'\n  '"), "'")
+    (identical(length(types), 1L) || identical(length(types), length(paths))) ||
+      error("'types' must be a string or the same length as paths:\n  'types': ", length(types), "\n  'paths': ", length(paths))
+    (is_na(shas) || all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must be NA or a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (is_na(shas) || (identical(length(shas), 1L) || identical(length(shas), length(paths)))) ||
+      error("'shas' must be NA, a string or the same length as 'paths':\n  'shas':  ", length(shas), "\n  'paths': ", length(paths))
+    (is_na(base_tree) || all(map(base_tree, is_sha, simplify = TRUE))) ||
+      error("'base_tree' must be NA or a vector of 40 character strings:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
+    (is_na(base_tree) || (identical(length(base_tree), 1L)) || identical(length(base_tree), length(paths))) ||
+      error("'base_tree' must be NA, a string or the same length as 'paths':\n  'base_tree':", length(base_tree), "\n  'paths':     ", length(paths))
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert(is_na(base_tree) || all(map_vec(base_tree, is_sha)))
-  assert(is_na(base_tree) || (identical(length(base_tree), 1L)) || identical(length(base_tree), length(paths)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   params <- tibble(
     path      = paths,
@@ -156,15 +170,13 @@ create_tree <- function(
     remove_missing()
 
   info("Posting tree to repository '", repo, "'")
-  tree_list <- tryCatch({
+  tree_list <- try_catch({
     gh_request(
       "POST", gh_url("repos", repo, "git/trees", api = api),
       payload = payload, token = token, ...)
-  }, error = function(e) {
-    error("Creation of tree failed: ", e$message)
   })
 
-  info("Transforming results", level = 2)
+  info("Transforming results", level = 3)
   tree_tbl <- bind_fields(tree_list$tree, list(
     tree_sha = "",
     tree_url = "",
@@ -175,7 +187,7 @@ create_tree <- function(
     url      = c("url",  as = "character"))) %>%
     mutate(tree_sha = tree_list$sha, tree_url = tree_list$url)
 
-  info("Done", level = 2)
+  info("Done", level = 3)
   tree_tbl
 }
 
@@ -219,26 +231,35 @@ upload_tree <- function(
   api    = getOption("github.api"),
   ...)
 {
-  assert(is_dir(path) && is_readable(path))
-  assert(is_repo(repo))
-  if (missing(base_tree)) {
-    base_tree <- NA
+  {
+    if (missing(base_tree)) {
+      base_tree <- NA
+    }
+
+    (is_dir(path) && is_readable(path)) ||
+      error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_na(base_tree) || is_sha(base_tree)) ||
+      error("'base_tree' must be NA or a string of 40 characters:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
+    (is_character(ignore)) ||
+      error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
-  assert(is_na(base_tree) || is_sha(base_tree))
-  assert(is_character(ignore))
-  assert(is_sha(token))
-  assert(is_url(api))
 
   ignore <- unique(c("^\\.$", "^\\.\\.$", ignore))
 
   info("Getting file information from '", path, "'")
   all_files <- list.files(path, all.files = TRUE, include.dirs = TRUE, full.names = TRUE)
-  file_path <- all_files[!map(ignore, grepl, basename(all_files)) %>% pmap_vec(any)]
+  file_path <- all_files[!map(ignore, grepl, basename(all_files)) %>% pmap(any, simplify = TRUE)]
   file_info <- file.info(file_path)
 
   tree <- file_info %>%
     mutate(path = file_path) %>%
-    mutate(sha = pmap_vec(list(file_path, file_info$isdir), function(p, isdir) {
+    mutate(sha = pmap(list(file_path, file_info$isdir), simplify = TRUE, function(p, isdir) {
       if (isdir) {
         upload_tree(path = p, repo = repo, token = token, api = api)[["tree_sha"]][[1]]
       } else {
@@ -290,19 +311,26 @@ trees_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_character(shas) && all(map_vec(shas, is_sha)))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  {
+    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
 
-  map_vec(shas, function(sha) {
+  map(shas, simplify = TRUE, function(sha) {
     info("Checking tree '", sha, "' exists in repository '", repo, "'")
-    tryCatch({
+
+    try_catch({
       gh_request(
         "GET", gh_url("repos", repo, "git/trees", sha, api = api),
         token = token, ...)
       TRUE
-    }, error = function(e) {
+    }, on_error = function(e) {
       FALSE
     })
   })

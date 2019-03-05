@@ -7,9 +7,21 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(all_releases, "tbl")
   expect_identical(
-    names(all_releases),
-    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
-      "created_at", "published_at", "assets", "zipball_url", "url"))
+    map(all_releases, function(field) class(field)[[1]], simplify = TRUE),
+    c(id               = "integer",
+      tag_name         = "character",
+      name             = "character",
+      body             = "character",
+      author_login     = "character",
+      draft            = "logical",
+      prerelease       = "logical",
+      target_commitish = "character",
+      created_at       = "POSIXct",
+      published_at     = "POSIXct",
+      assets           = "list",
+      zipball_url      = "character",
+      url              = "character"))
+
   expect_true("0.0.0" %in% all_releases$tag_name)
   expect_identical(
     filter(all_releases, name == "Initial release") %>% pull(target_commitish),
@@ -17,11 +29,23 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   latest_release <- view_releases("latest", repo = "ChadGoymer/test-githapi")
 
-  expect_is(all_releases, "tbl")
+  expect_is(latest_release, "tbl")
   expect_identical(
-    names(all_releases),
-    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
-      "created_at", "published_at", "assets", "zipball_url", "url"))
+    map(latest_release, function(field) class(field)[[1]], simplify = TRUE),
+    c(id               = "integer",
+      tag_name         = "character",
+      name             = "character",
+      body             = "character",
+      author_login     = "character",
+      draft            = "logical",
+      prerelease       = "logical",
+      target_commitish = "character",
+      created_at       = "POSIXct",
+      published_at     = "POSIXct",
+      assets           = "list",
+      zipball_url      = "character",
+      url              = "character"))
+
   latest_full_release <- filter(all_releases, draft == FALSE, prerelease == FALSE) %>% head(1)
   expect_identical(latest_release, latest_full_release)
 
@@ -34,9 +58,21 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(created_releases, "tbl")
   expect_identical(
-    names(created_releases),
-    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
-      "created_at", "published_at", "assets", "zipball_url", "url"))
+    map(created_releases, function(field) class(field)[[1]], simplify = TRUE),
+    c(id               = "integer",
+      tag_name         = "character",
+      name             = "character",
+      body             = "character",
+      author_login     = "character",
+      draft            = "logical",
+      prerelease       = "logical",
+      target_commitish = "character",
+      created_at       = "POSIXct",
+      published_at     = "POSIXct",
+      assets           = "list",
+      zipball_url      = "character",
+      url              = "character"))
+
   expect_identical(created_releases$tag_name, c("aaa", "bbb"))
   expect_identical(
     created_releases$target_commitish,
@@ -46,9 +82,21 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(viewed_releases, "tbl")
   expect_identical(
-    names(viewed_releases),
-    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
-      "created_at", "published_at", "assets", "zipball_url", "url"))
+    map(viewed_releases, function(field) class(field)[[1]], simplify = TRUE),
+    c(id               = "integer",
+      tag_name         = "character",
+      name             = "character",
+      body             = "character",
+      author_login     = "character",
+      draft            = "logical",
+      prerelease       = "logical",
+      target_commitish = "character",
+      created_at       = "POSIXct",
+      published_at     = "POSIXct",
+      assets           = "list",
+      zipball_url      = "character",
+      url              = "character"))
+
   expect_identical(viewed_releases$name, c("AAA", "BBB"))
   expect_identical(
     viewed_releases$body,
@@ -62,9 +110,21 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(updated_releases, "tbl")
   expect_identical(
-    names(updated_releases),
-    c("id", "tag_name", "name", "body", "author_login", "draft", "prerelease", "target_commitish",
-      "created_at", "published_at", "assets", "zipball_url", "url"))
+    map(updated_releases, function(field) class(field)[[1]], simplify = TRUE),
+    c(id               = "integer",
+      tag_name         = "character",
+      name             = "character",
+      body             = "character",
+      author_login     = "character",
+      draft            = "logical",
+      prerelease       = "logical",
+      target_commitish = "character",
+      created_at       = "POSIXct",
+      published_at     = "POSIXct",
+      assets           = "list",
+      zipball_url      = "character",
+      url              = "character"))
+
   expect_identical(updated_releases$name, c("AAA updated", "BBB updated"))
   expect_identical(
     updated_releases$body,

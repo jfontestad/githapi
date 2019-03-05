@@ -5,7 +5,7 @@
 \title{Send a http request to the specified GitHub url}
 \usage{
 gh_request(type, url, payload = NULL, accept = "json", parse = TRUE,
-  token = gh_token())
+  token = getOption("github.token"))
 }
 \arguments{
 \item{type}{(string) The type of the request. Either "GET", "POST", "DELETE" or "PATCH".}
