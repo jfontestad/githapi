@@ -136,3 +136,16 @@ test_that("create_releases creates some releases, view_releases retreives them a
   expect_error(suppressWarnings(view_releases("aaa", "ChadGoymer/test-githapi")), "Not Found")
   expect_error(suppressWarnings(view_releases("bbb", "ChadGoymer/test-githapi")), "Not Found")
 })
+
+# TEST: releases_exist ------------------------------------------------------------------------
+
+test_that("releases_exist returns TRUE or FALSE depending on whether the tag exists in the repo", {
+
+  expect_true(releases_exist("0.0.0", "ChadGoymer/test-githapi"))
+  expect_false(releases_exist("no-such-tag", "ChadGoymer/test-githapi"))
+
+  expect_identical(
+    releases_exist(c("0.0.0", "no-such-tag"), "ChadGoymer/test-githapi"),
+    c(`0.0.0` = TRUE, `no-such-tag` = FALSE))
+
+})

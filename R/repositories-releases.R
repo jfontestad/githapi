@@ -421,3 +421,56 @@ delete_releases <- function(
   info("Done", level = 3)
   releases_list
 }
+
+#  FUNCTION: releases_exist -------------------------------------------------------------------
+#
+#' Determine whether releases exist in the specified repository.
+#'
+#' This function returns `TRUE` if the release exists and `FALSE` otherwise.
+#'
+#' <https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name>
+#'
+#' @param tags (character) The names of the release tags.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
+#'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the
+#'   R option `"github.token"`.
+#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
+#'   environment variable `GITHUB_API` or in the R option `"github.api"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return A logical vector containing `TRUE` or `FALSE` for each tag specified.
+#'
+#' @export
+#'
+releases_exist <- function(
+  tags,
+  repo,
+  token = getOption("github.token"),
+  api   = getOption("github.api"),
+  ...)
+{
+  {
+    (is_character(tags)) ||
+      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+    (is_repo(repo)) ||
+      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+    (is_sha(token)) ||
+      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+    (is_url(api)) ||
+      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
+
+  map(tags, simplify = TRUE, function(tag) {
+    info("Checking release '", tag, "' exists in repository '", repo, "'")
+
+    try_catch({
+      gh_request(
+        "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+        token = token, ...)
+      TRUE
+    }, on_error = function(e) {
+      FALSE
+    })
+  })
+}
