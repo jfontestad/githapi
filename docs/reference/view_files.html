@@ -66,7 +66,7 @@ is specified then details about all the files within the directory is returned."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@ is specified then details about all the files within the directory is returned.<
     
     </div>
 
-    <pre class="usage"><span class='fu'>view_files</span>(<span class='no'>paths</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
+    <pre class="usage"><span class='fu'>view_files</span>(<span class='no'>paths</span>, <span class='no'>repo</span>, <span class='no'>ref</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
   <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -127,13 +127,13 @@ is specified then details about all the files within the directory is returned.<
       <td><p>(string, optional) The paths to the files or directories in the repository.</p></td>
     </tr>
     <tr>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+    </tr>
+    <tr>
       <th>ref</th>
       <td><p>(string, optional) A git reference: either a SHA-1, tag or branch. If a branch
 is specified the head commit is used. If not specified the head of the default branch is used.</p></td>
-    </tr>
-    <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>token</th>
