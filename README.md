@@ -1,7 +1,7 @@
 githapi
 =======
 
-[![Build Status](https://travis-ci.org/ChadGoymer/githapi.svg?branch=master)](https://travis-ci.org/ChadGoymer/githapi)
+[![Build Status](https://travis-ci.org/ChadGoymer/githapi.svg?branch=master)](https://travis-ci.org/ChadGoymer/githapi) [![Coverage status](https://codecov.io/gh/ChadGoymer/githapi/branch/master/graph/badge.svg)](https://codecov.io/github/ChadGoymer/githapi?branch=master)
 
 User-friendly access to the GitHub API for R, consistent with the tidyverse.
 
