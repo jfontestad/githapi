@@ -2,7 +2,7 @@
 % Please edit documentation in R/git-tags.R
 \name{tags_exist}
 \alias{tags_exist}
-\title{Determine whether a tags exist in the specified repository.}
+\title{Determine whether tags exist in the specified repository.}
 \usage{
 tags_exist(tags, repo, token = getOption("github.token"),
   api = getOption("github.api"), ...)
