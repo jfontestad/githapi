@@ -47,5 +47,8 @@ are supplied then only information about those files is returned. Finally, if a 
 is specified then details about all the files within the directory is returned.
 }
 \details{
+NOTE: This function is not recursive. If you want to view information about all the files
+in a repository use \code{\link[=view_trees]{view_trees()}}.
+
 \url{https://developer.github.com/v3/repos/contents/#get-contents}
 }

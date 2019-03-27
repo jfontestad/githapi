@@ -7,6 +7,9 @@
 #' are supplied then only information about those files is returned. Finally, if a directory
 #' is specified then details about all the files within the directory is returned.
 #'
+#' NOTE: This function is not recursive. If you want to view information about all the files
+#' in a repository use [view_trees()].
+#'
 #' <https://developer.github.com/v3/repos/contents/#get-contents>
 #'
 #' @param paths (string, optional) The paths to the files or directories in the repository.
