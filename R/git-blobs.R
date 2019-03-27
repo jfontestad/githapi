@@ -253,7 +253,11 @@ read_files <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  all_files <- view_trees(ref = ref, repo = repo, token = token, api = api)
+  if (!is_sha(ref)) {
+    ref <- view_history(ref = ref, repo = "ChadGoymer/test-githapi", n_max = 1)[["sha"]]
+  }
+
+  all_files <- view_trees(shas = ref, repo = repo, token = token, api = api)
   file_shas <- set_names(all_files$sha, all_files$path)
 
   files <- try_map(paths, simplify = TRUE, function(path) {
@@ -332,6 +336,10 @@ download_files <- function(
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
     (is_url(api)) ||
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  }
+
+  if (!is_sha(ref)) {
+    ref <- view_history(ref = ref, repo = "ChadGoymer/test-githapi", n_max = 1)[["sha"]]
   }
 
   all_files <- view_trees(shas = ref, repo = repo, token = token, api = api)
