@@ -221,7 +221,7 @@ test_that("gh_events returns a tibble describing the issue events", {
 
   expect_identical(
     sapply(events, function(field) class(field)[[1]]),
-    c(id           = "integer",
+    c(id           = "numeric",
       event        = "character",
       issue_number = "integer",
       issue_title  = "character",
