@@ -254,7 +254,7 @@ read_files <- function(
   }
 
   if (!is_sha(ref)) {
-    ref <- view_history(ref = ref, repo = "ChadGoymer/test-githapi", n_max = 1)[["sha"]]
+    ref <- view_history(ref = ref, repo = repo, n_max = 1)[["sha"]]
   }
 
   all_files <- view_trees(shas = ref, repo = repo, token = token, api = api)
@@ -339,7 +339,7 @@ download_files <- function(
   }
 
   if (!is_sha(ref)) {
-    ref <- view_history(ref = ref, repo = "ChadGoymer/test-githapi", n_max = 1)[["sha"]]
+    ref <- view_history(ref = ref, repo = repo, n_max = 1)[["sha"]]
   }
 
   all_files <- view_trees(shas = ref, repo = repo, token = token, api = api)

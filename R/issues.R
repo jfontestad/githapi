@@ -607,7 +607,7 @@ gh_events <- function(
   events <- gh_page(url, n_max = n_max, token = token, ...)
 
   bind_fields(events, list(
-    id           = c("id",              as = "integer"),
+    id           = c("id",              as = "numeric"),
     event        = c("event",           as = "character"),
     issue_number = c("issue", "number", as = "integer"),
     issue_title  = c("issue", "title",  as = "character"),
