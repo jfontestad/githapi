@@ -1,5 +1,18 @@
 navbar:
   type: inverse
+  left:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: Release Notes
+      href: news/index.html
+  right:
+    - icon: fa-github fa-lg
+      href: http://github.com/ChadGoymer/githapi
 reference:
 - title: Repositories
   desc: Functions for accessing information about repositories and their content.
@@ -165,3 +178,5 @@ reference:
     - '`gh_download`'
     - '`gh_release`'
     - '`gh_releases`'
+news:
+- one_page: false
