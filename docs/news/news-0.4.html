@@ -8,21 +8,25 @@
 
 <title>Version 0.4 • githapi</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,7 +34,9 @@
 
 
 
+
 <meta property="og:title" content="Version 0.4" />
+
 
 
 
@@ -42,6 +48,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -60,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.9</span>
       </span>
     </div>
 
@@ -79,7 +86,6 @@
   <a href="../news/index.html">Release Notes</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="http://github.com/ChadGoymer/githapi">
@@ -94,6 +100,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -103,43 +110,71 @@
       
     </div>
 
-    <div id="githapi-0-4-0" class="section level1">
+    <div id="githapi-040" class="section level1">
 <h1 class="page-header">
-<a href="#githapi-0-4-0" class="anchor"></a>githapi 0.4.0</h1>
+<a href="#githapi-040" class="anchor"></a>githapi 0.4.0</h1>
 <ul>
-<li>added gh_json</li>
-<li>fixed gh_page to return correct number</li>
-<li>added gh_tibble and made gh_page more robust</li>
-<li>added gh_projects</li>
-<li>added gh_project</li>
-<li>added gh_columns</li>
-<li>added gh_cards</li>
-<li>added gh_column</li>
-<li>added gh_card</li>
-<li>gh_page now uses n_max</li>
-<li>removed gh_tibble, gh_json and flatten</li>
-<li>added gh_rate_limit and warning in gh_get</li>
-<li>gh_issues: collapsed assignees login to comma-separated string</li>
-<li>update docs for n_max parameter</li>
-<li>added gh_gists</li>
-<li>added gh_gist</li>
-<li>added gh_gist_commits</li>
-<li>added is_gist_starred</li>
-<li>Changed all functions returning booleans to is_…</li>
-<li>added gh_gist_forks</li>
-<li>added gh_events</li>
-<li>added gh_event</li>
-<li>added gh_commit_comments</li>
-<li>added gh_commit_comment</li>
-<li>added gh_contributers</li>
-<li>extended gh_teams to include repos, without tests</li>
-<li>added gh_languages</li>
-<li>added gh_releases and collapse_list</li>
-<li>added gh_release</li>
-<li>added gh_assets</li>
-<li>added gh_asset</li>
-<li>added gh_gist_comments</li>
-<li>added gh_gist_comment</li>
+<li>added <code>gh_json()</code>
+</li>
+<li>fixed <code><a href="../reference/gh_page.html">gh_page()</a></code> to return correct number</li>
+<li>added <code>gh_tibble()</code> and made gh_page more robust</li>
+<li>added <code><a href="../reference/gh_projects.html">gh_projects()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_project.html">gh_project()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_columns.html">gh_columns()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_cards.html">gh_cards()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_column.html">gh_column()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_card.html">gh_card()</a></code>
+</li>
+<li>
+<code><a href="../reference/gh_page.html">gh_page()</a></code> now uses <code>n_max</code>
+</li>
+<li>removed <code>gh_tibble()</code>, <code>gh_json()</code> and flatten</li>
+<li>added <code>gh_rate_limit()</code> and warning in <code><a href="../reference/gh_get.html">gh_get()</a></code>
+</li>
+<li>
+<code><a href="../reference/gh_issues.html">gh_issues()</a></code>: collapsed assignees login to comma-separated string</li>
+<li>update docs for <code>n_max</code> parameter</li>
+<li>added <code><a href="../reference/gh_gists.html">gh_gists()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_gist.html">gh_gist()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_gist_commits.html">gh_gist_commits()</a></code>
+</li>
+<li>added <code><a href="../reference/is_gist_starred.html">is_gist_starred()</a></code>
+</li>
+<li>Changed all functions returning booleans to <code>is_*()</code>
+</li>
+<li>added <code><a href="../reference/gh_gist_forks.html">gh_gist_forks()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_events.html">gh_events()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_event.html">gh_event()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_commit_comments.html">gh_commit_comments()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_commit_comment.html">gh_commit_comment()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_contributers.html">gh_contributers()</a></code>
+</li>
+<li>extended <code><a href="../reference/gh_teams.html">gh_teams()</a></code> to include repos, without tests</li>
+<li>added <code><a href="../reference/gh_languages.html">gh_languages()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_releases.html">gh_releases()</a></code> and collapse_list</li>
+<li>added <code><a href="../reference/gh_release.html">gh_release()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_assets.html">gh_assets()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_asset.html">gh_asset()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_gist_comments.html">gh_gist_comments()</a></code>
+</li>
+<li>added <code><a href="../reference/gh_gist_comment.html">gh_gist_comment()</a></code>
+</li>
 </ul>
 </div>
   </div>
@@ -148,12 +183,13 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#githapi-0-4-0">0.4.0</a></li>
+        <li><a href="#githapi-040">0.4.0</a></li>
       </ul>
     </div>
   </div>
 
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -161,13 +197,16 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
