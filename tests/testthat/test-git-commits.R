@@ -87,7 +87,7 @@ test_that("create_commit creates a new commit in a repository", {
 # TEST: upload_commit -------------------------------------------------------------------------
 
 test_that("upload_commit uploads files and directory structure to github", {
-  skip("Does not work in Travis")
+  skip_on_travis()
 
   flat_commit <- upload_commit(
     branch  = "master",
