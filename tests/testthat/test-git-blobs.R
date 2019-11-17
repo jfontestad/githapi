@@ -77,7 +77,10 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
 # TEST: read_files ----------------------------------------------------------------------------
 
 test_that("read_files returns the contents of the specified files", {
-  files <- read_files(c("README.md", "test-file.txt"), "ChadGoymer/test-githapi")
+  files <- read_files(
+    paths = c("README.md", "test-file.txt"),
+    ref   = "test-files",
+    repo  = "ChadGoymer/test-githapi")
 
   expect_is(files, "character")
   expect_match(files["README.md"], "^# test-githapi")
@@ -107,6 +110,7 @@ test_that("download_files saves the specified files to disk", {
   paths <- download_files(
     paths    = c("README.md", "test-file.txt"),
     location = temp_path,
+    ref      = "test-files",
     repo     = "ChadGoymer/test-githapi")
 
   expect_is(paths, "character")
@@ -148,7 +152,7 @@ test_that("blobs_exist returns TRUE or FALSE depending on whether the blob exist
 # TEST: source_files --------------------------------------------------------------------------
 
 test_that("source_files sources a file in GitHub", {
-  source_files("test-source.R", "ChadGoymer/test-githapi")
+  source_files("test-source.R", "test-files", "ChadGoymer/test-githapi")
   expect_true(exists("test_source"))
   expect_is(test_source, "function")
   expect_identical(test_source(), "Testing source_files")
