@@ -1,10 +1,9 @@
 .onLoad <- function(libname, pkgname) {
 
   token <- Sys.getenv("GITHUB_TOKEN")
-  if (identical(token, ""))
+  if (identical(token, "")) {
     token <- Sys.getenv("GITHUB_PAT")
-  if (identical(token, ""))
-    packageStartupMessage("Cannot find a GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
+  }
 
   github_env <- list(
     GITHUB_API        = "https://api.github.com",
