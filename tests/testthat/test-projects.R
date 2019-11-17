@@ -8,7 +8,7 @@ test_that("gh_project returns a list describing the project", {
     project,
     c("owner_url", "url", "html_url", "columns_url", "id", "node_id", "name", "body",
       "number", "state", "creator", "created_at", "updated_at"))
-  expect_identical(project$name, "githapi")
+  expect_identical(project$name, "Prioritisation")
 })
 
 #  FUNCTION: gh_projects ----------------------------------------------------------------------
@@ -28,7 +28,7 @@ test_that("gh_projects returns a tibble describing the projects", {
       updated_at    = "POSIXct",
       url           = "character"))
 
-  expect_true("githapi" %in% projects$name)
+  expect_true("Prioritisation" %in% projects$name)
 })
 
 #  FUNCTION: gh_column ------------------------------------------------------------------------
@@ -38,7 +38,7 @@ test_that("gh_column returns a list describing the column", {
   expect_named(
     column,
     c("url", "project_url", "cards_url", "id", "node_id", "name", "created_at", "updated_at"))
-  expect_identical(column$name, "To do")
+  expect_identical(column$name, "Triage")
 })
 
 #  FUNCTION: gh_columns -----------------------------------------------------------------------
@@ -54,7 +54,7 @@ test_that("gh_columns returns a tibble describing the columns", {
       updated_at = "POSIXct",
       url        = "character"))
 
-  expect_true(all(c("To do", "In progress", "Done") %in% columns$name))
+  expect_true(all(c("Triage", "Sometime", "Soon", "Now", "Done") %in% columns$name))
 })
 
 #  FUNCTION: gh_card --------------------------------------------------------------------------
