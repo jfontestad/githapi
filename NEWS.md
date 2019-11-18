@@ -1,3 +1,7 @@
+# githapi 0.8.10
+
+- Fixed `upload_tree()` so mode is set correctly when uploading an executable.
+
 # githapi 0.8.9
 
 - Replaced `skip()` with `skip_on_travis()` in tests
