@@ -8,21 +8,25 @@
 
 <title>Version 0.7 • githapi</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,7 +34,9 @@
 
 
 
+
 <meta property="og:title" content="Version 0.7" />
+
 
 
 
@@ -42,6 +48,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -60,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.9</span>
       </span>
     </div>
 
@@ -79,7 +86,6 @@
   <a href="../news/index.html">Release Notes</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="http://github.com/ChadGoymer/githapi">
@@ -94,6 +100,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -103,12 +110,9 @@
       
     </div>
 
-    <div id="githapi-0-7-0" class="section level1">
+    <div id="githapi-070" class="section level1">
 <h1 class="page-header">
-<a href="#githapi-0-7-0" class="anchor"></a>githapi 0.7.0</h1>
-<div id="changes-7" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-7" class="anchor"></a>Changes</h2>
+<a href="#githapi-070" class="anchor"></a>githapi 0.7.0</h1>
 <p>This release starts the process of replacing the naming convention of functions and adding support for creating, updated and deleting objects in GitHub. It also adds useful messages, and logging.</p>
 <ul>
 <li>Added <code>info()</code>, <code>warn()</code> and <code>error()</code> functions which give nice messages to the users and optionally logs them to a file.</li>
@@ -118,83 +122,70 @@
 </li>
 </ul>
 </div>
-</div>
-    <div id="githapi-0-7-1" class="section level1">
+    <div id="githapi-071" class="section level1">
 <h1 class="page-header">
-<a href="#githapi-0-7-1" class="anchor"></a>githapi 0.7.1</h1>
-<div id="changes-6" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-6" class="anchor"></a>Changes</h2>
+<a href="#githapi-071" class="anchor"></a>githapi 0.7.1</h1>
 <p>No functional changes, change fixed broken tests and refactored new functions.</p>
 </div>
-</div>
-    <div id="githapi-0-7-2" class="section level1">
+    <div id="githapi-072" class="section level1">
 <h1 class="page-header">
-<a href="#githapi-0-7-2" class="anchor"></a>githapi 0.7.2</h1>
-<div id="changes-5" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-5" class="anchor"></a>Changes</h2>
+<a href="#githapi-072" class="anchor"></a>githapi 0.7.2</h1>
 <p>Added:</p>
 <ul>
-<li>view_files()</li>
-<li>create_files()</li>
-<li>update_files()</li>
-<li>delete_files()</li>
-<li>view_readme()</li>
-<li>view_contents()</li>
+<li><code><a href="../reference/view_files.html">view_files()</a></code></li>
+<li><code><a href="../reference/create_files.html">create_files()</a></code></li>
+<li><code><a href="../reference/update_files.html">update_files()</a></code></li>
+<li><code><a href="../reference/delete_files.html">delete_files()</a></code></li>
+<li><code>view_readme()</code></li>
+<li><code>view_contents()</code></li>
 </ul>
 </div>
-</div>
-    <div id="githapi-0-7-3" class="section level1">
+    <div id="githapi-073" class="section level1">
 <h1 class="page-header">
-<a href="#githapi-0-7-3" class="anchor"></a>githapi 0.7.3</h1>
-<div id="changes-4" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-4" class="anchor"></a>Changes</h2>
+<a href="#githapi-073" class="anchor"></a>githapi 0.7.3</h1>
 <p>Added repository commits functions:</p>
 <ul>
-<li>download_commit()</li>
-<li>view_commits()</li>
-<li>view_shas()</li>
-<li>compare_commits()</li>
-<li>compare_files()</li>
+<li><code><a href="../reference/download_commit.html">download_commit()</a></code></li>
+<li><code><a href="../reference/view_commits.html">view_commits()</a></code></li>
+<li><code><a href="../reference/view_shas.html">view_shas()</a></code></li>
+<li><code><a href="../reference/compare_commits.html">compare_commits()</a></code></li>
+<li><code><a href="../reference/compare_files.html">compare_files()</a></code></li>
 </ul>
 <p>Added git blobs functions:</p>
 <ul>
-<li>view_blobs()</li>
-<li>create_blobs()</li>
-<li>update_blobs()</li>
-<li>read_files()</li>
-<li>download_files()</li>
-<li>blob_exists()</li>
+<li><code><a href="../reference/view_blobs.html">view_blobs()</a></code></li>
+<li><code><a href="../reference/create_blobs.html">create_blobs()</a></code></li>
+<li><code>update_blobs()</code></li>
+<li><code><a href="../reference/read_files.html">read_files()</a></code></li>
+<li><code><a href="../reference/download_files.html">download_files()</a></code></li>
+<li><code>blob_exists()</code></li>
 </ul>
 <p>Added git trees functions:</p>
 <ul>
-<li>view_trees()</li>
-<li>create_tree()</li>
-<li>upload_tree()</li>
-<li>tree_exists()</li>
+<li><code><a href="../reference/view_trees.html">view_trees()</a></code></li>
+<li><code><a href="../reference/create_tree.html">create_tree()</a></code></li>
+<li><code><a href="../reference/upload_tree.html">upload_tree()</a></code></li>
+<li><code>tree_exists()</code></li>
 </ul>
 <p>Added git commits functions:</p>
 <ul>
-<li>view_commits()</li>
-<li>create_commit()</li>
-<li>upload_commit()</li>
-<li>commit_exists()</li>
+<li><code><a href="../reference/view_commits.html">view_commits()</a></code></li>
+<li><code><a href="../reference/create_commit.html">create_commit()</a></code></li>
+<li><code><a href="../reference/upload_commit.html">upload_commit()</a></code></li>
+<li><code>commit_exists()</code></li>
 </ul>
 <p>Added git branches functions:</p>
 <ul>
-<li>view_branches()</li>
-<li>create_branches()</li>
-<li>update_branches()</li>
-<li>delete_branches()</li>
-<li>branch_exists()</li>
+<li><code><a href="../reference/view_branches.html">view_branches()</a></code></li>
+<li><code><a href="../reference/create_branches.html">create_branches()</a></code></li>
+<li><code><a href="../reference/update_branches.html">update_branches()</a></code></li>
+<li><code><a href="../reference/delete_branches.html">delete_branches()</a></code></li>
+<li><code>branch_exists()</code></li>
 </ul>
 <p>Added git tags functions:</p>
 <ul>
-<li>tag_exists()</li>
+<li><code>tag_exists()</code></li>
 </ul>
-</div>
 </div>
   </div>
 
@@ -202,15 +193,16 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#githapi-0-7-0">0.7.0</a></li>
-        <li><a href="#githapi-0-7-1">0.7.1</a></li>
-        <li><a href="#githapi-0-7-2">0.7.2</a></li>
-        <li><a href="#githapi-0-7-3">0.7.3</a></li>
+        <li><a href="#githapi-070">0.7.0</a></li>
+        <li><a href="#githapi-071">0.7.1</a></li>
+        <li><a href="#githapi-072">0.7.2</a></li>
+        <li><a href="#githapi-073">0.7.3</a></li>
       </ul>
     </div>
   </div>
 
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -218,13 +210,16 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

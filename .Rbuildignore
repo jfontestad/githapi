@@ -1,4 +1,5 @@
 ^codecov\.yml$
+^\.covrignore$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$

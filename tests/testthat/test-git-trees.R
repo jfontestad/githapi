@@ -94,7 +94,7 @@ test_that("create_tree creates a new tree of the specified structure", {
 # TEST: upload_tree ---------------------------------------------------------------------------
 
 test_that("upload_tree uploads files and directory structure to github", {
-  skip("Does not work in Travis")
+  skip_on_travis()
 
   flat_tree <- upload_tree(
     path = system.file("test-data/upload-tree/test-dir", package = "githapi"),
