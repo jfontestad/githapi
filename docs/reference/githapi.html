@@ -8,25 +8,21 @@
 
 <title>User-friendly access to the GitHub API for R, consistent with the tidyverse. — githapi • githapi</title>
 
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -34,14 +30,13 @@
 
 
 
-
 <meta property="og:title" content="User-friendly access to the GitHub API for R, consistent with the tidyverse. — githapi" />
+
 <meta property="og:description" content="GitHub is a wildly popular host for version controlled code, but also data. This package
 provides a user-friendly way to access content within GitHub through v3 of its
 API. The functions are also consistent with the
 tidyverse approach and return tibbles where possible." />
 <meta name="twitter:card" content="summary" />
-
 
 
 
@@ -53,7 +48,6 @@ tidyverse approach and return tibbles where possible." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
 
 
   </head>
@@ -72,7 +66,7 @@ tidyverse approach and return tibbles where possible." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.10</span>
       </span>
     </div>
 
@@ -91,6 +85,7 @@ tidyverse approach and return tibbles where possible." />
   <a href="../news/index.html">Release Notes</a>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="http://github.com/ChadGoymer/githapi">
@@ -105,7 +100,6 @@ tidyverse approach and return tibbles where possible." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -117,45 +111,41 @@ tidyverse approach and return tibbles where possible." />
     </div>
 
     <div class="ref-description">
+    
     <p>GitHub is a wildly popular host for version controlled code, but also data. This package
 provides a user-friendly way to access content within GitHub through v3 of its
 <a href='https://developer.github.com/v3/'>API</a>. The functions are also consistent with the
 <a href='http://www.tidyverse.org/'>tidyverse</a> approach and return tibbles where possible.</p>
+    
     </div>
 
-
-
+        
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Detailed documentation can be found at: <a href='http://www.goymer.me.uk/githapi'>http://www.goymer.me.uk/githapi</a></p>
+    
     <h2 class="hasAnchor" id="authorisation"><a class="anchor" href="#authorisation"></a>Authorisation</h2>
 
     
-
-
-<p>In order to access repositories in GitHub authentication is required, by setting a
+    <p>In order to access repositories in GitHub authentication is required, by setting a
 <a href='https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/'>Personal Access Token</a>.
 githapi identifies the personal token in two possible ways:</p><ol>
 <li><p>On package load - if set as an environment variable named either "GITHUB_TOKEN" or "GITHUB_PAT"</p></li>
 <li><p>At any time - if set as an R option called "github.token"</p></li>
 </ol>
-
-<p>Setting an R option will override the environment variable.</p>
+    <p>Setting an R option will override the environment variable.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
-
-
-<p><code>githapi</code> works best if used as part of the <a href='http://www.tidyverse.org/'>tidyverse</a>.</p><pre>library(tidyverse)
+    <p><code>githapi</code> works best if used as part of the <a href='http://www.tidyverse.org/'>tidyverse</a>.</p><pre>library(tidyverse)
 library(githapi)
 </pre>
-
+    
     <h2 class="hasAnchor" id="getting-information-about-a-repository"><a class="anchor" href="#getting-information-about-a-repository"></a>Getting information about a repository</h2>
 
     
-
-
-<p><code>githapi</code> provides many functions for extracting information from a repository. For example, To
+    <p><code>githapi</code> provides many functions for extracting information from a repository. For example, To
 get information about the branches use <code><a href='view_branches.html'>view_branches()</a></code>:</p><pre>view_branches("ChadGoymer/test-githapi")
 </pre><pre>#&gt; # A tibble: 4 x 6
 #&gt;   name     ref        url                 object_sha      object_type object_url
@@ -165,8 +155,7 @@ get information about the branches use <code><a href='view_branches.html'>view_b
 #&gt; 3 test-up~ refs/head~ https://api.github~ 61c19d6edb1b9e~ commit      https://api.github.com/r~
 #&gt; 4 unedite~ refs/head~ https://api.github~ 37d97bf9e93418~ commit      https://api.github.com/r~
 </pre>
-
-<p>Similarly, to get the history of commits for a particular branch use <code><a href='view_history.html'>view_history()</a></code>:</p><pre>view_history("master", "ChadGoymer/test-githapi")
+    <p>Similarly, to get the history of commits for a particular branch use <code><a href='view_history.html'>view_history()</a></code>:</p><pre>view_history("master", "ChadGoymer/test-githapi")
 </pre><pre>#&gt; # A tibble: 1,000 x 12
 #&gt;    sha   message author_name author_email committer_name committer_email date
 #&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;           &lt;dttm&gt;
@@ -183,8 +172,7 @@ get information about the branches use <code><a href='view_branches.html'>view_b
 #&gt; # ... with 990 more rows, and 5 more variables: url &lt;chr&gt;, tree_sha &lt;chr&gt;, tree_url &lt;chr&gt;,
 #&gt; #   parent_sha &lt;list&gt;, parent_url &lt;list&gt;
 </pre>
-
-<p>Note that, by default, when viewing many items, only the last 1000 are returned. If you wish to
+    <p>Note that, by default, when viewing many items, only the last 1000 are returned. If you wish to
 view more you can set the <code>n_max</code> parameter. To get information about the files in a particular
 commit use <code><a href='view_files.html'>view_files()</a></code>:</p><pre>view_files(ref = "master", repo = "ChadGoymer/test-githapi")
 </pre><pre>#&gt; # A tibble: 4 x 9
@@ -195,8 +183,7 @@ commit use <code><a href='view_files.html'>view_files()</a></code>:</p><pre>view
 #&gt; 3 test-~ test-~ f933c54~    22 file  https://api~ https://git~ https://api.g~ https://raw.gith~
 #&gt; 4 test-~ test-~ 68f9ad1~    63 file  https://api~ https://git~ https://api.g~ https://raw.gith~
 </pre>
-
-<p>Note that we have used a branch name here rather than a commit. That is because most functions
+    <p>Note that we have used a branch name here rather than a commit. That is because most functions
 in <code>githapi</code> allow git references to identify commits. A git reference is either a branch, in
 which case the head commit on the branch is used, a tag or a SHA-1 of the commit.</p>
 <p>Information about tags and releases can also be viewed by using <code><a href='view_tags.html'>view_tags()</a></code> and
@@ -213,39 +200,31 @@ which case the head commit on the branch is used, a tag or a SHA-1 of the commit
 #&gt; # ... with 5 more variables: created_at &lt;dttm&gt;, published_at &lt;dttm&gt;, assets &lt;list&gt;,
 #&gt; #   zipball_url &lt;chr&gt;, url &lt;chr&gt;
 </pre>
-
+    
     <h2 class="hasAnchor" id="downloading-files-from-a-repository"><a class="anchor" href="#downloading-files-from-a-repository"></a>Downloading files from a repository</h2>
 
     
-
-
-<p>In addition to getting information about the contents of a repository, <code>githapi</code> can also
+    <p>In addition to getting information about the contents of a repository, <code>githapi</code> can also
 download files and commits. To download individual files use <code><a href='download_files.html'>download_files()</a></code>:</p><pre>temp_path &lt;- file.path(tempdir(), "githapi")
-
-download_files(
+    download_files(
   paths    = c("README.md", "test-file.txt"),
   location = temp_path,
   repo     = "ChadGoymer/test-githapi")
 </pre>
-
-<p>To download an entire commit use <code><a href='download_commit.html'>download_commit()</a></code>:</p><pre>download_commit(
+    <p>To download an entire commit use <code><a href='download_commit.html'>download_commit()</a></code>:</p><pre>download_commit(
   ref  = "master",
   path = temp_path,
   repo = "ChadGoymer/test-githapi")
 </pre>
-
-<p>You can also read text files from a commit directly using <code><a href='read_files.html'>read_files()</a></code>:</p><pre>files &lt;- read_files(c("README.md", "test-file.txt"), "ChadGoymer/test-githapi")
+    <p>You can also read text files from a commit directly using <code><a href='read_files.html'>read_files()</a></code>:</p><pre>files &lt;- read_files(c("README.md", "test-file.txt"), "ChadGoymer/test-githapi")
 </pre>
-
-<p>and source R scripts directly from GitHub using <code><a href='source_files.html'>source_files()</a></code>:</p><pre>source_files("test-source.R", "ChadGoymer/test-githapi")
+    <p>and source R scripts directly from GitHub using <code><a href='source_files.html'>source_files()</a></code>:</p><pre>source_files("test-source.R", "ChadGoymer/test-githapi")
 </pre>
-
+    
     <h2 class="hasAnchor" id="updating-a-repository"><a class="anchor" href="#updating-a-repository"></a>Updating a repository</h2>
 
     
-
-
-<p><code>githapi</code> also provides a set of functions for updating repsitories, for adding branches, tags as
+    <p><code>githapi</code> also provides a set of functions for updating repsitories, for adding branches, tags as
 well as new commits.</p>
 <p>To create or update a file, or small number of text files, in a repository use <code><a href='create_files.html'>create_files()</a></code>
 or <code><a href='update_files.html'>update_files()</a></code>:</p><pre>create_files(
@@ -259,8 +238,7 @@ or <code><a href='update_files.html'>update_files()</a></code>:</p><pre>create_f
   messages = "Testing update_files()",
   repo     = "ChadGoymer/test-githapi")
 </pre>
-
-<p>These functions create a new commit per file and specify the contents as strings. To upload many
+    <p>These functions create a new commit per file and specify the contents as strings. To upload many
 files, and/or binary files, use <code><a href='upload_commit.html'>upload_commit()</a></code>:</p><pre>upload_commit(
   branch  = "master",
   message = "Commit made with upload_commit",
@@ -268,8 +246,7 @@ files, and/or binary files, use <code><a href='upload_commit.html'>upload_commit
   parents = "master",
   repo    = "ChadGoymer/test-githapi")
 </pre>
-
-<p>This function, by default, makes a new commit containing the contents of the specified directory.
+    <p>This function, by default, makes a new commit containing the contents of the specified directory.
 If you wish to only specify the files to change then set the <code>replace</code> parameter to <code>FALSE</code>
 (see documentation for details).</p>
 <p>Finally, tags and releases can be created using <code><a href='create_tags.html'>create_tags()</a></code> and <code><a href='create_releases.html'>create_releases()</a></code>
@@ -284,23 +261,28 @@ respectively:</p><pre>create_tags(
   bodies  = c("Created for testing: aaa", "Created for testing: bbb"),
   repo    = "ChadGoymer/test-githapi")
 </pre>
-
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      
       <li><a href="#details">Details</a></li>
+
       <li><a href="#authorisation">Authorisation</a></li>
+
       <li><a href="#usage">Usage</a></li>
+
       <li><a href="#getting-information-about-a-repository">Getting information about a repository</a></li>
+
       <li><a href="#downloading-files-from-a-repository">Downloading files from a repository</a></li>
+
       <li><a href="#updating-a-repository">Updating a repository</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>
-
 
       <footer>
       <div class="copyright">
@@ -308,16 +290,13 @@ respectively:</p><pre>create_tags(
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 
   
 
-
   </body>
 </html>
-
 
