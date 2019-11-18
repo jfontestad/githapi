@@ -268,7 +268,7 @@ upload_tree <- function(
     })) %>%
     mutate(
       type = ifelse(file_info$isdir, "tree", "blob"),
-      mode = ifelse(file_info$isdir, "040000", ifelse(file_info$exe == "no", "100644", "100755")),
+      mode = ifelse(file_info$isdir, "040000", "100644"),
       path = basename(file_path)) %>%
     select("path", "mode", "type", "sha")
 
