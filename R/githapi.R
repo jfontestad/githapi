@@ -344,15 +344,15 @@ gh_get <- function(
   }
 
   info("> GET: ", url, level = 2)
-  response <- curl_fetch_memory(url, handle = handle_setheaders(
-    new_handle(),
+  response <- curl::curl_fetch_memory(url, handle = curl::handle_setheaders(
+    curl::new_handle(),
     Authorization = paste("token", token),
     Accept        = accept))
 
   response_content <- response$content
   message <- NULL
 
-  response_header  <- strsplit(parse_headers(response$header), ": ")
+  response_header  <- strsplit(curl::parse_headers(response$header), ": ")
   header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]])) %>%
     set_names(sapply(response_header, function(h) h[[1]]))
 
@@ -360,7 +360,7 @@ gh_get <- function(
     info("> Parsing response", level = 4)
     response_content <- rawToChar(response$content)
     if (grepl("json$", tolower(accept))) {
-      response_content <- fromJSON(response_content, simplifyVector = FALSE)
+      response_content <- jsonlite::fromJSON(response_content, simplifyVector = FALSE)
       message <- response_content$message
     }
   }
@@ -487,24 +487,24 @@ gh_request <- function(
   }
 
   info("> ", type, ": ", url, level = 2)
-  h <- new_handle()
+  h <- curl::new_handle()
   if (!identical(type, "GET")) {
-    h <- handle_setopt(h, customrequest = type)
+    h <- curl::handle_setopt(h, customrequest = type)
   }
 
   if (!is_null(payload)) {
     (is_list(payload)) ||
       error("'payload' must be a list:\n  '", paste(payload, collapse = "'\n  '"), "'")
 
-    h <- handle_setopt(h, COPYPOSTFIELDS = jsonlite::toJSON(payload, auto_unbox = TRUE))
+    h <- curl::handle_setopt(h, COPYPOSTFIELDS = jsonlite::toJSON(payload, auto_unbox = TRUE))
   }
-  h <- handle_setheaders(h, Authorization = paste("token", token), Accept = accept)
+  h <- curl::handle_setheaders(h, Authorization = paste("token", token), Accept = accept)
 
-  response <- curl_fetch_memory(url, handle = h)
+  response <- curl::curl_fetch_memory(url, handle = h)
   response_content <- response$content
   message <- NULL
 
-  response_header  <- strsplit(parse_headers(response$header), ": ")
+  response_header  <- strsplit(curl::parse_headers(response$header), ": ")
   header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]])) %>%
     set_names(sapply(response_header, function(h) h[[1]]))
 
@@ -512,7 +512,7 @@ gh_request <- function(
     info("> Parsing response", level = 4)
     response_content <- rawToChar(response$content)
     if (!identical(response_content, "") && grepl("json$", tolower(accept))) {
-      response_content <- fromJSON(response_content, simplifyVector = FALSE)
+      response_content <- jsonlite::fromJSON(response_content, simplifyVector = FALSE)
       message <- response_content$message
     } else {
       message <- "None"
@@ -563,13 +563,13 @@ gh_download_binary <- function(
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
   info("> DOWNLOAD: ", url, level = 2)
-  response <- curl_fetch_disk(url, path, handle = handle_setheaders(
-    new_handle(),
+  response <- curl::curl_fetch_disk(url, path, handle = curl::handle_setheaders(
+    curl::new_handle(),
     Authorization = paste("token", token),
     Accept = "application/vnd.github.raw"))
 
   info("> Parsing response", level = 4)
-  response_header  <- strsplit(parse_headers(response$header), ": ")
+  response_header  <- strsplit(curl::parse_headers(response$header), ": ")
   header_values <- lapply(response_header, function(h) ifelse(length(h) == 1, h[[1]], h[[2]])) %>%
     set_names(sapply(response_header, function(h) h[[1]]))
 

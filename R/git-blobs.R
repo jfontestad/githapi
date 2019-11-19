@@ -180,7 +180,7 @@ upload_blobs <- function(
   blobs_list <- try_map(paths, function(path) {
     info("Uploading file '", basename(path), "' to repository '", repo, "'")
 
-    content <- readBin(path, "raw", file.info(path)$size) %>% base64_enc()
+    content <- readBin(path, "raw", file.info(path)$size) %>% jsonlite::base64_enc()
 
     gh_request(
       "POST", gh_url("repos", repo, "git/blobs", api = api),

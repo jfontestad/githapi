@@ -755,7 +755,7 @@ gh_download <- function(
     gh_url("repos", repo, "zipball", ref, api = api),
     path = archive_path, token = token, ...)
 
-  unzip(archive_path, exdir = path)
+  utils::unzip(archive_path, exdir = path)
 
   # Tidy up by moving files up a directory level
   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)

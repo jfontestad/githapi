@@ -232,7 +232,7 @@ create_files <- function(
 
     payload <- list(
       message   = message,
-      content   = base64_enc(content),
+      content   = jsonlite::base64_enc(content),
       branch    = branch,
       committer = committer,
       author    = author) %>%
@@ -384,7 +384,7 @@ update_files <- function(
 
     payload <- list(
       message   = paste(message, "- updated", path),
-      content   = base64_enc(content),
+      content   = jsonlite::base64_enc(content),
       sha       = old_file$sha,
       branch    = branch,
       committer = committer,
@@ -683,7 +683,7 @@ download_commit <- function(
     path = archive_path, token = token, ...)
 
   info("Unpacking commit into '", path, "'", level = 3)
-  unzip(archive_path, exdir = path)
+  utils::unzip(archive_path, exdir = path)
 
   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
   on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
