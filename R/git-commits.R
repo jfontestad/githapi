@@ -41,7 +41,7 @@ view_commits <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -73,8 +73,8 @@ view_commits <- function(
     tree_url        = c("tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   commits_tbl
@@ -168,7 +168,7 @@ create_commit <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  parents <- map(parents, use_names = FALSE, function(p) {
+  parents <- gh_map(parents, use_names = FALSE, function(p) {
     if (!is_na(p) && !is_sha(p)) {
       p <- view_shas(p, repo = repo) %>% unname()
     }
@@ -205,8 +205,8 @@ create_commit <- function(
     tree_url        = c("tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commit_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(commit_list, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(commit_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(commit_list, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   commit_tbl
@@ -401,7 +401,7 @@ commits_exist <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -411,7 +411,7 @@ commits_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(shas, simplify = TRUE, function(sha) {
+  gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking commit '", sha, "' exists in repository '", repo, "'")
 
     try_catch({

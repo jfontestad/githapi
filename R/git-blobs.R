@@ -34,7 +34,7 @@ view_blobs <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -167,7 +167,7 @@ upload_blobs <- function(
   ...)
 {
   {
-    (all(map(paths, simplify = TRUE, function(p) is_file(p) && is_readable(p)))) ||
+    (all(gh_map(paths, simplify = TRUE, function(p) is_file(p) && is_readable(p)))) ||
       error("'paths' must be a character vector of readable file paths:\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -394,7 +394,7 @@ blobs_exist <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must be a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -404,7 +404,7 @@ blobs_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(shas, simplify = TRUE, function(sha) {
+  gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking blob '", sha, "' exists in repository '", repo, "'")
 
     try_catch({

@@ -87,8 +87,8 @@ view_history <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   commits_tbl
@@ -180,7 +180,7 @@ shas_exist <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -190,7 +190,7 @@ shas_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(shas, simplify = TRUE, function(sha) {
+  gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking commit SHA '", sha, "' exists in repository '", repo, "'")
 
     try_catch({
@@ -285,8 +285,8 @@ compare_commits <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   comparison_tbl

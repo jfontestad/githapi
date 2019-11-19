@@ -112,7 +112,7 @@ view_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
+    mutate(assets = gh_map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
 
   info("Done", level = 3)
   releases_tbl
@@ -232,7 +232,7 @@ create_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
+    mutate(assets = gh_map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
 
   info("Done", level = 3)
   releases_tbl
@@ -354,7 +354,7 @@ update_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
+    mutate(assets = gh_map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
 
   info("Done", level = 3)
   releases_tbl
@@ -461,7 +461,7 @@ releases_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(tags, simplify = TRUE, function(tag) {
+  gh_map(tags, simplify = TRUE, function(tag) {
     info("Checking release '", tag, "' exists in repository '", repo, "'")
 
     try_catch({

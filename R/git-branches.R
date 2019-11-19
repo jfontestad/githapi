@@ -79,7 +79,7 @@ view_branches <- function(
   }
 
   info("Transforming results", level = 3)
-  branches_tbl <- bind_fields(branches_list[!map(branches_list, is_null, simplify = TRUE)], list(
+  branches_tbl <- bind_fields(branches_list[!gh_map(branches_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -133,7 +133,7 @@ create_branches <- function(
   {
     (is_character(branches)) ||
       error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (identical(length(branches), length(shas))) ||
       error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
@@ -155,7 +155,7 @@ create_branches <- function(
   })
 
   info("Transforming results", level = 3)
-  branches_tbl <- bind_fields(branches_list[!map(branches_list, is_null, simplify = TRUE)], list(
+  branches_tbl <- bind_fields(branches_list[!gh_map(branches_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -209,7 +209,7 @@ update_branches <- function(
   {
     (is_character(branches)) ||
       error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (identical(length(branches), length(shas))) ||
       error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
@@ -231,7 +231,7 @@ update_branches <- function(
   })
 
   info("Transforming results", level = 3)
-  branches_tbl <- bind_fields(branches_list[!map(branches_list, is_null, simplify = TRUE)], list(
+  branches_tbl <- bind_fields(branches_list[!gh_map(branches_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -335,7 +335,7 @@ branches_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(branches, simplify = TRUE, function(branch) {
+  gh_map(branches, simplify = TRUE, function(branch) {
     info("Checking branch '", branch, "' exists in repository '", repo, "'")
 
     try_catch({

@@ -264,8 +264,8 @@ create_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
+    mutate(commit_parent_sha = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
   info("Done", level = 3)
   files_tbl
@@ -416,8 +416,8 @@ update_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
+    mutate(commit_parent_sha = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
   info("Done", level = 3)
   files_tbl
@@ -544,8 +544,8 @@ delete_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
+    mutate(commit_parent_sha = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
   info("Done", level = 3)
   files_tbl
@@ -599,7 +599,7 @@ files_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(paths, simplify = TRUE, function(path) {
+  gh_map(paths, simplify = TRUE, function(path) {
     info("Checking file '", path, "' exists in repository '", repo, "'")
 
     try_catch({
@@ -689,7 +689,7 @@ download_commit <- function(
   on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
 
   subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
-  map(file.path(path, subfolders[subfolders != ""]), dir.create)
+  gh_map(file.path(path, subfolders[subfolders != ""]), dir.create)
 
   files <- list.files(archive_folder, recursive = TRUE)
   file.rename(file.path(archive_folder, files), file.path(path, files))
