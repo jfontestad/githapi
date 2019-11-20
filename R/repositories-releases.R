@@ -60,7 +60,7 @@ view_releases <- function(
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_natural(n_max)) ||
+    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
       error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -184,9 +184,9 @@ create_releases <- function(
       error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags)))) ||
+    (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
       error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
-    (is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags)))) ||
+    (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
       error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -302,9 +302,9 @@ update_releases <- function(
       error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags)))) ||
+    (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
       error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
-    (is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags)))) ||
+    (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
       error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")

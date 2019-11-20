@@ -42,7 +42,7 @@ view_trees <- function(
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_boolean(recursive)) ||
+    (is_scalar_logical(recursive)) ||
       error("'recursive' must be boolean:\n  '", paste(recursive, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")

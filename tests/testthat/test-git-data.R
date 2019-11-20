@@ -5,7 +5,7 @@ test_that("gh_git_blob returns the contents of a file in the repository", {
   readme <- suppressWarnings(
     gh_git_blob("abb7f8ce52e6bdea33170ec8edbd6cfb1eca0722", "ChadGoymer/githapi"))
 
-  expect_true(is_string(readme))
+  expect_true(is_scalar_character(readme))
   expect_identical(
     readme,
     "# githapi\nUser-friendly access to the GitHub API for R, consistent with the tidyverse.\n")

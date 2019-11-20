@@ -141,7 +141,7 @@ test_that("is_valid_sha returns a boolean, with attributes describing the errors
 #  FUNCTION: gh_commit_sha --------------------------------------------------------------------
 test_that("gh_commit_sha returns a string with the SHA-1", {
   commit_sha <- suppressWarnings(gh_commit_sha("v0.0.0", "ChadGoymer/githapi"))
-  expect_true(is_string(commit_sha))
+  expect_true(is_scalar_character(commit_sha))
   expect_identical(commit_sha, "ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964")
 })
 
@@ -235,7 +235,7 @@ test_that("gh_readme returns the text in the README file", {
   readme_d9fe50f <- suppressWarnings(
     gh_readme("d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))
 
-  expect_true(is_string(readme_d9fe50f))
+  expect_true(is_scalar_character(readme_d9fe50f))
   expect_identical(
     readme_d9fe50f,
     "# githapi\nUser-friendly access to the GitHub API for R, consistent with the tidyverse.\n")
@@ -246,7 +246,7 @@ test_that("gh_contents returns the text in a specified file", {
   description_master <- suppressWarnings(
     gh_contents("DESCRIPTION", "master", "ChadGoymer/githapi"))
 
-  expect_true(is_string(description_master))
+  expect_true(is_scalar_character(description_master))
 
   readme_d9fe50f <- suppressWarnings(
     gh_contents("README.md", "d9fe50f8e31d7430df2c5b02442dffb68c854f08", "ChadGoymer/githapi"))

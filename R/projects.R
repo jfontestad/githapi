@@ -21,7 +21,7 @@ gh_project <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(project))
+  assert(is_scalar_integerish(project) && isTRUE(project > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -62,8 +62,8 @@ gh_projects <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_null(state) || is_string(state))
-  assert(is_natural(n_max))
+  assert(is_null(state) || is_scalar_character(state))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -74,7 +74,7 @@ gh_projects <- function(
     assert(is_repo(repo))
     url <- gh_url("repos", repo, "projects", state = state, api = api)
   } else if (!missing(org)) {
-    assert(is_string(org))
+    assert(is_scalar_character(org))
     url <- gh_url("orgs", org, "projects", state = state, api = api)
   } else {
     error("Must specify either repo or org!")
@@ -120,7 +120,7 @@ gh_column <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(column))
+  assert(is_scalar_integerish(column) && isTRUE(column > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -155,8 +155,8 @@ gh_columns <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(project))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(project) && isTRUE(project > 0))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -196,7 +196,7 @@ gh_card <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(card))
+  assert(is_scalar_integerish(card) && isTRUE(card > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -231,8 +231,8 @@ gh_cards <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(column))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(column) && isTRUE(column > 0))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 

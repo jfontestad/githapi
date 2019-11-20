@@ -39,7 +39,7 @@ convert_field <- function(field, as) {
 list_fields <- function(x, sublist, field) {
   assert(is_list(x))
   assert(is_character(sublist))
-  assert(is_string(field))
+  assert(is_scalar_character(field))
 
   if (!missing(sublist) || !is_null(sublist)) {
     for (i in sublist) {

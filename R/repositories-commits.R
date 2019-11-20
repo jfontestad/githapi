@@ -54,11 +54,11 @@ view_history <- function(
       ref <- NA
     }
 
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_natural(n_max)) ||
+    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
       error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -252,9 +252,9 @@ compare_commits <- function(
   ...)
 {
   {
-    (is_string(base)) ||
+    (is_scalar_character(base)) ||
       error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
-    (is_string(head)) ||
+    (is_scalar_character(head)) ||
       error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -335,9 +335,9 @@ compare_files <- function(
   ...)
 {
   {
-    (is_string(base)) ||
+    (is_scalar_character(base)) ||
       error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
-    (is_string(head)) ||
+    (is_scalar_character(head)) ||
       error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")

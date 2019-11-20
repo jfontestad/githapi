@@ -9,7 +9,7 @@
 #' @export
 #'
 is_sha <- function(x) {
-  is_string(x) && (nchar(x) == 40) && grepl("[0-9a-f]", x)
+  is_scalar_character(x) && (nchar(x) == 40) && grepl("[0-9a-f]", x)
 }
 
 #  FUNCTION: is_repo --------------------------------------------------------------------------
@@ -23,7 +23,7 @@ is_sha <- function(x) {
 #' @export
 #'
 is_repo <- function(x) {
-  is_string(x) && identical(length(strsplit(x, "/")[[1]]), 2L)
+  is_scalar_character(x) && identical(length(strsplit(x, "/")[[1]]), 2L)
 }
 
 #  FUNCTION: gh_token -------------------------------------------------------------------------
@@ -113,9 +113,9 @@ gh_get <- function(
   token  = gh_token())
 {
   assert(is_url(url))
-  assert(is_string(accept))
-  assert(is_boolean(parse))
-  assert(is_string(token))
+  assert(is_scalar_character(accept))
+  assert(is_scalar_logical(parse))
+  assert(is_scalar_character(token))
 
   if (identical(accept, "raw")) {
     accept <- "application/vnd.github.raw"
@@ -185,9 +185,9 @@ gh_page <- function(
   {
     (is_url(url)) ||
       error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
-    (is_string(accept)) ||
+    (is_scalar_character(accept)) ||
       error("'accept' must be a string:\n  '", paste(accept, collapse = "'\n  '"), "'")
-    (is_natural(n_max)) ||
+    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
       error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -248,13 +248,13 @@ gh_request <- function(
   token   = getOption("github.token"))
 {
   {
-    (is_string(type) && type %in% c("GET", "POST", "DELETE", "PATCH", "PUT")) ||
+    (is_scalar_character(type) && type %in% c("GET", "POST", "DELETE", "PATCH", "PUT")) ||
       error("'type' must be either 'GET', 'POST', 'DELETE', 'PATCH' or 'PUT':\n  '", paste(type, collapse = "'\n  '"), "'")
     (is_url(url)) ||
       error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
-    (is_string(accept)) ||
+    (is_scalar_character(accept)) ||
       error("'accept' must be a string:\n  '", paste(accept, collapse = "'\n  '"), "'")
-    (is_boolean(parse)) ||
+    (is_scalar_logical(parse)) ||
       error("'parse' must be a boolean:\n  '", paste(parse, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")

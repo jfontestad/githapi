@@ -245,7 +245,7 @@ read_files <- function(
       error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -326,11 +326,11 @@ download_files <- function(
 
     (is_character(paths)) ||
       error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_string(location)) ||
+    (is_scalar_character(location)) ||
       error("'location' must be a string:\n  ", paste(location, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -467,7 +467,7 @@ source_files <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")

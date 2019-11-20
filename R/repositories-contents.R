@@ -58,7 +58,7 @@ view_files <- function(
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -193,15 +193,15 @@ create_files <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_character(contents) && identical(length(contents), length(paths))) ||
       error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
-    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
     (is_na(parents) || is_character(parents)) ||
       error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -353,13 +353,13 @@ update_files <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_character(contents) && identical(length(contents), length(paths))) ||
       error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
-    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -492,13 +492,13 @@ delete_files <- function(
 
     (is_character(paths)) ||
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -591,7 +591,7 @@ files_exist <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -662,9 +662,9 @@ download_commit <- function(
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_string(path)) ||
+    (is_scalar_character(path)) ||
       error("'path' must be a string:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
