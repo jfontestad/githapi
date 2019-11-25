@@ -7,7 +7,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(all_files, "tbl")
   expect_identical(
-    map(all_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(all_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -29,7 +29,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(created_files, "tbl")
   expect_identical(
-    map(created_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -62,7 +62,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(viewed_files, "tbl")
   expect_identical(
-    map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -84,7 +84,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -110,7 +110,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
     c("Testing update_files() - updated aaaa.txt", "Testing update_files() - updated bbbb.txt"))
 
   expect_identical(
-    read_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi", ),
+    read_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi"),
     c(aaaa.txt = "Updated to test:\n\n  `update_files()`", bbbb.txt = "Updated to test:\n\n  `update_files()`"))
 
   deleted_files <- delete_files(
@@ -120,7 +120,7 @@ test_that("view_files, create_files, update_files and delete files on the defaul
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",
@@ -148,7 +148,7 @@ test_that("view_files, create_files, update_files and delete files in the specif
 
   expect_is(created_files, "tbl")
   expect_identical(
-    map(created_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -174,7 +174,7 @@ test_that("view_files, create_files, update_files and delete files in the specif
 
   expect_is(viewed_files, "tbl")
   expect_identical(
-    map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -195,7 +195,7 @@ test_that("view_files, create_files, update_files and delete files in the specif
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -224,7 +224,7 @@ test_that("view_files, create_files, update_files and delete files in the specif
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",
@@ -250,7 +250,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_is(created_files, "tbl")
   expect_identical(
-    map(created_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -276,7 +276,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_is(viewed_files, "tbl")
   expect_identical(
-    map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -298,7 +298,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -328,7 +328,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",
@@ -356,7 +356,7 @@ test_that("when creating files on a branch that does not exist, it is created", 
 
   expect_is(created_files, "tbl")
   expect_identical(
-    map(created_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -382,7 +382,7 @@ test_that("when creating files on a branch that does not exist, it is created", 
 
   expect_is(viewed_files, "tbl")
   expect_identical(
-    map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -407,7 +407,7 @@ test_that("author and committer can be set when creating, updating and deleting 
 
   expect_is(created_files, "tbl")
   expect_identical(
-    map(created_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -440,7 +440,7 @@ test_that("author and committer can be set when creating, updating and deleting 
 
   expect_is(updated_files, "tbl")
   expect_identical(
-    map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
     c(name              = "character",
       path              = "character",
       sha               = "character",
@@ -472,7 +472,7 @@ test_that("author and committer can be set when creating, updating and deleting 
 
   expect_is(deleted_files, "tbl")
   expect_identical(
-    map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
     c(commit_message    = "character",
       commit_sha        = "character",
       commit_url        = "character",

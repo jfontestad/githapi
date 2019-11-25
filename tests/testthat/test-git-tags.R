@@ -8,7 +8,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(all_tags, "tbl")
   expect_identical(
-    map(all_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(all_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -28,7 +28,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(created_tags, "tbl")
   expect_identical(
-    map(created_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(created_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -45,7 +45,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(viewed_tags, "tbl")
   expect_identical(
-    map(viewed_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(viewed_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -65,7 +65,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(updated_tags, "tbl")
   expect_identical(
-    map(updated_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(updated_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",

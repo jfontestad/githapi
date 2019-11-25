@@ -7,7 +7,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(all_branches, "tbl")
   expect_identical(
-    map(all_branches, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(all_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -24,7 +24,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(created_branches, "tbl")
   expect_identical(
-    map(created_branches, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(created_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -41,7 +41,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(viewed_branches, "tbl")
   expect_identical(
-    map(viewed_branches, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(viewed_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -61,7 +61,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_is(updated_branches, "tbl")
   expect_identical(
-    map(updated_branches, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(updated_branches, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",

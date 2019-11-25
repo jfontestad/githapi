@@ -9,7 +9,7 @@ test_that("view_trees returns a tibble of information about the files in commits
 
   expect_is(trees, "tbl")
   expect_identical(
-    map(trees, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(trees, function(field) class(field)[[1]], simplify = TRUE),
     c(tree_sha = "character",
       tree_url = "character",
       path     = "character",
@@ -38,7 +38,7 @@ test_that("create_tree creates a new tree of the specified structure", {
 
   expect_is(created_one_tree_one_object, "tbl")
   expect_identical(
-    map(created_one_tree_one_object, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(created_one_tree_one_object, function(field) class(field)[[1]], simplify = TRUE),
     c(tree_sha = "character",
       tree_url = "character",
       path     = "character",
@@ -62,7 +62,7 @@ test_that("create_tree creates a new tree of the specified structure", {
 
   expect_is(created_one_tree_two_objects, "tbl")
   expect_identical(
-    map(created_one_tree_two_objects, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(created_one_tree_two_objects, function(field) class(field)[[1]], simplify = TRUE),
     c(tree_sha = "character",
       tree_url = "character",
       path     = "character",
@@ -102,7 +102,7 @@ test_that("upload_tree uploads files and directory structure to github", {
 
   expect_is(flat_tree, "tbl")
   expect_identical(
-    map(flat_tree, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(flat_tree, function(field) class(field)[[1]], simplify = TRUE),
     c(tree_sha = "character",
       tree_url = "character",
       path     = "character",
@@ -120,7 +120,7 @@ test_that("upload_tree uploads files and directory structure to github", {
 
   expect_is(recursive_tree, "tbl")
   expect_identical(
-    map(recursive_tree, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(recursive_tree, function(field) class(field)[[1]], simplify = TRUE),
     c(tree_sha = "character",
       tree_url = "character",
       path     = "character",

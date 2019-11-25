@@ -9,7 +9,7 @@ test_that("view_commits returns a tibble of information about the commits", {
 
   expect_is(commits, "tbl")
   expect_identical(
-    map(commits, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(commits, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -42,7 +42,7 @@ test_that("create_commit creates a new commit in a repository", {
 
   expect_is(created_commit, "tbl")
   expect_identical(
-    map(created_commit, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(created_commit, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -66,7 +66,7 @@ test_that("create_commit creates a new commit in a repository", {
 
   expect_is(orphan_commit, "tbl")
   expect_identical(
-    map(orphan_commit, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(orphan_commit, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -98,7 +98,7 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_is(flat_commit, "tbl")
   expect_identical(
-    map(flat_commit, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(flat_commit, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -126,7 +126,7 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_is(recursive_commit, "tbl")
   expect_identical(
-    map(recursive_commit, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(recursive_commit, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -175,7 +175,7 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_is(updated_commit, "tbl")
   expect_identical(
-    map(updated_commit, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(updated_commit, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
@@ -213,7 +213,7 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_is(new_branch_commit, "tbl")
   expect_identical(
-    map(new_branch_commit, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(new_branch_commit, function(field) class(field)[[1]], simplify = TRUE),
     c(sha             = "character",
       message         = "character",
       author_name     = "character",
