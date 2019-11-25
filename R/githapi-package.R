@@ -18,6 +18,8 @@
 #'
 #' @importFrom methods as is
 #' @importFrom rlang is_integerish is_scalar_integerish
-#' @import purrr tibble dplyr msgr
+#' @import stringr purrr tibble dplyr msgr
 #'
 globalVariables(c(".", ".data"))
+
+cache <- new.env()
