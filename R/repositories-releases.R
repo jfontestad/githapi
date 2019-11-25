@@ -81,7 +81,7 @@ view_releases <- function(
 
     releases_list <- try_catch({
       list(gh_request(
-        "GET", gh_url("repos", repo, "releases/latest", api = api),
+        "GET", url = gh_url("repos", repo, "releases/latest", api = api),
         token = token, ...))
     })
   } else {
@@ -92,7 +92,7 @@ view_releases <- function(
       info("Getting release '", tag, "' from repository '", repo, "'")
 
       gh_request(
-        "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
         token = token, ...)
     })
   }
@@ -206,7 +206,7 @@ create_releases <- function(
     info("Posting release '", tag, "' to repository '", repo, "'")
 
     gh_request(
-      "POST", gh_url("repos", repo, "releases", api = api),
+      "POST", url = gh_url("repos", repo, "releases", api = api),
       payload = list(
         tag_name         = tag,
         target_commitish = commit,
@@ -323,7 +323,7 @@ update_releases <- function(
     info("Updating release '", tag, "' to repository '", repo, "'")
 
     release <- gh_request(
-      "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+      "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
       token = token, ...)
 
     payload <- list(
@@ -335,7 +335,7 @@ update_releases <- function(
       remove_missing()
 
     gh_request(
-      "PATCH", gh_url("repos", repo, "releases", release$id, api = api),
+      "PATCH", url = gh_url("repos", repo, "releases", release$id, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -404,16 +404,16 @@ delete_releases <- function(
     info("Deleting release '", tag, "' from repository '", repo, "'")
 
     release <- gh_request(
-      "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+      "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
       token = token, ...)
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "releases", release$id, api = api),
-      token = token, parse = FALSE, ...)
+      "DELETE", url = gh_url("repos", repo, "releases", release$id, api = api),
+      token = token, ...)
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-      token = token, parse = FALSE, ...)
+      "DELETE", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      token = token, ...)
 
     TRUE
   })
@@ -466,7 +466,7 @@ releases_exist <- function(
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {

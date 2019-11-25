@@ -86,14 +86,14 @@ test_that("veiwing tags that do not exist throws an appropriate error", {
   no_repo_error_msg <- tryCatch(view_branches("ChadGoymer/no-repo"), error = function(e) e$message)
 
   expect_match(no_repo_error_msg, "In view_branches\\(\\): GitHub GET request failed")
-  expect_match(no_repo_error_msg, "\\[Status\\]:  404 Not Found")
+  expect_match(no_repo_error_msg, "\\[Status\\]  404")
 
   no_branch_error_msg <- tryCatch(
     suppressWarnings(view_branches("no-branch", "ChadGoymer/test-githapi")),
     error = function(e) e$message)
 
   expect_match(no_branch_error_msg, "'no-branch': \\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\] GitHub GET request failed")
-  expect_match(no_branch_error_msg, "\\[Status\\]:  404 Not Found")
+  expect_match(no_branch_error_msg, "\\[Status\\]  404")
 
 })
 

@@ -3,6 +3,7 @@
   # Set environment variables that do not already exist
   githapi_env <- list(
     GITHUB_API        = "https://api.github.com",
+    GITHUB_PROXY      = "",
     GITHUB_TOKEN      = "",
     GITHUB_PAT        = "",
     GITHAPI_MSG_LEVEL = "1",
@@ -15,6 +16,12 @@
 
   # Read environment variables, to set as options
   githapi_env <- as.list(Sys.getenv(names(githapi_env)))
+
+  # Set github proxy
+  if (identical(githapi_env$GITHUB_PROXY, ""))
+  {
+    githapi_env$GITHUB_PROXY <- NULL
+  }
 
   # Set github token
   if (identical(githapi_env$GITHUB_TOKEN, ""))
@@ -36,6 +43,7 @@
 
     # GITHUB API
     github.api                = githapi_env$GITHUB_API,      # The base address of the GitHub API
+    github.proxy              = githapi_env$GITHUB_PROXY,    # The proxy to use to access GitHub
     github.token              = githapi_env$GITHUB_TOKEN,    # The GitHub token
 
     # Message Configuration

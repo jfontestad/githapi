@@ -73,7 +73,7 @@ view_tags <- function(
       info("Getting tag '", tag, "' from repository '", repo, "'")
 
       gh_request(
-        "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
         token = token, ...)
     })
   }
@@ -149,7 +149,7 @@ create_tags <- function(
     info("Posting tag '", tag, "' to repository '", repo, "'")
 
     gh_request(
-      "POST", gh_url("repos", repo, "git/refs", api = api),
+      "POST", url = gh_url("repos", repo, "git/refs", api = api),
       payload = list(ref = paste0("refs/tags/", tag), sha = sha),
       token = token, ...)
   })
@@ -225,7 +225,7 @@ update_tags <- function(
     info("Updating tag '", tag, "' in repository '", repo, "'")
 
     gh_request(
-      "PATCH", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      "PATCH", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
       payload = list(sha = sha, force = TRUE),
       token = token, ...)
   })
@@ -287,8 +287,8 @@ delete_tags <- function(
     info("Deleting tag '", tag, "' from repository '", repo, "'")
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-      token = token, parse = FALSE, ...)
+      "DELETE", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      token = token, ...)
     TRUE
   })
 
@@ -340,7 +340,7 @@ tags_exist <- function(
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {

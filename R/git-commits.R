@@ -55,7 +55,7 @@ view_commits <- function(
     info("Getting commit for sha '", sha, "' from repository '", repo, "'")
 
     gh_request(
-      "GET", gh_url("repos", repo, "git/commits", sha, api = api),
+      "GET", url = gh_url("repos", repo, "git/commits", sha, api = api),
       token = token, ...)
   })
 
@@ -186,7 +186,7 @@ create_commit <- function(
   info("Posting commit to repo '", repo, "'")
   commit_list <- try_catch({
     gh_request(
-      "POST", gh_url("repos", repo, "git/commits", api = api),
+      "POST", url = gh_url("repos", repo, "git/commits", api = api),
       payload = payload, token = token, ...) %>%
       list()
   })
@@ -416,7 +416,7 @@ commits_exist <- function(
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "git/commits", sha, api = api),
+        "GET", url = gh_url("repos", repo, "git/commits", sha, api = api),
         token = token, ...)
       TRUE
     },

@@ -91,14 +91,14 @@ test_that("veiwing tags that do not exist throws an appropriate error", {
   no_repo_error_msg <- tryCatch(view_tags("ChadGoymer/no-repo"), error = function(e) e$message)
 
   expect_match(no_repo_error_msg, "In view_tags\\(\\): GitHub GET request failed")
-  expect_match(no_repo_error_msg, "\\[Status\\]:  404 Not Found")
+  expect_match(no_repo_error_msg, "\\[Status\\]  404")
 
   no_tag_error_msg <- tryCatch(
     suppressWarnings(view_tags("no-tag", "ChadGoymer/no-repo")),
     error = function(e) e$message)
 
   expect_match(no_tag_error_msg, "'no-tag': \\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\] GitHub GET request failed")
-  expect_match(no_tag_error_msg, "\\[Status\\]:  404 Not Found")
+  expect_match(no_tag_error_msg, "\\[Status\\]  404")
 
 })
 

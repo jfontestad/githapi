@@ -73,7 +73,7 @@ view_branches <- function(
       info("Getting branch '", branch, "' from repository '", repo, "'")
 
       gh_request(
-        "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+        "GET", url = gh_url("repos", repo, "git/refs/heads", branch, api = api),
         token = token, ...)
     })
   }
@@ -149,7 +149,7 @@ create_branches <- function(
     info("Posting branch '", branch, "' to repository '", repo, "'")
 
     gh_request(
-      "POST", gh_url("repos", repo, "git/refs", api = api),
+      "POST", url = gh_url("repos", repo, "git/refs", api = api),
       payload = list(ref = paste0("refs/heads/", branch), sha = sha),
       token = token, ...)
   })
@@ -225,7 +225,7 @@ update_branches <- function(
     info("Updating branch '", branch, "' in repository '", repo, "'")
 
     gh_request(
-      "PATCH", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+      "PATCH", url = gh_url("repos", repo, "git/refs/heads", branch, api = api),
       payload = list(sha = sha, force = TRUE),
       token = token, ...)
   })
@@ -287,8 +287,8 @@ delete_branches <- function(
     info("Deleting branch '", branch, "' from repository '", repo, "'")
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "git/refs/heads", branch, api = api),
-      token = token, parse = FALSE, ...)
+      "DELETE", url = gh_url("repos", repo, "git/refs/heads", branch, api = api),
+      token = token, ...)
     TRUE
   })
 
@@ -340,7 +340,7 @@ branches_exist <- function(
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "git/refs/heads", branch, api = api),
+        "GET", url = gh_url("repos", repo, "git/refs/heads", branch, api = api),
         token = token, ...)
       TRUE
     },

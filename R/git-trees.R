@@ -54,7 +54,7 @@ view_trees <- function(
     info("Getting tree for sha '", sha, "' from repository '", repo, "'")
 
     tree <- gh_request(
-      "GET", gh_url("repos", repo, "git/trees", sha, recursive = as.integer(recursive), api = api),
+      "GET", url = gh_url("repos", repo, "git/trees", sha, recursive = as.integer(recursive), api = api),
       token = token, ...)
 
     info("Transforming results", level = 3)
@@ -172,7 +172,7 @@ create_tree <- function(
   info("Posting tree to repository '", repo, "'")
   tree_list <- try_catch({
     gh_request(
-      "POST", gh_url("repos", repo, "git/trees", api = api),
+      "POST", url = gh_url("repos", repo, "git/trees", api = api),
       payload = payload, token = token, ...)
   })
 
@@ -327,7 +327,7 @@ trees_exist <- function(
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "git/trees", sha, api = api),
+        "GET", url = gh_url("repos", repo, "git/trees", sha, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {

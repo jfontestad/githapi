@@ -48,14 +48,14 @@ view_history <- function(
     if (missing(repo)) {
       info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
       repo <- ref
-      ref <- NA
+      ref <- NULL
     }
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
-    (is_na(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+    (is_null(ref) || is_scalar_character(ref)) ||
+      error("'ref' must be NULL or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
     (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
@@ -140,7 +140,7 @@ view_shas <- function(
     info("Getting SHA for ref '", ref, "' from repository '", repo, "'")
 
     sha <- gh_request(
-      "GET", gh_url("repos", repo, "commits", ref, api = api),
+      "GET", url = gh_url("repos", repo, "commits", ref, api = api),
       accept = "application/vnd.github.VERSION.sha", token = token, ...)
 
     attr(sha, "header") <- NULL
@@ -195,7 +195,7 @@ shas_exist <- function(
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "commits", sha, api = api),
+        "GET", url = gh_url("repos", repo, "commits", sha, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {
@@ -267,7 +267,7 @@ compare_commits <- function(
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- try_catch({
     gh_request(
-      "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+      "GET", url = gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
       token = token, ...)
   })
 
@@ -350,7 +350,7 @@ compare_files <- function(
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- try_catch({
     gh_request(
-      "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+      "GET", url = gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
       token = token, ...)
   })
 

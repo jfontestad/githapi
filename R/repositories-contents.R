@@ -50,15 +50,15 @@ view_files <- function(
     if (missing(repo)) {
       info("'repo' is missing, so using 'paths' argument: ", paths, level = 2)
       repo <- paths
-      paths <- NA
+      paths <- NULL
     }
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_scalar_character(ref)) ||
+    (is_null(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -66,12 +66,12 @@ view_files <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  if (missing(paths) || is_na(paths)) {
+  if (missing(paths) || is_null(paths)) {
     info("Getting files from repository '", repo, "'")
 
     files_list <- try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "contents", ref = ref, api = api),
+        "GET", url = gh_url("repos", repo, "contents", ref = ref, api = api),
         token = token, ...)
     })
   } else {
@@ -82,7 +82,7 @@ view_files <- function(
       info("Getting file '", path, "' from repository '", repo, "'")
 
       gh_request(
-        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
+        "GET", url = gh_url("repos", repo, "contents", path, ref = ref, api = api),
         token = token, ...)
     })
   }
@@ -240,7 +240,7 @@ create_files <- function(
 
     info("Posting file '", basename(path), "' to repository '", repo, "'")
     gh_request(
-      "PUT", gh_url("repos", repo, "contents", path, api = api),
+      "PUT", url = gh_url("repos", repo, "contents", path, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -373,13 +373,14 @@ update_files <- function(
     path    = paths,
     content = contents,
     message = messages,
-    branch  = branches)
+    branch  = branches) %>%
+    mutate(branch = ifelse(is_na(.data$branch), list(NULL), .data$branch))
 
   files_list <- try_pmap(params, function(path, content, message, branch) {
     info("Posting file '", basename(path), "' to repository '", repo, "'")
 
     old_file <- gh_request(
-      "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
+      "GET", url = gh_url("repos", repo, "contents", path, ref = branch, api = api),
       token = token, ...)
 
     payload <- list(
@@ -392,7 +393,7 @@ update_files <- function(
       remove_missing()
 
     gh_request(
-      "PUT", gh_url("repos", repo, "contents", path, api = api),
+      "PUT", url = gh_url("repos", repo, "contents", path, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -511,13 +512,14 @@ delete_files <- function(
   params <- tibble(
     path    = paths,
     message = messages,
-    branch  = branches)
+    branch  = branches) %>%
+    mutate(branch = ifelse(is_na(.data$branch), list(NULL), .data$branch))
 
   files_list <- try_pmap(params, function(path, message, branch) {
     info("Deleting file '", basename(path), "' from repository '", repo, "'")
 
     old_file <- gh_request(
-      "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
+      "GET", url = gh_url("repos", repo, "contents", path, ref = branch, api = api),
       token = token, ...)
 
     payload <- list(
@@ -529,7 +531,7 @@ delete_files <- function(
       remove_missing()
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "contents", path, api = api),
+      "DELETE", url = gh_url("repos", repo, "contents", path, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -584,14 +586,14 @@ files_exist <- function(
 {
   {
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
     (is_character(paths)) ||
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_scalar_character(ref)) ||
+    (is_null(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -604,7 +606,7 @@ files_exist <- function(
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
+        "GET", url = gh_url("repos", repo, "contents", path, ref = ref, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {
@@ -651,20 +653,20 @@ download_commit <- function(
     if (missing(repo)) {
       info("'repo' is missing, so using 'path' argument: ", path, level = 2)
       repo <- path
-      path <- NA
+      path <- NULL
     }
     if (missing(path) || is_null(path) || is_na(path)) {
       path <- getwd()
     }
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
     (is_scalar_character(path)) ||
       error("'path' must be a string:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_scalar_character(ref)) ||
+    (is_null(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
