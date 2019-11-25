@@ -10,11 +10,12 @@ Imports:
     jsonlite,
     httr,
     rlang,
-    msgr,
+    stringr,
     purrr,
     tibble,
     dplyr,
-    readr
+    readr,
+    msgr
 Roxygen: list(markdown = TRUE)
 License: MIT + file LICENSE
 Encoding: UTF-8
