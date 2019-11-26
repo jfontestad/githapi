@@ -1,3 +1,9 @@
+# githapi 0.9.0
+
+- Imported rlang, stringr, purrr and tibble
+- Updated `gh_url()` and `gh_request()` to use above packages
+- Updated `gh_token()` to use OAuth
+
 # githapi 0.8.10
 
 - Fixed `upload_tree()` so mode is set correctly when uploading an executable.

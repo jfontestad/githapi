@@ -140,15 +140,18 @@ reference:
     - '`gh_user`'
     - '`gh_users`'
     - '`gh_user_email`'
-- title: GitHub API
-  desc: Functions for accessing the GitHub API.
+- title: Utilities
+  desc: Useful functions.
   contents:
     - '`is_sha`'
     - '`is_repo`'
+- title: GitHub API
+  desc: Functions for accessing the GitHub API.
+  contents:
     - '`gh_token`'
     - '`gh_url`'
-    - '`gh_get`'
     - '`gh_request`'
+    - '`gh_get`'
     - '`gh_page`'
     - '`gh_download_binary`'
 - title: Deprecated
