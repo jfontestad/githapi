@@ -2,7 +2,7 @@
 % Please edit documentation in R/github-api.R
 \name{gh_url}
 \alias{gh_url}
-\title{Build the URL for the github API}
+\title{Build the URL for the GitHub API}
 \usage{
 gh_url(..., api = getOption("github.api"))
 }
@@ -17,5 +17,6 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 Valid URL (string)
 }
 \description{
-Build the URL for the github API
+Unnamed strings are used to build the path upon the API and named strings are added as
+queries.
 }

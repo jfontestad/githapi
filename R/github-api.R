@@ -1,33 +1,35 @@
-# FUNCTION: gh_token -----------------------------------------------------------------------
+#  FUNCTION: gh_token -------------------------------------------------------------------------
 #
-# Get a token for accessing GitHub
-#
-# This function initiates the OAuth authentication code grant flow with GitHub. The user
-# will be redirected to GitHub's login page to enter a user name and password. Once complete
-# the user can close the window and this function returns a token which can be used for all
-# calls to the githapi API.
-#
-# For non-interactive processes a personal access token can be specified, either as an R
-# option (`"github.token"`) or as an environment variable (either `GITHUB_TOKEN` or
-# `GITHUB_PAT`).
-#
-# @param github_token (string, optional) A personal access token. Can be set in the
-#   `github.token` option or the `GITHUB_TOKEN` environment variable. Default: `NULL`.
-# @param github_oauth_url (string, optional) The base URL for for the OAuth endpoint. Can
-#   be set in the `github.oauth_url` option or the `GITHUB_OAUTH_URL` environment variable.
-#    Default: `"https://github.com/login/oauth"`.
-# @param githapi_key (string, optional) The application ID for accessing githapi. Default:
-#   Set in the `githapi.key` option or the `GITHAPI_KEY` environment variable.
-# @param githapi_secret (string, optional) The secret for the application to access githapi.
-#   Default: Set in the `githapi.secret` option or the `GITHAPI_SECRET` environment variable.
-# @param githapi_cache (boolean or string, optional) The location to store a cached token.
-#   If `TRUE` the cache uses the httr default; if `FALSE` it does not cache. Can be set
-#   in the `"githapi.cache"` option or the `GITHAPI_CACHE` environment variable. Default:
-#   `FALSE`.
-#
-# @return A token which is either a string, for a personal access token, or a [httr::Token]
-#   object for an OAuth token.
-#
+#' Get a token for accessing GitHub
+#'
+#' This function initiates the OAuth authentication code grant flow with GitHub. The user
+#' will be redirected to GitHub's login page to enter a user name and password. Once complete
+#' the user can close the window and this function returns a token which can be used for all
+#' calls to the githapi API.
+#'
+#' For non-interactive processes a personal access token can be specified, either as an R
+#' option (`"github.token"`) or as an environment variable (either `GITHUB_TOKEN` or
+#' `GITHUB_PAT`).
+#'
+#' @param github_token (string, optional) A personal access token. Can be set in the
+#'   `github.token` option or the `GITHUB_TOKEN` environment variable. Default: `NULL`.
+#' @param github_oauth_url (string, optional) The base URL for for the OAuth endpoint. Can
+#'   be set in the `github.oauth_url` option or the `GITHUB_OAUTH_URL` environment variable.
+#'    Default: `"https://github.com/login/oauth"`.
+#' @param githapi_key (string, optional) The application ID for accessing githapi. Default:
+#'   Set in the `githapi.key` option or the `GITHAPI_KEY` environment variable.
+#' @param githapi_secret (string, optional) The secret for the application to access githapi.
+#'   Default: Set in the `githapi.secret` option or the `GITHAPI_SECRET` environment variable.
+#' @param githapi_cache (boolean or string, optional) The location to store a cached token.
+#'   If `TRUE` the cache uses the httr default; if `FALSE` it does not cache. Can be set
+#'   in the `"githapi.cache"` option or the `GITHAPI_CACHE` environment variable. Default:
+#'   `FALSE`.
+#'
+#' @return A token which is either a string, for a personal access token, or a [httr::Token]
+#'   object for an OAuth token.
+#'
+#' @export
+#'
 gh_token <- function(
   github_token     = getOption("github.token"),
   github_oauth_url = getOption("github.oauth_url"),
@@ -82,7 +84,10 @@ gh_token <- function(
 
 #  FUNCTION: gh_url ----------------------------------------------------------------------------
 #
-#' Build the URL for the github API
+#' Build the URL for the GitHub API
+#'
+#' Unnamed strings are used to build the path upon the API and named strings are added as
+#' queries.
 #'
 #' @param ... (strings, optional) unnamed strings are built up into a URL path and named
 #'   parameters are added as queries.
@@ -129,7 +134,7 @@ gh_url <- function(
 
 #  FUNCTION: gh_request --------------------------------------------------------------------
 #
-#' Send an HTTP request to an github compatible API
+#' Send an HTTP request to the GitHub API
 #'
 #' This function can be used to make "GET", "POST", "PATCH", "PUT" or "DELETE" requests to
 #' the specified URL.
@@ -279,7 +284,7 @@ gh_request <- function(
 
 #  FUNCTION: print.github -----------------------------------------------------------------------
 #
-#  Print method for `github` class
+#  Print method for the `github` class
 #
 #' @export
 #'

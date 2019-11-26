@@ -17,7 +17,6 @@ test_that("gh_token returns a valid GitHub personal access token", {
 
   existing_token <- getOption("github.token")
   on.exit(options(github.token = existing_token))
-
   options(github.token = token2)
 
   expect_message(
@@ -33,7 +32,7 @@ test_that("gh_token returns a valid GitHub OAuth token", {
   skip_on_travis()
 
   existing_msgr_level <- getOption("msgr.level")
-  on.exit(options(msgr.level = 10))
+  on.exit(options(msgr.level = existing_msgr_level))
   options(msgr.level = 10)
 
   expect_error(

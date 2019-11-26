@@ -2,7 +2,7 @@
 % Please edit documentation in R/github-api.R
 \name{gh_request}
 \alias{gh_request}
-\title{Send an HTTP request to an github compatible API}
+\title{Send an HTTP request to the GitHub API}
 \usage{
 gh_request(url, type, payload = NULL, accept = "json",
   headers = NULL, token = gh_token(),
