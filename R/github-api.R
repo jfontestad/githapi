@@ -1,3 +1,85 @@
+# FUNCTION: gh_token -----------------------------------------------------------------------
+#
+# Get a token for accessing GitHub
+#
+# This function initiates the OAuth authentication code grant flow with GitHub. The user
+# will be redirected to GitHub's login page to enter a user name and password. Once complete
+# the user can close the window and this function returns a token which can be used for all
+# calls to the githapi API.
+#
+# For non-interactive processes a personal access token can be specified, either as an R
+# option (`"github.token"`) or as an environment variable (either `GITHUB_TOKEN` or
+# `GITHUB_PAT`).
+#
+# @param github_token (string, optional) A personal access token. Can be set in the
+#   `github.token` option or the `GITHUB_TOKEN` environment variable. Default: `NULL`.
+# @param github_oauth_url (string, optional) The base URL for for the OAuth endpoint. Can
+#   be set in the `github.oauth_url` option or the `GITHUB_OAUTH_URL` environment variable.
+#    Default: `"https://github.com/login/oauth"`.
+# @param githapi_key (string, optional) The application ID for accessing githapi. Default:
+#   Set in the `githapi.key` option or the `GITHAPI_KEY` environment variable.
+# @param githapi_secret (string, optional) The secret for the application to access githapi.
+#   Default: Set in the `githapi.secret` option or the `GITHAPI_SECRET` environment variable.
+# @param githapi_cache (boolean or string, optional) The location to store a cached token.
+#   If `TRUE` the cache uses the httr default; if `FALSE` it does not cache. Can be set
+#   in the `"githapi.cache"` option or the `GITHAPI_CACHE` environment variable. Default:
+#   `FALSE`.
+#
+# @return A token which is either a string, for a personal access token, or a [httr::Token]
+#   object for an OAuth token.
+#
+gh_token <- function(
+  github_token     = getOption("github.token"),
+  github_oauth_url = getOption("github.oauth_url"),
+  githapi_key      = getOption("githapi.key"),
+  githapi_secret   = getOption("githapi.secret"),
+  githapi_cache    = getOption("githapi.cache"))
+{
+  if (!is_null(github_token))
+  {
+    assert(is_sha(github_token), "'github_token' must be a 40 character string: '", github_token, "'")
+    info("> Using personal access token", level = 6)
+    return(github_token)
+  }
+  else if (!is_null(cache$token))
+  {
+    info("> Retrieving cached token", level = 6)
+    return(cache$token)
+  }
+
+  assert(is_scalar_character(github_oauth_url), "'github_oauth_url' must be a string: '", github_oauth_url, "'")
+  assert(is_scalar_character(githapi_key), "'githapi_key' must be a string: '", githapi_key, "'")
+  assert(is_scalar_character(githapi_secret), "'githapi_secret' must be a string: '", githapi_secret, "'")
+  assert(is_scalar_logical(githapi_cache) || is_scalar_character(githapi_cache), "'githapi_cache' must be a boolean or a string: '", githapi_cache, "'")
+
+  github_endpoint <- httr::oauth_endpoint(
+    authorize = file.path(github_oauth_url, "authorize"),
+    access    = file.path(github_oauth_url, "access_token"))
+
+  githapi_app <- httr::oauth_app(
+    appname = "githapi",
+    key     = githapi_key,
+    secret  = githapi_secret)
+
+  info("> Retrieving new token", level = 6)
+  token <- try_catch(httr::oauth2.0_token(
+    endpoint = github_endpoint,
+    app      = githapi_app,
+    cache    = githapi_cache))
+
+  if (("error" %in% names(token$credentials)) && (nchar(token$credentials$error) > 0))
+  {
+    error(
+      "GitHub token request failed:\n",
+      "\n[Error]       ", str_replace_all(token$credentials$error, "_", " "),
+      "\n[Description] ", str_replace_all(token$credentials$error_description, "\\+", " "),
+      "\n[Details]     ", token$credentials$error_uri)
+  }
+
+  cache$token <- token
+  token
+}
+
 #  FUNCTION: gh_url ----------------------------------------------------------------------------
 #
 #' Build the URL for the github API
@@ -91,7 +173,7 @@ gh_request <- function(
   payload = NULL,
   accept  = "json",
   headers = NULL,
-  token   = getOption("github.token"),
+  token   = gh_token(),
   proxy   = getOption("github.proxy"))
 {
   assert(is_url(url), "'url' must be a valid URL: '", url, "'")
@@ -127,6 +209,10 @@ gh_request <- function(
   if (is_sha(token))
   {
     headers <- c(headers, httr::add_headers(Authorization = str_c("token ", token)))
+  }
+  else if ("Token" %in% class(token))
+  {
+    headers <- c(headers, httr::config(token = token))
   }
   else
   {
@@ -176,7 +262,7 @@ gh_request <- function(
       "\n[Status]  ", httr::status_code(response),
       "\n[URL]     ", url,
       "\n[Message] ", str_replace_all(parsed_response$message, "\\n\\n", "\n  "),
-      "\n  Further details: ", str_c(parsed_response$documentation_url, collapse = "\n  "))
+      "\n[Details] ", parsed_response$documentation_url)
   }
 
   structered_response <- structure(

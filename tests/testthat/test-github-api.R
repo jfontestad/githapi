@@ -1,6 +1,61 @@
 context("github api")
 
 
+# TEST: gh_token ------------------------------------------------------------------------------
+
+test_that("gh_token returns a valid GitHub personal access token", {
+
+  token1 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% paste(collapse = "")
+
+  expect_message(
+    token1_result <- gh_token(github_token = token1),
+    "Using personal access token")
+
+  expect_identical(token1_result, token1)
+
+  token2 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% paste(collapse = "")
+
+  existing_token <- getOption("github.token")
+  on.exit(options(github.token = existing_token))
+
+  options(github.token = token2)
+
+  expect_message(
+    token2_result <- gh_token(),
+    "Using personal access token")
+
+  expect_identical(token2_result, token2)
+
+})
+
+test_that("gh_token returns a valid GitHub OAuth token", {
+
+  skip_on_travis()
+
+  existing_msgr_level <- getOption("msgr.level")
+  on.exit(options(msgr.level = 10))
+  options(msgr.level = 10)
+
+  expect_error(
+    gh_token(github_token = NULL, githapi_secret = "suhfdieudhisauhf"),
+    "incorrect client credentials")
+
+  expect_message(
+    token <- gh_token(github_token = NULL),
+    "Retrieving new token")
+
+  expect_is(token, "Token")
+
+  expect_message(
+    token <- gh_token(github_token = NULL),
+    "Retrieving cached token")
+
+
+  expect_is(token, "Token")
+
+})
+
+
 # TEST: gh_url --------------------------------------------------------------------------------
 
 test_that("gh_url returns a valid URL for the GitHub API", {

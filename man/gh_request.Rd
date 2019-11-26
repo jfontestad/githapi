@@ -5,7 +5,7 @@
 \title{Send an HTTP request to an github compatible API}
 \usage{
 gh_request(url, type, payload = NULL, accept = "json",
-  headers = NULL, token = getOption("github.token"),
+  headers = NULL, token = gh_token(),
   proxy = getOption("github.proxy"))
 }
 \arguments{

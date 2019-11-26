@@ -4,7 +4,11 @@
 \alias{gh_token}
 \title{Retrieve the GitHub personal access token}
 \usage{
-gh_token()
+gh_token(github_token = getOption("github.token"),
+  github_oauth_url = getOption("github.oauth_url"),
+  githapi_key = getOption("githapi.key"),
+  githapi_secret = getOption("githapi.secret"),
+  githapi_cache = getOption("githapi.cache"))
 }
 \value{
 The token as a string

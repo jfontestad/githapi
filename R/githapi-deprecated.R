@@ -38,32 +38,6 @@
 #'
 NULL
 
-#  FUNCTION: gh_token -------------------------------------------------------------------------
-#
-#' Retrieve the GitHub personal access token
-#'
-#' The token is retreived by looking in the following locations, in order:
-#'
-#' 1. `github.token` option
-#' 2. `GITHUB_TOKEN` environment variable
-#' 3. `GITHUB_PAT` environment variable
-#'
-#' @return The token as a string
-#'
-gh_token <- function() {
-  token <- getOption("github.token")
-  if (is_null(token)) {
-    token <- Sys.getenv("GITHUB_TOKEN")
-  }
-  if (identical(token, "")) {
-    token <- Sys.getenv("GITHUB_PAT")
-  }
-  if (identical(token, "")) {
-    error("Cannot find GitHub token. Please set the environment variable \"GITHUB_TOKEN\".")
-  }
-  token
-}
-
 #  FUNCTION: gh_get ---------------------------------------------------------------------------
 #
 #' Send a http GET request to the specified GitHub url
