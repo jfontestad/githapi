@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retrieve the GitHub personal access token — gh_token • githapi</title>
+<title>Get a token for accessing GitHub — gh_token • githapi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Retrieve the GitHub personal access token — gh_token" />
+<meta property="og:title" content="Get a token for accessing GitHub — gh_token" />
 
-<meta property="og:description" content="The token is retreived by looking in the following locations, in order:" />
+<meta property="og:description" content="This function initiates the OAuth authentication code grant flow with GitHub. The user
+will be redirected to GitHub's login page to enter a user name and password. Once complete
+the user can close the window and this function returns a token which can be used for all
+calls to the githapi API." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -102,36 +105,76 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retrieve the GitHub personal access token</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/githapi.R'><code>R/githapi.R</code></a></small>
+    <h1>Get a token for accessing GitHub</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/github-api.R'><code>R/github-api.R</code></a></small>
     <div class="hidden name"><code>gh_token.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The token is retreived by looking in the following locations, in order:</p>
+    <p>This function initiates the OAuth authentication code grant flow with GitHub. The user
+will be redirected to GitHub's login page to enter a user name and password. Once complete
+the user can close the window and this function returns a token which can be used for all
+calls to the githapi API.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>gh_token</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>gh_token</span>(<span class='kw'>github_token</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.token"</span>),
+  <span class='kw'>github_oauth_url</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.oauth_url"</span>),
+  <span class='kw'>githapi_key</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"githapi.key"</span>),
+  <span class='kw'>githapi_secret</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"githapi.secret"</span>),
+  <span class='kw'>githapi_cache</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"githapi.cache"</span>))</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>github_token</th>
+      <td><p>(string, optional) A personal access token. Can be set in the
+<code>github.token</code> option or the <code>GITHUB_TOKEN</code> environment variable. Default: <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>github_oauth_url</th>
+      <td><p>(string, optional) The base URL for for the OAuth endpoint. Can
+be set in the <code>github.oauth_url</code> option or the <code>GITHUB_OAUTH_URL</code> environment variable.
+Default: <code>"https://github.com/login/oauth"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>githapi_key</th>
+      <td><p>(string, optional) The application ID for accessing githapi. Default:
+Set in the <code>githapi.key</code> option or the <code>GITHAPI_KEY</code> environment variable.</p></td>
+    </tr>
+    <tr>
+      <th>githapi_secret</th>
+      <td><p>(string, optional) The secret for the application to access githapi.
+Default: Set in the <code>githapi.secret</code> option or the <code>GITHAPI_SECRET</code> environment variable.</p></td>
+    </tr>
+    <tr>
+      <th>githapi_cache</th>
+      <td><p>(boolean or string, optional) The location to store a cached token.
+If <code>TRUE</code> the cache uses the httr default; if <code>FALSE</code> it does not cache. Can be set
+in the <code>"githapi.cache"</code> option or the <code>GITHAPI_CACHE</code> environment variable. Default:
+<code>FALSE</code>.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The token as a string</p>
+    <p>A token which is either a string, for a personal access token, or a <a href='https://www.rdocumentation.org/packages/httr/topics/Token-class'>httr::Token</a>
+object for an OAuth token.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <ol>
-<li><p><code>github.token</code> option</p></li>
-<li><p><code>GITHUB_TOKEN</code> environment variable</p></li>
-<li><p><code>GITHUB_PAT</code> environment variable</p></li>
-</ol>
+    <p>For non-interactive processes a personal access token can be specified, either as an R
+option (<code>"github.token"</code>) or as an environment variable (either <code>GITHUB_TOKEN</code> or
+<code>GITHUB_PAT</code>).</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
 

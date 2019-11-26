@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get information about all the head commits in each branch — gh_branches • githapi</title>
+<title>Version 0.9 • githapi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,7 @@
 
 
 
-<meta property="og:title" content="Get information about all the head commits in each branch — gh_branches" />
-
-<meta property="og:description" content="NOTE: This function has been deprecated, please use view_branches() instead." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Version 0.9" />
 
 
 
@@ -50,7 +47,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -102,68 +99,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get information about all the head commits in each branch</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories.R'><code>R/repositories.R</code></a></small>
-    <div class="hidden name"><code>gh_branches.Rd</code></div>
-    </div>
-
-    <div class="ref-description">
-    
-    <p>NOTE: This function has been deprecated, please use <code><a href='view_branches.html'>view_branches()</a></code> instead.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>gh_branches</span>(<span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
-    </tr>
-    <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A tibble describing all the branches (see GitHub's API documentation for details).</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><a href='https://developer.github.com/v3/repos/branches/#list-branches'>https://developer.github.com/v3/repos/branches/#list-branches</a></p>
-    
-
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
+      <h1>Changelog <small>0.9</small></h1>
       
-      <li><a href="#value">Value</a></li>
+    </div>
 
-      <li><a href="#details">Details</a></li>
-          </ul>
-
+    <div id="githapi-090" class="section level1">
+<h1 class="page-header">
+<a href="#githapi-090" class="anchor"></a>githapi 0.9.0</h1>
+<ul>
+<li>Imported rlang, stringr, purrr and tibble</li>
+<li>Updated <code><a href="../reference/gh_url.html">gh_url()</a></code> and <code><a href="../reference/gh_request.html">gh_request()</a></code> to use above packages</li>
+<li>Updated <code><a href="../reference/gh_token.html">gh_token()</a></code> to use OAuth</li>
+</ul>
+</div>
   </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#githapi-090">0.9.0</a></li>
+      </ul>
+    </div>
+  </div>
+
 </div>
 
       <footer>
