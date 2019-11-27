@@ -29,7 +29,7 @@ test_that("gh_token returns a valid GitHub personal access token", {
 
 test_that("gh_token returns a valid GitHub OAuth token", {
 
-  skip_on_travis()
+  skip("OAuth authentication must be run manually")
 
   existing_msgr_level <- getOption("msgr.level")
   on.exit(options(msgr.level = existing_msgr_level))
@@ -48,7 +48,6 @@ test_that("gh_token returns a valid GitHub OAuth token", {
   expect_message(
     token <- gh_token(github_token = NULL),
     "Retrieving cached token")
-
 
   expect_is(token, "Token")
 
