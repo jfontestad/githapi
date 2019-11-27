@@ -119,7 +119,7 @@ gh_url <- function(
 
   if (!identical(length(path), 0L))
   {
-    url$path <- path
+    url$path <- file.path(url$path, path)
   }
 
   query <- as.list(dots[names(dots) != ""])
