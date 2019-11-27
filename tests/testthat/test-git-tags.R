@@ -8,7 +8,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(all_tags, "tbl")
   expect_identical(
-    map(all_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(all_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -28,7 +28,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(created_tags, "tbl")
   expect_identical(
-    map(created_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(created_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -45,7 +45,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(viewed_tags, "tbl")
   expect_identical(
-    map(viewed_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(viewed_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -65,7 +65,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
 
   expect_is(updated_tags, "tbl")
   expect_identical(
-    map(updated_tags, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(updated_tags, function(field) class(field)[[1]], simplify = TRUE),
     c(name        = "character",
       ref         = "character",
       url         = "character",
@@ -91,14 +91,14 @@ test_that("veiwing tags that do not exist throws an appropriate error", {
   no_repo_error_msg <- tryCatch(view_tags("ChadGoymer/no-repo"), error = function(e) e$message)
 
   expect_match(no_repo_error_msg, "In view_tags\\(\\): GitHub GET request failed")
-  expect_match(no_repo_error_msg, "\\[Status\\]:  404 Not Found")
+  expect_match(no_repo_error_msg, "\\[Status\\]  404")
 
   no_tag_error_msg <- tryCatch(
     suppressWarnings(view_tags("no-tag", "ChadGoymer/no-repo")),
     error = function(e) e$message)
 
   expect_match(no_tag_error_msg, "'no-tag': \\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\] GitHub GET request failed")
-  expect_match(no_tag_error_msg, "\\[Status\\]:  404 Not Found")
+  expect_match(no_tag_error_msg, "\\[Status\\]  404")
 
 })
 

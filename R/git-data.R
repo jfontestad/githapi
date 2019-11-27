@@ -110,7 +110,7 @@ gh_git_reference <- function(
 {
   .Deprecated(c("view_tags' or 'view_branches"), package = "githapi")
 
-  assert(is_string(ref))
+  assert(is_scalar_character(ref))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -149,7 +149,7 @@ is_tag <- function(
 {
   .Deprecated(c("tags_exist"), package = "githapi")
 
-  if (!is_string(tag)) {
+  if (!is_scalar_character(tag)) {
     return(FALSE)
   }
 
@@ -194,7 +194,7 @@ gh_git_references <- function(
   .Deprecated(c("view_tags' or 'view_branches"), package = "githapi")
 
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -292,9 +292,9 @@ gh_git_tree <- function(
 {
   .Deprecated("view_trees", package = "githapi")
 
-  assert(is_string(ref))
+  assert(is_scalar_character(ref))
   assert(is_repo(repo))
-  assert(is_boolean(recursive))
+  assert(is_scalar_logical(recursive))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -346,8 +346,8 @@ gh_save <- function(
 
   assert(is_character(files))
   assert(is_repo(repo))
-  assert(is_string(path))
-  assert(is_string(ref))
+  assert(is_scalar_character(path))
+  assert(is_scalar_character(ref))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -405,9 +405,9 @@ gh_source <- function(
 {
   .Deprecated("source_file", package = "githapi")
 
-  assert(is_string(file))
+  assert(is_scalar_character(file))
   assert(is_repo(repo))
-  assert(is_string(ref))
+  assert(is_scalar_character(ref))
   assert(is_sha(token))
   assert(is_url(api))
 

@@ -119,7 +119,7 @@ test_that("gh_issue_comment returns a list describing the comment", {
 test_that("gh_label returns a list describing the label", {
   label <- gh_label("bug", "ChadGoymer/githapi")
   expect_is(label, "list")
-  expect_named(label, c("id", "node_id", "url", "name", "color", "default"))
+  expect_named(label, c("id", "node_id", "url", "name", "color", "default", "description"))
   expect_identical(label$name, "bug")
   expect_identical(label$color, "b60205")
 })

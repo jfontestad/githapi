@@ -50,15 +50,15 @@ view_files <- function(
     if (missing(repo)) {
       info("'repo' is missing, so using 'paths' argument: ", paths, level = 2)
       repo <- paths
-      paths <- NA
+      paths <- NULL
     }
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_null(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -66,12 +66,12 @@ view_files <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  if (missing(paths) || is_na(paths)) {
+  if (missing(paths) || is_null(paths)) {
     info("Getting files from repository '", repo, "'")
 
     files_list <- try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "contents", ref = ref, api = api),
+        "GET", url = gh_url("repos", repo, "contents", ref = ref, api = api),
         token = token, ...)
     })
   } else {
@@ -82,7 +82,7 @@ view_files <- function(
       info("Getting file '", path, "' from repository '", repo, "'")
 
       gh_request(
-        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
+        "GET", url = gh_url("repos", repo, "contents", path, ref = ref, api = api),
         token = token, ...)
     })
   }
@@ -193,15 +193,15 @@ create_files <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_character(contents) && identical(length(contents), length(paths))) ||
       error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
-    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
     (is_na(parents) || is_character(parents)) ||
       error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -232,7 +232,7 @@ create_files <- function(
 
     payload <- list(
       message   = message,
-      content   = base64_enc(content),
+      content   = jsonlite::base64_enc(content),
       branch    = branch,
       committer = committer,
       author    = author) %>%
@@ -240,7 +240,7 @@ create_files <- function(
 
     info("Posting file '", basename(path), "' to repository '", repo, "'")
     gh_request(
-      "PUT", gh_url("repos", repo, "contents", path, api = api),
+      "PUT", url = gh_url("repos", repo, "contents", path, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -264,8 +264,8 @@ create_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
+    mutate(commit_parent_sha = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
   info("Done", level = 3)
   files_tbl
@@ -353,13 +353,13 @@ update_files <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_character(contents) && identical(length(contents), length(paths))) ||
       error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
-    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -373,18 +373,19 @@ update_files <- function(
     path    = paths,
     content = contents,
     message = messages,
-    branch  = branches)
+    branch  = branches) %>%
+    mutate(branch = ifelse(is_na(.data$branch), list(NULL), .data$branch))
 
   files_list <- try_pmap(params, function(path, content, message, branch) {
     info("Posting file '", basename(path), "' to repository '", repo, "'")
 
     old_file <- gh_request(
-      "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
+      "GET", url = gh_url("repos", repo, "contents", path, ref = branch, api = api),
       token = token, ...)
 
     payload <- list(
       message   = paste(message, "- updated", path),
-      content   = base64_enc(content),
+      content   = jsonlite::base64_enc(content),
       sha       = old_file$sha,
       branch    = branch,
       committer = committer,
@@ -392,7 +393,7 @@ update_files <- function(
       remove_missing()
 
     gh_request(
-      "PUT", gh_url("repos", repo, "contents", path, api = api),
+      "PUT", url = gh_url("repos", repo, "contents", path, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -416,8 +417,8 @@ update_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
+    mutate(commit_parent_sha = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
   info("Done", level = 3)
   files_tbl
@@ -492,13 +493,13 @@ delete_files <- function(
 
     (is_character(paths)) ||
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_character(messages) && (is_scalar(messages) || identical(length(messages), length(paths)))) ||
+    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar(branches) || identical(length(branches), length(paths)))) ||
+    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -511,13 +512,14 @@ delete_files <- function(
   params <- tibble(
     path    = paths,
     message = messages,
-    branch  = branches)
+    branch  = branches) %>%
+    mutate(branch = ifelse(is_na(.data$branch), list(NULL), .data$branch))
 
   files_list <- try_pmap(params, function(path, message, branch) {
     info("Deleting file '", basename(path), "' from repository '", repo, "'")
 
     old_file <- gh_request(
-      "GET", gh_url("repos", repo, "contents", path, ref = branch, api = api),
+      "GET", url = gh_url("repos", repo, "contents", path, ref = branch, api = api),
       token = token, ...)
 
     payload <- list(
@@ -529,7 +531,7 @@ delete_files <- function(
       remove_missing()
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "contents", path, api = api),
+      "DELETE", url = gh_url("repos", repo, "contents", path, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -544,8 +546,8 @@ delete_files <- function(
     commit_tree_url   = c("commit",  "tree", "url",       as = "character"),
     commit_parent_sha = "",
     commit_parent_url = "")) %>%
-    mutate(commit_parent_sha = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
-    mutate(commit_parent_url = map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
+    mutate(commit_parent_sha = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "sha")) %>%
+    mutate(commit_parent_url = gh_map(files_list, use_names = FALSE, list_fields, c("commit", "parents"), "url"))
 
   info("Done", level = 3)
   files_tbl
@@ -584,14 +586,14 @@ files_exist <- function(
 {
   {
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
     (is_character(paths)) ||
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_null(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -599,12 +601,12 @@ files_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(paths, simplify = TRUE, function(path) {
+  gh_map(paths, simplify = TRUE, function(path) {
     info("Checking file '", path, "' exists in repository '", repo, "'")
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "contents", path, ref = ref, api = api),
+        "GET", url = gh_url("repos", repo, "contents", path, ref = ref, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {
@@ -651,20 +653,20 @@ download_commit <- function(
     if (missing(repo)) {
       info("'repo' is missing, so using 'path' argument: ", path, level = 2)
       repo <- path
-      path <- NA
+      path <- NULL
     }
     if (missing(path) || is_null(path) || is_na(path)) {
       path <- getwd()
     }
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_string(path)) ||
+    (is_scalar_character(path)) ||
       error("'path' must be a string:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_null(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -683,13 +685,13 @@ download_commit <- function(
     path = archive_path, token = token, ...)
 
   info("Unpacking commit into '", path, "'", level = 3)
-  unzip(archive_path, exdir = path)
+  utils::unzip(archive_path, exdir = path)
 
   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
   on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
 
   subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
-  map(file.path(path, subfolders[subfolders != ""]), dir.create)
+  gh_map(file.path(path, subfolders[subfolders != ""]), dir.create)
 
   files <- list.files(archive_folder, recursive = TRUE)
   file.rename(file.path(archive_folder, files), file.path(path, files))

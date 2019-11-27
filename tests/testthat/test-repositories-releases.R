@@ -7,7 +7,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(all_releases, "tbl")
   expect_identical(
-    map(all_releases, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(all_releases, function(field) class(field)[[1]], simplify = TRUE),
     c(id               = "integer",
       tag_name         = "character",
       name             = "character",
@@ -31,7 +31,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(latest_release, "tbl")
   expect_identical(
-    map(latest_release, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(latest_release, function(field) class(field)[[1]], simplify = TRUE),
     c(id               = "integer",
       tag_name         = "character",
       name             = "character",
@@ -58,7 +58,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(created_releases, "tbl")
   expect_identical(
-    map(created_releases, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(created_releases, function(field) class(field)[[1]], simplify = TRUE),
     c(id               = "integer",
       tag_name         = "character",
       name             = "character",
@@ -82,7 +82,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(viewed_releases, "tbl")
   expect_identical(
-    map(viewed_releases, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(viewed_releases, function(field) class(field)[[1]], simplify = TRUE),
     c(id               = "integer",
       tag_name         = "character",
       name             = "character",
@@ -110,7 +110,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
   expect_is(updated_releases, "tbl")
   expect_identical(
-    map(updated_releases, function(field) class(field)[[1]], simplify = TRUE),
+    gh_map(updated_releases, function(field) class(field)[[1]], simplify = TRUE),
     c(id               = "integer",
       tag_name         = "character",
       name             = "character",

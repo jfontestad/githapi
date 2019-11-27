@@ -49,7 +49,7 @@ view_tags <- function(
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_natural(n_max)) ||
+    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
       error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -73,13 +73,13 @@ view_tags <- function(
       info("Getting tag '", tag, "' from repository '", repo, "'")
 
       gh_request(
-        "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
         token = token, ...)
     })
   }
 
   info("Transforming results", level = 3)
-  tags_tbl <- bind_fields(tags_list[!map(tags_list, is_null, simplify = TRUE)], list(
+  tags_tbl <- bind_fields(tags_list[!gh_map(tags_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -133,7 +133,7 @@ create_tags <- function(
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (identical(length(tags), length(shas))) ||
       error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
@@ -149,13 +149,13 @@ create_tags <- function(
     info("Posting tag '", tag, "' to repository '", repo, "'")
 
     gh_request(
-      "POST", gh_url("repos", repo, "git/refs", api = api),
+      "POST", url = gh_url("repos", repo, "git/refs", api = api),
       payload = list(ref = paste0("refs/tags/", tag), sha = sha),
       token = token, ...)
   })
 
   info("Transforming results", level = 3)
-  tags_tbl <- bind_fields(tags_list[!map(tags_list, is_null, simplify = TRUE)], list(
+  tags_tbl <- bind_fields(tags_list[!gh_map(tags_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -209,7 +209,7 @@ update_tags <- function(
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (identical(length(tags), length(shas))) ||
       error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
@@ -225,13 +225,13 @@ update_tags <- function(
     info("Updating tag '", tag, "' in repository '", repo, "'")
 
     gh_request(
-      "PATCH", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      "PATCH", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
       payload = list(sha = sha, force = TRUE),
       token = token, ...)
   })
 
   info("Transforming results", level = 3)
-  tags_tbl <- bind_fields(tags_list[!map(tags_list, is_null, simplify = TRUE)], list(
+  tags_tbl <- bind_fields(tags_list[!gh_map(tags_list, is_null, simplify = TRUE)], list(
     name        = "",
     ref         = c("ref",            as = "character"),
     url         = c("url",            as = "character"),
@@ -287,8 +287,8 @@ delete_tags <- function(
     info("Deleting tag '", tag, "' from repository '", repo, "'")
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-      token = token, parse = FALSE, ...)
+      "DELETE", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      token = token, ...)
     TRUE
   })
 
@@ -335,12 +335,12 @@ tags_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(tags, simplify = TRUE, function(tag) {
+  gh_map(tags, simplify = TRUE, function(tag) {
     info("Checking tag '", tag, "' exists in repository '", repo, "'")
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "git/refs/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {

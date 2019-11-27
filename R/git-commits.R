@@ -41,7 +41,7 @@ view_commits <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -55,7 +55,7 @@ view_commits <- function(
     info("Getting commit for sha '", sha, "' from repository '", repo, "'")
 
     gh_request(
-      "GET", gh_url("repos", repo, "git/commits", sha, api = api),
+      "GET", url = gh_url("repos", repo, "git/commits", sha, api = api),
       token = token, ...)
   })
 
@@ -73,8 +73,8 @@ view_commits <- function(
     tree_url        = c("tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   commits_tbl
@@ -150,15 +150,15 @@ create_commit <- function(
       author <- NA
     }
 
-    (is_string(message)) ||
+    (is_scalar_character(message)) ||
       error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
     (is_sha(tree)) ||
       error("'tree' must be a 40 character string:\n  '", paste(tree, collapse = "'\n  '"), "'")
     (is_na(parents) || is_character(parents)) ||
       error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -168,7 +168,7 @@ create_commit <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  parents <- map(parents, use_names = FALSE, function(p) {
+  parents <- gh_map(parents, use_names = FALSE, function(p) {
     if (!is_na(p) && !is_sha(p)) {
       p <- view_shas(p, repo = repo) %>% unname()
     }
@@ -186,7 +186,7 @@ create_commit <- function(
   info("Posting commit to repo '", repo, "'")
   commit_list <- try_catch({
     gh_request(
-      "POST", gh_url("repos", repo, "git/commits", api = api),
+      "POST", url = gh_url("repos", repo, "git/commits", api = api),
       payload = payload, token = token, ...) %>%
       list()
   })
@@ -205,8 +205,8 @@ create_commit <- function(
     tree_url        = c("tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commit_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(commit_list, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(commit_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(commit_list, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   commit_tbl
@@ -304,21 +304,21 @@ upload_commit <- function(
       author <- NA
     }
 
-    (is_string(branch)) ||
+    (is_scalar_character(branch)) ||
       error("'branch' must be a string:\n  '", paste(branch, collapse = "'\n  '"), "'")
-    (is_string(message)) ||
+    (is_scalar_character(message)) ||
       error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
     (is_dir(path) && is_readable(path)) ||
       error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
     (is_na(parents) || is_character(parents)) ||
       error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_string(committer$name) && is_string(committer$email))) ||
+    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_string(author$name) && is_string(author$email))) ||
+    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_boolean(replace)) ||
+    (is_scalar_logical(replace)) ||
       error("'replace' must be boolean:\n  '", paste(replace, collapse = "'\n  '"), "'")
     (is_character(ignore)) ||
       error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
@@ -401,7 +401,7 @@ commits_exist <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -411,12 +411,12 @@ commits_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(shas, simplify = TRUE, function(sha) {
+  gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking commit '", sha, "' exists in repository '", repo, "'")
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "git/commits", sha, api = api),
+        "GET", url = gh_url("repos", repo, "git/commits", sha, api = api),
         token = token, ...)
       TRUE
     },

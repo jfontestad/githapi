@@ -34,7 +34,7 @@ view_blobs <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -48,7 +48,7 @@ view_blobs <- function(
     info("Getting blob '", sha, "' from repository '", repo, "'")
 
     gh_request(
-      "GET", gh_url("repos", repo, "git/blobs", sha, api = api),
+      "GET", url = gh_url("repos", repo, "git/blobs", sha, api = api),
       token = token, ...)
   })
 
@@ -120,7 +120,7 @@ create_blobs <- function(
   info("Posting ", length(contents), " blob(s) to repository '", repo, "'")
   blobs_list <- try_pmap(params, function(content, encoding) {
     gh_request(
-      "POST", gh_url("repos", repo, "git/blobs", api = api),
+      "POST", url = gh_url("repos", repo, "git/blobs", api = api),
       payload = list(content = content, encoding = encoding),
       token = token, ...)
   })
@@ -167,7 +167,7 @@ upload_blobs <- function(
   ...)
 {
   {
-    (all(map(paths, simplify = TRUE, function(p) is_file(p) && is_readable(p)))) ||
+    (all(gh_map(paths, simplify = TRUE, function(p) is_file(p) && is_readable(p)))) ||
       error("'paths' must be a character vector of readable file paths:\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -180,10 +180,10 @@ upload_blobs <- function(
   blobs_list <- try_map(paths, function(path) {
     info("Uploading file '", basename(path), "' to repository '", repo, "'")
 
-    content <- readBin(path, "raw", file.info(path)$size) %>% base64_enc()
+    content <- readBin(path, "raw", file.info(path)$size) %>% jsonlite::base64_enc()
 
     gh_request(
-      "POST", gh_url("repos", repo, "git/blobs", api = api),
+      "POST", url = gh_url("repos", repo, "git/blobs", api = api),
       payload = list(content = content, encoding = "base64"),
       token = token, ...)
   })
@@ -235,17 +235,17 @@ read_files <- function(
     if (missing(repo)) {
       info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
       repo <- ref
-      ref <- NA
+      ref <- NULL
     }
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
     (is_character(paths)) ||
       error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_null(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -267,7 +267,7 @@ read_files <- function(
       error("Cannot find specified file path '", path, "' in repository '", repo, "'")
 
     file <- gh_request(
-      "GET", gh_url("repos", repo, "git/blobs", file_shas[[path]], api = api),
+      "GET", url = gh_url("repos", repo, "git/blobs", file_shas[[path]], api = api),
       accept = "raw", token = token, ...)
 
     attr(file, "header") <- NULL
@@ -326,11 +326,11 @@ download_files <- function(
 
     (is_character(paths)) ||
       error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_string(location)) ||
+    (is_scalar_character(location)) ||
       error("'location' must be a string:\n  ", paste(location, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -394,7 +394,7 @@ blobs_exist <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must be a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -404,12 +404,12 @@ blobs_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(shas, simplify = TRUE, function(sha) {
+  gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking blob '", sha, "' exists in repository '", repo, "'")
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "git/blobs", sha, api = api),
+        "GET", url = gh_url("repos", repo, "git/blobs", sha, api = api),
         token = token, ...)
       TRUE
     },
@@ -467,7 +467,7 @@ source_files <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_string(ref)) ||
+    (is_na(ref) || is_scalar_character(ref)) ||
       error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")

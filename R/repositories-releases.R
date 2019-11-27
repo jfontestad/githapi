@@ -60,7 +60,7 @@ view_releases <- function(
 
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_natural(n_max)) ||
+    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
       error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -81,7 +81,7 @@ view_releases <- function(
 
     releases_list <- try_catch({
       list(gh_request(
-        "GET", gh_url("repos", repo, "releases/latest", api = api),
+        "GET", url = gh_url("repos", repo, "releases/latest", api = api),
         token = token, ...))
     })
   } else {
@@ -92,7 +92,7 @@ view_releases <- function(
       info("Getting release '", tag, "' from repository '", repo, "'")
 
       gh_request(
-        "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
         token = token, ...)
     })
   }
@@ -112,7 +112,7 @@ view_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
+    mutate(assets = gh_map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
 
   info("Done", level = 3)
   releases_tbl
@@ -184,9 +184,9 @@ create_releases <- function(
       error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags)))) ||
+    (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
       error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
-    (is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags)))) ||
+    (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
       error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -206,7 +206,7 @@ create_releases <- function(
     info("Posting release '", tag, "' to repository '", repo, "'")
 
     gh_request(
-      "POST", gh_url("repos", repo, "releases", api = api),
+      "POST", url = gh_url("repos", repo, "releases", api = api),
       payload = list(
         tag_name         = tag,
         target_commitish = commit,
@@ -232,7 +232,7 @@ create_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
+    mutate(assets = gh_map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
 
   info("Done", level = 3)
   releases_tbl
@@ -302,9 +302,9 @@ update_releases <- function(
       error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_logical(draft) && (is_scalar(draft) || identical(length(draft), length(tags)))) ||
+    (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
       error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
-    (is_logical(prerelease) && (is_scalar(prerelease) || identical(length(prerelease), length(tags)))) ||
+    (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
       error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -323,7 +323,7 @@ update_releases <- function(
     info("Updating release '", tag, "' to repository '", repo, "'")
 
     release <- gh_request(
-      "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+      "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
       token = token, ...)
 
     payload <- list(
@@ -335,7 +335,7 @@ update_releases <- function(
       remove_missing()
 
     gh_request(
-      "PATCH", gh_url("repos", repo, "releases", release$id, api = api),
+      "PATCH", url = gh_url("repos", repo, "releases", release$id, api = api),
       payload = payload, token = token, ...)
   })
 
@@ -354,7 +354,7 @@ update_releases <- function(
     assets           = "",
     zipball_url      = c("zipball_url",      as = "character"),
     url              = c("url",              as = "character"))) %>%
-    mutate(assets = map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
+    mutate(assets = gh_map(releases_list, use_names = FALSE, list_fields, c("assets"), "name"))
 
   info("Done", level = 3)
   releases_tbl
@@ -404,16 +404,16 @@ delete_releases <- function(
     info("Deleting release '", tag, "' from repository '", repo, "'")
 
     release <- gh_request(
-      "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+      "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
       token = token, ...)
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "releases", release$id, api = api),
-      token = token, parse = FALSE, ...)
+      "DELETE", url = gh_url("repos", repo, "releases", release$id, api = api),
+      token = token, ...)
 
     gh_request(
-      "DELETE", gh_url("repos", repo, "git/refs/tags", tag, api = api),
-      token = token, parse = FALSE, ...)
+      "DELETE", url = gh_url("repos", repo, "git/refs/tags", tag, api = api),
+      token = token, ...)
 
     TRUE
   })
@@ -461,12 +461,12 @@ releases_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(tags, simplify = TRUE, function(tag) {
+  gh_map(tags, simplify = TRUE, function(tag) {
     info("Checking release '", tag, "' exists in repository '", repo, "'")
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "releases/tags", tag, api = api),
+        "GET", url = gh_url("repos", repo, "releases/tags", tag, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {

@@ -21,7 +21,7 @@ gh_user <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(user))
+  assert(is_scalar_character(user))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -59,7 +59,7 @@ gh_users <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 

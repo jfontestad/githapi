@@ -23,7 +23,7 @@ gh_pull_request <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(pull_request))
+  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -71,12 +71,12 @@ gh_pull_requests <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_null(state) || is_string(state))
-  assert(is_null(head) || is_string(head))
-  assert(is_null(base) || is_string(base))
-  assert(is_null(sort) || is_string(sort))
-  assert(is_null(direction) || is_string(direction))
-  assert(is_natural(n_max))
+  assert(is_null(state) || is_scalar_character(state))
+  assert(is_null(head) || is_scalar_character(head))
+  assert(is_null(base) || is_scalar_character(base))
+  assert(is_null(sort) || is_scalar_character(sort))
+  assert(is_null(direction) || is_scalar_character(direction))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -133,9 +133,9 @@ gh_pull_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(pull_request))
+  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -183,9 +183,9 @@ gh_pull_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(pull_request))
+  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -231,7 +231,7 @@ is_pull_merged <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(pull_request))
+  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -278,8 +278,8 @@ gh_pull_review <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(review))
-  assert(is_natural(pull_request))
+  assert(is_scalar_integerish(review) && isTRUE(review > 0))
+  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -317,9 +317,9 @@ gh_pull_reviews <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(pull_request))
+  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -354,7 +354,7 @@ gh_pull_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(comment))
+  assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -404,7 +404,7 @@ gh_pull_comments <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -413,10 +413,10 @@ gh_pull_comments <- function(
       "repos", repo, "pulls/comments", api = api,
       sort = sort, direction = direction, since = since)
   } else if (missing(review)) {
-    assert(is_natural(pull_request))
+    assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
     url <- gh_url("repos", repo, "pulls", pull_request, "comments", api = api)
   } else {
-    assert(is_natural(review))
+    assert(is_scalar_integerish(review) && isTRUE(review > 0))
     url <- gh_url("repos", repo, "pulls", pull_request, "reviews", review, "comments", api = api)
   }
 
@@ -451,9 +451,9 @@ gh_pull_review_requests <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(pull_request))
+  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 

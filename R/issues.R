@@ -23,7 +23,7 @@ gh_issue <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(issue))
+  assert(is_scalar_integerish(issue) && isTRUE(issue > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -82,16 +82,16 @@ gh_issues <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_null(milestone) || is_string(milestone))
-  assert(is_null(state) || is_string(state))
-  assert(is_null(assignee) || is_string(assignee))
-  assert(is_null(creator) || is_string(creator))
-  assert(is_null(mentioned) || is_string(mentioned))
-  assert(is_null(labels) || is_string(labels))
-  assert(is_null(sort) || is_string(sort))
-  assert(is_null(direction) || is_string(direction))
-  assert(is_null(since) || is_string(since))
-  assert(is_natural(n_max))
+  assert(is_null(milestone) || is_scalar_character(milestone))
+  assert(is_null(state) || is_scalar_character(state))
+  assert(is_null(assignee) || is_scalar_character(assignee))
+  assert(is_null(creator) || is_scalar_character(creator))
+  assert(is_null(mentioned) || is_scalar_character(mentioned))
+  assert(is_null(labels) || is_scalar_character(labels))
+  assert(is_null(sort) || is_scalar_character(sort))
+  assert(is_null(direction) || is_scalar_character(direction))
+  assert(is_null(since) || is_scalar_character(since))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -173,20 +173,20 @@ gh_user_issues <- function(
   api       = getOption("github.api"),
   ...)
 {
-  assert(is_null(filter) || is_string(filter))
-  assert(is_null(state) || is_string(state))
-  assert(is_null(labels) || is_string(labels))
-  assert(is_null(sort) || is_string(sort))
-  assert(is_null(direction) || is_string(direction))
-  assert(is_null(since) || is_string(since))
-  assert(is_natural(n_max))
+  assert(is_null(filter) || is_scalar_character(filter))
+  assert(is_null(state) || is_scalar_character(state))
+  assert(is_null(labels) || is_scalar_character(labels))
+  assert(is_null(sort) || is_scalar_character(sort))
+  assert(is_null(direction) || is_scalar_character(direction))
+  assert(is_null(since) || is_scalar_character(since))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
   if (missing(org)) {
     path <- "issues"
   } else {
-    assert(is_string(org))
+    assert(is_scalar_character(org))
     path <- file.path("orgs", org, "issues")
   }
 
@@ -243,7 +243,7 @@ gh_assignees <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -288,8 +288,8 @@ gh_issue_comments <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_null(since) || is_string(since))
-  assert(is_natural(n_max))
+  assert(is_null(since) || is_scalar_character(since))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -298,7 +298,7 @@ gh_issue_comments <- function(
       gh_url("repos", repo, "issues/comments", since = since, api = api),
       n_max = n_max, token = token, ...)
   } else {
-    assert(is_natural(issue))
+    assert(is_scalar_integerish(issue) && isTRUE(issue > 0))
     comments <- gh_page(
       gh_url("repos", repo, "issues", issue, "comments", since = since, api = api),
       n_max = n_max, token = token, ...)
@@ -338,7 +338,7 @@ gh_issue_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(comment))
+  assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -371,7 +371,7 @@ gh_label <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(name))
+  assert(is_scalar_character(name))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -413,7 +413,7 @@ gh_labels <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -421,10 +421,10 @@ gh_labels <- function(
     error("Must specify either issue or milestone, not both!")
 
   if (!missing(issue)) {
-    assert(is_natural(issue))
+    assert(is_scalar_integerish(issue) && isTRUE(issue > 0))
     url <- gh_url("repos", repo, "issues", issue, "labels", api = api)
   } else if (!missing(milestone)) {
-    assert(is_natural(milestone))
+    assert(is_scalar_integerish(milestone) && isTRUE(milestone > 0))
     url <- gh_url("repos", repo, "milestones", milestone, "labels", api = api)
   } else {
     url <- gh_url("repos", repo, "labels", api = api)
@@ -465,7 +465,7 @@ gh_milestone <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(milestone))
+  assert(is_scalar_integerish(milestone) && isTRUE(milestone > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -505,10 +505,10 @@ gh_milestones <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_null(state) || is_string(state))
-  assert(is_null(sort) || is_string(sort))
-  assert(is_null(direction) || is_string(direction))
-  assert(is_natural(n_max))
+  assert(is_null(state) || is_scalar_character(state))
+  assert(is_null(sort) || is_scalar_character(sort))
+  assert(is_null(direction) || is_scalar_character(direction))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -556,7 +556,7 @@ gh_event <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(event))
+  assert(is_scalar_integerish(event) && isTRUE(event > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -593,14 +593,14 @@ gh_events <- function(
   ...)
 {
   assert(is_repo(repo))
-  assert(is_natural(n_max))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
   if (missing(issue)) {
     url <- gh_url("repos", repo, "issues/events", api = api)
   } else {
-    assert(is_natural(issue))
+    assert(is_scalar_integerish(issue) && isTRUE(issue > 0))
     url <- gh_url("repos", repo, "issues", issue, "events", api = api)
   }
 

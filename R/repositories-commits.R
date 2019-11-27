@@ -48,17 +48,17 @@ view_history <- function(
     if (missing(repo)) {
       info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
       repo <- ref
-      ref <- NA
+      ref <- NULL
     }
     if (missing(ref) || is_null(ref)) {
-      ref <- NA
+      ref <- NULL
     }
 
-    (is_na(ref) || is_string(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+    (is_null(ref) || is_scalar_character(ref)) ||
+      error("'ref' must be NULL or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_natural(n_max)) ||
+    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
       error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
     (is_sha(token)) ||
       error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
@@ -87,8 +87,8 @@ view_history <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(commits_list, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   commits_tbl
@@ -140,7 +140,7 @@ view_shas <- function(
     info("Getting SHA for ref '", ref, "' from repository '", repo, "'")
 
     sha <- gh_request(
-      "GET", gh_url("repos", repo, "commits", ref, api = api),
+      "GET", url = gh_url("repos", repo, "commits", ref, api = api),
       accept = "application/vnd.github.VERSION.sha", token = token, ...)
 
     attr(sha, "header") <- NULL
@@ -180,7 +180,7 @@ shas_exist <- function(
   ...)
 {
   {
-    (is_character(shas) && all(map(shas, is_sha, simplify = TRUE))) ||
+    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -190,12 +190,12 @@ shas_exist <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  map(shas, simplify = TRUE, function(sha) {
+  gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking commit SHA '", sha, "' exists in repository '", repo, "'")
 
     try_catch({
       gh_request(
-        "GET", gh_url("repos", repo, "commits", sha, api = api),
+        "GET", url = gh_url("repos", repo, "commits", sha, api = api),
         token = token, ...)
       TRUE
     }, on_error = function(e) {
@@ -252,9 +252,9 @@ compare_commits <- function(
   ...)
 {
   {
-    (is_string(base)) ||
+    (is_scalar_character(base)) ||
       error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
-    (is_string(head)) ||
+    (is_scalar_character(head)) ||
       error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -267,7 +267,7 @@ compare_commits <- function(
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- try_catch({
     gh_request(
-      "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+      "GET", url = gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
       token = token, ...)
   })
 
@@ -285,8 +285,8 @@ compare_commits <- function(
     tree_url        = c("commit", "tree", "url",        as = "character"),
     parent_sha      = "",
     parent_url      = "")) %>%
-    mutate(parent_sha = map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "sha")) %>%
-    mutate(parent_url = map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "url"))
+    mutate(parent_sha = gh_map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "sha")) %>%
+    mutate(parent_url = gh_map(comparison_list$commits, use_names = FALSE, list_fields, "parents", "url"))
 
   info("Done", level = 3)
   comparison_tbl
@@ -335,9 +335,9 @@ compare_files <- function(
   ...)
 {
   {
-    (is_string(base)) ||
+    (is_scalar_character(base)) ||
       error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
-    (is_string(head)) ||
+    (is_scalar_character(head)) ||
       error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -350,7 +350,7 @@ compare_files <- function(
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- try_catch({
     gh_request(
-      "GET", gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
+      "GET", url = gh_url("repos", repo, "compare", paste0(base, "...", head), api = api),
       token = token, ...)
   })
 

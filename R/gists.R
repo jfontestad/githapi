@@ -24,7 +24,7 @@ gh_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(gist))
+  assert(is_scalar_character(gist))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -71,15 +71,15 @@ gh_gists <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_null(since) || is_string(since))
-  assert(is_natural(n_max))
+  assert(is_null(since) || is_scalar_character(since))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
   if (missing(user)) {
     url <- gh_url("gists", since = since, api = api)
   } else {
-    assert(is_string(user))
+    assert(is_scalar_character(user))
     if (user %in% c("public", "starred")) {
       url <- gh_url("gists", user, since = since, api = api)
     } else {
@@ -132,8 +132,8 @@ gh_gist_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(gist))
-  assert(is_natural(n_max))
+  assert(is_scalar_character(gist))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -175,7 +175,7 @@ is_gist_starred <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(gist))
+  assert(is_scalar_character(gist))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -218,8 +218,8 @@ gh_gist_forks <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(gist))
-  assert(is_natural(n_max))
+  assert(is_scalar_character(gist))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -263,8 +263,8 @@ gh_gist_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_natural(comment))
-  assert(is_string(gist))
+  assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
+  assert(is_scalar_character(gist))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -298,8 +298,8 @@ gh_gist_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(gist))
-  assert(is_natural(n_max))
+  assert(is_scalar_character(gist))
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -347,8 +347,8 @@ gh_save_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(gist))
-  assert(is_string(path))
+  assert(is_scalar_character(gist))
+  assert(is_scalar_character(path))
   assert(is_sha(token))
   assert(is_url(api))
 
@@ -399,8 +399,8 @@ gh_source_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
-  assert(is_string(file))
-  assert(is_string(gist))
+  assert(is_scalar_character(file))
+  assert(is_scalar_character(gist))
   assert(is_sha(token))
   assert(is_url(api))
 

@@ -9,7 +9,7 @@ test_that("view_blobs returns information about files in the repository", {
 
   expect_is(blobs, "tbl")
   expect_identical(
-    map(blobs, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(blobs, function(col) class(col)[[1]], simplify = TRUE),
     c(sha      = "character",
       content  = "character",
       encoding = "character",
@@ -35,10 +35,10 @@ test_that("create_blobs creates files in the repository and returns the SHA", {
 
   expect_is(blobs, "tbl")
   expect_identical(
-    map(blobs, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(blobs, function(col) class(col)[[1]], simplify = TRUE),
     c(sha = "character",
       url = "character"))
-  expect_true(all(map(blobs$sha, is_sha, simplify = TRUE)))
+  expect_true(all(gh_map(blobs$sha, is_sha, simplify = TRUE)))
 })
 
 # TEST: upload_blobs --------------------------------------------------------------------------
@@ -56,21 +56,21 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
 
   expect_is(blobs, "tbl")
   expect_identical(
-    map(blobs, function(col) class(col)[[1]], simplify = TRUE),
+    gh_map(blobs, function(col) class(col)[[1]], simplify = TRUE),
     c(name = "character",
       sha  = "character",
       url  = "character"))
-  expect_true(all(map(blobs$sha, is_sha, simplify = TRUE)))
+  expect_true(all(gh_map(blobs$sha, is_sha, simplify = TRUE)))
 
   created_blobs <- view_blobs(
     shas = blobs$sha,
     repo = "ChadGoymer/test-githapi")
 
   expect_match(
-    base64_dec(created_blobs$content[[1]]) %>% readBin("character"),
+    jsonlite::base64_dec(created_blobs$content[[1]]) %>% readBin("character"),
     "^This is the first test file")
   expect_match(
-    base64_dec(created_blobs$content[[2]]) %>% readBin("character"),
+    jsonlite::base64_dec(created_blobs$content[[2]]) %>% readBin("character"),
     "^This is the second test file")
 })
 
