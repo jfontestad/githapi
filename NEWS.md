@@ -1,3 +1,8 @@
+# githapi 0.9.1
+
+- Updated `gh_url()` to append path to API rather than replace it
+- Updated issues tests for new labels
+
 # githapi 0.9.0
 
 - Imported rlang, stringr, purrr and tibble

@@ -5,6 +5,10 @@ context("github api")
 
 test_that("gh_token returns a valid GitHub personal access token", {
 
+  existing_msgr_level <- getOption("msgr.level")
+  on.exit(options(msgr.level = existing_msgr_level), add = TRUE)
+  options(msgr.level = 10)
+
   token1 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% paste(collapse = "")
 
   expect_message(
@@ -16,7 +20,7 @@ test_that("gh_token returns a valid GitHub personal access token", {
   token2 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% paste(collapse = "")
 
   existing_token <- getOption("github.token")
-  on.exit(options(github.token = existing_token))
+  on.exit(options(github.token = existing_token), add = TRUE)
   options(github.token = token2)
 
   expect_message(
