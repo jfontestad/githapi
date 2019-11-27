@@ -121,7 +121,7 @@ test_that("gh_label returns a list describing the label", {
   expect_is(label, "list")
   expect_named(label, c("id", "node_id", "url", "name", "color", "default", "description"))
   expect_identical(label$name, "bug")
-  expect_identical(label$color, "b60205")
+  expect_identical(label$color, "d73a4a")
 })
 
 #  FUNCTION: gh_labels ------------------------------------------------------------------------
@@ -138,7 +138,7 @@ test_that("gh_labels returns a tibble of information about the labels", {
       url     = "character"))
 
   expect_true("bug" %in% labels$name)
-  expect_true("b60205" %in% labels$color)
+  expect_true("d73a4a" %in% labels$color)
 
   issue_labels <- gh_labels("ChadGoymer/githapi", issue = 1)
   expect_is(labels, "tbl")
@@ -152,7 +152,7 @@ test_that("gh_labels returns a tibble of information about the labels", {
       url     = "character"))
 
   expect_true("test" %in% labels$name)
-  expect_true("fbca04" %in% labels$color)
+  expect_true("e39af9" %in% labels$color)
 
   milestone_labels <- gh_labels("ChadGoymer/githapi", milestone = 1)
   expect_is(labels, "tbl")
@@ -165,8 +165,8 @@ test_that("gh_labels returns a tibble of information about the labels", {
       default = "logical",
       url     = "character"))
 
-  expect_true("enhancement" %in% labels$name)
-  expect_true("1d76db" %in% labels$color)
+  expect_true("feature" %in% labels$name)
+  expect_true("25b24d" %in% labels$color)
 })
 
 #  FUNCTION: gh_milestone ---------------------------------------------------------------------
