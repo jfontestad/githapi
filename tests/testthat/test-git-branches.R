@@ -17,8 +17,9 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_true("test-branch" %in% all_branches$name)
 
+  new_branches <- format(Sys.time(), "%Y-%m-%d-%H-%M-%S-") %>% str_c(1:2)
   created_branches <- create_branches(
-    branches = c("aaa", "bbb"),
+    branches = new_branches,
     shas = c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"),
     repo = "ChadGoymer/test-githapi")
 
@@ -32,12 +33,12 @@ test_that("create_branches creates some branches, view_branches retreives them a
       object_type = "character",
       object_url  = "character"))
 
-  expect_identical(created_branches$ref, c("refs/heads/aaa", "refs/heads/bbb"))
+  expect_identical(created_branches$ref, str_c("refs/heads/", new_branches))
   expect_identical(
     created_branches$object_sha,
     c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
 
-  viewed_branches <- view_branches(c("aaa", "bbb"), "ChadGoymer/test-githapi")
+  viewed_branches <- view_branches(new_branches, "ChadGoymer/test-githapi")
 
   expect_is(viewed_branches, "tbl")
   expect_identical(
@@ -49,13 +50,13 @@ test_that("create_branches creates some branches, view_branches retreives them a
       object_type = "character",
       object_url  = "character"))
 
-  expect_identical(viewed_branches$name, c("aaa", "bbb"))
+  expect_identical(viewed_branches$name, new_branches)
   expect_identical(
     viewed_branches$object_sha,
     c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
 
   updated_branches <- update_branches(
-    branches = c("aaa", "bbb"),
+    branches = new_branches,
     shas = c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"),
     repo = "ChadGoymer/test-githapi")
 
@@ -69,16 +70,16 @@ test_that("create_branches creates some branches, view_branches retreives them a
       object_type = "character",
       object_url  = "character"))
 
-  expect_identical(updated_branches$ref, c("refs/heads/aaa", "refs/heads/bbb"))
+  expect_identical(updated_branches$ref, str_c("refs/heads/", new_branches))
   expect_identical(
     updated_branches$object_sha,
     c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"))
 
-  delete_results <- delete_branches(c("aaa", "bbb"), "ChadGoymer/test-githapi")
+  delete_results <- delete_branches(new_branches, "ChadGoymer/test-githapi")
 
-  expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
-  expect_error(suppressWarnings(view_branches("aaa", "ChadGoymer/test-githapi")), "Not Found")
-  expect_error(suppressWarnings(view_branches("bbb", "ChadGoymer/test-githapi")), "Not Found")
+  expect_identical(delete_results, list(TRUE, TRUE) %>% set_names(new_branches))
+  expect_error(suppressWarnings(view_branches(new_branches[[1]], "ChadGoymer/test-githapi")), "Not Found")
+  expect_error(suppressWarnings(view_branches(new_branches[[2]], "ChadGoymer/test-githapi")), "Not Found")
 })
 
 test_that("veiwing tags that do not exist throws an appropriate error", {
