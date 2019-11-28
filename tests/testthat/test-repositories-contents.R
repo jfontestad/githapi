@@ -1,5 +1,27 @@
 context("repositories contents")
 
+repo_contents_branch <- str_c("test-repo-contents-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
+master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
+
+setup({
+  create_branches(
+    branches = repo_contents_branch,
+    shas     = master_sha,
+    repo     = "ChadGoymer/test-githapi")
+})
+
+teardown({
+  delete_branches(
+    branches = repo_contents_branch,
+    repo     = "ChadGoymer/test-githapi")
+
+  update_branches(
+    branches = "master",
+    shas     = master_sha,
+    repo     = "ChadGoymer/test-githapi")
+})
+
+
 # TEST: view_files, create_files, update_files & delete_files ---------------------------------
 
 test_that("view_files, create_files, update_files and delete files on the default branch works", {
@@ -244,8 +266,8 @@ test_that("view_files, create_files, update_files and delete files on the specif
   created_files <- create_files(
     paths    = "aaaa.txt",
     contents = "Created to test:\n\n  `create_files()`",
-    messages = "Testing create_files() on test-branch",
-    branches = "test-branch",
+    messages = "Testing create_files() on test branch",
+    branches = repo_contents_branch,
     repo     = "ChadGoymer/test-githapi")
 
   expect_is(created_files, "tbl")
@@ -272,7 +294,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_identical(created_files$name, "aaaa.txt")
 
-  viewed_files <- view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = "test-branch")
+  viewed_files <- view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = repo_contents_branch)
 
   expect_is(viewed_files, "tbl")
   expect_identical(
@@ -293,7 +315,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
     paths    = "aaaa.txt",
     contents = "Updated to test:\n\n  `update_files()`",
     messages = "Testing update_files()",
-    branches = "test-branch",
+    branches = repo_contents_branch,
     repo     = "ChadGoymer/test-githapi")
 
   expect_is(updated_files, "tbl")
@@ -323,7 +345,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
   deleted_files <- delete_files(
     paths    = "aaaa.txt",
     messages = "Testing delete_files()",
-    branches = "test-branch",
+    branches = repo_contents_branch,
     repo     = "ChadGoymer/test-githapi")
 
   expect_is(deleted_files, "tbl")
@@ -341,14 +363,14 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_identical(deleted_files$commit_message, "Testing delete_files() - deleted aaaa.txt")
 
-  expect_error(suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = "test-branch")), "Not Found")
+  expect_error(suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = repo_contents_branch)), "Not Found")
 })
 
 test_that("when creating files on a branch that does not exist, it is created", {
   created_files <- create_files(
     paths    = "aaaa.txt",
     contents = "Created to test:\n\n  `create_files()`",
-    messages = "Testing create_files() on test-branch",
+    messages = "Testing create_files() on test branch",
     branches = "new-branch",
     parent   = "master",
     repo     = "ChadGoymer/test-githapi")

@@ -15,7 +15,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
       object_type = "character",
       object_url  = "character"))
 
-  expect_true("test-branch" %in% all_branches$name)
+  expect_true("master" %in% all_branches$name)
 
   new_branches <- format(Sys.time(), "%Y-%m-%d-%H-%M-%S-") %>% str_c(1:2)
   created_branches <- create_branches(
