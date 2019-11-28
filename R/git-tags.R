@@ -57,7 +57,7 @@ view_tags <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  if (missing(tags) || is_null(tags) || is_na(tags)) {
+  if (missing(tags) || is_null(tags) || all(is_na(tags))) {
     info("Getting up to ", n_max, " tags from repository '", repo, "'")
 
     tags_list <- try_catch({

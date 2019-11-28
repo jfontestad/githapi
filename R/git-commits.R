@@ -154,11 +154,11 @@ create_commit <- function(
       error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
     (is_sha(tree)) ||
       error("'tree' must be a 40 character string:\n  '", paste(tree, collapse = "'\n  '"), "'")
-    (is_na(parents) || is_character(parents)) ||
+    (all(is_na(parents)) || is_character(parents)) ||
       error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -310,11 +310,11 @@ upload_commit <- function(
       error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
     (is_dir(path) && is_readable(path)) ||
       error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (is_na(parents) || is_character(parents)) ||
+    (all(is_na(parents)) || is_character(parents)) ||
       error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")

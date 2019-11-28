@@ -139,13 +139,13 @@ create_tree <- function(
       error("'types' must be a character vector of valid types (see ?create_tree):\n  '", paste(types, collapse = "'\n  '"), "'")
     (identical(length(types), 1L) || identical(length(types), length(paths))) ||
       error("'types' must be a string or the same length as paths:\n  'types': ", length(types), "\n  'paths': ", length(paths))
-    (is_na(shas) || all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    (all(is_na(shas)) || all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must be NA or a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_na(shas) || (identical(length(shas), 1L) || identical(length(shas), length(paths)))) ||
+    (all(is_na(shas)) || (identical(length(shas), 1L) || identical(length(shas), length(paths)))) ||
       error("'shas' must be NA, a string or the same length as 'paths':\n  'shas':  ", length(shas), "\n  'paths': ", length(paths))
-    (is_na(base_tree) || all(gh_map(base_tree, is_sha, simplify = TRUE))) ||
+    (all(is_na(base_tree)) || all(gh_map(base_tree, is_sha, simplify = TRUE))) ||
       error("'base_tree' must be NA or a vector of 40 character strings:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
-    (is_na(base_tree) || (identical(length(base_tree), 1L)) || identical(length(base_tree), length(paths))) ||
+    (all(is_na(base_tree)) || (identical(length(base_tree), 1L)) || identical(length(base_tree), length(paths))) ||
       error("'base_tree' must be NA, a string or the same length as 'paths':\n  'base_tree':", length(base_tree), "\n  'paths':     ", length(paths))
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
