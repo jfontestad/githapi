@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+githapi.Rcheck/
+githapi*.tar.gz
+githapi*.tgz
