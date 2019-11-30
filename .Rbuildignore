@@ -11,3 +11,4 @@
 ^githapi\.Rcheck$
 ^githapi.*\.tar\.gz$
 ^githapi.*\.tgz$
+^appveyor\.yml$
