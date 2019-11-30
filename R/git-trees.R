@@ -240,7 +240,7 @@ upload_tree <- function(
       error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(base_tree) || is_sha(base_tree)) ||
+    (all(is_na(base_tree)) || is_sha(base_tree)) ||
       error("'base_tree' must be NA or a string of 40 characters:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
     (is_character(ignore)) ||
       error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
