@@ -102,7 +102,7 @@ remove_missing <- function(x) {
   assert(is_list(x))
 
   is_empty <- gh_map(x, simplify = TRUE, function(e) {
-    is_null(e) || is_na(e) || identical(length(e), 0L)
+    is_null(e) || all(is_na(e)) || identical(length(e), 0L)
   })
 
   x[!is_empty]

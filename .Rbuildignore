@@ -8,3 +8,7 @@
 ^\.travis\.yml$
 ^README\.Rmd$
 ^.github$
+^githapi\.Rcheck$
+^githapi.*\.tar\.gz$
+^githapi.*\.tgz$
+^appveyor\.yml$

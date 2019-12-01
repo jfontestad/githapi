@@ -195,13 +195,13 @@ create_files <- function(
       error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
     (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
+    ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (is_na(parents) || is_character(parents)) ||
+    (all(is_na(parents)) || is_character(parents)) ||
       error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -355,11 +355,11 @@ update_files <- function(
       error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
     (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
+    ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -495,11 +495,11 @@ delete_files <- function(
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
     (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
       error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((is_na(branches) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
+    ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
       error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (is_na(committer) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
       error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (is_na(author) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
       error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
     (is_repo(repo)) ||
       error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
@@ -655,7 +655,7 @@ download_commit <- function(
       repo <- path
       path <- NULL
     }
-    if (missing(path) || is_null(path) || is_na(path)) {
+    if (missing(path) || is_null(path) || all(is_na(path))) {
       path <- getwd()
     }
     if (missing(ref) || is_null(ref)) {

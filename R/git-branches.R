@@ -57,7 +57,7 @@ view_branches <- function(
       error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
   }
 
-  if (missing(branches) || is_null(branches) || is_na(branches)) {
+  if (missing(branches) || is_null(branches) || all(is_na(branches))) {
     info("Getting up to ", n_max, " branches from repository '", repo, "'")
 
     branches_list <- try_catch({

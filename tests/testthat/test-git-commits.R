@@ -1,5 +1,22 @@
 context("git commits")
 
+git_commits_branch <- str_c("test-git-commits-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
+master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
+
+setup({
+  create_branches(
+    branches = git_commits_branch,
+    shas     = master_sha,
+    repo     = "ChadGoymer/test-githapi")
+})
+
+teardown({
+  delete_branches(
+    branches = git_commits_branch,
+    repo     = "ChadGoymer/test-githapi")
+})
+
+
 # TEST: view_commits --------------------------------------------------------------------------
 
 test_that("view_commits returns a tibble of information about the commits", {
@@ -37,7 +54,7 @@ test_that("create_commit creates a new commit in a repository", {
   created_commit <- create_commit(
     message = "This is created with create_commit()",
     tree    = "bbac77ba8fc1afa9a815a0cc8fc17e221cb0c027",
-    parents = "master",
+    parents = git_commits_branch,
     repo    = "ChadGoymer/test-githapi")
 
   expect_is(created_commit, "tbl")
@@ -90,10 +107,10 @@ test_that("upload_commit uploads files and directory structure to github", {
   skip_on_travis()
 
   flat_commit <- upload_commit(
-    branch  = "master",
+    branch  = git_commits_branch,
     message = "Test commit made with upload_commit",
     path    = system.file("test-data/upload-tree/test-dir", package = "githapi"),
-    parents = "master",
+    parents = git_commits_branch,
     repo    = "ChadGoymer/test-githapi")
 
   expect_is(flat_commit, "tbl")
@@ -118,10 +135,10 @@ test_that("upload_commit uploads files and directory structure to github", {
   expect_identical(master_files$path, c("file-in-dir-1.txt", "file-in-dir-2.txt"))
 
   recursive_commit <- upload_commit(
-    branch  = "master",
+    branch  = git_commits_branch,
     message = "Recursive commit made with upload_commit",
     path    = system.file("test-data/upload-tree", package = "githapi"),
-    parents = "master",
+    parents = git_commits_branch,
     repo    = "ChadGoymer/test-githapi")
 
   expect_is(recursive_commit, "tbl")
@@ -158,7 +175,7 @@ test_that("upload_commit uploads files and directory structure to github", {
   download_files(
     paths    = "test-file.txt",
     location = temp_path,
-    ref      = "master",
+    ref      = git_commits_branch,
     repo     = "ChadGoymer/test-githapi")
 
   temp_file <- file.path(temp_path, "test-file.txt")
@@ -166,10 +183,10 @@ test_that("upload_commit uploads files and directory structure to github", {
   writeLines(c("This file was updated:", now), temp_file)
 
   updated_commit <- upload_commit(
-    branch    = "master",
+    branch    = git_commits_branch,
     message   = "Update commit made with upload_commit",
     path      = temp_path,
-    parents   = "master",
+    parents   = git_commits_branch,
     repo      = "ChadGoymer/test-githapi",
     replace   = FALSE)
 
@@ -200,14 +217,14 @@ test_that("upload_commit uploads files and directory structure to github", {
       "test-dir/file-in-dir-2.txt",
       "test-file.txt"))
 
-  file_contents <- read_files("test-file.txt", ref = "master", repo = "ChadGoymer/test-githapi")
+  file_contents <- read_files("test-file.txt", ref = git_commits_branch, repo = "ChadGoymer/test-githapi")
   expect_match(file_contents, now)
 
   new_branch_commit <- upload_commit(
     branch  = "test-upload-commit",
     message = "Commit made on new branch with upload_commit",
     path    = system.file("test-data/upload-tree", package = "githapi"),
-    parents = "master",
+    parents = git_commits_branch,
     repo    = "ChadGoymer/test-githapi")
   on.exit(delete_branches("test-upload-commit", "ChadGoymer/test-githapi"), add = TRUE)
 

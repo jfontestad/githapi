@@ -29,7 +29,7 @@ gh_user <- function(
     gh_get(gh_url("users", user, api = api), token = token, ...)
   }))
 
-  if (is(response, "try-error") || response == "") {
+  if (is(response, "try-error") || identical(response, "")) {
     error("Specified user does not exist in GitHub: '", user, "'")
   }
 

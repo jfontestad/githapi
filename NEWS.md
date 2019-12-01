@@ -1,3 +1,8 @@
+# githapi 0.9.2
+
+- Ensure all tests pass and leave the test repository unchanged
+- Updated issues tests for new labels
+
 # githapi 0.9.1
 
 - Updated `gh_url()` to append path to API rather than replace it

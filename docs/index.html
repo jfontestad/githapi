@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User-friendly access to the GitHub API for R, consistent with the tidyverse • githapi</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="User-friendly access to the GitHub API for R, consistent with the tidyverse">
 <meta property="og:description" content="Provides a suite of functions which simplify working with GitHub's API.">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
       </span>
     </div>
 
@@ -65,6 +66,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="contents col-md-9">
 <div id="githapi" class="section level1">
@@ -82,7 +84,7 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The easiest way to install githapi is with the devtools package:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(devtools)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(devtools)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">install_github</span>(<span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
 </div>
 <div id="authorisation" class="section level2">
@@ -99,8 +101,8 @@
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p><code>githapi</code> works best if used as part of the <a href="http://www.tidyverse.org/">tidyverse</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(githapi)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(githapi)</a></code></pre></div>
 <div id="getting-information-about-a-repository" class="section level3">
 <h3 class="hasAnchor">
 <a href="#getting-information-about-a-repository" class="anchor"></a>Getting information about a repository</h3>
@@ -158,10 +160,10 @@
 <h3 class="hasAnchor">
 <a href="#downloading-files-from-a-repository" class="anchor"></a>Downloading files from a repository</h3>
 <p>In addition to getting information about the contents of a repository, <code>githapi</code> can also download files and commits. To download individual files use <a href="http://www.goymer.me.uk/githapi/reference/download_files.html"><code><a href="reference/download_files.html">download_files()</a></code></a></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">temp_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"githapi"</span>)</a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">temp_path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"githapi"</span>)</a>
 <a class="sourceLine" id="cb13-2" title="2"></a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="kw"><a href="reference/download_files.html">download_files</a></span>(</a>
-<a class="sourceLine" id="cb13-4" title="4">  <span class="dt">paths    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"README.md"</span>, <span class="st">"test-file.txt"</span>),</a>
+<a class="sourceLine" id="cb13-4" title="4">  <span class="dt">paths    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"README.md"</span>, <span class="st">"test-file.txt"</span>),</a>
 <a class="sourceLine" id="cb13-5" title="5">  <span class="dt">location =</span> temp_path,</a>
 <a class="sourceLine" id="cb13-6" title="6">  <span class="dt">repo     =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 <p>To download an entire commit use <a href="http://www.goymer.me.uk/githapi/reference/download_commit.html"><code><a href="reference/download_commit.html">download_commit()</a></code></a></p>
@@ -170,7 +172,7 @@
 <a class="sourceLine" id="cb14-3" title="3">  <span class="dt">path =</span> temp_path,</a>
 <a class="sourceLine" id="cb14-4" title="4">  <span class="dt">repo =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 <p>You can also read text files from a commit directly using <a href="http://www.goymer.me.uk/githapi/reference/read_files.html"><code><a href="reference/read_files.html">read_files()</a></code></a></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">files &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_files.html">read_files</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"README.md"</span>, <span class="st">"test-file.txt"</span>), <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">files &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_files.html">read_files</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"README.md"</span>, <span class="st">"test-file.txt"</span>), <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 <p>and source R scripts directly from GitHub using <a href="http://www.goymer.me.uk/githapi/reference/source_files.html"><code><a href="reference/source_files.html">source_files()</a></code></a></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="reference/source_files.html">source_files</a></span>(<span class="st">"test-source.R"</span>, <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 </div>
@@ -180,33 +182,33 @@
 <p><code>githapi</code> also provides a set of functions for updating repsitories, for adding branches, tags as well as new commits.</p>
 <p>To create or update a file, or small number of text files, in a repository use <a href="http://www.goymer.me.uk/githapi/reference/create_files.html"><code><a href="reference/create_files.html">create_files()</a></code></a> or <a href="http://www.goymer.me.uk/githapi/reference/update_files.html"><code><a href="reference/update_files.html">update_files()</a></code></a></p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw"><a href="reference/create_files.html">create_files</a></span>(</a>
-<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">paths    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"aaaa.txt"</span>, <span class="st">"bbbb.txt"</span>),</a>
-<a class="sourceLine" id="cb17-3" title="3">  <span class="dt">contents =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Created to test:</span><span class="ch">\n\n</span><span class="st">  `create_files()`"</span>, <span class="st">"Created to test:</span><span class="ch">\n\n</span><span class="st">  `create_files()`"</span>),</a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">paths    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaaa.txt"</span>, <span class="st">"bbbb.txt"</span>),</a>
+<a class="sourceLine" id="cb17-3" title="3">  <span class="dt">contents =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Created to test:</span><span class="ch">\n\n</span><span class="st">  `create_files()`"</span>, <span class="st">"Created to test:</span><span class="ch">\n\n</span><span class="st">  `create_files()`"</span>),</a>
 <a class="sourceLine" id="cb17-4" title="4">  <span class="dt">messages =</span> <span class="st">"Testing create_files()"</span>,</a>
 <a class="sourceLine" id="cb17-5" title="5">  <span class="dt">repo     =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw"><a href="reference/update_files.html">update_files</a></span>(</a>
-<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">paths    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"aaaa.txt"</span>, <span class="st">"bbbb.txt"</span>),</a>
-<a class="sourceLine" id="cb18-3" title="3">  <span class="dt">contents =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Updated to test:</span><span class="ch">\n\n</span><span class="st">  `update_files()`"</span>, <span class="st">"Updated to test:</span><span class="ch">\n\n</span><span class="st">  `update_files()`"</span>),</a>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">paths    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaaa.txt"</span>, <span class="st">"bbbb.txt"</span>),</a>
+<a class="sourceLine" id="cb18-3" title="3">  <span class="dt">contents =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Updated to test:</span><span class="ch">\n\n</span><span class="st">  `update_files()`"</span>, <span class="st">"Updated to test:</span><span class="ch">\n\n</span><span class="st">  `update_files()`"</span>),</a>
 <a class="sourceLine" id="cb18-4" title="4">  <span class="dt">messages =</span> <span class="st">"Testing update_files()"</span>,</a>
 <a class="sourceLine" id="cb18-5" title="5">  <span class="dt">repo     =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 <p>These functions create a new commit per file and specify the contents as strings. To upload many files, and/or binary files, use <a href="http://www.goymer.me.uk/githapi/reference/upload_commit.html"><code><a href="reference/upload_commit.html">upload_commit()</a></code></a></p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="reference/upload_commit.html">upload_commit</a></span>(</a>
 <a class="sourceLine" id="cb19-2" title="2">  <span class="dt">branch  =</span> <span class="st">"master"</span>,</a>
 <a class="sourceLine" id="cb19-3" title="3">  <span class="dt">message =</span> <span class="st">"Commit made with upload_commit"</span>,</a>
-<a class="sourceLine" id="cb19-4" title="4">  <span class="dt">path    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"test-data/upload-tree"</span>, <span class="dt">package =</span> <span class="st">"githapi"</span>),</a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="dt">path    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"test-data/upload-tree"</span>, <span class="dt">package =</span> <span class="st">"githapi"</span>),</a>
 <a class="sourceLine" id="cb19-5" title="5">  <span class="dt">parents =</span> <span class="st">"master"</span>,</a>
 <a class="sourceLine" id="cb19-6" title="6">  <span class="dt">repo    =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 <p>This function, by default, makes a new commit containing the contents of the specified directory. If you wish to only specify the files to change then set the <code>replace</code> parameter to <code>FALSE</code> (see documentation for details).</p>
 <p>Finally, tags and releases can be created using <a href="http://www.goymer.me.uk/githapi/reference/create_tags.html"><code><a href="reference/create_tags.html">create_tags()</a></code></a> and <a href="http://www.goymer.me.uk/githapi/reference/create_releases.html"><code><a href="reference/create_releases.html">create_releases()</a></code></a> respectively.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="reference/create_tags.html">create_tags</a></span>(</a>
-<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">tags =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"aaa"</span>, <span class="st">"bbb"</span>),</a>
-<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">shas =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"cbd94cf24a4c62761b3ae59ca3c69f868591cf7d"</span>, <span class="st">"310c21d3f1601a46e014e68e94814b23406bf574"</span>),</a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">tags =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaa"</span>, <span class="st">"bbb"</span>),</a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">shas =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cbd94cf24a4c62761b3ae59ca3c69f868591cf7d"</span>, <span class="st">"310c21d3f1601a46e014e68e94814b23406bf574"</span>),</a>
 <a class="sourceLine" id="cb20-4" title="4">  <span class="dt">repo =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw"><a href="reference/create_releases.html">create_releases</a></span>(</a>
-<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">tags    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"aaa"</span>, <span class="st">"bbb"</span>),</a>
-<a class="sourceLine" id="cb21-3" title="3">  <span class="dt">commits =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"310c21d3f1601a46e014e68e94814b23406bf574"</span>, <span class="st">"32d3c5c4f6aba7ae9679480407e1b9f94ad04843"</span>),</a>
-<a class="sourceLine" id="cb21-4" title="4">  <span class="dt">names   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AAA"</span>, <span class="st">"BBB"</span>),</a>
-<a class="sourceLine" id="cb21-5" title="5">  <span class="dt">bodies  =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Created for testing: aaa"</span>, <span class="st">"Created for testing: bbb"</span>),</a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">tags    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaa"</span>, <span class="st">"bbb"</span>),</a>
+<a class="sourceLine" id="cb21-3" title="3">  <span class="dt">commits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"310c21d3f1601a46e014e68e94814b23406bf574"</span>, <span class="st">"32d3c5c4f6aba7ae9679480407e1b9f94ad04843"</span>),</a>
+<a class="sourceLine" id="cb21-4" title="4">  <span class="dt">names   =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AAA"</span>, <span class="st">"BBB"</span>),</a>
+<a class="sourceLine" id="cb21-5" title="5">  <span class="dt">bodies  =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Created for testing: aaa"</span>, <span class="st">"Created for testing: bbb"</span>),</a>
 <a class="sourceLine" id="cb21-6" title="6">  <span class="dt">repo    =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
 </div>
 </div>
@@ -241,23 +243,27 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/ChadGoymer/githapi"><img src="https://travis-ci.org/ChadGoymer/githapi.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/ChadGoymer/githapi"><img src="https://ci.appveyor.com/api/projects/status/github/ChadGoymer/githapi?branch=master&amp;svg=true" alt="Build status"></a></li>
 <li><a href="https://codecov.io/github/ChadGoymer/githapi?branch=master"><img src="https://codecov.io/gh/ChadGoymer/githapi/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
 </ul>
 </div>
 </div>
 </div>
 
+
       <footer><div class="copyright">
   <p>Developed by Chad Goymer.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
