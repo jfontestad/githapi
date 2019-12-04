@@ -235,3 +235,49 @@ test_that("gh_page still works when the endpoint returns a singular response rat
 })
 
 
+# TEST: gh_find -------------------------------------------------------------------------------
+
+test_that("gh_find locate an entity with the specified property value", {
+
+  users_150 <- gh_page(
+    url   = file.path(getOption("github.api"), "users"),
+    n_max = 150)
+
+  user_25 <- gh_find(
+    url      = file.path(getOption("github.api"), "users"),
+    property = "login",
+    value    = users_150[[25]]$login)
+
+  expect_is(user_25, "list")
+  expect_identical(user_25$login, users_150[[25]]$login)
+
+  expect_identical(attr(user_25, "url"), "https://api.github.com/users?per_page=100")
+  expect_identical(attr(user_25, "request"), "GET")
+  expect_identical(attr(user_25, "status"), 200L)
+  expect_true(length(attr(user_25, "header")) > 1)
+
+  user_125 <- gh_find(
+    url      = file.path(getOption("github.api"), "users"),
+    property = "login",
+    value    = users_150[[125]]$login)
+
+  expect_is(user_125, "list")
+  expect_identical(user_125$login, users_150[[125]]$login)
+
+  expect_identical(attr(user_125, "url"), "https://api.github.com/users?per_page=100&since=135")
+  expect_identical(attr(user_125, "request"), "GET")
+  expect_identical(attr(user_125, "status"), 200L)
+  expect_true(length(attr(user_125, "header")) > 1)
+
+})
+
+test_that("gh_find throws an error if it cannot find the specified property value", {
+
+  expect_error(
+    gh_find(
+      url      = "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs/heads",
+      property = "ref",
+      value    = "refs/heads/bob"),
+    "Could not find an entity with the specified value, 'refs/heads/bob', for the specified property 'ref'")
+
+})

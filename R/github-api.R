@@ -419,6 +419,106 @@ gh_page <- function(
     header  = response_attr$header)
 }
 
+#  FUNCTION: gh_find --------------------------------------------------------------------------
+#
+#' Find an entity by matching a property value
+#'
+#' This function pages through a collection of entities searching for a specified property
+#' value. It returns the first match found. For example, you can search for an issue by
+#' specifying the title.
+#'
+#' @param url (string) The address of the API endpoint.
+#' @param property (string) The property to search.
+#' @param value (string) The property value to search for.
+#' @param max_pages (integer, optional) The maximum number of pages to search through.
+#'   Default: 100.
+#' @param headers (character, optional) Headers to add to the request. Default: `NULL`.
+#' @param accept (string, optional) The mime format to accept when making the call. Default:
+#'   "application/vnd.github.v3+json".
+#' @param token (string or Token, optional) An authorisation token to include with the
+#' request. If `NULL` the OAuth process is triggered. Default: `NULL`.
+#' @param proxy (character, optional) The proxy server to use to connect to the github API.
+#'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
+#'   environment variable `GITHUB_PROXY`. Default: `NULL`.
+#'
+#' @return A `github` list object consisting of the response, parsed into a list, with the
+#'   attributes:
+#'   - **url**: The URLs the request was sent to
+#'   - **request**: The type of HTTP request made
+#'   - **status**: The HTTP status code returned
+#'   - **header**: The HTTP header returned
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Find an issue by title
+#'   gh_find(
+#'     url      = "https://api.github.com/repos/ChadGoymer/githapi/issues",
+#'     property = "title",
+#'     value    = "Test issue")
+#' }
+#'
+#' @export
+#'
+gh_find <- function(
+  url,
+  property,
+  value,
+  max_pages = 100,
+  headers   = NULL,
+  accept    = "application/vnd.github.v3+json",
+  token     = gh_token(),
+  proxy     = getOption("github.proxy"))
+{
+  assert(is_url(url), "'url' must be a valid URL: '", url, "'")
+  assert(is_scalar_character(property), "'property' must be a string: '", property, "'")
+  assert(is_scalar_character(value), "'value' must be a string: '", value, "'")
+  assert(is_scalar_integerish(max_pages) && all(max_pages > 0), "'max_pages' must be a positive integer: '", max_pages, "'")
+  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector: '", headers, "'")
+  assert(is_scalar_character(accept), "'accept' must be a string: '", accept, "'")
+  assert(is_sha(token) || "Token" %in% class(token), "'token' must be a string or a Token object: '", token, "'")
+  assert(is_null(proxy) || is_scalar_character(proxy), "'proxy' must be a string: '", proxy, "'")
+
+  parsed_url <- httr::parse_url(url)
+  parsed_url$query$per_page <- "100"
+  page_url <- httr::build_url(parsed_url)
+
+  for (p in 1:max_pages)
+  {
+    page <- gh_request("GET", url = page_url, accept = accept, token = token, headers = headers, proxy = proxy)
+    matched_results <- keep(page, ~.[[property]] == value)
+
+    if (length(matched_results) > 0)
+    {
+      result <- structure(
+        matched_results[[1]],
+        class   = c("github", class(matched_results)),
+        url     = page_url,
+        request = "GET",
+        status  = attr(page, "status"),
+        header  = attr(page, "header"))
+
+      return(result)
+    }
+
+    if (is_null(attributes(page)[["header"]][["Link"]]))
+    {
+      break
+    }
+
+    page_url <- attributes(page)[["header"]][["Link"]] %>%
+      str_split(", ") %>%
+      first() %>%
+      str_subset("next") %>%
+      str_split(">") %>%
+      pluck(1, 1) %>%
+      str_remove("<")
+  }
+
+  error("Could not find an entity with the specified value, '", value, "', for the specified property '", property, "'")
+
+}
+
 #  FUNCTION: print.github -----------------------------------------------------------------------
 #
 #  Print method for the `github` class
