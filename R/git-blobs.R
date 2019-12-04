@@ -268,7 +268,7 @@ read_files <- function(
 
     file <- gh_request(
       "GET", url = gh_url("repos", repo, "git/blobs", file_shas[[path]], api = api),
-      accept = "raw", token = token, ...)
+      accept = "application/vnd.github.raw", token = token, ...)
 
     attr(file, "header") <- NULL
     file
