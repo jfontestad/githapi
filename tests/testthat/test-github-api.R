@@ -186,3 +186,52 @@ test_that("gh_request can make a request using an OAuth token", {
   expect_true(length(attr(master, "header")) > 1)
 
 })
+
+
+# TEST: gh_page -------------------------------------------------------------------------------
+
+test_that("gh_page returns a list of specified length", {
+
+  users_20 <- gh_page(
+    url   = file.path(getOption("github.api"), "users"),
+    n_max = 20)
+
+  expect_is(users_20, "list")
+  expect_identical(length(users_20), 20L)
+
+  expect_identical(attr(users_20, "url"), "https://api.github.com/users?per_page=20")
+  expect_identical(attr(users_20, "request"), "GET")
+  expect_identical(attr(users_20, "status"), 200L)
+  expect_true(length(attr(users_20, "header")) > 1)
+
+  users_150 <- gh_page(
+    url   = file.path(getOption("github.api"), "users"),
+    n_max = 150)
+
+  expect_is(users_150, "list")
+  expect_identical(length(users_150), 150L)
+
+  expect_identical(
+    attr(users_150, "url"),
+    c("https://api.github.com/users?per_page=100", "https://api.github.com/users?per_page=50&since=135"))
+  expect_identical(attr(users_150, "request"), "GET")
+  expect_identical(attr(users_150, "status"), c(200L, 200L))
+  expect_true(length(attr(users_150, "header")) > 1)
+
+})
+
+test_that("gh_page still works when the endpoint returns a singular response rather than a collection", {
+
+  master <- gh_page("https://api.github.com/repos/ChadGoymer/test-githapi/git/refs/heads/master")
+
+  expect_is(master, "list")
+  expect_identical(master$ref, "refs/heads/master")
+
+  expect_identical(attr(master, "url"), "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs/heads/master?per_page=100")
+  expect_identical(attr(master, "request"), "GET")
+  expect_identical(attr(master, "status"), 200L)
+  expect_true(length(attr(master, "header")) > 1)
+
+})
+
+

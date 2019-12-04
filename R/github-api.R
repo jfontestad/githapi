@@ -319,6 +319,106 @@ gh_request <- function(
   structered_response
 }
 
+#  FUNCTION: gh_page --------------------------------------------------------------------------
+#
+#' Get multiple pages from the GitHub API
+#'
+#' This function is used when requesting a collection of entities. GitHub sets a maximum page
+#' size of 100, so if more are request multiple requests are made and the results are combined.
+#' Each page uses [gh_request()] to retrieve the contents.
+#'
+#' @param url (string) The address of the API endpoint.
+#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
+#' @param headers (character, optional) Headers to add to the request. Default: `NULL`.
+#' @param accept (string, optional) The mime format to accept when making the call. Default:
+#'   "application/vnd.github.v3+json".
+#' @param token (string or Token, optional) An authorisation token to include with the
+#' request. If `NULL` the OAuth process is triggered. Default: `NULL`.
+#' @param proxy (character, optional) The proxy server to use to connect to the github API.
+#'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
+#'   environment variable `GITHUB_PROXY`. Default: `NULL`.
+#'
+#' @return A `github` list object consisting of the response, parsed into a list, with the
+#'   attributes:
+#'   - **url**: The URLs the request was sent to
+#'   - **request**: The type of HTTP request made
+#'   - **status**: The HTTP status code returned
+#'   - **header**: The HTTP header returned
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # First 20 users
+#'   gh_page(
+#'     url   = "https://api.github.com/users",
+#'     n_max = 20)
+#'
+#'   # First 150 users (two pages)
+#'   gh_page(
+#'     url   = "https://api.github.com/users",
+#'     n_max = 150)
+#' }
+#'
+#' @export
+#'
+gh_page <- function(
+  url,
+  n_max   = 1000,
+  headers = NULL,
+  accept  = "application/vnd.github.v3+json",
+  token   = gh_token(),
+  proxy   = getOption("github.proxy"))
+{
+  assert(is_url(url), "'url' must be a valid URL: '", url, "'")
+  assert(is_scalar_integerish(n_max) && all(n_max > 0), "'n_max' must be a positive integer: '", n_max, "'")
+  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector: '", headers, "'")
+  assert(is_scalar_character(accept), "'accept' must be a string: '", accept, "'")
+  assert(is_sha(token) || "Token" %in% class(token), "'token' must be a string or a Token object: '", token, "'")
+  assert(is_null(proxy) || is_scalar_character(proxy), "'proxy' must be a string: '", proxy, "'")
+
+  parsed_url <- httr::parse_url(url)
+  per_page   <- c(rep(100, n_max %/% 100), n_max %% 100)
+
+  response_list <- list()
+  response_attr <- list()
+
+  for (p in per_page[per_page > 0])
+  {
+    parsed_url$query$per_page <- as.character(p)
+    page_url <- httr::build_url(parsed_url)
+    page <- gh_request("GET", url = page_url, accept = accept, token = token, headers = headers, proxy = proxy)
+
+    response_list        <- c(response_list, page)
+    response_attr$url    <- c(response_attr$url, page_url)
+    response_attr$status <- c(response_attr$status, attr(page, "status"))
+    response_attr$header <- c(response_attr$header, attr(page, "header"))
+
+    links <- attributes(page)[["header"]][["Link"]]
+    if (is_null(links) || !str_detect(links, "next"))
+    {
+      info("> Returned ", length(response_list), level = 4)
+      break
+    }
+
+    parsed_url <- links %>%
+      str_split(", ") %>%
+      first() %>%
+      str_subset("next") %>%
+      str_split(">") %>%
+      pluck(1, 1) %>%
+      str_remove("<") %>%
+      httr::parse_url()
+  }
+
+  structure(
+    response_list,
+    class   = c("github", class(response_list)),
+    url     = response_attr$url,
+    request = "GET",
+    status  = response_attr$status,
+    header  = response_attr$header)
+}
+
 #  FUNCTION: print.github -----------------------------------------------------------------------
 #
 #  Print method for the `github` class
