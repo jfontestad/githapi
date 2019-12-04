@@ -3,14 +3,14 @@ context("repositories contents")
 repo_contents_branch <- str_c("test-repo-contents-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
 
-setup({
+setup(suppressMessages({
   create_branches(
     branches = repo_contents_branch,
     shas     = master_sha,
     repo     = "ChadGoymer/test-githapi")
-})
+}))
 
-teardown({
+teardown(suppressMessages({
   delete_branches(
     branches = repo_contents_branch,
     repo     = "ChadGoymer/test-githapi")
@@ -19,7 +19,7 @@ teardown({
     branches = "master",
     shas     = master_sha,
     repo     = "ChadGoymer/test-githapi")
-})
+}))
 
 
 # TEST: view_files, create_files, update_files & delete_files ---------------------------------
