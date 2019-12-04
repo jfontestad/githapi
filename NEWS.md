@@ -1,3 +1,12 @@
+# githapi 0.9.3
+
+- Use proxy in `gh_token()`
+- Cleaned up use of tokens in `gh_request()`
+- Updated `gh_page()` to use new approach
+- Added `gh_find()`
+- Added tests for `print.github()`
+- Corrected spelling mistakes
+
 # githapi 0.9.2
 
 - Ensure all tests pass and leave the test repository unchanged
