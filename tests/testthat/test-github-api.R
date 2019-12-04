@@ -12,8 +12,8 @@ test_that("gh_token returns a valid GitHub personal access token", {
   token1 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% paste(collapse = "")
 
   expect_message(
-    token1_result <- gh_token(github_token = token1),
-    "Using personal access token")
+    token1_result <- gh_token(token = token1),
+    "Using supplied token")
 
   expect_identical(token1_result, token1)
 
@@ -25,7 +25,7 @@ test_that("gh_token returns a valid GitHub personal access token", {
 
   expect_message(
     token2_result <- gh_token(),
-    "Using personal access token")
+    "Using supplied token")
 
   expect_identical(token2_result, token2)
 
@@ -33,27 +33,34 @@ test_that("gh_token returns a valid GitHub personal access token", {
 
 test_that("gh_token returns a valid GitHub OAuth token", {
 
-  skip("OAuth authentication must be run manually")
+  skip_if_not(interactive(), "OAuth authentication must be run manually")
 
-  existing_msgr_level <- getOption("msgr.level")
-  on.exit(options(msgr.level = existing_msgr_level))
-  options(msgr.level = 10)
+  existing_msgr_level    <- getOption("msgr.level")
+  existing_githapi_cache <- getOption("githapi.cache")
+  options(msgr.level = 10, githapi.cache = "~/.githapi.oauth")
+  on.exit(options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache))
 
   expect_error(
-    gh_token(github_token = NULL, githapi_secret = "suhfdieudhisauhf"),
+    gh_token(token = NULL, secret = "suhfdieudhisauhf"),
     "incorrect client credentials")
 
   expect_message(
-    token <- gh_token(github_token = NULL),
+    new_token <- gh_token(token = NULL),
     "Retrieving new token")
 
-  expect_is(token, "Token")
+  expect_is(new_token, "Token")
 
   expect_message(
-    token <- gh_token(github_token = NULL),
+    cached_token <- gh_token(token = NULL),
     "Retrieving cached token")
 
-  expect_is(token, "Token")
+  expect_is(cached_token, "Token")
+
+})
+
+test_that("gh_token throws an error if an invalid token is specified", {
+
+  expect_error(gh_token(token = "Bob"), "'token' must be a SHA or a Token object")
 
 })
 

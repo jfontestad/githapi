@@ -3,7 +3,7 @@
   # Set environment variables that do not already exist
   githapi_env <- list(
     GITHUB_API           = "https://api.github.com",
-    GITHUB_OAUTH_URL     = "https://github.com/login/oauth",
+    GITHUB_OAUTH         = "https://github.com/login/oauth",
     GITHUB_PROXY         = "",
     GITHUB_TOKEN         = "",
     GITHUB_PAT           = "",
@@ -31,7 +31,7 @@
   # Set github token
   if (identical(githapi_env$GITHUB_TOKEN, "") && identical(githapi_env$GITHUB_PAT, ""))
   {
-    githapi_env$GITHUB_TOKEN <- NA
+    githapi_env$GITHUB_TOKEN <- NULL
   }
   else
   {
@@ -59,7 +59,7 @@
 
     # GitHub API
     github.api                = githapi_env$GITHUB_API,            # The base address of the GitHub API
-    github.oauth_url          = githapi_env$GITHUB_OAUTH_URL,      # The base address of the GitHub OAuth URL
+    github.oauth              = githapi_env$GITHUB_OAUTH,          # The base address of the GitHub OAuth URL
     github.proxy              = githapi_env$GITHUB_PROXY,          # The proxy to use to access GitHub
     github.token              = githapi_env$GITHUB_TOKEN,          # The GitHub token
 

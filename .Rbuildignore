@@ -12,3 +12,4 @@
 ^githapi.*\.tar\.gz$
 ^githapi.*\.tgz$
 ^appveyor\.yml$
+^~/\.githapi\.oauth$
