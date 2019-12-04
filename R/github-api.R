@@ -167,9 +167,9 @@ gh_url <- function(
 #' This function can be used to make "GET", "POST", "PATCH", "PUT" or "DELETE" requests to
 #' the specified URL.
 #'
-#' The response is parsed from either raw binary formation, JSON or plain text, depending
-#' on the format received. When no reponse is received an empty list returned by the
-#' function. Details of the response are recorded as attributes.
+#' The response is parsed from either JSON or plain text, depending on the format received.
+#' When no response is received an empty list returned by the function. Details of the
+#' response are recorded as attributes.
 #'
 #' For "POST", "PATCH", "PUT" and "DELETE" requests a payload can be supplied. It is parsed
 #' into a JSON format before being sent to the URL.
@@ -180,16 +180,18 @@ gh_url <- function(
 #' Finally, an authorisation token can be supplied if it is required.
 #'
 #' @param url (string) The address of the API endpoint.
-#' @param type (string) The type of HTTP request. Either "GET", "POST" or "PATCH".
-#' @param payload (list, optional) The information to send to the API for "POST" and
-#'   "PATCH" requests. Default: `NULL`.
-#' @param accept (string, optional) The mime format to accept when making the call. Default:
-#'   "json".
+#' @param type (string) The type of HTTP request. Either "GET", "POST", "PATCH", "PUT" or
+#'   "DELETE".
+#' @param payload (list, optional) The information to send to the API for "POST", "PATCH",
+#'   "PUT" or "DELETE" requests. Default: `NULL`.
 #' @param headers (character, optional) Headers to add to the request. Default: `NULL`.
-#' @param token (string, optional) An authorisation token to include with the request.
-#'   Default: `NULL`.
+#' @param accept (string, optional) The mime format to accept when making the call. Default:
+#'   "application/vnd.github.v3+json".
+#' @param token (string or Token, optional) An authorisation token to include with the
+#' request. If `NULL` the OAuth process is triggered. Default: `NULL`.
 #' @param proxy (character, optional) The proxy server to use to connect to the github API.
-#'   Default: Set in the option `github.proxy`.
+#'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
+#'   environment variable `GITHUB_PROXY`. Default: `NULL`.
 #'
 #' @return A `github` list object consisting of the response, parsed into a list, with the
 #'   attributes:
@@ -198,24 +200,52 @@ gh_url <- function(
 #'   - **status**: The HTTP status code returned
 #'   - **header**: The HTTP header returned
 #'
+#' @examples
+#' \dontrun{
+#'
+#'   # Create a tag
+#'   gh_request(
+#'     url     = "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs",
+#'     type    = "POST",
+#'     payload = list(
+#'       ref = "test-tag",
+#'       sha = "a4b6545671455234757313a42738e44c10b0ef37"))
+#'
+#'   # View a tag
+#'   gh_request(
+#'     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
+#'     type = "GET")
+#'
+#'   # Update a tag
+#'   gh_request(
+#'     url     = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
+#'     type    = "PATCH",
+#'     payload = list(sha = "a4b6545671455234757313a42738e44c10b0ef37"))
+#'
+#'   # Delete a tag
+#'   gh_request(
+#'     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
+#'     type = "DELETE")
+#' }
+#'
 #' @export
 #'
 gh_request <- function(
   url,
   type,
   payload = NULL,
-  accept  = "json",
   headers = NULL,
-  token   = gh_token(),
+  accept  = "application/vnd.github.v3+json",
+  token   = getOption("github.token"),
   proxy   = getOption("github.proxy"))
 {
   assert(is_url(url), "'url' must be a valid URL: '", url, "'")
   assert(is_scalar_character(type), "'type' must be a string: '", type, "'")
   assert(type %in% c("GET", "POST", "PATCH", "PUT", "DELETE"), "'type' must be either 'GET', 'POST', 'PATCH','PUT' or 'DELETE': '", type, "'")
-  assert(is_scalar_character(accept), "'accept' must be a string: '", accept, "'")
   assert(is_null(headers) || is_character(headers), "'headers' must be a character vector: '", headers, "'")
+  assert(is_scalar_character(accept), "'accept' must be a string: '", accept, "'")
 
-  headers <- httr::add_headers(.headers = headers)
+  headers <- c(httr::add_headers(.headers = headers), httr::accept(accept))
 
   if (!is_null(payload))
   {
@@ -225,31 +255,14 @@ gh_request <- function(
     headers <- c(headers, httr::content_type_json())
   }
 
-  if (identical(accept, "raw"))
-  {
-    headers <- c(headers, httr::accept("application/vnd.github.raw"))
-  }
-  else if (identical(accept, "json"))
-  {
-    headers <- c(headers, httr::accept("application/vnd.github.v3+json"))
-  }
-  else
-  {
-    assert(str_detect(accept, "^application/"), "'accept' is not a valid mime: '", accept, "'")
-    headers <- c(headers, httr::accept(accept))
-  }
-
+  token <- gh_token(proxy = proxy, token = token)
   if (is_sha(token))
   {
     headers <- c(headers, httr::add_headers(Authorization = str_c("token ", token)))
   }
-  else if ("Token" %in% class(token))
-  {
-    headers <- c(headers, httr::config(token = token))
-  }
   else
   {
-    error("'token' specified is not valid")
+    headers <- c(headers, httr::config(token = token))
   }
 
   if (!is_null(proxy))
@@ -273,10 +286,6 @@ gh_request <- function(
   if (identical(httr::status_code(response), 204L))
   {
     parsed_response <- list()
-  }
-  else if (identical(httr::http_type(response), "application/octet-stream"))
-  {
-    parsed_response <- httr::content(response, type = "raw")
   }
   else if (identical(httr::http_type(response), "application/json"))
   {

@@ -109,13 +109,15 @@ test_that("gh_url returns a valid URL for the GitHub API", {
 master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
 test_sha <- view_shas(refs = "test-files", repo = "ChadGoymer/test-githapi")[[1]]
 
-test_that("gh_request can GET, POST and DELETE a tag in the specified repository", {
+test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified repository", {
 
   test_tag <- str_c("refs/tags/test-gh-request-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
+
   created_tag <- gh_request(
     url     = "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs",
     type    = "POST",
     payload = list(ref = test_tag, sha = master_sha))
+
   expect_is(created_tag, "list")
   expect_identical(created_tag$ref, test_tag)
   expect_identical(created_tag$object$sha, master_sha)
@@ -126,6 +128,7 @@ test_that("gh_request can GET, POST and DELETE a tag in the specified repository
   expect_true(length(attr(created_tag, "header")) > 1)
 
   viewed_tag <- gh_request(str_c("https://api.github.com/repos/ChadGoymer/test-githapi/git/", test_tag), "GET")
+
   expect_is(viewed_tag, "list")
   expect_identical(viewed_tag$ref, test_tag)
   expect_identical(viewed_tag$object$sha, master_sha)
@@ -139,6 +142,7 @@ test_that("gh_request can GET, POST and DELETE a tag in the specified repository
     url     = str_c("https://api.github.com/repos/ChadGoymer/test-githapi/git/", test_tag),
     type    = "PATCH",
     payload = list(sha = test_sha))
+
   expect_is(updated_tag, "list")
   expect_identical(updated_tag$ref, test_tag)
   expect_identical(updated_tag$object$sha, test_sha)
@@ -149,6 +153,7 @@ test_that("gh_request can GET, POST and DELETE a tag in the specified repository
   expect_true(length(attr(updated_tag, "header")) > 1)
 
   deleted_tag <- gh_request(str_c("https://api.github.com/repos/ChadGoymer/test-githapi/git/", test_tag), "DELETE")
+
   expect_is(deleted_tag, "list")
 
   expect_identical(attr(deleted_tag, "url"), str_c("https://api.github.com/repos/ChadGoymer/test-githapi/git/", test_tag))
@@ -157,5 +162,27 @@ test_that("gh_request can GET, POST and DELETE a tag in the specified repository
   expect_true(length(attr(deleted_tag, "header")) > 1)
 
   expect_error(gh_request(str_c("https://api.github.com/repos/ChadGoymer/test-githapi/git/", test_tag), "GET"))
+
+})
+
+test_that("gh_request can make a request using an OAuth token", {
+
+  skip_if_not(interactive(), "OAuth authentication must be run manually")
+
+  existing_msgr_level    <- getOption("msgr.level")
+  existing_githapi_cache <- getOption("githapi.cache")
+  options(msgr.level = 10, githapi.cache = "~/.githapi.oauth")
+  on.exit(options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache))
+
+  master <- "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs/heads/master" %>%
+    gh_request("GET", token = NULL)
+
+  expect_is(master, "list")
+  expect_identical(master$ref, "refs/heads/master")
+
+  expect_identical(attr(master, "url"), "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs/heads/master")
+  expect_identical(attr(master, "request"), "GET")
+  expect_identical(attr(master, "status"), 200L)
+  expect_true(length(attr(master, "header")) > 1)
 
 })
