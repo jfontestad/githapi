@@ -3,7 +3,7 @@
 #' Get information about the history of commits
 #'
 #' This function returns information about all the commits in the history of a specified
-#' commit. The commit can be specifed by a branch, tag or SHA.
+#' commit. The commit can be specified by a branch, tag or SHA.
 #'
 #' <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
 #'
@@ -209,7 +209,7 @@ shas_exist <- function(
 #' Compare two commits
 #'
 #' This function returns information about all the commits made between the two specified
-#' commits. The commits can be specifed by any git reference, i.e. branch, tag or SHA. Note:
+#' commits. The commits can be specified by any git reference, i.e. branch, tag or SHA. Note:
 #' This function will only return a maximum of 250 commits. If more are required, use
 #' [view_commits()].
 #'
@@ -297,7 +297,7 @@ compare_commits <- function(
 #' Compare the files of two commits
 #'
 #' This function returns information on all the files that have been changed between two
-#' commits. The commits can be specifed by any git reference, i.e. branch, tag or SHA.
+#' commits. The commits can be specified by any git reference, i.e. branch, tag or SHA.
 #'
 #' <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'

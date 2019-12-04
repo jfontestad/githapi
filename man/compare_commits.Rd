@@ -44,7 +44,7 @@ for more details):
 }
 \description{
 This function returns information about all the commits made between the two specified
-commits. The commits can be specifed by any git reference, i.e. branch, tag or SHA. Note:
+commits. The commits can be specified by any git reference, i.e. branch, tag or SHA. Note:
 This function will only return a maximum of 250 commits. If more are required, use
 \code{\link[=view_commits]{view_commits()}}.
 }

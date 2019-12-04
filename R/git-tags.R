@@ -178,7 +178,7 @@ create_tags <- function(
 #' <https://developer.github.com/v3/git/refs/#update-a-reference>
 #'
 #' @param tags (character) The tag names.
-#' @param shas (character) Ths SHAs of the commits to tag.
+#' @param shas (character) The SHAs of the commits to tag.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param token (string, optional) The personal access token for GitHub authorisation. Default:
 #'   value stored in the environment variable `GITHUB_TOKEN` (or `GITHUB_PAT`) or in the

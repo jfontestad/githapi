@@ -55,7 +55,7 @@ for more details):
 }
 \description{
 This function deletes the specified files from a repository in GitHub. It adds a new commit
-for each file deleted with the specifed commit message and on the specified branch. The
+for each file deleted with the specified commit message and on the specified branch. The
 committer and author can be set explicitly if necessary.
 }
 \details{

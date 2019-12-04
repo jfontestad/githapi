@@ -108,7 +108,7 @@ view_files <- function(
 #' Create a new files
 #'
 #' This function creates a new text files in a GitHub repository. It adds a new commit for
-#' each file created with the specifed commit message and on the specified branch. The
+#' each file created with the specified commit message and on the specified branch. The
 #' committer and author can be set explicitly if necessary.
 #'
 #' <https://developer.github.com/v3/repos/contents/#create-a-file>
@@ -276,7 +276,7 @@ create_files <- function(
 #' Update existing files
 #'
 #' This function updates existing text files in a GitHub repository. It adds a new commit for
-#' each file updated with the specifed commit message and on the specified branch. The
+#' each file updated with the specified commit message and on the specified branch. The
 #' committer and author can be set explicitly if necessary.
 #'
 #' <https://developer.github.com/v3/repos/contents/#update-a-file>
@@ -429,7 +429,7 @@ update_files <- function(
 #' Delete files.
 #'
 #' This function deletes the specified files from a repository in GitHub. It adds a new commit
-#' for each file deleted with the specifed commit message and on the specified branch. The
+#' for each file deleted with the specified commit message and on the specified branch. The
 #' committer and author can be set explicitly if necessary.
 #'
 #' <https://developer.github.com/v3/repos/contents/#delete-a-file>

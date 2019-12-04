@@ -19,6 +19,7 @@ Imports:
 Roxygen: list(markdown = TRUE)
 License: MIT + file LICENSE
 Encoding: UTF-8
+Language: En-GB
 LazyData: true
 Suggests: 
     testthat,
