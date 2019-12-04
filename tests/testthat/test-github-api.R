@@ -281,3 +281,89 @@ test_that("gh_find throws an error if it cannot find the specified property valu
     "Could not find an entity with the specified value, 'refs/heads/bob', for the specified property 'ref'")
 
 })
+
+
+# TEST: print.github --------------------------------------------------------------------------
+
+test_that("print.github correctly prints lists", {
+
+  test_github_list <- structure(
+    list(Name = "Bob"),
+    class   = c("github", "list"),
+    url     = "https://somwhere/Bob",
+    request = "GET",
+    status  = 200L,
+    header  = list(http_blah = "stuff"))
+
+  list_output <- utils::capture.output(test_github_list)
+
+  expect_identical(
+    list_output,
+    c("\033[34m# GET \033[4mhttps://somwhere/Bob\033[24m",
+      "\033[39mList of 1",
+      "  Name: chr \"Bob\""))
+
+})
+
+test_that("print.github correctly prints vectors", {
+
+  test_github_string <- structure(
+    "Bob",
+    class   = c("github", "character"),
+    url     = "https://somwhere/Bob",
+    request = "GET",
+    status  = 200L,
+    header  = list(http_blah = "stuff"))
+
+  string_output <- utils::capture.output(test_github_string)
+
+  expect_identical(
+    string_output,
+    c("\033[34m# GET \033[4mhttps://somwhere/Bob\033[24m",
+      "\033[39m[1] \"Bob\""))
+
+})
+
+test_that("print.github correctly prints data.frames", {
+
+  df <- tibble(Name = "Bob", role = "Developer")
+  test_github_df <- structure(
+    df,
+    class   = c("github", class(df)),
+    url     = "https://somwhere/Bob",
+    request = "GET",
+    status  = 200L,
+    header  = list(http_blah = "stuff"))
+
+  df_output <- utils::capture.output(test_github_df)
+
+  expect_identical(
+    df_output,
+    c("\033[34m# GET \033[4mhttps://somwhere/Bob\033[24m",
+      "\033[39m# A tibble: 1 x 2",
+      "  Name  role     ",
+      "* <chr> <chr>    ",
+      "1 Bob   Developer"))
+
+})
+
+test_that("print.github correctly prints multiple URLs", {
+
+  test_github_urls <- structure(
+    "Bob",
+    class   = c("github", "character"),
+    url     = c("https://somwhere/Bob1", "https://somwhere/Bob2", "https://somwhere/Bob3"),
+    request = "GET",
+    status  = 200L,
+    header  = list(http_blah = "stuff"))
+
+  urls_output <- utils::capture.output(test_github_urls)
+
+  expect_identical(
+    urls_output,
+    c("\033[34m# GET \033[4mhttps://somwhere/Bob1\033[24m",
+      "# GET \033[4mhttps://somwhere/Bob2\033[24m",
+      "# GET \033[4m...\033[24m",
+      "\033[39m[1] \"Bob\""))
+
+})
