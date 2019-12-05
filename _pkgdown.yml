@@ -151,8 +151,9 @@ reference:
     - '`gh_token`'
     - '`gh_url`'
     - '`gh_request`'
-    - '`gh_get`'
     - '`gh_page`'
+    - '`gh_find`'
+    - '`gh_get`'
     - '`gh_download_binary`'
 - title: Deprecated
   desc: These functions have been deprecated.

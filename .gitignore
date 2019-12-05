@@ -5,3 +5,4 @@
 githapi.Rcheck/
 githapi*.tar.gz
 githapi*.tgz
+~/.githapi.oauth

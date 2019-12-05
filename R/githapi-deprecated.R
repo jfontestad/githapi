@@ -106,69 +106,6 @@ gh_get <- function(
   response_content
 }
 
-#  FUNCTION: gh_page --------------------------------------------------------------------------
-#
-#' Get and parse the contents of multiple pages from a github http request
-#'
-#' @param url (string) URL for GitHub API endpoint.
-#' @param accept (string) The format of the returned result. Either "json", "raw" or other
-#'   GitHub accepted format. Default: "json".
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return A list of the combined parsed responses
-#'
-#' @export
-#'
-gh_page <- function(
-  url,
-  accept = "json",
-  n_max  = 1000L,
-  token  = getOption("github.token"),
-  ...)
-{
-  {
-    (is_url(url)) ||
-      error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
-    (is_scalar_character(accept)) ||
-      error("'accept' must be a string:\n  '", paste(accept, collapse = "'\n  '"), "'")
-    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
-      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-  }
-
-  per_page <- min(n_max, 100)
-  if (grepl("\\?", url)) {
-    url <- paste0(url, "&per_page=", per_page)
-  } else {
-    url <- paste0(url, "?per_page=", per_page)
-  }
-
-  response <- list()
-
-  while (length(response) < n_max) {
-    page <- gh_request("GET", url = url, accept = accept, token = token, ...)
-    response <- c(response, page)
-    if (length(response) >= n_max) {
-      info("> Returned ", length(response), level = 4)
-      return(response[1:n_max])
-    }
-    if (is_null(attributes(page)[["header"]][["Link"]])) {
-      info("> Returned ", length(response), level = 4)
-      return(response)
-    }
-    links <- strsplit(attributes(page)[["header"]][["Link"]], ", ")[[1]]
-    if (!any(grepl("next", links))) {
-      info("> Returned ", length(response), level = 4)
-      return(response)
-    }
-    url <- sub("<", "", strsplit(links[grepl("next", links)], ">")[[1]][[1]])
-  }
-}
-
 #  FUNCTION: gh_download_binary ---------------------------------------------------------------
 #
 #' Download a binary file from GitHub

@@ -46,7 +46,7 @@ for more details):
 }
 \description{
 This function returns information about all the commits in the history of a specified
-commit. The commit can be specifed by a branch, tag or SHA.
+commit. The commit can be specified by a branch, tag or SHA.
 }
 \details{
 \url{https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository}

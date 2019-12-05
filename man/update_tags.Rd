@@ -10,7 +10,7 @@ update_tags(tags, shas, repo, token = getOption("github.token"),
 \arguments{
 \item{tags}{(character) The tag names.}
 
-\item{shas}{(character) Ths SHAs of the commits to tag.}
+\item{shas}{(character) The SHAs of the commits to tag.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 

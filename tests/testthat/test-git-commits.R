@@ -3,18 +3,18 @@ context("git commits")
 git_commits_branch <- str_c("test-git-commits-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
 
-setup({
+setup(suppressMessages({
   create_branches(
     branches = git_commits_branch,
     shas     = master_sha,
     repo     = "ChadGoymer/test-githapi")
-})
+}))
 
-teardown({
+teardown(suppressMessages({
   delete_branches(
     branches = git_commits_branch,
     repo     = "ChadGoymer/test-githapi")
-})
+}))
 
 
 # TEST: view_commits --------------------------------------------------------------------------

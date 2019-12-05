@@ -178,7 +178,7 @@ source_files("test-source.R", "ChadGoymer/test-githapi")
 
 ### Updating a repository
 
-`githapi` also provides a set of functions for updating repsitories, for adding branches, tags as
+`githapi` also provides a set of functions for updating repositories, for adding branches, tags as
 well as new commits.
 
 To create or update a file, or small number of text files, in a repository use

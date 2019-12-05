@@ -4,30 +4,35 @@
 \alias{gh_token}
 \title{Get a token for accessing GitHub}
 \usage{
-gh_token(github_token = getOption("github.token"),
-  github_oauth_url = getOption("github.oauth_url"),
-  githapi_key = getOption("githapi.key"),
-  githapi_secret = getOption("githapi.secret"),
-  githapi_cache = getOption("githapi.cache"))
+gh_token(token = getOption("github.token"),
+  oauth = getOption("github.oauth"), proxy = getOption("github.proxy"),
+  key = getOption("githapi.key"), secret = getOption("githapi.secret"),
+  cache = getOption("githapi.cache"))
 }
 \arguments{
-\item{github_token}{(string, optional) A personal access token. Can be set in the
-\code{github.token} option or the \code{GITHUB_TOKEN} environment variable. Default: \code{NULL}.}
+\item{token}{(string, optional) A personal access token. If \code{NULL} then the OAuth process
+is triggered. Can be set in the \code{github.token} option or the \code{GITHUB_TOKEN} environment
+variable. Default: \code{NULL}.}
 
-\item{github_oauth_url}{(string, optional) The base URL for for the OAuth endpoint. Can
-be set in the \code{github.oauth_url} option or the \code{GITHUB_OAUTH_URL} environment variable.
-Default: \code{"https://github.com/login/oauth"}.}
+\item{oauth}{(string, optional) The base URL for for the OAuth endpoint. Can be set in the
+\code{github.oauth} option or the \code{GITHUB_OAUTH} environment variable. Default:
+\code{"https://github.com/login/oauth"}.}
 
-\item{githapi_key}{(string, optional) The application ID for accessing githapi. Default:
-Set in the \code{githapi.key} option or the \code{GITHAPI_KEY} environment variable.}
+\item{proxy}{(character, optional) The proxy server to use to connect to the github API.
+If \code{NULL} then no proxy is used. Can be set in the option \code{github.proxy} or the
+environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
 
-\item{githapi_secret}{(string, optional) The secret for the application to access githapi.
-Default: Set in the \code{githapi.secret} option or the \code{GITHAPI_SECRET} environment variable.}
+\item{key}{(string, optional) The application ID for accessing GitHub. Can be set in the
+\code{githapi.key} option or the \code{GITHAPI_KEY} environment variable. Default: The key for the
+githapi application in github.com.}
 
-\item{githapi_cache}{(boolean or string, optional) The location to store a cached token.
-If \code{TRUE} the cache uses the httr default; if \code{FALSE} it does not cache. Can be set
-in the \code{"githapi.cache"} option or the \code{GITHAPI_CACHE} environment variable. Default:
-\code{FALSE}.}
+\item{secret}{(string, optional) The secret for the application to access GitHub. Can be
+set in the \code{githapi.secret} option or the \code{GITHAPI_SECRET} environment variable. Default:
+The secret for the githapi application in github.com}
+
+\item{cache}{(boolean or string, optional) The location to store a cached token. If \code{TRUE}
+the cache uses the httr default; if \code{FALSE} it does not cache. Can be set in the
+\code{"githapi.cache"} option or the \code{GITHAPI_CACHE} environment variable. Default: \code{FALSE}.}
 }
 \value{
 A token which is either a string, for a personal access token, or a \link[httr:Token]{httr::Token}

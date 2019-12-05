@@ -41,7 +41,7 @@ for more details):
 }
 \description{
 This function returns information on all the files that have been changed between two
-commits. The commits can be specifed by any git reference, i.e. branch, tag or SHA.
+commits. The commits can be specified by any git reference, i.e. branch, tag or SHA.
 }
 \details{
 \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}

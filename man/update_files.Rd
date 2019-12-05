@@ -66,7 +66,7 @@ for more details):
 }
 \description{
 This function updates existing text files in a GitHub repository. It adds a new commit for
-each file updated with the specifed commit message and on the specified branch. The
+each file updated with the specified commit message and on the specified branch. The
 committer and author can be set explicitly if necessary.
 }
 \details{

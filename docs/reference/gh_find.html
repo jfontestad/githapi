@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get a project — gh_project • githapi</title>
+<title>Find an entity by matching a property value — gh_find • githapi</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Get a project — gh_project" />
+<meta property="og:title" content="Find an entity by matching a property value — gh_find" />
 
-<meta property="og:description" content="https://developer.github.com/v3/projects/#get-a-project" />
+<meta property="og:description" content="This function pages through a collection of entities searching for a specified property
+value. It returns the first match found. For example, you can search for an issue by
+specifying the title." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,48 +104,86 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get a project</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/projects.R'><code>R/projects.R</code></a></small>
-    <div class="hidden name"><code>gh_project.Rd</code></div>
+    <h1>Find an entity by matching a property value</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/github-api.R'><code>R/github-api.R</code></a></small>
+    <div class="hidden name"><code>gh_find.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><a href='https://developer.github.com/v3/projects/#get-a-project'>https://developer.github.com/v3/projects/#get-a-project</a></p>
+    <p>This function pages through a collection of entities searching for a specified property
+value. It returns the first match found. For example, you can search for an issue by
+specifying the title.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>gh_project</span>(<span class='no'>project</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(), <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>gh_find</span>(<span class='no'>url</span>, <span class='no'>property</span>, <span class='no'>value</span>, <span class='kw'>max_pages</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>headers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>accept</span> <span class='kw'>=</span> <span class='st'>"application/vnd.github.v3+json"</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
+  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"github.proxy"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>project</th>
-      <td><p>(integer) The ID of the project in GitHub.</p></td>
+      <th>url</th>
+      <td><p>(string) The address of the API endpoint.</p></td>
+    </tr>
+    <tr>
+      <th>property</th>
+      <td><p>(string) The property to search.</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>(string) The property value to search for.</p></td>
+    </tr>
+    <tr>
+      <th>max_pages</th>
+      <td><p>(integer, optional) The maximum number of pages to search through.
+Default: 100.</p></td>
+    </tr>
+    <tr>
+      <th>headers</th>
+      <td><p>(character, optional) Headers to add to the request. Default: <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>accept</th>
+      <td><p>(string, optional) The mime format to accept when making the call. Default:
+"application/vnd.github.v3+json".</p></td>
     </tr>
     <tr>
       <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+      <td><p>(string or Token, optional) An authorisation token to include with the
+request. If <code>NULL</code> the OAuth process is triggered. Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_get.html'>gh_get()</a></code>.</p></td>
+      <th>proxy</th>
+      <td><p>(character, optional) The proxy server to use to connect to the github API.
+If <code>NULL</code> then no proxy is used. Can be set in the option <code>github.proxy</code> or the
+environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list describing the project (see GitHub's API documentation for details).</p>
+    <p>A <code>github</code> list object consisting of the response, parsed into a list, with the
+attributes:</p><ul>
+<li><p><strong>url</strong>: The URLs the request was sent to</p></li>
+<li><p><strong>request</strong>: The type of HTTP request made</p></li>
+<li><p><strong>status</strong>: The HTTP status code returned</p></li>
+<li><p><strong>header</strong>: The HTTP header returned</p></li>
+</ul>
+
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+  <span class='co'># Find an issue by title</span>
+  <span class='fu'>gh_find</span>(
+    <span class='kw'>url</span>      <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/issues"</span>,
+    <span class='kw'>property</span> <span class='kw'>=</span> <span class='st'>"title"</span>,
+    <span class='kw'>value</span>    <span class='kw'>=</span> <span class='st'>"Test issue"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -151,7 +191,9 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

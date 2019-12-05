@@ -3,7 +3,7 @@
 #' User-friendly access to the GitHub API for R, consistent with the tidyverse
 #'
 #' Provides a suite of functions which simplify working with GitHub's API. The functions
-#' have a constent API and return either lists for single entities and tibbles for
+#' have a consistent API and return either lists for single entities and tibbles for
 #' collections.
 #'
 #' @name githapi
@@ -22,4 +22,4 @@
 #'
 globalVariables(c(".", ".data"))
 
-cache <- new.env()
+.cache <- new.env()

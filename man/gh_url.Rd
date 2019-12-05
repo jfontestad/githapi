@@ -17,6 +17,21 @@ environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
 Valid URL (string)
 }
 \description{
+This function is used to build the URL for the various endpoints in the GitHub API.
 Unnamed strings are used to build the path upon the API and named strings are added as
 queries.
+}
+\examples{
+\dontrun{
+
+  # URL for all repositories
+  gh_url("repos")
+
+  # URL for the master branch
+  gh_url("repos", "ChadGoymer/githapi", "git/refs/heads", "master")
+
+  # URL for a file tree with the recursive option
+  gh_url(c("repos", "ChadGoymer/githapi", "git/trees", "234752384"), list(recursive = 1))
+}
+
 }
