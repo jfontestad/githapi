@@ -45,7 +45,7 @@ gh_token <- function(
 {
   if (!is_null(token))
   {
-    assert(is_sha(token) || "Token" %in% class(token), "'token' must be a SHA or a Token object: '", token, "'")
+    assert(is_sha(token) || "Token" %in% class(token), "'token' must be a SHA or a Token object:\n  ", token)
     info("> Using supplied token", level = 6)
     return(token)
   }
@@ -55,14 +55,14 @@ gh_token <- function(
     return(.cache$token)
   }
 
-  assert(is_scalar_character(oauth), "'oauth' must be a string: '", oauth, "'")
-  assert(is_scalar_character(key), "'key' must be a string: '", key, "'")
-  assert(is_scalar_character(secret), "'secret' must be a string: '", secret, "'")
-  assert(is_scalar_logical(cache) || is_scalar_character(cache), "'cache' must be a boolean or a string: '", cache, "'")
+  assert(is_scalar_character(oauth), "'oauth' must be a string:\n  ", oauth)
+  assert(is_scalar_character(key), "'key' must be a string:\n  ", key)
+  assert(is_scalar_character(secret), "'secret' must be a string:\n  ", secret)
+  assert(is_scalar_logical(cache) || is_scalar_character(cache), "'cache' must be a boolean or a string:\n  ", cache)
 
   if (!is_null(proxy))
   {
-    assert(is_scalar_character(proxy), "'proxy' must be a string: '", proxy, "'")
+    assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
     httr::set_config(httr::use_proxy(proxy))
     httr::set_config(httr::config(connecttimeout = 60))
     on.exit(httr::reset_config())
@@ -95,6 +95,7 @@ gh_token <- function(
   .cache$token <- token
   token
 }
+
 
 #  FUNCTION: gh_url ----------------------------------------------------------------------------
 #
@@ -130,7 +131,7 @@ gh_url <- function(
   ...,
   api = getOption("github.api"))
 {
-  assert(is_url(api), "'api' must be a valid URL: '", api, "'")
+  assert(is_url(api), "'api' must be a valid URL:\n  ", api)
 
   url  <- httr::parse_url(api)
 
@@ -159,6 +160,7 @@ gh_url <- function(
 
   httr::build_url(url)
 }
+
 
 #  FUNCTION: gh_request --------------------------------------------------------------------
 #
@@ -239,17 +241,17 @@ gh_request <- function(
   token   = getOption("github.token"),
   proxy   = getOption("github.proxy"))
 {
-  assert(is_url(url), "'url' must be a valid URL: '", url, "'")
-  assert(is_scalar_character(type), "'type' must be a string: '", type, "'")
-  assert(type %in% c("GET", "POST", "PATCH", "PUT", "DELETE"), "'type' must be either 'GET', 'POST', 'PATCH','PUT' or 'DELETE': '", type, "'")
-  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector: '", headers, "'")
-  assert(is_scalar_character(accept), "'accept' must be a string: '", accept, "'")
+  assert(is_url(url), "'url' must be a valid URL:\n  ", url)
+  assert(is_scalar_character(type), "'type' must be a string:\n  ", type)
+  assert(type %in% c("GET", "POST", "PATCH", "PUT", "DELETE"), "'type' must be either 'GET', 'POST', 'PATCH','PUT' or 'DELETE':\n  ", type)
+  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector:\n  ", headers)
+  assert(is_scalar_character(accept), "'accept' must be a string:\n  ", accept)
 
   headers <- c(httr::add_headers(.headers = headers), httr::accept(accept))
 
   if (!is_null(payload))
   {
-    assert(is_list(payload), "'payload' must be a list: '", payload, "'")
+    assert(is_list(payload), "'payload' must be a list:\n  ", payload)
     info("> Parsing payload", level = 6)
     payload <- jsonlite::toJSON(payload, auto_unbox = TRUE, null = "null", na = "null")
     headers <- c(headers, httr::content_type_json())
@@ -267,7 +269,7 @@ gh_request <- function(
 
   if (!is_null(proxy))
   {
-    assert(is_scalar_character(proxy), "'proxy' must be a string: '", proxy, "'")
+    assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
     httr::set_config(httr::use_proxy(proxy))
     httr::set_config(httr::config(connecttimeout = 60))
     on.exit(httr::reset_config())
@@ -319,6 +321,7 @@ gh_request <- function(
   structered_response
 }
 
+
 #  FUNCTION: gh_page --------------------------------------------------------------------------
 #
 #' Get multiple pages from the GitHub API
@@ -369,12 +372,12 @@ gh_page <- function(
   token   = gh_token(),
   proxy   = getOption("github.proxy"))
 {
-  assert(is_url(url), "'url' must be a valid URL: '", url, "'")
-  assert(is_scalar_integerish(n_max) && all(n_max > 0), "'n_max' must be a positive integer: '", n_max, "'")
-  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector: '", headers, "'")
-  assert(is_scalar_character(accept), "'accept' must be a string: '", accept, "'")
-  assert(is_sha(token) || "Token" %in% class(token), "'token' must be a string or a Token object: '", token, "'")
-  assert(is_null(proxy) || is_scalar_character(proxy), "'proxy' must be a string: '", proxy, "'")
+  assert(is_url(url), "'url' must be a valid URL:\n  ", url)
+  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0), "'n_max' must be a positive integer:\n  ", n_max)
+  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector:\n  ", headers)
+  assert(is_scalar_character(accept), "'accept' must be a string:\n  ", accept)
+  assert(is_sha(token) || "Token" %in% class(token), "'token' must be a string or a Token object:\n  ", token)
+  assert(is_null(proxy) || is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
 
   parsed_url <- httr::parse_url(url)
   per_page   <- c(rep(100, n_max %/% 100), n_max %% 100)
@@ -419,6 +422,7 @@ gh_page <- function(
     header  = response_attr$header)
 }
 
+
 #  FUNCTION: gh_find --------------------------------------------------------------------------
 #
 #' Find an entity by matching a property value
@@ -429,7 +433,7 @@ gh_page <- function(
 #'
 #' @param url (string) The address of the API endpoint.
 #' @param property (string) The property to search.
-#' @param value (string) The property value to search for.
+#' @param value (scalar) The property value to search for.
 #' @param max_pages (integer, optional) The maximum number of pages to search through.
 #'   Default: 100.
 #' @param headers (character, optional) Headers to add to the request. Default: `NULL`.
@@ -470,14 +474,14 @@ gh_find <- function(
   token     = gh_token(),
   proxy     = getOption("github.proxy"))
 {
-  assert(is_url(url), "'url' must be a valid URL: '", url, "'")
-  assert(is_scalar_character(property), "'property' must be a string: '", property, "'")
-  assert(is_scalar_character(value), "'value' must be a string: '", value, "'")
-  assert(is_scalar_integerish(max_pages) && all(max_pages > 0), "'max_pages' must be a positive integer: '", max_pages, "'")
-  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector: '", headers, "'")
-  assert(is_scalar_character(accept), "'accept' must be a string: '", accept, "'")
-  assert(is_sha(token) || "Token" %in% class(token), "'token' must be a string or a Token object: '", token, "'")
-  assert(is_null(proxy) || is_scalar_character(proxy), "'proxy' must be a string: '", proxy, "'")
+  assert(is_url(url), "'url' must be a valid URL:\n  ", url)
+  assert(is_scalar_character(property), "'property' must be a string:\n  ", property)
+  assert(is_scalar_atomic(value), "'value' must be a scalar:\n  ", value)
+  assert(is_scalar_integerish(max_pages) && isTRUE(max_pages > 0), "'max_pages' must be a positive integer:\n  ", max_pages)
+  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector:\n  ", headers)
+  assert(is_scalar_character(accept), "'accept' must be a string:\n  ", accept)
+  assert(is_sha(token) || "Token" %in% class(token), "'token' must be a string or a Token object:\n  ", token)
+  assert(is_null(proxy) || is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
 
   parsed_url <- httr::parse_url(url)
   parsed_url$query$per_page <- "100"
@@ -486,7 +490,7 @@ gh_find <- function(
   for (p in 1:max_pages)
   {
     page <- gh_request("GET", url = page_url, accept = accept, token = token, headers = headers, proxy = proxy)
-    matched_results <- keep(page, ~.[[property]] == value)
+    matched_results <- keep(page, ~.[[property]] == as.character(value))
 
     if (length(matched_results) > 0)
     {
@@ -518,6 +522,7 @@ gh_find <- function(
   error("Could not find an entity with the specified value, '", value, "', for the specified property '", property, "'")
 
 }
+
 
 #  FUNCTION: print.github -----------------------------------------------------------------------
 #

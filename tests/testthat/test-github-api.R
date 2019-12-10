@@ -106,10 +106,10 @@ test_that("gh_url returns a valid URL for the GitHub API", {
 
 # TEST: gh_request ----------------------------------------------------------------------------
 
-master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
-test_sha <- view_shas(refs = "test-files", repo = "ChadGoymer/test-githapi")[[1]]
-
 test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified repository", {
+
+  master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
+  test_sha   <- view_shas(refs = "test-files", repo = "ChadGoymer/test-githapi")[[1]]
 
   test_tag <- str_c("refs/tags/test-gh-request-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 
