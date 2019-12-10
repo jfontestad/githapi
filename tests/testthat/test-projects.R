@@ -381,3 +381,28 @@ test_that("browse_project opens the project in the browser", {
   expect_identical(dirname(org_project), "https://github.com/orgs/HairyCoos/projects")
 
 })
+
+
+# TEST: delete_project ------------------------------------------------------------------------
+
+test_that("delete_project deletes the projects and returns TRUE", {
+
+  repo_project <- delete_project("Updated repo project", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "logical")
+  expect_identical(attr(repo_project, "status"), 204L)
+  expect_identical(as.logical(repo_project), TRUE)
+
+  user_project <- delete_project("User project", user = "ChadGoymer")
+
+  expect_is(user_project, "logical")
+  expect_identical(attr(user_project, "status"), 204L)
+  expect_identical(as.logical(user_project), TRUE)
+
+  org_project <- delete_project("Organisation project", org = "HairyCoos")
+
+  expect_is(org_project, "logical")
+  expect_identical(attr(org_project, "status"), 204L)
+  expect_identical(as.logical(org_project), TRUE)
+
+})

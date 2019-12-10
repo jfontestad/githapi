@@ -453,3 +453,64 @@ browse_project <- function(
     status  = attr(project, "status"),
     header  = attr(project, "header"))
 }
+
+
+#  FUNCTION: delete_project -------------------------------------------------------------------
+#
+#' Delete a GitHub project
+#'
+#' This function deletes a project in GitHub. Care should be taken as it will not be
+#' recoverable. If you just want to close the project use [update_project()].
+#'
+#' You can delete a project associated with either a repository, user or organisation, by
+#' supplying them as an input, as long as you have appropriate permissions.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/#delete-a-project>
+#'
+#' @param project (integer or string) Either the project number or name.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_project()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   delete_project(
+#'     project = "User project",
+#'     user    = "ChadGoymer")
+#' }
+#'
+#' @export
+#'
+delete_project <- function(
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  project <- view_project(
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org)
+
+  info("Deleting project '", project$name, "'")
+  result <- gh_url("projects", project$id) %>%
+    gh_request(
+      type   = "DELETE",
+      accept = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(result, "url"),
+    request = attr(result, "request"),
+    status  = attr(result, "status"),
+    header  = attr(result, "header"))
+}
