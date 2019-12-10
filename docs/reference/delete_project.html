@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update tags to new commits. — update_tags • githapi</title>
+<title>Delete a GitHub project — delete_project • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Update tags to new commits. — update_tags" />
-<meta property="og:description" content="This function updates the specified tags to point at new commits within a repository in
-GitHub." />
+<meta property="og:title" content="Delete a GitHub project — delete_project" />
+<meta property="og:description" content="This function deletes a project in GitHub. Care should be taken as it will not be
+recoverable. If you just want to close the project use update_project()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,44 +109,36 @@ GitHub." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update tags to new commits.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-tags.R'><code>R/git-tags.R</code></a></small>
-    <div class="hidden name"><code>update_tags.Rd</code></div>
+    <h1>Delete a GitHub project</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/projects.R'><code>R/projects.R</code></a></small>
+    <div class="hidden name"><code>delete_project.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function updates the specified tags to point at new commits within a repository in
-GitHub.</p>
+    <p>This function deletes a project in GitHub. Care should be taken as it will not be
+recoverable. If you just want to close the project use <code><a href='update_project.html'>update_project()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_tags</span>(<span class='no'>tags</span>, <span class='no'>shas</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_project</span>(<span class='no'>project</span>, <span class='no'>repo</span>, <span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tags</th>
-      <td><p>(character) The tag names.</p></td>
-    </tr>
-    <tr>
-      <th>shas</th>
-      <td><p>(character) The SHAs of the commits to tag.</p></td>
+      <th>project</th>
+      <td><p>(integer or string) Either the project number or name.</p></td>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
-R option <code>"github.token"</code>.</p></td>
+      <th>user</th>
+      <td><p>(string, optional) The login of the user.</p></td>
     </tr>
     <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
+      <th>org</th>
+      <td><p>(string, optional) The name of the organization.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -156,20 +148,22 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the tags, with the following columns
-(see <a href='https://developer.github.com/v3/git/refs/'>GitHub's documentation</a> for more details):</p><ul>
-<li><p><strong>name</strong>: The name of the tag.</p></li>
-<li><p><strong>ref</strong>: The full git reference for the tag.</p></li>
-<li><p><strong>url</strong>: The URL to get the tag details from GitHub.</p></li>
-<li><p><strong>object_sha</strong>: The SHA of the object tagged.</p></li>
-<li><p><strong>object_type</strong>: The type of the object tagged.</p></li>
-<li><p><strong>object_url</strong>: The URL to get the object details from GitHub</p></li>
-</ul>
-
+    <p><code>delete_project()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/git/refs/#update-a-reference'>https://developer.github.com/v3/git/refs/#update-a-reference</a></p>
+    <p>You can delete a project associated with either a repository, user or organisation, by
+supplying them as an input, as long as you have appropriate permissions.</p>
+<p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/projects/#delete-a-project'>https://developer.github.com/v3/projects/#delete-a-project</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='fu'>delete_project</span>(
+    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"User project"</span>,
+    <span class='kw'>user</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -177,6 +171,7 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
