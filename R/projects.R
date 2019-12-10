@@ -353,3 +353,70 @@ view_projects <- function(
   info("Done", level = 7)
   projects_gh
 }
+
+
+#  FUNCTION: view_project ---------------------------------------------------------------------
+#
+#' @rdname view_projects
+#' @export
+#'
+view_project <- function(
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  if (is_scalar_integerish(project))
+  {
+    property <- "number"
+  }
+  else if (is_scalar_character(project))
+  {
+    property <- "name"
+  }
+  else
+  {
+    error("'project' must be either an integer or a string:\n  ", project)
+  }
+
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    url <- gh_url("repos", repo, "projects", state = "all")
+  }
+  else if (!missing(user))
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    url <- gh_url("users", user, "projects", state = "all")
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    url <- gh_url("orgs", org, "projects", state = "all")
+  }
+  else
+  {
+    error("Must specify either 'repo', 'user' or 'org'!")
+  }
+
+  info("Getting project '", project, "'")
+  project_lst <- gh_find(
+    url       = url,
+    property  = property,
+    value     = project,
+    accept    = "application/vnd.github.inertia-preview+json",
+    ...)
+
+  info("Transforming results", level = 4)
+  project_gh <- select_properties(project_lst, properties$project) %>%
+    structure(
+      class   = c("github", class(project_lst)),
+      url     = attr(project_lst, "url"),
+      request = attr(project_lst, "request"),
+      status  = attr(project_lst, "status"),
+      header  = attr(project_lst, "header"))
+
+  info("Done", level = 7)
+  project_gh
+}

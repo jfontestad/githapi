@@ -248,3 +248,109 @@ test_that("view_projects throws an error if invalid arguments are supplied", {
     "Must specify either 'repo', 'user' or 'org'!")
 
 })
+
+
+# TEST: view_project --------------------------------------------------------------------------
+
+test_that("view_project returns a list of project properties", {
+
+  repo_project <- view_project("Updated repo project", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "list")
+  expect_identical(attr(repo_project, "status"), 200L)
+  expect_identical(
+    map_chr(repo_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(repo_project$name, "Updated repo project")
+
+  user_project <- view_project("User project", user = "ChadGoymer")
+
+  expect_is(user_project, "list")
+  expect_identical(attr(user_project, "status"), 200L)
+  expect_identical(
+    map_chr(user_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(user_project$state, "closed")
+
+  org_project <- view_project("Organisation project", org = "HairyCoos")
+
+  expect_is(org_project, "list")
+  expect_identical(attr(org_project, "status"), 200L)
+  expect_identical(
+    map_chr(org_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(org_project$permission, "read")
+  expect_identical(org_project$private, FALSE)
+
+})
+
+test_that("view_project can accept a project number", {
+
+  projects <- view_projects("ChadGoymer/test-githapi")
+
+  first_project <- view_project(projects$number[[1]], "ChadGoymer/test-githapi")
+
+  expect_is(first_project, "list")
+  expect_identical(attr(first_project, "status"), 200L)
+  expect_identical(
+    map_chr(first_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(first_project$number, projects$number[[1]])
+
+})
+
+test_that("view_project throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_project(TRUE, "ChadGoymer/test-githapi"),
+    "'project' must be either an integer or a string")
+
+  expect_error(
+    view_project("Repo project"),
+    "Must specify either 'repo', 'user' or 'org'!")
+
+})
