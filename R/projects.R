@@ -230,3 +230,126 @@ update_project <- function(
   info("Done", level = 7)
   project_gh
 }
+
+
+#  FUNCTION: view_projects --------------------------------------------------------------------
+#
+#' View GitHub projects
+#'
+#' `view_projects()` summarises projects in a table with the properties as columns and a row
+#' for each project. `view_project()` returns a list of all properties for a single job.
+#' `browse_project()` opens the web page for the project in the default browser.
+#'
+#' You can summarise all the projects associated with either a repository, user or
+#' organisation, by supplying them as an input.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/#list-repository-projects>
+#' - <https://developer.github.com/v3/projects/#list-user-projects>
+#' - <https://developer.github.com/v3/projects/#list-organization-projects>
+#' - <https://developer.github.com/v3/projects/#get-a-project>
+#'
+#' @param project (integer or string) The number or name of the project.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param state (string, optional) Indicates the state of the projects to return. Can be
+#'   either "open", "closed", or "all". Default: `"open"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_projects()` returns a tibble of project properties. `view_project()`
+#'   returns a list of properties for a single project. `browse_project()` opens the default
+#'   browser on the prject page and returns the URL invisibly.
+#'
+#' **Project Properties:**
+#'
+#' - **id**: The ID of the project.
+#' - **number**: The number of the project for the repository, user or organisation.
+#' - **name**: The name given to the project.
+#' - **body**: The description given to the project.
+#' - **state**: Whether the project is "open" or "closed".
+#' - **creator**: The user who created the project.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#' - **html_url**: The URL to view the project.
+#'
+#' @examples
+#' \dontrun{
+#'   # View a repository's projects
+#'   view_projects("ChadGoymer/githapi")
+#'
+#'   # View a user's projects
+#'   view_projects(user = "ChadGoymer")
+#'
+#'   # View an organisation's projects
+#'   view_projects(org = "Tidyverse")
+#'
+#'   # View closed projects
+#'   view_projects("ChadGoymer/githapi", state = "closed")
+#'
+#'   # View all projects
+#'   view_projects("ChadGoymer/githapi", state = "all")
+#'
+#'   # View a specific project
+#'   view_project("Prioritisation", "ChadGoymer/githapi")
+#'
+#'   # Browse a specific project
+#'   browse_project("Prioritisation", "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+view_projects <- function(
+  repo,
+  user,
+  org,
+  state = "open",
+  n_max = 1000,
+  ...)
+{
+  assert(
+    is_scalar_character(state) && state %in% values$project$state,
+    "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
+
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    url <- gh_url("repos", repo, "projects", state = state)
+  }
+  else if (!missing(user))
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    url <- gh_url("users", user, "projects", state = state)
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    url <- gh_url("orgs", org, "projects", state = state)
+  }
+  else
+  {
+    error("Must specify either 'repo', 'user' or 'org'!")
+  }
+
+  info("Getting projects")
+  projects_lst <- gh_page(
+    url    = url,
+    accept = "application/vnd.github.inertia-preview+json",
+    n_max  = n_max,
+    ...)
+
+  info("Transforming results", level = 4)
+  projects_tbl <- bind_properties(projects_lst, properties$project)
+
+  projects_gh <- structure(
+    projects_tbl,
+    class   = c("github", class(projects_tbl)),
+    url     = attr(projects_lst, "url"),
+    request = attr(projects_lst, "request"),
+    status  = attr(projects_lst, "status"),
+    header  = attr(projects_lst, "header"))
+
+  info("Done", level = 7)
+  projects_gh
+}

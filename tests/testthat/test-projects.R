@@ -173,3 +173,78 @@ test_that("update_project updates a project and returns a list of the new proper
   expect_identical(org_project$private, FALSE)
 
 })
+
+
+# TEST: view_projects -------------------------------------------------------------------------
+
+test_that("view_projects returns a tibble summarising the projects", {
+
+  repo_projects <- view_projects("ChadGoymer/test-githapi")
+
+  expect_is(repo_projects, "tbl")
+  expect_identical(attr(repo_projects, "status"), 200L)
+  expect_identical(
+    map_chr(repo_projects, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_true("Updated repo project" %in% repo_projects$name)
+
+  user_projects <- view_projects(user = "ChadGoymer", state = "closed")
+
+  expect_is(user_projects, "tbl")
+  expect_identical(attr(user_projects, "status"), 200L)
+  expect_identical(
+    map_chr(user_projects, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_true("User project" %in% user_projects$name)
+
+  org_projects <- view_projects(org = "HairyCoos")
+
+  expect_is(org_projects, "tbl")
+  expect_identical(attr(org_projects, "status"), 200L)
+  expect_identical(
+    map_chr(org_projects, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_true("Organisation project" %in% org_projects$name)
+
+})
+
+test_that("view_projects throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_projects(),
+    "Must specify either 'repo', 'user' or 'org'!")
+
+})
