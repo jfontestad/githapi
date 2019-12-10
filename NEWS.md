@@ -1,3 +1,14 @@
+# githapi 0.9.4
+
+- Added `create_project()`
+- Added `update_project()`
+- Added `view_projects()`
+- Added `view_project()`
+- Added `browse_project()`
+- Added `delete_project()`
+- Added utility functions for managing properties
+- Deprecated `gh_project()` and `gh_projects()`
+
 # githapi 0.9.3
 
 - Use proxy in `gh_token()`
