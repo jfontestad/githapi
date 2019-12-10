@@ -94,3 +94,82 @@ test_that("create_project throws an error if invalid arguments are supplied", {
     "'org' must be a string")
 
 })
+
+
+# TEST: update_project ------------------------------------------------------------------------
+
+test_that("update_project updates a project and returns a list of the new properties", {
+
+  repo_project <- update_project(
+    project = "Repo project",
+    name    = "Updated repo project",
+    body    = "This is an updated repo project",
+    repo    = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "list")
+  expect_identical(attr(repo_project, "status"), 200L)
+  expect_identical(
+    map_chr(repo_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(repo_project$name, "Updated repo project")
+
+  user_project <- update_project(
+    project = "User project",
+    state   = "closed",
+    user    = "ChadGoymer")
+
+  expect_is(user_project, "list")
+  expect_identical(attr(user_project, "status"), 200L)
+  expect_identical(
+    map_chr(user_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(user_project$state, "closed")
+
+  org_project <- update_project(
+    project    = "Organisation project",
+    permission = "read",
+    private    = FALSE,
+    org        = "HairyCoos")
+
+  expect_is(org_project, "list")
+  expect_identical(attr(org_project, "status"), 200L)
+  expect_identical(
+    map_chr(org_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(org_project$permission, "read")
+  expect_identical(org_project$private, FALSE)
+
+})
