@@ -43,4 +43,12 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
+\section{Projects Functions}{
+
+\itemize{
+\item \code{\link[=gh_project]{gh_project()}}: replace with \code{\link[=view_project]{view_project()}}
+\item \code{\link[=gh_projects]{gh_projects()}}: replace with \code{\link[=view_projects]{view_projects()}}
+}
+}
+
 \keyword{internal}
