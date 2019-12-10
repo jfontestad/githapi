@@ -3,6 +3,7 @@
 S3method(print,github)
 export(blobs_exist)
 export(branches_exist)
+export(browse_project)
 export(commits_exist)
 export(compare_commits)
 export(compare_files)

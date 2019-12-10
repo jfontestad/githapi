@@ -420,3 +420,36 @@ view_project <- function(
   info("Done", level = 7)
   project_gh
 }
+
+
+#  FUNCTION: browse_project -------------------------------------------------------------------
+#
+#' @rdname view_projects
+#' @export
+#'
+browse_project <- function(
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  project <- view_project(
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org,
+    ...)
+
+  info("Browsing project '", project$name, "'")
+  httr::BROWSE(project$html_url)
+
+  info("Done", level = 7)
+  structure(
+    project$html_url,
+    class   = c("github", "character"),
+    url     = attr(project, "url"),
+    request = attr(project, "request"),
+    status  = attr(project, "status"),
+    header  = attr(project, "header"))
+}

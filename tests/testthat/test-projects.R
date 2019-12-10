@@ -354,3 +354,30 @@ test_that("view_project throws an error if invalid arguments are supplied", {
     "Must specify either 'repo', 'user' or 'org'!")
 
 })
+
+
+# TEST: browse_project ------------------------------------------------------------------------
+
+test_that("browse_project opens the project in the browser", {
+
+  skip_if(!interactive(), "browse_project must be tested manually")
+
+  repo_project <- browse_project("Updated repo project", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "character")
+  expect_identical(attr(repo_project, "status"), 200L)
+  expect_identical(dirname(repo_project), "https://github.com/ChadGoymer/test-githapi/projects")
+
+  user_project <- browse_project("User project", user = "ChadGoymer")
+
+  expect_is(user_project, "character")
+  expect_identical(attr(user_project, "status"), 200L)
+  expect_identical(dirname(user_project), "https://github.com/users/ChadGoymer/projects")
+
+  org_project <- browse_project("Organisation project", org = "HairyCoos")
+
+  expect_is(org_project, "character")
+  expect_identical(attr(org_project, "status"), 200L)
+  expect_identical(dirname(org_project), "https://github.com/orgs/HairyCoos/projects")
+
+})
