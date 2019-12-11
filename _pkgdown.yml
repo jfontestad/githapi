@@ -14,6 +14,13 @@ navbar:
     - icon: fa-github fa-lg
       href: http://github.com/ChadGoymer/githapi
 reference:
+- title: Projects
+  desc: Functions for accessing information about projects.
+  contents:
+    - '`create_project`'
+    - '`update_project`'
+    - '`view_projects`'
+    - '`delete_project`'
 - title: Repositories
   desc: Functions for accessing information about repositories and their content.
   contents:

@@ -36,6 +36,11 @@
 #' - [gh_release()]: replace with [view_releases()]
 #' - [gh_releases()]: replace with [view_releases()]
 #'
+#' @section Projects Functions:
+#'
+#' - [gh_project()]: replace with [view_project()]
+#' - [gh_projects()]: replace with [view_projects()]
+#'
 NULL
 
 #  FUNCTION: gh_get ---------------------------------------------------------------------------

@@ -1,252 +1,516 @@
-#  FUNCTION: gh_project -----------------------------------------------------------------------
+#  FUNCTION: create_project -------------------------------------------------------------------
 #
-#' Get a project
+#' Create a GitHub project
 #'
-#' <https://developer.github.com/v3/projects/#get-a-project>
+#' This function creates a new project in GitHub. The project will be empty so you will need
+#' to add columns and cards separately.
 #'
-#' @param project (integer) The ID of the project in GitHub.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+#' You can create a project associated with either a repository or organisation, by
+#' supplying them as an input, as long as you have appropriate permissions. If no repository
+#' or organisation is specified the project is created for the authenticated user.
 #'
-#' @return A list describing the project (see GitHub's API documentation for details).
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/#create-a-repository-project>
+#' - <https://developer.github.com/v3/projects/#create-an-organization-project>
+#' - <https://developer.github.com/v3/projects/#create-a-user-project>
+#'
+#' @param name (string) The name of the project.
+#' @param body (string) The description of the project.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param org (string, optional) The name of the organization.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `create_project()` returns a list of the project properties.
+#'
+#' **Project Properties:**
+#'
+#' - **id**: The ID of the project.
+#' - **number**: The number of the project for the repository, user or organisation.
+#' - **name**: The name given to the project.
+#' - **body**: The description given to the project.
+#' - **state**: Whether the project is "open" or "closed".
+#' - **creator**: The user who created the project.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#' - **html_url**: The URL to view the project.
+#'
+#' @examples
+#' \dontrun{
+#'   create_project(
+#'     name = "Repo project",
+#'     body = "This is a repository's project",
+#'     repo = "ChadGoymer/test-githapi")
+#'
+#'   create_project(
+#'     name = "User project",
+#'     body = "This is a user's project")
+#' }
 #'
 #' @export
 #'
-gh_project <- function(
-  project,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(project) && isTRUE(project > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  # NOTE: Projects is currently in beta, so requires preview accept header
-  gh_get(
-    gh_url("projects", project, api = api),
-    accept = "application/vnd.github.inertia-preview+json", token = token, ...)
-}
-
-#  FUNCTION: gh_projects ----------------------------------------------------------------------
-#
-#' List organisation or repository projects
-#'
-#' <https://developer.github.com/v3/projects/#list-repository-projects>
-#' <https://developer.github.com/v3/projects/#list-organization-projects>
-#'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param org (string) The name of the organization.
-#' @param state (string, optional) Indicates the state of the projects to return. Can be either open,
-#'   closed, or all. Default: open
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the projects (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_projects <- function(
+create_project <- function(
+  name,
+  body,
   repo,
   org,
-  state = NULL,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
   ...)
 {
-  assert(is_null(state) || is_scalar_character(state))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+  assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
 
-  if (!missing(repo) && !missing(org))
-    error("Must specify either repo or org, not both!")
+  payload <- list(name = name, body = body)
 
-  if (!missing(repo)) {
-    assert(is_repo(repo))
-    url <- gh_url("repos", repo, "projects", state = state, api = api)
-  } else if (!missing(org)) {
-    assert(is_scalar_character(org))
-    url <- gh_url("orgs", org, "projects", state = state, api = api)
-  } else {
-    error("Must specify either repo or org!")
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    url <- gh_url("repos", repo, "projects")
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    url <- gh_url("orgs", org, "projects")
+  }
+  else
+  {
+    url <- gh_url("user/projects")
   }
 
-  # NOTE: Projects is currently in beta, so requires preview accept header
-  projects <- gh_page(
-    url, accept = "application/vnd.github.inertia-preview+json",
-    n_max = n_max, token = token, ...)
+  info("Posting project '", name, "'")
+  project_lst <- gh_request(
+    url     = url,
+    type    = "POST",
+    payload = payload,
+    accept  = "application/vnd.github.inertia-preview+json",
+    ...)
 
-  bind_fields(projects, list(
-    id            = c("id",               as = "integer"),
-    number        = c("number",           as = "integer"),
-    name          = c("name",             as = "character"),
-    body          = c("body",             as = "character"),
-    state         = c("state",            as = "character"),
-    creator_login = c("creator", "login", as = "character"),
-    created_at    = c("created_at",       as = "datetime"),
-    updated_at    = c("updated_at",       as = "datetime"),
-    url           = c("url",              as = "character")))
+  info("Transforming results", level = 4)
+  project_tbl <- select_properties(project_lst, properties$project)
+
+  project_gh <- structure(
+    project_tbl,
+    class   = c("github", class(project_tbl)),
+    url     = attr(project_lst, "url"),
+    request = attr(project_lst, "request"),
+    status  = attr(project_lst, "status"),
+    header  = attr(project_lst, "header"))
+
+  info("Done", level = 7)
+  project_gh
 }
 
-#  FUNCTION: gh_column ------------------------------------------------------------------------
+
+#  FUNCTION: update_project -------------------------------------------------------------------
 #
-#' Get a project column
+#' Update a GitHub project
 #'
-#' <https://developer.github.com/v3/projects/columns/#get-a-project-column>
+#' This function updates a project in GitHub. It can be used to change the name and body, but
+#' can also be used to close the project or change permissions.
 #'
-#' @param column (integer) The ID of the column in GitHub.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+#' You can update a project associated with either a repository, user or organisation, by
+#' supplying them as an input, as long as you have appropriate permissions.
 #'
-#' @return A list describing the column (see GitHub's API documentation for details).
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/#update-a-project>
+#'
+#' @param project (integer or string) Either the project number or name.
+#' @param name (string, optional) The new name for the project.
+#' @param body (string, optional) The new description of the project.
+#' @param state (string, optional) The new state of the project, either `"open"` or `"closed"`.
+#' @param permission (string, optional) The new permissions for the project, either `"read"`,
+#'   `"write"`, `"admin"` or `"none"`.
+#' @param private (boolean, optional) Whether the project should be private.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_project()` returns a list of the project properties.
+#'
+#' **Project Properties:**
+#'
+#' - **id**: The ID of the project.
+#' - **number**: The number of the project for the repository, user or organisation.
+#' - **name**: The name given to the project.
+#' - **body**: The description given to the project.
+#' - **state**: Whether the project is "open" or "closed".
+#' - **creator**: The user who created the project.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#' - **html_url**: The URL to view the project.
+#'
+#' @examples
+#' \dontrun{
+#'   update_project(
+#'     project = "Repo project",
+#'     name    = "Updated repo project",
+#'     body    = "This is an updated repository's project",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   update_project(
+#'     name  = "User project",
+#'     state = "closed",
+#'     user  = "ChadGoymer")
+#' }
 #'
 #' @export
 #'
-gh_column <- function(
-  column,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(column) && isTRUE(column > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  # NOTE: Projects is currently in beta, so requires preview accept header
-  gh_get(
-    gh_url("projects/columns", column, api = api),
-    accept = "application/vnd.github.inertia-preview+json", token = token, ...)
-}
-
-#  FUNCTION: gh_columns -----------------------------------------------------------------------
-#
-#' List project columns
-#'
-#' <https://developer.github.com/v3/projects/columns/#list-project-columns>
-#'
-#' @param project (integer) The ID of the project in GitHub.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the columns (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_columns <- function(
+update_project <- function(
   project,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
+  name,
+  body,
+  state,
+  permission,
+  private,
+  repo,
+  user,
+  org,
   ...)
 {
-  assert(is_scalar_integerish(project) && isTRUE(project > 0))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  payload <- list()
 
-  # NOTE: Projects is currently in beta, so requires preview accept header
-  columns <- gh_page(
-    gh_url("projects", project, "columns", api = api),
-    accept = "application/vnd.github.inertia-preview+json", n_max = n_max, token = token, ...)
+  if (!missing(name))
+  {
+    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+    payload <- c(payload, name = name)
+  }
 
-  bind_fields(columns, list(
-    id         = c("id",         as = "integer"),
-    name       = c("name",       as = "character"),
-    created_at = c("created_at", as = "datetime"),
-    updated_at = c("updated_at", as = "datetime"),
-    url        = c("url",        as = "character")))
+  if (!missing(body))
+  {
+    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    payload <- c(payload, body = body)
+  }
+
+  if (!missing(state))
+  {
+    assert(
+      is_scalar_character(state) && state %in% str_subset(values$project$state, "all", negate = TRUE),
+      "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
+    payload <- c(payload, state = state)
+  }
+
+  if (!missing(permission))
+  {
+    assert(
+      is_scalar_character(permission) && permission %in% values$project$permission,
+      "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
+    payload <- c(payload, organization_permission = permission)
+  }
+
+  if (!missing(private))
+  {
+    assert(is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
+    payload <- c(payload, private = private)
+  }
+
+  project <- view_project(
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org)
+
+  info("Updating project '", project$name, "'")
+  project_lst <- gh_url("projects", project$id) %>%
+    gh_request(
+      type    = "PATCH",
+      payload = payload,
+      accept  = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Transforming results", level = 4)
+  project_tbl <- select_properties(project_lst, properties$project)
+
+  project_gh <- structure(
+    project_tbl,
+    class   = c("github", class(project_tbl)),
+    url     = attr(project_lst, "url"),
+    request = attr(project_lst, "request"),
+    status  = attr(project_lst, "status"),
+    header  = attr(project_lst, "header"))
+
+  info("Done", level = 7)
+  project_gh
 }
 
-#  FUNCTION: gh_card --------------------------------------------------------------------------
-#
-#' Get a project card
-#'
-#' <https://developer.github.com/v3/projects/cards/#get-a-project-card>
-#'
-#' @param card (integer) The ID of the card in GitHub.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return A list describing the card (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_card <- function(
-  card,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(card) && isTRUE(card > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
 
-  # NOTE: Projects is currently in beta, so requires preview accept header
-  gh_get(
-    gh_url("projects/columns/cards", card, api = api),
-    accept = "application/vnd.github.inertia-preview+json", token = token, ...)
-}
-
-#  FUNCTION: gh_cards -------------------------------------------------------------------------
+#  FUNCTION: view_projects --------------------------------------------------------------------
 #
-#' List project cards
+#' View GitHub projects
 #'
-#' <https://developer.github.com/v3/projects/cards/#list-project-cards>
+#' `view_projects()` summarises projects in a table with the properties as columns and a row
+#' for each project. `view_project()` returns a list of all properties for a single job.
+#' `browse_project()` opens the web page for the project in the default browser.
 #'
-#' @param column (integer) The ID of the column in GitHub.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' You can summarise all the projects associated with either a repository, user or
+#' organisation, by supplying them as an input.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/#list-repository-projects>
+#' - <https://developer.github.com/v3/projects/#list-user-projects>
+#' - <https://developer.github.com/v3/projects/#list-organization-projects>
+#' - <https://developer.github.com/v3/projects/#get-a-project>
+#'
+#' @param project (integer or string) The number or name of the project.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param state (string, optional) Indicates the state of the projects to return. Can be
+#'   either "open", "closed", or "all". Default: `"open"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return A tibble describing the cards (see GitHub's API documentation for details).
+#' @return `view_projects()` returns a tibble of project properties. `view_project()`
+#'   returns a list of properties for a single project. `browse_project()` opens the default
+#'   browser on the prject page and returns the URL invisibly.
+#'
+#' **Project Properties:**
+#'
+#' - **id**: The ID of the project.
+#' - **number**: The number of the project for the repository, user or organisation.
+#' - **name**: The name given to the project.
+#' - **body**: The description given to the project.
+#' - **state**: Whether the project is "open" or "closed".
+#' - **creator**: The user who created the project.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#' - **html_url**: The URL to view the project.
+#'
+#' @examples
+#' \dontrun{
+#'   # View a repository's projects
+#'   view_projects("ChadGoymer/githapi")
+#'
+#'   # View a user's projects
+#'   view_projects(user = "ChadGoymer")
+#'
+#'   # View an organisation's projects
+#'   view_projects(org = "Tidyverse")
+#'
+#'   # View closed projects
+#'   view_projects("ChadGoymer/githapi", state = "closed")
+#'
+#'   # View all projects
+#'   view_projects("ChadGoymer/githapi", state = "all")
+#'
+#'   # View a specific project
+#'   view_project("Prioritisation", "ChadGoymer/githapi")
+#'
+#'   # Browse a specific project
+#'   browse_project("Prioritisation", "ChadGoymer/githapi")
+#' }
 #'
 #' @export
 #'
-gh_cards <- function(
-  column,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
+view_projects <- function(
+  repo,
+  user,
+  org,
+  state = "open",
+  n_max = 1000,
   ...)
 {
-  assert(is_scalar_integerish(column) && isTRUE(column > 0))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(
+    is_scalar_character(state) && state %in% values$project$state,
+    "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
 
-  # NOTE: Projects is currently in beta, so requires preview accept header
-  cards <- gh_page(
-    gh_url("projects/columns", column, "cards", api = api),
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    url <- gh_url("repos", repo, "projects", state = state)
+  }
+  else if (!missing(user))
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    url <- gh_url("users", user, "projects", state = state)
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    url <- gh_url("orgs", org, "projects", state = state)
+  }
+  else
+  {
+    error("Must specify either 'repo', 'user' or 'org'!")
+  }
+
+  info("Getting projects")
+  projects_lst <- gh_page(
+    url    = url,
     accept = "application/vnd.github.inertia-preview+json",
-    n_max = n_max, token = token, ...)
+    n_max  = n_max,
+    ...)
 
-  bind_fields(cards, list(
-    id            = c("id",               as = "integer"),
-    creator_login = c("creator", "login", as = "character"),
-    created_at    = c("created_at",       as = "datetime"),
-    updated_at    = c("updated_at",       as = "datetime"),
-    content_url   = c("content_url",      as = "character"),
-    url           = c("url",              as = "character")))
+  info("Transforming results", level = 4)
+  projects_tbl <- bind_properties(projects_lst, properties$project)
+
+  projects_gh <- structure(
+    projects_tbl,
+    class   = c("github", class(projects_tbl)),
+    url     = attr(projects_lst, "url"),
+    request = attr(projects_lst, "request"),
+    status  = attr(projects_lst, "status"),
+    header  = attr(projects_lst, "header"))
+
+  info("Done", level = 7)
+  projects_gh
+}
+
+
+#  FUNCTION: view_project ---------------------------------------------------------------------
+#
+#' @rdname view_projects
+#' @export
+#'
+view_project <- function(
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  if (is_scalar_integerish(project))
+  {
+    property <- "number"
+  }
+  else if (is_scalar_character(project))
+  {
+    property <- "name"
+  }
+  else
+  {
+    error("'project' must be either an integer or a string:\n  ", project)
+  }
+
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    url <- gh_url("repos", repo, "projects", state = "all")
+  }
+  else if (!missing(user))
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    url <- gh_url("users", user, "projects", state = "all")
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    url <- gh_url("orgs", org, "projects", state = "all")
+  }
+  else
+  {
+    error("Must specify either 'repo', 'user' or 'org'!")
+  }
+
+  info("Getting project '", project, "'")
+  project_lst <- gh_find(
+    url       = url,
+    property  = property,
+    value     = project,
+    accept    = "application/vnd.github.inertia-preview+json",
+    ...)
+
+  info("Transforming results", level = 4)
+  project_gh <- select_properties(project_lst, properties$project) %>%
+    structure(
+      class   = c("github", class(project_lst)),
+      url     = attr(project_lst, "url"),
+      request = attr(project_lst, "request"),
+      status  = attr(project_lst, "status"),
+      header  = attr(project_lst, "header"))
+
+  info("Done", level = 7)
+  project_gh
+}
+
+
+#  FUNCTION: browse_project -------------------------------------------------------------------
+#
+#' @rdname view_projects
+#' @export
+#'
+browse_project <- function(
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  project <- view_project(
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org,
+    ...)
+
+  info("Browsing project '", project$name, "'")
+  httr::BROWSE(project$html_url)
+
+  info("Done", level = 7)
+  structure(
+    project$html_url,
+    class   = c("github", "character"),
+    url     = attr(project, "url"),
+    request = attr(project, "request"),
+    status  = attr(project, "status"),
+    header  = attr(project, "header"))
+}
+
+
+#  FUNCTION: delete_project -------------------------------------------------------------------
+#
+#' Delete a GitHub project
+#'
+#' This function deletes a project in GitHub. Care should be taken as it will not be
+#' recoverable. If you just want to close the project use [update_project()].
+#'
+#' You can delete a project associated with either a repository, user or organisation, by
+#' supplying them as an input, as long as you have appropriate permissions.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/#delete-a-project>
+#'
+#' @param project (integer or string) Either the project number or name.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_project()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   delete_project(
+#'     project = "User project",
+#'     user    = "ChadGoymer")
+#' }
+#'
+#' @export
+#'
+delete_project <- function(
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  project <- view_project(
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org)
+
+  info("Deleting project '", project$name, "'")
+  result <- gh_url("projects", project$id) %>%
+    gh_request(
+      type   = "DELETE",
+      accept = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(result, "url"),
+    request = attr(result, "request"),
+    status  = attr(result, "status"),
+    header  = attr(result, "header"))
 }

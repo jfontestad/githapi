@@ -1,88 +1,408 @@
 context("projects api")
 
-#  FUNCTION: gh_project -----------------------------------------------------------------------
-test_that("gh_project returns a list describing the project", {
-  project <- gh_project(747228)
-  expect_is(project, "list")
-  expect_named(
-    project,
-    c("owner_url", "url", "html_url", "columns_url", "id", "node_id", "name", "body",
-      "number", "state", "creator", "created_at", "updated_at"))
-  expect_identical(project$name, "Prioritisation")
-})
 
-#  FUNCTION: gh_projects ----------------------------------------------------------------------
-test_that("gh_projects returns a tibble describing the projects", {
-  projects <- gh_projects("ChadGoymer/githapi")
-  expect_is(projects, "tbl")
+# TEST: create_project ------------------------------------------------------------------------
 
+test_that("create_projects creates a project and returns its properties", {
+
+  repo_project <- create_project(
+    name = "Repo project",
+    body = "This is a repo project",
+    repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "list")
+  expect_identical(attr(repo_project, "status"), 201L)
   expect_identical(
-    sapply(projects, function(field) class(field)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
-      name          = "character",
-      body          = "character",
-      state         = "character",
-      creator_login = "character",
-      created_at    = "POSIXct",
-      updated_at    = "POSIXct",
-      url           = "character"))
-
-  expect_true("Prioritisation" %in% projects$name)
-})
-
-#  FUNCTION: gh_column ------------------------------------------------------------------------
-test_that("gh_column returns a list describing the column", {
-  column <- gh_column(1310204)
-  expect_is(column, "list")
-  expect_named(
-    column,
-    c("url", "project_url", "cards_url", "id", "node_id", "name", "created_at", "updated_at"))
-  expect_identical(column$name, "Triage")
-})
-
-#  FUNCTION: gh_columns -----------------------------------------------------------------------
-test_that("gh_columns returns a tibble describing the columns", {
-  columns <- gh_columns(747228)
-  expect_is(columns, "tbl")
-
-  expect_identical(
-    sapply(columns, function(field) class(field)[[1]]),
+    map_chr(repo_project, ~ class(.)[[1]]),
     c(id         = "integer",
+      number     = "integer",
       name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
-      url        = "character"))
+      html_url   = "character"))
 
-  expect_true(all(c("Triage", "Sometime", "Soon", "Now", "Done") %in% columns$name))
+  expect_identical(repo_project$name, "Repo project")
+
+  user_project <- create_project(
+    name = "User project",
+    body = "This is a user project")
+
+  expect_is(user_project, "list")
+  expect_identical(attr(user_project, "status"), 201L)
+  expect_identical(
+    map_chr(user_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(user_project$name, "User project")
+
+  org_project <- create_project(
+    name = "Organisation project",
+    body = "This is an organisation project",
+    org  = "HairyCoos")
+
+  expect_is(org_project, "list")
+  expect_identical(attr(org_project, "status"), 201L)
+  expect_identical(
+    map_chr(org_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(org_project$name, "Organisation project")
+
 })
 
-#  FUNCTION: gh_card --------------------------------------------------------------------------
-test_that("gh_card returns a list describing the card", {
-  card <- gh_card(4211067)
-  expect_is(card, "list")
-  expect_named(
-    card,
-    c("url", "project_url", "id", "node_id", "note", "archived", "creator", "created_at",
-      "updated_at", "column_url", "content_url"))
-  expect_identical(
-    card$content_url,
-    "https://api.github.com/repos/ChadGoymer/githapi/issues/16")
+test_that("create_project throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    create_project(name = 1, body = "This is an invalid project"),
+    "'name' must be a string")
+
+  expect_error(
+    create_project(name = "invalid project", body = 1),
+    "'body' must be a string")
+
+  expect_error(
+    create_project(name = "invalid project", body = "This is an invalid project", repo = 1),
+    "'repo' must be a string in the format 'owner/repo'")
+
+  expect_error(
+    create_project(name = "invalid project", body = "This is an invalid project", org = 1),
+    "'org' must be a string")
+
 })
 
-#  FUNCTION: gh_cards -------------------------------------------------------------------------
-test_that("gh_cards returns a tibble describing the cards", {
-  cards <- gh_cards(1310204)
-  expect_is(cards, "tbl")
 
+# TEST: update_project ------------------------------------------------------------------------
+
+test_that("update_project updates a project and returns a list of the new properties", {
+
+  repo_project <- update_project(
+    project = "Repo project",
+    name    = "Updated repo project",
+    body    = "This is an updated repo project",
+    repo    = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "list")
+  expect_identical(attr(repo_project, "status"), 200L)
   expect_identical(
-    sapply(cards, function(field) class(field)[[1]]),
-    c(id            = "integer",
-      creator_login = "character",
-      created_at    = "POSIXct",
-      updated_at    = "POSIXct",
-      content_url   = "character",
-      url           = "character"))
+    map_chr(repo_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
 
-  expect_true("ChadGoymer" %in% cards$creator_login)
+  expect_identical(repo_project$name, "Updated repo project")
+
+  user_project <- update_project(
+    project = "User project",
+    state   = "closed",
+    user    = "ChadGoymer")
+
+  expect_is(user_project, "list")
+  expect_identical(attr(user_project, "status"), 200L)
+  expect_identical(
+    map_chr(user_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(user_project$state, "closed")
+
+  org_project <- update_project(
+    project    = "Organisation project",
+    permission = "read",
+    private    = FALSE,
+    org        = "HairyCoos")
+
+  expect_is(org_project, "list")
+  expect_identical(attr(org_project, "status"), 200L)
+  expect_identical(
+    map_chr(org_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(org_project$permission, "read")
+  expect_identical(org_project$private, FALSE)
+
+})
+
+
+# TEST: view_projects -------------------------------------------------------------------------
+
+test_that("view_projects returns a tibble summarising the projects", {
+
+  repo_projects <- view_projects("ChadGoymer/test-githapi")
+
+  expect_is(repo_projects, "tbl")
+  expect_identical(attr(repo_projects, "status"), 200L)
+  expect_identical(
+    map_chr(repo_projects, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_true("Updated repo project" %in% repo_projects$name)
+
+  user_projects <- view_projects(user = "ChadGoymer", state = "closed")
+
+  expect_is(user_projects, "tbl")
+  expect_identical(attr(user_projects, "status"), 200L)
+  expect_identical(
+    map_chr(user_projects, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_true("User project" %in% user_projects$name)
+
+  org_projects <- view_projects(org = "HairyCoos")
+
+  expect_is(org_projects, "tbl")
+  expect_identical(attr(org_projects, "status"), 200L)
+  expect_identical(
+    map_chr(org_projects, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_true("Organisation project" %in% org_projects$name)
+
+})
+
+test_that("view_projects throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_projects(),
+    "Must specify either 'repo', 'user' or 'org'!")
+
+})
+
+
+# TEST: view_project --------------------------------------------------------------------------
+
+test_that("view_project returns a list of project properties", {
+
+  repo_project <- view_project("Updated repo project", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "list")
+  expect_identical(attr(repo_project, "status"), 200L)
+  expect_identical(
+    map_chr(repo_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(repo_project$name, "Updated repo project")
+
+  user_project <- view_project("User project", user = "ChadGoymer")
+
+  expect_is(user_project, "list")
+  expect_identical(attr(user_project, "status"), 200L)
+  expect_identical(
+    map_chr(user_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(user_project$state, "closed")
+
+  org_project <- view_project("Organisation project", org = "HairyCoos")
+
+  expect_is(org_project, "list")
+  expect_identical(attr(org_project, "status"), 200L)
+  expect_identical(
+    map_chr(org_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(org_project$permission, "read")
+  expect_identical(org_project$private, FALSE)
+
+})
+
+test_that("view_project can accept a project number", {
+
+  projects <- view_projects("ChadGoymer/test-githapi")
+
+  first_project <- view_project(projects$number[[1]], "ChadGoymer/test-githapi")
+
+  expect_is(first_project, "list")
+  expect_identical(attr(first_project, "status"), 200L)
+  expect_identical(
+    map_chr(first_project, ~ class(.)[[1]]),
+    c(id         = "integer",
+      number     = "integer",
+      name       = "character",
+      body       = "character",
+      state      = "character",
+      permission = "character",
+      private    = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      html_url   = "character"))
+
+  expect_identical(first_project$number, projects$number[[1]])
+
+})
+
+test_that("view_project throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_project(TRUE, "ChadGoymer/test-githapi"),
+    "'project' must be either an integer or a string")
+
+  expect_error(
+    view_project("Repo project"),
+    "Must specify either 'repo', 'user' or 'org'!")
+
+})
+
+
+# TEST: browse_project ------------------------------------------------------------------------
+
+test_that("browse_project opens the project in the browser", {
+
+  skip_if(!interactive(), "browse_project must be tested manually")
+
+  repo_project <- browse_project("Updated repo project", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "character")
+  expect_identical(attr(repo_project, "status"), 200L)
+  expect_identical(dirname(repo_project), "https://github.com/ChadGoymer/test-githapi/projects")
+
+  user_project <- browse_project("User project", user = "ChadGoymer")
+
+  expect_is(user_project, "character")
+  expect_identical(attr(user_project, "status"), 200L)
+  expect_identical(dirname(user_project), "https://github.com/users/ChadGoymer/projects")
+
+  org_project <- browse_project("Organisation project", org = "HairyCoos")
+
+  expect_is(org_project, "character")
+  expect_identical(attr(org_project, "status"), 200L)
+  expect_identical(dirname(org_project), "https://github.com/orgs/HairyCoos/projects")
+
+})
+
+
+# TEST: delete_project ------------------------------------------------------------------------
+
+test_that("delete_project deletes the projects and returns TRUE", {
+
+  repo_project <- delete_project("Updated repo project", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_project, "logical")
+  expect_identical(attr(repo_project, "status"), 204L)
+  expect_identical(as.logical(repo_project), TRUE)
+
+  user_project <- delete_project("User project", user = "ChadGoymer")
+
+  expect_is(user_project, "logical")
+  expect_identical(attr(user_project, "status"), 204L)
+  expect_identical(as.logical(user_project), TRUE)
+
+  org_project <- delete_project("Organisation project", org = "HairyCoos")
+
+  expect_is(org_project, "logical")
+  expect_identical(attr(org_project, "status"), 204L)
+  expect_identical(as.logical(org_project), TRUE)
+
 })

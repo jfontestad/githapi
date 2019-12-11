@@ -13,7 +13,7 @@ gh_find(url, property, value, max_pages = 100, headers = NULL,
 
 \item{property}{(string) The property to search.}
 
-\item{value}{(string) The property value to search for.}
+\item{value}{(scalar) The property value to search for.}
 
 \item{max_pages}{(integer, optional) The maximum number of pages to search through.
 Default: 100.}
