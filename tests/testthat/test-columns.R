@@ -36,3 +36,27 @@ test_that("create_columns creates a column and returns its properties", {
   expect_identical(column$name, "Test column")
 
 })
+
+
+# TEST: update_column ------------------------------------------------------------------------
+
+test_that("update_column updates a column and returns a list of the new properties", {
+
+  column <- update_column(
+    column  = "Test column",
+    name    = "Updated test column",
+    project = "Test columns",
+    repo    = "ChadGoymer/test-githapi")
+
+  expect_is(column, "list")
+  expect_identical(attr(column, "status"), 200L)
+  expect_identical(
+    map_chr(column, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(column$name, "Updated test column")
+
+})

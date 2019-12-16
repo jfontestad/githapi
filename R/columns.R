@@ -87,3 +87,103 @@ create_column <- function(
   info("Done", level = 7)
   column_gh
 }
+
+
+#  FUNCTION: update_column -------------------------------------------------------------------
+#
+#' Update a column in a GitHub project
+#'
+#' `update_column()` can be used to change the column name in a project in GitHub.
+#' `move_column()` can be used to reorder the columns.
+#'
+#' You can update a column associated with either a repository, user or organisation, by
+#' supplying them as an input, as long as you have appropriate permissions.
+#'
+#' You can move a column by either specifying the position, either `"first"` or `"last"`, or
+#' by specifying another column to place it after.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/columns/#update-a-project-column>
+#' - <https://developer.github.com/v3/projects/columns/#move-a-project-column>
+#'
+#' @param column (integer or string) Either the column number or name.
+#' @param name (string, optional) The new name for the column.
+#' @param position (string, optional) Either `"first"` or `"last"`.
+#' @param after (integer or string) An ID or name of another column to place this one after.
+#' @param project (integer or string) Either the project number or name.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_column()` returns a list of the column properties.
+#'
+#' **column Properties:**
+#'
+#' - **id**: The ID of the column.
+#' - **name**: The name given to the column.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update the name of a column in a repository project
+#'   update_column(
+#'     column  = "Test column",
+#'     name    = "Updated test column",
+#'     project = "Test project",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Move a column to the first position in a user's project
+#'   move_column(
+#'     name     = "Test column",
+#'     position = "first",
+#'     user     = "ChadGoymer")
+#'
+#'   # Move a column after another on in an organisation's project
+#'   move_column(
+#'     name  = "Test column",
+#'     after = "Test column 2",
+#'     org   = "HairyCoos")
+#' }
+#'
+#' @export
+#'
+update_column <- function(
+  column,
+  name,
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+
+  column <- view_column(
+    column  = column,
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org)
+
+  info("Updating column '", column$name, "' in project '", project, "'")
+  column_lst <- gh_url("projects/columns", column$id) %>%
+    gh_request(
+      type    = "PATCH",
+      payload = list(name = name),
+      accept  = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Transforming results", level = 4)
+  column_gh <- select_properties(column_lst, properties$column) %>%
+    structure(
+      class   = class(column_lst),
+      url     = attr(column_lst, "url"),
+      request = attr(column_lst, "request"),
+      status  = attr(column_lst, "status"),
+      header  = attr(column_lst, "header"))
+
+  info("Done", level = 7)
+  column_gh
+}
