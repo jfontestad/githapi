@@ -177,3 +177,19 @@ test_that("view_column throws an error if invalid arguments are supplied", {
     "'column' must be either an integer or a string")
 
 })
+
+
+# TEST: delete_column ------------------------------------------------------------------------
+
+test_that("delete_column deletes the columns and returns TRUE", {
+
+  column <- delete_column(
+    column  = "Updated test column",
+    project = "Test columns",
+    repo    = "ChadGoymer/test-githapi")
+
+  expect_is(column, "logical")
+  expect_identical(attr(column, "status"), 204L)
+  expect_identical(as.logical(column), TRUE)
+
+})
