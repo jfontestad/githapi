@@ -4,12 +4,17 @@
 \alias{gh_git_reference}
 \title{Get a reference}
 \usage{
-gh_git_reference(ref, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_git_reference(
+  ref,
+  repo,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
-\item{ref}{(string) tags, specified as \code{tags/<tag_name>}, or branches, specified as
-\code{heads/<branch_name>}}
+\item{ref}{(string) tags, specified as \verb{tags/<tag_name>}, or branches, specified as
+\verb{heads/<branch_name>}}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
@@ -17,7 +22,7 @@ gh_git_reference(ref, repo, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

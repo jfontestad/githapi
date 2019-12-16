@@ -4,9 +4,19 @@
 \alias{gh_user_issues}
 \title{List issues assigned to the authenticated user}
 \usage{
-gh_user_issues(org, filter = NULL, state = NULL, labels = NULL,
-  sort = NULL, direction = NULL, since = NULL, n_max = 1000L,
-  token = gh_token(), api = getOption("github.api"), ...)
+gh_user_issues(
+  org,
+  filter = NULL,
+  state = NULL,
+  labels = NULL,
+  sort = NULL,
+  direction = NULL,
+  since = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{org}{(string, optional) Filter the list to repositories owned by an organisation.}
@@ -40,7 +50,7 @@ timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

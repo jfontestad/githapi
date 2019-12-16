@@ -48,6 +48,8 @@ possible, alternative functions with similar functionality are also mentioned.
 \itemize{
 \item \code{\link[=gh_project]{gh_project()}}: replace with \code{\link[=view_project]{view_project()}}
 \item \code{\link[=gh_projects]{gh_projects()}}: replace with \code{\link[=view_projects]{view_projects()}}
+\item \code{\link[=gh_column]{gh_column()}}: replace with \code{\link[=view_column]{view_column()}}
+\item \code{\link[=gh_columns]{gh_columns()}}: replace with \code{\link[=view_columns]{view_columns()}}
 }
 }
 

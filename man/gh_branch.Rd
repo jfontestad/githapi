@@ -4,8 +4,7 @@
 \alias{gh_branch}
 \title{Get information about a branch}
 \usage{
-gh_branch(branch, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_branch(branch, repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{branch}{(string) The branch name.}
@@ -16,7 +15,7 @@ gh_branch(branch, repo, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

@@ -4,8 +4,14 @@
 \alias{gh_pull_reviews}
 \title{List reviews on a pull request}
 \usage{
-gh_pull_reviews(pull_request, repo, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_pull_reviews(
+  pull_request,
+  repo,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{pull_request}{(integer) The number assigned to the pull request.}
@@ -18,7 +24,7 @@ gh_pull_reviews(pull_request, repo, n_max = 1000L, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

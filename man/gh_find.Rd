@@ -4,9 +4,16 @@
 \alias{gh_find}
 \title{Find an entity by matching a property value}
 \usage{
-gh_find(url, property, value, max_pages = 100, headers = NULL,
-  accept = "application/vnd.github.v3+json", token = gh_token(),
-  proxy = getOption("github.proxy"))
+gh_find(
+  url,
+  property,
+  value,
+  max_pages = 100,
+  headers = NULL,
+  accept = "application/vnd.github.v3+json",
+  token = gh_token(),
+  proxy = getOption("github.proxy")
+)
 }
 \arguments{
 \item{url}{(string) The address of the API endpoint.}

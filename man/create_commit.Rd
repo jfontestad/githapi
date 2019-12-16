@@ -4,9 +4,17 @@
 \alias{create_commit}
 \title{Create a commit}
 \usage{
-create_commit(message, tree, parents, committer, author, repo,
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+create_commit(
+  message,
+  tree,
+  parents,
+  committer,
+  author,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{message}{(string) The commit message}

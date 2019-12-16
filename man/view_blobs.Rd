@@ -4,8 +4,13 @@
 \alias{view_blobs}
 \title{View information about Git blobs (files)}
 \usage{
-view_blobs(shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+view_blobs(
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{shas}{(character) The SHAs of the blobs (files).}

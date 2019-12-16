@@ -4,8 +4,14 @@
 \alias{gh_gists}
 \title{List a user's gists, or all public or starred gists}
 \usage{
-gh_gists(user, since = NULL, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_gists(
+  user,
+  since = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{user}{(string) The GitHub username of the user. If user set to 'public' all public

@@ -4,8 +4,14 @@
 \alias{files_exist}
 \title{Determine whether files exist in the specified commit.}
 \usage{
-files_exist(paths, repo, ref, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+files_exist(
+  paths,
+  repo,
+  ref,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(string, optional) The paths to the files or directories in the repository.}

@@ -4,9 +4,18 @@
 \alias{gh_pull_requests}
 \title{List pull requests}
 \usage{
-gh_pull_requests(repo, state = NULL, head = NULL, base = NULL,
-  sort = NULL, direction = NULL, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_pull_requests(
+  repo,
+  state = NULL,
+  head = NULL,
+  base = NULL,
+  sort = NULL,
+  direction = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
@@ -31,7 +40,7 @@ Default: desc when sort is created or sort is not specified, otherwise asc."}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

@@ -4,8 +4,16 @@
 \alias{gh_members}
 \title{Get Organization or team members list}
 \usage{
-gh_members(org, team, filter = NULL, role = NULL, n_max = 1000L,
-  token = gh_token(), api = getOption("github.api"), ...)
+gh_members(
+  org,
+  team,
+  filter = NULL,
+  role = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{org}{(string) The name of the organization.}
@@ -14,7 +22,7 @@ gh_members(org, team, filter = NULL, role = NULL, n_max = 1000L,
 
 \item{filter}{(string) Filter members returned in the list. Can be one of:
 \itemize{
-\item \code{2fa_disabled}: Members without two-factor authentication enabled. Available for
+\item \verb{2fa_disabled}: Members without two-factor authentication enabled. Available for
 organization owners.
 \item \code{all}: All members the authenticated user can see.
 \item \code{Default}: all.
@@ -34,7 +42,7 @@ organization owners.
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

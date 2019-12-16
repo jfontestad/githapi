@@ -4,8 +4,14 @@
 \alias{update_branches}
 \title{Update branches to new commits.}
 \usage{
-update_branches(branches, shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+update_branches(
+  branches,
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{branches}{(character) The branch names.}

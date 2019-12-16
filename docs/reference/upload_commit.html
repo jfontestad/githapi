@@ -71,7 +71,7 @@ specified branch (using create_branches())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -121,11 +121,21 @@ It the creates a new commit (using <code><a href='create_commit.html'>create_com
 specified branch (using <code><a href='create_branches.html'>create_branches()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>upload_commit</span>(<span class='no'>branch</span>, <span class='no'>message</span>, <span class='no'>path</span>, <span class='no'>parents</span>, <span class='no'>committer</span>, <span class='no'>author</span>, <span class='no'>repo</span>,
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ignore</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"\\.git"</span>, <span class='st'>"\\.Rproj\\.user"</span>,
-  <span class='st'>"\\.Rhistory"</span>, <span class='st'>"\\.RData"</span>, <span class='st'>"\\.Ruserdata"</span>),
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>), <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>upload_commit</span>(
+  <span class='no'>branch</span>,
+  <span class='no'>message</span>,
+  <span class='no'>path</span>,
+  <span class='no'>parents</span>,
+  <span class='no'>committer</span>,
+  <span class='no'>author</span>,
+  <span class='no'>repo</span>,
+  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ignore</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"\\.git"</span>, <span class='st'>"\\.Rproj\\.user"</span>, <span class='st'>"\\.Rhistory"</span>, <span class='st'>"\\.RData"</span>,
+    <span class='st'>"\\.Ruserdata"</span>),
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
+  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,8 +183,8 @@ just update the files within the directory (see description). Default: <code>TRU
     <tr>
       <th>ignore</th>
       <td><p>(character) A character vector of regular expressions. If any of these are
-detected in a file name they are not uploaded. Default: <code>"\.git"</code>, <code>"\.Rproj\.user"</code>,
-<code>"\.Rhistory"</code>, <code>"\.RData"</code> &amp; <code>"\.Ruserdata"</code></p></td>
+detected in a file name they are not uploaded. Default: <code>"\\.git"</code>, <code>"\\.Rproj\\.user"</code>,
+<code>"\\.Rhistory"</code>, <code>"\\.RData"</code> &amp; <code>"\\.Ruserdata"</code></p></td>
     </tr>
     <tr>
       <th>token</th>

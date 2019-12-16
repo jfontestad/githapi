@@ -4,8 +4,7 @@
 \alias{is_valid_sha}
 \title{Check whether the input is a valid SHA-1}
 \usage{
-is_valid_sha(sha, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+is_valid_sha(sha, repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{sha}{(string) A commit SHA-1.}
@@ -17,7 +16,7 @@ If not supplied existence of the commit is not checked, only the format of the s
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

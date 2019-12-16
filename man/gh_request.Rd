@@ -4,9 +4,15 @@
 \alias{gh_request}
 \title{Send an HTTP request to the GitHub API}
 \usage{
-gh_request(url, type, payload = NULL, headers = NULL,
+gh_request(
+  url,
+  type,
+  payload = NULL,
+  headers = NULL,
   accept = "application/vnd.github.v3+json",
-  token = getOption("github.token"), proxy = getOption("github.proxy"))
+  token = getOption("github.token"),
+  proxy = getOption("github.proxy")
+)
 }
 \arguments{
 \item{url}{(string) The address of the API endpoint.}

@@ -4,8 +4,14 @@
 \alias{compare_commits}
 \title{Compare two commits}
 \usage{
-compare_commits(base, head, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+compare_commits(
+  base,
+  head,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{base}{(string) The reference of the base commit.}

@@ -37,7 +37,7 @@
 
 <meta property="og:title" content="View GitHub projects — view_projects" />
 <meta property="og:description" content="view_projects() summarises projects in a table with the properties as columns and a row
-for each project. view_project() returns a list of all properties for a single job.
+for each project. view_project() returns a list of all properties for a single project.
 browse_project() opens the web page for the project in the default browser." />
 <meta name="twitter:card" content="summary" />
 
@@ -71,7 +71,7 @@ browse_project() opens the web page for the project in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@ browse_project() opens the web page for the project in the default browser." />
 
     <div class="ref-description">
     <p><code>view_projects()</code> summarises projects in a table with the properties as columns and a row
-for each project. <code>view_project()</code> returns a list of all properties for a single job.
+for each project. <code>view_project()</code> returns a list of all properties for a single project.
 <code>browse_project()</code> opens the web page for the project in the default browser.</p>
     </div>
 
@@ -199,7 +199,7 @@ organisation, by supplying them as an input.</p>
   <span class='fu'>view_projects</span>(<span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View an organisation's projects</span>
-  <span class='fu'>view_projects</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"Tidyverse"</span>)
+  <span class='fu'>view_projects</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View closed projects</span>
   <span class='fu'>view_projects</span>(<span class='st'>"ChadGoymer/githapi"</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"closed"</span>)
@@ -207,11 +207,23 @@ organisation, by supplying them as an input.</p>
   <span class='co'># View all projects</span>
   <span class='fu'>view_projects</span>(<span class='st'>"ChadGoymer/githapi"</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"all"</span>)
 
-  <span class='co'># View a specific project</span>
-  <span class='fu'>view_project</span>(<span class='st'>"Prioritisation"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='co'># View a specific repository project</span>
+  <span class='fu'>view_project</span>(<span class='st'>"Prioritisation"</span>, <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
-  <span class='co'># Browse a specific project</span>
+  <span class='co'># View a specific user project</span>
+  <span class='fu'>view_project</span>(<span class='st'>"Test project"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+
+  <span class='co'># View a specific organisation project</span>
+  <span class='fu'>view_project</span>(<span class='st'>"Prioritisation"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># Browse a specific repository project</span>
   <span class='fu'>browse_project</span>(<span class='st'>"Prioritisation"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='co'># Browse a specific user project</span>
+  <span class='fu'>browse_project</span>(<span class='st'>"Test project"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+
+  <span class='co'># Browse a specific organisation project</span>
+  <span class='fu'>browse_project</span>(<span class='st'>"Prioritisation"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

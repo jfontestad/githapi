@@ -4,9 +4,17 @@
 \alias{gh_repositories}
 \title{Get information about a user's, organisation's or team's repositories.}
 \usage{
-gh_repositories(owner, team, type = NULL, sort = NULL,
-  direction = NULL, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_repositories(
+  owner,
+  team,
+  type = NULL,
+  sort = NULL,
+  direction = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{owner}{(string) The user or organisation owning the repository.}
@@ -28,7 +36,7 @@ Default: \code{full_name}.}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

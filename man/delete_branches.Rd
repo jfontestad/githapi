@@ -4,8 +4,13 @@
 \alias{delete_branches}
 \title{Delete branches.}
 \usage{
-delete_branches(branches, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+delete_branches(
+  branches,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{branches}{(character) The branch names.}

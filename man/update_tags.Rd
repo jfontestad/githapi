@@ -4,8 +4,14 @@
 \alias{update_tags}
 \title{Update tags to new commits.}
 \usage{
-update_tags(tags, shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+update_tags(
+  tags,
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{tags}{(character) The tag names.}

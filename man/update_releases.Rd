@@ -4,9 +4,17 @@
 \alias{update_releases}
 \title{Update releases to new commits.}
 \usage{
-update_releases(tags, names, bodies, repo, draft = FALSE,
-  prerelease = FALSE, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+update_releases(
+  tags,
+  names,
+  bodies,
+  repo,
+  draft = FALSE,
+  prerelease = FALSE,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{tags}{(character) The tag names.}

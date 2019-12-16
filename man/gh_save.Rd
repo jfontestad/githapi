@@ -4,8 +4,15 @@
 \alias{gh_save}
 \title{Download files and save them to a location}
 \usage{
-gh_save(files, repo, path, ref = "master", token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_save(
+  files,
+  repo,
+  path,
+  ref = "master",
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{files}{(string) The paths to the files in the repository.}
@@ -21,7 +28,7 @@ is specified the head commit is used. Default: "master".}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_git_tree]{gh_git_tree()}}.}
 }

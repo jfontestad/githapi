@@ -4,9 +4,14 @@
 \alias{view_branches}
 \title{View information about branches}
 \usage{
-view_branches(branches, repo, n_max = 1000L,
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+view_branches(
+  branches,
+  repo,
+  n_max = 1000L,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{branches}{(character, optional) The branch names. If missing or \code{NULL} all the}

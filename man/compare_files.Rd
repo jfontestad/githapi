@@ -4,8 +4,14 @@
 \alias{compare_files}
 \title{Compare the files of two commits}
 \usage{
-compare_files(base, head, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+compare_files(
+  base,
+  head,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{base}{(string) The reference of the base commit.}

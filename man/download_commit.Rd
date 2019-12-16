@@ -4,8 +4,14 @@
 \alias{download_commit}
 \title{Download the contents of a commit}
 \usage{
-download_commit(path, repo, ref, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+download_commit(
+  path,
+  repo,
+  ref,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{path}{(string, optional) The path to save to. If not specified the current working
@@ -20,7 +26,7 @@ specified the head commit is used. If not specified the default branch is used.}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_download_binary]{gh_download_binary()}}.}
 }

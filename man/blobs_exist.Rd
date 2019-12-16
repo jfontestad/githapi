@@ -4,8 +4,13 @@
 \alias{blobs_exist}
 \title{Determine whether blobs exist in the specified repository.}
 \usage{
-blobs_exist(shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+blobs_exist(
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{shas}{(character) The SHAs of the blobs (files).}

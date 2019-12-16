@@ -4,8 +4,13 @@
 \alias{commits_exist}
 \title{Determine whether commits exist in the specified repository.}
 \usage{
-commits_exist(shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+commits_exist(
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{shas}{(character) The SHAs of the commits.}

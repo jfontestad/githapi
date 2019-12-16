@@ -4,8 +4,13 @@
 \alias{view_commits}
 \title{View information about Git commits.}
 \usage{
-view_commits(shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+view_commits(
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{shas}{(character) The SHAs of the commits.}

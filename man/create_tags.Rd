@@ -4,8 +4,14 @@
 \alias{create_tags}
 \title{Create tags at specified commits.}
 \usage{
-create_tags(tags, shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+create_tags(
+  tags,
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{tags}{(character) The tag names.}

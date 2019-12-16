@@ -4,8 +4,13 @@
 \alias{gh_releases}
 \title{List releases for a repository}
 \usage{
-gh_releases(repo, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_releases(
+  repo,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
@@ -16,7 +21,7 @@ gh_releases(repo, n_max = 1000L, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

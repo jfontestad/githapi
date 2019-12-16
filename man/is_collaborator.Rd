@@ -4,8 +4,13 @@
 \alias{is_collaborator}
 \title{Check if a user is a collaborator}
 \usage{
-is_collaborator(user, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+is_collaborator(
+  user,
+  repo,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{user}{(string) The GitHub username of the user.}
@@ -16,7 +21,7 @@ is_collaborator(user, repo, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

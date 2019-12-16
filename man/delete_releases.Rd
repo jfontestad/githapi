@@ -4,8 +4,13 @@
 \alias{delete_releases}
 \title{Delete releases.}
 \usage{
-delete_releases(tags, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+delete_releases(
+  tags,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{tags}{(character) The tag names associated with the releases.}
