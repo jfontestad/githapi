@@ -104,3 +104,23 @@ test_that("move_column throws an error in invalid arguments are supplied", {
     "Either 'position' or 'after' must be supplied")
 
 })
+
+
+# TEST: view_columns -------------------------------------------------------------------------
+
+test_that("view_columns returns a tibble summarising the columns", {
+
+  columns <- view_columns("Test columns", "ChadGoymer/test-githapi")
+
+  expect_is(columns, "tbl")
+  expect_identical(attr(columns, "status"), 200L)
+  expect_identical(
+    map_chr(columns, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_true("Updated test column" %in% columns$name)
+
+})

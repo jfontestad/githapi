@@ -255,3 +255,110 @@ move_column <- function(
   info("Done", level = 7)
   column_gh
 }
+
+
+#  FUNCTION: view_columns --------------------------------------------------------------------
+#
+#' View columns within a GitHub project
+#'
+#' `view_columns()` summarises columns in a table with the properties as columns and a row
+#' for each column in the project. `view_column()` returns a list of all properties for a
+#' single column.
+#'
+#' You can summarise all the columns of a project associated with either a repository, user
+#' or organisation, by supplying them as an input.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/columns/#list-project-columns>
+#' - <https://developer.github.com/v3/projects/columns/#get-a-project-column>
+#'
+#' @param column (integer or string) The number or name of the column.
+#' @param project (integer or string) Either the project number or name.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_columns()` returns a tibble of column properties. `view_column()`
+#'   returns a list of properties for a single column.
+#'
+#' **column Properties:**
+#'
+#' - **id**: The ID of the column.
+#' - **name**: The name given to the column.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'   # View columns in a repository project
+#'   view_columns(
+#'     project = "Test columns",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # View columns in a user's project
+#'   view_columns(
+#'     project = "Test columns",
+#'     user    = "ChadGoymer")
+#'
+#'   # View columns in an organisation's project
+#'   view_column(
+#'     project = "Test columns",
+#'     org     = "HairyCoos")
+#'
+#'   # View a column in a repository project
+#'   view_column(
+#'     column  = "Test column",
+#'     project = "Test columns",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # View a column in a user's project
+#'   view_column(
+#'     column  = "Test column",
+#'     project = "Test columns",
+#'     user    = "ChadGoymer")
+#'
+#'   # View a column in an organisation's project
+#'   view_column(
+#'     column  = "Test column",
+#'     project = "Test columns",
+#'     org     = "HairyCoos")
+#' }
+#'
+#' @export
+#'
+view_columns <- function(
+  project,
+  repo,
+  user,
+  org,
+  n_max = 1000,
+  ...)
+{
+  project <- view_project(
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org,
+    ...)
+
+  info("Viewing columns in project '", project$name, "'")
+  columns_lst <- gh_url("projects", project$id, "columns") %>%
+    gh_page(
+      accept = "application/vnd.github.inertia-preview+json",
+      n_max  = n_max,
+      ...)
+
+  info("Transforming results", level = 4)
+  columns_gh <- bind_properties(columns_lst, properties$column) %>%
+    structure(
+      class   = c("github", class(.)),
+      url     = attr(columns_lst, "url"),
+      request = attr(columns_lst, "request"),
+      status  = attr(columns_lst, "status"),
+      header  = attr(columns_lst, "header"))
+
+  info("Done", level = 7)
+  columns_gh
+}
