@@ -187,3 +187,71 @@ update_column <- function(
   info("Done", level = 7)
   column_gh
 }
+
+
+#  FUNCTION: move_column ----------------------------------------------------------------------
+#
+#' @rdname update_column
+#' @export
+#'
+move_column <- function(
+  column,
+  position,
+  after,
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  if (!missing(position))
+  {
+    assert(
+      is_scalar_character(position) && position %in% values$column$position,
+      "'position' must be one of '", str_c(values$column$position, collapse = "', '"), "':\n  ", position)
+
+    payload <- list(position = position)
+  }
+  else if (!missing(after))
+  {
+    after_column <- view_column(
+      column  = after,
+      project = project,
+      repo    = repo,
+      user    = user,
+      org     = org)
+
+    payload <- list(position = str_c("after:", after_column$id))
+  }
+  else
+  {
+    error("Either 'position' or 'after' must be supplied")
+  }
+
+  column <- view_column(
+    column  = column,
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org)
+
+  info("Moving column '", column$name, "' in project '", project, "'")
+  response <- gh_url("projects/columns", column$id, "moves") %>%
+    gh_request(
+      type    = "POST",
+      payload = payload,
+      accept  = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Transforming results", level = 4)
+  column_gh <- structure(
+    column,
+    class   = class(column),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+
+  info("Done", level = 7)
+  column_gh
+}
