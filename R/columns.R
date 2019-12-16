@@ -362,3 +362,58 @@ view_columns <- function(
   info("Done", level = 7)
   columns_gh
 }
+
+
+#  FUNCTION: view_column ---------------------------------------------------------------------
+#
+#' @rdname view_columns
+#' @export
+#'
+view_column <- function(
+  column,
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  if (is_scalar_integerish(column))
+  {
+    property <- "id"
+  }
+  else if (is_scalar_character(column))
+  {
+    property <- "name"
+  }
+  else
+  {
+    error("'column' must be either an integer or a string:\n  ", column)
+  }
+
+  project <- view_project(
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org,
+    ...)
+
+  info("Viewing column '", column, "' in project '", project$name, "'")
+  column_lst <- gh_url("projects", project$id, "columns") %>%
+    gh_find(
+      property = property,
+      value    = column,
+      accept   = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Transforming results", level = 4)
+  column_gh <- select_properties(column_lst, properties$column) %>%
+    structure(
+      class   = class(column_lst),
+      url     = attr(column_lst, "url"),
+      request = attr(column_lst, "request"),
+      status  = attr(column_lst, "status"),
+      header  = attr(column_lst, "header"))
+
+  info("Done", level = 7)
+  column_gh
+}

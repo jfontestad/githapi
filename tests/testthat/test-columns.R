@@ -124,3 +124,56 @@ test_that("view_columns returns a tibble summarising the columns", {
   expect_true("Updated test column" %in% columns$name)
 
 })
+
+
+# TEST: view_column --------------------------------------------------------------------------
+
+test_that("view_column returns a list of column properties", {
+
+  column <- view_column(
+    column  = "Updated test column",
+    project = "Test columns",
+    repo    = "ChadGoymer/test-githapi")
+
+  expect_is(column, "list")
+  expect_identical(attr(column, "status"), 200L)
+  expect_identical(
+    map_chr(column, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(column$name, "Updated test column")
+
+})
+
+test_that("view_column can accept a column number", {
+
+  columns <- view_columns("Test columns", "ChadGoymer/test-githapi")
+
+  first_column <- view_column(
+    columns$id[[1]],
+    project = "Test columns",
+    repo    = "ChadGoymer/test-githapi")
+
+  expect_is(first_column, "list")
+  expect_identical(attr(first_column, "status"), 200L)
+  expect_identical(
+    map_chr(first_column, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(first_column$id, columns$id[[1]])
+
+})
+
+test_that("view_column throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_column(TRUE, "Test columns", "ChadGoymer/test-githapi"),
+    "'column' must be either an integer or a string")
+
+})
