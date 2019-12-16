@@ -128,6 +128,8 @@ gh_column <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_column", package = "githapi")
+
   assert(is_scalar_integerish(column) && isTRUE(column > 0))
   assert(is_sha(token))
   assert(is_url(api))
@@ -163,6 +165,8 @@ gh_columns <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_columns", package = "githapi")
+
   assert(is_scalar_integerish(project) && isTRUE(project > 0))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))

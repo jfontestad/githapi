@@ -40,6 +40,8 @@
 #'
 #' - [gh_project()]: replace with [view_project()]
 #' - [gh_projects()]: replace with [view_projects()]
+#' - [gh_column()]: replace with [view_column()]
+#' - [gh_columns()]: replace with [view_columns()]
 #'
 NULL
 
