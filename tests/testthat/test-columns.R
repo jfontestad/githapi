@@ -2,17 +2,21 @@ context("columns api")
 
 
 setup(suppressMessages({
+
   test_project <- create_project(
     name = "Test columns",
     body = "A project to test columns functions",
     repo = "ChadGoymer/test-githapi")
+
 }))
 
-teardown(suppressMessages({
+teardown(suppressMessages(tryCatch({
+
   delete_project(
     project = "Test columns",
     repo    = "ChadGoymer/test-githapi")
-}))
+
+})))
 
 
 # TEST: create_column ------------------------------------------------------------------------

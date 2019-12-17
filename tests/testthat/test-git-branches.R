@@ -1,5 +1,15 @@
 context("git branches")
 
+new_branches <- str_c("test-branches-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S-"), 1:2)
+
+teardown(suppressMessages(tryCatch({
+
+  delete_branches(
+    branches = new_branches,
+    repo     = "ChadGoymer/test-githapi")
+
+})))
+
 # TEST: view_branches, create_branches & delete_branches --------------------------------------
 
 test_that("create_branches creates some branches, view_branches retreives them and delete_branches deletes them", {
@@ -17,7 +27,6 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_true("master" %in% all_branches$name)
 
-  new_branches <- format(Sys.time(), "%Y-%m-%d-%H-%M-%S-") %>% str_c(1:2)
   created_branches <- create_branches(
     branches = new_branches,
     shas = c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"),

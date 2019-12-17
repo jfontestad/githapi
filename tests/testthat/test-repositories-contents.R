@@ -1,25 +1,30 @@
 context("repositories contents")
 
 repo_contents_branch <- str_c("test-repo-contents-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
+new_files_branch <- str_c("test-create-files-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
 
 setup(suppressMessages({
+
   create_branches(
     branches = repo_contents_branch,
     shas     = master_sha,
     repo     = "ChadGoymer/test-githapi")
+
 }))
 
-teardown(suppressMessages({
+teardown(suppressMessages(tryCatch({
+
   delete_branches(
-    branches = repo_contents_branch,
+    branches = c(repo_contents_branch, new_files_branch),
     repo     = "ChadGoymer/test-githapi")
 
   update_branches(
     branches = "master",
     shas     = master_sha,
     repo     = "ChadGoymer/test-githapi")
-}))
+
+})))
 
 
 # TEST: view_files, create_files, update_files & delete_files ---------------------------------
@@ -371,10 +376,10 @@ test_that("when creating files on a branch that does not exist, it is created", 
     paths    = "aaaa.txt",
     contents = "Created to test:\n\n  `create_files()`",
     messages = "Testing create_files() on test branch",
-    branches = "new-branch",
+    branches = new_files_branch,
     parent   = "master",
     repo     = "ChadGoymer/test-githapi")
-  on.exit(delete_branches(branches = "new-branch", repo = "ChadGoymer/test-githapi"))
+  on.exit(delete_branches(branches = new_files_branch, repo = "ChadGoymer/test-githapi"))
 
   expect_is(created_files, "tbl")
   expect_identical(
@@ -400,7 +405,7 @@ test_that("when creating files on a branch that does not exist, it is created", 
 
   expect_identical(created_files$name, "aaaa.txt")
 
-  viewed_files <- view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = "new-branch")
+  viewed_files <- view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = new_files_branch)
 
   expect_is(viewed_files, "tbl")
   expect_identical(
