@@ -4,8 +4,7 @@
 \alias{is_manager}
 \title{Check if a team manages a repository}
 \usage{
-is_manager(team, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+is_manager(team, repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{team}{(integer) The GitHub ID of the team.}
@@ -16,7 +15,7 @@ is_manager(team, repo, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

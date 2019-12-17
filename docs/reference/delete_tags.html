@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -117,8 +117,13 @@
     <p>This function deletes the specified tags from a repository in GitHub.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_tags</span>(<span class='no'>tags</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_tags</span>(
+  <span class='no'>tags</span>,
+  <span class='no'>repo</span>,
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
+  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

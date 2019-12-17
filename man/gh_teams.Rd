@@ -4,8 +4,14 @@
 \alias{gh_teams}
 \title{List teams}
 \usage{
-gh_teams(org, repo, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_teams(
+  org,
+  repo,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{org}{(string, optional) The name of the organization. If org and repo are not
@@ -19,7 +25,7 @@ specified, the teams of the authenticated user are returned.}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

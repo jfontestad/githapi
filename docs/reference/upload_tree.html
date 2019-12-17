@@ -71,7 +71,7 @@ uploaded as nested trees create_tree()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -121,10 +121,16 @@ GitHub. Files are uploaded as blobs (see <code><a href='upload_blobs.html'>uploa
 uploaded as nested trees <code><a href='create_tree.html'>create_tree()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>upload_tree</span>(<span class='no'>path</span>, <span class='no'>repo</span>, <span class='no'>base_tree</span>, <span class='kw'>ignore</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"\\.git"</span>,
-  <span class='st'>"\\.Rproj\\.user"</span>, <span class='st'>"\\.Rhistory"</span>, <span class='st'>"\\.RData"</span>, <span class='st'>"\\.Ruserdata"</span>),
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>), <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>upload_tree</span>(
+  <span class='no'>path</span>,
+  <span class='no'>repo</span>,
+  <span class='no'>base_tree</span>,
+  <span class='kw'>ignore</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"\\.git"</span>, <span class='st'>"\\.Rproj\\.user"</span>, <span class='st'>"\\.Rhistory"</span>, <span class='st'>"\\.RData"</span>,
+    <span class='st'>"\\.Ruserdata"</span>),
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
+  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,8 +151,8 @@ If not specified, a new tree will be created.</p></td>
     <tr>
       <th>ignore</th>
       <td><p>(character) A character vector of regular expressions. If any of these are
-detected in a file name they are not uploaded. Default: <code>"\.git"</code>, <code>"\.Rproj\.user"</code>,
-<code>"\.Rhistory"</code>, <code>"\.RData"</code> &amp; <code>"\.Ruserdata"</code></p></td>
+detected in a file name they are not uploaded. Default: <code>"\\.git"</code>, <code>"\\.Rproj\\.user"</code>,
+<code>"\\.Rhistory"</code>, <code>"\\.RData"</code> &amp; <code>"\\.Ruserdata"</code></p></td>
     </tr>
     <tr>
       <th>token</th>

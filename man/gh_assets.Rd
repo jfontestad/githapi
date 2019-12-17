@@ -4,8 +4,14 @@
 \alias{gh_assets}
 \title{List assets for a release}
 \usage{
-gh_assets(release, repo, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_assets(
+  release,
+  repo,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{release}{(integer) The ID assigned to the release by GitHub.}
@@ -18,7 +24,7 @@ gh_assets(release, repo, n_max = 1000L, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

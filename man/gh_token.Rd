@@ -4,10 +4,14 @@
 \alias{gh_token}
 \title{Get a token for accessing GitHub}
 \usage{
-gh_token(token = getOption("github.token"),
-  oauth = getOption("github.oauth"), proxy = getOption("github.proxy"),
-  key = getOption("githapi.key"), secret = getOption("githapi.secret"),
-  cache = getOption("githapi.cache"))
+gh_token(
+  token = getOption("github.token"),
+  oauth = getOption("github.oauth"),
+  proxy = getOption("github.proxy"),
+  key = getOption("githapi.key"),
+  secret = getOption("githapi.secret"),
+  cache = getOption("githapi.cache")
+)
 }
 \arguments{
 \item{token}{(string, optional) A personal access token. If \code{NULL} then the OAuth process

@@ -51,14 +51,22 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+  # Create a project for a repository
   create_project(
     name = "Repo project",
     body = "This is a repository's project",
     repo = "ChadGoymer/test-githapi")
 
+  # Create a project for the current user
   create_project(
     name = "User project",
     body = "This is a user's project")
+
+  # Create a project for an organisation
+  create_project(
+    name = "Repo project",
+    body = "This is a repository's project",
+    org  = "HairyCoos")
 }
 
 }

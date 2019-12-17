@@ -36,14 +36,22 @@
 #'
 #' @examples
 #' \dontrun{
+#'   # Create a project for a repository
 #'   create_project(
 #'     name = "Repo project",
 #'     body = "This is a repository's project",
 #'     repo = "ChadGoymer/test-githapi")
 #'
+#'   # Create a project for the current user
 #'   create_project(
 #'     name = "User project",
 #'     body = "This is a user's project")
+#'
+#'   # Create a project for an organisation
+#'   create_project(
+#'     name = "Repo project",
+#'     body = "This is a repository's project",
+#'     org  = "HairyCoos")
 #' }
 #'
 #' @export
@@ -58,41 +66,39 @@ create_project <- function(
   assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
   assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
 
-  payload <- list(name = name, body = body)
-
   if (!missing(repo))
   {
     assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    info("Creating project '", name, "' for repository '", repo, "'")
     url <- gh_url("repos", repo, "projects")
   }
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    info("Creating project '", name, "' for organisation '", org, "'")
     url <- gh_url("orgs", org, "projects")
   }
   else
   {
+    info("Creating project '", name, "' for current user")
     url <- gh_url("user/projects")
   }
 
-  info("Posting project '", name, "'")
   project_lst <- gh_request(
     url     = url,
     type    = "POST",
-    payload = payload,
+    payload = list(name = name, body = body),
     accept  = "application/vnd.github.inertia-preview+json",
     ...)
 
   info("Transforming results", level = 4)
-  project_tbl <- select_properties(project_lst, properties$project)
-
-  project_gh <- structure(
-    project_tbl,
-    class   = c("github", class(project_tbl)),
-    url     = attr(project_lst, "url"),
-    request = attr(project_lst, "request"),
-    status  = attr(project_lst, "status"),
-    header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project) %>%
+    structure(
+      class   = class(project_lst),
+      url     = attr(project_lst, "url"),
+      request = attr(project_lst, "request"),
+      status  = attr(project_lst, "status"),
+      header  = attr(project_lst, "header"))
 
   info("Done", level = 7)
   project_gh
@@ -140,16 +146,25 @@ create_project <- function(
 #'
 #' @examples
 #' \dontrun{
+#'   # Update the name of a project for a repository
 #'   update_project(
 #'     project = "Repo project",
 #'     name    = "Updated repo project",
 #'     body    = "This is an updated repository's project",
 #'     repo    = "ChadGoymer/test-githapi")
 #'
+#'   # Update the state of a project for a user
 #'   update_project(
 #'     name  = "User project",
 #'     state = "closed",
 #'     user  = "ChadGoymer")
+#'
+#'   # Update the permissions of a project for an organisation
+#'   update_project(
+#'     name       = "Org project",
+#'     permission = "read",
+#'     private    = TRUE,
+#'     org        = "HairyCoos")
 #' }
 #'
 #' @export
@@ -217,15 +232,13 @@ update_project <- function(
       ...)
 
   info("Transforming results", level = 4)
-  project_tbl <- select_properties(project_lst, properties$project)
-
-  project_gh <- structure(
-    project_tbl,
-    class   = c("github", class(project_tbl)),
-    url     = attr(project_lst, "url"),
-    request = attr(project_lst, "request"),
-    status  = attr(project_lst, "status"),
-    header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project) %>%
+    structure(
+      class   = class(project_lst),
+      url     = attr(project_lst, "url"),
+      request = attr(project_lst, "request"),
+      status  = attr(project_lst, "status"),
+      header  = attr(project_lst, "header"))
 
   info("Done", level = 7)
   project_gh
@@ -237,7 +250,7 @@ update_project <- function(
 #' View GitHub projects
 #'
 #' `view_projects()` summarises projects in a table with the properties as columns and a row
-#' for each project. `view_project()` returns a list of all properties for a single job.
+#' for each project. `view_project()` returns a list of all properties for a single project.
 #' `browse_project()` opens the web page for the project in the default browser.
 #'
 #' You can summarise all the projects associated with either a repository, user or
@@ -283,7 +296,7 @@ update_project <- function(
 #'   view_projects(user = "ChadGoymer")
 #'
 #'   # View an organisation's projects
-#'   view_projects(org = "Tidyverse")
+#'   view_projects(org = "HairyCoos")
 #'
 #'   # View closed projects
 #'   view_projects("ChadGoymer/githapi", state = "closed")
@@ -291,11 +304,23 @@ update_project <- function(
 #'   # View all projects
 #'   view_projects("ChadGoymer/githapi", state = "all")
 #'
-#'   # View a specific project
-#'   view_project("Prioritisation", "ChadGoymer/githapi")
+#'   # View a specific repository project
+#'   view_project("Prioritisation", repo = "ChadGoymer/githapi")
 #'
-#'   # Browse a specific project
+#'   # View a specific user project
+#'   view_project("Test project", user = "ChadGoymer")
+#'
+#'   # View a specific organisation project
+#'   view_project("Prioritisation", org = "HairyCoos")
+#'
+#'   # Browse a specific repository project
 #'   browse_project("Prioritisation", "ChadGoymer/githapi")
+#'
+#'   # Browse a specific user project
+#'   browse_project("Test project", user = "ChadGoymer")
+#'
+#'   # Browse a specific organisation project
+#'   browse_project("Prioritisation", org = "HairyCoos")
 #' }
 #'
 #' @export
@@ -315,16 +340,19 @@ view_projects <- function(
   if (!missing(repo))
   {
     assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    info("Viewing projects for repository '", repo, "'")
     url <- gh_url("repos", repo, "projects", state = state)
   }
   else if (!missing(user))
   {
     assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    info("Viewing projects for user '", user, "'")
     url <- gh_url("users", user, "projects", state = state)
   }
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    info("Viewing projects for organisation '", org, "'")
     url <- gh_url("orgs", org, "projects", state = state)
   }
   else
@@ -332,7 +360,6 @@ view_projects <- function(
     error("Must specify either 'repo', 'user' or 'org'!")
   }
 
-  info("Getting projects")
   projects_lst <- gh_page(
     url    = url,
     accept = "application/vnd.github.inertia-preview+json",
@@ -340,15 +367,13 @@ view_projects <- function(
     ...)
 
   info("Transforming results", level = 4)
-  projects_tbl <- bind_properties(projects_lst, properties$project)
-
-  projects_gh <- structure(
-    projects_tbl,
-    class   = c("github", class(projects_tbl)),
-    url     = attr(projects_lst, "url"),
-    request = attr(projects_lst, "request"),
-    status  = attr(projects_lst, "status"),
-    header  = attr(projects_lst, "header"))
+  projects_gh <- bind_properties(projects_lst, properties$project) %>%
+    structure(
+      class   = c("github", class(.)),
+      url     = attr(projects_lst, "url"),
+      request = attr(projects_lst, "request"),
+      status  = attr(projects_lst, "status"),
+      header  = attr(projects_lst, "header"))
 
   info("Done", level = 7)
   projects_gh
@@ -383,16 +408,19 @@ view_project <- function(
   if (!missing(repo))
   {
     assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    info("Viewing project '", project, "' for repository '", repo, "'")
     url <- gh_url("repos", repo, "projects", state = "all")
   }
   else if (!missing(user))
   {
     assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    info("Viewing project '", project, "' for user '", user, "'")
     url <- gh_url("users", user, "projects", state = "all")
   }
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    info("Viewing project '", project, "' for organisation '", org, "'")
     url <- gh_url("orgs", org, "projects", state = "all")
   }
   else
@@ -400,7 +428,6 @@ view_project <- function(
     error("Must specify either 'repo', 'user' or 'org'!")
   }
 
-  info("Getting project '", project, "'")
   project_lst <- gh_find(
     url       = url,
     property  = property,
@@ -411,7 +438,7 @@ view_project <- function(
   info("Transforming results", level = 4)
   project_gh <- select_properties(project_lst, properties$project) %>%
     structure(
-      class   = c("github", class(project_lst)),
+      class   = class(project_lst),
       url     = attr(project_lst, "url"),
       request = attr(project_lst, "request"),
       status  = attr(project_lst, "status"),
@@ -478,9 +505,20 @@ browse_project <- function(
 #'
 #' @examples
 #' \dontrun{
+#'   # Delete a project for a repository
+#'   delete_project(
+#'     project = "Repo project",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Delete a project for a user
 #'   delete_project(
 #'     project = "User project",
 #'     user    = "ChadGoymer")
+#'
+#'   # Delete a project for an organisation
+#'   delete_project(
+#'     project = "User project",
+#'     org     = "HairyCoos")
 #' }
 #'
 #' @export

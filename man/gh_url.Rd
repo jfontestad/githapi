@@ -11,7 +11,7 @@ gh_url(..., api = getOption("github.api"))
 parameters are added as queries.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 }
 \value{
 Valid URL (string)

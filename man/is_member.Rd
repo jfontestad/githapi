@@ -4,8 +4,7 @@
 \alias{is_member}
 \title{Check membership}
 \usage{
-is_member(user, org, token = gh_token(), api = getOption("github.api"),
-  ...)
+is_member(user, org, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{user}{(string) The GitHub username of the user.}
@@ -16,7 +15,7 @@ is_member(user, org, token = gh_token(), api = getOption("github.api"),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

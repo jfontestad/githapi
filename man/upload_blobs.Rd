@@ -4,8 +4,13 @@
 \alias{upload_blobs}
 \title{Upload blobs (files).}
 \usage{
-upload_blobs(paths, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+upload_blobs(
+  paths,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(character) The paths to the files.}

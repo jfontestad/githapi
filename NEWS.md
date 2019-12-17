@@ -1,3 +1,15 @@
+# githapi 0.9.5
+
+- Added `create_column()`
+- Added `update_column()`
+- Added `move_column()`
+- Added `view_columns()`
+- Added `view_column()`
+- Added `delete_column()`
+- Updated documentation and messages for project functions
+- Added scripts for testing and deployment
+- Deprecated `gh_column()` and `gh_columns()`
+
 # githapi 0.9.4
 
 - Added `create_project()`

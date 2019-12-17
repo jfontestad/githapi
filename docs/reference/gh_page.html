@@ -71,7 +71,7 @@ Each page uses gh_request() to retrieve the contents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -121,9 +121,14 @@ size of 100, so if more are request multiple requests are made and the results a
 Each page uses <code><a href='gh_request.html'>gh_request()</a></code> to retrieve the contents.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_page</span>(<span class='no'>url</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>headers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>accept</span> <span class='kw'>=</span> <span class='st'>"application/vnd.github.v3+json"</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>))</pre>
+    <pre class="usage"><span class='fu'>gh_page</span>(
+  <span class='no'>url</span>,
+  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+  <span class='kw'>headers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>accept</span> <span class='kw'>=</span> <span class='st'>"application/vnd.github.v3+json"</span>,
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
+  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

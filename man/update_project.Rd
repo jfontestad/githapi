@@ -4,8 +4,18 @@
 \alias{update_project}
 \title{Update a GitHub project}
 \usage{
-update_project(project, name, body, state, permission, private, repo, user,
-  org, ...)
+update_project(
+  project,
+  name,
+  body,
+  state,
+  permission,
+  private,
+  repo,
+  user,
+  org,
+  ...
+)
 }
 \arguments{
 \item{project}{(integer or string) Either the project number or name.}
@@ -60,16 +70,25 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+  # Update the name of a project for a repository
   update_project(
     project = "Repo project",
     name    = "Updated repo project",
     body    = "This is an updated repository's project",
     repo    = "ChadGoymer/test-githapi")
 
+  # Update the state of a project for a user
   update_project(
     name  = "User project",
     state = "closed",
     user  = "ChadGoymer")
+
+  # Update the permissions of a project for an organisation
+  update_project(
+    name       = "Org project",
+    permission = "read",
+    private    = TRUE,
+    org        = "HairyCoos")
 }
 
 }

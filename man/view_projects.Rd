@@ -48,7 +48,7 @@ browser on the prject page and returns the URL invisibly.
 }
 \description{
 \code{view_projects()} summarises projects in a table with the properties as columns and a row
-for each project. \code{view_project()} returns a list of all properties for a single job.
+for each project. \code{view_project()} returns a list of all properties for a single project.
 \code{browse_project()} opens the web page for the project in the default browser.
 }
 \details{
@@ -72,7 +72,7 @@ For more details see the GitHub API documentation:
   view_projects(user = "ChadGoymer")
 
   # View an organisation's projects
-  view_projects(org = "Tidyverse")
+  view_projects(org = "HairyCoos")
 
   # View closed projects
   view_projects("ChadGoymer/githapi", state = "closed")
@@ -80,11 +80,23 @@ For more details see the GitHub API documentation:
   # View all projects
   view_projects("ChadGoymer/githapi", state = "all")
 
-  # View a specific project
-  view_project("Prioritisation", "ChadGoymer/githapi")
+  # View a specific repository project
+  view_project("Prioritisation", repo = "ChadGoymer/githapi")
 
-  # Browse a specific project
+  # View a specific user project
+  view_project("Test project", user = "ChadGoymer")
+
+  # View a specific organisation project
+  view_project("Prioritisation", org = "HairyCoos")
+
+  # Browse a specific repository project
   browse_project("Prioritisation", "ChadGoymer/githapi")
+
+  # Browse a specific user project
+  browse_project("Test project", user = "ChadGoymer")
+
+  # Browse a specific organisation project
+  browse_project("Prioritisation", org = "HairyCoos")
 }
 
 }

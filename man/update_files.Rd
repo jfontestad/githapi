@@ -4,9 +4,18 @@
 \alias{update_files}
 \title{Update existing files}
 \usage{
-update_files(paths, contents, messages, branches, committer, author, repo,
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+update_files(
+  paths,
+  contents,
+  messages,
+  branches,
+  committer,
+  author,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(character) The paths to the files in the repository.}

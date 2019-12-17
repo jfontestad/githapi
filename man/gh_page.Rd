@@ -4,9 +4,14 @@
 \alias{gh_page}
 \title{Get multiple pages from the GitHub API}
 \usage{
-gh_page(url, n_max = 1000, headers = NULL,
-  accept = "application/vnd.github.v3+json", token = gh_token(),
-  proxy = getOption("github.proxy"))
+gh_page(
+  url,
+  n_max = 1000,
+  headers = NULL,
+  accept = "application/vnd.github.v3+json",
+  token = gh_token(),
+  proxy = getOption("github.proxy")
+)
 }
 \arguments{
 \item{url}{(string) The address of the API endpoint.}

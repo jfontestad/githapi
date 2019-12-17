@@ -4,8 +4,14 @@
 \alias{view_files}
 \title{View information about a files}
 \usage{
-view_files(paths, repo, ref, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+view_files(
+  paths,
+  repo,
+  ref,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(string, optional) The paths to the files or directories in the repository.}

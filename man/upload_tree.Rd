@@ -4,10 +4,16 @@
 \alias{upload_tree}
 \title{Upload a tree from a directory}
 \usage{
-upload_tree(path, repo, base_tree, ignore = c("\\\\.git",
-  "\\\\.Rproj\\\\.user", "\\\\.Rhistory", "\\\\.RData", "\\\\.Ruserdata"),
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+upload_tree(
+  path,
+  repo,
+  base_tree,
+  ignore = c("\\\\.git", "\\\\.Rproj\\\\.user", "\\\\.Rhistory", "\\\\.RData",
+    "\\\\.Ruserdata"),
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{path}{(string) The path to the directory, which is to be uploaded as a tree.}
@@ -18,8 +24,8 @@ upload_tree(path, repo, base_tree, ignore = c("\\\\.git",
 If not specified, a new tree will be created.}
 
 \item{ignore}{(character) A character vector of regular expressions. If any of these are
-detected in a file name they are not uploaded. Default: \code{"\\.git"}, \code{"\\.Rproj\\.user"},
-\code{"\\.Rhistory"}, \code{"\\.RData"} & \code{"\\.Ruserdata"}}
+detected in a file name they are not uploaded. Default: \code{"\\\\.git"}, \code{"\\\\.Rproj\\\\.user"},
+\code{"\\\\.Rhistory"}, \code{"\\\\.RData"} & \code{"\\\\.Ruserdata"}}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

@@ -34,7 +34,7 @@ test_that("gh_projects returns a tibble describing the projects", {
 
 #  FUNCTION: gh_column ------------------------------------------------------------------------
 test_that("gh_column returns a list describing the column", {
-  column <- gh_column(1310204)
+  column <- suppressWarnings(gh_column(1310204))
   expect_is(column, "list")
   expect_named(
     column,
@@ -44,7 +44,7 @@ test_that("gh_column returns a list describing the column", {
 
 #  FUNCTION: gh_columns -----------------------------------------------------------------------
 test_that("gh_columns returns a tibble describing the columns", {
-  columns <- gh_columns(747228)
+  columns <- suppressWarnings(gh_columns(747228))
   expect_is(columns, "tbl")
 
   expect_identical(

@@ -4,9 +4,19 @@
 \alias{create_files}
 \title{Create a new files}
 \usage{
-create_files(paths, contents, messages, branches, parents, committer,
-  author, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+create_files(
+  paths,
+  contents,
+  messages,
+  branches,
+  parents,
+  committer,
+  author,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(character) The paths to the files in the repository.}

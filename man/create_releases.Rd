@@ -4,9 +4,18 @@
 \alias{create_releases}
 \title{Create releases at specified commits.}
 \usage{
-create_releases(tags, commits, names, bodies, repo, draft = FALSE,
-  prerelease = FALSE, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+create_releases(
+  tags,
+  commits,
+  names,
+  bodies,
+  repo,
+  draft = FALSE,
+  prerelease = FALSE,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{tags}{(character) The tag names.}

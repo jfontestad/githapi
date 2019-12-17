@@ -4,9 +4,14 @@
 \alias{view_trees}
 \title{View information about Git trees}
 \usage{
-view_trees(shas, repo, recursive = TRUE,
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+view_trees(
+  shas,
+  repo,
+  recursive = TRUE,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{shas}{(character) The SHAs of the trees.}

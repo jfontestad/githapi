@@ -4,8 +4,14 @@
 \alias{gh_source}
 \title{Source an R file}
 \usage{
-gh_source(file, repo, ref = "master", token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_source(
+  file,
+  repo,
+  ref = "master",
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{file}{(string) The path to the file in the repository}
@@ -19,7 +25,7 @@ is specified the head commit is used. Default: "master".}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[base:source]{base::source()}}.}
 }

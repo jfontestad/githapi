@@ -4,8 +4,13 @@
 \alias{gh_gist_comments}
 \title{List comments on a gist}
 \usage{
-gh_gist_comments(gist, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_gist_comments(
+  gist,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{gist}{(string) The ID of the gist in GitHub.}
@@ -16,7 +21,7 @@ gh_gist_comments(gist, n_max = 1000L, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

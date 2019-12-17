@@ -4,8 +4,7 @@
 \alias{gh_event}
 \title{Get a single event}
 \usage{
-gh_event(event, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_event(event, repo, token = gh_token(), api = getOption("github.api"), ...)
 }
 \arguments{
 \item{event}{(integer) The ID assigned to the event in GitHub.}
@@ -16,7 +15,7 @@ gh_event(event, repo, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

@@ -4,8 +4,14 @@
 \alias{create_branches}
 \title{Create branches at specified commits.}
 \usage{
-create_branches(branches, shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+create_branches(
+  branches,
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{branches}{(character) The branch names.}

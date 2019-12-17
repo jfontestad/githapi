@@ -4,8 +4,13 @@
 \alias{gh_milestone}
 \title{Get a single milestone}
 \usage{
-gh_milestone(milestone, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_milestone(
+  milestone,
+  repo,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{milestone}{(integer) The number assigned to the milestone.}
@@ -16,7 +21,7 @@ gh_milestone(milestone, repo, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

@@ -4,8 +4,13 @@
 \alias{view_shas}
 \title{Look up the SHA-1 of commit references}
 \usage{
-view_shas(refs, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+view_shas(
+  refs,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{refs}{(character) Git references: either tags or branches. If a branch is specified

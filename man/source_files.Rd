@@ -4,8 +4,14 @@
 \alias{source_files}
 \title{Source R files from a GitHub repository}
 \usage{
-source_files(paths, ref, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+source_files(
+  paths,
+  ref,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(string) The paths to the files in the repository.}

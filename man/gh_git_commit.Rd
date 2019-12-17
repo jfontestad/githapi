@@ -4,8 +4,13 @@
 \alias{gh_git_commit}
 \title{Get a commit}
 \usage{
-gh_git_commit(sha, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_git_commit(
+  sha,
+  repo,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{sha}{(string) The SHA-1 of the commit.}
@@ -16,7 +21,7 @@ gh_git_commit(sha, repo, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

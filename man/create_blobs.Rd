@@ -4,9 +4,14 @@
 \alias{create_blobs}
 \title{Create blobs (files).}
 \usage{
-create_blobs(contents, repo, encoding = "utf-8",
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+create_blobs(
+  contents,
+  repo,
+  encoding = "utf-8",
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{contents}{(character) The contents of the files.}

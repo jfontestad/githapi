@@ -18,7 +18,13 @@ properties <- list(
     creator    = c("creator", "login",        as = "character"),
     created_at = c("created_at",              as = "datetime"),
     updated_at = c("updated_at",              as = "datetime"),
-    html_url   = c("html_url",                as = "character"))
+    html_url   = c("html_url",                as = "character")),
+
+  column = list(
+    id         = c("id",                      as = "integer"),
+    name       = c("name",                    as = "character"),
+    created_at = c("created_at",              as = "datetime"),
+    updated_at = c("updated_at",              as = "datetime"))
 
 )
 
@@ -34,6 +40,9 @@ values <- list(
 
   project = list(
     state      = c("open", "closed", "all"),
-    permission = c("read", "write", "admin", "none"))
+    permission = c("read", "write", "admin", "none")),
+
+  column = list(
+    position   = c("first", "last"))
 
 )

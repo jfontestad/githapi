@@ -4,8 +4,13 @@
 \alias{trees_exist}
 \title{Determine whether a tree exists in the specified repository.}
 \usage{
-trees_exist(shas, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+trees_exist(
+  shas,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{shas}{(character) The SHAs of the trees.}

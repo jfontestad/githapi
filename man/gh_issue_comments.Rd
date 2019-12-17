@@ -4,8 +4,15 @@
 \alias{gh_issue_comments}
 \title{List comments on an issue}
 \usage{
-gh_issue_comments(issue, repo, since = NULL, n_max = 1000L,
-  token = gh_token(), api = getOption("github.api"), ...)
+gh_issue_comments(
+  issue,
+  repo,
+  since = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{issue}{(integer) The number assigned to the issue.}
@@ -21,7 +28,7 @@ timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.}
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

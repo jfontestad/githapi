@@ -4,11 +4,21 @@
 \alias{upload_commit}
 \title{Upload a directory of files and create a commit on a branch}
 \usage{
-upload_commit(branch, message, path, parents, committer, author, repo,
-  replace = TRUE, ignore = c("\\\\.git", "\\\\.Rproj\\\\.user",
-  "\\\\.Rhistory", "\\\\.RData", "\\\\.Ruserdata"),
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+upload_commit(
+  branch,
+  message,
+  path,
+  parents,
+  committer,
+  author,
+  repo,
+  replace = TRUE,
+  ignore = c("\\\\.git", "\\\\.Rproj\\\\.user", "\\\\.Rhistory", "\\\\.RData",
+    "\\\\.Ruserdata"),
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{branch}{(string) The name of the branch to set the commit as head.}
@@ -36,8 +46,8 @@ If not specified then the authenticated user is used.}
 just update the files within the directory (see description). Default: \code{TRUE}.}
 
 \item{ignore}{(character) A character vector of regular expressions. If any of these are
-detected in a file name they are not uploaded. Default: \code{"\\.git"}, \code{"\\.Rproj\\.user"},
-\code{"\\.Rhistory"}, \code{"\\.RData"} & \code{"\\.Ruserdata"}}
+detected in a file name they are not uploaded. Default: \code{"\\\\.git"}, \code{"\\\\.Rproj\\\\.user"},
+\code{"\\\\.Rhistory"}, \code{"\\\\.RData"} & \code{"\\\\.Ruserdata"}}
 
 \item{token}{(string, optional) The personal access token for GitHub authorisation. Default:
 value stored in the environment variable \code{GITHUB_TOKEN} (or \code{GITHUB_PAT}) or in the

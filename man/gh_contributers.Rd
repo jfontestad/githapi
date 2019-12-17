@@ -4,8 +4,14 @@
 \alias{gh_contributers}
 \title{List contributors}
 \usage{
-gh_contributers(repo, anon = NULL, n_max = 1000L, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_contributers(
+  repo,
+  anon = NULL,
+  n_max = 1000L,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
@@ -18,7 +24,7 @@ gh_contributers(repo, anon = NULL, n_max = 1000L, token = gh_token(),
 value stored in the environment variable \code{GITHUB_TOKEN} or \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }

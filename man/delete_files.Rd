@@ -4,9 +4,17 @@
 \alias{delete_files}
 \title{Delete files.}
 \usage{
-delete_files(paths, messages, branches, committer, author, repo,
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+delete_files(
+  paths,
+  messages,
+  branches,
+  committer,
+  author,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(character) The paths to the files in the repository.}

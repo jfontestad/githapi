@@ -4,8 +4,14 @@
 \alias{gh_compare_files}
 \title{Compare the files of two commits}
 \usage{
-gh_compare_files(base, head, repo, token = gh_token(),
-  api = getOption("github.api"), ...)
+gh_compare_files(
+  base,
+  head,
+  repo,
+  token = gh_token(),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{base}{(string) The base branch name.}
@@ -19,7 +25,7 @@ Default: value stored in the environment variable \code{GITHUB_TOKEN} or
 \code{GITHUB_PAT}.}
 
 \item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \code{https://api.github.com}.}
+environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_get]{gh_get()}}.}
 }

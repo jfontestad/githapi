@@ -4,8 +4,13 @@
 \alias{delete_tags}
 \title{Delete tags.}
 \usage{
-delete_tags(tags, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+delete_tags(
+  tags,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{tags}{(character) The tag names.}

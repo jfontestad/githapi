@@ -4,9 +4,17 @@
 \alias{create_tree}
 \title{Create a tree.}
 \usage{
-create_tree(paths, modes, types, shas, repo, base_tree,
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+create_tree(
+  paths,
+  modes,
+  types,
+  shas,
+  repo,
+  base_tree,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(character) The paths to the files or directories.}

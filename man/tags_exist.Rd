@@ -4,8 +4,13 @@
 \alias{tags_exist}
 \title{Determine whether tags exist in the specified repository.}
 \usage{
-tags_exist(tags, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+tags_exist(
+  tags,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{tags}{(character) The names of the tags.}

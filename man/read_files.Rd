@@ -4,8 +4,14 @@
 \alias{read_files}
 \title{Read the contents of text files}
 \usage{
-read_files(paths, ref, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+read_files(
+  paths,
+  ref,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(string) The paths to the files.}

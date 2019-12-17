@@ -4,8 +4,13 @@
 \alias{branches_exist}
 \title{Determine whether branches exist in the specified repository.}
 \usage{
-branches_exist(branches, repo, token = getOption("github.token"),
-  api = getOption("github.api"), ...)
+branches_exist(
+  branches,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{branches}{(character) The name of the branch.}

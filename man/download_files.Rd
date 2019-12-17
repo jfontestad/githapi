@@ -4,9 +4,15 @@
 \alias{download_files}
 \title{Download files and save them to a location}
 \usage{
-download_files(paths, location, ref, repo,
-  token = getOption("github.token"), api = getOption("github.api"),
-  ...)
+download_files(
+  paths,
+  location,
+  ref,
+  repo,
+  token = getOption("github.token"),
+  api = getOption("github.api"),
+  ...
+)
 }
 \arguments{
 \item{paths}{(string) The paths to the files in the repository.}
