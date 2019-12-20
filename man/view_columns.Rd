@@ -28,7 +28,7 @@ view_column(column, project, repo, user, org, ...)
 \code{view_columns()} returns a tibble of column properties. \code{view_column()}
 returns a list of properties for a single column.
 
-\strong{column Properties:}
+\strong{Column Properties:}
 \itemize{
 \item \strong{id}: The ID of the column.
 \item \strong{name}: The name given to the column.
@@ -85,6 +85,9 @@ For more details see the GitHub API documentation:
     column  = "Test column",
     project = "Test columns",
     org     = "HairyCoos")
+
+  # View column by ID
+  view_column(123456)
 }
 
 }

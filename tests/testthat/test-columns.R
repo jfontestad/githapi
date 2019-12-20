@@ -81,7 +81,14 @@ test_that("move_column changes the position of a column", {
     project  = "Test columns",
     repo     = "ChadGoymer/test-githapi")
 
+  expect_is(first_column, "list")
   expect_identical(attr(first_column, "status"), 201L)
+  expect_identical(
+    map_chr(first_column, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
 
   last_column <- move_column(
     column   = "Test column 2",
@@ -89,15 +96,29 @@ test_that("move_column changes the position of a column", {
     project  = "Test columns",
     repo     = "ChadGoymer/test-githapi")
 
+  expect_is(last_column, "list")
   expect_identical(attr(last_column, "status"), 201L)
+  expect_identical(
+    map_chr(last_column, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
 
-  after_column2 <- move_column(
+  after_column <- move_column(
     column  = "Updated test column",
     after   = "Test column 2",
     project = "Test columns",
     repo    = "ChadGoymer/test-githapi")
 
-  expect_identical(attr(after_column2, "status"), 201L)
+  expect_is(after_column, "list")
+  expect_identical(attr(after_column, "status"), 201L)
+  expect_identical(
+    map_chr(after_column, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
 
 })
 
@@ -149,6 +170,19 @@ test_that("view_column returns a list of column properties", {
       updated_at = "POSIXct"))
 
   expect_identical(column$name, "Updated test column")
+
+  column_by_id <- view_column(column = column$id)
+
+  expect_is(column_by_id, "list")
+  expect_identical(attr(column_by_id, "status"), 200L)
+  expect_identical(
+    map_chr(column_by_id, ~ class(.)[[1]]),
+    c(id         = "integer",
+      name       = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(column_by_id$id, column$id)
 
 })
 

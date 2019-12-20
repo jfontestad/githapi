@@ -26,12 +26,13 @@ move_column(column, position, after, project, repo, user, org, ...)
 
 \item{position}{(string, optional) Either \code{"first"} or \code{"last"}.}
 
-\item{after}{(integer or string) An ID or name of another column to place this one after.}
+\item{after}{(integer or string, optional) An ID or name of another column to place this
+one after.}
 }
 \value{
 \code{update_column()} returns a list of the column properties.
 
-\strong{column Properties:}
+\strong{Column Properties:}
 \itemize{
 \item \strong{id}: The ID of the column.
 \item \strong{name}: The name given to the column.
