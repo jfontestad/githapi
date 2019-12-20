@@ -317,3 +317,107 @@ move_card <- function(
   info("Done", level = 7)
   card_gh
 }
+
+
+#  FUNCTION: view_cards --------------------------------------------------------------------
+#
+#' View cards within a GitHub project
+#'
+#' `view_cards()` summarises cards in a table with the properties as cards and a row
+#' for each card in a column of a project. `view_card()` returns a list of all properties
+#' for a single card.
+#'
+#' You can summarise all the cards of a project associated with either a repository, user
+#' or organisation, by supplying them as an input.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/cards/#list-project-cards>
+#' - <https://developer.github.com/v3/projects/cards/#get-a-project-card>
+#'
+#' @param card (integer) The ID of the card.
+#' @param column (integer or string) Either the ID or name of the column.
+#' @param project (integer or string) Either the project number or name.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_cards()` returns a tibble of card properties. `view_card()`
+#'   returns a list of properties for a single card.
+#'
+#' **Card Properties:**
+#'
+#' - **id**: The ID of the card.
+#' - **content_id**: The ID of the issue or pull request.
+#' - **note**: The content of a note.
+#' - **archived**: Whether the card has been archived.
+#' - **creator**: The creator of the note.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'   # View cards in a repository project
+#'   cards <- view_cards(
+#'     column  = "Test cards",
+#'     project = "Test cards",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # View cards in a user's project
+#'   cards <- view_cards(
+#'     column  = "Test cards",
+#'     project = "Test cards",
+#'     user    = "ChadGoymer")
+#'
+#'   # View cards in an organisation's project
+#'   view_card(
+#'   cards <- view_cards(
+#'     column  = "Test cards",
+#'     project = "Test cards",
+#'     org     = "HairyCoos")
+#'
+#'   # View a single card
+#'   view_card(card = 123456)
+#' }
+#'
+#' @export
+#'
+view_cards <- function(
+  column,
+  project,
+  repo,
+  user,
+  org,
+  n_max = 1000,
+  ...)
+{
+  column <- view_column(
+    column  = column,
+    project = project,
+    repo    = repo,
+    user    = user,
+    org     = org,
+    ...)
+
+  info("Viewing cards in column '", column$name, "'")
+  cards_lst <- gh_url("projects/columns", column$id, "cards") %>%
+    gh_page(
+      accept = "application/vnd.github.inertia-preview+json",
+      n_max  = n_max,
+      ...)
+
+  info("Transforming results", level = 4)
+  cards_gh <- bind_properties(cards_lst, properties$card) %>%
+    mutate(content_id = as.integer(basename(.data$content_url))) %>%
+    select("id", "content_id", everything(), -"content_url") %>%
+    structure(
+      class   = c("github", class(.)),
+      url     = attr(cards_lst, "url"),
+      request = attr(cards_lst, "request"),
+      status  = attr(cards_lst, "status"),
+      header  = attr(cards_lst, "header"))
+
+  info("Done", level = 7)
+  cards_gh
+}

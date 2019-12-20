@@ -263,3 +263,30 @@ test_that("move_card throws an error in invalid arguments are supplied", {
     "Either 'position' or 'after' must be supplied")
 
 })
+
+
+# TEST: view_cards -------------------------------------------------------------------------
+
+test_that("view_cards returns a tibble summarising the cards", {
+
+  cards <- view_cards(
+    column  = "Test cards",
+    project = "Test cards",
+    repo    = "ChadGoymer/test-githapi")
+
+  expect_is(cards, "tbl")
+  expect_identical(attr(cards, "status"), 200L)
+  expect_identical(
+    map_chr(cards, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_true(2L %in% cards$content_id)
+  expect_true("Note Title\nThis is an updated note" %in% cards$note)
+
+})
