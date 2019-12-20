@@ -133,3 +133,114 @@ create_card <- function(
   info("Done", level = 7)
   card_gh
 }
+
+
+#  FUNCTION: update_card -------------------------------------------------------------------
+#
+#' Update a card in a GitHub project
+#'
+#' `update_card()` can be used to change a card's note in a project in GitHub or archive it.
+#' `move_card()` can be used to reorder the cards or move them to other columns.
+#'
+#' You can update a card associated with either a repository, user or organisation, by
+#' supplying them as an input, as long as you have appropriate permissions.
+#'
+#' You can move a card by either specifying the position, either `"top"` or `"bottom"`,
+#' by specifying another card to place it after, or by specifying a column to move it to.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/cards/#update-a-project-card>
+#' - <https://developer.github.com/v3/projects/cards/#move-a-project-card>
+#'
+#' @param card (integer) The ID of the card.
+#' @param note (string, optional) The new note for the card.
+#' @param archived (boolean, optional) Whether to archive the card.
+#' @param position (string, optional) Either `"top"` or `"bottom"`.
+#' @param after (integer, optional) An ID of another card to place this one after.
+#' @param column (integer or string, optional) Either the ID or name of the column.
+#' @param project (integer or string) Either the project number or name. Only required
+#'   if moving the column.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_card()` returns a list of the card properties.
+#'
+#' **Card Properties:**
+#'
+#' - **id**: The ID of the card.
+#' - **content_id**: The ID of the issue or pull request.
+#' - **note**: The content of a note.
+#' - **archived**: Whether the card has been archived.
+#' - **creator**: The creator of the note.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update a note in a card
+#'   update_card(card = 123456, note = "This is an updated note")
+#'
+#'   # Archive a card
+#'   update_card(card = 654321, archived = TRUE)
+#'
+#'   # Move a card to the top of a column
+#'   move_card(card = 123456, position = "top")
+#'
+#'   # Move a card after another card
+#'   move_card(card  = 123456, after = 654321)
+#'
+#'   # Move card to another column
+#'   move_card(
+#'     card     = 123456,
+#'     position = "top",
+#'     column   = "Test column 2",
+#'     project  = "Test project",
+#'     repo     = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+update_card <- function(
+  card,
+  note,
+  archived,
+  ...)
+{
+  payload <- list()
+
+  if (!missing(note))
+  {
+    assert(is_scalar_character(note), "'note' must be a string:\n  ", note)
+    payload <- list(note = note)
+  }
+
+  if (!missing(archived))
+  {
+    assert(is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
+    payload <- c(payload, archived = archived)
+  }
+
+  info("Updating card '", card, "'")
+  card_lst <- gh_url("projects/columns/cards", card) %>%
+    gh_request(
+      type    = "PATCH",
+      payload = payload,
+      accept  = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Transforming results", level = 4)
+  card_gh <- select_properties(card_lst, properties$card) %>%
+    append(list(content_id   = as.integer(basename(.$content_url))), after = 1) %>%
+    discard(names(.) == "content_url") %>%
+    structure(
+      class   = class(card_lst),
+      url     = attr(card_lst, "url"),
+      request = attr(card_lst, "request"),
+      status  = attr(card_lst, "status"),
+      header  = attr(card_lst, "header"))
+
+  info("Done", level = 7)
+  card_gh
+}

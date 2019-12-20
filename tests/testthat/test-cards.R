@@ -112,3 +112,69 @@ test_that("create_card throws an error in invalid arguments are supplied", {
     "Either 'content_id' or 'note' must be supplied")
 
 })
+
+
+# TEST: update_card ------------------------------------------------------------------------
+
+suppressMessages({
+  cards <- view_cards(
+    column  = "Test cards",
+    project = "Test cards",
+    repo    = "ChadGoymer/test-githapi")
+})
+
+issue_card_id <- filter(cards, .data$content_id == 1) %>% pull(id)
+pull_card_id  <- filter(cards, .data$content_id == 2) %>% pull(id)
+note_card_id  <- filter(cards, is.na(.data$content_id)) %>% pull(id)
+
+test_that("update_card updates a card and returns a list of the new properties", {
+
+  archived_card <- update_card(card = issue_card_id, archived = TRUE)
+
+  expect_is(archived_card, "list")
+  expect_identical(attr(archived_card, "status"), 200L)
+  expect_identical(
+    map_chr(archived_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_true(archived_card$archived)
+
+  unarchived_card <- update_card(card = issue_card_id, archived = FALSE)
+
+  expect_is(unarchived_card, "list")
+  expect_identical(attr(unarchived_card, "status"), 200L)
+  expect_identical(
+    map_chr(unarchived_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_false(unarchived_card$archived)
+
+  note_card <- update_card(card = note_card_id, note = "Note Title\nThis is an updated note")
+
+  expect_is(note_card, "list")
+  expect_identical(attr(note_card, "status"), 200L)
+  expect_identical(
+    map_chr(note_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(note_card$note, "Note Title\nThis is an updated note")
+
+})
