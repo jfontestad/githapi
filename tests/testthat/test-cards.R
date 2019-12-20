@@ -290,3 +290,58 @@ test_that("view_cards returns a tibble summarising the cards", {
   expect_true("Note Title\nThis is an updated note" %in% cards$note)
 
 })
+
+
+# TEST: view_card --------------------------------------------------------------------------
+
+test_that("view_card returns a list of card properties", {
+
+  issue_card <- view_card(card = cards$id[[3]])
+
+  expect_is(issue_card, "list")
+  expect_identical(attr(issue_card, "status"), 200L)
+  expect_identical(
+    map_chr(issue_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(issue_card$content_id, 1L)
+
+  pull_card <- view_card(card = cards$id[[2]])
+
+  expect_is(pull_card, "list")
+  expect_identical(attr(pull_card, "status"), 200L)
+  expect_identical(
+    map_chr(pull_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(pull_card$content_id, 2L)
+
+  note_card <- view_card(card = cards$id[[1]])
+
+  expect_is(note_card, "list")
+  expect_identical(attr(note_card, "status"), 200L)
+  expect_identical(
+    map_chr(note_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(note_card$note, "Note Title\nThis is an updated note")
+
+})

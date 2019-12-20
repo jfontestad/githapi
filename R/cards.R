@@ -421,3 +421,37 @@ view_cards <- function(
   info("Done", level = 7)
   cards_gh
 }
+
+
+#  FUNCTION: view_card ---------------------------------------------------------------------
+#
+#' @rdname view_cards
+#' @export
+#'
+view_card <- function(
+  card,
+  ...)
+{
+  assert(is_scalar_integerish(card), "'card' must be an integer:\n  ", card)
+
+  info("Viewing card '", card, "'")
+  card_lst <- gh_url("projects/columns/cards", card) %>%
+    gh_request(
+      type   = "GET",
+      accept = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Transforming results", level = 4)
+  card_gh <- select_properties(card_lst, properties$card) %>%
+    append(list(content_id   = as.integer(basename(.$content_url))), after = 1) %>%
+    discard(names(.) == "content_url") %>%
+    structure(
+      class   = class(card_lst),
+      url     = attr(card_lst, "url"),
+      request = attr(card_lst, "request"),
+      status  = attr(card_lst, "status"),
+      header  = attr(card_lst, "header"))
+
+  info("Done", level = 7)
+  card_gh
+}
