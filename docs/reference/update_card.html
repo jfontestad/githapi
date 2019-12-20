@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View columns within a GitHub project — view_columns • githapi</title>
+<title>Update a card in a GitHub project — update_card • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="View columns within a GitHub project — view_columns" />
-<meta property="og:description" content="view_columns() summarises columns in a table with the properties as columns and a row
-for each column in the project. view_column() returns a list of all properties for a
-single column." />
+<meta property="og:title" content="Update a card in a GitHub project — update_card" />
+<meta property="og:description" content="update_card() can be used to change a card's note in a project in GitHub or archive it.
+move_card() can be used to reorder the cards or move them to other columns." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,27 +109,55 @@ single column." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View columns within a GitHub project</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/columns.R'><code>R/columns.R</code></a></small>
-    <div class="hidden name"><code>view_columns.Rd</code></div>
+    <h1>Update a card in a GitHub project</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/cards.R'><code>R/cards.R</code></a></small>
+    <div class="hidden name"><code>update_card.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>view_columns()</code> summarises columns in a table with the properties as columns and a row
-for each column in the project. <code>view_column()</code> returns a list of all properties for a
-single column.</p>
+    <p><code>update_card()</code> can be used to change a card's note in a project in GitHub or archive it.
+<code>move_card()</code> can be used to reorder the cards or move them to other columns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_columns</span>(<span class='no'>project</span>, <span class='no'>repo</span>, <span class='no'>user</span>, <span class='no'>org</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>update_card</span>(<span class='no'>card</span>, <span class='no'>note</span>, <span class='no'>archived</span>, <span class='no'>...</span>)
 
-<span class='fu'>view_column</span>(<span class='no'>column</span>, <span class='no'>project</span>, <span class='no'>repo</span>, <span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>move_card</span>(<span class='no'>card</span>, <span class='no'>position</span>, <span class='no'>after</span>, <span class='no'>column</span>, <span class='no'>project</span>, <span class='no'>repo</span>, <span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>card</th>
+      <td><p>(integer) The ID of the card.</p></td>
+    </tr>
+    <tr>
+      <th>note</th>
+      <td><p>(string, optional) The new note for the card.</p></td>
+    </tr>
+    <tr>
+      <th>archived</th>
+      <td><p>(boolean, optional) Whether to archive the card.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>position</th>
+      <td><p>(string, optional) Either <code>"top"</code> or <code>"bottom"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>after</th>
+      <td><p>(integer, optional) An ID of another card to place this one after.</p></td>
+    </tr>
+    <tr>
+      <th>column</th>
+      <td><p>(integer or string, optional) Either the ID or name of the column.</p></td>
+    </tr>
+    <tr>
       <th>project</th>
-      <td><p>(integer or string) Either the project number or name.</p></td>
+      <td><p>(integer or string) Either the project number or name. Only required
+if moving the column.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -144,78 +171,54 @@ single column.</p>
       <th>org</th>
       <td><p>(string, optional) The name of the organization.</p></td>
     </tr>
-    <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: <code>1000</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>column</th>
-      <td><p>(integer or string) The number or name of the column.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_columns()</code> returns a tibble of column properties. <code>view_column()</code>
-returns a list of properties for a single column.</p>
-<p><strong>Column Properties:</strong></p><ul>
-<li><p><strong>id</strong>: The ID of the column.</p></li>
-<li><p><strong>name</strong>: The name given to the column.</p></li>
+    <p><code>update_card()</code> returns a list of the card properties.</p>
+<p><strong>Card Properties:</strong></p><ul>
+<li><p><strong>id</strong>: The ID of the card.</p></li>
+<li><p><strong>content_id</strong>: The ID of the issue or pull request.</p></li>
+<li><p><strong>note</strong>: The content of a note.</p></li>
+<li><p><strong>archived</strong>: Whether the card has been archived.</p></li>
+<li><p><strong>creator</strong>: The creator of the note.</p></li>
 <li><p><strong>created_at</strong>: When it was created.</p></li>
 <li><p><strong>updated_at</strong>: When it was last updated.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the columns of a project associated with either a repository, user
-or organisation, by supplying them as an input.</p>
+    <p>You can update a card associated with either a repository, user or organisation, by
+supplying them as an input, as long as you have appropriate permissions.</p>
+<p>You can move a card by either specifying the position, either <code>"top"</code> or <code>"bottom"</code>,
+by specifying another card to place it after, or by specifying a column to move it to.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/projects/columns/#list-project-columns'>https://developer.github.com/v3/projects/columns/#list-project-columns</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/columns/#get-a-project-column'>https://developer.github.com/v3/projects/columns/#get-a-project-column</a></p></li>
+<li><p><a href='https://developer.github.com/v3/projects/cards/#update-a-project-card'>https://developer.github.com/v3/projects/cards/#update-a-project-card</a></p></li>
+<li><p><a href='https://developer.github.com/v3/projects/cards/#move-a-project-card'>https://developer.github.com/v3/projects/cards/#move-a-project-card</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='co'># View columns in a repository project</span>
-  <span class='fu'>view_columns</span>(
-    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test columns"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='co'># Update a note in a card</span>
+  <span class='fu'>update_card</span>(<span class='kw'>card</span> <span class='kw'>=</span> <span class='fl'>123456</span>, <span class='kw'>note</span> <span class='kw'>=</span> <span class='st'>"This is an updated note"</span>)
 
-  <span class='co'># View columns in a user's project</span>
-  <span class='fu'>view_columns</span>(
-    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test columns"</span>,
-    <span class='kw'>user</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+  <span class='co'># Archive a card</span>
+  <span class='fu'>update_card</span>(<span class='kw'>card</span> <span class='kw'>=</span> <span class='fl'>654321</span>, <span class='kw'>archived</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-  <span class='co'># View columns in an organisation's project</span>
-  <span class='fu'>view_column</span>(
-    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test columns"</span>,
-    <span class='kw'>org</span>     <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='co'># Move a card to the top of a column</span>
+  <span class='fu'>move_card</span>(<span class='kw'>card</span> <span class='kw'>=</span> <span class='fl'>123456</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"top"</span>)
 
-  <span class='co'># View a column in a repository project</span>
-  <span class='fu'>view_column</span>(
-    <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test column"</span>,
-    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test columns"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='co'># Move a card after another card</span>
+  <span class='fu'>move_card</span>(<span class='kw'>card</span>  <span class='kw'>=</span> <span class='fl'>123456</span>, <span class='kw'>after</span> <span class='kw'>=</span> <span class='fl'>654321</span>)
 
-  <span class='co'># View a column in a user's project</span>
-  <span class='fu'>view_column</span>(
-    <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test column"</span>,
-    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test columns"</span>,
-    <span class='kw'>user</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
-
-  <span class='co'># View a column in an organisation's project</span>
-  <span class='fu'>view_column</span>(
-    <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test column"</span>,
-    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test columns"</span>,
-    <span class='kw'>org</span>     <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
-
-  <span class='co'># View column by ID</span>
-  <span class='fu'>view_column</span>(<span class='fl'>123456</span>)
+  <span class='co'># Move card to another column</span>
+  <span class='fu'>move_card</span>(
+    <span class='kw'>card</span>     <span class='kw'>=</span> <span class='fl'>123456</span>,
+    <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
+    <span class='kw'>column</span>   <span class='kw'>=</span> <span class='st'>"Test column 2"</span>,
+    <span class='kw'>project</span>  <span class='kw'>=</span> <span class='st'>"Test project"</span>,
+    <span class='kw'>repo</span>     <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
