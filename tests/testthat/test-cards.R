@@ -345,3 +345,28 @@ test_that("view_card returns a list of card properties", {
   expect_identical(note_card$note, "Note Title\nThis is an updated note")
 
 })
+
+
+# TEST: delete_card ------------------------------------------------------------------------
+
+test_that("delete_card deletes the cards and returns TRUE", {
+
+  issue_card <- delete_card(issue_card_id)
+
+  expect_is(issue_card, "logical")
+  expect_identical(attr(issue_card, "status"), 204L)
+  expect_identical(as.logical(issue_card), TRUE)
+
+  pull_card <- delete_card(pull_card_id)
+
+  expect_is(pull_card, "logical")
+  expect_identical(attr(pull_card, "status"), 204L)
+  expect_identical(as.logical(pull_card), TRUE)
+
+  note_card <- delete_card(note_card_id)
+
+  expect_is(note_card, "logical")
+  expect_identical(attr(note_card, "status"), 204L)
+  expect_identical(as.logical(note_card), TRUE)
+
+})

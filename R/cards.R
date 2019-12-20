@@ -455,3 +455,51 @@ view_card <- function(
   info("Done", level = 7)
   card_gh
 }
+
+
+#  FUNCTION: delete_card -------------------------------------------------------------------
+#
+#' Delete a card in a GitHub project
+#'
+#' This function deletes a card in a GitHub project. Care should be taken as it will not be
+#' recoverable. Instead, you may way to archive the card with [update_card()].
+#'
+#' You can delete a card associated with either a repository, user or organisation, by
+#' supplying them as an input, as long as you have appropriate permissions.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/projects/cards/#delete-a-project-card>
+#'
+#' @param card (integer) The ID of the card.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_card()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   # Delete a card
+#'   delete_card(123456)
+#' }
+#'
+#' @export
+#'
+delete_card <- function(
+  card,
+  ...)
+{
+  info("Deleting card '", card, "'")
+  response <- gh_url("projects/columns/cards", card) %>%
+    gh_request(
+      type   = "DELETE",
+      accept = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
