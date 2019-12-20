@@ -244,3 +244,76 @@ update_card <- function(
   info("Done", level = 7)
   card_gh
 }
+
+
+#  FUNCTION: move_card ----------------------------------------------------------------------
+#
+#' @rdname update_card
+#' @export
+#'
+move_card <- function(
+  card,
+  position,
+  after,
+  column,
+  project,
+  repo,
+  user,
+  org,
+  ...)
+{
+  payload <- list()
+
+  if (!missing(position))
+  {
+    assert(
+      is_scalar_character(position) && position %in% values$card$position,
+      "'position' must be one of '", str_c(values$card$position, collapse = "', '"), "':\n  ", position)
+
+    payload <- list(position = position)
+  }
+  else if (!missing(after))
+  {
+    assert(is_scalar_integerish(after), "'after' must be an integer:\n  ", after)
+
+    payload <- list(position = str_c("after:", after))
+  }
+  else
+  {
+    error("Either 'position' or 'after' must be supplied")
+  }
+
+  if (!missing(column))
+  {
+    column <- view_column(
+      column  = column,
+      project = project,
+      repo    = repo,
+      user    = user,
+      org     = org)
+
+    payload <- c(payload, column_id = column$id)
+  }
+
+  info("Moving card '", card, "'")
+  response <- gh_url("projects/columns/cards", card, "moves") %>%
+    gh_request(
+      type    = "POST",
+      payload = payload,
+      accept  = "application/vnd.github.inertia-preview+json",
+      ...)
+
+  card <- view_card(card)
+
+  info("Transforming results", level = 4)
+  card_gh <- structure(
+    card,
+    class   = class(card),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+
+  info("Done", level = 7)
+  card_gh
+}

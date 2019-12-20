@@ -178,3 +178,88 @@ test_that("update_card updates a card and returns a list of the new properties",
   expect_identical(note_card$note, "Note Title\nThis is an updated note")
 
 })
+
+
+# TEST: move_card ---------------------------------------------------------------------------
+
+test_that("move_card changes the position of a card", {
+
+  first_card <- move_card(card = issue_card_id, position = "top")
+
+  expect_is(first_card, "list")
+  expect_identical(attr(first_card, "status"), 201L)
+  expect_identical(
+    map_chr(first_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  last_card <- move_card(card = note_card_id, position = "bottom")
+
+  expect_is(last_card, "list")
+  expect_identical(attr(last_card, "status"), 201L)
+  expect_identical(
+    map_chr(last_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  after_card <- move_card(card  = pull_card_id, after = note_card_id)
+
+  expect_is(after_card, "list")
+  expect_identical(attr(after_card, "status"), 201L)
+  expect_identical(
+    map_chr(after_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+})
+
+test_that("move_card changes the column a card is in", {
+
+  column2 <- create_column(
+    name    = "Test cards 2",
+    project = "Test cards",
+    repo    = "ChadGoymer/test-githapi")
+
+  column_card <- move_card(
+    card     = issue_card_id,
+    position = "top",
+    column   = "Test cards 2",
+    project  = "Test cards",
+    repo     = "ChadGoymer/test-githapi")
+
+  expect_is(column_card, "list")
+  expect_identical(attr(column_card, "status"), 201L)
+  expect_identical(
+    map_chr(column_card, ~ class(.)[[1]]),
+    c(id         = "integer",
+      content_id = "integer",
+      note       = "character",
+      archived   = "logical",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+})
+
+test_that("move_card throws an error in invalid arguments are supplied", {
+
+  expect_error(
+    move_card(issue_card_id, repo = "ChadGoymer/test-githapi"),
+    "Either 'position' or 'after' must be supplied")
+
+})
