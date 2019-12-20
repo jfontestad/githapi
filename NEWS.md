@@ -1,3 +1,15 @@
+# githapi 0.9.6
+
+- Added `create_card()`
+- Added `update_card()`
+- Added `move_card()`
+- Added `view_cards()`
+- Added `view_card()`
+- Added `delete_card()`
+- Use direct URL in `view_column()` when given an ID
+- Added more detailed error message in `gh_request()`
+- Deprecated `gh_card()` and `gh_cards()`
+
 # githapi 0.9.5
 
 - Added `create_column()`
