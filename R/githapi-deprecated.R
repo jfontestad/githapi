@@ -42,6 +42,8 @@
 #' - [gh_projects()]: replace with [view_projects()]
 #' - [gh_column()]: replace with [view_column()]
 #' - [gh_columns()]: replace with [view_columns()]
+#' - [gh_card()]: replace with [view_card()]
+#' - [gh_cards()]: replace with [view_cards()]
 #'
 NULL
 

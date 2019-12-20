@@ -60,7 +60,7 @@ test_that("gh_columns returns a tibble describing the columns", {
 
 #  FUNCTION: gh_card --------------------------------------------------------------------------
 test_that("gh_card returns a list describing the card", {
-  card <- gh_card(4211067)
+  card <- suppressWarnings(gh_card(4211067))
   expect_is(card, "list")
   expect_named(
     card,
@@ -73,7 +73,7 @@ test_that("gh_card returns a list describing the card", {
 
 #  FUNCTION: gh_cards -------------------------------------------------------------------------
 test_that("gh_cards returns a tibble describing the cards", {
-  cards <- gh_cards(1310204)
+  cards <- suppressWarnings(gh_cards(1310204))
   expect_is(cards, "tbl")
 
   expect_identical(

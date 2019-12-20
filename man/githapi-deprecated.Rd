@@ -50,6 +50,8 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_projects]{gh_projects()}}: replace with \code{\link[=view_projects]{view_projects()}}
 \item \code{\link[=gh_column]{gh_column()}}: replace with \code{\link[=view_column]{view_column()}}
 \item \code{\link[=gh_columns]{gh_columns()}}: replace with \code{\link[=view_columns]{view_columns()}}
+\item \code{\link[=gh_card]{gh_card()}}: replace with \code{\link[=view_card]{view_card()}}
+\item \code{\link[=gh_cards]{gh_cards()}}: replace with \code{\link[=view_cards]{view_cards()}}
 }
 }
 
