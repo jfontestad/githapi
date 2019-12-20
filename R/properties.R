@@ -8,23 +8,32 @@
 properties <- list(
 
   project = list(
-    id         = c("id",                      as = "integer"),
-    number     = c("number",                  as = "integer"),
-    name       = c("name",                    as = "character"),
-    body       = c("body",                    as = "character"),
-    state      = c("state",                   as = "character"),
-    permission = c("organization_permission", as = "character"),
-    private    = c("private",                 as = "logical"),
-    creator    = c("creator", "login",        as = "character"),
-    created_at = c("created_at",              as = "datetime"),
-    updated_at = c("updated_at",              as = "datetime"),
-    html_url   = c("html_url",                as = "character")),
+    id          = c("id",                      as = "integer"),
+    number      = c("number",                  as = "integer"),
+    name        = c("name",                    as = "character"),
+    body        = c("body",                    as = "character"),
+    state       = c("state",                   as = "character"),
+    permission  = c("organization_permission", as = "character"),
+    private     = c("private",                 as = "logical"),
+    creator     = c("creator", "login",        as = "character"),
+    created_at  = c("created_at",              as = "datetime"),
+    updated_at  = c("updated_at",              as = "datetime"),
+    html_url    = c("html_url",                as = "character")),
 
   column = list(
-    id         = c("id",                      as = "integer"),
-    name       = c("name",                    as = "character"),
-    created_at = c("created_at",              as = "datetime"),
-    updated_at = c("updated_at",              as = "datetime"))
+    id          = c("id",                      as = "integer"),
+    name        = c("name",                    as = "character"),
+    created_at  = c("created_at",              as = "datetime"),
+    updated_at  = c("updated_at",              as = "datetime")),
+
+  card = list(
+    id          = c("id",                      as = "integer"),
+    note        = c("note",                    as = "character"),
+    archived    = c("archived",                as = "logical"),
+    creator     = c("creator", "login",        as = "character"),
+    created_at  = c("created_at",              as = "datetime"),
+    updated_at  = c("updated_at",              as = "datetime"),
+    content_url = c("content_url",             as = "character"))
 
 )
 
@@ -39,10 +48,15 @@ properties <- list(
 values <- list(
 
   project = list(
-    state      = c("open", "closed", "all"),
-    permission = c("read", "write", "admin", "none")),
+    state          = c("open", "closed", "all"),
+    permission     = c("read", "write", "admin", "none")),
 
   column = list(
-    position   = c("first", "last"))
+    position       = c("first", "last")),
+
+  card = list(
+    content_type   = c("Issue", "PullRequest"),
+    archived_state = c("archived", "not_archived", "all"),
+    position       = c("top", "bottom"))
 
 )
