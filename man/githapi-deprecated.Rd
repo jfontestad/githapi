@@ -55,4 +55,13 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
+\section{Organisations, teams and users}{
+
+\itemize{
+\item \code{\link[=gh_user]{gh_user()}}: replace with \code{\link[=view_user]{view_user()}}
+\item \code{\link[=gh_users]{gh_users()}}: replace with \code{\link[=view_users]{view_users()}}
+\item \code{\link[=gh_user_email]{gh_user_email()}}: is being removed
+}
+}
+
 \keyword{internal}
