@@ -2,9 +2,12 @@
 % Please edit documentation in R/users.R
 \name{view_users}
 \alias{view_users}
+\alias{view_user}
 \title{View users in GitHub}
 \usage{
 view_users(repo, org, team, n_max = 1000, ...)
+
+view_user(user, ...)
 }
 \arguments{
 \item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
@@ -47,6 +50,7 @@ For more details see the GitHub API documentation:
 \item \url{https://developer.github.com/v3/orgs/members/#members-list}
 \item \url{https://developer.github.com/v3/teams/members/#list-team-members}
 \item \url{https://developer.github.com/v3/users/#get-all-users}
+\item \url{https://developer.github.com/v3/users/#get-a-single-user}
 }
 }
 \examples{

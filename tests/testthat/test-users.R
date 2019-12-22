@@ -48,3 +48,24 @@ test_that("view_users returns a tibble summarising the users", {
   expect_true("ChadGoymer" %in% team_users$login)
 
 })
+
+
+# TEST: view_user -----------------------------------------------------------------------------
+
+test_that("view_user returns a list of user properties", {
+
+  user <- view_user("ChadGoymer")
+
+  expect_is(user, "list")
+  expect_identical(attr(user, "status"), 200L)
+  expect_identical(
+    map_chr(user, ~ class(.)[[1]]),
+    c(id          = "integer",
+      login       = "character",
+      type        = "character",
+      site_admin  = "logical",
+      html_url    = "character"))
+
+  expect_identical(user$login, "ChadGoymer")
+
+})

@@ -14,6 +14,7 @@
 #' - <https://developer.github.com/v3/orgs/members/#members-list>
 #' - <https://developer.github.com/v3/teams/members/#list-team-members>
 #' - <https://developer.github.com/v3/users/#get-all-users>
+#' - <https://developer.github.com/v3/users/#get-a-single-user>
 #'
 #' @param user (integer) The ID of the user.
 #' @param repo (string, optional) The repository specified in the format: `owner/repo`.
@@ -89,4 +90,26 @@ view_users <- function(
 
   info("Done", level = 7)
   users_gh
+}
+
+
+#  FUNCTION: view_user ---------------------------------------------------------------------
+#
+#' @rdname view_users
+#' @export
+#'
+view_user <- function(
+  user,
+  ...)
+{
+  assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+
+  info("Viewing user '", user, "'")
+  user_lst <- gh_url("users", user) %>% gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  user_gh <- select_properties(user_lst, properties$user)
+
+  info("Done", level = 7)
+  user_gh
 }
