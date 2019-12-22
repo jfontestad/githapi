@@ -45,6 +45,12 @@
 #' - [gh_card()]: replace with [view_card()]
 #' - [gh_cards()]: replace with [view_cards()]
 #'
+#' @section Organisations, teams and users
+#'
+#' - [gh_user()]: replace with [view_user()]
+#' - [gh_users()]: replace with [view_users()]
+#' - [gh_user_email()]: is being removed
+#'
 NULL
 
 #  FUNCTION: gh_get ---------------------------------------------------------------------------
