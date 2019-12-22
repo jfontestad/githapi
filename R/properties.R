@@ -33,7 +33,14 @@ properties <- list(
     creator     = c("creator", "login",        as = "character"),
     created_at  = c("created_at",              as = "datetime"),
     updated_at  = c("updated_at",              as = "datetime"),
-    content_url = c("content_url",             as = "character"))
+    content_url = c("content_url",             as = "character")),
+
+  user = list(
+    id          = c("id",                      as = "integer"),
+    login       = c("login",                   as = "character"),
+    type        = c("type",                    as = "character"),
+    site_admin  = c("site_admin",              as = "logical"),
+    html_url    = c("html_url",                as = "character"))
 
 )
 

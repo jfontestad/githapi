@@ -1,42 +1,50 @@
 context("users api")
 
-#  FUNCTION: gh_user --------------------------------------------------------------------------
-test_that("gh_user returns a list describing the user", {
-  user <- gh_user("ChadGoymer")
-  expect_identical(user$login, "ChadGoymer")
-  expect_identical(user$name, "Chad Goymer")
-  expect_identical(user$email, "chad.goymer@gmail.com")
-})
 
-test_that("gh_user returns an error is the specified user does not exist", {
-  expect_error(gh_user("SomeNameThatDoesNotExist"), "Specified user does not exist in GitHub: 'SomeNameThatDoesNotExist'")
-})
+# TEST: view_users -------------------------------------------------------------------------
 
-#  FUNCTION: gh_users -------------------------------------------------------------------------
-test_that("gh_users returns a tibble describing all the users", {
-  users <- gh_users(n_max = 100)
-  expect_is(users, "tbl")
-  expect_identical(nrow(users), 100L)
+test_that("view_users returns a tibble summarising the users", {
 
+  repo_users <- view_users(repo = "ChadGoymer/githapi")
+
+  expect_is(repo_users, "tbl")
+  expect_identical(attr(repo_users, "status"), 200L)
   expect_identical(
-    sapply(users, function(field) class(field)[[1]]),
-    c(login    = "character",
-      type     = "character",
-      html_url = "character",
-      url      = "character"))
-})
+    map_chr(repo_users, ~ class(.)[[1]]),
+    c(id          = "integer",
+      login       = "character",
+      type        = "character",
+      site_admin  = "logical",
+      html_url    = "character"))
 
-#  FUNCTION: gh_user_email --------------------------------------------------------------------
-test_that("gh_user_email returns the authenticated user's email addresses", {
-  email <- gh_user_email()
-  expect_is(email, "tbl")
+  expect_true("ChadGoymer" %in% repo_users$login)
 
+  org_users <- view_users(org = "HairyCoos")
+
+  expect_is(org_users, "tbl")
+  expect_identical(attr(org_users, "status"), 200L)
   expect_identical(
-    sapply(email, function(field) class(field)[[1]]),
-    c(email      = "character",
-      primary    = "logical",
-      verified   = "logical",
-      visibility = "character"))
+    map_chr(org_users, ~ class(.)[[1]]),
+    c(id          = "integer",
+      login       = "character",
+      type        = "character",
+      site_admin  = "logical",
+      html_url    = "character"))
 
-  expect_true("chad.goymer@gmail.com" %in% email$email)
+  expect_true("ChadGoymer" %in% org_users$login)
+
+  team_users <- view_users(org = "HairyCoos", team = "HeadCoos")
+
+  expect_is(team_users, "tbl")
+  expect_identical(attr(team_users, "status"), 200L)
+  expect_identical(
+    map_chr(team_users, ~ class(.)[[1]]),
+    c(id          = "integer",
+      login       = "character",
+      type        = "character",
+      site_admin  = "logical",
+      html_url    = "character"))
+
+  expect_true("ChadGoymer" %in% team_users$login)
+
 })
