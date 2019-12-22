@@ -82,11 +82,10 @@ create_card <- function(
       is_scalar_character(content_type) && content_type %in% values$card$content_type,
       "'content_type' must be one of '", str_c(values$card$content_type, collapse = "', '"), "':\n  ", content_type)
 
-    # TODO: replace with view_issue() and view_pull_request()
     issue <- switch(
       content_type,
-      Issue       = gh_issue(issue = content_id, repo = repo),
-      PullRequest = gh_pull_request(pull_request = content_id, repo = repo))
+      Issue       = gh_url("repos", repo, "issues", content_id) %>% gh_request("GET", ...),
+      PullRequest = gh_url("repos", repo, "pulls", content_id) %>% gh_request("GET", ...))
 
     info("Creating card for ", str_to_lower(content_type), " '", content_id, "'")
     payload <- list(content_id = issue$id, content_type = content_type)
