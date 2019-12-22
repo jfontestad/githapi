@@ -3,11 +3,14 @@
 \name{view_users}
 \alias{view_users}
 \alias{view_user}
+\alias{browse_user}
 \title{View users in GitHub}
 \usage{
 view_users(repo, org, team, n_max = 1000, ...)
 
 view_user(user, ...)
+
+browse_user(user, ...)
 }
 \arguments{
 \item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
@@ -38,6 +41,7 @@ returns a list of properties for a single user.
 \description{
 \code{view_users()} summarises users in a table with the properties as columns and a row
 for each user. \code{view_user()} returns a list of all properties for a single user.
+\code{browse_user()} opens the web page for the user in the default browser.
 }
 \details{
 You can summarise all the users associated with either a repository, organisation or a
@@ -63,6 +67,12 @@ For more details see the GitHub API documentation:
 
   # View users in a team within an organisation
   view_users(org = "HairyCoos", team = "HeadCoos")
+
+  # View a single user
+  view_user("ChadGoymer")
+
+  # Browse a user's GitHub page
+  browse_user("ChadGoymer")
 }
 
 }

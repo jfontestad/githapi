@@ -4,6 +4,7 @@
 #'
 #' `view_users()` summarises users in a table with the properties as columns and a row
 #' for each user. `view_user()` returns a list of all properties for a single user.
+#' `browse_user()` opens the web page for the user in the default browser.
 #'
 #' You can summarise all the users associated with either a repository, organisation or a
 #' team within an organisation. If none of those are supplied the first `n_max` users of
@@ -44,6 +45,12 @@
 #'
 #'   # View users in a team within an organisation
 #'   view_users(org = "HairyCoos", team = "HeadCoos")
+#'
+#'   # View a single user
+#'   view_user("ChadGoymer")
+#'
+#'   # Browse a user's GitHub page
+#'   browse_user("ChadGoymer")
 #' }
 #'
 #' @export
@@ -66,17 +73,20 @@ view_users <- function(
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
-    info("Viewing users in organisation '", org, "'")
-    url <- gh_url("orgs", org, "members")
-  }
-  else if (!missing(team))
-  {
-    assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+    if (!missing(team))
+    {
+      assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
 
-    team <- gh_url("orgs", org, "teams") %>% gh_find(property = "name", value = team, ...)
+      team <- gh_url("orgs", org, "teams") %>% gh_find(property = "name", value = team, ...)
 
-    info("Viewing users in team '", team$name, "'")
-    url <- gh_url("teams", team$id, "members")
+      info("Viewing users in team '", team$name, "'")
+      url <- gh_url("teams", team$id, "members")
+    }
+    else
+    {
+      info("Viewing users in organisation '", org, "'")
+      url <- gh_url("orgs", org, "members")
+    }
   }
   else
   {
@@ -112,4 +122,29 @@ view_user <- function(
 
   info("Done", level = 7)
   user_gh
+}
+
+
+#  FUNCTION: browse_user ----------------------------------------------------------------------
+#
+#' @rdname view_users
+#' @export
+#'
+browse_user <- function(
+  user,
+  ...)
+{
+  user <- view_user(user, ...)
+
+  info("Browsing user '", user$name, "'")
+  httr::BROWSE(user$html_url)
+
+  info("Done", level = 7)
+  structure(
+    user$html_url,
+    class   = c("github", "character"),
+    url     = attr(user, "url"),
+    request = attr(user, "request"),
+    status  = attr(user, "status"),
+    header  = attr(user, "header"))
 }
