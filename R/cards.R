@@ -322,7 +322,7 @@ move_card <- function(
 #
 #' View cards within a GitHub project
 #'
-#' `view_cards()` summarises cards in a table with the properties as cards and a row
+#' `view_cards()` summarises cards in a table with the properties as columnss and a row
 #' for each card in a column of a project. `view_card()` returns a list of all properties
 #' for a single card.
 #'
