@@ -92,13 +92,7 @@ create_project <- function(
     ...)
 
   info("Transforming results", level = 4)
-  project_gh <- select_properties(project_lst, properties$project) %>%
-    structure(
-      class   = class(project_lst),
-      url     = attr(project_lst, "url"),
-      request = attr(project_lst, "request"),
-      status  = attr(project_lst, "status"),
-      header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project)
 
   info("Done", level = 7)
   project_gh
@@ -232,13 +226,7 @@ update_project <- function(
       ...)
 
   info("Transforming results", level = 4)
-  project_gh <- select_properties(project_lst, properties$project) %>%
-    structure(
-      class   = class(project_lst),
-      url     = attr(project_lst, "url"),
-      request = attr(project_lst, "request"),
-      status  = attr(project_lst, "status"),
-      header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project)
 
   info("Done", level = 7)
   project_gh
@@ -367,13 +355,7 @@ view_projects <- function(
     ...)
 
   info("Transforming results", level = 4)
-  projects_gh <- bind_properties(projects_lst, properties$project) %>%
-    structure(
-      class   = c("github", class(.)),
-      url     = attr(projects_lst, "url"),
-      request = attr(projects_lst, "request"),
-      status  = attr(projects_lst, "status"),
-      header  = attr(projects_lst, "header"))
+  projects_gh <- bind_properties(projects_lst, properties$project)
 
   info("Done", level = 7)
   projects_gh
@@ -436,13 +418,7 @@ view_project <- function(
     ...)
 
   info("Transforming results", level = 4)
-  project_gh <- select_properties(project_lst, properties$project) %>%
-    structure(
-      class   = class(project_lst),
-      url     = attr(project_lst, "url"),
-      request = attr(project_lst, "request"),
-      status  = attr(project_lst, "status"),
-      header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project)
 
   info("Done", level = 7)
   project_gh
