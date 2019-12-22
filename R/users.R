@@ -155,3 +155,92 @@ browse_user <- function(
     status  = attr(user, "status"),
     header  = attr(user, "header"))
 }
+
+
+#  FUNCTION: update_user ----------------------------------------------------------------------
+#
+#' Update your user properties in GitHub
+#'
+#' This function updates your user properties in GitHub. You cannot update someone else's
+#' profile.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/users/#update-a-user>
+#'
+#' @param name (string, optional) The new name of the user.
+#' @param email (string, optional) The publicly visible email address of the user.
+#' @param blog (string, optional) The new blog URL of the user.
+#' @param company (string, optional) The new company of the user.
+#' @param location (string, optional) The new location of the user.
+#' @param hireable (boolean, optional) The new hiring availability of the user.
+#' @param bio (string, optional) The new short biography of the user.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_user()` returns a list of the new user properties.
+#'
+#' **User Properties:**
+#'
+#' - **id**: The ID of the user.
+#' - **login**: The login name of the user.
+#' - **name**: The name of the user.
+#' - **email**: The public email address of the user.
+#' - **blog**: The blog address of the user.
+#' - **company**: The company the user works for.
+#' - **location**: The location of the user.
+#' - **hireable**: Whether the user currently hireable.
+#' - **bio**: The biography of the user.
+#' - **type**: The type of account.
+#' - **site_admin**: Whether the user is an administrator.
+#' - **html_url**: The GitHub page for the user.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update your name
+#'   update_user(name = "Bob Smith")
+#'
+#'   # Update your company
+#'   update_user(company = "Acme")
+#'
+#'   # Update your hireable status
+#'   update_user(hireable = TRUE)
+#' }
+#'
+#' @export
+#'
+update_user <- function(
+  name     = NULL,
+  email    = NULL,
+  blog     = NULL,
+  company  = NULL,
+  location = NULL,
+  hireable = NULL,
+  bio      = NULL,
+  ...)
+{
+  assert(is_null(name)     || is_scalar_character(name),     "'name' must be a string:\n  ",      name)
+  assert(is_null(email)    || is_scalar_character(email),    "'email' must be a string:\n  ",     email)
+  assert(is_null(blog)     || is_scalar_character(blog),     "'blog' must be a string:\n  ",      blog)
+  assert(is_null(company)  || is_scalar_character(company),  "'company' must be a string:\n  ",   company)
+  assert(is_null(location) || is_scalar_character(location), "'location' must be a string:\n  ",  location)
+  assert(is_null(hireable) || is_scalar_logical(hireable),   "'hireable' must be a boolean:\n  ", hireable)
+  assert(is_null(bio)      || is_scalar_character(bio),      "'bio' must be a string:\n  ",       bio)
+
+  payload <- list(
+    name     = name,
+    email    = email,
+    blog     = blog,
+    company  = company,
+    location = location,
+    hireable = hireable,
+    bio      = bio) %>%
+    compact()
+
+  info("Updating user")
+  user_lst <- gh_url("user") %>% gh_request("PATCH", payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  user_gh <- select_properties(user_lst, properties$user)
+
+  info("Done", level = 7)
+  user_gh
+}

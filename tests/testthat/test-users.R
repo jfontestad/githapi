@@ -131,3 +131,48 @@ test_that("browse_user opens the user's page in the browser", {
   expect_identical(as.character(user), "https://github.com/ChadGoymer")
 
 })
+
+
+# TEST: update_user ---------------------------------------------------------------------------
+
+test_that("update_user changes the user's properties", {
+
+  skip_if(!interactive(), "update_user must be tested manually")
+
+  original_user <- view_user("ChadGoymer")
+
+  on.exit({
+    update_user(
+      name     = original_user$name,
+      location = original_user$location,
+      hireable = original_user$hireable)
+  })
+
+  updated_user <- update_user(
+    name     = "Bob",
+    location = "Nowhere",
+    hireable = TRUE)
+
+  expect_is(updated_user, "list")
+  expect_identical(attr(updated_user, "status"), 200L)
+  expect_identical(
+    map_chr(updated_user, ~ class(.)[[1]]),
+    c(id          = "integer",
+      login       = "character",
+      name        = "character",
+      email       = "character",
+      blog        = "character",
+      company     = "character",
+      location    = "character",
+      hireable    = "logical",
+      bio         = "character",
+      type        = "character",
+      site_admin  = "logical",
+      html_url    = "character"))
+
+  expect_identical(updated_user$login, "ChadGoymer")
+  expect_identical(updated_user$name, "Bob")
+  expect_identical(updated_user$location, "Nowhere")
+  expect_identical(updated_user$hireable, TRUE)
+
+})
