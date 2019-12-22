@@ -2,7 +2,7 @@ context("repositories contents")
 
 repo_contents_branch <- str_c("test-repo-contents-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 new_files_branch <- str_c("test-create-files-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
-master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
+master_sha <- view_shas(refs = "unedited-contents", repo = "ChadGoymer/test-githapi")[[1]]
 
 setup(suppressMessages({
 
@@ -29,243 +29,243 @@ teardown(suppressMessages(tryCatch({
 
 # TEST: view_files, create_files, update_files & delete_files ---------------------------------
 
-test_that("view_files, create_files, update_files and delete files on the default branch works", {
-  all_files <- view_files("ChadGoymer/test-githapi")
-
-  expect_is(all_files, "tbl")
-  expect_identical(
-    gh_map(all_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(name              = "character",
-      path              = "character",
-      sha               = "character",
-      size              = "integer",
-      type              = "character",
-      url               = "character",
-      html_url          = "character",
-      git_url           = "character",
-      download_url      = "character"))
-
-  expect_true("README.md" %in% all_files$name)
-  expect_identical(filter(all_files, name == "README.md") %>% pull(type), "file")
-
-  created_files <- create_files(
-    paths    = c("aaaa.txt", "bbbb.txt"),
-    contents = c("Created to test:\n\n  `create_files()`", "Created to test:\n\n  `create_files()`"),
-    messages = "Testing create_files()",
-    repo     = "ChadGoymer/test-githapi")
-
-  expect_is(created_files, "tbl")
-  expect_identical(
-    gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(name              = "character",
-      path              = "character",
-      sha               = "character",
-      size              = "integer",
-      type              = "character",
-      url               = "character",
-      html_url          = "character",
-      git_url           = "character",
-      download_url      = "character",
-      commit_message    = "character",
-      commit_sha        = "character",
-      commit_url        = "character",
-      commit_author     = "character",
-      commit_committer  = "character",
-      commit_tree_sha   = "character",
-      commit_tree_url   = "character",
-      commit_parent_sha = "list",
-      commit_parent_url = "list"))
-
-  expect_identical(created_files$name, c("aaaa.txt", "bbbb.txt"))
-  expect_identical(
-    created_files$commit_message,
-    c("Testing create_files()", "Testing create_files()"))
-
-  expect_identical(
-    read_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi"),
-    c(aaaa.txt = "Created to test:\n\n  `create_files()`", bbbb.txt = "Created to test:\n\n  `create_files()`"))
-
-  viewed_files <- view_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi")
-
-  expect_is(viewed_files, "tbl")
-  expect_identical(
-    gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(name              = "character",
-      path              = "character",
-      sha               = "character",
-      size              = "integer",
-      type              = "character",
-      url               = "character",
-      html_url          = "character",
-      git_url           = "character",
-      download_url      = "character"))
-
-  expect_identical(viewed_files$name, c("aaaa.txt", "bbbb.txt"))
-  expect_identical(viewed_files$type, c("file", "file"))
-
-  updated_files <- update_files(
-    paths    = c("aaaa.txt", "bbbb.txt"),
-    contents = c("Updated to test:\n\n  `update_files()`", "Updated to test:\n\n  `update_files()`"),
-    messages = "Testing update_files()",
-    repo     = "ChadGoymer/test-githapi")
-
-  expect_is(updated_files, "tbl")
-  expect_identical(
-    gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(name              = "character",
-      path              = "character",
-      sha               = "character",
-      size              = "integer",
-      type              = "character",
-      url               = "character",
-      html_url          = "character",
-      git_url           = "character",
-      download_url      = "character",
-      commit_message    = "character",
-      commit_sha        = "character",
-      commit_url        = "character",
-      commit_author     = "character",
-      commit_committer  = "character",
-      commit_tree_sha   = "character",
-      commit_tree_url   = "character",
-      commit_parent_sha = "list",
-      commit_parent_url = "list"))
-
-  expect_identical(updated_files$name, c("aaaa.txt", "bbbb.txt"))
-  expect_identical(
-    updated_files$commit_message,
-    c("Testing update_files() - updated aaaa.txt", "Testing update_files() - updated bbbb.txt"))
-
-  expect_identical(
-    read_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi"),
-    c(aaaa.txt = "Updated to test:\n\n  `update_files()`", bbbb.txt = "Updated to test:\n\n  `update_files()`"))
-
-  deleted_files <- delete_files(
-    paths    = c("aaaa.txt", "bbbb.txt"),
-    messages = "Testing delete_files()",
-    repo     = "ChadGoymer/test-githapi")
-
-  expect_is(deleted_files, "tbl")
-  expect_identical(
-    gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(commit_message    = "character",
-      commit_sha        = "character",
-      commit_url        = "character",
-      commit_author     = "character",
-      commit_committer  = "character",
-      commit_tree_sha   = "character",
-      commit_tree_url   = "character",
-      commit_parent_sha = "list",
-      commit_parent_url = "list"))
-
-  expect_identical(
-    deleted_files$commit_message,
-    c("Testing delete_files() - deleted aaaa.txt", "Testing delete_files() - deleted bbbb.txt"))
-
-  expect_error(suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi")), "Not Found")
-  expect_error(suppressWarnings(view_files("bbbb.txt", "ChadGoymer/test-githapi")), "Not Found")
-})
-
-test_that("view_files, create_files, update_files and delete files in the specified directory works", {
-  created_files <- create_files(
-    paths    = "test-dir/aaaa.txt",
-    contents = "Created to test:\n\n  `create_files()`",
-    messages = "Testing create_files()",
-    repo     = "ChadGoymer/test-githapi")
-
-  expect_is(created_files, "tbl")
-  expect_identical(
-    gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(name              = "character",
-      path              = "character",
-      sha               = "character",
-      size              = "integer",
-      type              = "character",
-      url               = "character",
-      html_url          = "character",
-      git_url           = "character",
-      download_url      = "character",
-      commit_message    = "character",
-      commit_sha        = "character",
-      commit_url        = "character",
-      commit_author     = "character",
-      commit_committer  = "character",
-      commit_tree_sha   = "character",
-      commit_tree_url   = "character",
-      commit_parent_sha = "list",
-      commit_parent_url = "list"))
-
-  expect_identical(created_files$commit_message, "Testing create_files()")
-
-  viewed_files <- view_files("test-dir/aaaa.txt", "ChadGoymer/test-githapi")
-
-  expect_is(viewed_files, "tbl")
-  expect_identical(
-    gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(name              = "character",
-      path              = "character",
-      sha               = "character",
-      size              = "integer",
-      type              = "character",
-      url               = "character",
-      html_url          = "character",
-      git_url           = "character",
-      download_url      = "character"))
-
-  expect_identical(viewed_files$path, "test-dir/aaaa.txt")
-
-  updated_files <- update_files(
-    paths    = "test-dir/aaaa.txt",
-    contents = "Updated to test:\n\n  `update_files()`",
-    messages = "Testing update_files()",
-    repo     = "ChadGoymer/test-githapi")
-
-  expect_is(updated_files, "tbl")
-  expect_identical(
-    gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(name              = "character",
-      path              = "character",
-      sha               = "character",
-      size              = "integer",
-      type              = "character",
-      url               = "character",
-      html_url          = "character",
-      git_url           = "character",
-      download_url      = "character",
-      commit_message    = "character",
-      commit_sha        = "character",
-      commit_url        = "character",
-      commit_author     = "character",
-      commit_committer  = "character",
-      commit_tree_sha   = "character",
-      commit_tree_url   = "character",
-      commit_parent_sha = "list",
-      commit_parent_url = "list"))
-
-  expect_identical(updated_files$commit_message, "Testing update_files() - updated test-dir/aaaa.txt")
-
-  deleted_files <- delete_files(
-    paths    = "test-dir/aaaa.txt",
-    messages = "Testing delete_files()",
-    repo     = "ChadGoymer/test-githapi")
-
-  expect_is(deleted_files, "tbl")
-  expect_identical(
-    gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
-    c(commit_message    = "character",
-      commit_sha        = "character",
-      commit_url        = "character",
-      commit_author     = "character",
-      commit_committer  = "character",
-      commit_tree_sha   = "character",
-      commit_tree_url   = "character",
-      commit_parent_sha = "list",
-      commit_parent_url = "list"))
-
-  expect_identical(deleted_files$commit_message, "Testing delete_files() - deleted test-dir/aaaa.txt")
-
-  expect_error(suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi")), "Not Found")
-})
+# test_that("view_files, create_files, update_files and delete files on the default branch works", {
+#   all_files <- view_files("ChadGoymer/test-githapi")
+#
+#   expect_is(all_files, "tbl")
+#   expect_identical(
+#     gh_map(all_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(name              = "character",
+#       path              = "character",
+#       sha               = "character",
+#       size              = "integer",
+#       type              = "character",
+#       url               = "character",
+#       html_url          = "character",
+#       git_url           = "character",
+#       download_url      = "character"))
+#
+#   expect_true("README.md" %in% all_files$name)
+#   expect_identical(filter(all_files, name == "README.md") %>% pull(type), "file")
+#
+#   created_files <- create_files(
+#     paths    = c("aaaa.txt", "bbbb.txt"),
+#     contents = c("Created to test:\n\n  `create_files()`", "Created to test:\n\n  `create_files()`"),
+#     messages = "Testing create_files()",
+#     repo     = "ChadGoymer/test-githapi")
+#
+#   expect_is(created_files, "tbl")
+#   expect_identical(
+#     gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(name              = "character",
+#       path              = "character",
+#       sha               = "character",
+#       size              = "integer",
+#       type              = "character",
+#       url               = "character",
+#       html_url          = "character",
+#       git_url           = "character",
+#       download_url      = "character",
+#       commit_message    = "character",
+#       commit_sha        = "character",
+#       commit_url        = "character",
+#       commit_author     = "character",
+#       commit_committer  = "character",
+#       commit_tree_sha   = "character",
+#       commit_tree_url   = "character",
+#       commit_parent_sha = "list",
+#       commit_parent_url = "list"))
+#
+#   expect_identical(created_files$name, c("aaaa.txt", "bbbb.txt"))
+#   expect_identical(
+#     created_files$commit_message,
+#     c("Testing create_files()", "Testing create_files()"))
+#
+#   expect_identical(
+#     read_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi"),
+#     c(aaaa.txt = "Created to test:\n\n  `create_files()`", bbbb.txt = "Created to test:\n\n  `create_files()`"))
+#
+#   viewed_files <- view_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi")
+#
+#   expect_is(viewed_files, "tbl")
+#   expect_identical(
+#     gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(name              = "character",
+#       path              = "character",
+#       sha               = "character",
+#       size              = "integer",
+#       type              = "character",
+#       url               = "character",
+#       html_url          = "character",
+#       git_url           = "character",
+#       download_url      = "character"))
+#
+#   expect_identical(viewed_files$name, c("aaaa.txt", "bbbb.txt"))
+#   expect_identical(viewed_files$type, c("file", "file"))
+#
+#   updated_files <- update_files(
+#     paths    = c("aaaa.txt", "bbbb.txt"),
+#     contents = c("Updated to test:\n\n  `update_files()`", "Updated to test:\n\n  `update_files()`"),
+#     messages = "Testing update_files()",
+#     repo     = "ChadGoymer/test-githapi")
+#
+#   expect_is(updated_files, "tbl")
+#   expect_identical(
+#     gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(name              = "character",
+#       path              = "character",
+#       sha               = "character",
+#       size              = "integer",
+#       type              = "character",
+#       url               = "character",
+#       html_url          = "character",
+#       git_url           = "character",
+#       download_url      = "character",
+#       commit_message    = "character",
+#       commit_sha        = "character",
+#       commit_url        = "character",
+#       commit_author     = "character",
+#       commit_committer  = "character",
+#       commit_tree_sha   = "character",
+#       commit_tree_url   = "character",
+#       commit_parent_sha = "list",
+#       commit_parent_url = "list"))
+#
+#   expect_identical(updated_files$name, c("aaaa.txt", "bbbb.txt"))
+#   expect_identical(
+#     updated_files$commit_message,
+#     c("Testing update_files() - updated aaaa.txt", "Testing update_files() - updated bbbb.txt"))
+#
+#   expect_identical(
+#     read_files(c("aaaa.txt", "bbbb.txt"), "ChadGoymer/test-githapi"),
+#     c(aaaa.txt = "Updated to test:\n\n  `update_files()`", bbbb.txt = "Updated to test:\n\n  `update_files()`"))
+#
+#   deleted_files <- delete_files(
+#     paths    = c("aaaa.txt", "bbbb.txt"),
+#     messages = "Testing delete_files()",
+#     repo     = "ChadGoymer/test-githapi")
+#
+#   expect_is(deleted_files, "tbl")
+#   expect_identical(
+#     gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(commit_message    = "character",
+#       commit_sha        = "character",
+#       commit_url        = "character",
+#       commit_author     = "character",
+#       commit_committer  = "character",
+#       commit_tree_sha   = "character",
+#       commit_tree_url   = "character",
+#       commit_parent_sha = "list",
+#       commit_parent_url = "list"))
+#
+#   expect_identical(
+#     deleted_files$commit_message,
+#     c("Testing delete_files() - deleted aaaa.txt", "Testing delete_files() - deleted bbbb.txt"))
+#
+#   expect_error(suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi")), "Not Found")
+#   expect_error(suppressWarnings(view_files("bbbb.txt", "ChadGoymer/test-githapi")), "Not Found")
+# })
+#
+# test_that("view_files, create_files, update_files and delete files in the specified directory works", {
+#   created_files <- create_files(
+#     paths    = "test-dir/aaaa.txt",
+#     contents = "Created to test:\n\n  `create_files()`",
+#     messages = "Testing create_files()",
+#     repo     = "ChadGoymer/test-githapi")
+#
+#   expect_is(created_files, "tbl")
+#   expect_identical(
+#     gh_map(created_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(name              = "character",
+#       path              = "character",
+#       sha               = "character",
+#       size              = "integer",
+#       type              = "character",
+#       url               = "character",
+#       html_url          = "character",
+#       git_url           = "character",
+#       download_url      = "character",
+#       commit_message    = "character",
+#       commit_sha        = "character",
+#       commit_url        = "character",
+#       commit_author     = "character",
+#       commit_committer  = "character",
+#       commit_tree_sha   = "character",
+#       commit_tree_url   = "character",
+#       commit_parent_sha = "list",
+#       commit_parent_url = "list"))
+#
+#   expect_identical(created_files$commit_message, "Testing create_files()")
+#
+#   viewed_files <- view_files("test-dir/aaaa.txt", "ChadGoymer/test-githapi")
+#
+#   expect_is(viewed_files, "tbl")
+#   expect_identical(
+#     gh_map(viewed_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(name              = "character",
+#       path              = "character",
+#       sha               = "character",
+#       size              = "integer",
+#       type              = "character",
+#       url               = "character",
+#       html_url          = "character",
+#       git_url           = "character",
+#       download_url      = "character"))
+#
+#   expect_identical(viewed_files$path, "test-dir/aaaa.txt")
+#
+#   updated_files <- update_files(
+#     paths    = "test-dir/aaaa.txt",
+#     contents = "Updated to test:\n\n  `update_files()`",
+#     messages = "Testing update_files()",
+#     repo     = "ChadGoymer/test-githapi")
+#
+#   expect_is(updated_files, "tbl")
+#   expect_identical(
+#     gh_map(updated_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(name              = "character",
+#       path              = "character",
+#       sha               = "character",
+#       size              = "integer",
+#       type              = "character",
+#       url               = "character",
+#       html_url          = "character",
+#       git_url           = "character",
+#       download_url      = "character",
+#       commit_message    = "character",
+#       commit_sha        = "character",
+#       commit_url        = "character",
+#       commit_author     = "character",
+#       commit_committer  = "character",
+#       commit_tree_sha   = "character",
+#       commit_tree_url   = "character",
+#       commit_parent_sha = "list",
+#       commit_parent_url = "list"))
+#
+#   expect_identical(updated_files$commit_message, "Testing update_files() - updated test-dir/aaaa.txt")
+#
+#   deleted_files <- delete_files(
+#     paths    = "test-dir/aaaa.txt",
+#     messages = "Testing delete_files()",
+#     repo     = "ChadGoymer/test-githapi")
+#
+#   expect_is(deleted_files, "tbl")
+#   expect_identical(
+#     gh_map(deleted_files, function(col) class(col)[[1]], simplify = TRUE),
+#     c(commit_message    = "character",
+#       commit_sha        = "character",
+#       commit_url        = "character",
+#       commit_author     = "character",
+#       commit_committer  = "character",
+#       commit_tree_sha   = "character",
+#       commit_tree_url   = "character",
+#       commit_parent_sha = "list",
+#       commit_parent_url = "list"))
+#
+#   expect_identical(deleted_files$commit_message, "Testing delete_files() - deleted test-dir/aaaa.txt")
+#
+#   expect_error(suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi")), "Not Found")
+# })
 
 test_that("view_files, create_files, update_files and delete files on the specified branch works", {
   created_files <- create_files(
