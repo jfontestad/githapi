@@ -38,6 +38,13 @@ properties <- list(
   user = list(
     id          = c("id",                      as = "integer"),
     login       = c("login",                   as = "character"),
+    name        = c("name",                    as = "character"),
+    email       = c("email",                   as = "character"),
+    blog        = c("blog",                    as = "character"),
+    company     = c("company",                 as = "character"),
+    location    = c("location",                as = "character"),
+    hireable    = c("hireable",                as = "logical"),
+    bio         = c("bio",                     as = "character"),
     type        = c("type",                    as = "character"),
     site_admin  = c("site_admin",              as = "logical"),
     html_url    = c("html_url",                as = "character"))

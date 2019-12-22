@@ -17,7 +17,7 @@
 #' - <https://developer.github.com/v3/users/#get-all-users>
 #' - <https://developer.github.com/v3/users/#get-a-single-user>
 #'
-#' @param user (integer) The ID of the user.
+#' @param user (integer) The login of the user.
 #' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #' @param org (string, optional) The name of the organization.
 #' @param team (string, optional) The name of the team.
@@ -31,6 +31,13 @@
 #'
 #' - **id**: The ID of the user.
 #' - **login**: The login name of the user.
+#' - **name**: The name of the user (only available in `view_user()`).
+#' - **email**: The public email address of the user (only available in `view_user()`).
+#' - **blog**: The blog address of the user (only available in `view_user()`).
+#' - **company**: The company the user works for (only available in `view_user()`).
+#' - **location**: The location of the user (only available in `view_user()`).
+#' - **hireable**: Whether the user currently hireable (only available in `view_user()`).
+#' - **bio**: The biography of the user (only available in `view_user()`).
 #' - **type**: The type of account.
 #' - **site_admin**: Whether the user is an administrator.
 #' - **html_url**: The GitHub page for the user.

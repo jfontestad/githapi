@@ -23,7 +23,7 @@ browse_user(user, ...)
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 
-\item{user}{(integer) The ID of the user.}
+\item{user}{(integer) The login of the user.}
 }
 \value{
 \code{view_users()} returns a tibble of user properties. \code{view_user()}
@@ -33,6 +33,13 @@ returns a list of properties for a single user.
 \itemize{
 \item \strong{id}: The ID of the user.
 \item \strong{login}: The login name of the user.
+\item \strong{name}: The name of the user (only available in \code{view_user()}).
+\item \strong{email}: The public email address of the user (only available in \code{view_user()}).
+\item \strong{blog}: The blog address of the user (only available in \code{view_user()}).
+\item \strong{company}: The company the user works for (only available in \code{view_user()}).
+\item \strong{location}: The location of the user (only available in \code{view_user()}).
+\item \strong{hireable}: Whether the user currently hireable (only available in \code{view_user()}).
+\item \strong{bio}: The biography of the user (only available in \code{view_user()}).
 \item \strong{type}: The type of account.
 \item \strong{site_admin}: Whether the user is an administrator.
 \item \strong{html_url}: The GitHub page for the user.
