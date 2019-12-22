@@ -208,6 +208,8 @@ gh_card <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_card", package = "githapi")
+
   assert(is_scalar_integerish(card) && isTRUE(card > 0))
   assert(is_sha(token))
   assert(is_url(api))
@@ -243,6 +245,8 @@ gh_cards <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_cards", package = "githapi")
+
   assert(is_scalar_integerish(column) && isTRUE(column > 0))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))

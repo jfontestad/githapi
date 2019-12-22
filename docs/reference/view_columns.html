@@ -71,7 +71,7 @@ single column." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.6</span>
       </span>
     </div>
 
@@ -162,7 +162,7 @@ single column.</p>
 
     <p><code>view_columns()</code> returns a tibble of column properties. <code>view_column()</code>
 returns a list of properties for a single column.</p>
-<p><strong>column Properties:</strong></p><ul>
+<p><strong>Column Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the column.</p></li>
 <li><p><strong>name</strong>: The name given to the column.</p></li>
 <li><p><strong>created_at</strong>: When it was created.</p></li>
@@ -213,6 +213,9 @@ or organisation, by supplying them as an input.</p>
     <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test column"</span>,
     <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test columns"</span>,
     <span class='kw'>org</span>     <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># View column by ID</span>
+  <span class='fu'>view_column</span>(<span class='fl'>123456</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

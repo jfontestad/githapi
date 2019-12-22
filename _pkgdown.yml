@@ -25,6 +25,10 @@ reference:
     - '`update_column`'
     - '`view_columns`'
     - '`delete_column`'
+    - '`create_card`'
+    - '`update_card`'
+    - '`view_cards`'
+    - '`delete_card`'
 - title: Repositories
   desc: Functions for accessing information about repositories and their content.
   contents:
@@ -124,15 +128,6 @@ reference:
     - '`gh_pull_comment`'
     - '`gh_pull_comments`'
     - '`gh_pull_review_requests`'
-- title: Projects
-  desc: Functions for accessing information about projects and their contents.
-  contents:
-    - '`gh_project`'
-    - '`gh_projects`'
-    - '`gh_column`'
-    - '`gh_columns`'
-    - '`gh_card`'
-    - '`gh_cards`'
 - title: Organizations
   desc: Functions for accessing information about organizations.
   contents:
@@ -193,5 +188,11 @@ reference:
     - '`gh_download`'
     - '`gh_release`'
     - '`gh_releases`'
+    - '`gh_project`'
+    - '`gh_projects`'
+    - '`gh_column`'
+    - '`gh_columns`'
+    - '`gh_card`'
+    - '`gh_cards`'
 news:
 - one_page: false

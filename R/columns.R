@@ -20,7 +20,7 @@
 #'
 #' @return `create_column()` returns a list of the column properties.
 #'
-#' **column Properties:**
+#' **Column Properties:**
 #'
 #' - **id**: The ID of the column.
 #' - **name**: The name given to the column.
@@ -109,7 +109,8 @@ create_column <- function(
 #' @param column (integer or string) Either the column number or name.
 #' @param name (string, optional) The new name for the column.
 #' @param position (string, optional) Either `"first"` or `"last"`.
-#' @param after (integer or string) An ID or name of another column to place this one after.
+#' @param after (integer or string, optional) An ID or name of another column to place this
+#'   one after.
 #' @param project (integer or string) Either the project number or name.
 #' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
@@ -118,7 +119,7 @@ create_column <- function(
 #'
 #' @return `update_column()` returns a list of the column properties.
 #'
-#' **column Properties:**
+#' **Column Properties:**
 #'
 #' - **id**: The ID of the column.
 #' - **name**: The name given to the column.
@@ -283,7 +284,7 @@ move_column <- function(
 #' @return `view_columns()` returns a tibble of column properties. `view_column()`
 #'   returns a list of properties for a single column.
 #'
-#' **column Properties:**
+#' **Column Properties:**
 #'
 #' - **id**: The ID of the column.
 #' - **name**: The name given to the column.
@@ -324,6 +325,9 @@ move_column <- function(
 #'     column  = "Test column",
 #'     project = "Test columns",
 #'     org     = "HairyCoos")
+#'
+#'   # View column by ID
+#'   view_column(123456)
 #' }
 #'
 #' @export
@@ -379,31 +383,34 @@ view_column <- function(
 {
   if (is_scalar_integerish(column))
   {
-    property <- "id"
+    info("Viewing column '", column, "''")
+    column_lst <- gh_url("projects/columns", column) %>%
+      gh_request(
+          type   = "GET",
+        accept = "application/vnd.github.inertia-preview+json",
+        ...)
   }
   else if (is_scalar_character(column))
   {
-    property <- "name"
+    project <- view_project(
+      project = project,
+      repo    = repo,
+      user    = user,
+      org     = org,
+      ...)
+
+    info("Viewing column '", column, "' in project '", project$name, "'")
+    column_lst <- gh_url("projects", project$id, "columns") %>%
+      gh_find(
+        property = "name",
+        value    = column,
+        accept   = "application/vnd.github.inertia-preview+json",
+        ...)
   }
   else
   {
     error("'column' must be either an integer or a string:\n  ", column)
   }
-
-  project <- view_project(
-    project = project,
-    repo    = repo,
-    user    = user,
-    org     = org,
-    ...)
-
-  info("Viewing column '", column, "' in project '", project$name, "'")
-  column_lst <- gh_url("projects", project$id, "columns") %>%
-    gh_find(
-      property = property,
-      value    = column,
-      accept   = "application/vnd.github.inertia-preview+json",
-      ...)
 
   info("Transforming results", level = 4)
   column_gh <- select_properties(column_lst, properties$column) %>%

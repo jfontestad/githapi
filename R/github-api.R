@@ -301,11 +301,15 @@ gh_request <- function(
 
   if (httr::http_error(response))
   {
+    msg <- str_replace_all(parsed_response$message, "\\n\\n", "\n  ") %>%
+      c(map_chr(parsed_response$errors, "message")) %>%
+      str_c(collapse = "\n  ")
+
     error(
       "GitHub ", type, " request failed:\n",
       "\n[Status]  ", httr::status_code(response),
       "\n[URL]     ", url,
-      "\n[Message] ", str_replace_all(parsed_response$message, "\\n\\n", "\n  "),
+      "\n[Message] ", msg,
       "\n[Details] ", parsed_response$documentation_url)
   }
 

@@ -22,7 +22,7 @@ create_column(name, project, repo, user, org, ...)
 \value{
 \code{create_column()} returns a list of the column properties.
 
-\strong{column Properties:}
+\strong{Column Properties:}
 \itemize{
 \item \strong{id}: The ID of the column.
 \item \strong{name}: The name given to the column.
