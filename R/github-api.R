@@ -537,12 +537,15 @@ gh_find <- function(
 print.github <- function(x, n_urls = 2, ...)
 {
   urls <- attr(x, "url")
-  if (length(urls) > n_urls)
+  if (!is_null(urls))
   {
-    urls <- c(urls[1:n_urls], "...")
-  }
+    if (length(urls) > n_urls)
+    {
+      urls <- c(urls[1:n_urls], "...")
+    }
 
-  cat("\033[34m", str_c("# ", attr(x, "request"), " \033[4m", str_replace_all(urls, "%20", " "), "\033[24m\n"), "\033[39m", sep = "")
+    cat("\033[34m", str_c("# ", attr(x, "request"), " \033[4m", str_replace_all(urls, "%20", " "), "\033[24m\n"), "\033[39m", sep = "")
+  }
 
   if (is.data.frame(x))
   {
