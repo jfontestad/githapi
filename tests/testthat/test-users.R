@@ -5,27 +5,6 @@ context("users api")
 
 test_that("view_users returns a tibble summarising the users", {
 
-  repo_users <- view_users(repo = "ChadGoymer/githapi")
-
-  expect_is(repo_users, "tbl")
-  expect_identical(attr(repo_users, "status"), 200L)
-  expect_identical(
-    map_chr(repo_users, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      name        = "character",
-      email       = "character",
-      blog        = "character",
-      company     = "character",
-      location    = "character",
-      hireable    = "logical",
-      bio         = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
-
-  expect_true("ChadGoymer" %in% repo_users$login)
-
   org_users <- view_users(org = "HairyCoos")
 
   expect_is(org_users, "tbl")
@@ -34,13 +13,6 @@ test_that("view_users returns a tibble summarising the users", {
     map_chr(org_users, ~ class(.)[[1]]),
     c(id          = "integer",
       login       = "character",
-      name        = "character",
-      email       = "character",
-      blog        = "character",
-      company     = "character",
-      location    = "character",
-      hireable    = "logical",
-      bio         = "character",
       type        = "character",
       site_admin  = "logical",
       html_url    = "character"))
@@ -55,13 +27,6 @@ test_that("view_users returns a tibble summarising the users", {
     map_chr(team_users, ~ class(.)[[1]]),
     c(id          = "integer",
       login       = "character",
-      name        = "character",
-      email       = "character",
-      blog        = "character",
-      company     = "character",
-      location    = "character",
-      hireable    = "logical",
-      bio         = "character",
       type        = "character",
       site_admin  = "logical",
       html_url    = "character"))
@@ -76,16 +41,24 @@ test_that("view_users returns a tibble summarising the users", {
     map_chr(all_users, ~ class(.)[[1]]),
     c(id          = "integer",
       login       = "character",
-      name        = "character",
-      email       = "character",
-      blog        = "character",
-      company     = "character",
-      location    = "character",
-      hireable    = "logical",
-      bio         = "character",
       type        = "character",
       site_admin  = "logical",
       html_url    = "character"))
+
+  admin_users <- view_users(org = "HairyCoos", role = "admin")
+
+  expect_is(admin_users, "tbl")
+  expect_identical(attr(admin_users, "status"), 200L)
+  expect_identical(
+    map_chr(admin_users, ~ class(.)[[1]]),
+    c(id          = "integer",
+      login       = "character",
+      type        = "character",
+      site_admin  = "logical",
+      html_url    = "character"))
+
+  expect_true("ChadGoymer" %in% admin_users$login)
+  expect_true(nrow(admin_users) < nrow(org_users))
 
 })
 
@@ -115,6 +88,27 @@ test_that("view_user returns a list of user properties", {
 
   expect_identical(user$login, "ChadGoymer")
 
+  auth_user <- view_user()
+
+  expect_is(auth_user, "list")
+  expect_identical(attr(auth_user, "status"), 200L)
+  expect_identical(
+    map_chr(auth_user, ~ class(.)[[1]]),
+    c(id          = "integer",
+      login       = "character",
+      name        = "character",
+      email       = "character",
+      blog        = "character",
+      company     = "character",
+      location    = "character",
+      hireable    = "logical",
+      bio         = "character",
+      type        = "character",
+      site_admin  = "logical",
+      html_url    = "character"))
+
+  expect_identical(auth_user$login, "ChadGoymer")
+
 })
 
 
@@ -129,6 +123,12 @@ test_that("browse_user opens the user's page in the browser", {
   expect_is(user, "character")
   expect_identical(attr(user, "status"), 200L)
   expect_identical(as.character(user), "https://github.com/ChadGoymer")
+
+  auth_user <- browse_user()
+
+  expect_is(auth_user, "character")
+  expect_identical(attr(auth_user, "status"), 200L)
+  expect_identical(as.character(auth_user), "https://github.com/ChadGoymer")
 
 })
 

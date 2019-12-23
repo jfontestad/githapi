@@ -35,6 +35,13 @@ properties <- list(
     updated_at  = c("updated_at",              as = "datetime"),
     content_url = c("content_url",             as = "character")),
 
+  users = list(
+    id          = c("id",                      as = "integer"),
+    login       = c("login",                   as = "character"),
+    type        = c("type",                    as = "character"),
+    site_admin  = c("site_admin",              as = "logical"),
+    html_url    = c("html_url",                as = "character")),
+
   user = list(
     id          = c("id",                      as = "integer"),
     login       = c("login",                   as = "character"),
@@ -71,6 +78,9 @@ values <- list(
   card = list(
     content_type   = c("Issue", "PullRequest"),
     archived_state = c("archived", "not_archived", "all"),
-    position       = c("top", "bottom"))
+    position       = c("top", "bottom")),
+
+  user = list(
+    role           = c("admin", "member", "all"))
 
 )

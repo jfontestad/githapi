@@ -6,21 +6,21 @@
 #' for each user. `view_user()` returns a list of all properties for a single user.
 #' `browse_user()` opens the web page for the user in the default browser.
 #'
-#' You can summarise all the users associated with either a repository, organisation or a
-#' team within an organisation. If none of those are supplied the first `n_max` users of
-#' GitHub are returned.
+#' You can summarise all the users associated with either an organisation or a team within
+#' an organisation. If none of those are supplied the first `n_max` users of GitHub are
+#' returned.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/collaborators/#list-collaborators>
 #' - <https://developer.github.com/v3/orgs/members/#members-list>
 #' - <https://developer.github.com/v3/teams/members/#list-team-members>
 #' - <https://developer.github.com/v3/users/#get-all-users>
 #' - <https://developer.github.com/v3/users/#get-a-single-user>
 #'
 #' @param user (integer) The login of the user.
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #' @param org (string, optional) The name of the organization.
 #' @param team (string, optional) The name of the team.
+#' @param role (string, optional) Filter the result by role. Can specify either `"admin"`,
+#'   `"member"` or `"all"`. Default: `"all"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
@@ -53,6 +53,9 @@
 #'   # View users in a team within an organisation
 #'   view_users(org = "HairyCoos", team = "HeadCoos")
 #'
+#'   # View the admins of an organisation
+#'   view_users(org = "HairyCoos", role = "admin")
+#'
 #'   # View a single user
 #'   view_user("ChadGoymer")
 #'
@@ -63,22 +66,18 @@
 #' @export
 #'
 view_users <- function(
-  repo,
   org,
   team,
+  role  = "all",
   n_max = 1000,
   ...)
 {
-  if (!missing(repo))
-  {
-    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-
-    info("Viewing users in repo '", repo, "'")
-    url <- gh_url("repos", repo, "collaborators")
-  }
-  else if (!missing(org))
+  if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    assert(
+      is_scalar_character(role) && role %in% values$user$role,
+      "'role' must be one of '", str_c(values$card$role, collapse = "', '"), "':\n  ", role)
 
     if (!missing(team))
     {
@@ -87,12 +86,12 @@ view_users <- function(
       team <- gh_url("orgs", org, "teams") %>% gh_find(property = "name", value = team, ...)
 
       info("Viewing users in team '", team$name, "'")
-      url <- gh_url("teams", team$id, "members")
+      url <- gh_url("teams", team$id, "members", role = role)
     }
     else
     {
       info("Viewing users in organisation '", org, "'")
-      url <- gh_url("orgs", org, "members")
+      url <- gh_url("orgs", org, "members", role = role)
     }
   }
   else
@@ -103,7 +102,7 @@ view_users <- function(
   users_lst <- gh_page(url = url, n_max  = n_max, ...)
 
   info("Transforming results", level = 4)
-  users_gh <- bind_properties(users_lst, properties$user)
+  users_gh <- bind_properties(users_lst, properties$users)
 
   info("Done", level = 7)
   users_gh
@@ -119,10 +118,19 @@ view_user <- function(
   user,
   ...)
 {
-  assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+  if (missing(user))
+  {
+    info("Viewing authenticated user")
+    url <- gh_url("user")
+  }
+  else
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    info("Viewing user '", user, "'")
+    url <- gh_url("users", user)
+  }
 
-  info("Viewing user '", user, "'")
-  user_lst <- gh_url("users", user) %>% gh_request("GET", ...)
+  user_lst <- gh_request("GET", url = url, ...)
 
   info("Transforming results", level = 4)
   user_gh <- select_properties(user_lst, properties$user)

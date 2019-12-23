@@ -6,18 +6,19 @@
 \alias{browse_user}
 \title{View users in GitHub}
 \usage{
-view_users(repo, org, team, n_max = 1000, ...)
+view_users(org, team, role = "all", n_max = 1000, ...)
 
 view_user(user, ...)
 
 browse_user(user, ...)
 }
 \arguments{
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
-
 \item{org}{(string, optional) The name of the organization.}
 
 \item{team}{(string, optional) The name of the team.}
+
+\item{role}{(string, optional) Filter the result by role. Can specify either \code{"admin"},
+\code{"member"} or \code{"all"}. Default: \code{"all"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -51,13 +52,12 @@ for each user. \code{view_user()} returns a list of all properties for a single 
 \code{browse_user()} opens the web page for the user in the default browser.
 }
 \details{
-You can summarise all the users associated with either a repository, organisation or a
-team within an organisation. If none of those are supplied the first \code{n_max} users of
-GitHub are returned.
+You can summarise all the users associated with either an organisation or a team within
+an organisation. If none of those are supplied the first \code{n_max} users of GitHub are
+returned.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/collaborators/#list-collaborators}
 \item \url{https://developer.github.com/v3/orgs/members/#members-list}
 \item \url{https://developer.github.com/v3/teams/members/#list-team-members}
 \item \url{https://developer.github.com/v3/users/#get-all-users}
@@ -74,6 +74,9 @@ For more details see the GitHub API documentation:
 
   # View users in a team within an organisation
   view_users(org = "HairyCoos", team = "HeadCoos")
+
+  # View the admins of an organisation
+  view_users(org = "HairyCoos", role = "admin")
 
   # View a single user
   view_user("ChadGoymer")
