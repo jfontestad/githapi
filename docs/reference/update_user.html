@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Delete a card in a GitHub project — delete_card • githapi</title>
+<title>Update your user properties in GitHub — update_user • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Delete a card in a GitHub project — delete_card" />
-<meta property="og:description" content="This function deletes a card in a GitHub project. Care should be taken as it will not be
-recoverable. Instead, you may way to archive the card with update_card()." />
+<meta property="og:title" content="Update your user properties in GitHub — update_user" />
+<meta property="og:description" content="This function updates your user properties in GitHub. You cannot update someone else's
+profile." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,24 +109,57 @@ recoverable. Instead, you may way to archive the card with update_card()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Delete a card in a GitHub project</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/cards.R'><code>R/cards.R</code></a></small>
-    <div class="hidden name"><code>delete_card.Rd</code></div>
+    <h1>Update your user properties in GitHub</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/users.R'><code>R/users.R</code></a></small>
+    <div class="hidden name"><code>update_user.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function deletes a card in a GitHub project. Care should be taken as it will not be
-recoverable. Instead, you may way to archive the card with <code><a href='update_card.html'>update_card()</a></code>.</p>
+    <p>This function updates your user properties in GitHub. You cannot update someone else's
+profile.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_card</span>(<span class='no'>card</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_user</span>(
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>blog</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>company</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>location</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>hireable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>bio</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>card</th>
-      <td><p>(integer) The ID of the card.</p></td>
+      <th>name</th>
+      <td><p>(string, optional) The new name of the user.</p></td>
+    </tr>
+    <tr>
+      <th>email</th>
+      <td><p>(string, optional) The publicly visible email address of the user.</p></td>
+    </tr>
+    <tr>
+      <th>blog</th>
+      <td><p>(string, optional) The new blog URL of the user.</p></td>
+    </tr>
+    <tr>
+      <th>company</th>
+      <td><p>(string, optional) The new company of the user.</p></td>
+    </tr>
+    <tr>
+      <th>location</th>
+      <td><p>(string, optional) The new location of the user.</p></td>
+    </tr>
+    <tr>
+      <th>hireable</th>
+      <td><p>(boolean, optional) The new hiring availability of the user.</p></td>
+    </tr>
+    <tr>
+      <th>bio</th>
+      <td><p>(string, optional) The new short biography of the user.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -136,20 +169,39 @@ recoverable. Instead, you may way to archive the card with <code><a href='update
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>delete_card()</code> returns a TRUE if successfully deleted.</p>
+    <p><code>update_user()</code> returns a list of the new user properties.</p>
+<p><strong>User Properties:</strong></p><ul>
+<li><p><strong>id</strong>: The ID of the user.</p></li>
+<li><p><strong>login</strong>: The login name of the user.</p></li>
+<li><p><strong>name</strong>: The name of the user.</p></li>
+<li><p><strong>email</strong>: The public email address of the user.</p></li>
+<li><p><strong>blog</strong>: The blog address of the user.</p></li>
+<li><p><strong>company</strong>: The company the user works for.</p></li>
+<li><p><strong>location</strong>: The location of the user.</p></li>
+<li><p><strong>hireable</strong>: Whether the user currently hireable.</p></li>
+<li><p><strong>bio</strong>: The biography of the user.</p></li>
+<li><p><strong>type</strong>: The type of account.</p></li>
+<li><p><strong>site_admin</strong>: Whether the user is an administrator.</p></li>
+<li><p><strong>html_url</strong>: The GitHub page for the user.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can delete a card associated with either a repository, user or organisation, by
-supplying them as an input, as long as you have appropriate permissions.</p>
-<p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/projects/cards/#delete-a-project-card'>https://developer.github.com/v3/projects/cards/#delete-a-project-card</a></p></li>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/users/#update-a-user'>https://developer.github.com/v3/users/#update-a-user</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='co'># Delete a card</span>
-  <span class='fu'>delete_card</span>(<span class='fl'>123456</span>)
+  <span class='co'># Update your name</span>
+  <span class='fu'>update_user</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Bob Smith"</span>)
+
+  <span class='co'># Update your company</span>
+  <span class='fu'>update_user</span>(<span class='kw'>company</span> <span class='kw'>=</span> <span class='st'>"Acme"</span>)
+
+  <span class='co'># Update your hireable status</span>
+  <span class='fu'>update_user</span>(<span class='kw'>hireable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
