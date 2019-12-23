@@ -428,6 +428,7 @@ test_that("author and committer can be set when creating, updating and deleting 
     paths     = "aaaa.txt",
     contents  = "Created to test:\n\n  `create_files()`",
     messages  = "Testing create_files()",
+    branches  = repo_contents_branch,
     author    = list(name = "Bob Smith", email = "bob.smith@acme.com"),
     committer = list(name = "Jane Jones", email = "jane.jones@acme.com"),
     repo      = "ChadGoymer/test-githapi")
@@ -458,12 +459,13 @@ test_that("author and committer can be set when creating, updating and deleting 
   expect_identical(created_files$commit_committer, "Jane Jones")
 
   updated_files <- update_files(
-    paths    = "aaaa.txt",
-    contents = "Updated to test:\n\n  `update_files()`",
-    messages = "Testing update_files()",
+    paths     = "aaaa.txt",
+    contents  = "Updated to test:\n\n  `update_files()`",
+    messages  = "Testing update_files()",
+    branches  = repo_contents_branch,
     author    = list(name = "Jane Jones", email = "jane.jones@acme.com"),
     committer = list(name = "Bob Smith", email = "bob.smith@acme.com"),
-    repo     = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/test-githapi")
 
   expect_is(updated_files, "tbl")
   expect_identical(
@@ -491,11 +493,12 @@ test_that("author and committer can be set when creating, updating and deleting 
   expect_identical(updated_files$commit_committer, "Bob Smith")
 
   deleted_files <- delete_files(
-    paths    = "aaaa.txt",
-    messages = "Testing delete_files()",
+    paths     = "aaaa.txt",
+    messages  = "Testing delete_files()",
+    branches  = repo_contents_branch,
     author    = list(name = "Jane Jones", email = "jane.jones@acme.com"),
     committer = list(name = "Bob Smith", email = "bob.smith@acme.com"),
-    repo     = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/test-githapi")
 
   expect_is(deleted_files, "tbl")
   expect_identical(
