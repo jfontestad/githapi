@@ -137,8 +137,6 @@ test_that("browse_user opens the user's page in the browser", {
 
 test_that("update_user changes the user's properties", {
 
-  skip_if(!interactive(), "update_user must be tested manually")
-
   original_user <- view_user("ChadGoymer")
 
   on.exit({
