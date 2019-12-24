@@ -70,7 +70,7 @@ is_repository <- function(
 
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
 #
-#' Get information about a user's, organisation's or team's repositories.
+#' Get information about a user's, organization's or team's repositories.
 #'
 #' <https://developer.github.com/v3/repos/#list-user-repositories>
 #' <https://developer.github.com/v3/repos/#list-organization-repositories>
@@ -78,7 +78,7 @@ is_repository <- function(
 #'
 #' Note: Must specify either `owner` or `team`, but not both.
 #'
-#' @param owner (string) The user or organisation owning the repository.
+#' @param owner (string) The user or organization owning the repository.
 #' @param team (string) The team owning the repository.
 #' @param type (string, optional) Can be one of `all`, `owner`, `member`.
 #'   Default: `owner`.
@@ -93,7 +93,7 @@ is_repository <- function(
 #'   environment variable `GITHUB_API` or `https://api.github.com`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return A tibble describing all the repositories a user or organisation has (see GitHub's
+#' @return A tibble describing all the repositories a user or organization has (see GitHub's
 #'   API documentation for more detail).
 #'
 #' @export

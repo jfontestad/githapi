@@ -52,7 +52,7 @@ if moving the column.}
 \code{move_card()} can be used to reorder the cards or move them to other columns.
 }
 \details{
-You can update a card associated with either a repository, user or organisation, by
+You can update a card associated with either a repository, user or organization, by
 supplying them as an input, as long as you have appropriate permissions.
 
 You can move a card by either specifying the position, either \code{"top"} or \code{"bottom"},

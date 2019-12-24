@@ -45,7 +45,7 @@ update_project(
 \strong{Project Properties:}
 \itemize{
 \item \strong{id}: The ID of the project.
-\item \strong{number}: The number of the project for the repository, user or organisation.
+\item \strong{number}: The number of the project for the repository, user or organization.
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
@@ -60,7 +60,7 @@ This function updates a project in GitHub. It can be used to change the name and
 can also be used to close the project or change permissions.
 }
 \details{
-You can update a project associated with either a repository, user or organisation, by
+You can update a project associated with either a repository, user or organization, by
 supplying them as an input, as long as you have appropriate permissions.
 
 For more details see the GitHub API documentation:
@@ -83,7 +83,7 @@ For more details see the GitHub API documentation:
     state = "closed",
     user  = "ChadGoymer")
 
-  # Update the permissions of a project for an organisation
+  # Update the permissions of a project for an organization
   update_project(
     name       = "Org project",
     permission = "read",

@@ -6,7 +6,7 @@
 #' card can either contain an existing issue or pull request or you can create a note.
 #'
 #' You can create a card in a project associated with either a repository, user or
-#' organisation, by supplying them as an input, as long as you have appropriate permissions.
+#' organization, by supplying them as an input, as long as you have appropriate permissions.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/cards/#create-a-project-card>
@@ -54,7 +54,7 @@
 #'     project      = "Test project",
 #'     user         = "ChadGoymer")
 #'
-#'   # Create a note card in an organisation's project
+#'   # Create a note card in an organization's project
 #'   create_card(
 #'     note    = "This is a note",
 #'     column  = "Test column",
@@ -141,7 +141,7 @@ create_card <- function(
 #' `update_card()` can be used to change a card's note in a project in GitHub or archive it.
 #' `move_card()` can be used to reorder the cards or move them to other columns.
 #'
-#' You can update a card associated with either a repository, user or organisation, by
+#' You can update a card associated with either a repository, user or organization, by
 #' supplying them as an input, as long as you have appropriate permissions.
 #'
 #' You can move a card by either specifying the position, either `"top"` or `"bottom"`,
@@ -321,7 +321,7 @@ move_card <- function(
 #' for a single card.
 #'
 #' You can summarise all the cards of a project associated with either a repository, user
-#' or organisation, by supplying them as an input.
+#' or organization, by supplying them as an input.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/cards/#list-project-cards>
@@ -363,7 +363,7 @@ move_card <- function(
 #'     project = "Test cards",
 #'     user    = "ChadGoymer")
 #'
-#'   # View cards in an organisation's project
+#'   # View cards in an organization's project
 #'   view_card(
 #'   cards <- view_cards(
 #'     column  = "Test cards",
@@ -457,7 +457,7 @@ view_card <- function(
 #' This function deletes a card in a GitHub project. Care should be taken as it will not be
 #' recoverable. Instead, you may way to archive the card with [update_card()].
 #'
-#' You can delete a card associated with either a repository, user or organisation, by
+#' You can delete a card associated with either a repository, user or organization, by
 #' supplying them as an input, as long as you have appropriate permissions.
 #'
 #' For more details see the GitHub API documentation:

@@ -55,7 +55,7 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
-\section{Organisations, teams and users}{
+\section{Organizations, teams and users}{
 
 \itemize{
 \item \code{\link[=gh_user]{gh_user()}}: replace with \code{\link[=view_user]{view_user()}}

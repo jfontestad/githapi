@@ -45,7 +45,7 @@ one after.}
 \code{move_column()} can be used to reorder the columns.
 }
 \details{
-You can update a column associated with either a repository, user or organisation, by
+You can update a column associated with either a repository, user or organization, by
 supplying them as an input, as long as you have appropriate permissions.
 
 You can move a column by either specifying the position, either \code{"first"} or \code{"last"}, or
@@ -72,7 +72,7 @@ For more details see the GitHub API documentation:
     position = "first",
     user     = "ChadGoymer")
 
-  # Move a column after another on in an organisation's project
+  # Move a column after another on in an organization's project
   move_column(
     name  = "Test column",
     after = "Test column 2",

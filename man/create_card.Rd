@@ -58,7 +58,7 @@ card can either contain an existing issue or pull request or you can create a no
 }
 \details{
 You can create a card in a project associated with either a repository, user or
-organisation, by supplying them as an input, as long as you have appropriate permissions.
+organization, by supplying them as an input, as long as you have appropriate permissions.
 
 For more details see the GitHub API documentation:
 \itemize{
@@ -83,7 +83,7 @@ For more details see the GitHub API documentation:
     project      = "Test project",
     user         = "ChadGoymer")
 
-  # Create a note card in an organisation's project
+  # Create a note card in an organization's project
   create_card(
     note    = "This is a note",
     column  = "Test column",

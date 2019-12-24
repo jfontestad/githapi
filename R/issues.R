@@ -132,7 +132,7 @@ gh_issues <- function(
 #'
 #' <https://developer.github.com/v3/issues/#list-issues>
 #'
-#' @param org (string, optional) Filter the list to repositories owned by an organisation.
+#' @param org (string, optional) Filter the list to repositories owned by an organization.
 #' @param filter (string) Indicates which sorts of issues to return. Can be one of:
 #'  - `assigned`: Issues assigned to you
 #'  - `created`: Issues created by you

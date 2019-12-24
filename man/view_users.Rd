@@ -28,7 +28,8 @@ browse_user(user, ...)
 }
 \value{
 \code{view_users()} returns a tibble of user properties. \code{view_user()}
-returns a list of properties for a single user.
+returns a list of properties for a single user.  \code{browse_user()} opens the default
+browser on the user's page and returns the URL invisibly.
 
 \strong{user Properties:}
 \itemize{
@@ -52,8 +53,8 @@ for each user. \code{view_user()} returns a list of all properties for a single 
 \code{browse_user()} opens the web page for the user in the default browser.
 }
 \details{
-You can summarise all the users associated with either an organisation or a team within
-an organisation. If none of those are supplied the first \code{n_max} users of GitHub are
+You can summarise all the users associated with either an organization or a team within
+an organization. If none of those are supplied the first \code{n_max} users of GitHub are
 returned.
 
 For more details see the GitHub API documentation:
@@ -69,13 +70,13 @@ For more details see the GitHub API documentation:
   # View users collaborating on a repository
   view_users(repo = "ChadGoymer/githapi")
 
-  # View users in an organisation
+  # View users in an organization
   view_users(org = "HairyCoos")
 
-  # View users in a team within an organisation
+  # View users in a team within an organization
   view_users(org = "HairyCoos", team = "HeadCoos")
 
-  # View the admins of an organisation
+  # View the admins of an organization
   view_users(org = "HairyCoos", role = "admin")
 
   # View a single user

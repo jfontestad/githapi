@@ -23,7 +23,7 @@ create_project(name, body, repo, org, ...)
 \strong{Project Properties:}
 \itemize{
 \item \strong{id}: The ID of the project.
-\item \strong{number}: The number of the project for the repository, user or organisation.
+\item \strong{number}: The number of the project for the repository, user or organization.
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
@@ -38,9 +38,9 @@ This function creates a new project in GitHub. The project will be empty so you 
 to add columns and cards separately.
 }
 \details{
-You can create a project associated with either a repository or organisation, by
+You can create a project associated with either a repository or organization, by
 supplying them as an input, as long as you have appropriate permissions. If no repository
-or organisation is specified the project is created for the authenticated user.
+or organization is specified the project is created for the authenticated user.
 
 For more details see the GitHub API documentation:
 \itemize{
@@ -62,7 +62,7 @@ For more details see the GitHub API documentation:
     name = "User project",
     body = "This is a user's project")
 
-  # Create a project for an organisation
+  # Create a project for an organization
   create_project(
     name = "Repo project",
     body = "This is a repository's project",

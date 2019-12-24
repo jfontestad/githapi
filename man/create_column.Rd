@@ -36,7 +36,7 @@ will need to add cards separately.
 }
 \details{
 You can create a column in a project associated with either a repository, user or
-organisation, by supplying them as an input, as long as you have appropriate permissions.
+organization, by supplying them as an input, as long as you have appropriate permissions.
 
 For more details see the GitHub API documentation:
 \itemize{
@@ -57,7 +57,7 @@ For more details see the GitHub API documentation:
     project = "Test project",
     user    = "ChadGoymer")
 
-  # Create a column in an organisation's project
+  # Create a column in an organization's project
   create_column(
     name    = "Test column",
     project = "Test project",

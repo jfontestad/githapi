@@ -43,7 +43,7 @@ single column.
 }
 \details{
 You can summarise all the columns of a project associated with either a repository, user
-or organisation, by supplying them as an input.
+or organization, by supplying them as an input.
 
 For more details see the GitHub API documentation:
 \itemize{
@@ -63,7 +63,7 @@ For more details see the GitHub API documentation:
     project = "Test columns",
     user    = "ChadGoymer")
 
-  # View columns in an organisation's project
+  # View columns in an organization's project
   view_column(
     project = "Test columns",
     org     = "HairyCoos")
@@ -80,7 +80,7 @@ For more details see the GitHub API documentation:
     project = "Test columns",
     user    = "ChadGoymer")
 
-  # View a column in an organisation's project
+  # View a column in an organization's project
   view_column(
     column  = "Test column",
     project = "Test columns",

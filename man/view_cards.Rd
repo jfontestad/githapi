@@ -48,7 +48,7 @@ for a single card.
 }
 \details{
 You can summarise all the cards of a project associated with either a repository, user
-or organisation, by supplying them as an input.
+or organization, by supplying them as an input.
 
 For more details see the GitHub API documentation:
 \itemize{
@@ -70,7 +70,7 @@ For more details see the GitHub API documentation:
     project = "Test cards",
     user    = "ChadGoymer")
 
-  # View cards in an organisation's project
+  # View cards in an organization's project
   view_card(
   cards <- view_cards(
     column  = "Test cards",

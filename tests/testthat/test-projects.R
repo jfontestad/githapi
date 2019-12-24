@@ -51,8 +51,8 @@ test_that("create_projects creates a project and returns its properties", {
   expect_identical(user_project$name, "User project")
 
   org_project <- create_project(
-    name = "Organisation project",
-    body = "This is an organisation project",
+    name = "Organization project",
+    body = "This is an organization project",
     org  = "HairyCoos")
 
   expect_is(org_project, "list")
@@ -71,7 +71,7 @@ test_that("create_projects creates a project and returns its properties", {
       updated_at = "POSIXct",
       html_url   = "character"))
 
-  expect_identical(org_project$name, "Organisation project")
+  expect_identical(org_project$name, "Organization project")
 
 })
 
@@ -148,7 +148,7 @@ test_that("update_project updates a project and returns a list of the new proper
   expect_identical(user_project$state, "closed")
 
   org_project <- update_project(
-    project    = "Organisation project",
+    project    = "Organization project",
     permission = "read",
     private    = FALSE,
     org        = "HairyCoos")
@@ -237,7 +237,7 @@ test_that("view_projects returns a tibble summarising the projects", {
       updated_at = "POSIXct",
       html_url   = "character"))
 
-  expect_true("Organisation project" %in% org_projects$name)
+  expect_true("Organization project" %in% org_projects$name)
 
 })
 
@@ -294,7 +294,7 @@ test_that("view_project returns a list of project properties", {
 
   expect_identical(user_project$state, "closed")
 
-  org_project <- view_project("Organisation project", org = "HairyCoos")
+  org_project <- view_project("Organization project", org = "HairyCoos")
 
   expect_is(org_project, "list")
   expect_identical(attr(org_project, "status"), 200L)
@@ -374,7 +374,7 @@ test_that("browse_project opens the project in the browser", {
   expect_identical(attr(user_project, "status"), 200L)
   expect_identical(dirname(user_project), "https://github.com/users/ChadGoymer/projects")
 
-  org_project <- browse_project("Organisation project", org = "HairyCoos")
+  org_project <- browse_project("Organization project", org = "HairyCoos")
 
   expect_is(org_project, "character")
   expect_identical(attr(org_project, "status"), 200L)
@@ -399,7 +399,7 @@ test_that("delete_project deletes the projects and returns TRUE", {
   expect_identical(attr(user_project, "status"), 204L)
   expect_identical(as.logical(user_project), TRUE)
 
-  org_project <- delete_project("Organisation project", org = "HairyCoos")
+  org_project <- delete_project("Organization project", org = "HairyCoos")
 
   expect_is(org_project, "logical")
   expect_identical(attr(org_project, "status"), 204L)

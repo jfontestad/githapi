@@ -19,7 +19,7 @@ gh_user_issues(
 )
 }
 \arguments{
-\item{org}{(string, optional) Filter the list to repositories owned by an organisation.}
+\item{org}{(string, optional) Filter the list to repositories owned by an organization.}
 
 \item{filter}{(string) Indicates which sorts of issues to return. Can be one of:
 \itemize{

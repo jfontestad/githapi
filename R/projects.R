@@ -5,9 +5,9 @@
 #' This function creates a new project in GitHub. The project will be empty so you will need
 #' to add columns and cards separately.
 #'
-#' You can create a project associated with either a repository or organisation, by
+#' You can create a project associated with either a repository or organization, by
 #' supplying them as an input, as long as you have appropriate permissions. If no repository
-#' or organisation is specified the project is created for the authenticated user.
+#' or organization is specified the project is created for the authenticated user.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/#create-a-repository-project>
@@ -25,7 +25,7 @@
 #' **Project Properties:**
 #'
 #' - **id**: The ID of the project.
-#' - **number**: The number of the project for the repository, user or organisation.
+#' - **number**: The number of the project for the repository, user or organization.
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
@@ -47,7 +47,7 @@
 #'     name = "User project",
 #'     body = "This is a user's project")
 #'
-#'   # Create a project for an organisation
+#'   # Create a project for an organization
 #'   create_project(
 #'     name = "Repo project",
 #'     body = "This is a repository's project",
@@ -75,7 +75,7 @@ create_project <- function(
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
-    info("Creating project '", name, "' for organisation '", org, "'")
+    info("Creating project '", name, "' for organization '", org, "'")
     url <- gh_url("orgs", org, "projects")
   }
   else
@@ -106,7 +106,7 @@ create_project <- function(
 #' This function updates a project in GitHub. It can be used to change the name and body, but
 #' can also be used to close the project or change permissions.
 #'
-#' You can update a project associated with either a repository, user or organisation, by
+#' You can update a project associated with either a repository, user or organization, by
 #' supplying them as an input, as long as you have appropriate permissions.
 #'
 #' For more details see the GitHub API documentation:
@@ -129,7 +129,7 @@ create_project <- function(
 #' **Project Properties:**
 #'
 #' - **id**: The ID of the project.
-#' - **number**: The number of the project for the repository, user or organisation.
+#' - **number**: The number of the project for the repository, user or organization.
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
@@ -153,7 +153,7 @@ create_project <- function(
 #'     state = "closed",
 #'     user  = "ChadGoymer")
 #'
-#'   # Update the permissions of a project for an organisation
+#'   # Update the permissions of a project for an organization
 #'   update_project(
 #'     name       = "Org project",
 #'     permission = "read",
@@ -224,7 +224,7 @@ update_project <- function(
 #' `browse_project()` opens the web page for the project in the default browser.
 #'
 #' You can summarise all the projects associated with either a repository, user or
-#' organisation, by supplying them as an input.
+#' organization, by supplying them as an input.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/#list-repository-projects>
@@ -243,12 +243,12 @@ update_project <- function(
 #'
 #' @return `view_projects()` returns a tibble of project properties. `view_project()`
 #'   returns a list of properties for a single project. `browse_project()` opens the default
-#'   browser on the prject page and returns the URL invisibly.
+#'   browser on the project's page and returns the URL invisibly.
 #'
 #' **Project Properties:**
 #'
 #' - **id**: The ID of the project.
-#' - **number**: The number of the project for the repository, user or organisation.
+#' - **number**: The number of the project for the repository, user or organization.
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
@@ -265,7 +265,7 @@ update_project <- function(
 #'   # View a user's projects
 #'   view_projects(user = "ChadGoymer")
 #'
-#'   # View an organisation's projects
+#'   # View an organization's projects
 #'   view_projects(org = "HairyCoos")
 #'
 #'   # View closed projects
@@ -280,7 +280,7 @@ update_project <- function(
 #'   # View a specific user project
 #'   view_project("Test project", user = "ChadGoymer")
 #'
-#'   # View a specific organisation project
+#'   # View a specific organization project
 #'   view_project("Prioritisation", org = "HairyCoos")
 #'
 #'   # Browse a specific repository project
@@ -289,7 +289,7 @@ update_project <- function(
 #'   # Browse a specific user project
 #'   browse_project("Test project", user = "ChadGoymer")
 #'
-#'   # Browse a specific organisation project
+#'   # Browse a specific organization project
 #'   browse_project("Prioritisation", org = "HairyCoos")
 #' }
 #'
@@ -322,7 +322,7 @@ view_projects <- function(
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
-    info("Viewing projects for organisation '", org, "'")
+    info("Viewing projects for organization '", org, "'")
     url <- gh_url("orgs", org, "projects", state = state)
   }
   else
@@ -384,7 +384,7 @@ view_project <- function(
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
-    info("Viewing project '", project, "' for organisation '", org, "'")
+    info("Viewing project '", project, "' for organization '", org, "'")
     url <- gh_url("orgs", org, "projects", state = "all")
   }
   else
@@ -447,7 +447,7 @@ browse_project <- function(
 #' This function deletes a project in GitHub. Care should be taken as it will not be
 #' recoverable. If you just want to close the project use [update_project()].
 #'
-#' You can delete a project associated with either a repository, user or organisation, by
+#' You can delete a project associated with either a repository, user or organization, by
 #' supplying them as an input, as long as you have appropriate permissions.
 #'
 #' For more details see the GitHub API documentation:
@@ -473,7 +473,7 @@ browse_project <- function(
 #'     project = "User project",
 #'     user    = "ChadGoymer")
 #'
-#'   # Delete a project for an organisation
+#'   # Delete a project for an organization
 #'   delete_project(
 #'     project = "User project",
 #'     org     = "HairyCoos")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/projects-deprecated.R
 \name{gh_projects}
 \alias{gh_projects}
-\title{List organisation or repository projects}
+\title{List organization or repository projects}
 \usage{
 gh_projects(
   repo,

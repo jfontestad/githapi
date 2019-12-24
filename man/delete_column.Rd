@@ -27,7 +27,7 @@ This function deletes a column in a GitHub project. Care should be taken as it w
 recoverable.
 }
 \details{
-You can delete a column associated with either a repository, user or organisation, by
+You can delete a column associated with either a repository, user or organization, by
 supplying them as an input, as long as you have appropriate permissions.
 
 For more details see the GitHub API documentation:
@@ -49,7 +49,7 @@ For more details see the GitHub API documentation:
     project = "Test project",
     user    = "ChadGoymer")
 
-  # Delete a column in an organisation's project
+  # Delete a column in an organization's project
   delete_column(
     column  = "Test column",
     project = "Test project",
