@@ -1,108 +1,254 @@
-#  FUNCTION: gh_user --------------------------------------------------------------------------
+#  FUNCTION: view_users --------------------------------------------------------------------
 #
-#' Get a single user
+#' View users in GitHub
 #'
-#' <https://developer.github.com/v3/users/#get-a-single-user>
+#' `view_users()` summarises users in a table with the properties as columns and a row
+#' for each user. `view_user()` returns a list of all properties for a single user.
+#' `browse_user()` opens the web page for the user in the default browser.
 #'
-#' @param user (string) The GitHub username of the user.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+#' You can summarise all the users associated with either an organisation or a team within
+#' an organisation. If none of those are supplied the first `n_max` users of GitHub are
+#' returned.
 #'
-#' @return A list describing the user (see GitHub's API documentation for details).
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/orgs/members/#members-list>
+#' - <https://developer.github.com/v3/teams/members/#list-team-members>
+#' - <https://developer.github.com/v3/users/#get-all-users>
+#' - <https://developer.github.com/v3/users/#get-a-single-user>
 #'
-#' @export
-#'
-gh_user <- function(
-  user,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_character(user))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  response <- try(silent = TRUE, suppressMessages({
-    gh_get(gh_url("users", user, api = api), token = token, ...)
-  }))
-
-  if (is(response, "try-error") || identical(response, "")) {
-    error("Specified user does not exist in GitHub: '", user, "'")
-  }
-
-  response
-}
-
-#  FUNCTION: gh_users -------------------------------------------------------------------------
-#
-#' Get all users
-#'
-#' <https://developer.github.com/v3/users/#get-all-users>
-#'
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   string stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param user (integer) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param team (string, optional) The name of the team.
+#' @param role (string, optional) Filter the result by role. Can specify either `"admin"`,
+#'   `"member"` or `"all"`. Default: `"all"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return A tibble describing the users (see GitHub's API documentation for more detail).
+#' @return `view_users()` returns a tibble of user properties. `view_user()`
+#'   returns a list of properties for a single user.
+#'
+#' **user Properties:**
+#'
+#' - **id**: The ID of the user.
+#' - **login**: The login name of the user.
+#' - **name**: The name of the user (only available in `view_user()`).
+#' - **email**: The public email address of the user (only available in `view_user()`).
+#' - **blog**: The blog address of the user (only available in `view_user()`).
+#' - **company**: The company the user works for (only available in `view_user()`).
+#' - **location**: The location of the user (only available in `view_user()`).
+#' - **hireable**: Whether the user currently hireable (only available in `view_user()`).
+#' - **bio**: The biography of the user (only available in `view_user()`).
+#' - **type**: The type of account.
+#' - **site_admin**: Whether the user is an administrator.
+#' - **html_url**: The GitHub page for the user.
+#'
+#' @examples
+#' \dontrun{
+#'   # View users collaborating on a repository
+#'   view_users(repo = "ChadGoymer/githapi")
+#'
+#'   # View users in an organisation
+#'   view_users(org = "HairyCoos")
+#'
+#'   # View users in a team within an organisation
+#'   view_users(org = "HairyCoos", team = "HeadCoos")
+#'
+#'   # View the admins of an organisation
+#'   view_users(org = "HairyCoos", role = "admin")
+#'
+#'   # View a single user
+#'   view_user("ChadGoymer")
+#'
+#'   # Browse a user's GitHub page
+#'   browse_user("ChadGoymer")
+#' }
 #'
 #' @export
 #'
-gh_users <- function(
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
+view_users <- function(
+  org,
+  team,
+  role  = "all",
+  n_max = 1000,
   ...)
 {
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    assert(
+      is_scalar_character(role) && role %in% values$user$role,
+      "'role' must be one of '", str_c(values$card$role, collapse = "', '"), "':\n  ", role)
 
-  users <- gh_page(gh_url("users", api = api), n_max = n_max, token = token, ...)
+    if (!missing(team))
+    {
+      assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
 
-  bind_fields(users, list(
-    login    = c("login",    as = "character"),
-    type     = c("type",     as = "character"),
-    html_url = c("html_url", as = "character"),
-    url      = c("url",      as = "character")))
+      team <- gh_url("orgs", org, "teams") %>% gh_find(property = "name", value = team, ...)
+
+      info("Viewing users in team '", team$name, "'")
+      url <- gh_url("teams", team$id, "members", role = role)
+    }
+    else
+    {
+      info("Viewing users in organisation '", org, "'")
+      url <- gh_url("orgs", org, "members", role = role)
+    }
+  }
+  else
+  {
+    url <- gh_url("users")
+  }
+
+  users_lst <- gh_page(url = url, n_max  = n_max, ...)
+
+  info("Transforming results", level = 4)
+  users_gh <- bind_properties(users_lst, properties$users)
+
+  info("Done", level = 7)
+  users_gh
 }
 
-#  FUNCTION: gh_user_email --------------------------------------------------------------------
+
+#  FUNCTION: view_user ---------------------------------------------------------------------
 #
-#' List email addresses for the authenticated user
+#' @rdname view_users
+#' @export
 #'
-#' <https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user>
-#' <https://developer.github.com/v3/users/emails/#list-public-email-addresses-for-a-user>
+view_user <- function(
+  user,
+  ...)
+{
+  if (missing(user))
+  {
+    info("Viewing authenticated user")
+    url <- gh_url("user")
+  }
+  else
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    info("Viewing user '", user, "'")
+    url <- gh_url("users", user)
+  }
+
+  user_lst <- gh_request("GET", url = url, ...)
+
+  info("Transforming results", level = 4)
+  user_gh <- select_properties(user_lst, properties$user)
+
+  info("Done", level = 7)
+  user_gh
+}
+
+
+#  FUNCTION: browse_user ----------------------------------------------------------------------
+#
+#' @rdname view_users
+#' @export
 #'
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   string stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+browse_user <- function(
+  user,
+  ...)
+{
+  user <- view_user(user, ...)
+
+  info("Browsing user '", user$name, "'")
+  httr::BROWSE(user$html_url)
+
+  info("Done", level = 7)
+  structure(
+    user$html_url,
+    class   = c("github", "character"),
+    url     = attr(user, "url"),
+    request = attr(user, "request"),
+    status  = attr(user, "status"),
+    header  = attr(user, "header"))
+}
+
+
+#  FUNCTION: update_user ----------------------------------------------------------------------
+#
+#' Update your user properties in GitHub
 #'
-#' @return A tibble describing the user's email addresses (see GitHub's API documentation for
-#'   more detail).
+#' This function updates your user properties in GitHub. You cannot update someone else's
+#' profile.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/users/#update-a-user>
+#'
+#' @param name (string, optional) The new name of the user.
+#' @param email (string, optional) The publicly visible email address of the user.
+#' @param blog (string, optional) The new blog URL of the user.
+#' @param company (string, optional) The new company of the user.
+#' @param location (string, optional) The new location of the user.
+#' @param hireable (boolean, optional) The new hiring availability of the user.
+#' @param bio (string, optional) The new short biography of the user.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_user()` returns a list of the new user properties.
+#'
+#' **User Properties:**
+#'
+#' - **id**: The ID of the user.
+#' - **login**: The login name of the user.
+#' - **name**: The name of the user.
+#' - **email**: The public email address of the user.
+#' - **blog**: The blog address of the user.
+#' - **company**: The company the user works for.
+#' - **location**: The location of the user.
+#' - **hireable**: Whether the user currently hireable.
+#' - **bio**: The biography of the user.
+#' - **type**: The type of account.
+#' - **site_admin**: Whether the user is an administrator.
+#' - **html_url**: The GitHub page for the user.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update your name
+#'   update_user(name = "Bob Smith")
+#'
+#'   # Update your company
+#'   update_user(company = "Acme")
+#'
+#'   # Update your hireable status
+#'   update_user(hireable = TRUE)
+#' }
 #'
 #' @export
 #'
-gh_user_email <- function(
-  token = gh_token(),
-  api   = getOption("github.api"),
+update_user <- function(
+  name     = NULL,
+  email    = NULL,
+  blog     = NULL,
+  company  = NULL,
+  location = NULL,
+  hireable = NULL,
+  bio      = NULL,
   ...)
 {
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_null(name)     || is_scalar_character(name),     "'name' must be a string:\n  ",      name)
+  assert(is_null(email)    || is_scalar_character(email),    "'email' must be a string:\n  ",     email)
+  assert(is_null(blog)     || is_scalar_character(blog),     "'blog' must be a string:\n  ",      blog)
+  assert(is_null(company)  || is_scalar_character(company),  "'company' must be a string:\n  ",   company)
+  assert(is_null(location) || is_scalar_character(location), "'location' must be a string:\n  ",  location)
+  assert(is_null(hireable) || is_scalar_logical(hireable),   "'hireable' must be a boolean:\n  ", hireable)
+  assert(is_null(bio)      || is_scalar_character(bio),      "'bio' must be a string:\n  ",       bio)
 
-  emails <- gh_get(gh_url("user/emails", api = api), token = token, ...)
+  payload <- list(
+    name     = name,
+    email    = email,
+    blog     = blog,
+    company  = company,
+    location = location,
+    hireable = hireable,
+    bio      = bio) %>%
+    compact()
 
-  bind_fields(emails, list(
-    email      = c("email",      as = "character"),
-    primary    = c("primary",    as = "logical"),
-    verified   = c("verified",   as = "logical"),
-    visibility = c("visibility", as = "character")))
+  info("Updating user")
+  user_lst <- gh_url("user") %>% gh_request("PATCH", payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  user_gh <- select_properties(user_lst, properties$user)
+
+  info("Done", level = 7)
+  user_gh
 }

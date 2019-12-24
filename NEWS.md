@@ -1,3 +1,13 @@
+# githapi 0.9.7
+
+- Added `view_users()`
+- Added `view_user()`
+- Added `browse_user()`
+- Added `update_user()`
+- In all `update_*()` functions set default values to `NULL`
+- When printing a `github` object, only show URL if the attribute exists
+- Deprecated `gh_user()`, `gh_users()` and `gh_user_email()`
+
 # githapi 0.9.6
 
 - Added `create_card()`

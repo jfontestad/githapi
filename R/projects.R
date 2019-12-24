@@ -92,13 +92,7 @@ create_project <- function(
     ...)
 
   info("Transforming results", level = 4)
-  project_gh <- select_properties(project_lst, properties$project) %>%
-    structure(
-      class   = class(project_lst),
-      url     = attr(project_lst, "url"),
-      request = attr(project_lst, "request"),
-      status  = attr(project_lst, "status"),
-      header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project)
 
   info("Done", level = 7)
   project_gh
@@ -171,51 +165,33 @@ create_project <- function(
 #'
 update_project <- function(
   project,
-  name,
-  body,
-  state,
-  permission,
-  private,
+  name       = NULL,
+  body       = NULL,
+  state      = NULL,
+  permission = NULL,
+  private    = NULL,
   repo,
   user,
   org,
   ...)
 {
-  payload <- list()
+  assert(is_null(name) || is_scalar_character(name), "'name' must be a string:\n  ", name)
+  assert(is_null(body) || is_scalar_character(body), "'body' must be a string:\n  ", body)
+  assert(
+    is_null(state) || is_scalar_character(state) && state %in% str_subset(values$project$state, "all", negate = TRUE),
+    "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
+  assert(
+    is_null(permission) || is_scalar_character(permission) && permission %in% values$project$permission,
+    "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
+  assert(is_null(private) || is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
 
-  if (!missing(name))
-  {
-    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
-    payload <- c(payload, name = name)
-  }
-
-  if (!missing(body))
-  {
-    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
-    payload <- c(payload, body = body)
-  }
-
-  if (!missing(state))
-  {
-    assert(
-      is_scalar_character(state) && state %in% str_subset(values$project$state, "all", negate = TRUE),
-      "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
-    payload <- c(payload, state = state)
-  }
-
-  if (!missing(permission))
-  {
-    assert(
-      is_scalar_character(permission) && permission %in% values$project$permission,
-      "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
-    payload <- c(payload, organization_permission = permission)
-  }
-
-  if (!missing(private))
-  {
-    assert(is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
-    payload <- c(payload, private = private)
-  }
+  payload <- list(
+    name                    = name,
+    body                    = body,
+    state                   = state,
+    organization_permission = permission,
+    private                 = private) %>%
+    compact()
 
   project <- view_project(
     project = project,
@@ -232,13 +208,7 @@ update_project <- function(
       ...)
 
   info("Transforming results", level = 4)
-  project_gh <- select_properties(project_lst, properties$project) %>%
-    structure(
-      class   = class(project_lst),
-      url     = attr(project_lst, "url"),
-      request = attr(project_lst, "request"),
-      status  = attr(project_lst, "status"),
-      header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project)
 
   info("Done", level = 7)
   project_gh
@@ -367,13 +337,7 @@ view_projects <- function(
     ...)
 
   info("Transforming results", level = 4)
-  projects_gh <- bind_properties(projects_lst, properties$project) %>%
-    structure(
-      class   = c("github", class(.)),
-      url     = attr(projects_lst, "url"),
-      request = attr(projects_lst, "request"),
-      status  = attr(projects_lst, "status"),
-      header  = attr(projects_lst, "header"))
+  projects_gh <- bind_properties(projects_lst, properties$project)
 
   info("Done", level = 7)
   projects_gh
@@ -436,13 +400,7 @@ view_project <- function(
     ...)
 
   info("Transforming results", level = 4)
-  project_gh <- select_properties(project_lst, properties$project) %>%
-    structure(
-      class   = class(project_lst),
-      url     = attr(project_lst, "url"),
-      request = attr(project_lst, "request"),
-      status  = attr(project_lst, "status"),
-      header  = attr(project_lst, "header"))
+  project_gh <- select_properties(project_lst, properties$project)
 
   info("Done", level = 7)
   project_gh

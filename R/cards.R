@@ -203,23 +203,17 @@ create_card <- function(
 #'
 update_card <- function(
   card,
-  note,
-  archived,
+  note     = NULL,
+  archived = NULL,
   ...)
 {
-  payload <- list()
+  assert(is_null(note)     || is_scalar_character(note),   "'note' must be a string:\n  ",      note)
+  assert(is_null(archived) || is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
 
-  if (!missing(note))
-  {
-    assert(is_scalar_character(note), "'note' must be a string:\n  ", note)
-    payload <- list(note = note)
-  }
-
-  if (!missing(archived))
-  {
-    assert(is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
-    payload <- c(payload, archived = archived)
-  }
+  payload <- list(
+    note     = note,
+    archived = archived) %>%
+    compact()
 
   info("Updating card '", card, "'")
   card_lst <- gh_url("projects/columns/cards", card) %>%
@@ -322,7 +316,7 @@ move_card <- function(
 #
 #' View cards within a GitHub project
 #'
-#' `view_cards()` summarises cards in a table with the properties as cards and a row
+#' `view_cards()` summarises cards in a table with the properties as columnss and a row
 #' for each card in a column of a project. `view_card()` returns a list of all properties
 #' for a single card.
 #'

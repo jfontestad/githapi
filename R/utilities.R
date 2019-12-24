@@ -109,7 +109,13 @@ select_properties <- function(entity, properties)
 
   map2(selected_properties, conversions, function(prop, conv) {
     if (is_na(conv)) prop else exec(paste0("as.", conv), prop)
-  })
+  }) %>%
+    structure(
+      class   = c("github", class(.)),
+      url     = attr(entity, "url"),
+      request = attr(entity, "request"),
+      status  = attr(entity, "status"),
+      header  = attr(entity, "header"))
 }
 
 
@@ -147,5 +153,11 @@ bind_properties <- function(collection, properties)
   map2(selected_properties, conversions, function(prop, conv) {
     if (is_na(conv)) prop else exec(paste0("as.", conv), prop)
   }) %>%
-    as_tibble()
+    as_tibble() %>%
+    structure(
+      class   = c("github", class(.)),
+      url     = attr(collection, "url"),
+      request = attr(collection, "request"),
+      status  = attr(collection, "status"),
+      header  = attr(collection, "header"))
 }

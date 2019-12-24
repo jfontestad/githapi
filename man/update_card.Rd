@@ -5,7 +5,7 @@
 \alias{move_card}
 \title{Update a card in a GitHub project}
 \usage{
-update_card(card, note, archived, ...)
+update_card(card, note = NULL, archived = NULL, ...)
 
 move_card(card, position, after, column, project, repo, user, org, ...)
 }

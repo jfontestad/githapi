@@ -109,6 +109,8 @@ test_that("select_properties returns a list of converted properties", {
     updated_at = as.POSIXct("2019-12-10 19:07:53", tz = "UTC") %>% format(tz = "") %>% as.POSIXct(),
     html_url   = "https://github.com/users/ChadGoymer/projects/1")
 
+  class(expected_result) <- c("github", "list")
+
   expect_identical(selected_properties, expected_result)
 
 })
@@ -142,6 +144,8 @@ test_that("select_properties returns a list of empty vectors for an empty entity
     created_at = as.POSIXct(character()),
     updated_at = as.POSIXct(character()),
     html_url   = character())
+
+  class(expected_empty_result) <- c("github", "list")
 
   expect_identical(empty_result, expected_empty_result)
 
@@ -207,6 +211,8 @@ test_that("bind_properties extracts properties from entities and binds them into
     updated_at = as.POSIXct(c("2019-12-10 19:07:53", "2019-12-07 12:53:24"), tz = "UTC") %>% format(tz = "") %>% as.POSIXct(),
     html_url   = c("https://github.com/users/ChadGoymer/projects/1", "https://github.com/ChadGoymer/githapi/projects/1"))
 
+  class(expected_result) <- c("github", class(expected_result))
+
   expect_identical(result, expected_result)
 
 })
@@ -240,6 +246,8 @@ test_that("bind_properties returns an empty data.frame for an empty list of enti
     created_at = as.POSIXct(character()),
     updated_at = as.POSIXct(character()),
     html_url   = character())
+
+  class(expected_empty_result) <- c("github", class(expected_empty_result))
 
   expect_identical(empty_result, expected_empty_result)
 

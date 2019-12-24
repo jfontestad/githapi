@@ -76,13 +76,7 @@ create_column <- function(
       ...)
 
   info("Transforming results", level = 4)
-  column_gh <- select_properties(column_lst, properties$column) %>%
-    structure(
-      class   = class(column_lst),
-      url     = attr(column_lst, "url"),
-      request = attr(column_lst, "request"),
-      status  = attr(column_lst, "status"),
-      header  = attr(column_lst, "header"))
+  column_gh <- select_properties(column_lst, properties$column)
 
   info("Done", level = 7)
   column_gh
@@ -177,13 +171,7 @@ update_column <- function(
       ...)
 
   info("Transforming results", level = 4)
-  column_gh <- select_properties(column_lst, properties$column) %>%
-    structure(
-      class   = class(column_lst),
-      url     = attr(column_lst, "url"),
-      request = attr(column_lst, "request"),
-      status  = attr(column_lst, "status"),
-      header  = attr(column_lst, "header"))
+  column_gh <- select_properties(column_lst, properties$column)
 
   info("Done", level = 7)
   column_gh
@@ -355,13 +343,7 @@ view_columns <- function(
       ...)
 
   info("Transforming results", level = 4)
-  columns_gh <- bind_properties(columns_lst, properties$column) %>%
-    structure(
-      class   = c("github", class(.)),
-      url     = attr(columns_lst, "url"),
-      request = attr(columns_lst, "request"),
-      status  = attr(columns_lst, "status"),
-      header  = attr(columns_lst, "header"))
+  columns_gh <- bind_properties(columns_lst, properties$column)
 
   info("Done", level = 7)
   columns_gh
@@ -413,13 +395,7 @@ view_column <- function(
   }
 
   info("Transforming results", level = 4)
-  column_gh <- select_properties(column_lst, properties$column) %>%
-    structure(
-      class   = class(column_lst),
-      url     = attr(column_lst, "url"),
-      request = attr(column_lst, "request"),
-      status  = attr(column_lst, "status"),
-      header  = attr(column_lst, "header"))
+  column_gh <- select_properties(column_lst, properties$column)
 
   info("Done", level = 7)
   column_gh
