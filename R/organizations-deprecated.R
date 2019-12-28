@@ -21,6 +21,8 @@ gh_organization <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_organization", package = "githapi")
+
   assert(is_scalar_character(org))
   assert(is_sha(token))
   assert(is_url(api))
@@ -55,6 +57,8 @@ gh_organizations <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_organizations", package = "githapi")
+
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
@@ -162,6 +166,8 @@ gh_members <- function(
   api    = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_users", package = "githapi")
+
   assert(is_null(filter) | is_scalar_character(filter))
   assert(is_null(role) | is_scalar_character(role))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
@@ -221,6 +227,8 @@ gh_membership <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_membership", package = "githapi")
+
   assert(is_scalar_character(user))
   assert(is_scalar_character(org))
   assert(is_sha(token))
@@ -268,6 +276,8 @@ gh_memberships <- function(
   api    = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_memberships", package = "githapi")
+
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))

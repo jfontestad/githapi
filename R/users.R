@@ -16,7 +16,7 @@
 #' - <https://developer.github.com/v3/users/#get-all-users>
 #' - <https://developer.github.com/v3/users/#get-a-single-user>
 #'
-#' @param user (integer) The login of the user.
+#' @param user (string) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param team (string, optional) The name of the team.
 #' @param role (string, optional) Filter the result by role. Can specify either `"admin"`,
@@ -97,6 +97,7 @@ view_users <- function(
   }
   else
   {
+    info("Viewing all users")
     url <- gh_url("users")
   }
 

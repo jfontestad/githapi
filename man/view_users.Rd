@@ -24,7 +24,7 @@ browse_user(user, ...)
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 
-\item{user}{(integer) The login of the user.}
+\item{user}{(string) The login of the user.}
 }
 \value{
 \code{view_users()} returns a tibble of user properties. \code{view_user()}

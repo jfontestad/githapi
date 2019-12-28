@@ -2,7 +2,7 @@ context("organizations api")
 
 #  FUNCTION: gh_organization ------------------------------------------------------------------
 test_that("gh_organization returns a list describing the organization", {
-  tidyverse <- gh_organization("tidyverse")
+  tidyverse <- suppressWarnings(gh_organization("tidyverse"))
   expect_is(tidyverse, "list")
   expect_named(
     tidyverse,
@@ -16,7 +16,7 @@ test_that("gh_organization returns a list describing the organization", {
 
 #  FUNCTION: gh_organizations -----------------------------------------------------------------
 test_that("gh_organizations returns a tibble describing the organizations", {
-  hadley_orgs <- gh_organizations("hadley")
+  hadley_orgs <- suppressWarnings(gh_organizations("hadley"))
   expect_is(hadley_orgs, "tbl")
 
   expect_identical(
@@ -37,7 +37,7 @@ test_that("gh_member returns TRUE if user is a member and FALSE otherwise", {
 
 #  FUNCTION: gh_members -----------------------------------------------------------------------
 test_that("gh_members returns a tibble describing the members", {
-  tidy_members <- gh_members("tidyverse")
+  tidy_members <- suppressWarnings(gh_members("tidyverse"))
   expect_is(tidy_members, "tbl")
 
   expect_identical(
@@ -50,18 +50,3 @@ test_that("gh_members returns a tibble describing the members", {
 
   expect_true("hadley" %in% tidy_members$login)
 })
-
-#  FUNCTION: gh_membership --------------------------------------------------------------------
-#  TODO: set up an organization so it can be tested
-
-#  FUNCTION: gh_memberships -------------------------------------------------------------------
-#  TODO: set up an organization so it can be tested
-
-#  FUNCTION: gh_team --------------------------------------------------------------------------
-#  TODO: set up an organization so it can be tested
-
-#  FUNCTION: gh_teams -------------------------------------------------------------------------
-#  TODO: set up an organization so it can be tested
-
-#  FUNCTION: is_manager -----------------------------------------------------------------------
-#  TODO: set up an organization so it can be tested
