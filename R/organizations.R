@@ -117,3 +117,25 @@ view_organizations <- function(
   info("Done", level = 7)
   organizations_gh
 }
+
+
+#  FUNCTION: view_organization -------------------------------------------------------------
+#
+#' @rdname view_organizations
+#' @export
+#'
+view_organization <- function(
+  organization,
+  ...)
+{
+  assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+
+  info("Viewing organization '", organization, "'")
+  organization_lst <- gh_url("orgs", organization) %>% gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  organization_gh <- select_properties(organization_lst, properties$organization)
+
+  info("Done", level = 7)
+  organization_gh
+}

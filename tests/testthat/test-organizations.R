@@ -40,3 +40,50 @@ test_that("view_organizations returns a tibble summarising the organizations", {
       description = "character"))
 
 })
+
+
+# TEST: view_organization ---------------------------------------------------------------------
+
+test_that("view_organization returns a list of organization properties", {
+
+  organization <- view_organization("HairyCoos")
+
+  expect_is(organization, "list")
+  expect_identical(attr(organization, "status"), 200L)
+  expect_identical(
+    map_chr(organization, ~ class(.)[[1]]),
+    c(id                                       = "integer",
+      login                                    = "character",
+      description                              = "character",
+      name                                     = "character",
+      company                                  = "character",
+      blog                                     = "character",
+      location                                 = "character",
+      email                                    = "character",
+      is_verified                              = "logical",
+      has_organization_projects                = "logical",
+      has_repository_projects                  = "logical",
+      public_repos                             = "integer",
+      public_gists                             = "integer",
+      html_url                                 = "character",
+      created_at                               = "POSIXct",
+      total_private_repos                      = "integer",
+      owned_private_repos                      = "integer",
+      private_gists                            = "integer",
+      disk_usage                               = "numeric",
+      collaborators                            = "integer",
+      billing_email                            = "character",
+      plan_name                                = "character",
+      plan_space                               = "integer",
+      plan_private_repos                       = "integer",
+      default_repository_settings              = "character",
+      members_can_create_repositories          = "logical",
+      two_factor_requirement_enabled           = "logical",
+      members_allowed_repository_creation_type = "character",
+      members_can_create_public_repositories   = "logical",
+      members_can_create_private_repositories  = "logical",
+      members_can_create_internal_repositories = "logical"))
+
+  expect_identical(organization$login, "HairyCoos")
+
+})
