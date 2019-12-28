@@ -87,3 +87,18 @@ test_that("view_organization returns a list of organization properties", {
   expect_identical(organization$login, "HairyCoos")
 
 })
+
+
+# TEST: browse_organization -------------------------------------------------------------------
+
+test_that("browse_organization opens the organization's page in the browser", {
+
+  skip_if(!interactive(), "browse_organization must be tested manually")
+
+  organization <- browse_organization("HairyCoos")
+
+  expect_is(organization, "character")
+  expect_identical(attr(organization, "status"), 200L)
+  expect_identical(as.character(organization), "https://github.com/HairyCoos")
+
+})

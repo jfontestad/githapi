@@ -139,3 +139,28 @@ view_organization <- function(
   info("Done", level = 7)
   organization_gh
 }
+
+
+#  FUNCTION: browse_organization --------------------------------------------------------------
+#
+#' @rdname view_organizations
+#' @export
+#'
+browse_organization <- function(
+  organization,
+  ...)
+{
+  organization <- view_organization(organization, ...)
+
+  info("Browsing organization '", organization$login, "'")
+  httr::BROWSE(organization$html_url)
+
+  info("Done", level = 7)
+  structure(
+    organization$html_url,
+    class   = c("github", "character"),
+    url     = attr(organization, "url"),
+    request = attr(organization, "request"),
+    status  = attr(organization, "status"),
+    header  = attr(organization, "header"))
+}
