@@ -8,7 +8,7 @@
 #' browser.
 #'
 #' You can summarise all the organizations a user is a member of by specifying the user login,
-#' or the authenticate user if it is set to `NULL`. If a user is not supplied the first `n_max`
+#' or the authenticated user if it is set to `NULL`. If a user is not supplied the first `n_max`
 #' organizations of GitHub are returned.
 #'
 #' For more details see the GitHub API documentation:
@@ -40,8 +40,8 @@
 #' - **location**: The geographical location.
 #' - **email**: The email address for the organization.
 #' - **is_verified**: Whether the organization has been verified.
-#' - **has_organization_projects**: Whether the organization has projects.
-#' - **has_repository_projects**: Whether the organization's repositories have projects.
+#' - **has_organization_projects**: Whether the organization can have projects.
+#' - **has_repository_projects**: Whether the organization's repositories can have projects.
 #' - **public_repos**: The number of public repositories.
 #' - **public_gists**: The number of public gists.
 #' - **html_url**: The address for the organization's GitHub web page.
@@ -55,10 +55,9 @@
 #' - **plan_name**: The name of the GitHub plan.
 #' - **plan_space**: The total space allocated for the plan.
 #' - **plan_private_repos**: The number of private repositories for the plan.
-#' - **default_repository_settings**: The default access for new repositories.
-#' - **members_can_create_repositories**: Whether members can create repositories.
+#' - **default_repository_permission**: The default access for new repositories.
 #' - **two_factor_requirement_enabled**: Whether members require two-factor authentication.
-#' - **members_allowed_repository_creation_type**: The types of repositories members can create.
+#' - **members_can_create_repositories**: Whether members can create repositories.
 #' - **members_can_create_public_repositories**: Whether members can create public repositories.
 #' - **members_can_create_private_repositories**: Whether members can create private repositories.
 #' - **members_can_create_internal_repositories**:  Whether members can create internal repositories.

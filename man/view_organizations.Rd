@@ -42,8 +42,8 @@ The following are only returned using \code{view_organization()}:
 \item \strong{location}: The geographical location.
 \item \strong{email}: The email address for the organization.
 \item \strong{is_verified}: Whether the organization has been verified.
-\item \strong{has_organization_projects}: Whether the organization has projects.
-\item \strong{has_repository_projects}: Whether the organization's repositories have projects.
+\item \strong{has_organization_projects}: Whether the organization can have projects.
+\item \strong{has_repository_projects}: Whether the organization's repositories can have projects.
 \item \strong{public_repos}: The number of public repositories.
 \item \strong{public_gists}: The number of public gists.
 \item \strong{html_url}: The address for the organization's GitHub web page.
@@ -57,10 +57,9 @@ The following are only returned using \code{view_organization()}:
 \item \strong{plan_name}: The name of the GitHub plan.
 \item \strong{plan_space}: The total space allocated for the plan.
 \item \strong{plan_private_repos}: The number of private repositories for the plan.
-\item \strong{default_repository_settings}: The default access for new repositories.
-\item \strong{members_can_create_repositories}: Whether members can create repositories.
+\item \strong{default_repository_permission}: The default access for new repositories.
 \item \strong{two_factor_requirement_enabled}: Whether members require two-factor authentication.
-\item \strong{members_allowed_repository_creation_type}: The types of repositories members can create.
+\item \strong{members_can_create_repositories}: Whether members can create repositories.
 \item \strong{members_can_create_public_repositories}: Whether members can create public repositories.
 \item \strong{members_can_create_private_repositories}: Whether members can create private repositories.
 \item \strong{members_can_create_internal_repositories}:  Whether members can create internal repositories.
@@ -74,7 +73,7 @@ browser.
 }
 \details{
 You can summarise all the organizations a user is a member of by specifying the user login,
-or the authenticate user if it is set to \code{NULL}. If a user is not supplied the first \code{n_max}
+or the authenticated user if it is set to \code{NULL}. If a user is not supplied the first \code{n_max}
 organizations of GitHub are returned.
 
 For more details see the GitHub API documentation:

@@ -62,8 +62,8 @@ properties <- list(
   organization = list(
     id                                       = c("id",                                       as = "integer"),
     login                                    = c("login",                                    as = "character"),
-    description                              = c("description",                              as = "character"),
     name                                     = c("name",                                     as = "character"),
+    description                              = c("description",                              as = "character"),
     company                                  = c("company",                                  as = "character"),
     blog                                     = c("blog",                                     as = "character"),
     location                                 = c("location",                                 as = "character"),
@@ -84,10 +84,9 @@ properties <- list(
     plan_name                                = c("plan", "name",                             as = "character"),
     plan_space                               = c("plan", "space",                            as = "integer"),
     plan_private_repos                       = c("plan", "private_repos",                    as = "integer"),
-    default_repository_settings              = c("default_repository_settings",              as = "character"),
-    members_can_create_repositories          = c("members_can_create_repositories",          as = "logical"),
+    default_repository_permission            = c("default_repository_permission",            as = "character"),
     two_factor_requirement_enabled           = c("two_factor_requirement_enabled",           as = "logical"),
-    members_allowed_repository_creation_type = c("members_allowed_repository_creation_type", as = "character"),
+    members_can_create_repositories          = c("members_can_create_repositories",          as = "logical"),
     members_can_create_public_repositories   = c("members_can_create_public_repositories",   as = "logical"),
     members_can_create_private_repositories  = c("members_can_create_private_repositories",  as = "logical"),
     members_can_create_internal_repositories = c("members_can_create_internal_repositories", as = "logical"))
