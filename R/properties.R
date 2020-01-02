@@ -116,6 +116,9 @@ values <- list(
     position       = c("top", "bottom")),
 
   user = list(
-    role           = c("admin", "member", "all"))
+    role           = c("admin", "member", "all")),
+
+  organization = list(
+    default_repository_permission = c("read", "write", "admin", "none"))
 
 )
