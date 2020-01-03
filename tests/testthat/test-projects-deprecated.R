@@ -9,7 +9,7 @@ test_that("gh_project returns a list describing the project", {
     project,
     c("owner_url", "url", "html_url", "columns_url", "id", "node_id", "name", "body",
       "number", "state", "creator", "created_at", "updated_at"))
-  expect_identical(project$name, "Prioritisation")
+  expect_identical(project$name, "githapi prioritisation")
 })
 
 #  FUNCTION: gh_projects ----------------------------------------------------------------------
@@ -29,7 +29,7 @@ test_that("gh_projects returns a tibble describing the projects", {
       updated_at    = "POSIXct",
       url           = "character"))
 
-  expect_true("Prioritisation" %in% projects$name)
+  expect_true("githapi prioritisation" %in% projects$name)
 })
 
 #  FUNCTION: gh_column ------------------------------------------------------------------------
