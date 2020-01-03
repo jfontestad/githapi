@@ -71,7 +71,7 @@ browse_user() opens the web page for the user in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8</span>
       </span>
     </div>
 
@@ -153,14 +153,15 @@ for each user. <code>view_user()</code> returns a list of all properties for a s
     </tr>
     <tr>
       <th>user</th>
-      <td><p>(integer) The login of the user.</p></td>
+      <td><p>(string) The login of the user.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>view_users()</code> returns a tibble of user properties. <code>view_user()</code>
-returns a list of properties for a single user.</p>
+returns a list of properties for a single user.  <code>browse_user()</code> opens the default
+browser on the user's page and returns the URL invisibly.</p>
 <p><strong>user Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the user.</p></li>
 <li><p><strong>login</strong>: The login name of the user.</p></li>
@@ -178,8 +179,8 @@ returns a list of properties for a single user.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the users associated with either an organisation or a team within
-an organisation. If none of those are supplied the first <code>n_max</code> users of GitHub are
+    <p>You can summarise all the users associated with either an organization or a team within
+an organization. If none of those are supplied the first <code>n_max</code> users of GitHub are
 returned.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/orgs/members/#members-list'>https://developer.github.com/v3/orgs/members/#members-list</a></p></li>
@@ -194,13 +195,13 @@ returned.</p>
   <span class='co'># View users collaborating on a repository</span>
   <span class='fu'>view_users</span>(<span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
-  <span class='co'># View users in an organisation</span>
+  <span class='co'># View users in an organization</span>
   <span class='fu'>view_users</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 
-  <span class='co'># View users in a team within an organisation</span>
+  <span class='co'># View users in a team within an organization</span>
   <span class='fu'>view_users</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>, <span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"HeadCoos"</span>)
 
-  <span class='co'># View the admins of an organisation</span>
+  <span class='co'># View the admins of an organization</span>
   <span class='fu'>view_users</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>, <span class='kw'>role</span> <span class='kw'>=</span> <span class='st'>"admin"</span>)
 
   <span class='co'># View a single user</span>

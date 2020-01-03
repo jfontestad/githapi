@@ -11,11 +11,10 @@ test_that("view_users returns a tibble summarising the users", {
   expect_identical(attr(org_users, "status"), 200L)
   expect_identical(
     map_chr(org_users, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
 
   expect_true("ChadGoymer" %in% org_users$login)
 
@@ -25,11 +24,10 @@ test_that("view_users returns a tibble summarising the users", {
   expect_identical(attr(team_users, "status"), 200L)
   expect_identical(
     map_chr(team_users, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
 
   expect_true("ChadGoymer" %in% team_users$login)
 
@@ -39,11 +37,10 @@ test_that("view_users returns a tibble summarising the users", {
   expect_identical(attr(all_users, "status"), 200L)
   expect_identical(
     map_chr(all_users, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
 
   admin_users <- view_users(org = "HairyCoos", role = "admin")
 
@@ -51,11 +48,10 @@ test_that("view_users returns a tibble summarising the users", {
   expect_identical(attr(admin_users, "status"), 200L)
   expect_identical(
     map_chr(admin_users, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
 
   expect_true("ChadGoymer" %in% admin_users$login)
   expect_true(nrow(admin_users) < nrow(org_users))
@@ -73,18 +69,17 @@ test_that("view_user returns a list of user properties", {
   expect_identical(attr(user, "status"), 200L)
   expect_identical(
     map_chr(user, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      name        = "character",
-      email       = "character",
-      blog        = "character",
-      company     = "character",
-      location    = "character",
-      hireable    = "logical",
-      bio         = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
+    c(id         = "integer",
+      login      = "character",
+      name       = "character",
+      email      = "character",
+      blog       = "character",
+      company    = "character",
+      location   = "character",
+      hireable   = "logical",
+      bio        = "character",
+      site_admin = "logical",
+      html_url   = "character"))
 
   expect_identical(user$login, "ChadGoymer")
 
@@ -94,18 +89,17 @@ test_that("view_user returns a list of user properties", {
   expect_identical(attr(auth_user, "status"), 200L)
   expect_identical(
     map_chr(auth_user, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      name        = "character",
-      email       = "character",
-      blog        = "character",
-      company     = "character",
-      location    = "character",
-      hireable    = "logical",
-      bio         = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
+    c(id         = "integer",
+      login      = "character",
+      name       = "character",
+      email      = "character",
+      blog       = "character",
+      company    = "character",
+      location   = "character",
+      hireable   = "logical",
+      bio        = "character",
+      site_admin = "logical",
+      html_url   = "character"))
 
   expect_identical(auth_user$login, "ChadGoymer")
 
@@ -155,18 +149,17 @@ test_that("update_user changes the user's properties", {
   expect_identical(attr(updated_user, "status"), 200L)
   expect_identical(
     map_chr(updated_user, ~ class(.)[[1]]),
-    c(id          = "integer",
-      login       = "character",
-      name        = "character",
-      email       = "character",
-      blog        = "character",
-      company     = "character",
-      location    = "character",
-      hireable    = "logical",
-      bio         = "character",
-      type        = "character",
-      site_admin  = "logical",
-      html_url    = "character"))
+    c(id         = "integer",
+      login      = "character",
+      name       = "character",
+      email      = "character",
+      blog       = "character",
+      company    = "character",
+      location   = "character",
+      hireable   = "logical",
+      bio        = "character",
+      site_admin = "logical",
+      html_url   = "character"))
 
   expect_identical(updated_user$login, "ChadGoymer")
   expect_identical(updated_user$name, "Bob")

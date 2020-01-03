@@ -6,8 +6,8 @@
 #' for each user. `view_user()` returns a list of all properties for a single user.
 #' `browse_user()` opens the web page for the user in the default browser.
 #'
-#' You can summarise all the users associated with either an organisation or a team within
-#' an organisation. If none of those are supplied the first `n_max` users of GitHub are
+#' You can summarise all the users associated with either an organization or a team within
+#' an organization. If none of those are supplied the first `n_max` users of GitHub are
 #' returned.
 #'
 #' For more details see the GitHub API documentation:
@@ -16,7 +16,7 @@
 #' - <https://developer.github.com/v3/users/#get-all-users>
 #' - <https://developer.github.com/v3/users/#get-a-single-user>
 #'
-#' @param user (integer) The login of the user.
+#' @param user (string) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param team (string, optional) The name of the team.
 #' @param role (string, optional) Filter the result by role. Can specify either `"admin"`,
@@ -25,7 +25,8 @@
 #' @param ... Parameters passed to [gh_page()].
 #'
 #' @return `view_users()` returns a tibble of user properties. `view_user()`
-#'   returns a list of properties for a single user.
+#'   returns a list of properties for a single user.  `browse_user()` opens the default
+#'   browser on the user's page and returns the URL invisibly.
 #'
 #' **user Properties:**
 #'
@@ -47,13 +48,13 @@
 #'   # View users collaborating on a repository
 #'   view_users(repo = "ChadGoymer/githapi")
 #'
-#'   # View users in an organisation
+#'   # View users in an organization
 #'   view_users(org = "HairyCoos")
 #'
-#'   # View users in a team within an organisation
+#'   # View users in a team within an organization
 #'   view_users(org = "HairyCoos", team = "HeadCoos")
 #'
-#'   # View the admins of an organisation
+#'   # View the admins of an organization
 #'   view_users(org = "HairyCoos", role = "admin")
 #'
 #'   # View a single user
@@ -90,12 +91,13 @@ view_users <- function(
     }
     else
     {
-      info("Viewing users in organisation '", org, "'")
+      info("Viewing users in organization '", org, "'")
       url <- gh_url("orgs", org, "members", role = role)
     }
   }
   else
   {
+    info("Viewing all users")
     url <- gh_url("users")
   }
 

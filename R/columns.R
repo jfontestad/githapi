@@ -6,7 +6,7 @@
 #' will need to add cards separately.
 #'
 #' You can create a column in a project associated with either a repository, user or
-#' organisation, by supplying them as an input, as long as you have appropriate permissions.
+#' organization, by supplying them as an input, as long as you have appropriate permissions.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/columns/#create-a-project-column>
@@ -41,7 +41,7 @@
 #'     project = "Test project",
 #'     user    = "ChadGoymer")
 #'
-#'   # Create a column in an organisation's project
+#'   # Create a column in an organization's project
 #'   create_column(
 #'     name    = "Test column",
 #'     project = "Test project",
@@ -90,7 +90,7 @@ create_column <- function(
 #' `update_column()` can be used to change the column name in a project in GitHub.
 #' `move_column()` can be used to reorder the columns.
 #'
-#' You can update a column associated with either a repository, user or organisation, by
+#' You can update a column associated with either a repository, user or organization, by
 #' supplying them as an input, as long as you have appropriate permissions.
 #'
 #' You can move a column by either specifying the position, either `"first"` or `"last"`, or
@@ -135,7 +135,7 @@ create_column <- function(
 #'     position = "first",
 #'     user     = "ChadGoymer")
 #'
-#'   # Move a column after another on in an organisation's project
+#'   # Move a column after another on in an organization's project
 #'   move_column(
 #'     name  = "Test column",
 #'     after = "Test column 2",
@@ -255,7 +255,7 @@ move_column <- function(
 #' single column.
 #'
 #' You can summarise all the columns of a project associated with either a repository, user
-#' or organisation, by supplying them as an input.
+#' or organization, by supplying them as an input.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/columns/#list-project-columns>
@@ -291,7 +291,7 @@ move_column <- function(
 #'     project = "Test columns",
 #'     user    = "ChadGoymer")
 #'
-#'   # View columns in an organisation's project
+#'   # View columns in an organization's project
 #'   view_column(
 #'     project = "Test columns",
 #'     org     = "HairyCoos")
@@ -308,7 +308,7 @@ move_column <- function(
 #'     project = "Test columns",
 #'     user    = "ChadGoymer")
 #'
-#'   # View a column in an organisation's project
+#'   # View a column in an organization's project
 #'   view_column(
 #'     column  = "Test column",
 #'     project = "Test columns",
@@ -409,7 +409,7 @@ view_column <- function(
 #' This function deletes a column in a GitHub project. Care should be taken as it will not be
 #' recoverable.
 #'
-#' You can delete a column associated with either a repository, user or organisation, by
+#' You can delete a column associated with either a repository, user or organization, by
 #' supplying them as an input, as long as you have appropriate permissions.
 #'
 #' For more details see the GitHub API documentation:
@@ -438,7 +438,7 @@ view_column <- function(
 #'     project = "Test project",
 #'     user    = "ChadGoymer")
 #'
-#'   # Delete a column in an organisation's project
+#'   # Delete a column in an organization's project
 #'   delete_column(
 #'     column  = "Test column",
 #'     project = "Test project",

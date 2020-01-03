@@ -45,11 +45,16 @@
 #' - [gh_card()]: replace with [view_card()]
 #' - [gh_cards()]: replace with [view_cards()]
 #'
-#' @section Organisations, teams and users:
+#' @section Organizations, teams and users:
 #'
+#' - [gh_organization()]: replace with [view_organization()]
+#' - [gh_organizations()]: replace with [view_organizations()]
+#' - [gh_membership()]: replace with [view_membership()]
+#' - [gh_memberships()]: replace with [view_memberships()]
+#' - [gh_members()]: replace with [view_users()]
 #' - [gh_user()]: replace with [view_user()]
 #' - [gh_users()]: replace with [view_users()]
-#' - [gh_user_email()]: is being removed
+#' - [gh_user_email()]: is being removed. Use [view_user()]
 #'
 NULL
 

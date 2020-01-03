@@ -37,7 +37,7 @@ gh_project <- function(
 
 #  FUNCTION: gh_projects ----------------------------------------------------------------------
 #
-#' List organisation or repository projects
+#' List organization or repository projects
 #'
 #' NOTE: This function has been deprecated, please use [view_projects()] instead.
 #'

@@ -379,7 +379,6 @@ test_that("when creating files on a branch that does not exist, it is created", 
     branches = new_files_branch,
     parent   = "master",
     repo     = "ChadGoymer/test-githapi")
-  on.exit(delete_branches(branches = new_files_branch, repo = "ChadGoymer/test-githapi"))
 
   expect_is(created_files, "tbl")
   expect_identical(

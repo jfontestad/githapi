@@ -31,12 +31,12 @@ either "open", "closed", or "all". Default: \code{"open"}.}
 \value{
 \code{view_projects()} returns a tibble of project properties. \code{view_project()}
 returns a list of properties for a single project. \code{browse_project()} opens the default
-browser on the prject page and returns the URL invisibly.
+browser on the project's page and returns the URL invisibly.
 
 \strong{Project Properties:}
 \itemize{
 \item \strong{id}: The ID of the project.
-\item \strong{number}: The number of the project for the repository, user or organisation.
+\item \strong{number}: The number of the project for the repository, user or organization.
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
@@ -53,7 +53,7 @@ for each project. \code{view_project()} returns a list of all properties for a s
 }
 \details{
 You can summarise all the projects associated with either a repository, user or
-organisation, by supplying them as an input.
+organization, by supplying them as an input.
 
 For more details see the GitHub API documentation:
 \itemize{
@@ -71,7 +71,7 @@ For more details see the GitHub API documentation:
   # View a user's projects
   view_projects(user = "ChadGoymer")
 
-  # View an organisation's projects
+  # View an organization's projects
   view_projects(org = "HairyCoos")
 
   # View closed projects
@@ -86,7 +86,7 @@ For more details see the GitHub API documentation:
   # View a specific user project
   view_project("Test project", user = "ChadGoymer")
 
-  # View a specific organisation project
+  # View a specific organization project
   view_project("Prioritisation", org = "HairyCoos")
 
   # Browse a specific repository project
@@ -95,7 +95,7 @@ For more details see the GitHub API documentation:
   # Browse a specific user project
   browse_project("Test project", user = "ChadGoymer")
 
-  # Browse a specific organisation project
+  # Browse a specific organization project
   browse_project("Prioritisation", org = "HairyCoos")
 }
 

@@ -55,12 +55,17 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
-\section{Organisations, teams and users}{
+\section{Organizations, teams and users}{
 
 \itemize{
+\item \code{\link[=gh_organization]{gh_organization()}}: replace with \code{\link[=view_organization]{view_organization()}}
+\item \code{\link[=gh_organizations]{gh_organizations()}}: replace with \code{\link[=view_organizations]{view_organizations()}}
+\item \code{\link[=gh_membership]{gh_membership()}}: replace with \code{\link[=view_membership]{view_membership()}}
+\item \code{\link[=gh_memberships]{gh_memberships()}}: replace with \code{\link[=view_memberships]{view_memberships()}}
+\item \code{\link[=gh_members]{gh_members()}}: replace with \code{\link[=view_users]{view_users()}}
 \item \code{\link[=gh_user]{gh_user()}}: replace with \code{\link[=view_user]{view_user()}}
 \item \code{\link[=gh_users]{gh_users()}}: replace with \code{\link[=view_users]{view_users()}}
-\item \code{\link[=gh_user_email]{gh_user_email()}}: is being removed
+\item \code{\link[=gh_user_email]{gh_user_email()}}: is being removed. Use \code{\link[=view_user]{view_user()}}
 }
 }
 

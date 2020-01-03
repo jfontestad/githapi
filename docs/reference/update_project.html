@@ -70,7 +70,7 @@ can also be used to close the project or change permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8</span>
       </span>
     </div>
 
@@ -183,7 +183,7 @@ can also be used to close the project or change permissions.</p>
     <p><code>update_project()</code> returns a list of the project properties.</p>
 <p><strong>Project Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the project.</p></li>
-<li><p><strong>number</strong>: The number of the project for the repository, user or organisation.</p></li>
+<li><p><strong>number</strong>: The number of the project for the repository, user or organization.</p></li>
 <li><p><strong>name</strong>: The name given to the project.</p></li>
 <li><p><strong>body</strong>: The description given to the project.</p></li>
 <li><p><strong>state</strong>: Whether the project is "open" or "closed".</p></li>
@@ -195,7 +195,7 @@ can also be used to close the project or change permissions.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can update a project associated with either a repository, user or organisation, by
+    <p>You can update a project associated with either a repository, user or organization, by
 supplying them as an input, as long as you have appropriate permissions.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/projects/#update-a-project'>https://developer.github.com/v3/projects/#update-a-project</a></p></li>
@@ -217,7 +217,7 @@ supplying them as an input, as long as you have appropriate permissions.</p>
     <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"closed"</span>,
     <span class='kw'>user</span>  <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
 
-  <span class='co'># Update the permissions of a project for an organisation</span>
+  <span class='co'># Update the permissions of a project for an organization</span>
   <span class='fu'>update_project</span>(
     <span class='kw'>name</span>       <span class='kw'>=</span> <span class='st'>"Org project"</span>,
     <span class='kw'>permission</span> <span class='kw'>=</span> <span class='st'>"read"</span>,

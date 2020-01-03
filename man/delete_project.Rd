@@ -25,7 +25,7 @@ This function deletes a project in GitHub. Care should be taken as it will not b
 recoverable. If you just want to close the project use \code{\link[=update_project]{update_project()}}.
 }
 \details{
-You can delete a project associated with either a repository, user or organisation, by
+You can delete a project associated with either a repository, user or organization, by
 supplying them as an input, as long as you have appropriate permissions.
 
 For more details see the GitHub API documentation:
@@ -45,7 +45,7 @@ For more details see the GitHub API documentation:
     project = "User project",
     user    = "ChadGoymer")
 
-  # Delete a project for an organisation
+  # Delete a project for an organization
   delete_project(
     project = "User project",
     org     = "HairyCoos")

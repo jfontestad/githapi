@@ -14,6 +14,14 @@ navbar:
     - icon: fa-github fa-lg
       href: http://github.com/ChadGoymer/githapi
 reference:
+- title: Organizations, Teams and Users
+  desc: Functions for creating, updating, viewing and deleting organizations, teams and users.
+  contents:
+    - '`update_user`'
+    - '`view_users`'
+    - '`update_organization`'
+    - '`view_organizations`'
+    - '`view_memberships`'
 - title: Projects
   desc: Functions for creating, updating, viewing and deleting projects.
   contents:
@@ -29,11 +37,6 @@ reference:
     - '`update_card`'
     - '`view_cards`'
     - '`delete_card`'
-- title: Organisations, Teams and Users
-  desc: Functions for creating, updating, viewing and deleting organisations, teams and users.
-  contents:
-    - '`update_user`'
-    - '`view_users`'
 - title: Repositories
   desc: Functions for accessing information about repositories and their content.
   contents:
@@ -133,24 +136,6 @@ reference:
     - '`gh_pull_comment`'
     - '`gh_pull_comments`'
     - '`gh_pull_review_requests`'
-- title: Organizations
-  desc: Functions for accessing information about organizations.
-  contents:
-    - '`gh_organization`'
-    - '`gh_organizations`'
-    - '`is_member`'
-    - '`gh_members`'
-    - '`gh_membership`'
-    - '`gh_memberships`'
-    - '`gh_team`'
-    - '`gh_teams`'
-    - '`is_manager`'
-- title: Users
-  desc: Functions for accessing information about users.
-  contents:
-    - '`gh_user`'
-    - '`gh_users`'
-    - '`gh_user_email`'
 - title: Utilities
   desc: Useful functions.
   contents:
@@ -199,5 +184,13 @@ reference:
     - '`gh_columns`'
     - '`gh_card`'
     - '`gh_cards`'
+    - '`gh_organization`'
+    - '`gh_organizations`'
+    - '`gh_membership`'
+    - '`gh_memberships`'
+    - '`gh_members`'
+    - '`gh_user`'
+    - '`gh_users`'
+    - '`gh_user_email`'
 news:
 - one_page: false

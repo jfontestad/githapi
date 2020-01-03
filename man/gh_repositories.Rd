@@ -2,7 +2,7 @@
 % Please edit documentation in R/repositories.R
 \name{gh_repositories}
 \alias{gh_repositories}
-\title{Get information about a user's, organisation's or team's repositories.}
+\title{Get information about a user's, organization's or team's repositories.}
 \usage{
 gh_repositories(
   owner,
@@ -17,7 +17,7 @@ gh_repositories(
 )
 }
 \arguments{
-\item{owner}{(string) The user or organisation owning the repository.}
+\item{owner}{(string) The user or organization owning the repository.}
 
 \item{team}{(string) The team owning the repository.}
 
@@ -41,7 +41,7 @@ environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 }
 \value{
-A tibble describing all the repositories a user or organisation has (see GitHub's
+A tibble describing all the repositories a user or organization has (see GitHub's
 API documentation for more detail).
 }
 \description{

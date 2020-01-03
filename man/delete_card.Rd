@@ -19,7 +19,7 @@ This function deletes a card in a GitHub project. Care should be taken as it wil
 recoverable. Instead, you may way to archive the card with \code{\link[=update_card]{update_card()}}.
 }
 \details{
-You can delete a card associated with either a repository, user or organisation, by
+You can delete a card associated with either a repository, user or organization, by
 supplying them as an input, as long as you have appropriate permissions.
 
 For more details see the GitHub API documentation:

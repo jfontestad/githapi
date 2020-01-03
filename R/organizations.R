@@ -1,409 +1,462 @@
-#  FUNCTION: gh_organization ------------------------------------------------------------------
+#  FUNCTION: view_organizations ---------------------------------------------------------------
 #
-#' Get an organization
+#' View organizations in GitHub
 #'
-#' <https://developer.github.com/v3/orgs/#get-an-organization>
+#' `view_organizations()` summarises organizations in a table with the properties as columns
+#' and a row for each organization. `view_organization()` returns a list of all properties for
+#' a single organization. `browse_organization()` opens the web page for the organization in
+#' the default browser.
 #'
-#' @param org (string) The name of the organization.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+#' You can summarise all the organizations a user is a member of by specifying the user login,
+#' or the authenticated user if it is set to `NULL`. If a user is not supplied the first
+#' `n_max` organizations of GitHub are returned.
 #'
-#' @return A list describing the organization (see GitHub's API documentation for details).
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/orgs/#list-user-organizations>
+#' - <https://developer.github.com/v3/orgs/#list-your-organizations>
+#' - <https://developer.github.com/v3/orgs/#list-all-organizations>
 #'
-#' @export
-#'
-gh_organization <- function(
-  org,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_character(org))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  gh_get(gh_url("orgs", org, api = api), token = token, ...)
-}
-
-#  FUNCTION: gh_organizations -----------------------------------------------------------------
-#
-#' List organizations
-#'
-#' <https://developer.github.com/v3/orgs/#list-all-organizations>
-#' <https://developer.github.com/v3/orgs/#list-user-organizations>
-#'
-#' @param user (string, optional) The GitHub username of the user. If not specified, all
-#'   organizations are returned.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
+#' @param organization (string) The login of the organization.
+#' @param user (string, optional) The login of the user. If `NULL` the authenticated user is
+#'   used.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return A tibble describing the organizations (see GitHub's API documentation for details).
+#' @return `view_organizations()` returns a tibble of organization properties.
+#'   `view_organization()` returns a list of properties for a single organization.
+#'   `browse_organization()` opens the default browser on the organization's page and returns
+#'   the URL invisibly.
+#'
+#' **Organization Properties:**
+#'
+#' - **id**: The ID of the organization.
+#' - **login**: The login name of the organization.
+#' - **description**: The description of the organization.
+#'
+#' The following are only returned using `view_organization()`:
+#'
+#' - **name**: The name of the organization.
+#' - **company**: The name of the associated company.
+#' - **blog**: The address for a blog.
+#' - **location**: The geographical location.
+#' - **email**: The email address for the organization.
+#' - **is_verified**: Whether the organization has been verified.
+#' - **has_organization_projects**: Whether the organization can have projects.
+#' - **has_repository_projects**: Whether the organization's repositories can have projects.
+#' - **public_repos**: The number of public repositories.
+#' - **public_gists**: The number of public gists.
+#' - **html_url**: The address for the organization's GitHub web page.
+#' - **created_at**: When the organization was created.
+#' - **total_private_repos**: The number of private repositories.
+#' - **owned_private_repos**:  The number of owned private repositories.
+#' - **private_gists**:  The number of private gists.
+#' - **disk_usage**:  The total disk usage for the organization.
+#' - **collaborators**: The number of collaborators.
+#' - **billing_email**: The email address for billing.
+#' - **plan_name**: The name of the GitHub plan.
+#' - **plan_space**: The total space allocated for the plan.
+#' - **plan_private_repos**: The number of private repositories for the plan.
+#' - **default_repository_permission**: The default access for new repositories.
+#' - **two_factor_requirement_enabled**: Whether members require two-factor authentication.
+#' - **members_can_create_repositories**: Whether members can create repositories.
+#' - **members_can_create_public_repositories**: Whether members can create public repositories.
+#' - **members_can_create_private_repositories**: Whether members can create private repositories.
+#' - **members_can_create_internal_repositories**:  Whether members can create internal repositories.
+#'
+#' @examples
+#' \dontrun{
+#'   # View organizations a user is a member of
+#'   view_organizations(user = "ChadGoymer")
+#'
+#'   # View organizations the authenticated user is a member of
+#'   view_organizations(user = NULL)
+#'
+#'   # View all organizations
+#'   view_organizations()
+#'
+#'   # View a single organization in more detail.
+#'   view_organization("HairyCoos")
+#'
+#'   # Browse a organization's GitHub page
+#'   browse_organization("HairyCoos")
+#' }
 #'
 #' @export
 #'
-gh_organizations <- function(
+view_organizations <- function(
   user,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
+  n_max = 1000,
   ...)
 {
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  if (!missing(user)) {
-    assert(is_scalar_character(user))
-    url <- gh_url("users", user, "orgs", api = api)
-  } else {
-    url <- gh_url("organizations", api = api)
-  }
-
-  organizations <- gh_page(url, n_max = n_max, token = token, ...)
-
-  bind_fields(organizations, list(
-    id          = c("id",          as = "integer"),
-    name        = c("login",       as = "character"),
-    description = c("description", as = "character"),
-    url         = c("url",         as = "character")))
-}
-
-#  FUNCTION: is_member ------------------------------------------------------------------------
-#
-#' Check membership
-#'
-#' <https://developer.github.com/v3/orgs/members/#check-membership>
-#'
-#' @param user (string) The GitHub username of the user.
-#' @param org (string) The name of the organization.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return TRUE if the user is a member, FALSE otherwise (see GitHub's API documentation for
-#'   details).
-#'
-#' @export
-#'
-is_member <- function(
-  user,
-  org,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_character(user))
-  assert(is_scalar_character(org))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  response <- try(silent = TRUE, suppressMessages({
-    gh_get(
-      gh_url("orgs", org, "members", user, api = api),
-      accept = "raw", token = token, ...)
-  }))
-
-  attributes(response) <- NULL
-  if (identical(response, "")) {
-    TRUE
-  } else {
-    FALSE
-  }
-}
-
-#  FUNCTION: gh_members -----------------------------------------------------------------------
-#
-#' Get Organization or team members list
-#'
-#' <https://developer.github.com/v3/orgs/members/#members-list>
-#' <https://developer.github.com/v3/orgs/teams/#list-team-members>
-#'
-#' Note: Must specify either `org` or `team`, but not both.
-#'
-#' @param org (string) The name of the organization.
-#' @param team (integer) The GitHub ID of the team.
-#' @param filter (string) Filter members returned in the list. Can be one of:
-#'  - `2fa_disabled`: Members without two-factor authentication enabled. Available for
-#'    organization owners.
-#'  - `all`: All members the authenticated user can see.
-#'  - `Default`: all.
-#' @param role (string) Filter members returned by their role. Can be one of:
-#'  - `all`: All members of the organization, regardless of role.
-#'  - `admin`: Organization owners.
-#'  - `member`: Non-owner organization members.
-#'  - `Default`: all.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the members (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_members <- function(
-  org,
-  team,
-  filter = NULL,
-  role   = NULL,
-  n_max = 1000L,
-  token  = gh_token(),
-  api    = getOption("github.api"),
-  ...)
-{
-  assert(is_null(filter) | is_scalar_character(filter))
-  assert(is_null(role) | is_scalar_character(role))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  if (!missing(org) && !missing(team))
-    error("Must specify either org or team, not both!")
-
-  if (!missing(org)) {
-    assert(is_scalar_character(org))
-    url <- gh_url("orgs", org, "members", filter = filter, role = role, api = api)
-  } else if (!missing(team)) {
-    assert(is_scalar_integerish(team) && isTRUE(team > 0))
-    url <- gh_url("teams", team, "members", org, role = role, api = api)
-  } else {
-    error("Must specify either org or team!")
-  }
-
-  members <- gh_page(url, n_max = n_max, token = token, ...)
-
-  bind_fields(members, list(
-    id         = c("id",         as = "integer"),
-    login      = c("login",      as = "character"),
-    type       = c("type",       as = "character"),
-    site_admin = c("site_admin", as = "logical"),
-    url        = c("url",        as = "character")))
-}
-
-#  FUNCTION: gh_membership --------------------------------------------------------------------
-#
-#' Get organization and team membership
-#'
-#' <https://developer.github.com/v3/orgs/members/#get-organization-membership>
-#' <https://developer.github.com/v3/orgs/teams/#get-team-membership>
-#'
-#' Note: Must specify either `org` or `team`, but not both.
-#'
-#' @param user (string, optional) The GitHub username of the user.
-#' @param org (string) The name of the organization.
-#' @param team (integer) The GitHub ID of the team.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return A list describing the membership (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_membership <- function(
-  user,
-  org,
-  team,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_character(user))
-  assert(is_scalar_character(org))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  if (!missing(org) && !missing(team))
-    error("Must specify either org or team, not both!")
-
-  if (!missing(org)) {
-    assert(is_scalar_character(org))
-    url <- gh_url("orgs", org, "memberships", user, api = api)
-  } else if (!missing(team)) {
-    assert(is_scalar_integerish(team) && isTRUE(team > 0))
-    url <- gh_url("teams", team, "memberships", user, api = api)
-  } else {
-    error("Must specify either org or team!")
-  }
-
-  gh_get(url, token = token, ...)
-}
-
-#  FUNCTION: gh_memberships -------------------------------------------------------------------
-#
-#' List your organization memberships
-#'
-#' <https://developer.github.com/v3/orgs/members/#list-your-organization-memberships>
-#' <https://developer.github.com/v3/orgs/members/#get-your-organization-membership>
-#'
-#' @param org (string, optional) The name of the organization.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing your memberships (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_memberships <- function(
-  org,
-  n_max = 1000L,
-  token  = gh_token(),
-  api    = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  if (missing(org)) {
-    url <- gh_url("user/memberships/orgs", api = api)
-  } else {
-    assert(is_scalar_character(org))
-    url <- gh_url("user/memberships/orgs", org, api = api)
-  }
-
-  gh_page(url, n_max = n_max, token = token, ...)
-}
-
-#  FUNCTION: gh_team --------------------------------------------------------------------------
-#
-#' Get team
-#'
-#' <https://developer.github.com/v3/orgs/teams/#get-team>
-#'
-#' @param team (integer) The GitHub ID of the team.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return A list describing the team (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_team <- function(
-  team,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(team) && isTRUE(team > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  gh_get(gh_url("teams", team, api = api), token = token, ...)
-}
-
-#  FUNCTION: gh_teams -------------------------------------------------------------------------
-#
-#' List teams
-#'
-#' <https://developer.github.com/v3/orgs/teams/#list-teams>
-#' <https://developer.github.com/v3/orgs/teams/#list-user-teams>
-#'
-#' @param org (string, optional) The name of the organization. If org and repo are not
-#'   specified, the teams of the authenticated user are returned.
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the teams (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_teams <- function(
-  org,
-  repo,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  if (!missing(org) && !missing(repo))
-    error("Must specify either org or repo, not both!")
-
-  if (missing(org)) {
-    if (missing(repo)) {
-      url <- gh_url("user/teams", api = api)
-    } else {
-      assert(is_repo(repo))
-      url <- gh_url("repos", repo, "teams", api = api)
+  if (!missing(user))
+  {
+    if (is_null(user))
+    {
+      info("Viewing organizations for authenticated user")
+      url <- gh_url("/user/orgs")
     }
-  } else {
-    assert(is_scalar_character(org))
-    url <- gh_url("orgs", org, "teams", api = api)
+    else
+    {
+      assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+
+      info("Viewing organizations for user '", user, "'")
+      url <- gh_url("/users", user, "orgs")
+    }
+  }
+  else
+  {
+    info("Viewing all organizations")
+    url <- gh_url("organizations")
   }
 
-  gh_page(url, n_max = n_max, token = token, ...)
+  organizations_lst <- gh_page(url = url, n_max  = n_max, ...)
+
+  info("Transforming results", level = 4)
+  organizations_gh <- bind_properties(organizations_lst, properties$organizations)
+
+  info("Done", level = 7)
+  organizations_gh
 }
 
-#  FUNCTION: is_manager -----------------------------------------------------------------------
+
+#  FUNCTION: view_organization ----------------------------------------------------------------
 #
-#' Check if a team manages a repository
+#' @rdname view_organizations
+#' @export
 #'
-#' <https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository>
+view_organization <- function(
+  organization,
+  ...)
+{
+  assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+
+  info("Viewing organization '", organization, "'")
+  organization_lst <- gh_url("orgs", organization) %>% gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  organization_gh <- select_properties(organization_lst, properties$organization)
+
+  info("Done", level = 7)
+  organization_gh
+}
+
+
+#  FUNCTION: browse_organization --------------------------------------------------------------
+#
+#' @rdname view_organizations
+#' @export
 #'
-#' @param team (integer) The GitHub ID of the team.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+browse_organization <- function(
+  organization,
+  ...)
+{
+  organization <- view_organization(organization, ...)
+
+  info("Browsing organization '", organization$login, "'")
+  httr::BROWSE(organization$html_url)
+
+  info("Done", level = 7)
+  structure(
+    organization$html_url,
+    class   = c("github", "character"),
+    url     = attr(organization, "url"),
+    request = attr(organization, "request"),
+    status  = attr(organization, "status"),
+    header  = attr(organization, "header"))
+}
+
+
+#  FUNCTION: update_organization --------------------------------------------------------------
+#
+#' Update an organization's properties in GitHub
 #'
-#' @return TRUE if the team is a manager, FALSE otherwise (see GitHub's API documentation for
-#'   details).
+#' This function updates an organization's properties in GitHub. You can only update an
+#' organization if you have the appropriate permissions.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/orgs/#edit-an-organization>
+#'
+#' @param organization (string) The login of the organization.
+#' @param name (string, optional) The shorthand name of the company.
+#' @param description (string, optional) The description of the company.
+#' @param email (string, optional) The publicly visible email address.
+#' @param location (string, optional) The location.
+#' @param company (string, optional) The company name.
+#' @param billing_email (string, optional) Billing email address. This address is not
+#'   publicized.
+#' @param has_organization_projects (boolean, optional) Toggles whether an organization can use
+#'   organization projects.
+#' @param has_repository_projects (boolean, optional) Toggles whether repositories that belong
+#'   to the organization can use repository projects.
+#' @param default_repository_permission (string, optional) Default permission level members have
+#' for organization repositories:
+#'   - `"read"`: can pull, but not push to or administer this repository.
+#'   - `"write"`: can pull and push, but not administer this repository.
+#'   - `"admin"`: can pull, push, and administer this repository.
+#'   - `"none"`: no permissions granted by default.
+#'   Default: `"read"`.
+#' @param members_can_create_repositories (boolean, optional) Toggles the ability of non-admin
+#'   organization members to create repositories. Can be one of:
+#'   - `TRUE`: all organization members can create repositories.
+#'   - `FALSE`: only organization owners can create repositories.
+#'   Default: `TRUE`.
+#'   Note: A parameter can override this parameter. See
+#'   members_allowed_repository_creation_type in this table for details.
+#' @param members_can_create_internal_repositories (boolean, optional) Toggles whether
+#'   organization members can create internal repositories, which are visible to all enterprise
+#'   members. You can only allow members to create internal repositories if your organization is
+#'   associated with an enterprise account using GitHub Enterprise Cloud. Can be one of:
+#'   - `TRUE`: all organization members can create internal repositories.
+#'   - `FALSE`: only organization owners can create internal repositories.
+#'   Default: `TRUE`. For more information, see "Restricting repository creation in your
+#'   organization" in the GitHub Help documentation.
+#' @param members_can_create_private_repositories (boolean, optional) Toggles whether organization
+#'   members can create private repositories, which are visible to organization members with
+#'   permission. Can be one of:
+#'   - `TRUE`: all organization members can create private repositories.
+#'   - `FALSE`: only organization owners can create private repositories.
+#'   Default: `TRUE`. For more information, see "Restricting repository creation in your
+#'   organization" in the GitHub Help documentation.
+#' @param members_can_create_public_repositories (boolean, optional) Toggles whether organization
+#'   members can create public repositories, which are visible to anyone. Can be one of:
+#'   - `TRUE`: all organization members can create public repositories.
+#'   - `FALSE`: only organization owners can create public repositories.
+#'   Default: `TRUE`. For more information, see "Restricting repository creation in your
+#'   organization" in the GitHub Help documentation.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_organization()` returns a list of the new organization properties.
+#'
+#' **Organization Properties:**
+#'
+#' - **id**: The ID of the organization.
+#' - **login**: The login name of the organization.
+#' - **name**: The name of the organization.
+#' - **description**: The description of the organization.
+#' - **company**: The name of the associated company.
+#' - **blog**: The address for a blog.
+#' - **location**: The geographical location.
+#' - **email**: The email address for the organization.
+#' - **is_verified**: Whether the organization has been verified.
+#' - **has_organization_projects**: Whether the organization can have projects.
+#' - **has_repository_projects**: Whether the organization's repositories can have projects.
+#' - **public_repos**: The number of public repositories.
+#' - **public_gists**: The number of public gists.
+#' - **html_url**: The address for the organization's GitHub web page.
+#' - **created_at**: When the organization was created.
+#' - **total_private_repos**: The number of private repositories.
+#' - **owned_private_repos**:  The number of owned private repositories.
+#' - **private_gists**:  The number of private gists.
+#' - **disk_usage**:  The total disk usage for the organization.
+#' - **collaborators**: The number of collaborators.
+#' - **billing_email**: The email address for billing.
+#' - **plan_name**: The name of the GitHub plan.
+#' - **plan_space**: The total space allocated for the plan.
+#' - **plan_private_repos**: The number of private repositories for the plan.
+#' - **default_repository_settings**: The default access for new repositories.
+#' - **members_can_create_repositories**: Whether members can create repositories.
+#' - **two_factor_requirement_enabled**: Whether members require two-factor authentication.
+#' - **members_allowed_repository_creation_type**: The types of repositories members can create.
+#' - **members_can_create_public_repositories**: Whether members can create public repositories.
+#' - **members_can_create_private_repositories**: Whether members can create private repositories.
+#' - **members_can_create_internal_repositories**:  Whether members can create internal repositories.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update your name
+#'   update_organization(name = "Bob Smith")
+#'
+#'   # Update your company
+#'   update_organization(company = "Acme")
+#'
+#'   # Update your hireable status
+#'   update_organization(hireable = TRUE)
+#' }
 #'
 #' @export
 #'
-is_manager <- function(
-  team,
-  repo,
-  token = gh_token(),
-  api   = getOption("github.api"),
+update_organization <- function(
+  organization,
+  name                                     = NULL,
+  description                              = NULL,
+  email                                    = NULL,
+  location                                 = NULL,
+  company                                  = NULL,
+  billing_email                            = NULL,
+  has_organization_projects                = NULL,
+  has_repository_projects                  = NULL,
+  default_repository_permission            = NULL,
+  members_can_create_repositories          = NULL,
+  members_can_create_internal_repositories = NULL,
+  members_can_create_private_repositories  = NULL,
+  members_can_create_public_repositories   = NULL,
   ...)
 {
-  assert(is_scalar_integerish(team) && isTRUE(team > 0))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_null(name) || is_scalar_character(name), "'name' must be a string:\n  ", name)
+  assert(is_null(description) || is_scalar_character(description), "'description' must be a string:\n  ", description)
+  assert(is_null(email) || is_scalar_character(email), "'email' must be a string:\n  ", email)
+  assert(is_null(location) || is_scalar_character(location), "'location' must be a string:\n  ", location)
+  assert(is_null(company) || is_scalar_character(company), "'company' must be a string:\n  ", company)
+  assert(is_null(billing_email) || is_scalar_character(billing_email), "'billing_email' must be a string:\n  ", billing_email)
+  assert(
+    is_null(has_organization_projects) || is_scalar_logical(has_organization_projects),
+    "'has_organization_projects' must be a boolean:\n  ", has_organization_projects)
+  assert(
+    is_null(has_repository_projects) || is_scalar_logical(has_repository_projects),
+    "'has_repository_projects' must be a boolean:\n  ", has_repository_projects)
+  assert(
+    is_null(default_repository_permission) || is_scalar_character(default_repository_permission),
+    "'default_repository_permission' must be a string:\n  ", default_repository_permission)
+  assert(
+    is_null(default_repository_permission) || default_repository_permission %in% values$organization$default_repository_permission,
+    "'default_repository_permission' must be one of '", str_c(values$organization$default_repository_permission, collapse = "', '"), "':\n  ", default_repository_permission)
+  assert(
+    is_null(members_can_create_repositories) || is_scalar_logical(members_can_create_repositories),
+    "'members_can_create_repositories' must be a string:\n  ", members_can_create_repositories)
+  assert(
+    is_null(members_can_create_internal_repositories) || is_scalar_logical(members_can_create_internal_repositories),
+    "'members_can_create_internal_repositories' must be a boolean:\n  ", members_can_create_internal_repositories)
+  assert(
+    is_null(members_can_create_private_repositories) || is_scalar_logical(members_can_create_private_repositories),
+    "'members_can_create_private_repositories' must be a boolean:\n  ", members_can_create_private_repositories)
+  assert(
+    is_null(members_can_create_public_repositories) || is_scalar_logical(members_can_create_public_repositories),
+    "'members_can_create_public_repositories' must be a boolean:\n  ", members_can_create_public_repositories)
 
-  response <- try(silent = TRUE, suppressMessages({
-    gh_get(
-      gh_url("teams", team, "repos", repo, api = api),
-      accept = "raw", token = token, ...)
-  }))
+  payload <- list(
+    name                                     = name,
+    description                              = description,
+    email                                    = email,
+    location                                 = location,
+    company                                  = company,
+    billing_email                            = billing_email,
+    has_organization_projects                = has_organization_projects,
+    has_repository_projects                  = has_repository_projects,
+    default_repository_permission            = default_repository_permission,
+    members_can_create_repositories          = members_can_create_repositories,
+    members_can_create_internal_repositories = members_can_create_internal_repositories,
+    members_can_create_private_repositories  = members_can_create_private_repositories,
+    members_can_create_public_repositories   = members_can_create_public_repositories) %>%
+    compact()
 
-  attributes(response) <- NULL
-  if (identical(response, "")) {
-    TRUE
-  } else {
-    FALSE
+  info("Updating organization")
+  organization_lst <- gh_url("orgs", organization) %>% gh_request("PATCH", payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  organization_gh <- select_properties(organization_lst, properties$organization)
+
+  info("Done", level = 7)
+  organization_gh
+}
+
+
+#  FUNCTION: view_memberships -----------------------------------------------------------------
+#
+#' View membership of organizations in GitHub
+#'
+#' `view_memberships()` summarises the membership of organizations in a table with the
+#' properties as columns and a row for each organization. `view_membership()` returns a list
+#' of all membership properties for a single organization.
+#'
+#' You can summarise all the organizations a user is a member of by specifying the user login,
+#' or the authenticated user if it is set to `NULL`.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/orgs/members/#list-your-organization-memberships>
+#' - <https://developer.github.com/v3/orgs/members/#get-organization-membership>
+#' - <https://developer.github.com/v3/orgs/members/#get-your-organization-membership>
+#'
+#' @param state (string, optional) Filter results depending on the `state` of the membership.
+#'   Can be either `"active"` or `"pending"`. If not supplied, all memberships are returned for
+#'   the authenticated user.
+#' @param organization (string) The login of the organization.
+#' @param user (string, optional) The login of the user. If `NULL` the authenticated user is
+#'   used.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_memberships()` returns a tibble of membership properties. `view_membership()`
+#'   returns a list of membership properties for a single organization.
+#'
+#' **Membership Properties:**
+#'
+#' - **organization**: The organization login.
+#' - **user**: The user login.
+#' - **state**: The state of the membership - either `"active"` or `"pending"`.
+#' - **role**: The role of the user in the organization - either `"admin"` or `"member"`.
+#'
+#' @examples
+#' \dontrun{
+#'   # View membership of all organizations the authenticated user is a member of
+#'   view_memberships()
+#'
+#'   # View only active memberships for the authenticated user
+#'   view_memberships(state = "active")
+#'
+#'   # View the membership of a user in an organization
+#'   view_membership("HairyCoos", "ChadGoymer")
+#'
+#'   # View the membership of the authenticated user in an organization
+#'   view_membership("HairyCoos")
+#' }
+#'
+#' @export
+#'
+view_memberships <- function(
+  state,
+  n_max = 1000,
+  ...)
+{
+  if (!missing(state))
+  {
+    assert(
+      is_scalar_character(state) || state %in% values$membership$state,
+      "'state' must be one of '", str_c(values$membership$state, collapse = "', '"), "':\n  ", state)
   }
+  else
+  {
+    state <- NULL
+  }
+
+  info("Viewing memberships for authenticated user")
+  memberships_lst <- gh_url("user/memberships/orgs", state = state) %>% gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  memberships_gh <- bind_properties(memberships_lst, properties$memberships)
+
+  info("Done", level = 7)
+  memberships_gh
+}
+
+
+#  FUNCTION: view_membership ---------------------------------------------------------------
+#
+#' @rdname view_memberships
+#' @export
+#'
+view_membership <- function(
+  organization,
+  user = NULL,
+  ...)
+{
+  assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+
+  if (is_null(user))
+  {
+    info("Viewing membership for authenticated user in '", organization, "'")
+    url <- gh_url("user/memberships/orgs", organization)
+  }
+  else
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    info("Viewing membership for '", user, "' in '", organization, "'")
+    url <- gh_url("orgs", organization, "memberships", user)
+  }
+  membership_lst <- gh_request("GET", url = url, ...)
+
+  info("Transforming results", level = 4)
+  membership_gh <- select_properties(membership_lst, properties$memberships)
+
+  info("Done", level = 7)
+  membership_gh
 }
