@@ -1,3 +1,20 @@
+# githapi 0.9.8
+
+Added the following functions:
+- `view_organizations()`
+- `view_organization()`
+- `browse_organization()`
+- `update_organization()`
+- `view_memberships()`
+- `view_membership()`
+
+Deprecated the following functions:
+- `gh_organizations()`
+- `gh_organization()`
+- `gh_memberships()`
+- `gh_membership()`
+- `gh_members()`
+
 # githapi 0.9.7
 
 - Added `view_users()`

@@ -19,6 +19,9 @@ reference:
   contents:
     - '`update_user`'
     - '`view_users`'
+    - '`update_organization`'
+    - '`view_organizations`'
+    - '`view_memberships`'
 - title: Projects
   desc: Functions for creating, updating, viewing and deleting projects.
   contents:
