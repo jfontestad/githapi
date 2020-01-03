@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8</span>
       </span>
     </div>
 
@@ -118,6 +118,44 @@
     </colgroup>
 
     <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-organizations-teams-and-users" class="hasAnchor"><a href="#section-organizations-teams-and-users" class="anchor"></a>Organizations, Teams and Users</h2>
+          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting organizations, teams and users.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="update_user.html">update_user()</a></code> </p>
+        </td>
+        <td><p>Update your user properties in GitHub</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_users.html">view_users()</a></code> <code><a href="view_users.html">view_user()</a></code> <code><a href="view_users.html">browse_user()</a></code> </p>
+        </td>
+        <td><p>View users in GitHub</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="update_organization.html">update_organization()</a></code> </p>
+        </td>
+        <td><p>Update an organization's properties in GitHub</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_organizations.html">view_organizations()</a></code> <code><a href="view_organizations.html">view_organization()</a></code> <code><a href="view_organizations.html">browse_organization()</a></code> </p>
+        </td>
+        <td><p>View organizations in GitHub</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_memberships.html">view_memberships()</a></code> <code><a href="view_memberships.html">view_membership()</a></code> </p>
+        </td>
+        <td><p>View membership of organizations in GitHub</p></td>
+      </tr>
+    </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-projects" class="hasAnchor"><a href="#section-projects" class="anchor"></a>Projects</h2>
@@ -196,26 +234,6 @@
           <p><code><a href="delete_card.html">delete_card()</a></code> </p>
         </td>
         <td><p>Delete a card in a GitHub project</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-organisations-teams-and-users" class="hasAnchor"><a href="#section-organisations-teams-and-users" class="anchor"></a>Organisations, Teams and Users</h2>
-          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting organisations, teams and users.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="update_user.html">update_user()</a></code> </p>
-        </td>
-        <td><p>Update your user properties in GitHub</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="view_users.html">view_users()</a></code> <code><a href="view_users.html">view_user()</a></code> <code><a href="view_users.html">browse_user()</a></code> </p>
-        </td>
-        <td><p>View users in GitHub</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -337,7 +355,7 @@
         <td>
           <p><code><a href="gh_repositories.html">gh_repositories()</a></code> </p>
         </td>
-        <td><p>Get information about a user's, organisation's or team's repositories.</p></td>
+        <td><p>Get information about a user's, organization's or team's repositories.</p></td>
       </tr><tr>
         
         <td>
@@ -764,94 +782,6 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-organizations" class="hasAnchor"><a href="#section-organizations" class="anchor"></a>Organizations</h2>
-          <p class="section-desc"><p>Functions for accessing information about organizations.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="gh_organization.html">gh_organization()</a></code> </p>
-        </td>
-        <td><p>Get an organization</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_organizations.html">gh_organizations()</a></code> </p>
-        </td>
-        <td><p>List organizations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_member.html">is_member()</a></code> </p>
-        </td>
-        <td><p>Check membership</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_members.html">gh_members()</a></code> </p>
-        </td>
-        <td><p>Get Organization or team members list</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_membership.html">gh_membership()</a></code> </p>
-        </td>
-        <td><p>Get organization and team membership</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_memberships.html">gh_memberships()</a></code> </p>
-        </td>
-        <td><p>List your organization memberships</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_team.html">gh_team()</a></code> </p>
-        </td>
-        <td><p>Get team</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_teams.html">gh_teams()</a></code> </p>
-        </td>
-        <td><p>List teams</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_manager.html">is_manager()</a></code> </p>
-        </td>
-        <td><p>Check if a team manages a repository</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-users" class="hasAnchor"><a href="#section-users" class="anchor"></a>Users</h2>
-          <p class="section-desc"><p>Functions for accessing information about users.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="gh_user.html">gh_user()</a></code> </p>
-        </td>
-        <td><p>Get a single user</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_users.html">gh_users()</a></code> </p>
-        </td>
-        <td><p>Get all users</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_user_email.html">gh_user_email()</a></code> </p>
-        </td>
-        <td><p>List email addresses for the authenticated user</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
           <h2 id="section-utilities" class="hasAnchor"><a href="#section-utilities" class="anchor"></a>Utilities</h2>
           <p class="section-desc"><p>Useful functions.</p></p>
         </th>
@@ -1081,7 +1011,7 @@
         <td>
           <p><code><a href="gh_projects.html">gh_projects()</a></code> </p>
         </td>
-        <td><p>List organisation or repository projects</p></td>
+        <td><p>List organization or repository projects</p></td>
       </tr><tr>
         
         <td>
@@ -1106,6 +1036,54 @@
           <p><code><a href="gh_cards.html">gh_cards()</a></code> </p>
         </td>
         <td><p>List project cards</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_organization.html">gh_organization()</a></code> </p>
+        </td>
+        <td><p>Get an organization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_organizations.html">gh_organizations()</a></code> </p>
+        </td>
+        <td><p>List organizations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_membership.html">gh_membership()</a></code> </p>
+        </td>
+        <td><p>Get organization and team membership</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_memberships.html">gh_memberships()</a></code> </p>
+        </td>
+        <td><p>List your organization memberships</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_members.html">gh_members()</a></code> </p>
+        </td>
+        <td><p>Get Organization or team members list</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_user.html">gh_user()</a></code> </p>
+        </td>
+        <td><p>Get a single user</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_users.html">gh_users()</a></code> </p>
+        </td>
+        <td><p>Get all users</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_user_email.html">gh_user_email()</a></code> </p>
+        </td>
+        <td><p>List email addresses for the authenticated user</p></td>
       </tr>
     </tbody>
     </table>
@@ -1114,15 +1092,13 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#section-organizations-teams-and-users">Organizations, Teams and Users</a></li>
       <li><a href="#section-projects">Projects</a></li>
-      <li><a href="#section-organisations-teams-and-users">Organisations, Teams and Users</a></li>
       <li><a href="#section-repositories">Repositories</a></li>
       <li><a href="#section-git-data">Git Data</a></li>
       <li><a href="#section-gists">Gists</a></li>
       <li><a href="#section-issues">Issues</a></li>
       <li><a href="#section-pull-requests">Pull Requests</a></li>
-      <li><a href="#section-organizations">Organizations</a></li>
-      <li><a href="#section-users">Users</a></li>
       <li><a href="#section-utilities">Utilities</a></li>
       <li><a href="#section-github-api">GitHub API</a></li>
       <li><a href="#section-deprecated">Deprecated</a></li>

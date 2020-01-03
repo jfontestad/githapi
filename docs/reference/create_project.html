@@ -70,7 +70,7 @@ to add columns and cards separately." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ to add columns and cards separately.</p>
     <p><code>create_project()</code> returns a list of the project properties.</p>
 <p><strong>Project Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the project.</p></li>
-<li><p><strong>number</strong>: The number of the project for the repository, user or organisation.</p></li>
+<li><p><strong>number</strong>: The number of the project for the repository, user or organization.</p></li>
 <li><p><strong>name</strong>: The name given to the project.</p></li>
 <li><p><strong>body</strong>: The description given to the project.</p></li>
 <li><p><strong>state</strong>: Whether the project is "open" or "closed".</p></li>
@@ -163,9 +163,9 @@ to add columns and cards separately.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can create a project associated with either a repository or organisation, by
+    <p>You can create a project associated with either a repository or organization, by
 supplying them as an input, as long as you have appropriate permissions. If no repository
-or organisation is specified the project is created for the authenticated user.</p>
+or organization is specified the project is created for the authenticated user.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/projects/#create-a-repository-project'>https://developer.github.com/v3/projects/#create-a-repository-project</a></p></li>
 <li><p><a href='https://developer.github.com/v3/projects/#create-an-organization-project'>https://developer.github.com/v3/projects/#create-an-organization-project</a></p></li>
@@ -186,7 +186,7 @@ or organisation is specified the project is created for the authenticated user.<
     <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"User project"</span>,
     <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is a user's project"</span>)
 
-  <span class='co'># Create a project for an organisation</span>
+  <span class='co'># Create a project for an organization</span>
   <span class='fu'>create_project</span>(
     <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Repo project"</span>,
     <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is a repository's project"</span>,
