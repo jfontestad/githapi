@@ -1,15 +1,15 @@
-#  FUNCTION: view_organizations --------------------------------------------------------------------
+#  FUNCTION: view_organizations ---------------------------------------------------------------
 #
 #' View organizations in GitHub
 #'
-#' `view_organizations()` summarises organizations in a table with the properties as columns and a
-#' row for each organization. `view_organization()` returns a list of all properties for a single
-#' organization. `browse_organization()` opens the web page for the organization in the default
-#' browser.
+#' `view_organizations()` summarises organizations in a table with the properties as columns
+#' and a row for each organization. `view_organization()` returns a list of all properties for
+#' a single organization. `browse_organization()` opens the web page for the organization in
+#' the default browser.
 #'
 #' You can summarise all the organizations a user is a member of by specifying the user login,
-#' or the authenticated user if it is set to `NULL`. If a user is not supplied the first `n_max`
-#' organizations of GitHub are returned.
+#' or the authenticated user if it is set to `NULL`. If a user is not supplied the first
+#' `n_max` organizations of GitHub are returned.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/orgs/#list-user-organizations>
@@ -17,14 +17,15 @@
 #' - <https://developer.github.com/v3/orgs/#list-all-organizations>
 #'
 #' @param organization (string) The login of the organization.
-#' @param user (string, optional) The login of the user. If `NULL` the authenticated user is used.
+#' @param user (string, optional) The login of the user. If `NULL` the authenticated user is
+#'   used.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
 #' @return `view_organizations()` returns a tibble of organization properties.
 #'   `view_organization()` returns a list of properties for a single organization.
-#'   `browse_organization()` opens the default browser on the organization's page and returns the
-#'   URL invisibly.
+#'   `browse_organization()` opens the default browser on the organization's page and returns
+#'   the URL invisibly.
 #'
 #' **Organization Properties:**
 #'
@@ -118,7 +119,7 @@ view_organizations <- function(
 }
 
 
-#  FUNCTION: view_organization -------------------------------------------------------------
+#  FUNCTION: view_organization ----------------------------------------------------------------
 #
 #' @rdname view_organizations
 #' @export
