@@ -348,3 +348,82 @@ update_organization <- function(
   info("Done", level = 7)
   organization_gh
 }
+
+
+#  FUNCTION: view_memberships -----------------------------------------------------------------
+#
+#' View membership of organizations in GitHub
+#'
+#' `view_memberships()` summarises the membership of organizations in a table with the
+#' properties as columns and a row for each organization. `view_membership()` returns a list
+#' of all membership properties for a single organization.
+#'
+#' You can summarise all the organizations a user is a member of by specifying the user login,
+#' or the authenticated user if it is set to `NULL`.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/orgs/members/#list-your-organization-memberships>
+#' - <https://developer.github.com/v3/orgs/members/#get-organization-membership>
+#' - <https://developer.github.com/v3/orgs/members/#get-your-organization-membership>
+#'
+#' @param state (string, optional) Filter results depending on the `state` of the membership.
+#'   Can be either `"active"` or `"pending"`. If not supplied, all memberships are returned for
+#'   the authenticated user.
+#' @param organization (string) The login of the organization.
+#' @param user (string, optional) The login of the user. If `NULL` the authenticated user is
+#'   used.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_memberships()` returns a tibble of membership properties. `view_membership()`
+#'   returns a list of membership properties for a single organization.
+#'
+#' **Membership Properties:**
+#'
+#' - **organization**: The organization login.
+#' - **user**: The user login.
+#' - **state**: The state of the membership - either `"active"` or `"pending"`.
+#' - **role**: The role of the user in the organization - either `"admin"` or `"member"`.
+#'
+#' @examples
+#' \dontrun{
+#'   # View membership of all organizations the authenticated user is a member of
+#'   view_memberships()
+#'
+#'   # View only active memberships for the authenticated user
+#'   view_memberships(state = "active")
+#'
+#'   # View the membership of a user in an organization
+#'   view_membership("HairyCoos", "ChadGoymer")
+#'
+#'   # View the membership of the authenticated user in an organization
+#'   view_membership("HairyCoos")
+#' }
+#'
+#' @export
+#'
+view_memberships <- function(
+  state,
+  n_max = 1000,
+  ...)
+{
+  if (!missing(state))
+  {
+    assert(
+      is_scalar_character(state) || state %in% values$membership$state,
+      "'state' must be one of '", str_c(values$membership$state, collapse = "', '"), "':\n  ", state)
+  }
+  else
+  {
+    state <- NULL
+  }
+
+  info("Viewing memberships for authenticated user")
+  memberships_lst <- gh_url("user/memberships/orgs", state = state) %>% gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  memberships_gh <- bind_properties(memberships_lst, properties$memberships)
+
+  info("Done", level = 7)
+  memberships_gh
+}

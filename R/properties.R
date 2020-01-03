@@ -89,7 +89,13 @@ properties <- list(
     members_can_create_repositories          = c("members_can_create_repositories",          as = "logical"),
     members_can_create_public_repositories   = c("members_can_create_public_repositories",   as = "logical"),
     members_can_create_private_repositories  = c("members_can_create_private_repositories",  as = "logical"),
-    members_can_create_internal_repositories = c("members_can_create_internal_repositories", as = "logical"))
+    members_can_create_internal_repositories = c("members_can_create_internal_repositories", as = "logical")),
+
+  memberships = list(
+    organization                             = c("organization", "login",                    as = "character"),
+    user                                     = c("user", "login",                            as = "character"),
+    state                                    = c("state",                                    as = "character"),
+    role                                     = c("role",                                     as = "character"))
 
 )
 
@@ -104,21 +110,24 @@ properties <- list(
 values <- list(
 
   project = list(
-    state          = c("open", "closed", "all"),
-    permission     = c("read", "write", "admin", "none")),
+    state                         = c("open", "closed", "all"),
+    permission                    = c("read", "write", "admin", "none")),
 
   column = list(
-    position       = c("first", "last")),
+    position                      = c("first", "last")),
 
   card = list(
-    content_type   = c("Issue", "PullRequest"),
-    archived_state = c("archived", "not_archived", "all"),
-    position       = c("top", "bottom")),
+    content_type                  = c("Issue", "PullRequest"),
+    archived_state                = c("archived", "not_archived", "all"),
+    position                      = c("top", "bottom")),
 
   user = list(
-    role           = c("admin", "member", "all")),
+    role                          = c("admin", "member", "all")),
 
   organization = list(
-    default_repository_permission = c("read", "write", "admin", "none"))
+    default_repository_permission = c("read", "write", "admin", "none")),
+
+  membership = list(
+    state                         = c("active", "pending"))
 
 )

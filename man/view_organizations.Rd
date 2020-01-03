@@ -13,7 +13,8 @@ view_organization(organization, ...)
 browse_organization(organization, ...)
 }
 \arguments{
-\item{user}{(string, optional) The login of the user. If \code{NULL} the authenticated user is used.}
+\item{user}{(string, optional) The login of the user. If \code{NULL} the authenticated user is
+used.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -24,8 +25,8 @@ browse_organization(organization, ...)
 \value{
 \code{view_organizations()} returns a tibble of organization properties.
 \code{view_organization()} returns a list of properties for a single organization.
-\code{browse_organization()} opens the default browser on the organization's page and returns the
-URL invisibly.
+\code{browse_organization()} opens the default browser on the organization's page and returns
+the URL invisibly.
 
 \strong{Organization Properties:}
 \itemize{
@@ -66,15 +67,15 @@ The following are only returned using \code{view_organization()}:
 }
 }
 \description{
-\code{view_organizations()} summarises organizations in a table with the properties as columns and a
-row for each organization. \code{view_organization()} returns a list of all properties for a single
-organization. \code{browse_organization()} opens the web page for the organization in the default
-browser.
+\code{view_organizations()} summarises organizations in a table with the properties as columns
+and a row for each organization. \code{view_organization()} returns a list of all properties for
+a single organization. \code{browse_organization()} opens the web page for the organization in
+the default browser.
 }
 \details{
 You can summarise all the organizations a user is a member of by specifying the user login,
-or the authenticated user if it is set to \code{NULL}. If a user is not supplied the first \code{n_max}
-organizations of GitHub are returned.
+or the authenticated user if it is set to \code{NULL}. If a user is not supplied the first
+\code{n_max} organizations of GitHub are returned.
 
 For more details see the GitHub API documentation:
 \itemize{
