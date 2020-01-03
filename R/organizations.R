@@ -427,3 +427,36 @@ view_memberships <- function(
   info("Done", level = 7)
   memberships_gh
 }
+
+
+#  FUNCTION: view_membership ---------------------------------------------------------------
+#
+#' @rdname view_memberships
+#' @export
+#'
+view_membership <- function(
+  organization,
+  user = NULL,
+  ...)
+{
+  assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+
+  if (is_null(user))
+  {
+    info("Viewing membership for authenticated user in '", organization, "'")
+    url <- gh_url("user/memberships/orgs", organization)
+  }
+  else
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    info("Viewing membership for '", user, "' in '", organization, "'")
+    url <- gh_url("orgs", organization, "memberships", user)
+  }
+  membership_lst <- gh_request("GET", url = url, ...)
+
+  info("Transforming results", level = 4)
+  membership_gh <- select_properties(membership_lst, properties$memberships)
+
+  info("Done", level = 7)
+  membership_gh
+}

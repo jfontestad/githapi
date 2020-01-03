@@ -221,3 +221,42 @@ test_that("view_memberships returns a tibble summarising the user's memberships"
       role         = "character"))
 
 })
+
+
+# TEST: view_membership -----------------------------------------------------------------------
+
+test_that("view_membership returns a list of membership properties", {
+
+  user_membership <- view_membership("HairyCoos", "ChadGoymer")
+
+  expect_is(user_membership, "list")
+  expect_identical(attr(user_membership, "status"), 200L)
+  expect_identical(
+    map_chr(user_membership, ~ class(.)[[1]]),
+    c(organization = "character",
+      user         = "character",
+      state        = "character",
+      role         = "character"))
+
+  expect_identical(user_membership$organization, "HairyCoos")
+  expect_identical(user_membership$user, "ChadGoymer")
+  expect_identical(user_membership$state, "active")
+  expect_identical(user_membership$role, "admin")
+
+  auth_membership <- view_membership("HairyCoos")
+
+  expect_is(auth_membership, "list")
+  expect_identical(attr(auth_membership, "status"), 200L)
+  expect_identical(
+    map_chr(auth_membership, ~ class(.)[[1]]),
+    c(organization = "character",
+      user         = "character",
+      state        = "character",
+      role         = "character"))
+
+  expect_identical(auth_membership$organization, "HairyCoos")
+  expect_identical(auth_membership$user, "ChadGoymer")
+  expect_identical(auth_membership$state, "active")
+  expect_identical(auth_membership$role, "admin")
+
+})
