@@ -345,3 +345,33 @@ view_teams <- function(
   info("Done", level = 7)
   teams_gh
 }
+
+
+#  FUNCTION: view_team ------------------------------------------------------------------------
+#
+#' @rdname view_teams
+#' @export
+#'
+view_team <- function(
+  team,
+  organization,
+  ...)
+{
+  if (is_scalar_character(team))
+  {
+    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+    team <- gh_url("orgs", organization, "teams") %>%
+      gh_find(property = "name", value = team, ...) %>%
+      pluck("id")
+  }
+  assert(is_scalar_integerish(team), "'team' must be an integer or string:\n  ", team)
+
+  info("Viewing team '", team, "'")
+  team_lst <- gh_url("teams", team) %>% gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  team_gh <- select_properties(team_lst, properties$team)
+
+  info("Done", level = 7)
+  team_gh
+}

@@ -205,3 +205,54 @@ test_that("view_teams returns a tibble summarising the teams", {
   expect_true("FirstTeam" %in% user_teams$name)
 
 })
+
+
+# TEST: view_team -----------------------------------------------------------------------------
+
+test_that("view_team returns a list of team properties", {
+
+  team <- view_team("FirstTeam", "HairyCoos")
+
+  expect_is(team, "list")
+  expect_identical(attr(team, "status"), 200L)
+  expect_identical(
+    map_chr(team, ~ class(.)[[1]]),
+    c(id            = "integer",
+      name          = "character",
+      slug          = "character",
+      description   = "character",
+      privacy       = "character",
+      permission    = "character",
+      parent        = "character",
+      html_url      = "character",
+      organization  = "character",
+      members_count = "integer",
+      repos_count   = "integer",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct"))
+
+  expect_identical(team$name, "FirstTeam")
+
+  team_by_id <- view_team(team$id)
+
+  expect_is(team_by_id, "list")
+  expect_identical(attr(team_by_id, "status"), 200L)
+  expect_identical(
+    map_chr(team_by_id, ~ class(.)[[1]]),
+    c(id            = "integer",
+      name          = "character",
+      slug          = "character",
+      description   = "character",
+      privacy       = "character",
+      permission    = "character",
+      parent        = "character",
+      html_url      = "character",
+      organization  = "character",
+      members_count = "integer",
+      repos_count   = "integer",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct"))
+
+  expect_identical(team_by_id$name, "FirstTeam")
+
+})
