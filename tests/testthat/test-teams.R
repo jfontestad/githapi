@@ -107,3 +107,43 @@ test_that("create_team creates a team and returns its properties", {
   expect_identical(parent_team$parent, "TestTeam3")
 
 })
+
+
+# TEST: update_team ---------------------------------------------------------------------------
+
+test_that("update_team changes the team's properties", {
+
+  original_team <- view_team("TestTeam", "HairyCoos")
+
+  updated_team <- update_team(
+    team         = "TestTeam",
+    name         = "FirstTeam",
+    organization = "HairyCoos",
+    description  = "This is a test team",
+    privacy      = "closed",
+    parent_team  = "TestTeam3")
+
+  expect_is(updated_team, "list")
+  expect_identical(attr(updated_team, "status"), 200L)
+  expect_identical(
+    map_chr(updated_team, ~ class(.)[[1]]),
+    c(id            = "integer",
+      name          = "character",
+      slug          = "character",
+      description   = "character",
+      privacy       = "character",
+      permission    = "character",
+      parent        = "character",
+      html_url      = "character",
+      organization  = "character",
+      members_count = "integer",
+      repos_count   = "integer",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct"))
+
+  expect_identical(updated_team$name, "FirstTeam")
+  expect_identical(updated_team$description, "This is a test team")
+  expect_identical(updated_team$privacy, "closed")
+  expect_identical(updated_team$parent, "TestTeam3")
+
+})
