@@ -243,3 +243,105 @@ update_team <- function(
   info("Done", level = 7)
   team_gh
 }
+
+
+#  FUNCTION: view_teams -----------------------------------------------------------------------
+#
+#' View teams in an organization in GitHub
+#'
+#' `view_teams()` summarises teams in a table with the properties as columns and a row for
+#' each team. `view_team()` returns a list of all properties for a single team. `browse_team()`
+#' opens the web page for the team in the default browser.
+#'
+#' You can summarise all the teams within an organisation, that are children to a parent team
+#' or, if neither are supplied, the teams the authenticated user is a member of.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/teams/#list-teams>
+#' - <https://developer.github.com/v3/teams/#list-child-teams>
+#' - <https://developer.github.com/v3/teams/#list-user-teams>
+#'
+#' @param team (integer or string) The ID or name of the team.
+#' @param organization (string, optional) The login of the organization.
+#' @param parent_team (integer or string, optional) The ID or name of a team. If supplied, all
+#'   the child teams will be returned.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_teams()` returns a tibble of team properties. `view_team()` returns a list
+#'   of properties for a single team. `browse_team()` opens the default browser on the
+#'   team's page and returns the URL invisibly.
+#'
+#' **Team Properties:**
+#'
+#' - **id**: The ID of the team.
+#' - **name**: The name of the team.
+#' - **slug**: The team slug name.
+#' - **description**: The description of the team.
+#' - **privacy**: The privacy setting of the team - either "closed" or "secret".
+#' - **permission**: The default repository permissions of the team.
+#' - **parent**: The parent team.
+#' - **html_url**: The URL of the team page in GitHub
+#'
+#' The following are only returned using `view_team()`:
+#'
+#' - **organization**: The organization the team is associated with.
+#' - **members_count**: The number of members.
+#' - **repos_count**: The number of repositories the team has access to.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'   # View teams in an organization
+#'   view_teams("HairyCoos")
+#'
+#'   # View a single team
+#'   view_team("HeadCoos", "HairyCoos")
+#'
+#'   # Browse a team's GitHub page
+#'   browse_team("HeadCoos", "HairyCoos")
+#' }
+#'
+#' @export
+#'
+view_teams <- function(
+  organization,
+  parent_team,
+  n_max = 1000,
+  ...)
+{
+  if (!missing(parent_team))
+  {
+    if (is_scalar_character(parent_team))
+    {
+      assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+      parent_team <- gh_url("orgs", organization, "teams") %>%
+        gh_find(property = "name", value = parent_team, ...) %>%
+        pluck("id")
+    }
+
+    assert(is_scalar_integerish(parent_team), "'parent_team' must be an integer or string:\n  ", parent_team)
+    info("Viewing child teams of the team '", parent_team, "'")
+    url <- gh_url("teams", parent_team, "teams")
+  }
+  else if (!missing(organization))
+  {
+    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+    info("Viewing teams in organization '", organization, "'")
+    url <- gh_url("orgs", organization, "teams")
+  }
+  else
+  {
+    info("Viewing teams of authenticated user")
+    url <- gh_url("user/teams")
+  }
+
+  teams_lst <- gh_page(url = url, n_max  = n_max, ...)
+
+  info("Transforming results", level = 4)
+  teams_gh <- bind_properties(teams_lst, properties$teams)
+
+  info("Done", level = 7)
+  teams_gh
+}

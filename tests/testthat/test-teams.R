@@ -147,3 +147,61 @@ test_that("update_team changes the team's properties", {
   expect_identical(updated_team$parent, "TestTeam3")
 
 })
+
+
+# TEST: view_teams ----------------------------------------------------------------------------
+
+test_that("view_teams returns a tibble summarising the teams", {
+
+  org_teams <- view_teams("HairyCoos")
+
+  expect_is(org_teams, "tbl")
+  expect_identical(attr(org_teams, "status"), 200L)
+  expect_identical(
+    map_chr(org_teams, ~ class(.)[[1]]),
+    c(id            = "integer",
+      name          = "character",
+      slug          = "character",
+      description   = "character",
+      privacy       = "character",
+      permission    = "character",
+      parent        = "character",
+      html_url      = "character"))
+
+  expect_true("FirstTeam" %in% org_teams$name)
+
+  team_teams <- view_teams("HairyCoos", parent_team = "TestTeam3")
+
+  expect_is(team_teams, "tbl")
+  expect_identical(attr(team_teams, "status"), 200L)
+  expect_identical(
+    map_chr(team_teams, ~ class(.)[[1]]),
+    c(id            = "integer",
+      name          = "character",
+      slug          = "character",
+      description   = "character",
+      privacy       = "character",
+      permission    = "character",
+      parent        = "character",
+      html_url      = "character"))
+
+  expect_true("FirstTeam" %in% team_teams$name)
+
+  user_teams <- view_teams()
+
+  expect_is(user_teams, "tbl")
+  expect_identical(attr(user_teams, "status"), 200L)
+  expect_identical(
+    map_chr(user_teams, ~ class(.)[[1]]),
+    c(id            = "integer",
+      name          = "character",
+      slug          = "character",
+      description   = "character",
+      privacy       = "character",
+      permission    = "character",
+      parent        = "character",
+      html_url      = "character"))
+
+  expect_true("FirstTeam" %in% user_teams$name)
+
+})
