@@ -281,3 +281,28 @@ test_that("browse_team opens the team's page in the browser", {
   expect_error(browse_team(FALSE), "'team' must be an integer or string")
 
 })
+
+
+# TEST: delete_team ---------------------------------------------------------------------------
+
+test_that("delete_team removes a team from an organization", {
+
+  first_team <- delete_team("FirstTeam", "HairyCoos")
+
+  expect_is(first_team, "logical")
+  expect_identical(attr(first_team, "status"), 204L)
+  expect_identical(as.logical(first_team), TRUE)
+
+  secret_team <- delete_team("TestTeam2", "HairyCoos")
+
+  expect_is(secret_team, "logical")
+  expect_identical(attr(secret_team, "status"), 204L)
+  expect_identical(as.logical(secret_team), TRUE)
+
+  parent_team <- delete_team("TestTeam3", "HairyCoos")
+
+  expect_is(parent_team, "logical")
+  expect_identical(attr(parent_team, "status"), 204L)
+  expect_identical(as.logical(parent_team), TRUE)
+
+})

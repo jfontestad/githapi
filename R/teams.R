@@ -414,3 +414,55 @@ browse_team <- function(
     status  = attr(team, "status"),
     header  = attr(team, "header"))
 }
+
+
+#  FUNCTION: delete_team ----------------------------------------------------------------------
+#
+#' Delete a team in GitHub
+#'
+#' This function deletes a team from an organization in GitHub, as long as you have
+#' appropriate permissions. Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/teams/#delete-team>
+#'
+#' @param team (integer or string) The ID or name of the team.
+#' @param organization (string) The login of the organization.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_team()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   # Delete a team
+#'   delete_team("HeadCoos", "HairyCoos")
+#' }
+#'
+#' @export
+#'
+delete_team <- function(
+  team,
+  organization,
+  ...)
+{
+  if (is_scalar_character(team))
+  {
+    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+    team <- gh_url("orgs", organization, "teams") %>%
+      gh_find(property = "name", value = team, ...) %>%
+      pluck("id")
+  }
+  assert(is_scalar_integerish(team), "'team' must be an integer or string:\n  ", team)
+
+  info("Deleting team '", team, "'")
+  response <- gh_url("teams", team) %>% gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
