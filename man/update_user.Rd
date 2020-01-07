@@ -4,16 +4,7 @@
 \alias{update_user}
 \title{Update your user properties in GitHub}
 \usage{
-update_user(
-  name = NULL,
-  email = NULL,
-  blog = NULL,
-  company = NULL,
-  location = NULL,
-  hireable = NULL,
-  bio = NULL,
-  ...
-)
+update_user(name, email, blog, company, location, hireable, bio, ...)
 }
 \arguments{
 \item{name}{(string, optional) The new name of the user.}
