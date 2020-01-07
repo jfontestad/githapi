@@ -92,7 +92,32 @@ properties <- list(
     organization                             = c("organization", "login",                    as = "character"),
     user                                     = c("user", "login",                            as = "character"),
     state                                    = c("state",                                    as = "character"),
-    role                                     = c("role",                                     as = "character"))
+    role                                     = c("role",                                     as = "character")),
+
+  teams = list(
+    id                                       = c("id",                                       as = "integer"),
+    name                                     = c("name",                                     as = "character"),
+    slug                                     = c("slug",                                     as = "character"),
+    description                              = c("description",                              as = "character"),
+    privacy                                  = c("privacy",                                  as = "character"),
+    permission                               = c("permission",                               as = "character"),
+    parent                                   = c("parent", "name",                           as = "character"),
+    html_url                                 = c("html_url",                                 as = "character")),
+
+  team = list(
+    id                                       = c("id",                                       as = "integer"),
+    name                                     = c("name",                                     as = "character"),
+    slug                                     = c("slug",                                     as = "character"),
+    description                              = c("description",                              as = "character"),
+    privacy                                  = c("privacy",                                  as = "character"),
+    permission                               = c("permission",                               as = "character"),
+    parent                                   = c("parent", "name",                           as = "character"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    organization                             = c("organization", "login",                    as = "character"),
+    members_count                            = c("members_count",                            as = "integer"),
+    repos_count                              = c("repos_count",                              as = "integer"),
+    created_at                               = c("created_at",                               as = "datetime"),
+    updated_at                               = c("updated_at",                               as = "datetime"))
 
 )
 
@@ -125,6 +150,9 @@ values <- list(
     default_repository_permission = c("read", "write", "admin", "none")),
 
   membership = list(
-    state                         = c("active", "pending"))
+    state                         = c("active", "pending")),
+
+  team = list(
+    privacy                         = c("secret", "closed"))
 
 )
