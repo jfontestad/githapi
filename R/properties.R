@@ -86,10 +86,7 @@ properties <- list(
     plan_private_repos                       = c("plan", "private_repos",                    as = "integer"),
     default_repository_permission            = c("default_repository_permission",            as = "character"),
     two_factor_requirement_enabled           = c("two_factor_requirement_enabled",           as = "logical"),
-    members_can_create_repositories          = c("members_can_create_repositories",          as = "logical"),
-    members_can_create_public_repositories   = c("members_can_create_public_repositories",   as = "logical"),
-    members_can_create_private_repositories  = c("members_can_create_private_repositories",  as = "logical"),
-    members_can_create_internal_repositories = c("members_can_create_internal_repositories", as = "logical")),
+    members_can_create_repositories          = c("members_can_create_repositories",          as = "logical")),
 
   memberships = list(
     organization                             = c("organization", "login",                    as = "character"),

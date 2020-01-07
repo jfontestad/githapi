@@ -78,10 +78,7 @@ test_that("view_organization returns a list of organization properties", {
       plan_private_repos                       = "integer",
       default_repository_permission            = "character",
       two_factor_requirement_enabled           = "logical",
-      members_can_create_repositories          = "logical",
-      members_can_create_public_repositories   = "logical",
-      members_can_create_private_repositories  = "logical",
-      members_can_create_internal_repositories = "logical"))
+      members_can_create_repositories          = "logical"))
 
   expect_identical(organization$login, "HairyCoos")
 
@@ -112,16 +109,28 @@ test_that("update_organization changes the organization's properties", {
   on.exit({
     update_organization(
       organization                    = "HairyCoos",
+      name                            = original_organization$name,
       description                     = original_organization$description,
+      email                           = original_organization$email,
       location                        = original_organization$location,
+      company                         = original_organization$company,
+      billing_email                   = original_organization$billing_email,
+      has_organization_projects       = original_organization$has_organization_projects,
+      has_repository_projects         = original_organization$has_repository_projects,
       default_repository_permission   = original_organization$default_repository_permission,
       members_can_create_repositories = original_organization$members_can_create_repositories)
   })
 
   updated_organization <- update_organization(
     organization                    = "HairyCoos",
-    description                     = "We are the Hairy Coos!",
-    location                        = "The Highlands",
+    name                            = "ACME",
+    description                     = "ACME Trading Co",
+    email                           = original_organization$email,
+    location                        = "The desert",
+    company                         = "ACME",
+    billing_email                   = original_organization$billing_email,
+    has_organization_projects       = FALSE,
+    has_repository_projects         = FALSE,
     default_repository_permission   = "write",
     members_can_create_repositories = FALSE)
 
@@ -155,14 +164,15 @@ test_that("update_organization changes the organization's properties", {
       plan_private_repos                       = "integer",
       default_repository_permission            = "character",
       two_factor_requirement_enabled           = "logical",
-      members_can_create_repositories          = "logical",
-      members_can_create_public_repositories   = "logical",
-      members_can_create_private_repositories  = "logical",
-      members_can_create_internal_repositories = "logical"))
+      members_can_create_repositories          = "logical"))
 
   expect_identical(updated_organization$login, "HairyCoos")
-  expect_identical(updated_organization$description, "We are the Hairy Coos!")
-  expect_identical(updated_organization$location, "The Highlands")
+  expect_identical(updated_organization$name, "ACME")
+  expect_identical(updated_organization$description, "ACME Trading Co")
+  expect_identical(updated_organization$location, "The desert")
+  expect_identical(updated_organization$company, "ACME")
+  expect_false(updated_organization$has_organization_projects)
+  expect_false(updated_organization$has_repository_projects)
   expect_identical(updated_organization$default_repository_permission, "write")
   expect_false(updated_organization$members_can_create_repositories)
 

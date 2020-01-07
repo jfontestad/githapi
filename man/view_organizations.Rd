@@ -61,9 +61,6 @@ The following are only returned using \code{view_organization()}:
 \item \strong{default_repository_permission}: The default access for new repositories.
 \item \strong{two_factor_requirement_enabled}: Whether members require two-factor authentication.
 \item \strong{members_can_create_repositories}: Whether members can create repositories.
-\item \strong{members_can_create_public_repositories}: Whether members can create public repositories.
-\item \strong{members_can_create_private_repositories}: Whether members can create private repositories.
-\item \strong{members_can_create_internal_repositories}:  Whether members can create internal repositories.
 }
 }
 \description{

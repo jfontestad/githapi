@@ -6,19 +6,16 @@
 \usage{
 update_organization(
   organization,
-  name = NULL,
-  description = NULL,
-  email = NULL,
-  location = NULL,
-  company = NULL,
-  billing_email = NULL,
-  has_organization_projects = NULL,
-  has_repository_projects = NULL,
-  default_repository_permission = NULL,
-  members_can_create_repositories = NULL,
-  members_can_create_internal_repositories = NULL,
-  members_can_create_private_repositories = NULL,
-  members_can_create_public_repositories = NULL,
+  name,
+  description,
+  email,
+  location,
+  company,
+  billing_email,
+  has_organization_projects,
+  has_repository_projects,
+  default_repository_permission,
+  members_can_create_repositories,
   ...
 )
 }
@@ -51,53 +48,24 @@ for organization repositories:
 \item \code{"write"}: can pull and push, but not administer this repository.
 \item \code{"admin"}: can pull, push, and administer this repository.
 \item \code{"none"}: no permissions granted by default.
-Default: \code{"read"}.
-}}
+}
+
+Default: \code{"read"}.}
 
 \item{members_can_create_repositories}{(boolean, optional) Toggles the ability of non-admin
 organization members to create repositories. Can be one of:
 \itemize{
 \item \code{TRUE}: all organization members can create repositories.
 \item \code{FALSE}: only organization owners can create repositories.
-Default: \code{TRUE}.
-Note: A parameter can override this parameter. See
-members_allowed_repository_creation_type in this table for details.
-}}
+}
 
-\item{members_can_create_internal_repositories}{(boolean, optional) Toggles whether
-organization members can create internal repositories, which are visible to all enterprise
-members. You can only allow members to create internal repositories if your organization is
-associated with an enterprise account using GitHub Enterprise Cloud. Can be one of:
-\itemize{
-\item \code{TRUE}: all organization members can create internal repositories.
-\item \code{FALSE}: only organization owners can create internal repositories.
-Default: \code{TRUE}. For more information, see "Restricting repository creation in your
-organization" in the GitHub Help documentation.
-}}
-
-\item{members_can_create_private_repositories}{(boolean, optional) Toggles whether organization
-members can create private repositories, which are visible to organization members with
-permission. Can be one of:
-\itemize{
-\item \code{TRUE}: all organization members can create private repositories.
-\item \code{FALSE}: only organization owners can create private repositories.
-Default: \code{TRUE}. For more information, see "Restricting repository creation in your
-organization" in the GitHub Help documentation.
-}}
-
-\item{members_can_create_public_repositories}{(boolean, optional) Toggles whether organization
-members can create public repositories, which are visible to anyone. Can be one of:
-\itemize{
-\item \code{TRUE}: all organization members can create public repositories.
-\item \code{FALSE}: only organization owners can create public repositories.
-Default: \code{TRUE}. For more information, see "Restricting repository creation in your
-organization" in the GitHub Help documentation.
-}}
+Default: \code{TRUE}. Note: A parameter can override this parameter. See
+\code{members_allowed_repository_creation_type} for details.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{update_organization()} returns a list of the new organization properties.
+\code{update_organization()} returns a list of the organization's properties.
 
 \strong{Organization Properties:}
 \itemize{
@@ -126,12 +94,8 @@ organization" in the GitHub Help documentation.
 \item \strong{plan_space}: The total space allocated for the plan.
 \item \strong{plan_private_repos}: The number of private repositories for the plan.
 \item \strong{default_repository_settings}: The default access for new repositories.
-\item \strong{members_can_create_repositories}: Whether members can create repositories.
 \item \strong{two_factor_requirement_enabled}: Whether members require two-factor authentication.
-\item \strong{members_allowed_repository_creation_type}: The types of repositories members can create.
-\item \strong{members_can_create_public_repositories}: Whether members can create public repositories.
-\item \strong{members_can_create_private_repositories}: Whether members can create private repositories.
-\item \strong{members_can_create_internal_repositories}:  Whether members can create internal repositories.
+\item \strong{members_can_create_repositories}: Whether members can create repositories.
 }
 }
 \description{
@@ -146,14 +110,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
-  # Update your name
-  update_organization(name = "Bob Smith")
-
-  # Update your company
-  update_organization(company = "Acme")
-
-  # Update your hireable status
-  update_organization(hireable = TRUE)
+  # Update some of your organization properties
+  update_organization(
+    organization                    = "HairyCoos",
+    description                     = "We are the Hairy Coos!",
+    location                        = "The Highlands",
+    default_repository_permission   = "write",
+    members_can_create_repositories = FALSE)
 }
 
 }

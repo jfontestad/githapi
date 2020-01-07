@@ -59,9 +59,6 @@
 #' - **default_repository_permission**: The default access for new repositories.
 #' - **two_factor_requirement_enabled**: Whether members require two-factor authentication.
 #' - **members_can_create_repositories**: Whether members can create repositories.
-#' - **members_can_create_public_repositories**: Whether members can create public repositories.
-#' - **members_can_create_private_repositories**: Whether members can create private repositories.
-#' - **members_can_create_internal_repositories**:  Whether members can create internal repositories.
 #'
 #' @examples
 #' \dontrun{
@@ -93,14 +90,14 @@ view_organizations <- function(
     if (is_null(user))
     {
       info("Viewing organizations for authenticated user")
-      url <- gh_url("/user/orgs")
+      url <- gh_url("user/orgs")
     }
     else
     {
       assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
 
       info("Viewing organizations for user '", user, "'")
-      url <- gh_url("/users", user, "orgs")
+      url <- gh_url("users", user, "orgs")
     }
   }
   else
@@ -194,38 +191,18 @@ browse_organization <- function(
 #'   - `"write"`: can pull and push, but not administer this repository.
 #'   - `"admin"`: can pull, push, and administer this repository.
 #'   - `"none"`: no permissions granted by default.
+#'
 #'   Default: `"read"`.
 #' @param members_can_create_repositories (boolean, optional) Toggles the ability of non-admin
 #'   organization members to create repositories. Can be one of:
 #'   - `TRUE`: all organization members can create repositories.
 #'   - `FALSE`: only organization owners can create repositories.
-#'   Default: `TRUE`.
-#'   Note: A parameter can override this parameter. See
-#'   members_allowed_repository_creation_type in this table for details.
-#' @param members_can_create_internal_repositories (boolean, optional) Toggles whether
-#'   organization members can create internal repositories, which are visible to all enterprise
-#'   members. You can only allow members to create internal repositories if your organization is
-#'   associated with an enterprise account using GitHub Enterprise Cloud. Can be one of:
-#'   - `TRUE`: all organization members can create internal repositories.
-#'   - `FALSE`: only organization owners can create internal repositories.
-#'   Default: `TRUE`. For more information, see "Restricting repository creation in your
-#'   organization" in the GitHub Help documentation.
-#' @param members_can_create_private_repositories (boolean, optional) Toggles whether organization
-#'   members can create private repositories, which are visible to organization members with
-#'   permission. Can be one of:
-#'   - `TRUE`: all organization members can create private repositories.
-#'   - `FALSE`: only organization owners can create private repositories.
-#'   Default: `TRUE`. For more information, see "Restricting repository creation in your
-#'   organization" in the GitHub Help documentation.
-#' @param members_can_create_public_repositories (boolean, optional) Toggles whether organization
-#'   members can create public repositories, which are visible to anyone. Can be one of:
-#'   - `TRUE`: all organization members can create public repositories.
-#'   - `FALSE`: only organization owners can create public repositories.
-#'   Default: `TRUE`. For more information, see "Restricting repository creation in your
-#'   organization" in the GitHub Help documentation.
+#'
+#'   Default: `TRUE`. Note: A parameter can override this parameter. See
+#'   `members_allowed_repository_creation_type` for details.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `update_organization()` returns a list of the new organization properties.
+#' @return `update_organization()` returns a list of the organization's properties.
 #'
 #' **Organization Properties:**
 #'
@@ -254,90 +231,99 @@ browse_organization <- function(
 #' - **plan_space**: The total space allocated for the plan.
 #' - **plan_private_repos**: The number of private repositories for the plan.
 #' - **default_repository_settings**: The default access for new repositories.
-#' - **members_can_create_repositories**: Whether members can create repositories.
 #' - **two_factor_requirement_enabled**: Whether members require two-factor authentication.
-#' - **members_allowed_repository_creation_type**: The types of repositories members can create.
-#' - **members_can_create_public_repositories**: Whether members can create public repositories.
-#' - **members_can_create_private_repositories**: Whether members can create private repositories.
-#' - **members_can_create_internal_repositories**:  Whether members can create internal repositories.
+#' - **members_can_create_repositories**: Whether members can create repositories.
 #'
 #' @examples
 #' \dontrun{
-#'   # Update your name
-#'   update_organization(name = "Bob Smith")
-#'
-#'   # Update your company
-#'   update_organization(company = "Acme")
-#'
-#'   # Update your hireable status
-#'   update_organization(hireable = TRUE)
+#'   # Update some of your organization properties
+#'   update_organization(
+#'     organization                    = "HairyCoos",
+#'     description                     = "We are the Hairy Coos!",
+#'     location                        = "The Highlands",
+#'     default_repository_permission   = "write",
+#'     members_can_create_repositories = FALSE)
 #' }
 #'
 #' @export
 #'
 update_organization <- function(
   organization,
-  name                                     = NULL,
-  description                              = NULL,
-  email                                    = NULL,
-  location                                 = NULL,
-  company                                  = NULL,
-  billing_email                            = NULL,
-  has_organization_projects                = NULL,
-  has_repository_projects                  = NULL,
-  default_repository_permission            = NULL,
-  members_can_create_repositories          = NULL,
-  members_can_create_internal_repositories = NULL,
-  members_can_create_private_repositories  = NULL,
-  members_can_create_public_repositories   = NULL,
+  name,
+  description,
+  email,
+  location,
+  company,
+  billing_email,
+  has_organization_projects,
+  has_repository_projects,
+  default_repository_permission,
+  members_can_create_repositories,
   ...)
 {
-  assert(is_null(name) || is_scalar_character(name), "'name' must be a string:\n  ", name)
-  assert(is_null(description) || is_scalar_character(description), "'description' must be a string:\n  ", description)
-  assert(is_null(email) || is_scalar_character(email), "'email' must be a string:\n  ", email)
-  assert(is_null(location) || is_scalar_character(location), "'location' must be a string:\n  ", location)
-  assert(is_null(company) || is_scalar_character(company), "'company' must be a string:\n  ", company)
-  assert(is_null(billing_email) || is_scalar_character(billing_email), "'billing_email' must be a string:\n  ", billing_email)
-  assert(
-    is_null(has_organization_projects) || is_scalar_logical(has_organization_projects),
-    "'has_organization_projects' must be a boolean:\n  ", has_organization_projects)
-  assert(
-    is_null(has_repository_projects) || is_scalar_logical(has_repository_projects),
-    "'has_repository_projects' must be a boolean:\n  ", has_repository_projects)
-  assert(
-    is_null(default_repository_permission) || is_scalar_character(default_repository_permission),
-    "'default_repository_permission' must be a string:\n  ", default_repository_permission)
-  assert(
-    is_null(default_repository_permission) || default_repository_permission %in% values$organization$default_repository_permission,
-    "'default_repository_permission' must be one of '", str_c(values$organization$default_repository_permission, collapse = "', '"), "':\n  ", default_repository_permission)
-  assert(
-    is_null(members_can_create_repositories) || is_scalar_logical(members_can_create_repositories),
-    "'members_can_create_repositories' must be a string:\n  ", members_can_create_repositories)
-  assert(
-    is_null(members_can_create_internal_repositories) || is_scalar_logical(members_can_create_internal_repositories),
-    "'members_can_create_internal_repositories' must be a boolean:\n  ", members_can_create_internal_repositories)
-  assert(
-    is_null(members_can_create_private_repositories) || is_scalar_logical(members_can_create_private_repositories),
-    "'members_can_create_private_repositories' must be a boolean:\n  ", members_can_create_private_repositories)
-  assert(
-    is_null(members_can_create_public_repositories) || is_scalar_logical(members_can_create_public_repositories),
-    "'members_can_create_public_repositories' must be a boolean:\n  ", members_can_create_public_repositories)
+  payload <- list()
 
-  payload <- list(
-    name                                     = name,
-    description                              = description,
-    email                                    = email,
-    location                                 = location,
-    company                                  = company,
-    billing_email                            = billing_email,
-    has_organization_projects                = has_organization_projects,
-    has_repository_projects                  = has_repository_projects,
-    default_repository_permission            = default_repository_permission,
-    members_can_create_repositories          = members_can_create_repositories,
-    members_can_create_internal_repositories = members_can_create_internal_repositories,
-    members_can_create_private_repositories  = members_can_create_private_repositories,
-    members_can_create_public_repositories   = members_can_create_public_repositories) %>%
-    compact()
+  if (!missing(name))
+  {
+    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+    payload$name <- name
+  }
+
+  if (!missing(description))
+  {
+    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    payload$description <- description
+  }
+
+  if (!missing(email))
+  {
+    assert(is_scalar_character(email), "'email' must be a string:\n  ", email)
+    payload$email <- email
+  }
+
+  if (!missing(location))
+  {
+    assert(is_scalar_character(location), "'location' must be a string:\n  ", location)
+    payload$location <- location
+  }
+
+  if (!missing(company))
+  {
+    assert(is_scalar_character(company), "'company' must be a string:\n  ", company)
+    payload$company <- company
+  }
+
+  if (!missing(billing_email))
+  {
+    assert(is_scalar_character(billing_email), "'billing_email' must be a string:\n  ", billing_email)
+    payload$billing_email <- billing_email
+  }
+
+  if (!missing(has_organization_projects))
+  {
+    assert(is_scalar_logical(has_organization_projects), "'has_organization_projects' must be a boolean:\n  ", has_organization_projects)
+    payload$has_organization_projects <- has_organization_projects
+  }
+
+  if (!missing(has_repository_projects))
+  {
+    assert(is_scalar_logical(has_repository_projects), "'has_repository_projects' must be a boolean:\n  ", has_repository_projects)
+    payload$has_repository_projects <- has_repository_projects
+  }
+
+  if (!missing(default_repository_permission))
+  {
+    assert(
+      is_scalar_character(default_repository_permission) && default_repository_permission %in% values$organization$default_repository_permission,
+      "'default_repository_permission' must be a string:\n  ", default_repository_permission)
+    payload$default_repository_permission <- default_repository_permission
+  }
+
+  if (!missing(members_can_create_repositories))
+  {
+    assert(is_scalar_logical(members_can_create_repositories), "'members_can_create_repositories' must be a string:\n  ", members_can_create_repositories)
+    payload$members_can_create_repositories <- members_can_create_repositories
+  }
 
   info("Updating organization")
   organization_lst <- gh_url("orgs", organization) %>% gh_request("PATCH", payload = payload, ...)
