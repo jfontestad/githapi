@@ -6,11 +6,11 @@
 \usage{
 update_project(
   project,
-  name = NULL,
-  body = NULL,
-  state = NULL,
-  permission = NULL,
-  private = NULL,
+  name,
+  body,
+  state,
+  permission,
+  private,
   repo,
   user,
   org,
