@@ -256,3 +256,28 @@ test_that("view_team returns a list of team properties", {
   expect_identical(team_by_id$name, "FirstTeam")
 
 })
+
+
+# TEST: browse_team ---------------------------------------------------------------------------
+
+test_that("browse_team opens the team's page in the browser", {
+
+  skip_if(!interactive(), "browse_team must be tested manually")
+
+  team <- browse_team("FirstTeam", "HairyCoos")
+
+  expect_is(team, "character")
+  expect_identical(attr(team, "status"), 200L)
+  expect_identical(as.character(team), "https://github.com/orgs/HairyCoos/teams/firstteam")
+
+
+  team <- view_team("FirstTeam", "HairyCoos")
+  team_by_id <- browse_team(team$id)
+
+  expect_is(team_by_id, "character")
+  expect_identical(attr(team_by_id, "status"), 200L)
+  expect_identical(as.character(team_by_id), "https://github.com/orgs/HairyCoos/teams/firstteam")
+
+  expect_error(browse_team(FALSE), "'team' must be an integer or string")
+
+})

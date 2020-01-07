@@ -375,3 +375,42 @@ view_team <- function(
   info("Done", level = 7)
   team_gh
 }
+
+
+#  FUNCTION: browse_team ----------------------------------------------------------------------
+#
+#' @rdname view_teams
+#' @export
+#'
+browse_team <- function(
+  team,
+  organization,
+  ...)
+{
+  if (is_scalar_character(team))
+  {
+    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+    team <- gh_url("orgs", organization, "teams") %>%
+      gh_find(property = "name", value = team, ...)
+  }
+  else if (is_scalar_integerish(team))
+  {
+    team <- gh_url("teams", team) %>% gh_request("GET", ...)
+  }
+  else
+  {
+    error("'team' must be an integer or string:\n  ", team)
+  }
+
+  info("Browsing team '", team$id, "'")
+  httr::BROWSE(team$html_url)
+
+  info("Done", level = 7)
+  structure(
+    team$html_url,
+    class   = c("github", "character"),
+    url     = attr(team, "url"),
+    request = attr(team, "request"),
+    status  = attr(team, "status"),
+    header  = attr(team, "header"))
+}
