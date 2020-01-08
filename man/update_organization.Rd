@@ -5,7 +5,7 @@
 \title{Update an organization's properties in GitHub}
 \usage{
 update_organization(
-  organization,
+  org,
   name,
   description,
   email,
@@ -20,7 +20,7 @@ update_organization(
 )
 }
 \arguments{
-\item{organization}{(string) The login of the organization.}
+\item{org}{(string) The login of the organization.}
 
 \item{name}{(string, optional) The shorthand name of the company.}
 
@@ -112,7 +112,7 @@ For more details see the GitHub API documentation:
 \dontrun{
   # Update some of your organization properties
   update_organization(
-    organization                    = "HairyCoos",
+    org                             = "HairyCoos",
     description                     = "We are the Hairy Coos!",
     location                        = "The Highlands",
     default_repository_permission   = "write",

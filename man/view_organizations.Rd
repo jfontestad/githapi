@@ -8,9 +8,9 @@
 \usage{
 view_organizations(user, n_max = 1000, ...)
 
-view_organization(organization, ...)
+view_organization(org, ...)
 
-browse_organization(organization, ...)
+browse_organization(org, ...)
 }
 \arguments{
 \item{user}{(string, optional) The login of the user. If \code{NULL} the authenticated user is
@@ -20,7 +20,7 @@ used.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 
-\item{organization}{(string) The login of the organization.}
+\item{org}{(string) The login of the organization.}
 }
 \value{
 \code{view_organizations()} returns a tibble of organization properties.

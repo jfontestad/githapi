@@ -7,7 +7,7 @@
 \usage{
 view_memberships(state, n_max = 1000, ...)
 
-view_membership(organization, user = NULL, ...)
+view_membership(org, user = NULL, ...)
 }
 \arguments{
 \item{state}{(string, optional) Filter results depending on the \code{state} of the membership.
@@ -18,7 +18,7 @@ the authenticated user.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 
-\item{organization}{(string) The login of the organization.}
+\item{org}{(string) The login of the organization.}
 
 \item{user}{(string, optional) The login of the user. If \code{NULL} the authenticated user is
 used.}

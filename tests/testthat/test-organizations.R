@@ -108,7 +108,7 @@ test_that("update_organization changes the organization's properties", {
 
   on.exit({
     update_organization(
-      organization                    = "HairyCoos",
+      org                             = "HairyCoos",
       name                            = original_organization$name,
       description                     = original_organization$description,
       email                           = original_organization$email,
@@ -122,7 +122,7 @@ test_that("update_organization changes the organization's properties", {
   })
 
   updated_organization <- update_organization(
-    organization                    = "HairyCoos",
+    org                             = "HairyCoos",
     name                            = "ACME",
     description                     = "ACME Trading Co",
     email                           = original_organization$email,

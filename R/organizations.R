@@ -16,7 +16,7 @@
 #' - <https://developer.github.com/v3/orgs/#list-your-organizations>
 #' - <https://developer.github.com/v3/orgs/#list-all-organizations>
 #'
-#' @param organization (string) The login of the organization.
+#' @param org (string) The login of the organization.
 #' @param user (string, optional) The login of the user. If `NULL` the authenticated user is
 #'   used.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
@@ -122,19 +122,19 @@ view_organizations <- function(
 #' @export
 #'
 view_organization <- function(
-  organization,
+  org,
   ...)
 {
-  assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
-  info("Viewing organization '", organization, "'")
-  organization_lst <- gh_url("orgs", organization) %>% gh_request("GET", ...)
+  info("Viewing organization '", org, "'")
+  org_lst <- gh_url("orgs", org) %>% gh_request("GET", ...)
 
   info("Transforming results", level = 4)
-  organization_gh <- select_properties(organization_lst, properties$organization)
+  org_gh <- select_properties(org_lst, properties$organization)
 
   info("Done", level = 7)
-  organization_gh
+  org_gh
 }
 
 
@@ -144,22 +144,22 @@ view_organization <- function(
 #' @export
 #'
 browse_organization <- function(
-  organization,
+  org,
   ...)
 {
-  organization <- view_organization(organization, ...)
+  org <- view_organization(org, ...)
 
-  info("Browsing organization '", organization$login, "'")
-  httr::BROWSE(organization$html_url)
+  info("Browsing organization '", org$login, "'")
+  httr::BROWSE(org$html_url)
 
   info("Done", level = 7)
   structure(
-    organization$html_url,
+    org$html_url,
     class   = c("github", "character"),
-    url     = attr(organization, "url"),
-    request = attr(organization, "request"),
-    status  = attr(organization, "status"),
-    header  = attr(organization, "header"))
+    url     = attr(org, "url"),
+    request = attr(org, "request"),
+    status  = attr(org, "status"),
+    header  = attr(org, "header"))
 }
 
 
@@ -173,7 +173,7 @@ browse_organization <- function(
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/orgs/#edit-an-organization>
 #'
-#' @param organization (string) The login of the organization.
+#' @param org (string) The login of the organization.
 #' @param name (string, optional) The shorthand name of the company.
 #' @param description (string, optional) The description of the company.
 #' @param email (string, optional) The publicly visible email address.
@@ -238,7 +238,7 @@ browse_organization <- function(
 #' \dontrun{
 #'   # Update some of your organization properties
 #'   update_organization(
-#'     organization                    = "HairyCoos",
+#'     org                             = "HairyCoos",
 #'     description                     = "We are the Hairy Coos!",
 #'     location                        = "The Highlands",
 #'     default_repository_permission   = "write",
@@ -248,7 +248,7 @@ browse_organization <- function(
 #' @export
 #'
 update_organization <- function(
-  organization,
+  org,
   name,
   description,
   email,
@@ -326,13 +326,13 @@ update_organization <- function(
   }
 
   info("Updating organization")
-  organization_lst <- gh_url("orgs", organization) %>% gh_request("PATCH", payload = payload, ...)
+  org_lst <- gh_url("orgs", org) %>% gh_request("PATCH", payload = payload, ...)
 
   info("Transforming results", level = 4)
-  organization_gh <- select_properties(organization_lst, properties$organization)
+  org_gh <- select_properties(org_lst, properties$organization)
 
   info("Done", level = 7)
-  organization_gh
+  org_gh
 }
 
 
@@ -355,7 +355,7 @@ update_organization <- function(
 #' @param state (string, optional) Filter results depending on the `state` of the membership.
 #'   Can be either `"active"` or `"pending"`. If not supplied, all memberships are returned for
 #'   the authenticated user.
-#' @param organization (string) The login of the organization.
+#' @param org (string) The login of the organization.
 #' @param user (string, optional) The login of the user. If `NULL` the authenticated user is
 #'   used.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
@@ -421,22 +421,22 @@ view_memberships <- function(
 #' @export
 #'
 view_membership <- function(
-  organization,
+  org,
   user = NULL,
   ...)
 {
-  assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
   if (is_null(user))
   {
-    info("Viewing membership for authenticated user in '", organization, "'")
-    url <- gh_url("user/memberships/orgs", organization)
+    info("Viewing membership for authenticated user in '", org, "'")
+    url <- gh_url("user/memberships/orgs", org)
   }
   else
   {
     assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
-    info("Viewing membership for '", user, "' in '", organization, "'")
-    url <- gh_url("orgs", organization, "memberships", user)
+    info("Viewing membership for '", user, "' in '", org, "'")
+    url <- gh_url("orgs", org, "memberships", user)
   }
   membership_lst <- gh_request("GET", url = url, ...)
 
