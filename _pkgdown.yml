@@ -22,6 +22,10 @@ reference:
     - '`update_organization`'
     - '`view_organizations`'
     - '`view_memberships`'
+    - '`create_team`'
+    - '`update_team`'
+    - '`view_teams`'
+    - '`delete_team`'
 - title: Projects
   desc: Functions for creating, updating, viewing and deleting projects.
   contents:
