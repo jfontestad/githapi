@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List organization or repository projects — gh_projects • githapi</title>
+<title>Update a team's properties in GitHub — update_team • githapi</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,9 @@
 
 
 
-<meta property="og:title" content="List organization or repository projects — gh_projects" />
-<meta property="og:description" content="NOTE: This function has been deprecated, please use view_projects() instead." />
+<meta property="og:title" content="Update a team's properties in GitHub — update_team" />
+<meta property="og:description" content="This function updates a team's properties in GitHub. You can only update a team if you have
+the appropriate permissions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,69 +109,98 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List organization or repository projects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/projects-deprecated.R'><code>R/projects-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_projects.Rd</code></div>
+    <h1>Update a team's properties in GitHub</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/teams.R'><code>R/teams.R</code></a></small>
+    <div class="hidden name"><code>update_team.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>NOTE: This function has been deprecated, please use <code><a href='view_projects.html'>view_projects()</a></code> instead.</p>
+    <p>This function updates a team's properties in GitHub. You can only update a team if you have
+the appropriate permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_projects</span>(
-  <span class='no'>repo</span>,
-  <span class='no'>org</span>,
-  <span class='kw'>state</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_team</span>(<span class='no'>team</span>, <span class='no'>name</span>, <span class='no'>description</span>, <span class='no'>privacy</span>, <span class='no'>parent_team</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <th>team</th>
+      <td><p>(integer or string) The Id or current name of the team.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>(string, optional) The new name of the team.</p></td>
+    </tr>
+    <tr>
+      <th>description</th>
+      <td><p>(string, optional) The description of the team.</p></td>
+    </tr>
+    <tr>
+      <th>privacy</th>
+      <td><p>(string, optional) The level of privacy this team should have. Editing teams
+without specifying this parameter leaves privacy intact. The options are:</p>
+<p>For a non-nested team:</p><ul>
+<li><p><code>"secret"</code>: only visible to organization owners and members of this team.</p></li>
+<li><p><code>"closed"</code>: visible to all members of this organization.</p></li>
+</ul>
+
+<p>For a parent or child team:</p><ul>
+<li><p><code>"closed"</code>: visible to all members of this organization.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>parent_team</th>
+      <td><p>(integer or string, optional) The ID or name of a team to set as the
+parent team.</p></td>
     </tr>
     <tr>
       <th>org</th>
-      <td><p>(string) The name of the organization.</p></td>
-    </tr>
-    <tr>
-      <th>state</th>
-      <td><p>(string, optional) Indicates the state of the projects to return. Can be either open,
-closed, or all. Default: open</p></td>
-    </tr>
-    <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <td><p>(string, optional) The organization the team is associated with. Not required
+if your are specifying <code>team</code> and/or <code>parent_team</code> set by ID.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the projects (see GitHub's API documentation for details).</p>
+    <p><code>update_team()</code> returns a list of the team's properties.</p>
+<p><strong>Team Properties:</strong></p><ul>
+<li><p><strong>id</strong>: The ID of the team.</p></li>
+<li><p><strong>name</strong>: The name of the team.</p></li>
+<li><p><strong>organization</strong>: The organization the team is associated with.</p></li>
+<li><p><strong>slug</strong>: The team slug name.</p></li>
+<li><p><strong>description</strong>: The description of the team.</p></li>
+<li><p><strong>privacy</strong>: The privacy setting of the team - either "closed" or "secret".</p></li>
+<li><p><strong>permission</strong>: The default repository permissions of the team.</p></li>
+<li><p><strong>parent</strong>: The parent team.</p></li>
+<li><p><strong>members_count</strong>: The number of members.</p></li>
+<li><p><strong>repos_count</strong>: The number of repositories the team has access to.</p></li>
+<li><p><strong>created_at</strong>: When it was created.</p></li>
+<li><p><strong>updated_at</strong>: When it was last updated.</p></li>
+<li><p><strong>html_url</strong>: The URL of the team page in GitHub</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/projects/#list-repository-projects'>https://developer.github.com/v3/projects/#list-repository-projects</a>
-<a href='https://developer.github.com/v3/projects/#list-organization-projects'>https://developer.github.com/v3/projects/#list-organization-projects</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/teams/#edit-team'>https://developer.github.com/v3/teams/#edit-team</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='co'># Update a team</span>
+  <span class='fu'>update_team</span>(
+    <span class='kw'>team</span>        <span class='kw'>=</span> <span class='st'>"TestTeam"</span>,
+    <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"This is a test team"</span>,
+    <span class='kw'>privacy</span>     <span class='kw'>=</span> <span class='st'>"closed"</span>,
+    <span class='kw'>parent_team</span> <span class='kw'>=</span> <span class='st'>"TestTeam3"</span>,
+    <span class='kw'>org</span>         <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -178,6 +208,7 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

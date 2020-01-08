@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List organization or repository projects — gh_projects • githapi</title>
+<title>Delete a team in GitHub — delete_team • githapi</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,9 @@
 
 
 
-<meta property="og:title" content="List organization or repository projects — gh_projects" />
-<meta property="og:description" content="NOTE: This function has been deprecated, please use view_projects() instead." />
+<meta property="og:title" content="Delete a team in GitHub — delete_team" />
+<meta property="og:description" content="This function deletes a team from an organization in GitHub, as long as you have
+appropriate permissions. Care should be taken as it will not be recoverable." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,69 +109,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List organization or repository projects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/projects-deprecated.R'><code>R/projects-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_projects.Rd</code></div>
+    <h1>Delete a team in GitHub</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/teams.R'><code>R/teams.R</code></a></small>
+    <div class="hidden name"><code>delete_team.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>NOTE: This function has been deprecated, please use <code><a href='view_projects.html'>view_projects()</a></code> instead.</p>
+    <p>This function deletes a team from an organization in GitHub, as long as you have
+appropriate permissions. Care should be taken as it will not be recoverable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_projects</span>(
-  <span class='no'>repo</span>,
-  <span class='no'>org</span>,
-  <span class='kw'>state</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>delete_team</span>(<span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <th>team</th>
+      <td><p>(integer or string) The ID or name of the team.</p></td>
     </tr>
     <tr>
       <th>org</th>
-      <td><p>(string) The name of the organization.</p></td>
-    </tr>
-    <tr>
-      <th>state</th>
-      <td><p>(string, optional) Indicates the state of the projects to return. Can be either open,
-closed, or all. Default: open</p></td>
-    </tr>
-    <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <td><p>(string) The login of the organization.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the projects (see GitHub's API documentation for details).</p>
+    <p><code>delete_team()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/projects/#list-repository-projects'>https://developer.github.com/v3/projects/#list-repository-projects</a>
-<a href='https://developer.github.com/v3/projects/#list-organization-projects'>https://developer.github.com/v3/projects/#list-organization-projects</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/teams/#delete-team'>https://developer.github.com/v3/teams/#delete-team</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='co'># Delete a team</span>
+  <span class='fu'>delete_team</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -178,6 +160,7 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

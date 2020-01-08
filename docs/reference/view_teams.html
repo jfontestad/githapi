@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List organization or repository projects — gh_projects • githapi</title>
+<title>View teams in an organization in GitHub — view_teams • githapi</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,10 @@
 
 
 
-<meta property="og:title" content="List organization or repository projects — gh_projects" />
-<meta property="og:description" content="NOTE: This function has been deprecated, please use view_projects() instead." />
+<meta property="og:title" content="View teams in an organization in GitHub — view_teams" />
+<meta property="og:description" content="view_teams() summarises teams in a table with the properties as columns and a row for
+each team. view_team() returns a list of all properties for a single team. browse_team()
+opens the web page for the team in the default browser." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,69 +110,95 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List organization or repository projects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/projects-deprecated.R'><code>R/projects-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_projects.Rd</code></div>
+    <h1>View teams in an organization in GitHub</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/teams.R'><code>R/teams.R</code></a></small>
+    <div class="hidden name"><code>view_teams.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>NOTE: This function has been deprecated, please use <code><a href='view_projects.html'>view_projects()</a></code> instead.</p>
+    <p><code>view_teams()</code> summarises teams in a table with the properties as columns and a row for
+each team. <code>view_team()</code> returns a list of all properties for a single team. <code>browse_team()</code>
+opens the web page for the team in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_projects</span>(
-  <span class='no'>repo</span>,
-  <span class='no'>org</span>,
-  <span class='kw'>state</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>view_teams</span>(<span class='no'>org</span>, <span class='no'>parent_team</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+
+<span class='fu'>view_team</span>(<span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)
+
+<span class='fu'>browse_team</span>(<span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
-    </tr>
-    <tr>
       <th>org</th>
-      <td><p>(string) The name of the organization.</p></td>
+      <td><p>(string, optional) The login of the organization.</p></td>
     </tr>
     <tr>
-      <th>state</th>
-      <td><p>(string, optional) Indicates the state of the projects to return. Can be either open,
-closed, or all. Default: open</p></td>
+      <th>parent_team</th>
+      <td><p>(integer or string, optional) The ID or name of a team. If supplied, all
+the child teams will be returned.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <td><p>(integer, optional) Maximum number to return. Default: <code>1000</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
     </tr>
+    <tr>
+      <th>team</th>
+      <td><p>(integer or string) The ID or name of the team.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the projects (see GitHub's API documentation for details).</p>
+    <p><code>view_teams()</code> returns a tibble of team properties. <code>view_team()</code> returns a list
+of properties for a single team. <code>browse_team()</code> opens the default browser on the
+team's page and returns the URL invisibly.</p>
+<p><strong>Team Properties:</strong></p><ul>
+<li><p><strong>id</strong>: The ID of the team.</p></li>
+<li><p><strong>name</strong>: The name of the team.</p></li>
+<li><p><strong>slug</strong>: The team slug name.</p></li>
+<li><p><strong>description</strong>: The description of the team.</p></li>
+<li><p><strong>privacy</strong>: The privacy setting of the team - either "closed" or "secret".</p></li>
+<li><p><strong>permission</strong>: The default repository permissions of the team.</p></li>
+<li><p><strong>parent</strong>: The parent team.</p></li>
+<li><p><strong>html_url</strong>: The URL of the team page in GitHub</p></li>
+</ul>
+
+<p>The following are only returned using <code>view_team()</code>:</p><ul>
+<li><p><strong>organization</strong>: The organization the team is associated with.</p></li>
+<li><p><strong>members_count</strong>: The number of members.</p></li>
+<li><p><strong>repos_count</strong>: The number of repositories the team has access to.</p></li>
+<li><p><strong>created_at</strong>: When it was created.</p></li>
+<li><p><strong>updated_at</strong>: When it was last updated.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/projects/#list-repository-projects'>https://developer.github.com/v3/projects/#list-repository-projects</a>
-<a href='https://developer.github.com/v3/projects/#list-organization-projects'>https://developer.github.com/v3/projects/#list-organization-projects</a></p>
+    <p>You can summarise all the teams within an organisation, that are children to a parent team
+or, if neither are supplied, the teams the authenticated user is a member of.</p>
+<p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/teams/#list-teams'>https://developer.github.com/v3/teams/#list-teams</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#list-child-teams'>https://developer.github.com/v3/teams/#list-child-teams</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#list-user-teams'>https://developer.github.com/v3/teams/#list-user-teams</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='co'># View teams in an organization</span>
+  <span class='fu'>view_teams</span>(<span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># View a single team</span>
+  <span class='fu'>view_team</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># Browse a team's GitHub page</span>
+  <span class='fu'>browse_team</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -178,6 +206,7 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
