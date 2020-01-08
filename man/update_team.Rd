@@ -4,7 +4,7 @@
 \alias{update_team}
 \title{Update a team's properties in GitHub}
 \usage{
-update_team(team, name, description, privacy, parent_team, organization, ...)
+update_team(team, name, description, privacy, parent_team, org, ...)
 }
 \arguments{
 \item{team}{(integer or string) The Id or current name of the team.}
@@ -30,8 +30,10 @@ For a parent or child team:
 \item{parent_team}{(integer or string, optional) The ID or name of a team to set as the
 parent team.}
 
-\item{organization}{(string, optional) The organization the team is associated with. Not
-required if your are specifying \code{team} and/or \code{parent_team} set by ID.}
+\item{org}{(string, optional) The organization the team is associated with. Not required
+if your are specifying \code{team} and/or \code{parent_team} set by ID.}
+
+\item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
 \code{update_team()} returns a list of the team's properties.
@@ -67,11 +69,11 @@ For more details see the GitHub API documentation:
 \dontrun{
   # Update a team
   update_team(
-    team         = "TestTeam",
-    description  = "This is a test team",
-    privacy      = "closed",
-    parent_team  = "TestTeam3",
-    organization = "HairyCoos")
+    team        = "TestTeam",
+    description = "This is a test team",
+    privacy     = "closed",
+    parent_team = "TestTeam3",
+    org         = "HairyCoos")
 }
 
 }

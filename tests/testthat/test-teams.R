@@ -6,10 +6,10 @@ context("teams api")
 test_that("create_team creates a team and returns its properties", {
 
   first_team <- create_team(
-    name         = "TestTeam",
-    organization = "HairyCoos",
-    description  = "This is a test team",
-    repo_names   = "HairyCoos/test-repo")
+    name        = "TestTeam",
+    org         = "HairyCoos",
+    description = "This is a test team",
+    repo_names  = "HairyCoos/test-repo")
 
   expect_is(first_team, "list")
   expect_identical(attr(first_team, "status"), 201L)
@@ -56,7 +56,7 @@ test_that("create_team creates a team and returns its properties", {
 
   expect_identical(maintainers_team$name, "TestTeam2")
   expect_identical(maintainers_team$organization, "HairyCoos")
-  expect_identical(maintainers_team$members_count, 2L)
+  expect_identical(maintainers_team$members_count, 1L)
 
   closed_team <- create_team("TestTeam3", "HairyCoos", privacy = "closed")
 
@@ -116,12 +116,12 @@ test_that("update_team changes the team's properties", {
   original_team <- view_team("TestTeam", "HairyCoos")
 
   updated_team <- update_team(
-    team         = "TestTeam",
-    name         = "FirstTeam",
-    organization = "HairyCoos",
-    description  = "This is a test team",
-    privacy      = "closed",
-    parent_team  = "TestTeam3")
+    team        = "TestTeam",
+    name        = "FirstTeam",
+    org         = "HairyCoos",
+    description = "This is a test team",
+    privacy     = "closed",
+    parent_team = "TestTeam3")
 
   expect_is(updated_team, "list")
   expect_identical(attr(updated_team, "status"), 200L)

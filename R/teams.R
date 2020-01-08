@@ -10,7 +10,7 @@
 #' - <https://developer.github.com/v3/teams/#create-team>
 #'
 #' @param name (string) The name of the team.
-#' @param organization (string) The login of the organization.
+#' @param org (string) The login of the organization.
 #' @param description (string, optional) The description of the team.
 #' @param maintainers (character, optional) The logins of organization members to add as
 #'   maintainers of the team. If you do not specify any maintainers, then you will
@@ -70,7 +70,7 @@
 #'
 create_team <- function(
   name,
-  organization,
+  org,
   description,
   maintainers,
   repo_names,
@@ -79,7 +79,7 @@ create_team <- function(
   ...)
 {
   assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
-  assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
   payload <- list(name = name)
 
@@ -90,7 +90,7 @@ create_team <- function(
 
   if (!missing(maintainers)) {
     assert(is_character(maintainers), "'maintainers' must be a character vector:\n  ", maintainers)
-    payload$maintainers <- maintainers
+    payload$maintainers <- as.list(maintainers)
   }
 
   if (!missing(repo_names)) {
@@ -108,7 +108,7 @@ create_team <- function(
   if (!missing(parent_team)) {
     if (is_scalar_character(parent_team))
     {
-      parent_team <- gh_url("orgs", organization, "teams") %>%
+      parent_team <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = parent_team, ...) %>%
         pluck("id")
     }
@@ -116,7 +116,7 @@ create_team <- function(
     payload$parent_team_id <- parent_team
   }
 
-  team_lst <- gh_url("orgs", organization, "teams") %>%
+  team_lst <- gh_url("orgs", org, "teams") %>%
     gh_request("POST", payload = payload, ...)
 
   info("Transforming results", level = 4)
@@ -151,8 +151,9 @@ create_team <- function(
 #'   - `"closed"`: visible to all members of this organization.
 #' @param parent_team (integer or string, optional) The ID or name of a team to set as the
 #'   parent team.
-#' @param organization (string, optional) The organization the team is associated with. Not
-#'   required if your are specifying `team` and/or `parent_team` set by ID.
+#' @param org (string, optional) The organization the team is associated with. Not required
+#'   if your are specifying `team` and/or `parent_team` set by ID.
+#' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `update_team()` returns a list of the team's properties.
 #'
@@ -176,11 +177,11 @@ create_team <- function(
 #' \dontrun{
 #'   # Update a team
 #'   update_team(
-#'     team         = "TestTeam",
-#'     description  = "This is a test team",
-#'     privacy      = "closed",
-#'     parent_team  = "TestTeam3",
-#'     organization = "HairyCoos")
+#'     team        = "TestTeam",
+#'     description = "This is a test team",
+#'     privacy     = "closed",
+#'     parent_team = "TestTeam3",
+#'     org         = "HairyCoos")
 #' }
 #'
 #' @export
@@ -191,7 +192,7 @@ update_team <- function(
   description,
   privacy,
   parent_team,
-  organization,
+  org,
   ...)
 {
   payload <- list()
@@ -216,8 +217,8 @@ update_team <- function(
   if (!missing(parent_team)) {
     if (is_scalar_character(parent_team))
     {
-      assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
-      parent_team <- gh_url("orgs", organization, "teams") %>%
+      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      parent_team <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = parent_team, ...) %>%
         pluck("id")
     }
@@ -227,8 +228,8 @@ update_team <- function(
 
   if (is_scalar_character(team))
   {
-    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
-    team <- gh_url("orgs", organization, "teams") %>%
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...) %>%
       pluck("id")
   }
@@ -262,7 +263,7 @@ update_team <- function(
 #' - <https://developer.github.com/v3/teams/#list-user-teams>
 #'
 #' @param team (integer or string) The ID or name of the team.
-#' @param organization (string, optional) The login of the organization.
+#' @param org (string, optional) The login of the organization.
 #' @param parent_team (integer or string, optional) The ID or name of a team. If supplied, all
 #'   the child teams will be returned.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
@@ -306,7 +307,7 @@ update_team <- function(
 #' @export
 #'
 view_teams <- function(
-  organization,
+  org,
   parent_team,
   n_max = 1000,
   ...)
@@ -315,8 +316,8 @@ view_teams <- function(
   {
     if (is_scalar_character(parent_team))
     {
-      assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
-      parent_team <- gh_url("orgs", organization, "teams") %>%
+      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      parent_team <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = parent_team, ...) %>%
         pluck("id")
     }
@@ -325,11 +326,11 @@ view_teams <- function(
     info("Viewing child teams of the team '", parent_team, "'")
     url <- gh_url("teams", parent_team, "teams")
   }
-  else if (!missing(organization))
+  else if (!missing(org))
   {
-    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
-    info("Viewing teams in organization '", organization, "'")
-    url <- gh_url("orgs", organization, "teams")
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    info("Viewing teams in organization '", org, "'")
+    url <- gh_url("orgs", org, "teams")
   }
   else
   {
@@ -354,13 +355,13 @@ view_teams <- function(
 #'
 view_team <- function(
   team,
-  organization,
+  org,
   ...)
 {
   if (is_scalar_character(team))
   {
-    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
-    team <- gh_url("orgs", organization, "teams") %>%
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...) %>%
       pluck("id")
   }
@@ -384,13 +385,13 @@ view_team <- function(
 #'
 browse_team <- function(
   team,
-  organization,
+  org,
   ...)
 {
   if (is_scalar_character(team))
   {
-    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
-    team <- gh_url("orgs", organization, "teams") %>%
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...)
   }
   else if (is_scalar_integerish(team))
@@ -427,7 +428,7 @@ browse_team <- function(
 #' - <https://developer.github.com/v3/teams/#delete-team>
 #'
 #' @param team (integer or string) The ID or name of the team.
-#' @param organization (string) The login of the organization.
+#' @param org (string) The login of the organization.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `delete_team()` returns a TRUE if successfully deleted.
@@ -442,13 +443,13 @@ browse_team <- function(
 #'
 delete_team <- function(
   team,
-  organization,
+  org,
   ...)
 {
   if (is_scalar_character(team))
   {
-    assert(is_scalar_character(organization), "'organization' must be a string:\n  ", organization)
-    team <- gh_url("orgs", organization, "teams") %>%
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...) %>%
       pluck("id")
   }

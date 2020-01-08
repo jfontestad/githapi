@@ -6,7 +6,7 @@
 \usage{
 create_team(
   name,
-  organization,
+  org,
   description,
   maintainers,
   repo_names,
@@ -18,7 +18,7 @@ create_team(
 \arguments{
 \item{name}{(string) The name of the team.}
 
-\item{organization}{(string) The login of the organization.}
+\item{org}{(string) The login of the organization.}
 
 \item{description}{(string, optional) The description of the team.}
 

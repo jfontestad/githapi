@@ -6,14 +6,14 @@
 \alias{browse_team}
 \title{View teams in an organization in GitHub}
 \usage{
-view_teams(organization, parent_team, n_max = 1000, ...)
+view_teams(org, parent_team, n_max = 1000, ...)
 
-view_team(team, organization, ...)
+view_team(team, org, ...)
 
-browse_team(team, organization, ...)
+browse_team(team, org, ...)
 }
 \arguments{
-\item{organization}{(string, optional) The login of the organization.}
+\item{org}{(string, optional) The login of the organization.}
 
 \item{parent_team}{(integer or string, optional) The ID or name of a team. If supplied, all
 the child teams will be returned.}

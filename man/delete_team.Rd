@@ -4,12 +4,12 @@
 \alias{delete_team}
 \title{Delete a team in GitHub}
 \usage{
-delete_team(team, organization, ...)
+delete_team(team, org, ...)
 }
 \arguments{
 \item{team}{(integer or string) The ID or name of the team.}
 
-\item{organization}{(string) The login of the organization.}
+\item{org}{(string) The login of the organization.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
