@@ -66,6 +66,10 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_user]{gh_user()}}: replace with \code{\link[=view_user]{view_user()}}
 \item \code{\link[=gh_users]{gh_users()}}: replace with \code{\link[=view_users]{view_users()}}
 \item \code{\link[=gh_user_email]{gh_user_email()}}: is being removed. Use \code{\link[=view_user]{view_user()}}
+\item \code{\link[=gh_team]{gh_team()}}: replace with \code{\link[=view_team]{view_team()}}
+\item \code{\link[=gh_teams]{gh_teams()}}: replace with \code{\link[=view_teams]{view_teams()}}
+\item \code{\link[=is_member]{is_member()}}: is being removed
+\item \code{\link[=is_manager]{is_manager()}}: is being removed
 }
 }
 

@@ -105,6 +105,8 @@ is_member <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_character(user))
   assert(is_scalar_character(org))
   assert(is_sha(token))
@@ -315,6 +317,8 @@ gh_team <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_team", package = "githapi")
+
   assert(is_scalar_integerish(team) && isTRUE(team > 0))
   assert(is_sha(token))
   assert(is_url(api))
@@ -351,6 +355,8 @@ gh_teams <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_teams", package = "githapi")
+
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
   assert(is_url(api))
@@ -399,6 +405,8 @@ is_manager <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(team) && isTRUE(team > 0))
   assert(is_repo(repo))
   assert(is_sha(token))

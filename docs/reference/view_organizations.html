@@ -72,7 +72,7 @@ the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
       </span>
     </div>
 
@@ -125,9 +125,9 @@ the default browser.</p>
 
     <pre class="usage"><span class='fu'>view_organizations</span>(<span class='no'>user</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
 
-<span class='fu'>view_organization</span>(<span class='no'>organization</span>, <span class='no'>...</span>)
+<span class='fu'>view_organization</span>(<span class='no'>org</span>, <span class='no'>...</span>)
 
-<span class='fu'>browse_organization</span>(<span class='no'>organization</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>browse_organization</span>(<span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +146,7 @@ used.</p></td>
       <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>organization</th>
+      <th>org</th>
       <td><p>(string) The login of the organization.</p></td>
     </tr>
     </table>
@@ -188,9 +188,6 @@ the URL invisibly.</p>
 <li><p><strong>default_repository_permission</strong>: The default access for new repositories.</p></li>
 <li><p><strong>two_factor_requirement_enabled</strong>: Whether members require two-factor authentication.</p></li>
 <li><p><strong>members_can_create_repositories</strong>: Whether members can create repositories.</p></li>
-<li><p><strong>members_can_create_public_repositories</strong>: Whether members can create public repositories.</p></li>
-<li><p><strong>members_can_create_private_repositories</strong>: Whether members can create private repositories.</p></li>
-<li><p><strong>members_can_create_internal_repositories</strong>:  Whether members can create internal repositories.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

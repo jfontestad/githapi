@@ -2,7 +2,7 @@ context("git branches")
 
 new_branches <- str_c("test-branches-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S-"), 1:2)
 
-teardown(suppressMessages(tryCatch({
+teardown(suppressMessages(try(silent = TRUE, {
 
   delete_branches(
     branches = new_branches,

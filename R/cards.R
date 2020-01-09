@@ -203,17 +203,23 @@ create_card <- function(
 #'
 update_card <- function(
   card,
-  note     = NULL,
-  archived = NULL,
+  note,
+  archived,
   ...)
 {
-  assert(is_null(note)     || is_scalar_character(note),   "'note' must be a string:\n  ",      note)
-  assert(is_null(archived) || is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
+  payload <- list()
 
-  payload <- list(
-    note     = note,
-    archived = archived) %>%
-    compact()
+  if (!missing(note))
+  {
+    assert(is_scalar_character(note), "'note' must be a string:\n  ", note)
+    payload$note <- note
+  }
+
+  if (!missing(archived))
+  {
+    assert(is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
+    payload$archived <- archived
+  }
 
   info("Updating card '", card, "'")
   card_lst <- gh_url("projects/columns/cards", card) %>%

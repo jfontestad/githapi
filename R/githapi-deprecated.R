@@ -55,6 +55,10 @@
 #' - [gh_user()]: replace with [view_user()]
 #' - [gh_users()]: replace with [view_users()]
 #' - [gh_user_email()]: is being removed. Use [view_user()]
+#' - [gh_team()]: replace with [view_team()]
+#' - [gh_teams()]: replace with [view_teams()]
+#' - [is_member()]: is being removed
+#' - [is_manager()]: is being removed
 #'
 NULL
 

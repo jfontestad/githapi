@@ -218,32 +218,58 @@ browse_user <- function(
 #' @export
 #'
 update_user <- function(
-  name     = NULL,
-  email    = NULL,
-  blog     = NULL,
-  company  = NULL,
-  location = NULL,
-  hireable = NULL,
-  bio      = NULL,
+  name,
+  email,
+  blog,
+  company,
+  location,
+  hireable,
+  bio,
   ...)
 {
-  assert(is_null(name)     || is_scalar_character(name),     "'name' must be a string:\n  ",      name)
-  assert(is_null(email)    || is_scalar_character(email),    "'email' must be a string:\n  ",     email)
-  assert(is_null(blog)     || is_scalar_character(blog),     "'blog' must be a string:\n  ",      blog)
-  assert(is_null(company)  || is_scalar_character(company),  "'company' must be a string:\n  ",   company)
-  assert(is_null(location) || is_scalar_character(location), "'location' must be a string:\n  ",  location)
-  assert(is_null(hireable) || is_scalar_logical(hireable),   "'hireable' must be a boolean:\n  ", hireable)
-  assert(is_null(bio)      || is_scalar_character(bio),      "'bio' must be a string:\n  ",       bio)
+  payload <- list()
 
-  payload <- list(
-    name     = name,
-    email    = email,
-    blog     = blog,
-    company  = company,
-    location = location,
-    hireable = hireable,
-    bio      = bio) %>%
-    compact()
+  if (!missing(name))
+  {
+    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+    payload$name <- name
+  }
+
+  if (!missing(email))
+  {
+    assert(is_scalar_character(email), "'email' must be a string:\n  ", email)
+    payload$email <- email
+  }
+
+  if (!missing(blog))
+  {
+    assert(is_scalar_character(blog), "'blog' must be a string:\n  ", blog)
+    payload$blog <- blog
+  }
+
+  if (!missing(company))
+  {
+    assert(is_scalar_character(company), "'company' must be a string:\n  ", company)
+    payload$company <- company
+  }
+
+  if (!missing(location))
+  {
+    assert(is_scalar_character(location), "'location' must be a string:\n  ", location)
+    payload$location <- location
+  }
+
+  if (!missing(hireable))
+  {
+    assert(is_scalar_logical(hireable), "'hireable' must be a boolean:\n  ", hireable)
+    payload$hireable <- hireable
+  }
+
+  if (!missing(bio))
+  {
+    assert(is_scalar_character(bio), "'bio' must be a string:\n  ", bio)
+    payload$bio <- bio
+  }
 
   info("Updating user")
   user_lst <- gh_url("user") %>% gh_request("PATCH", payload = payload, ...)

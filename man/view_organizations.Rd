@@ -8,9 +8,9 @@
 \usage{
 view_organizations(user, n_max = 1000, ...)
 
-view_organization(organization, ...)
+view_organization(org, ...)
 
-browse_organization(organization, ...)
+browse_organization(org, ...)
 }
 \arguments{
 \item{user}{(string, optional) The login of the user. If \code{NULL} the authenticated user is
@@ -20,7 +20,7 @@ used.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 
-\item{organization}{(string) The login of the organization.}
+\item{org}{(string) The login of the organization.}
 }
 \value{
 \code{view_organizations()} returns a tibble of organization properties.
@@ -61,9 +61,6 @@ The following are only returned using \code{view_organization()}:
 \item \strong{default_repository_permission}: The default access for new repositories.
 \item \strong{two_factor_requirement_enabled}: Whether members require two-factor authentication.
 \item \strong{members_can_create_repositories}: Whether members can create repositories.
-\item \strong{members_can_create_public_repositories}: Whether members can create public repositories.
-\item \strong{members_can_create_private_repositories}: Whether members can create private repositories.
-\item \strong{members_can_create_internal_repositories}:  Whether members can create internal repositories.
 }
 }
 \description{

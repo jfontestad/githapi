@@ -136,14 +136,22 @@ test_that("update_user changes the user's properties", {
   on.exit({
     update_user(
       name     = original_user$name,
+      email    = original_user$email,
+      blog     = original_user$blog,
+      company  = original_user$company,
       location = original_user$location,
-      hireable = original_user$hireable)
+      hireable = FALSE,
+      bio      = original_user$bio,)
   })
 
   updated_user <- update_user(
     name     = "Bob",
+    email    = original_user$email,
+    blog     = "https://acme.com/blog",
+    company  = "ACME",
     location = "Nowhere",
-    hireable = TRUE)
+    hireable = TRUE,
+    bio      = "Blah Blah")
 
   expect_is(updated_user, "list")
   expect_identical(attr(updated_user, "status"), 200L)

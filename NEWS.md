@@ -1,3 +1,27 @@
+# githapi 0.9.9
+
+Added the following functions:
+- `create_team()`
+- `update_team()`
+- `view_teams()`
+- `view_team()`
+- `browse_team()`
+- `delete_team()`
+
+Updated the following functions:
+- `update_project()`: no longer has `NULL` defaults
+- `update_card()`: no longer has `NULL` defaults
+- `update_user()`: no longer has `NULL` defaults
+- `update_organization()`: no longer has `NULL` defaults
+- Used `org` argument in organization functions for consistency
+- Removed beta properties from all organizations functions
+
+Deprecated the following functions:
+- `gh_team()`
+- `gh_teams()`
+- `is_member()`
+- `is_manager()`
+
 # githapi 0.9.8
 
 Added the following functions:
