@@ -121,23 +121,29 @@ create_project <- function(
 #' Update a GitHub project
 #'
 #' This function updates a project in GitHub. It can be used to change the name and body, but
-#' can also be used to close the project or change permissions.
+#' can also be used to close the project, change permissions or add a team.
 #'
-#' You can update a project associated with either a repository, user or organization, by
-#' supplying them as an input, as long as you have appropriate permissions.
+#' You can update a project associated with either a repository, user, team or organization,
+#' by supplying them as an input, as long as you have appropriate permissions. Supplying a
+#' team that does not already have access to the project adds them. If they have access, then
+#' the team's permissions can be changed with the `permission` argument.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/#update-a-project>
+#' - <https://developer.github.com/v3/teams/#add-or-update-team-project>
 #'
 #' @param project (integer or string) Either the project number or name.
 #' @param name (string, optional) The new name for the project.
 #' @param body (string, optional) The new description of the project.
 #' @param state (string, optional) The new state of the project, either `"open"` or `"closed"`.
-#' @param permission (string, optional) The new permissions for the project, either `"read"`,
-#'   `"write"`, `"admin"` or `"none"`.
-#' @param private (boolean, optional) Whether the project should be private.
+#' @param permission (string, optional) The new team or organisation permissions for the
+#'   project, either `"read"`, `"write"`, `"admin"` or `"none"`. Note: applies to team and
+#'   organization projects only.
+#' @param private (boolean, optional) Whether the project should be private. Note: applies to
+#'   team and organization projects only.
 #' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
+#' @param team (string or integer, optional) The team ID or name.
 #' @param org (string, optional) The name of the organization.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -150,6 +156,10 @@ create_project <- function(
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
+#' - **private**: Whether the project is private (organization and team projects only).
+#' - **org_permissions**: The default permission for organization members (organization and
+#'   team projects only).
+#' - **team_permissions**: The default permission for team members (team projects only).
 #' - **creator**: The user who created the project.
 #' - **created_at**: When it was created.
 #' - **updated_at**: When it was last updated.
@@ -176,6 +186,19 @@ create_project <- function(
 #'     permission = "read",
 #'     private    = TRUE,
 #'     org        = "HairyCoos")
+#'
+#'   # Add a team to the project
+#'   update_project(
+#'     project = "Org project",
+#'     team    = "HeadCoos",
+#'     org     = "HairyCoos")
+#'
+#'   # Update the team's permissions on the project
+#'   update_project(
+#'     project    = "Org project",
+#'     permission = "write",
+#'     team       = "HeadCoos",
+#'     org        = "HairyCoos")
 #' }
 #'
 #' @export
@@ -189,64 +212,123 @@ update_project <- function(
   private,
   repo,
   user,
+  team,
   org,
   ...)
 {
-  payload <- list()
-
-  if (!missing(name))
-  {
-    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
-    payload$name <- name
-  }
-
-  if (!missing(body))
-  {
-    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
-    payload$body <- body
-  }
-
-  if (!missing(state))
-  {
-    assert(
-      is_scalar_character(state) && state %in% str_subset(values$project$state, "all", negate = TRUE),
-      "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
-    payload$state <- state
-  }
-
-  if (!missing(permission))
-  {
-    assert(
-      is_scalar_character(permission) && permission %in% values$project$permission,
-      "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
-    payload$organization_permission <- permission
-  }
-
-  if (!missing(private))
-  {
-    assert(is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
-    payload$private <- private
-  }
-
   project <- view_project(
     project = project,
     repo    = repo,
     user    = user,
     org     = org)
 
-  info("Updating project '", project$name, "'")
-  project_lst <- gh_url("projects", project$id) %>%
-    gh_request(
-      type    = "PATCH",
-      payload = payload,
-      accept  = "application/vnd.github.inertia-preview+json",
-      ...)
+  payload <- NULL
 
-  info("Transforming results", level = 4)
-  project_gh <- select_properties(project_lst, properties$project)
+  if (!missing(team))
+  {
+    if (!missing(permission))
+    {
+      assert(
+        is_scalar_character(permission) && permission %in% values$project$permission,
+        "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
+      payload$permission <- permission
+    }
 
-  info("Done", level = 7)
-  project_gh
+    team_id <- team
+    if (is_scalar_character(team))
+    {
+      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      team_id <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("id")
+    }
+    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+
+    info("Adding project '", project$name, "' to team '", team, "'")
+    result <- gh_url("teams", team_id, "projects", project$id) %>%
+      gh_request(
+        type    = "PUT",
+        payload = payload,
+        accept  = "application/vnd.github.inertia-preview+json",
+        ...)
+
+    project_gh <- view_project(
+      project = project$name,
+      team    = team,
+      org     = org)
+
+    info("Done", level = 7)
+    structure(
+      project_gh,
+      url     = attr(result, "url"),
+      request = attr(result, "request"),
+      status  = attr(result, "status"),
+      header  = attr(result, "header"))
+  }
+  else
+  {
+    if (!missing(permission))
+    {
+      assert(
+        is_scalar_character(permission) && permission %in% values$project$permission,
+        "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
+      payload$organization_permission <- permission
+    }
+
+    if (!missing(name))
+    {
+      assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+      payload$name <- name
+    }
+
+    if (!missing(body))
+    {
+      assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+      payload$body <- body
+    }
+
+    if (!missing(state))
+    {
+      assert(
+        is_scalar_character(state) && state %in% str_subset(values$project$state, "all", negate = TRUE),
+        "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
+      payload$state <- state
+    }
+
+    if (!missing(private))
+    {
+      assert(is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
+      payload$private <- private
+    }
+
+    info("Updating project '", project$name, "'")
+    project_lst <- gh_url("projects", project$id) %>%
+      gh_request(
+        type    = "PATCH",
+        payload = payload,
+        accept  = "application/vnd.github.inertia-preview+json",
+        ...)
+
+    info("Transforming results", level = 4)
+    project_gh <- select_properties(project_lst, properties$project)
+
+    if (!missing(org))
+    {
+      project_gh <- project_gh %>%
+        append(
+          after = which(names(project_gh) == "state"),
+          list(private = project_lst$private, org_permission = project_lst$organization_permission))
+    }
+
+    info("Done", level = 7)
+    structure(
+      project_gh,
+      class   = class(project_lst),
+      url     = attr(project_lst, "url"),
+      request = attr(project_lst, "request"),
+      status  = attr(project_lst, "status"),
+      header  = attr(project_lst, "header"))
+  }
 }
 
 

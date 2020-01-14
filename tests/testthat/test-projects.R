@@ -1,6 +1,18 @@
 context("projects api")
 
 
+setup(try(silent = TRUE, {
+  test_team <- create_team(
+    name        = "TestProjectsTeam",
+    description = "This was created to test team projects",
+    org         = "HairyCoos")
+}))
+
+teardown(try(silent = TRUE, {
+  delete_team("TestProjectsTeam", org = "HairyCoos")
+}))
+
+
 # TEST: create_project ------------------------------------------------------------------------
 
 test_that("create_projects creates a project and returns its properties", {
@@ -111,8 +123,6 @@ test_that("update_project updates a project and returns a list of the new proper
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -134,8 +144,6 @@ test_that("update_project updates a project and returns a list of the new proper
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -153,20 +161,69 @@ test_that("update_project updates a project and returns a list of the new proper
   expect_identical(attr(org_project, "status"), 200L)
   expect_identical(
     map_chr(org_project, ~ class(.)[[1]]),
-    c(id         = "integer",
-      number     = "integer",
-      name       = "character",
-      body       = "character",
-      state      = "character",
-      permission = "character",
-      private    = "logical",
-      creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+    c(id             = "integer",
+      number         = "integer",
+      name           = "character",
+      body           = "character",
+      state          = "character",
+      private        = "logical",
+      org_permission = "character",
+      creator        = "character",
+      created_at     = "POSIXct",
+      updated_at     = "POSIXct",
+      html_url       = "character"))
 
-  expect_identical(org_project$permission, "read")
+  expect_identical(org_project$org_permission, "read")
   expect_identical(org_project$private, FALSE)
+
+  team_project <- update_project(
+    project = "Organization project",
+    team    = "TestProjectsTeam",
+    org     = "HairyCoos")
+
+  expect_is(team_project, "list")
+  expect_identical(attr(team_project, "status"), 204L)
+  expect_identical(
+    map_chr(team_project, ~ class(.)[[1]]),
+    c(id              = "integer",
+      number          = "integer",
+      name            = "character",
+      body            = "character",
+      state           = "character",
+      private         = "logical",
+      org_permission  = "character",
+      team_permission = "character",
+      creator         = "character",
+      created_at      = "POSIXct",
+      updated_at      = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(team_project$team_permission, "write")
+
+  upd_team_project <- update_project(
+    project    = "Organization project",
+    team       = "TestProjectsTeam",
+    org        = "HairyCoos",
+    permission = "read")
+
+  expect_is(upd_team_project, "list")
+  expect_identical(attr(upd_team_project, "status"), 204L)
+  expect_identical(
+    map_chr(upd_team_project, ~ class(.)[[1]]),
+    c(id              = "integer",
+      number          = "integer",
+      name            = "character",
+      body            = "character",
+      state           = "character",
+      private         = "logical",
+      org_permission  = "character",
+      team_permission = "character",
+      creator         = "character",
+      created_at      = "POSIXct",
+      updated_at      = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(upd_team_project$team_permission, "read")
 
 })
 
