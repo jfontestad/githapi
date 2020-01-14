@@ -496,6 +496,15 @@ test_that("delete_project deletes the projects and returns TRUE", {
   expect_identical(attr(user_project, "status"), 204L)
   expect_identical(as.logical(user_project), TRUE)
 
+  team_project <- delete_project(
+    project = "Organization project",
+    team    = "TestProjectsTeam",
+    org     = "HairyCoos")
+
+  expect_is(team_project, "logical")
+  expect_identical(attr(team_project, "status"), 204L)
+  expect_identical(as.logical(team_project), TRUE)
+
   org_project <- delete_project("Organization project", org = "HairyCoos")
 
   expect_is(org_project, "logical")

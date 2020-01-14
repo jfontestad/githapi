@@ -650,15 +650,19 @@ browse_project <- function(
 #' This function deletes a project in GitHub. Care should be taken as it will not be
 #' recoverable. If you just want to close the project use [update_project()].
 #'
-#' You can delete a project associated with either a repository, user or organization, by
-#' supplying them as an input, as long as you have appropriate permissions.
+#' You can delete a project associated with either a repository, user, team or organization,
+#' by supplying them as an input, as long as you have appropriate permissions. Deleting a
+#' team project just removes the team's access. If you want to delete it completely you
+#' have to delete the organization's project.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/#delete-a-project>
+#' - <https://developer.github.com/v3/teams/#remove-team-project>
 #'
 #' @param project (integer or string) Either the project number or name.
 #' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
+#' @param team (string or integer, optional) The team ID or name.
 #' @param org (string, optional) The name of the organization.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -676,6 +680,12 @@ browse_project <- function(
 #'     project = "User project",
 #'     user    = "ChadGoymer")
 #'
+#'   # Remove a team's access to the organization's project
+#'   delete_project(
+#'     project = "User project",
+#'     team    = "HeadCoos",
+#'     org     = "HairyCoos")
+#'
 #'   # Delete a project for an organization
 #'   delete_project(
 #'     project = "User project",
@@ -688,6 +698,7 @@ delete_project <- function(
   project,
   repo,
   user,
+  team,
   org,
   ...)
 {
@@ -695,14 +706,35 @@ delete_project <- function(
     project = project,
     repo    = repo,
     user    = user,
+    team    = team,
     org     = org)
 
-  info("Deleting project '", project$name, "'")
-  result <- gh_url("projects", project$id) %>%
-    gh_request(
-      type   = "DELETE",
-      accept = "application/vnd.github.inertia-preview+json",
-      ...)
+  if (missing(team))
+  {
+    info("Deleting project '", project$name, "'")
+    url <- gh_url("projects", project$id)
+  }
+  else
+  {
+    team_id <- team
+    if (is_scalar_character(team))
+    {
+      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      team_id <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("id")
+    }
+    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+
+    info("Removing project '", project$name, "' from team '", team, "'")
+    url <- gh_url("teams", team_id, "projects", project$id)
+  }
+
+  result <- gh_request(
+    url    = url,
+    type   = "DELETE",
+    accept = "application/vnd.github.inertia-preview+json",
+    ...)
 
   info("Done", level = 7)
   structure(

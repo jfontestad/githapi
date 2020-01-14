@@ -4,7 +4,7 @@
 \alias{delete_project}
 \title{Delete a GitHub project}
 \usage{
-delete_project(project, repo, user, org, ...)
+delete_project(project, repo, user, team, org, ...)
 }
 \arguments{
 \item{project}{(integer or string) Either the project number or name.}
@@ -12,6 +12,8 @@ delete_project(project, repo, user, org, ...)
 \item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
 
 \item{user}{(string, optional) The login of the user.}
+
+\item{team}{(string or integer, optional) The team ID or name.}
 
 \item{org}{(string, optional) The name of the organization.}
 
@@ -25,12 +27,15 @@ This function deletes a project in GitHub. Care should be taken as it will not b
 recoverable. If you just want to close the project use \code{\link[=update_project]{update_project()}}.
 }
 \details{
-You can delete a project associated with either a repository, user or organization, by
-supplying them as an input, as long as you have appropriate permissions.
+You can delete a project associated with either a repository, user, team or organization,
+by supplying them as an input, as long as you have appropriate permissions. Deleting a
+team project just removes the team's access. If you want to delete it completely you
+have to delete the organization's project.
 
 For more details see the GitHub API documentation:
 \itemize{
 \item \url{https://developer.github.com/v3/projects/#delete-a-project}
+\item \url{https://developer.github.com/v3/teams/#remove-team-project}
 }
 }
 \examples{
@@ -44,6 +49,12 @@ For more details see the GitHub API documentation:
   delete_project(
     project = "User project",
     user    = "ChadGoymer")
+
+  # Remove a team's access to the organization's project
+  delete_project(
+    project = "User project",
+    team    = "HeadCoos",
+    org     = "HairyCoos")
 
   # Delete a project for an organization
   delete_project(
