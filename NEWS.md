@@ -1,3 +1,13 @@
+# githapi 0.9.10
+
+Update the following functions:
+- `create_project()`: Only include organization properties if organization project is created
+- `update_project()`: Add or update team permissions on an organization project
+- `view_projects()`: View the projects a team has access to
+- `view_project()`: View a project a team has access to
+- `browse_project()`: Browse a project a team has access to
+- `delete_project()`: Remove a team from an organization project
+
 # githapi 0.9.9
 
 Added the following functions:
