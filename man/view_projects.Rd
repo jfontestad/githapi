@@ -6,16 +6,18 @@
 \alias{browse_project}
 \title{View GitHub projects}
 \usage{
-view_projects(repo, user, org, state = "open", n_max = 1000, ...)
+view_projects(repo, user, team, org, state = "open", n_max = 1000, ...)
 
-view_project(project, repo, user, org, ...)
+view_project(project, repo, user, team, org, ...)
 
-browse_project(project, repo, user, org, ...)
+browse_project(project, repo, user, team, org, ...)
 }
 \arguments{
 \item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
 
 \item{user}{(string, optional) The login of the user.}
+
+\item{team}{(string or integer, optional) The team ID or name.}
 
 \item{org}{(string, optional) The name of the organization.}
 
@@ -40,6 +42,10 @@ browser on the project's page and returns the URL invisibly.
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
+\item \strong{private}: Whether the project is private (organization and team projects only).
+\item \strong{org_permissions}: The default permission for organization members (organization and
+team projects only).
+\item \strong{team_permissions}: The default permission for team members (team projects only).
 \item \strong{creator}: The user who created the project.
 \item \strong{created_at}: When it was created.
 \item \strong{updated_at}: When it was last updated.
@@ -52,7 +58,7 @@ for each project. \code{view_project()} returns a list of all properties for a s
 \code{browse_project()} opens the web page for the project in the default browser.
 }
 \details{
-You can summarise all the projects associated with either a repository, user or
+You can summarise all the projects associated with either a repository, user, team or
 organization, by supplying them as an input.
 
 For more details see the GitHub API documentation:
@@ -60,6 +66,7 @@ For more details see the GitHub API documentation:
 \item \url{https://developer.github.com/v3/projects/#list-repository-projects}
 \item \url{https://developer.github.com/v3/projects/#list-user-projects}
 \item \url{https://developer.github.com/v3/projects/#list-organization-projects}
+\item \url{https://developer.github.com/v3/teams/#review-a-team-project}
 \item \url{https://developer.github.com/v3/projects/#get-a-project}
 }
 }
@@ -73,6 +80,9 @@ For more details see the GitHub API documentation:
 
   # View an organization's projects
   view_projects(org = "HairyCoos")
+
+  # View a team's projects
+  view_projects(team = "HeadCoos", org = "HairyCoos")
 
   # View closed projects
   view_projects("ChadGoymer/githapi", state = "closed")
@@ -89,6 +99,9 @@ For more details see the GitHub API documentation:
   # View a specific organization project
   view_project("Prioritisation", org = "HairyCoos")
 
+  # View a specific team project
+  view_project("Prioritisation", team = "HeadCoos", org = "HairyCoos")
+
   # Browse a specific repository project
   browse_project("Prioritisation", "ChadGoymer/githapi")
 
@@ -97,6 +110,9 @@ For more details see the GitHub API documentation:
 
   # Browse a specific organization project
   browse_project("Prioritisation", org = "HairyCoos")
+
+  # Browse a specific team project
+  browse_project("Prioritisation", team = "HeadCoos", org = "HairyCoos")
 }
 
 }

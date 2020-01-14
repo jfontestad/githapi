@@ -340,18 +340,20 @@ update_project <- function(
 #' for each project. `view_project()` returns a list of all properties for a single project.
 #' `browse_project()` opens the web page for the project in the default browser.
 #'
-#' You can summarise all the projects associated with either a repository, user or
+#' You can summarise all the projects associated with either a repository, user, team or
 #' organization, by supplying them as an input.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/projects/#list-repository-projects>
 #' - <https://developer.github.com/v3/projects/#list-user-projects>
 #' - <https://developer.github.com/v3/projects/#list-organization-projects>
+#' - <https://developer.github.com/v3/teams/#review-a-team-project>
 #' - <https://developer.github.com/v3/projects/#get-a-project>
 #'
 #' @param project (integer or string) The number or name of the project.
 #' @param repo (string, optional) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
+#' @param team (string or integer, optional) The team ID or name.
 #' @param org (string, optional) The name of the organization.
 #' @param state (string, optional) Indicates the state of the projects to return. Can be
 #'   either "open", "closed", or "all". Default: `"open"`.
@@ -369,6 +371,10 @@ update_project <- function(
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
+#' - **private**: Whether the project is private (organization and team projects only).
+#' - **org_permissions**: The default permission for organization members (organization and
+#'   team projects only).
+#' - **team_permissions**: The default permission for team members (team projects only).
 #' - **creator**: The user who created the project.
 #' - **created_at**: When it was created.
 #' - **updated_at**: When it was last updated.
@@ -385,6 +391,9 @@ update_project <- function(
 #'   # View an organization's projects
 #'   view_projects(org = "HairyCoos")
 #'
+#'   # View a team's projects
+#'   view_projects(team = "HeadCoos", org = "HairyCoos")
+#'
 #'   # View closed projects
 #'   view_projects("ChadGoymer/githapi", state = "closed")
 #'
@@ -400,6 +409,9 @@ update_project <- function(
 #'   # View a specific organization project
 #'   view_project("Prioritisation", org = "HairyCoos")
 #'
+#'   # View a specific team project
+#'   view_project("Prioritisation", team = "HeadCoos", org = "HairyCoos")
+#'
 #'   # Browse a specific repository project
 #'   browse_project("Prioritisation", "ChadGoymer/githapi")
 #'
@@ -408,6 +420,9 @@ update_project <- function(
 #'
 #'   # Browse a specific organization project
 #'   browse_project("Prioritisation", org = "HairyCoos")
+#'
+#'   # Browse a specific team project
+#'   browse_project("Prioritisation", team = "HeadCoos", org = "HairyCoos")
 #' }
 #'
 #' @export
@@ -415,6 +430,7 @@ update_project <- function(
 view_projects <- function(
   repo,
   user,
+  team,
   org,
   state = "open",
   n_max = 1000,
@@ -436,6 +452,21 @@ view_projects <- function(
     info("Viewing projects for user '", user, "'")
     url <- gh_url("users", user, "projects", state = state)
   }
+  else if (!missing(team))
+  {
+    team_id <- team
+    if (is_scalar_character(team))
+    {
+      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      team_id <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("id")
+    }
+    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+
+    info("Viewing projects for team '", team, "'")
+    url <- gh_url("teams", team_id, "projects", state = state)
+  }
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
@@ -455,6 +486,21 @@ view_projects <- function(
 
   info("Transforming results", level = 4)
   projects_gh <- bind_properties(projects_lst, properties$project)
+
+  if (!missing(team))
+  {
+    team_permission <- map_chr(projects_lst, ~ names(.$permissions)[max(which(as.logical(.$permissions)))])
+    projects_gh <- add_column(projects_gh, team_permission = team_permission, .after = "state")
+  }
+
+  if (!missing(org))
+  {
+    org_permission <- map_chr(projects_lst, pluck, "organization_permission")
+    private <- map_lgl(projects_lst, pluck, "private")
+    projects_gh <- projects_gh %>%
+      add_column(org_permission = org_permission, .after = "state") %>%
+      add_column(private = private, .after = "state")
+  }
 
   info("Done", level = 7)
   projects_gh

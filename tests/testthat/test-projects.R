@@ -243,8 +243,6 @@ test_that("view_projects returns a tibble summarising the projects", {
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -263,8 +261,6 @@ test_that("view_projects returns a tibble summarising the projects", {
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -278,19 +274,40 @@ test_that("view_projects returns a tibble summarising the projects", {
   expect_identical(attr(org_projects, "status"), 200L)
   expect_identical(
     map_chr(org_projects, ~ class(.)[[1]]),
-    c(id         = "integer",
-      number     = "integer",
-      name       = "character",
-      body       = "character",
-      state      = "character",
-      permission = "character",
-      private    = "logical",
-      creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+    c(id             = "integer",
+      number         = "integer",
+      name           = "character",
+      body           = "character",
+      state          = "character",
+      private        = "logical",
+      org_permission = "character",
+      creator        = "character",
+      created_at     = "POSIXct",
+      updated_at     = "POSIXct",
+      html_url       = "character"))
 
   expect_true("Organization project" %in% org_projects$name)
+
+  team_projects <- view_projects(team = "TestProjectsTeam", org = "HairyCoos")
+
+  expect_is(team_projects, "tbl")
+  expect_identical(attr(team_projects, "status"), 200L)
+  expect_identical(
+    map_chr(team_projects, ~ class(.)[[1]]),
+    c(id              = "integer",
+      number          = "integer",
+      name            = "character",
+      body            = "character",
+      state           = "character",
+      private         = "logical",
+      org_permission  = "character",
+      team_permission = "character",
+      creator         = "character",
+      created_at      = "POSIXct",
+      updated_at      = "POSIXct",
+      html_url        = "character"))
+
+  expect_true("Organization project" %in% team_projects$name)
 
 })
 
