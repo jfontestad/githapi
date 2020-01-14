@@ -13,8 +13,6 @@ properties <- list(
     name                                     = c("name",                                     as = "character"),
     body                                     = c("body",                                     as = "character"),
     state                                    = c("state",                                    as = "character"),
-    permission                               = c("organization_permission",                  as = "character"),
-    private                                  = c("private",                                  as = "logical"),
     creator                                  = c("creator", "login",                         as = "character"),
     created_at                               = c("created_at",                               as = "datetime"),
     updated_at                               = c("updated_at",                               as = "datetime"),
