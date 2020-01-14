@@ -335,8 +335,6 @@ test_that("view_project returns a list of project properties", {
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -355,8 +353,6 @@ test_that("view_project returns a list of project properties", {
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -370,20 +366,44 @@ test_that("view_project returns a list of project properties", {
   expect_identical(attr(org_project, "status"), 200L)
   expect_identical(
     map_chr(org_project, ~ class(.)[[1]]),
-    c(id         = "integer",
-      number     = "integer",
-      name       = "character",
-      body       = "character",
-      state      = "character",
-      permission = "character",
-      private    = "logical",
-      creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+    c(id             = "integer",
+      number         = "integer",
+      name           = "character",
+      body           = "character",
+      state          = "character",
+      private        = "logical",
+      org_permission = "character",
+      creator        = "character",
+      created_at     = "POSIXct",
+      updated_at     = "POSIXct",
+      html_url       = "character"))
 
-  expect_identical(org_project$permission, "read")
+  expect_identical(org_project$org_permission, "read")
   expect_identical(org_project$private, FALSE)
+
+  team_project <- view_project(
+    project = "Organization project",
+    team    = "TestProjectsTeam",
+    org     = "HairyCoos")
+
+  expect_is(team_project, "list")
+  expect_identical(attr(team_project, "status"), 200L)
+  expect_identical(
+    map_chr(team_project, ~ class(.)[[1]]),
+    c(id              = "integer",
+      number          = "integer",
+      name            = "character",
+      body            = "character",
+      state           = "character",
+      private         = "logical",
+      org_permission  = "character",
+      team_permission = "character",
+      creator         = "character",
+      created_at      = "POSIXct",
+      updated_at      = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(team_project$team_permission, "read")
 
 })
 
@@ -402,8 +422,6 @@ test_that("view_project can accept a project number", {
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",

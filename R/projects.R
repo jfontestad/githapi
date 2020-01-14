@@ -516,6 +516,7 @@ view_project <- function(
   project,
   repo,
   user,
+  team,
   org,
   ...)
 {
@@ -544,6 +545,21 @@ view_project <- function(
     info("Viewing project '", project, "' for user '", user, "'")
     url <- gh_url("users", user, "projects", state = "all")
   }
+  else if (!missing(team))
+  {
+    team_id <- team
+    if (is_scalar_character(team))
+    {
+      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      team_id <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("id")
+    }
+    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+
+    info("Viewing project '", project, "' for team '", team, "'")
+    url <- gh_url("teams", team_id, "projects", state = "all")
+  }
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
@@ -565,8 +581,30 @@ view_project <- function(
   info("Transforming results", level = 4)
   project_gh <- select_properties(project_lst, properties$project)
 
+  if (!missing(team))
+  {
+    project_gh <- project_gh %>%
+      append(
+        after = which(names(project_gh) == "state"),
+        list(team_permission = names(project_lst$permissions)[max(which(as.logical(project_lst$permissions)))]))
+  }
+
+  if (!missing(org))
+  {
+    project_gh <- project_gh %>%
+      append(
+        after = which(names(project_gh) == "state"),
+        list(private = project_lst$private, org_permission = project_lst$organization_permission))
+  }
+
   info("Done", level = 7)
-  project_gh
+  structure(
+    project_gh,
+    class   = class(project_lst),
+    url     = attr(project_lst, "url"),
+    request = attr(project_lst, "request"),
+    status  = attr(project_lst, "status"),
+    header  = attr(project_lst, "header"))
 }
 
 
