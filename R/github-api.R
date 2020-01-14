@@ -523,7 +523,7 @@ gh_find <- function(
       str_remove("<")
   }
 
-  error("Could not find an entity with the specified value, '", value, "', for the specified property '", property, "'")
+  error("Could not find an entity with '", property, "' equal to '", value, "'")
 
 }
 
