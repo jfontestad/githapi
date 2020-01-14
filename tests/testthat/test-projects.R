@@ -19,8 +19,6 @@ test_that("create_projects creates a project and returns its properties", {
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -41,8 +39,6 @@ test_that("create_projects creates a project and returns its properties", {
       name       = "character",
       body       = "character",
       state      = "character",
-      permission = "character",
-      private    = "logical",
       creator    = "character",
       created_at = "POSIXct",
       updated_at = "POSIXct",
@@ -59,17 +55,17 @@ test_that("create_projects creates a project and returns its properties", {
   expect_identical(attr(org_project, "status"), 201L)
   expect_identical(
     map_chr(org_project, ~ class(.)[[1]]),
-    c(id         = "integer",
-      number     = "integer",
-      name       = "character",
-      body       = "character",
-      state      = "character",
-      permission = "character",
-      private    = "logical",
-      creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+    c(id             = "integer",
+      number         = "integer",
+      name           = "character",
+      body           = "character",
+      state          = "character",
+      private        = "logical",
+      org_permission = "character",
+      creator        = "character",
+      created_at     = "POSIXct",
+      updated_at     = "POSIXct",
+      html_url       = "character"))
 
   expect_identical(org_project$name, "Organization project")
 

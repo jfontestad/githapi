@@ -29,6 +29,9 @@
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
+#' - **private**: Whether the project is private (organisation project only).
+#' - **org_permission**: The default permission for the project - either "read", "write" or
+#'   "admin" (organisation project only).
 #' - **creator**: The user who created the project.
 #' - **created_at**: When it was created.
 #' - **updated_at**: When it was last updated.
@@ -49,8 +52,8 @@
 #'
 #'   # Create a project for an organization
 #'   create_project(
-#'     name = "Repo project",
-#'     body = "This is a repository's project",
+#'     name = "Organization project",
+#'     body = "This is an organization's project",
 #'     org  = "HairyCoos")
 #' }
 #'
@@ -94,8 +97,22 @@ create_project <- function(
   info("Transforming results", level = 4)
   project_gh <- select_properties(project_lst, properties$project)
 
+  if (!missing(org))
+  {
+    project_gh <- project_gh %>%
+      append(
+        after = which(names(project_gh) == "state"),
+        list(private = project_lst$private, org_permission = project_lst$organization_permission))
+  }
+
   info("Done", level = 7)
-  project_gh
+  structure(
+    project_gh,
+    class   = class(project_lst),
+    url     = attr(project_lst, "url"),
+    request = attr(project_lst, "request"),
+    status  = attr(project_lst, "status"),
+    header  = attr(project_lst, "header"))
 }
 
 

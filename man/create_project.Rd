@@ -27,6 +27,9 @@ create_project(name, body, repo, org, ...)
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
+\item \strong{private}: Whether the project is private (organisation project only).
+\item \strong{org_permission}: The default permission for the project - either "read", "write" or
+"admin" (organisation project only).
 \item \strong{creator}: The user who created the project.
 \item \strong{created_at}: When it was created.
 \item \strong{updated_at}: When it was last updated.
@@ -64,8 +67,8 @@ For more details see the GitHub API documentation:
 
   # Create a project for an organization
   create_project(
-    name = "Repo project",
-    body = "This is a repository's project",
+    name = "Organization project",
+    body = "This is an organization's project",
     org  = "HairyCoos")
 }
 
