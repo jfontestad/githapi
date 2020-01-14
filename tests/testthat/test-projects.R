@@ -468,6 +468,15 @@ test_that("browse_project opens the project in the browser", {
   expect_identical(attr(org_project, "status"), 200L)
   expect_identical(dirname(org_project), "https://github.com/orgs/HairyCoos/projects")
 
+  team_project <- browse_project(
+    project = "Organization project",
+    team    = "TestProjectsTeam",
+    org     = "HairyCoos")
+
+  expect_is(team_project, "character")
+  expect_identical(attr(team_project, "status"), 200L)
+  expect_identical(dirname(team_project), "https://github.com/orgs/HairyCoos/projects")
+
 })
 
 

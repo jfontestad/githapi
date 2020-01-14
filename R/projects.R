@@ -617,6 +617,7 @@ browse_project <- function(
   project,
   repo,
   user,
+  team,
   org,
   ...)
 {
@@ -624,6 +625,7 @@ browse_project <- function(
     project = project,
     repo    = repo,
     user    = user,
+    team    = team,
     org     = org,
     ...)
 
