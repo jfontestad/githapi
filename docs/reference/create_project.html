@@ -70,7 +70,7 @@ to add columns and cards separately." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.10</span>
       </span>
     </div>
 
@@ -155,6 +155,9 @@ to add columns and cards separately.</p>
 <li><p><strong>name</strong>: The name given to the project.</p></li>
 <li><p><strong>body</strong>: The description given to the project.</p></li>
 <li><p><strong>state</strong>: Whether the project is "open" or "closed".</p></li>
+<li><p><strong>private</strong>: Whether the project is private (organisation project only).</p></li>
+<li><p><strong>org_permission</strong>: The default permission for the project - either "read", "write" or
+"admin" (organisation project only).</p></li>
 <li><p><strong>creator</strong>: The user who created the project.</p></li>
 <li><p><strong>created_at</strong>: When it was created.</p></li>
 <li><p><strong>updated_at</strong>: When it was last updated.</p></li>
@@ -188,8 +191,8 @@ or organization is specified the project is created for the authenticated user.<
 
   <span class='co'># Create a project for an organization</span>
   <span class='fu'>create_project</span>(
-    <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Repo project"</span>,
-    <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is a repository's project"</span>,
+    <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Organization project"</span>,
+    <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is an organization's project"</span>,
     <span class='kw'>org</span>  <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 }</div></pre>
   </div>

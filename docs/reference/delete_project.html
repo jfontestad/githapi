@@ -70,7 +70,7 @@ recoverable. If you just want to close the project use update_project()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.10</span>
       </span>
     </div>
 
@@ -119,7 +119,7 @@ recoverable. If you just want to close the project use update_project()." />
 recoverable. If you just want to close the project use <code><a href='update_project.html'>update_project()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_project</span>(<span class='no'>project</span>, <span class='no'>repo</span>, <span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_project</span>(<span class='no'>project</span>, <span class='no'>repo</span>, <span class='no'>user</span>, <span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,6 +137,10 @@ recoverable. If you just want to close the project use <code><a href='update_pro
       <td><p>(string, optional) The login of the user.</p></td>
     </tr>
     <tr>
+      <th>team</th>
+      <td><p>(string or integer, optional) The team ID or name.</p></td>
+    </tr>
+    <tr>
       <th>org</th>
       <td><p>(string, optional) The name of the organization.</p></td>
     </tr>
@@ -151,10 +155,13 @@ recoverable. If you just want to close the project use <code><a href='update_pro
     <p><code>delete_project()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can delete a project associated with either a repository, user or organization, by
-supplying them as an input, as long as you have appropriate permissions.</p>
+    <p>You can delete a project associated with either a repository, user, team or organization,
+by supplying them as an input, as long as you have appropriate permissions. Deleting a
+team project just removes the team's access. If you want to delete it completely you
+have to delete the organization's project.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/projects/#delete-a-project'>https://developer.github.com/v3/projects/#delete-a-project</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#remove-team-project'>https://developer.github.com/v3/teams/#remove-team-project</a></p></li>
 </ul>
 
 
@@ -169,6 +176,12 @@ supplying them as an input, as long as you have appropriate permissions.</p>
   <span class='fu'>delete_project</span>(
     <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"User project"</span>,
     <span class='kw'>user</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+
+  <span class='co'># Remove a team's access to the organization's project</span>
+  <span class='fu'>delete_project</span>(
+    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"User project"</span>,
+    <span class='kw'>team</span>    <span class='kw'>=</span> <span class='st'>"HeadCoos"</span>,
+    <span class='kw'>org</span>     <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Delete a project for an organization</span>
   <span class='fu'>delete_project</span>(

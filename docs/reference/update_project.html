@@ -37,7 +37,7 @@
 
 <meta property="og:title" content="Update a GitHub project — update_project" />
 <meta property="og:description" content="This function updates a project in GitHub. It can be used to change the name and body, but
-can also be used to close the project or change permissions." />
+can also be used to close the project, change permissions or add a team." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +70,7 @@ can also be used to close the project or change permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.10</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@ can also be used to close the project or change permissions." />
 
     <div class="ref-description">
     <p>This function updates a project in GitHub. It can be used to change the name and body, but
-can also be used to close the project or change permissions.</p>
+can also be used to close the project, change permissions or add a team.</p>
     </div>
 
     <pre class="usage"><span class='fu'>update_project</span>(
@@ -128,6 +128,7 @@ can also be used to close the project or change permissions.</p>
   <span class='no'>private</span>,
   <span class='no'>repo</span>,
   <span class='no'>user</span>,
+  <span class='no'>team</span>,
   <span class='no'>org</span>,
   <span class='no'>...</span>
 )</pre>
@@ -153,12 +154,14 @@ can also be used to close the project or change permissions.</p>
     </tr>
     <tr>
       <th>permission</th>
-      <td><p>(string, optional) The new permissions for the project, either <code>"read"</code>,
-<code>"write"</code>, <code>"admin"</code> or <code>"none"</code>.</p></td>
+      <td><p>(string, optional) The new team or organisation permissions for the
+project, either <code>"read"</code>, <code>"write"</code>, <code>"admin"</code> or <code>"none"</code>. Note: applies to team and
+organization projects only.</p></td>
     </tr>
     <tr>
       <th>private</th>
-      <td><p>(boolean, optional) Whether the project should be private.</p></td>
+      <td><p>(boolean, optional) Whether the project should be private. Note: applies to
+team and organization projects only.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -167,6 +170,10 @@ can also be used to close the project or change permissions.</p>
     <tr>
       <th>user</th>
       <td><p>(string, optional) The login of the user.</p></td>
+    </tr>
+    <tr>
+      <th>team</th>
+      <td><p>(string or integer, optional) The team ID or name.</p></td>
     </tr>
     <tr>
       <th>org</th>
@@ -187,6 +194,10 @@ can also be used to close the project or change permissions.</p>
 <li><p><strong>name</strong>: The name given to the project.</p></li>
 <li><p><strong>body</strong>: The description given to the project.</p></li>
 <li><p><strong>state</strong>: Whether the project is "open" or "closed".</p></li>
+<li><p><strong>private</strong>: Whether the project is private (organization and team projects only).</p></li>
+<li><p><strong>org_permissions</strong>: The default permission for organization members (organization and
+team projects only).</p></li>
+<li><p><strong>team_permissions</strong>: The default permission for team members (team projects only).</p></li>
 <li><p><strong>creator</strong>: The user who created the project.</p></li>
 <li><p><strong>created_at</strong>: When it was created.</p></li>
 <li><p><strong>updated_at</strong>: When it was last updated.</p></li>
@@ -195,10 +206,13 @@ can also be used to close the project or change permissions.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can update a project associated with either a repository, user or organization, by
-supplying them as an input, as long as you have appropriate permissions.</p>
+    <p>You can update a project associated with either a repository, user, team or organization,
+by supplying them as an input, as long as you have appropriate permissions. Supplying a
+team that does not already have access to the project adds them. If they have access, then
+the team's permissions can be changed with the <code>permission</code> argument.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/projects/#update-a-project'>https://developer.github.com/v3/projects/#update-a-project</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#add-or-update-team-project'>https://developer.github.com/v3/teams/#add-or-update-team-project</a></p></li>
 </ul>
 
 
@@ -222,6 +236,19 @@ supplying them as an input, as long as you have appropriate permissions.</p>
     <span class='kw'>name</span>       <span class='kw'>=</span> <span class='st'>"Org project"</span>,
     <span class='kw'>permission</span> <span class='kw'>=</span> <span class='st'>"read"</span>,
     <span class='kw'>private</span>    <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>org</span>        <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># Add a team to the project</span>
+  <span class='fu'>update_project</span>(
+    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Org project"</span>,
+    <span class='kw'>team</span>    <span class='kw'>=</span> <span class='st'>"HeadCoos"</span>,
+    <span class='kw'>org</span>     <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># Update the team's permissions on the project</span>
+  <span class='fu'>update_project</span>(
+    <span class='kw'>project</span>    <span class='kw'>=</span> <span class='st'>"Org project"</span>,
+    <span class='kw'>permission</span> <span class='kw'>=</span> <span class='st'>"write"</span>,
+    <span class='kw'>team</span>       <span class='kw'>=</span> <span class='st'>"HeadCoos"</span>,
     <span class='kw'>org</span>        <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 }</div></pre>
   </div>
