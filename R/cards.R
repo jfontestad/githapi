@@ -370,7 +370,6 @@ move_card <- function(
 #'     user    = "ChadGoymer")
 #'
 #'   # View cards in an organization's project
-#'   view_card(
 #'   cards <- view_cards(
 #'     column  = "Test cards",
 #'     project = "Test cards",

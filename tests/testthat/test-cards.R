@@ -1,34 +1,38 @@
 context("cards api")
 
 
-setup(suppressMessages({
+# SETUP ---------------------------------------------------------------------------------------
+
+now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+
+setup(suppressMessages(try(silent = TRUE, {
 
   test_project <- create_project(
-    name = "Test cards",
+    name = paste("Test cards", now),
     body = "A project to test card functions",
     repo = "ChadGoymer/test-githapi")
 
   test_column <- create_column(
-    name    = "Test cards",
-    project = "Test cards",
+    name    = paste("Test cards", now),
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 
-}))
+})))
 
-teardown(suppressMessages(tryCatch({
+teardown(suppressMessages(try(silent = TRUE, {
 
   delete_column(
-    column  = "Test cards",
-    project = "Test cards",
+    column  = paste("Test cards", now),
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 
   delete_column(
-    column  = "Test cards 2",
-    project = "Test cards",
+    column  = paste("Test cards 2", now),
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 
   delete_project(
-    project = "Test cards",
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 
 })))
@@ -41,8 +45,8 @@ test_that("create_cards creates a card and returns its properties", {
   issue_card <- create_card(
     content_id   = 1,
     content_type = "Issue",
-    column       = "Test cards",
-    project      = "Test cards",
+    column       = paste("Test cards", now),
+    project      = paste("Test cards", now),
     repo         = "ChadGoymer/test-githapi")
 
   expect_is(issue_card, "list")
@@ -62,8 +66,8 @@ test_that("create_cards creates a card and returns its properties", {
   pull_card <- create_card(
     content_id   = 2,
     content_type = "PullRequest",
-    column       = "Test cards",
-    project      = "Test cards",
+    column       = paste("Test cards", now),
+    project      = paste("Test cards", now),
     repo         = "ChadGoymer/test-githapi")
 
   expect_is(pull_card, "list")
@@ -82,8 +86,8 @@ test_that("create_cards creates a card and returns its properties", {
 
   note_card <- create_card(
     note    = "Note Title\nThis is a note",
-    column  = "Test cards",
-    project = "Test cards",
+    column  = paste("Test cards", now),
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 
   expect_is(note_card, "list")
@@ -106,8 +110,8 @@ test_that("create_card throws an error in invalid arguments are supplied", {
 
   expect_error(
     create_card(
-      column  = "Test cards",
-      project = "Test cards",
+      column  = paste("Test cards", now),
+      project = paste("Test cards", now),
       repo    = "ChadGoymer/test-githapi"),
     "Either 'content_id' or 'note' must be supplied")
 
@@ -118,8 +122,8 @@ test_that("create_card throws an error in invalid arguments are supplied", {
 
 suppressMessages({
   cards <- view_cards(
-    column  = "Test cards",
-    project = "Test cards",
+    column  = paste("Test cards", now),
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 })
 
@@ -231,15 +235,15 @@ test_that("move_card changes the position of a card", {
 test_that("move_card changes the column a card is in", {
 
   column2 <- create_column(
-    name    = "Test cards 2",
-    project = "Test cards",
+    name    = paste("Test cards 2", now),
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 
   column_card <- move_card(
     card     = issue_card_id,
     position = "top",
-    column   = "Test cards 2",
-    project  = "Test cards",
+    column   = paste("Test cards 2", now),
+    project  = paste("Test cards", now),
     repo     = "ChadGoymer/test-githapi")
 
   expect_is(column_card, "list")
@@ -270,8 +274,8 @@ test_that("move_card throws an error in invalid arguments are supplied", {
 test_that("view_cards returns a tibble summarising the cards", {
 
   cards <- view_cards(
-    column  = "Test cards",
-    project = "Test cards",
+    column  = paste("Test cards", now),
+    project = paste("Test cards", now),
     repo    = "ChadGoymer/test-githapi")
 
   expect_is(cards, "tbl")

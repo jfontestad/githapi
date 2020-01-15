@@ -278,7 +278,7 @@ test_that("gh_find throws an error if it cannot find the specified property valu
       url      = "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs/heads",
       property = "ref",
       value    = "refs/heads/bob"),
-    "Could not find an entity with the specified value, 'refs/heads/bob', for the specified property 'ref'")
+    "Could not find an entity with 'ref' equal to 'refs/heads/bob'")
 
 })
 

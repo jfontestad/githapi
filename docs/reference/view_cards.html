@@ -71,7 +71,7 @@ for a single card." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.10</span>
       </span>
     </div>
 
@@ -187,7 +187,28 @@ or organization, by supplying them as an input.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='co'># View cards in a repository project</span>
+  <span class='no'>cards</span> <span class='kw'>&lt;-</span> <span class='fu'>view_cards</span>(
+    <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
+    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+
+  <span class='co'># View cards in a user's project</span>
+  <span class='no'>cards</span> <span class='kw'>&lt;-</span> <span class='fu'>view_cards</span>(
+    <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
+    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
+    <span class='kw'>user</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+
+  <span class='co'># View cards in an organization's project</span>
+  <span class='no'>cards</span> <span class='kw'>&lt;-</span> <span class='fu'>view_cards</span>(
+    <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
+    <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
+    <span class='kw'>org</span>     <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># View a single card</span>
+  <span class='fu'>view_card</span>(<span class='kw'>card</span> <span class='kw'>=</span> <span class='fl'>123456</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
