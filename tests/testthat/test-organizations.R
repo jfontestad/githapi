@@ -1,4 +1,4 @@
-context("organizations api")
+context("organizations")
 
 
 # TEST: view_organizations --------------------------------------------------------------------
