@@ -1,4 +1,4 @@
-# LIST: properties ----------------------------------------------------------------------------
+  # LIST: properties ----------------------------------------------------------------------------
 #
 # The properties to show for all GitHub entities
 #
@@ -87,10 +87,10 @@ properties <- list(
     members_can_create_repositories          = c("members_can_create_repositories",          as = "logical")),
 
   memberships = list(
-    organization                             = c("organization", "login",                    as = "character"),
     user                                     = c("user", "login",                            as = "character"),
-    state                                    = c("state",                                    as = "character"),
-    role                                     = c("role",                                     as = "character")),
+    organization                             = c("organization", "login",                    as = "character"),
+    role                                     = c("role",                                     as = "character"),
+    state                                    = c("state",                                    as = "character")),
 
   teams = list(
     id                                       = c("id",                                       as = "integer"),
