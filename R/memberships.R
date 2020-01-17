@@ -1,6 +1,123 @@
+#  FUNCTION: update_membership ----------------------------------------------------------------
+#
+#' Update membership of an organization or team
+#'
+#' This function can be used to invite a user into an organization or team, or update their
+#' role within the organization or team.
+#'
+#' Note: you can only invite or update a user if the authenticate user is an organization
+#' "owner" or a team "maintainer".
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/orgs/members/#add-or-update-organization-membership>
+#' - <https://developer.github.com/v3/teams/members/#add-or-update-team-membership>
+#'
+#' @param user (string) The login of the user.
+#' @param org (string) The login of the organization.
+#' @param team (integer or string, optional) The ID or name of the team.
+#' @param role (string, optional) The role to give the user. For an organization this is
+#'   either `"member"` or `"admin"`, for a team it is either `"member"` or `"maintainer"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `view_memberships()` returns a tibble of membership properties. `view_membership()`
+#'   returns a list of membership properties for a single organization or team.
+#'
+#' **Membership Properties:**
+#'
+#' - **user**: The user login.
+#' - **organization**: The organization login.
+#' - **team**: The team name (team membership only).
+#' - **role**: The role of the user - for organizations it is either `"member"` or `"admin"`,
+#'   for teams it is either `"member"` or `"maintainer"`.
+#' - **state**: The state of the membership - either `"active"` or `"pending"`.
+#'
+#' @examples
+#' \dontrun{
+#'   # Invite a new user into an organization
+#'   update_membership("ChadGoymer2", "HairyCoos")
+#'
+#'   # Update a user's role in an organization
+#'   update_membership("ChadGoymer2", "HairyCoos", role = "admin")
+#'
+#'   # Invite a new user into a team
+#'   update_membership("ChadGoymer2", "HairyCoos", "HeadCoos")
+#'
+#'   # Update a user's role in a team
+#'   update_membership("ChadGoymer2", "HairyCoos", "HeadCoos", role = "maintainer")
+#' }
+#'
+#' @export
+#'
+update_membership <- function(
+  user,
+  org,
+  team,
+  role,
+  ...)
+{
+  assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+  payload <- NULL
+
+  if (missing(team))
+  {
+    if (!missing(role))
+    {
+      assert(
+        is_scalar_character(role) && role %in% values$membership$org_role,
+        "organization 'role' must be either '", paste(values$membership$org_role, collapse = "', '"), "':\n  ", role)
+      payload <- list(role = role)
+    }
+
+    info("Updating membership for '", user, "' in organization '", org, "'")
+    membership_lst <- gh_url("orgs", org, "memberships", user) %>%
+      gh_request("PUT", payload = payload, ...)
+
+    info("Transforming results", level = 4)
+    membership_gh <- select_properties(membership_lst, properties$memberships)
+  }
+  else
+  {
+    if (!missing(role))
+    {
+      assert(
+        is_scalar_character(role) && role %in% values$membership$team_role,
+        "organization 'role' must be either '", paste(values$membership$team_role, collapse = "', '"), "':\n  ", role)
+      payload <- list(role = role)
+    }
+
+    if (is_scalar_character(team))
+    {
+      team_id <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("id")
+    }
+    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+
+    info("Updating membership for '", user, "' in team '", team, "'")
+    membership_lst <- gh_url("teams", team_id, "memberships", user) %>%
+      gh_request("PUT", payload = payload, ...)
+
+    info("Transforming results", level = 4)
+    membership_gh <- select_properties(membership_lst, properties$memberships) %>%
+      utils::modifyList(list(user = user, organization = org)) %>%
+      append(list(team = team), after = which(names(.) == "organization")) %>%
+      structure(
+        class   = class(membership_lst),
+        url     = attr(membership_lst, "url"),
+        request = attr(membership_lst, "request"),
+        status  = attr(membership_lst, "status"),
+        header  = attr(membership_lst, "header"))
+  }
+
+  info("Done", level = 7)
+  membership_gh
+}
+
 #  FUNCTION: view_memberships -----------------------------------------------------------------
 #
-#' View membership of organizations or teams in GitHub
+#' View membership of organizations or teams
 #'
 #' `view_memberships()` summarises the authenticate user's membership in organizations in
 #' a table with the properties as columns and a row for each organization. `view_membership()`
@@ -90,12 +207,11 @@ view_membership <- function(
   team,
   ...)
 {
+  assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
   assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
   if (missing(team))
   {
-    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
-
     info("Viewing membership for '", user, "' in organization '", org, "'")
     membership_lst <- gh_url("orgs", org, "memberships", user) %>% gh_request("GET", ...)
 

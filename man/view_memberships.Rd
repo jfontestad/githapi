@@ -3,7 +3,7 @@
 \name{view_memberships}
 \alias{view_memberships}
 \alias{view_membership}
-\title{View membership of organizations or teams in GitHub}
+\title{View membership of organizations or teams}
 \usage{
 view_memberships(state, n_max = 1000, ...)
 

@@ -1,6 +1,82 @@
 context("memberships")
 
 
+# TEST: update_membership ---------------------------------------------------------------------
+
+test_that("update_membership returns a list of membership properties", {
+
+  org_membership <- update_membership("ChadGoymer2", "HairyCoos")
+
+  expect_is(org_membership, "list")
+  expect_identical(attr(org_membership, "status"), 200L)
+  expect_identical(
+    map_chr(org_membership, ~ class(.)[[1]]),
+    c(user         = "character",
+      organization = "character",
+      role         = "character",
+      state        = "character"))
+
+  expect_identical(org_membership$user, "ChadGoymer2")
+  expect_identical(org_membership$organization, "HairyCoos")
+  expect_identical(org_membership$role, "member")
+  expect_identical(org_membership$state, "pending")
+
+  org_role_membership <- update_membership("ChadGoymer2", "HairyCoos", role = "admin")
+
+  expect_is(org_role_membership, "list")
+  expect_identical(attr(org_role_membership, "status"), 200L)
+  expect_identical(
+    map_chr(org_role_membership, ~ class(.)[[1]]),
+    c(user         = "character",
+      organization = "character",
+      role         = "character",
+      state        = "character"))
+
+  expect_identical(org_role_membership$user, "ChadGoymer2")
+  expect_identical(org_role_membership$organization, "HairyCoos")
+  expect_identical(org_role_membership$role, "admin")
+  expect_identical(org_role_membership$state, "pending")
+
+
+  team_membership <- update_membership("ChadGoymer2", "HairyCoos", "HeadCoos")
+
+  expect_is(team_membership, "list")
+  expect_identical(attr(team_membership, "status"), 200L)
+  expect_identical(
+    map_chr(team_membership, ~ class(.)[[1]]),
+    c(user         = "character",
+      organization = "character",
+      team         = "character",
+      role         = "character",
+      state        = "character"))
+
+  expect_identical(team_membership$user, "ChadGoymer2")
+  expect_identical(team_membership$organization, "HairyCoos")
+  expect_identical(team_membership$team, "HeadCoos")
+  expect_identical(team_membership$role, "member")
+  expect_identical(team_membership$state, "pending")
+
+  team_role_membership <- update_membership("ChadGoymer2", "HairyCoos", "HeadCoos", role = "maintainer")
+
+  expect_is(team_role_membership, "list")
+  expect_identical(attr(team_role_membership, "status"), 200L)
+  expect_identical(
+    map_chr(team_role_membership, ~ class(.)[[1]]),
+    c(user         = "character",
+      organization = "character",
+      team         = "character",
+      role         = "character",
+      state        = "character"))
+
+  expect_identical(team_role_membership$user, "ChadGoymer2")
+  expect_identical(team_role_membership$organization, "HairyCoos")
+  expect_identical(team_role_membership$team, "HeadCoos")
+  expect_identical(team_role_membership$role, "maintainer")
+  expect_identical(team_role_membership$state, "pending")
+
+})
+
+
 # TEST: view_memberships ----------------------------------------------------------------------
 
 test_that("view_memberships returns a tibble summarising the user's memberships", {
@@ -59,7 +135,7 @@ test_that("view_memberships returns a tibble summarising the user's memberships"
 
 test_that("view_membership returns a list of membership properties", {
 
-  user_membership <- view_membership("ChadGoymer", "HairyCoos")
+  user_membership <- view_membership("ChadGoymer2", "HairyCoos")
 
   expect_is(user_membership, "list")
   expect_identical(attr(user_membership, "status"), 200L)
@@ -70,12 +146,12 @@ test_that("view_membership returns a list of membership properties", {
       role         = "character",
       state        = "character"))
 
-  expect_identical(user_membership$user, "ChadGoymer")
+  expect_identical(user_membership$user, "ChadGoymer2")
   expect_identical(user_membership$organization, "HairyCoos")
   expect_identical(user_membership$role, "admin")
-  expect_identical(user_membership$state, "active")
+  expect_identical(user_membership$state, "pending")
 
-  team_membership <- view_membership("ChadGoymer", "HairyCoos", "HeadCoos")
+  team_membership <- view_membership("ChadGoymer2", "HairyCoos", "HeadCoos")
 
   expect_is(team_membership, "list")
   expect_identical(attr(team_membership, "status"), 200L)
@@ -87,10 +163,10 @@ test_that("view_membership returns a list of membership properties", {
       role         = "character",
       state        = "character"))
 
-  expect_identical(team_membership$user, "ChadGoymer")
+  expect_identical(team_membership$user, "ChadGoymer2")
   expect_identical(team_membership$organization, "HairyCoos")
   expect_identical(team_membership$team, "HeadCoos")
   expect_identical(team_membership$role, "maintainer")
-  expect_identical(team_membership$state, "active")
+  expect_identical(team_membership$state, "pending")
 
 })

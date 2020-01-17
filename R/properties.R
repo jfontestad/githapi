@@ -147,10 +147,12 @@ values <- list(
   organization = list(
     default_repository_permission = c("read", "write", "admin", "none")),
 
-  membership = list(
-    state                         = c("active", "pending")),
-
   team = list(
-    privacy                         = c("secret", "closed"))
+    privacy                       = c("secret", "closed")),
+
+  membership = list(
+    state                         = c("active", "pending"),
+    org_role                      = c("member", "admin"),
+    team_role                     = c("member", "maintainer"))
 
 )
