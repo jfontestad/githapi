@@ -170,3 +170,22 @@ test_that("view_membership returns a list of membership properties", {
   expect_identical(team_membership$state, "pending")
 
 })
+
+
+# TEST: delete_membership ---------------------------------------------------------------------
+
+test_that("delete_membership removes users from an organization or team", {
+
+  team_membership <- delete_membership("ChadGoymer2", "HairyCoos", "HeadCoos")
+
+  expect_is(team_membership, "logical")
+  expect_identical(attr(team_membership, "status"), 204L)
+  expect_identical(as.logical(team_membership), TRUE)
+
+  org_membership <- delete_membership("ChadGoymer2", "HairyCoos")
+
+  expect_is(org_membership, "logical")
+  expect_identical(attr(org_membership, "status"), 204L)
+  expect_identical(as.logical(org_membership), TRUE)
+
+})

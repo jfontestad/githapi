@@ -246,3 +246,75 @@ view_membership <- function(
   info("Done", level = 7)
   membership_gh
 }
+
+
+#  FUNCTION: delete_membership ----------------------------------------------------------------
+#
+#' Remove a member from an organization or team.
+#'
+#' This function removes a user from an organization or team. Removing someone from a team
+#' does not remove them from the organization, whereas removing them from an organization
+#' also removes them from any teams within the organization.
+#'
+#' Note: you can only remove a user if the authenticate user is an organization "owner" or a
+#' team "maintainer".
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/orgs/members/#remove-organization-membership>
+#' - <https://developer.github.com/v3/teams/members/#remove-team-membership>
+#'
+#' @param user (string) The login of the user.
+#' @param org (string) The login of the organization.
+#' @param team (integer or string, optional) The ID or name of the team.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_membership()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   # Remove a user from an organization
+#'   delete_membership("HeadCoos", "HairyCoos")
+#'
+#'   # Remove a user from a team
+#'   delete_membership("HeadCoos", "HairyCoos", "HeadCoos")
+#' }
+#'
+#' @export
+#'
+delete_membership <- function(
+  user,
+  org,
+  team,
+  ...)
+{
+  assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+  if (missing(team))
+  {
+    info("Deleting membership for '", user, "' in organization '", org, "'")
+    response <- gh_url("orgs", org, "memberships", user) %>% gh_request("DELETE", ...)
+  }
+  else
+  {
+    if (is_scalar_character(team))
+    {
+      team_id <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("id")
+    }
+    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+
+    info("Deleting membership for '", user, "' in team '", team, "'")
+    response <- gh_url("teams", team_id, "memberships", user) %>% gh_request("DELETE", ...)
+  }
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
