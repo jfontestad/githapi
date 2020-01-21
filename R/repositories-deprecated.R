@@ -796,6 +796,8 @@ is_collaborator <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_character(user))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -848,6 +850,8 @@ gh_collaborators <- function(
   api         = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_collaborators", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -894,6 +898,8 @@ gh_permissions <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_collaborator", package = "githapi")
+
   assert(is_scalar_character(user))
   assert(is_repo(repo))
   assert(is_sha(token))

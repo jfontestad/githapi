@@ -65,9 +65,6 @@ reference:
     - '`gh_repository`'
     - '`is_repository`'
     - '`gh_repositories`'
-    - '`is_collaborator`'
-    - '`gh_collaborators`'
-    - '`gh_permissions`'
     - '`gh_commit_comment`'
     - '`gh_commit_comments`'
     - '`gh_contributers`'
@@ -198,5 +195,8 @@ reference:
     - '`gh_user`'
     - '`gh_users`'
     - '`gh_user_email`'
+    - '`is_collaborator`'
+    - '`gh_collaborators`'
+    - '`gh_permissions`'
 news:
 - one_page: false
