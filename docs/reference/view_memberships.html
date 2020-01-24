@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View membership of organizations in GitHub — view_memberships • githapi</title>
+<title>View membership of organizations or teams — view_memberships • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="View membership of organizations in GitHub — view_memberships" />
-<meta property="og:description" content="view_memberships() summarises the membership of organizations in a table with the
-properties as columns and a row for each organization. view_membership() returns a list
-of all membership properties for a single organization." />
+<meta property="og:title" content="View membership of organizations or teams — view_memberships" />
+<meta property="og:description" content="view_memberships() summarises the authenticate user's membership in organizations in
+a table with the properties as columns and a row for each organization. view_membership()
+returns a list of all membership properties for a user in a single organization or team." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +71,7 @@ of all membership properties for a single organization." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.11</span>
       </span>
     </div>
 
@@ -110,20 +110,20 @@ of all membership properties for a single organization." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View membership of organizations in GitHub</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/organizations.R'><code>R/organizations.R</code></a></small>
+    <h1>View membership of organizations or teams</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/memberships.R'><code>R/memberships.R</code></a></small>
     <div class="hidden name"><code>view_memberships.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>view_memberships()</code> summarises the membership of organizations in a table with the
-properties as columns and a row for each organization. <code>view_membership()</code> returns a list
-of all membership properties for a single organization.</p>
+    <p><code>view_memberships()</code> summarises the authenticate user's membership in organizations in
+a table with the properties as columns and a row for each organization. <code>view_membership()</code>
+returns a list of all membership properties for a user in a single organization or team.</p>
     </div>
 
     <pre class="usage"><span class='fu'>view_memberships</span>(<span class='no'>state</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
 
-<span class='fu'>view_membership</span>(<span class='no'>org</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>view_membership</span>(<span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>team</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,35 +143,40 @@ the authenticated user.</p></td>
       <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
     </tr>
     <tr>
+      <th>user</th>
+      <td><p>(string) The login of the user.</p></td>
+    </tr>
+    <tr>
       <th>org</th>
       <td><p>(string) The login of the organization.</p></td>
     </tr>
     <tr>
-      <th>user</th>
-      <td><p>(string, optional) The login of the user. If <code>NULL</code> the authenticated user is
-used.</p></td>
+      <th>team</th>
+      <td><p>(integer or string, optional) The ID or name of the team.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>view_memberships()</code> returns a tibble of membership properties. <code>view_membership()</code>
-returns a list of membership properties for a single organization.</p>
+returns a list of membership properties for a single organization or team.</p>
 <p><strong>Membership Properties:</strong></p><ul>
-<li><p><strong>organization</strong>: The organization login.</p></li>
 <li><p><strong>user</strong>: The user login.</p></li>
+<li><p><strong>organization</strong>: The organization login.</p></li>
+<li><p><strong>team</strong>: The team name (team membership only).</p></li>
+<li><p><strong>role</strong>: The role of the user - for organizations it is either <code>"member"</code> or <code>"admin"</code>,
+for teams it is either <code>"member"</code> or <code>"maintainer"</code>.</p></li>
 <li><p><strong>state</strong>: The state of the membership - either <code>"active"</code> or <code>"pending"</code>.</p></li>
-<li><p><strong>role</strong>: The role of the user in the organization - either <code>"admin"</code> or <code>"member"</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the organizations a user is a member of by specifying the user login,
-or the authenticated user if it is set to <code>NULL</code>.</p>
+    <p>Note: you can only view another user's membership in an organization or team if the
+authenticate user is also a member.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/orgs/members/#list-your-organization-memberships'>https://developer.github.com/v3/orgs/members/#list-your-organization-memberships</a></p></li>
 <li><p><a href='https://developer.github.com/v3/orgs/members/#get-organization-membership'>https://developer.github.com/v3/orgs/members/#get-organization-membership</a></p></li>
-<li><p><a href='https://developer.github.com/v3/orgs/members/#get-your-organization-membership'>https://developer.github.com/v3/orgs/members/#get-your-organization-membership</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/members/#get-team-membership'>https://developer.github.com/v3/teams/members/#get-team-membership</a></p></li>
 </ul>
 
 
@@ -184,10 +189,10 @@ or the authenticated user if it is set to <code>NULL</code>.</p>
   <span class='fu'>view_memberships</span>(<span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"active"</span>)
 
   <span class='co'># View the membership of a user in an organization</span>
-  <span class='fu'>view_membership</span>(<span class='st'>"HairyCoos"</span>, <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_membership</span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>)
 
-  <span class='co'># View the membership of the authenticated user in an organization</span>
-  <span class='fu'>view_membership</span>(<span class='st'>"HairyCoos"</span>)
+  <span class='co'># View the membership of a user in a team</span>
+  <span class='fu'>view_membership</span>(<span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>, <span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"HeadCoos"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

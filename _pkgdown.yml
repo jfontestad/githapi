@@ -14,18 +14,20 @@ navbar:
     - icon: fa-github fa-lg
       href: http://github.com/ChadGoymer/githapi
 reference:
-- title: Organizations, Teams and Users
-  desc: Functions for creating, updating, viewing and deleting organizations, teams and users.
+- title: Users, Organizations and Teams
+  desc: Functions for creating, updating, viewing and deleting users, organizations and teams.
   contents:
     - '`update_user`'
     - '`view_users`'
     - '`update_organization`'
     - '`view_organizations`'
-    - '`view_memberships`'
     - '`create_team`'
     - '`update_team`'
     - '`view_teams`'
     - '`delete_team`'
+    - '`update_membership`'
+    - '`view_memberships`'
+    - '`delete_membership`'
 - title: Projects
   desc: Functions for creating, updating, viewing and deleting projects.
   contents:

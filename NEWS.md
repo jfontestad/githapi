@@ -1,3 +1,10 @@
+# githapi 0.9.11
+
+- Added `update_membership()`
+- Added `view_memberships()`
+- Added `view_membership()`
+- Added `delete_membership()`
+
 # githapi 0.9.10
 
 Updated the following functions:
