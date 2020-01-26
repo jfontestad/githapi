@@ -278,3 +278,92 @@ view_collaborator <- function(
   info("Done", level = 7)
   collaborators_gh
 }
+
+
+#  FUNCTION: delete_collaborator --------------------------------------------------------------
+#
+#' Remove a collaborator from a repository, project or organization.
+#'
+#' This function removes a collaborator from a repository, project or organization. Removing
+#' someone from a repository or project does not remove them from the organization, whereas
+#' removing them from an organization also removes them from any repositories and projects
+#' within the organization.
+#'
+#' Note: you can only remove a user if the authenticate user is an organization "owner" or a
+#' team "maintainer".
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/collaborators/#remove-user-as-a-collaborator>
+#' - <https://developer.github.com/v3/projects/collaborators/#remove-user-as-a-collaborator>
+#' - <https://developer.github.com/v3/orgs/outside_collaborators/#remove-outside-collaborator>
+#'
+#' @param user (string) The login of the user.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param project (integer or string, optional) Either the project number or name.
+#' @param org (string, optional) The name of the organization. Only required for projects.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_collaborator()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   # Remove a collaborator from a repository
+#'   delete_collaborator("ChadGoymer", repo = "ChadGoymer/test-githapi")
+#'
+#'   # Remove a collaborator from a project
+#'   delete_collaborator(
+#'     user    = "ChadGoymer",
+#'     project = "Test project",
+#'     org     = "HairyCoos")
+#'
+#'   # Remove a collaborator from an organization
+#'   delete_collaborator("ChadGoymer", org = "HairyCoos")
+#' }
+#'
+#' @export
+#'
+delete_collaborator <- function(
+  user,
+  repo,
+  project,
+  org,
+  ...)
+{
+  assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    info("Deleting collaborator '", user, "' from repository '", repo, "'")
+    response <- gh_url("repos", repo, "collaborators", user) %>%
+      gh_request("DELETE", ...)
+  }
+  else if (!missing(project))
+  {
+    project <- view_project(project = project, org = org)
+
+    info("Deleting collaborator '", user, "' from project '", project$name, "'")
+    response <- gh_url("projects", project$id, "collaborators", user) %>%
+      gh_request("DELETE", accept  = "application/vnd.github.inertia-preview+json", ...)
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    info("Deleting collaborator '", user, "' from organization '", org, "'")
+    response <- gh_url("orgs", org, "outside_collaborators", user) %>%
+      gh_request("DELETE", ...)
+  }
+  else
+  {
+    error("A 'repo', 'project' or 'org' must be specified when deleting collaborators")
+  }
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}

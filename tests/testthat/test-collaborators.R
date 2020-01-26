@@ -183,3 +183,39 @@ test_that("view_collaborator throws an error in invalid arguments are supplied",
     "A 'repo' or 'project' must be specified when viewing a collaborator")
 
 })
+
+
+# TEST: delete_collaborator -------------------------------------------------------------------
+
+test_that("delete_collaborator removes a collaborator from a repo, project or organization", {
+
+  repo_collaborator <- delete_collaborator("ChadGoymer2", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_collaborator, "logical")
+  expect_identical(attr(repo_collaborator, "status"), 204L)
+  expect_identical(as.logical(repo_collaborator), TRUE)
+
+  project_collaborator <- delete_collaborator(
+    user    = "ChadGoymer2",
+    project = paste("Test collaborators", now),
+    org     = "HairyCoos")
+
+  expect_is(project_collaborator, "logical")
+  expect_identical(attr(project_collaborator, "status"), 204L)
+  expect_identical(as.logical(project_collaborator), TRUE)
+
+  org_collaborator <- delete_collaborator("ChadGoymer2", org = "HairyCoos")
+
+  expect_is(org_collaborator, "logical")
+  expect_identical(attr(org_collaborator, "status"), 204L)
+  expect_identical(as.logical(org_collaborator), TRUE)
+
+})
+
+test_that("delete_collaborator throws an error in invalid arguments are supplied", {
+
+  expect_error(
+    delete_collaborator(user = "ChadGoymer2"),
+    "A 'repo', 'project' or 'org' must be specified when deleting collaborators")
+
+})
