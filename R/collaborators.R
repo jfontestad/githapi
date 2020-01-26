@@ -229,3 +229,52 @@ view_collaborators <- function(
   info("Done", level = 7)
   collaborators_gh
 }
+
+
+#  FUNCTION: view_collaborator -------------------------------------------------------------
+#
+#' @rdname view_collaborators
+#' @export
+#'
+view_collaborator <- function(
+  user,
+  repo,
+  project,
+  org,
+  ...)
+{
+  assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    info("Viewing collaborator '", user, "' for repository '", repo, "'")
+    collaborators_lst <- gh_url("repos", repo, "collaborators", user, "permission") %>%
+      gh_request("GET", ...)
+  }
+  else if (!missing(project))
+  {
+    project <- view_project(project = project, org = org)
+
+    info("Viewing collaborator '", user, "' for project '", project$name, "'")
+    collaborators_lst <- gh_url("projects", project$id, "collaborators", user, "permission") %>%
+      gh_request("GET", accept = "application/vnd.github.inertia-preview+json", ...)
+  }
+  else
+  {
+    error("A 'repo' or 'project' must be specified when viewing a collaborator")
+  }
+
+  info("Transforming results", level = 4)
+  collaborators_gh <- select_properties(collaborators_lst$user, properties$users) %>%
+    append(list(permission = collaborators_lst$permission)) %>%
+    structure(
+      class   = class(collaborators_lst),
+      url     = attr(collaborators_lst, "url"),
+      request = attr(collaborators_lst, "request"),
+      status  = attr(collaborators_lst, "status"),
+      header  = attr(collaborators_lst, "header"))
+
+  info("Done", level = 7)
+  collaborators_gh
+}

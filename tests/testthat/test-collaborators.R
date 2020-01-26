@@ -135,3 +135,51 @@ test_that("view_collaborators throws an error in invalid arguments are supplied"
     "A 'repo', 'project' or 'org' must be specified when viewing collaborators")
 
 })
+
+
+# TEST: view_collaborator ---------------------------------------------------------------------
+
+test_that("view_collaborator returns a list of a collaborator's properties", {
+
+  repo_collaborator <- view_collaborator("ChadGoymer2", repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_collaborator, "list")
+  expect_identical(attr(repo_collaborator, "status"), 200L)
+  expect_identical(
+    map_chr(repo_collaborator, ~ class(.)[[1]]),
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character",
+      permission = "character"))
+
+  expect_identical(repo_collaborator$login, "ChadGoymer2")
+  expect_identical(repo_collaborator$permission, "read")
+
+  project_collaborator <- view_collaborator(
+    user    = "ChadGoymer2",
+    project = paste("Test collaborators", now),
+    org     = "HairyCoos")
+
+  expect_is(project_collaborator, "list")
+  expect_identical(attr(project_collaborator, "status"), 200L)
+  expect_identical(
+    map_chr(project_collaborator, ~ class(.)[[1]]),
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character",
+      permission = "character"))
+
+  expect_identical(project_collaborator$login, "ChadGoymer2")
+  expect_identical(project_collaborator$permission, "admin")
+
+})
+
+test_that("view_collaborator throws an error in invalid arguments are supplied", {
+
+  expect_error(
+    view_collaborator(user = "ChadGoymer2"),
+    "A 'repo' or 'project' must be specified when viewing a collaborator")
+
+})
