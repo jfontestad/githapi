@@ -19,8 +19,7 @@ either \code{"member"} or \code{"admin"}, for a team it is either \code{"member"
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{view_memberships()} returns a tibble of membership properties. \code{view_membership()}
-returns a list of membership properties for a single organization or team.
+\code{update_memberships()} returns a list of membership properties
 
 \strong{Membership Properties:}
 \itemize{

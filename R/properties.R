@@ -153,6 +153,11 @@ values <- list(
   membership = list(
     state                         = c("active", "pending"),
     org_role                      = c("member", "admin"),
-    team_role                     = c("member", "maintainer"))
+    team_role                     = c("member", "maintainer")),
+
+  collaborators = list(
+    repo_permission               = c("pull", "push", "admin"),
+    project_permission            = c("read", "write", "admin"),
+    affiliation                   = c("outside", "direct", "all"))
 
 )
