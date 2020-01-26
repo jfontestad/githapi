@@ -28,6 +28,9 @@ reference:
     - '`update_membership`'
     - '`view_memberships`'
     - '`delete_membership`'
+    - '`update_collaborator`'
+    - '`view_collaborators`'
+    - '`delete_collaborator`'
 - title: Projects
   desc: Functions for creating, updating, viewing and deleting projects.
   contents:
