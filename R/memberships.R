@@ -19,8 +19,7 @@
 #'   either `"member"` or `"admin"`, for a team it is either `"member"` or `"maintainer"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `view_memberships()` returns a tibble of membership properties. `view_membership()`
-#'   returns a list of membership properties for a single organization or team.
+#' @return `update_memberships()` returns a list of membership properties
 #'
 #' **Membership Properties:**
 #'
@@ -114,6 +113,7 @@ update_membership <- function(
   info("Done", level = 7)
   membership_gh
 }
+
 
 #  FUNCTION: view_memberships -----------------------------------------------------------------
 #

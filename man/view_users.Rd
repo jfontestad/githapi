@@ -42,7 +42,6 @@ browser on the user's page and returns the URL invisibly.
 \item \strong{location}: The location of the user (only available in \code{view_user()}).
 \item \strong{hireable}: Whether the user currently hireable (only available in \code{view_user()}).
 \item \strong{bio}: The biography of the user (only available in \code{view_user()}).
-\item \strong{type}: The type of account.
 \item \strong{site_admin}: Whether the user is an administrator.
 \item \strong{html_url}: The GitHub page for the user.
 }

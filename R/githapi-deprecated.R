@@ -59,6 +59,9 @@
 #' - [gh_teams()]: replace with [view_teams()]
 #' - [is_member()]: is being removed
 #' - [is_manager()]: is being removed
+#' - [is_collaborator()]: is being removed
+#' - [gh_collaborators()]: replace with [view_collaborators()]
+#' - [gh_permissions()]: replace with [view_collaborator()]
 #'
 NULL
 

@@ -268,13 +268,13 @@ test_that("gh_download saves the contents of a commit to the specified location"
 
 #  FUNCTION: is_collaborator ------------------------------------------------------------------
 test_that("is_collaborator return TRUE if the user is a collaborator, FALSE otherwise", {
-  expect_true(is_collaborator("ChadGoymer", "ChadGoymer/githapi"))
-  expect_false(is_collaborator("Batman", "ChadGoymer/githapi"))
+  expect_true(suppressWarnings(is_collaborator("ChadGoymer", "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_collaborator("Batman", "ChadGoymer/githapi")))
 })
 
 #  FUNCTION: gh_collaborators -----------------------------------------------------------------
 test_that("gh_collaborators returns a tibble describing the collaborators", {
-  collaborators <- gh_collaborators("ChadGoymer/githapi")
+  collaborators <- suppressWarnings(gh_collaborators("ChadGoymer/githapi"))
   expect_is(collaborators, "tbl")
 
   expect_identical(
@@ -293,7 +293,8 @@ test_that("gh_collaborators returns a tibble describing the collaborators", {
 
 #  FUNCTION: gh_permissions -------------------------------------------------------------------
 test_that("gh_permissions returns a list describing the user's permissions", {
-  permissions <- gh_permissions("ChadGoymer", "ChadGoymer/githapi")
+  permissions <- suppressWarnings(gh_permissions("ChadGoymer", "ChadGoymer/githapi"))
+
   expect_is(permissions, "list")
   expect_named(permissions, c("permission", "user"))
   expect_identical(permissions$permission, "admin")

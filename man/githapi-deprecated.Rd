@@ -70,6 +70,9 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_teams]{gh_teams()}}: replace with \code{\link[=view_teams]{view_teams()}}
 \item \code{\link[=is_member]{is_member()}}: is being removed
 \item \code{\link[=is_manager]{is_manager()}}: is being removed
+\item \code{\link[=is_collaborator]{is_collaborator()}}: is being removed
+\item \code{\link[=gh_collaborators]{gh_collaborators()}}: replace with \code{\link[=view_collaborators]{view_collaborators()}}
+\item \code{\link[=gh_permissions]{gh_permissions()}}: replace with \code{\link[=view_collaborator]{view_collaborator()}}
 }
 }
 

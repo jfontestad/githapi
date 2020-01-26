@@ -1,3 +1,10 @@
+# githapi 0.9.12
+
+- Added `update_collaborator()`
+- Added `view_collaborators()`
+- Added `view_collaborator()`
+- Added `delete_collaborator()`
+
 # githapi 0.9.11
 
 - Added `update_membership()`

@@ -39,7 +39,6 @@
 #' - **location**: The location of the user (only available in `view_user()`).
 #' - **hireable**: Whether the user currently hireable (only available in `view_user()`).
 #' - **bio**: The biography of the user (only available in `view_user()`).
-#' - **type**: The type of account.
 #' - **site_admin**: Whether the user is an administrator.
 #' - **html_url**: The GitHub page for the user.
 #'
