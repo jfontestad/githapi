@@ -72,3 +72,66 @@ test_that("update_collaborator throws an error in invalid arguments are supplied
     "A 'repo' or 'project' must be specified when creating a collaborator")
 
 })
+
+
+# TEST: view_collaborators --------------------------------------------------------------------
+
+test_that("view_collaborators returns a tibble summarising the collaborators", {
+
+  repo_collaborators <- view_collaborators(repo = "ChadGoymer/test-githapi")
+
+  expect_is(repo_collaborators, "tbl")
+  expect_identical(attr(repo_collaborators, "status"), 200L)
+  expect_identical(
+    map_chr(repo_collaborators, ~ class(.)[[1]]),
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
+
+  expect_true("ChadGoymer" %in% repo_collaborators$login)
+
+  project_collaborators <- view_collaborators(project = paste("Test collaborators", now), org = "HairyCoos")
+
+  expect_is(project_collaborators, "tbl")
+  expect_identical(attr(project_collaborators, "status"), 200L)
+  expect_identical(
+    map_chr(project_collaborators, ~ class(.)[[1]]),
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
+
+  expect_true("ChadGoymer" %in% project_collaborators$login)
+
+  org_collaborators <- view_collaborators(org = "HairyCoos")
+
+  expect_is(org_collaborators, "tbl")
+  expect_identical(attr(org_collaborators, "status"), 200L)
+  expect_identical(
+    map_chr(org_collaborators, ~ class(.)[[1]]),
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
+
+  direct_collaborators <- view_collaborators(org = "HairyCoos", affiliation = "direct")
+
+  expect_is(direct_collaborators, "tbl")
+  expect_identical(attr(direct_collaborators, "status"), 200L)
+  expect_identical(
+    map_chr(direct_collaborators, ~ class(.)[[1]]),
+    c(id         = "integer",
+      login      = "character",
+      site_admin = "logical",
+      html_url   = "character"))
+
+})
+
+test_that("view_collaborators throws an error in invalid arguments are supplied", {
+
+  expect_error(
+    view_collaborators(),
+    "A 'repo', 'project' or 'org' must be specified when viewing collaborators")
+
+})

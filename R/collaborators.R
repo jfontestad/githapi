@@ -111,3 +111,121 @@ update_collaborator <- function(
     status  = attr(response, "status"),
     header  = attr(response, "header"))
 }
+
+
+#  FUNCTION: view_collaborators ---------------------------------------------------------------
+#
+#' View collaborators in an organization, repository or project
+#'
+#' `view_collaborators()` summarises the collaborators in a repository, project or
+#' organization in a table with the properties as columns and a row for each collaborator.
+#' `view_collaborator()` returns a list of all collaborator's properties including their
+#' permission.
+#'
+#' Note: you can only view collaborators in an organization if the authenticate user is also
+#' a member.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/collaborators/#list-collaborators>
+#' - <https://developer.github.com/v3/projects/collaborators/#list-collaborators>
+#' - <https://developer.github.com/v3/orgs/outside_collaborators/#list-outside-collaborators>
+#' - <https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level>
+#' - <https://developer.github.com/v3/projects/collaborators/#review-a-users-permission-level>
+#'
+#' @param user (string) The login of the user.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param project (integer or string, optional) Either the project number or name.
+#' @param org (string, optional) The name of the organization. Only required for projects.
+#' @param affiliation (string, optional) Filter by the affiliation of the user. This is either
+#'   `"outside"`, `"direct"` or `"all"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_collaborators()` returns a tibble of collaborator properties.
+#'   `view_collaborator()` returns a list of properties for a single collaborator.
+#'
+#' **Collaborator Properties:**
+#'
+#' - **id**: The ID of the collaborator.
+#' - **login**: The login name of the collaborator.
+#' - **site_admin**: Whether the collaborator is an administrator.
+#' - **html_url**: The GitHub page for the collaborator.
+#' - **permission**: The permission the collaborator has (only available in `view_collaborator()`).
+#'
+#' @examples
+#' \dontrun{
+#'   # View collaborators on a repository
+#'   view_collaborators(repo = "ChadGoymer/test-githapi")
+#'
+#'   # View collaborators on a project
+#'   view_collaborators(project = test_project$name, org = "HairyCoos")
+#'
+#'   # View collaborators in an organization
+#'   view_collaborators(org = "HairyCoos")
+#'
+#'   # View collaborator on a repository
+#'   view_collaborator("ChadGoymer", repo = "ChadGoymer/test-githapi")
+#'
+#'   # View collaborator on a project
+#'   view_collaborator(
+#'     user    = "ChadGoymer",
+#'     project = "Test project",
+#'     org     = "HairyCoos")
+#' }
+#'
+#' @export
+#'
+view_collaborators <- function(
+  repo,
+  project,
+  org,
+  affiliation,
+  n_max = 1000,
+  ...)
+{
+  payload <- NULL
+  if (!missing(affiliation))
+  {
+    assert(
+      is_scalar_character(affiliation) && affiliation %in% values$collaborators$affiliation,
+      "'affiliation' for repositories must be either '", paste(values$collaborators$repo_affiliation, collapse = "', '"), "':\n  ", affiliation)
+    payload$affiliation <- affiliation
+  }
+
+  if (!missing(repo))
+  {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    info("Viewing collaborators for repository '", repo, "'")
+    collaborators_lst <- gh_url("repos", repo, "collaborators") %>%
+      gh_request("GET", payload = payload, ...)
+  }
+  else if (!missing(project))
+  {
+    project <- view_project(project = project, org = org)
+
+    info("Viewing collaborators for project '", project$name, "'")
+    collaborators_lst <- gh_url("projects", project$id, "collaborators") %>%
+      gh_request(
+        type    = "GET",
+        payload = payload,
+        accept  = "application/vnd.github.inertia-preview+json",
+        ...)
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    info("Viewing collaborators for organization '", org, "'")
+    collaborators_lst <- gh_url("orgs", org, "outside_collaborators") %>%
+      gh_request("GET", ...)
+  }
+  else
+  {
+    error("A 'repo', 'project' or 'org' must be specified when viewing collaborators")
+  }
+
+  info("Transforming results", level = 4)
+  collaborators_gh <- bind_properties(collaborators_lst, properties$users)
+
+  info("Done", level = 7)
+  collaborators_gh
+}
