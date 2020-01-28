@@ -35,6 +35,9 @@
 #' - [gh_download()]: replace with [download_commit()]
 #' - [gh_release()]: replace with [view_releases()]
 #' - [gh_releases()]: replace with [view_releases()]
+#' - [gh_repository()]: replace with [view_repository()]
+#' - [gh_repositories()]: replace with [view_repositories()]
+#' - [is_repository()]: is being removed
 #'
 #' @section Projects Functions:
 #'

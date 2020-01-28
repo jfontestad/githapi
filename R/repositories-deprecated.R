@@ -21,6 +21,8 @@ gh_repository <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_repository", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -53,6 +55,8 @@ is_repository <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_repository", package = "githapi")
+
   if (!is_repo(repo)) {
     return(FALSE)
   }
@@ -109,6 +113,8 @@ gh_repositories <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_repositories", package = "githapi")
+
   assert(is_null(type) || is_scalar_character(type), type %in% c("owner", "member"))
   assert(is_null(sort) || is_scalar_character(sort), sort %in% c("created", "updated", "pushed", "full_name"))
   assert(is_null(direction) || is_scalar_character(direction), direction %in% c("asc", "desc"))

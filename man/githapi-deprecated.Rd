@@ -40,6 +40,9 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_download]{gh_download()}}: replace with \code{\link[=download_commit]{download_commit()}}
 \item \code{\link[=gh_release]{gh_release()}}: replace with \code{\link[=view_releases]{view_releases()}}
 \item \code{\link[=gh_releases]{gh_releases()}}: replace with \code{\link[=view_releases]{view_releases()}}
+\item \code{\link[=gh_repository]{gh_repository()}}: replace with \code{\link[=view_repository]{view_repository()}}
+\item \code{\link[=gh_repositories]{gh_repositories()}}: replace with \code{\link[=view_repositories]{view_repositories()}}
+\item \code{\link[=is_repository]{is_repository()}}: is being removed
 }
 }
 

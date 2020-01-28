@@ -2,26 +2,26 @@ context("repositories")
 
 #  FUNCTION: gh_repository --------------------------------------------------------------------
 test_that("gh_repository returns a list describing the repository", {
-  repo <- gh_repository("ChadGoymer/githapi")
+  repo <- suppressWarnings(gh_repository("ChadGoymer/githapi"))
   expect_is(repo, "list")
   expect_identical(repo$name, "githapi")
   expect_identical(repo$owner$login, "ChadGoymer")
 })
 
 test_that("gh_repository returns an error is the specified repo does not exist", {
-  expect_error(gh_repository("SomeNameThatDoesNotExist/repo"))
+  expect_error(suppressWarnings(gh_repository("SomeNameThatDoesNotExist/repo")))
 })
 
 #  FUNCTION: is_repository --------------------------------------------------------------------
 test_that("is_repository returns a boolean, with attributes describing the errors, if there are any", {
-  expect_true(is_repository("ChadGoymer/githapi"))
-  expect_false(is_repository("githapi"))
-  expect_false(is_repository("DoesNotExist/githapi"))
+  expect_true(suppressWarnings(is_repository("ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_repository("githapi")))
+  expect_false(suppressWarnings(is_repository("DoesNotExist/githapi")))
 })
 
 #  FUNCTION: gh_repositories ------------------------------------------------------------------
 test_that("gh_repositories returns a tibble describing all the repositories a user has", {
-  repos <- gh_repositories("ChadGoymer")
+  repos <- suppressWarnings(gh_repositories("ChadGoymer"))
   expect_is(repos, "tbl")
   expect_true("githapi" %in% repos$name)
   expect_identical(repos$name, sort(repos$name))
@@ -40,18 +40,18 @@ test_that("gh_repositories returns a tibble describing all the repositories a us
       created_at     = "POSIXct",
       updated_at     = "POSIXct"))
 
-  repos <- gh_repositories("ChadGoymer", sort = "updated")
+  repos <- suppressWarnings(gh_repositories("ChadGoymer", sort = "updated"))
   expect_identical(repos$updated_at, sort(repos$updated_at, decreasing = TRUE))
 })
 
 test_that("gh_repositories returns a tibble describing all the repositories an org has", {
-  repos <- gh_repositories("tidyverse")
+  repos <- suppressWarnings(gh_repositories("tidyverse"))
   expect_is(repos, "tbl")
   expect_true(all(c("dplyr", "tidyr") %in% repos$name))
 })
 
 test_that("gh_repositories returns an error is the specified owner does not exist", {
-  expect_error(gh_repositories("SomeNameThatDoesNotExist"))
+  expect_error(suppressWarnings(gh_repositories("SomeNameThatDoesNotExist")))
 })
 
 #  FUNCTION: gh_tags ----------------------------------------------------------------------

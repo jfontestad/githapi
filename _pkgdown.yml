@@ -65,9 +65,6 @@ reference:
     - '`update_releases`'
     - '`delete_releases`'
     - '`releases_exist`'
-    - '`gh_repository`'
-    - '`is_repository`'
-    - '`gh_repositories`'
     - '`gh_commit_comment`'
     - '`gh_commit_comments`'
     - '`gh_contributers`'
@@ -201,5 +198,8 @@ reference:
     - '`is_collaborator`'
     - '`gh_collaborators`'
     - '`gh_permissions`'
+    - '`gh_repository`'
+    - '`is_repository`'
+    - '`gh_repositories`'
 news:
 - one_page: false
