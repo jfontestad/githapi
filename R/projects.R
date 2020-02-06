@@ -489,7 +489,9 @@ view_projects <- function(
 
   if (!missing(team))
   {
-    team_permission <- map_chr(projects_lst, ~ names(.$permissions)[max(which(as.logical(.$permissions)))])
+    team_permission <- map_chr(projects_lst, function(p) {
+      values$project$permission[max(which(as.logical(p$permissions[values$project$permission])))]
+      })
     projects_gh <- add_column(projects_gh, team_permission = team_permission, .after = "state")
   }
 
