@@ -430,3 +430,18 @@ test_that("view_repository returns a list of repository properties", {
   expect_identical(test_repo$name, paste0("updated-user-repository-", now))
 
 })
+
+
+# TEST: browse_repository ---------------------------------------------------------------------
+
+test_that("browse_repository opens the repository's page in the browser", {
+
+  skip_if(!interactive(), "browse_repository must be tested manually")
+
+  repo <- browse_repository(paste0("ChadGoymer/updated-user-repository-", now))
+
+  expect_is(repo, "character")
+  expect_identical(attr(repo, "status"), 200L)
+  expect_identical(as.character(repo), paste0("https://github.com/ChadGoymer/updated-user-repository-", now))
+
+})

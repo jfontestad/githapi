@@ -521,3 +521,29 @@ view_repository <- function(
     status  = attr(repo_lst, "status"),
     header  = attr(repo_lst, "header"))
 }
+
+
+#  FUNCTION: browse_repository ----------------------------------------------------------------
+#
+#' @rdname view_repositories
+#' @export
+#'
+browse_repository <- function(
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Browsing repository '", repo, "'")
+  repo <- gh_url("repos", repo) %>% gh_request("GET", ...)
+  httr::BROWSE(repo$html_url)
+
+  info("Done", level = 7)
+  structure(
+    repo$html_url,
+    class   = c("github", "character"),
+    url     = attr(repo, "url"),
+    request = attr(repo, "request"),
+    status  = attr(repo, "status"),
+    header  = attr(repo, "header"))
+}
