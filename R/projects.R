@@ -362,7 +362,7 @@ update_project <- function(
 #'
 #' @return `view_projects()` returns a tibble of project properties. `view_project()`
 #'   returns a list of properties for a single project. `browse_project()` opens the default
-#'   browser on the project's page and returns the URL invisibly.
+#'   browser on the project's page and returns the URL.
 #'
 #' **Project Properties:**
 #'

@@ -29,7 +29,7 @@ browse_user(user, ...)
 \value{
 \code{view_users()} returns a tibble of user properties. \code{view_user()}
 returns a list of properties for a single user.  \code{browse_user()} opens the default
-browser on the user's page and returns the URL invisibly.
+browser on the user's page and returns the URL.
 
 \strong{user Properties:}
 \itemize{

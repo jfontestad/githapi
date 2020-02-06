@@ -271,7 +271,7 @@ update_team <- function(
 #'
 #' @return `view_teams()` returns a tibble of team properties. `view_team()` returns a list
 #'   of properties for a single team. `browse_team()` opens the default browser on the
-#'   team's page and returns the URL invisibly.
+#'   team's page and returns the URL.
 #'
 #' **Team Properties:**
 #'

@@ -27,7 +27,7 @@ the child teams will be returned.}
 \value{
 \code{view_teams()} returns a tibble of team properties. \code{view_team()} returns a list
 of properties for a single team. \code{browse_team()} opens the default browser on the
-team's page and returns the URL invisibly.
+team's page and returns the URL.
 
 \strong{Team Properties:}
 \itemize{
