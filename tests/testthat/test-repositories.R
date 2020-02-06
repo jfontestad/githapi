@@ -388,3 +388,45 @@ test_that("view_repositories returns a tibble summarising the repositories", {
   expect_true(paste0("updated-user-repository-", now) %in% auth_repos$name)
 
 })
+
+
+# TEST: view_repository -----------------------------------------------------------------------
+
+test_that("view_repository returns a list of repository properties", {
+
+  test_repo <- view_repository(paste0("ChadGoymer/updated-user-repository-", now))
+
+  expect_is(test_repo, "list")
+  expect_identical(attr(test_repo, "status"), 200L)
+  expect_identical(
+    map_chr(test_repo, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      html_url           = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
+
+  expect_identical(test_repo$name, paste0("updated-user-repository-", now))
+
+})
