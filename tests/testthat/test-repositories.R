@@ -445,3 +445,22 @@ test_that("browse_repository opens the repository's page in the browser", {
   expect_identical(as.character(repo), paste0("https://github.com/ChadGoymer/updated-user-repository-", now))
 
 })
+
+
+# TEST: delete_repository ---------------------------------------------------------------------
+
+test_that("delete_repository removes a respository and returns TRUE", {
+
+  user_repo <- delete_repository(paste0("ChadGoymer/updated-user-repository-", now))
+
+  expect_is(user_repo, "logical")
+  expect_identical(attr(user_repo, "status"), 204L)
+  expect_identical(as.logical(user_repo), TRUE)
+
+  org_repo <- delete_repository(paste0("HairyCoos/updated-org-repository-", now))
+
+  expect_is(org_repo, "logical")
+  expect_identical(attr(org_repo, "status"), 204L)
+  expect_identical(as.logical(org_repo), TRUE)
+
+})

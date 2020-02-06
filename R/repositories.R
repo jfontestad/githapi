@@ -547,3 +547,49 @@ browse_repository <- function(
     status  = attr(repo, "status"),
     header  = attr(repo, "header"))
 }
+
+
+#  FUNCTION: delete_repository ----------------------------------------------------------------
+#
+#' Delete a user or organization repository
+#'
+#' This function deletes a repository from GitHub, as long as you have appropriate permissions.
+#' Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/#delete-a-repository>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_repository()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   # Delete a user's repository
+#'   delete_repository("ChadGoymer/user-repository")
+#'
+#'   # Delete a organization's repository
+#'   delete_repository("HairyCoos/org-repository")
+#' }
+#'
+#' @export
+#'
+delete_repository <- function(
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Deleting repository '", repo, "'")
+  response <- gh_url("repos", repo) %>% gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
