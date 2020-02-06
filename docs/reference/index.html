@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.13</span>
       </span>
     </div>
 
@@ -118,6 +118,38 @@
     </colgroup>
 
     <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-repositories-issues-and-pull-requests" class="hasAnchor"><a href="#section-repositories-issues-and-pull-requests" class="anchor"></a>Repositories, Issues and Pull Requests</h2>
+          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting repositories, issues and pull requests.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="create_repository.html">create_repository()</a></code> </p>
+        </td>
+        <td><p>Create a repository for a user or organization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="update_repository.html">update_repository()</a></code> </p>
+        </td>
+        <td><p>Update a user or organization repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_repositories.html">view_repositories()</a></code> <code><a href="view_repositories.html">view_repository()</a></code> <code><a href="view_repositories.html">browse_repository()</a></code> </p>
+        </td>
+        <td><p>View repositories for a user or organization</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="delete_repository.html">delete_repository()</a></code> </p>
+        </td>
+        <td><p>Delete a user or organization repository</p></td>
+      </tr>
+    </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-users-organizations-and-teams" class="hasAnchor"><a href="#section-users-organizations-and-teams" class="anchor"></a>Users, Organizations and Teams</h2>
@@ -392,24 +424,6 @@
           <p><code><a href="releases_exist.html">releases_exist()</a></code> </p>
         </td>
         <td><p>Determine whether releases exist in the specified repository.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_repository.html">gh_repository()</a></code> </p>
-        </td>
-        <td><p>Get information about a repository</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_repository.html">is_repository()</a></code> </p>
-        </td>
-        <td><p>Check whether the input is a valid repository</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_repositories.html">gh_repositories()</a></code> </p>
-        </td>
-        <td><p>Get information about a user's, organization's or team's repositories.</p></td>
       </tr><tr>
         
         <td>
@@ -1123,6 +1137,30 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="gh_team.html">gh_team()</a></code> </p>
+        </td>
+        <td><p>Get team</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_teams.html">gh_teams()</a></code> </p>
+        </td>
+        <td><p>List teams</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_member.html">is_member()</a></code> </p>
+        </td>
+        <td><p>Check membership</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_manager.html">is_manager()</a></code> </p>
+        </td>
+        <td><p>Check if a team manages a repository</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="is_collaborator.html">is_collaborator()</a></code> </p>
         </td>
         <td><p>Check if a user is a collaborator</p></td>
@@ -1138,6 +1176,24 @@
           <p><code><a href="gh_permissions.html">gh_permissions()</a></code> </p>
         </td>
         <td><p>Review a user's permission level</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_repository.html">gh_repository()</a></code> </p>
+        </td>
+        <td><p>Get information about a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_repository.html">is_repository()</a></code> </p>
+        </td>
+        <td><p>Check whether the input is a valid repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_repositories.html">gh_repositories()</a></code> </p>
+        </td>
+        <td><p>Get information about a user's, organization's or team's repositories.</p></td>
       </tr>
     </tbody>
     </table>
@@ -1146,6 +1202,7 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#section-repositories-issues-and-pull-requests">Repositories, Issues and Pull Requests</a></li>
       <li><a href="#section-users-organizations-and-teams">Users, Organizations and Teams</a></li>
       <li><a href="#section-projects">Projects</a></li>
       <li><a href="#section-repositories">Repositories</a></li>
