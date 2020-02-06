@@ -237,3 +237,154 @@ test_that("update_repository changes a repository's properties and returns them 
   expect_true(archived_repo$archived)
 
 })
+
+
+# TEST: view_repositories ---------------------------------------------------------------------
+
+test_that("view_repositories returns a tibble summarising the repositories", {
+
+  user_repos <- view_repositories(user = "ChadGoymer")
+
+  expect_is(user_repos, "tbl")
+  expect_identical(attr(user_repos, "status"), 200L)
+  expect_identical(
+    map_chr(user_repos, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      html_url           = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
+
+  expect_true(paste0("updated-user-repository-", now) %in% user_repos$name)
+  expect_identical(sort(user_repos$created_at, decreasing = TRUE), user_repos$created_at)
+
+
+  ordered_repos <- view_repositories(user = "ChadGoymer", sort = "full_name", direction = "asc")
+
+  expect_is(ordered_repos, "tbl")
+  expect_identical(attr(ordered_repos, "status"), 200L)
+  expect_identical(
+    map_chr(ordered_repos, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      html_url           = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
+
+  expect_identical(sort(ordered_repos$full_name), ordered_repos$full_name)
+
+
+  org_repos <- view_repositories(org = "HairyCoos")
+
+  expect_is(org_repos, "tbl")
+  expect_identical(attr(org_repos, "status"), 200L)
+  expect_identical(
+    map_chr(org_repos, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      html_url           = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
+
+  expect_true(paste0("updated-org-repository-", now) %in% org_repos$name)
+
+
+  auth_repos <- view_repositories()
+
+  expect_is(auth_repos, "tbl")
+  expect_identical(attr(auth_repos, "status"), 200L)
+  expect_identical(
+    map_chr(auth_repos, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      html_url           = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
+
+  expect_true(paste0("updated-user-repository-", now) %in% auth_repos$name)
+
+})

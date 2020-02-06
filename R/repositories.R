@@ -353,3 +353,140 @@ update_repository <- function(
     status  = attr(repo_lst, "status"),
     header  = attr(repo_lst, "header"))
 }
+
+
+#  FUNCTION: view_repositories ----------------------------------------------------------------
+#
+#' View repositories for a user or organization
+#'
+#' `view_repositories()` summarises the repositories for a user or organization in a table
+#' with the properties as columns and a row for each repository. `view_repository()` returns
+#' a list of a single repository's properties. `browse_repository()` opens the web page for
+#' the repository in the default browser.
+#'
+#' You can summarise all the repositories associated with either a user or organization, by
+#' supplying them as an input. If neither a user or organization is specified a summary of
+#' the authenticated user's repositories is returned.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/#list-user-repositories>
+#' - <https://developer.github.com/v3/repos/#list-organization-repositories>
+#' - <https://developer.github.com/v3/repos/#list-your-repositories>
+#'
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param user (string, optional) The login of the user.
+#' @param org (string, optional) The name of the organization.
+#' @param sort (string, optional) The property to order the returned repositories by. Can
+#'   be either `"created"`, `"updated"`, `"pushed"` or `"full_name"`. Default: `"created"`.
+#' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
+#'   `"desc"`. Default: `"desc"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_repositories()` returns a tibble of repository properties.
+#'   `view_repository()` returns a list of properties for a single repository.
+#'   `browse_repository()` opens the default browser on the repository's page and returns
+#'   the URL.
+#'
+#' **Repository Properties:**
+#'
+#' - **id**: The ID of the repository.
+#' - **name**: The name of the repository.
+#' - **full_name**: The full name of the repository, in the format: `owner/repo`.
+#' - **description**: The description of the repository.
+#' - **owner**: The owner of the repository.
+#' - **html_url**: The address of the repository's web page in GitHub.
+#' - **homepage**: The homepage for the repository.
+#' - **language**: The dominant programming language in the repository.
+#' - **size**: The overall size of the repository in bytes.
+#' - **default_branch**: The name of the default branch.
+#' - **permission**: The permission the authenticated user has.
+#' - **private**: Whether the repository is private.
+#' - **has_issues**: Whether the repository has issues.
+#' - **has_projects**: Whether the repository has projects.
+#' - **has_wiki**: Whether the repository has a wiki.
+#' - **has_pages**: Whether the repository has GitHub Pages.
+#' - **has_downloads**: Whether the repository has downloads.
+#' - **allow_squash_merge**: Whether the repository allows squash-merging pull requests.
+#' - **allow_merge_commit**: Whether the repository allows merging pull requests with a merge
+#'   commit.
+#' - **allow_rebase_merge**: Whether the repository allows rebase-merging pull requests.
+#' - **fork**: Whether the repository is a fork of another.
+#' - **archived**: Whether the repository has been archived.
+#' - **disabled**: Whether the repository has been disabled.
+#' - **pushed_at**: When the repository was last pushed to.
+#' - **created_at**: When the repository was created.
+#' - **updated_at**: When the repository was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'   # View a user's repositories
+#'   view_repositories(user = "ChadGoymer")
+#'
+#'   # View an organization's repositories
+#'   view_repositories(org = "HairyCoos")
+#'
+#'   # Reorder a user's repositories
+#'   view_repositories(user = "ChadGoymer", sort = "full_name", direction = "asc")
+#'
+#'   # View a specific user repository
+#'   view_repository("Test repo", user = "ChadGoymer")
+#'
+#'   # View a specific organization repository
+#'   view_repository("Test repo", org = "HairyCoos")
+#'
+#'   # Browse a specific user repository
+#'   browse_repository("Test repo", user = "ChadGoymer")
+#'
+#'   # Browse a specific organization repository
+#'   browse_repository("Test repo", org = "HairyCoos")
+#' }
+#'
+#' @export
+#'
+view_repositories <- function(
+  user,
+  org,
+  sort      = "created",
+  direction = "desc",
+  n_max     = 1000,
+  ...)
+{
+  assert(
+    is_scalar_character(sort) && sort %in% values$repository$sort,
+    "'sort' must be either '", paste(values$repository$sort, collapse = "', '"), "':\n  ", sort)
+  assert(
+    is_scalar_character(direction) && direction %in% values$repository$direction,
+    "'direction' must be either '", paste(values$repository$direction, collapse = "', '"), "':\n  ", direction)
+
+  if (!missing(user))
+  {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    info("Viewing repositories for user '", user, "'")
+    url <- gh_url("users", user, "repos", type = "all", sort = sort, direction = direction)
+  }
+  else if (!missing(org))
+  {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    info("Viewing repositories for organization '", org, "'")
+    url <- gh_url("orgs", org, "repos", type = "all", sort = sort, direction = direction)
+  }
+  else
+  {
+    info("Viewing repositories for authenticated user")
+    url <- gh_url("user/repos", type = "all", sort = sort, direction = direction)
+  }
+
+  repositories_lst <- gh_page(url = url, n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  repositories_gh <- bind_properties(repositories_lst, properties$repository)
+
+  permission <- map_chr(repositories_lst, function(r) {
+    values$repository$permission[max(which(as.logical(r$permissions[values$repository$permission])))]
+  })
+  repositories_gh <- add_column(repositories_gh, permission = permission, .after = "default_branch")
+
+  info("Done", level = 7)
+  repositories_gh
+}
