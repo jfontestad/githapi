@@ -67,8 +67,8 @@ update_collaborator <- function(
     if (!missing(permission))
     {
       assert(
-        is_scalar_character(permission) && permission %in% values$collaborators$repo_permission,
-        "'permission' for repositories must be either '", paste(values$collaborators$repo_permission, collapse = "', '"), "':\n  ", permission)
+        is_scalar_character(permission) && permission %in% values$repository$permission,
+        "'permission' for repositories must be either '", paste(values$repository$permission, collapse = "', '"), "':\n  ", permission)
       payload$permission <- permission
     }
 
@@ -82,8 +82,8 @@ update_collaborator <- function(
     if (!missing(permission))
     {
       assert(
-        is_scalar_character(permission) && permission %in% values$collaborators$project_permission,
-        "'permission' for projects must be either '", paste(values$collaborators$project_permission, collapse = "', '"), "':\n  ", permission)
+        is_scalar_character(permission) && permission %in% values$project$permission,
+        "'permission' for projects must be either '", paste(values$project$permission, collapse = "', '"), "':\n  ", permission)
       payload$permission <- permission
     }
 
@@ -179,44 +179,38 @@ view_collaborators <- function(
   repo,
   project,
   org,
-  affiliation,
-  n_max = 1000,
+  affiliation = "all",
+  n_max       = 1000,
   ...)
 {
-  payload <- NULL
-  if (!missing(affiliation))
-  {
-    assert(
-      is_scalar_character(affiliation) && affiliation %in% values$collaborators$affiliation,
-      "'affiliation' for repositories must be either '", paste(values$collaborators$repo_affiliation, collapse = "', '"), "':\n  ", affiliation)
-    payload$affiliation <- affiliation
-  }
+  assert(
+    is_scalar_character(affiliation) && affiliation %in% values$collaborator$affiliation,
+    "'affiliation' for repositories must be either '", paste(values$collaborator$affiliation, collapse = "', '"), "':\n  ", affiliation)
 
   if (!missing(repo))
   {
     assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
     info("Viewing collaborators for repository '", repo, "'")
-    collaborators_lst <- gh_url("repos", repo, "collaborators") %>%
-      gh_request("GET", payload = payload, ...)
+    collaborators_lst <- gh_url("repos", repo, "collaborators", affiliation = affiliation) %>%
+      gh_page(n_max = n_max, ...)
   }
   else if (!missing(project))
   {
     project <- view_project(project = project, org = org)
 
     info("Viewing collaborators for project '", project$name, "'")
-    collaborators_lst <- gh_url("projects", project$id, "collaborators") %>%
-      gh_request(
-        type    = "GET",
-        payload = payload,
-        accept  = "application/vnd.github.inertia-preview+json",
+    collaborators_lst <- gh_url("projects", project$id, "collaborators", affiliation = affiliation) %>%
+      gh_page(
+        accept = "application/vnd.github.inertia-preview+json",
+        n_max  = n_max,
         ...)
   }
   else if (!missing(org))
   {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     info("Viewing collaborators for organization '", org, "'")
-    collaborators_lst <- gh_url("orgs", org, "outside_collaborators") %>%
-      gh_request("GET", ...)
+    collaborators_lst <- gh_url("orgs", org, "outside_collaborators", affiliation = affiliation) %>%
+      gh_page(n_max = n_max, ...)
   }
   else
   {

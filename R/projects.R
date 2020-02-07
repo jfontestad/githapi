@@ -362,7 +362,7 @@ update_project <- function(
 #'
 #' @return `view_projects()` returns a tibble of project properties. `view_project()`
 #'   returns a list of properties for a single project. `browse_project()` opens the default
-#'   browser on the project's page and returns the URL invisibly.
+#'   browser on the project's page and returns the URL.
 #'
 #' **Project Properties:**
 #'
@@ -489,7 +489,9 @@ view_projects <- function(
 
   if (!missing(team))
   {
-    team_permission <- map_chr(projects_lst, ~ names(.$permissions)[max(which(as.logical(.$permissions)))])
+    team_permission <- map_chr(projects_lst, function(p) {
+      values$project$permission[max(which(as.logical(p$permissions[values$project$permission])))]
+      })
     projects_gh <- add_column(projects_gh, team_permission = team_permission, .after = "state")
   }
 

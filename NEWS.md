@@ -1,3 +1,13 @@
+# githapi 0.9.13
+
+- Added `create_repository()`
+- Added `update_repository()`
+- Added `view_repositories()`
+- Added `view_repository()`
+- Added `browse_repository()`
+- Added `delete_repository()`
+- Fixed filter on `view_collaborators()`
+
 # githapi 0.9.12
 
 - Added `update_collaborator()`

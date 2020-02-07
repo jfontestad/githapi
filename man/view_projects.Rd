@@ -33,7 +33,7 @@ either "open", "closed", or "all". Default: \code{"open"}.}
 \value{
 \code{view_projects()} returns a tibble of project properties. \code{view_project()}
 returns a list of properties for a single project. \code{browse_project()} opens the default
-browser on the project's page and returns the URL invisibly.
+browser on the project's page and returns the URL.
 
 \strong{Project Properties:}
 \itemize{

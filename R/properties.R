@@ -115,6 +115,33 @@ properties <- list(
     members_count                            = c("members_count",                            as = "integer"),
     repos_count                              = c("repos_count",                              as = "integer"),
     created_at                               = c("created_at",                               as = "datetime"),
+    updated_at                               = c("updated_at",                               as = "datetime")),
+
+  repository = list(
+    id                                       = c("id",                                       as = "integer"),
+    name                                     = c("name",                                     as = "character"),
+    full_name                                = c("full_name",                                as = "character"),
+    description                              = c("description",                              as = "character"),
+    owner                                    = c("owner", "login",                           as = "character"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    homepage                                 = c("homepage",                                 as = "character"),
+    language                                 = c("language",                                 as = "character"),
+    size                                     = c("size",                                     as = "numeric"),
+    default_branch                           = c("default_branch",                           as = "character"),
+    private                                  = c("private",                                  as = "logical"),
+    has_issues                               = c("has_issues",                               as = "logical"),
+    has_projects                             = c("has_projects",                             as = "logical"),
+    has_wiki                                 = c("has_wiki",                                 as = "logical"),
+    has_pages                                = c("has_pages",                                as = "logical"),
+    has_downloads                            = c("has_downloads",                            as = "logical"),
+    allow_squash_merge                       = c("allow_squash_merge",                       as = "logical"),
+    allow_merge_commit                       = c("allow_merge_commit",                       as = "logical"),
+    allow_rebase_merge                       = c("allow_rebase_merge",                       as = "logical"),
+    fork                                     = c("fork",                                     as = "logical"),
+    archived                                 = c("archived",                                 as = "logical"),
+    disabled                                 = c("disabled",                                 as = "logical"),
+    pushed_at                                = c("pushed_at",                                as = "datetime"),
+    created_at                               = c("created_at",                               as = "datetime"),
     updated_at                               = c("updated_at",                               as = "datetime"))
 
 )
@@ -131,7 +158,7 @@ values <- list(
 
   project = list(
     state                         = c("open", "closed", "all"),
-    permission                    = c("read", "write", "admin", "none")),
+    permission                    = c("read", "write", "admin")),
 
   column = list(
     position                      = c("first", "last")),
@@ -142,7 +169,7 @@ values <- list(
     position                      = c("top", "bottom")),
 
   user = list(
-    role                          = c("admin", "member", "all")),
+    role                          = c("member", "admin", "all")),
 
   organization = list(
     default_repository_permission = c("read", "write", "admin", "none")),
@@ -155,9 +182,12 @@ values <- list(
     org_role                      = c("member", "admin"),
     team_role                     = c("member", "maintainer")),
 
-  collaborators = list(
-    repo_permission               = c("pull", "push", "admin"),
-    project_permission            = c("read", "write", "admin"),
-    affiliation                   = c("outside", "direct", "all"))
+  collaborator = list(
+    affiliation                   = c("outside", "direct", "all")),
+
+  repository = list(
+    sort                          = c("created", "updated", "pushed", "full_name"),
+    direction                     = c("asc", "desc"),
+    permission                    = c("pull", "push", "admin"))
 
 )

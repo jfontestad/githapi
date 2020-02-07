@@ -5,7 +5,7 @@
 \alias{view_collaborator}
 \title{View collaborators in an organization, repository or project}
 \usage{
-view_collaborators(repo, project, org, affiliation, n_max = 1000, ...)
+view_collaborators(repo, project, org, affiliation = "all", n_max = 1000, ...)
 
 view_collaborator(user, repo, project, org, ...)
 }

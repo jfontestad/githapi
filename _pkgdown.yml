@@ -14,6 +14,13 @@ navbar:
     - icon: fa-github fa-lg
       href: http://github.com/ChadGoymer/githapi
 reference:
+- title: Repositories, Issues and Pull Requests
+  desc: Functions for creating, updating, viewing and deleting repositories, issues and pull requests.
+  contents:
+    - '`create_repository`'
+    - '`update_repository`'
+    - '`view_repositories`'
+    - '`delete_repository`'
 - title: Users, Organizations and Teams
   desc: Functions for creating, updating, viewing and deleting users, organizations and teams.
   contents:
@@ -65,9 +72,6 @@ reference:
     - '`update_releases`'
     - '`delete_releases`'
     - '`releases_exist`'
-    - '`gh_repository`'
-    - '`is_repository`'
-    - '`gh_repositories`'
     - '`gh_commit_comment`'
     - '`gh_commit_comments`'
     - '`gh_contributers`'
@@ -198,8 +202,15 @@ reference:
     - '`gh_user`'
     - '`gh_users`'
     - '`gh_user_email`'
+    - '`gh_team`'
+    - '`gh_teams`'
+    - '`is_member`'
+    - '`is_manager`'
     - '`is_collaborator`'
     - '`gh_collaborators`'
     - '`gh_permissions`'
+    - '`gh_repository`'
+    - '`is_repository`'
+    - '`gh_repositories`'
 news:
 - one_page: false

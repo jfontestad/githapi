@@ -26,7 +26,7 @@ used.}
 \code{view_organizations()} returns a tibble of organization properties.
 \code{view_organization()} returns a list of properties for a single organization.
 \code{browse_organization()} opens the default browser on the organization's page and returns
-the URL invisibly.
+the URL.
 
 \strong{Organization Properties:}
 \itemize{
