@@ -223,5 +223,11 @@ reference:
     - '`gh_labels`'
     - '`gh_milestone`'
     - '`gh_milestones`'
+    - '`gh_issue`'
+    - '`gh_issues`'
+    - '`gh_user_issues`'
+    - '`gh_assignees`'
+    - '`gh_issue_comments`'
+    - '`gh_issue_comment`'
 news:
 - one_page: false

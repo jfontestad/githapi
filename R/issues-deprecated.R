@@ -23,6 +23,8 @@ gh_issue <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_issue", package = "githapi")
+
   assert(is_scalar_integerish(issue) && isTRUE(issue > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -81,6 +83,8 @@ gh_issues <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_issues", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_null(milestone) || is_scalar_character(milestone))
   assert(is_null(state) || is_scalar_character(state))
@@ -173,6 +177,8 @@ gh_user_issues <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_issues", package = "githapi")
+
   assert(is_null(filter) || is_scalar_character(filter))
   assert(is_null(state) || is_scalar_character(state))
   assert(is_null(labels) || is_scalar_character(labels))
@@ -242,6 +248,8 @@ gh_assignees <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -287,6 +295,8 @@ gh_issue_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_issue", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_null(since) || is_scalar_character(since))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
@@ -338,6 +348,8 @@ gh_issue_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
