@@ -285,3 +285,40 @@ view_milestones <- function(
   info("Done", level = 7)
   milestones_gh
 }
+
+
+#  FUNCTION: view_milestone -------------------------------------------------------------------
+#
+#' @rdname view_milestones
+#' @export
+#'
+view_milestone <- function(
+  milestone,
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (is_scalar_integerish(milestone))
+  {
+    info("Viewing milestone '", milestone, "' for repository '", repo, "'")
+    milestone_lst <- gh_url("repos", repo, "milestones", milestone) %>%
+      gh_request("GET", ...)
+  }
+  else if (is_scalar_character(milestone))
+  {
+    info("Viewing milestone '", milestone, "' for repository '", repo, "'")
+    milestone_lst <- gh_url("repos", repo, "milestones") %>%
+      gh_find(property  = "title", value = milestone, ...)
+  }
+  else
+  {
+    error("'milestone' must be either an integer or a string:\n  ", milestone)
+  }
+
+  info("Transforming results", level = 4)
+  milestone_gh <- select_properties(milestone_lst, properties$milestone)
+
+  info("Done", level = 7)
+  milestone_gh
+}

@@ -193,3 +193,64 @@ test_that("view_milestones returns a tibble of milestone properties", {
   expect_true(paste("test updated milestone", now) %in% closed_milestones$title)
 
 })
+
+
+# TEST: view_milestone ------------------------------------------------------------------------
+
+test_that("view_milestone returns a list of repository properties", {
+
+  first_milestone <- view_milestone(1, repo = paste0("ChadGoymer/test-milestones-", now))
+
+  expect_is(first_milestone, "list")
+  expect_identical(attr(first_milestone, "status"), 200L)
+  expect_identical(
+    map_chr(first_milestone, ~ class(.)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      title         = "character",
+      description   = "character",
+      state         = "character",
+      open_issues   = "integer",
+      closed_issues = "integer",
+      html_url      = "character",
+      creator       = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      due_on        = "POSIXct",
+      closed_at     = "POSIXct"))
+
+  expect_identical(first_milestone$number, 1L)
+
+  named_milestone <- view_milestone(
+    milestone = paste("test detailed milestone", now),
+    repo      = paste0("ChadGoymer/test-milestones-", now))
+
+  expect_is(named_milestone, "list")
+  expect_identical(attr(named_milestone, "status"), 200L)
+  expect_identical(
+    map_chr(named_milestone, ~ class(.)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      title         = "character",
+      description   = "character",
+      state         = "character",
+      open_issues   = "integer",
+      closed_issues = "integer",
+      html_url      = "character",
+      creator       = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      due_on        = "POSIXct",
+      closed_at     = "POSIXct"))
+
+  expect_identical(named_milestone$title, paste("test detailed milestone", now))
+
+})
+
+test_that("view_milestone throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_milestone(TRUE, repo = paste0("ChadGoymer/test-milestones-", now)),
+    "'milestone' must be either an integer or a string")
+
+})
