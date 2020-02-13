@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove a member from an organization or team. — delete_membership • githapi</title>
+<title>Create a milestone in a repository — create_milestone • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Remove a member from an organization or team. — delete_membership" />
-<meta property="og:description" content="This function removes a user from an organization or team. Removing someone from a team
-does not remove them from the organization, whereas removing them from an organization
-also removes them from any teams within the organization." />
+<meta property="og:title" content="Create a milestone in a repository — create_milestone" />
+<meta property="og:description" content="This function creates a new milestone for the specified repository in GitHub. It can also be
+used to set a due date." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,33 +109,42 @@ also removes them from any teams within the organization." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove a member from an organization or team.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/memberships.R'><code>R/memberships.R</code></a></small>
-    <div class="hidden name"><code>delete_membership.Rd</code></div>
+    <h1>Create a milestone in a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/milestones.R'><code>R/milestones.R</code></a></small>
+    <div class="hidden name"><code>create_milestone.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function removes a user from an organization or team. Removing someone from a team
-does not remove them from the organization, whereas removing them from an organization
-also removes them from any teams within the organization.</p>
+    <p>This function creates a new milestone for the specified repository in GitHub. It can also be
+used to set a due date.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_membership</span>(<span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>team</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>create_milestone</span>(<span class='no'>title</span>, <span class='no'>repo</span>, <span class='no'>description</span>, <span class='no'>due_on</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"open"</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>user</th>
-      <td><p>(string) The login of the user.</p></td>
+      <th>title</th>
+      <td><p>(string) The title of the milestone.</p></td>
     </tr>
     <tr>
-      <th>org</th>
-      <td><p>(string) The login of the organization.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>team</th>
-      <td><p>(integer or string, optional) The ID or name of the team.</p></td>
+      <th>description</th>
+      <td><p>(string, optional) A description of the milestone.</p></td>
+    </tr>
+    <tr>
+      <th>due_on</th>
+      <td><p>(string, optional) The milestone due date. This is in the format:
+<code>YYYY-MM-DD</code>.</p></td>
+    </tr>
+    <tr>
+      <th>state</th>
+      <td><p>(string, optional) The state of the milestone. Either <code>"open"</code> or <code>"closed"</code>.
+Default: <code>"open"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -146,24 +154,37 @@ also removes them from any teams within the organization.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>delete_membership()</code> returns a TRUE if successfully deleted.</p>
+    <p><code>create_milestone()</code> returns a list of the milestone's properties.</p>
+<p><strong>Milestone Properties:</strong></p><ul>
+<li><p><strong>id</strong>: The ID assigned to the milestone.</p></li>
+<li><p><strong>number</strong>: The number assigned to the milestone within the repository.</p></li>
+<li><p><strong>title</strong>: The title of the milestone.</p></li>
+<li><p><strong>description</strong>: The description of the milestone.</p></li>
+<li><p><strong>state</strong>: The state of the milestone - either "open" or "closed".</p></li>
+<li><p><strong>open_issues</strong>: The number of open issues within the milestone.</p></li>
+<li><p><strong>closed_issues</strong>: The number of closed issues within the milestone.</p></li>
+<li><p><strong>html_url</strong>: The URL of the milestone's web page in GitHub.</p></li>
+<li><p><strong>creator</strong>: The creator's login.</p></li>
+<li><p><strong>created_at</strong>: When the milestone was created.</p></li>
+<li><p><strong>updated_at</strong>: When the milestone was last updated.</p></li>
+<li><p><strong>due_on</strong>: When the milestone is due.</p></li>
+<li><p><strong>closed_at</strong>: When the milestone was closed.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: you can only remove a user if the authenticate user is an organization "owner" or a
-team "maintainer".</p>
-<p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/orgs/members/#remove-organization-membership'>https://developer.github.com/v3/orgs/members/#remove-organization-membership</a></p></li>
-<li><p><a href='https://developer.github.com/v3/teams/members/#remove-team-membership'>https://developer.github.com/v3/teams/members/#remove-team-membership</a></p></li>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/issues/milestones/#create-a-milestone'>https://developer.github.com/v3/issues/milestones/#create-a-milestone</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='co'># Remove a user from an organization</span>
-  <span class='fu'>delete_membership</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
-
-  <span class='co'># Remove a user from a team</span>
-  <span class='fu'>delete_membership</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>)
+  <span class='fu'>create_milestone</span>(
+    <span class='kw'>title</span>       <span class='kw'>=</span> <span class='st'>"test milestone"</span>,
+    <span class='kw'>repo</span>        <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"This is a test milestone"</span>,
+    <span class='kw'>due_on</span>      <span class='kw'>=</span> <span class='st'>"2030-01-01 00:00:00"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
