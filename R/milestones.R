@@ -188,3 +188,100 @@ update_milestone <- function(
   info("Done", level = 7)
   milestone_gh
 }
+
+
+#  FUNCTION: view_milestones ------------------------------------------------------------------
+#
+#' View milestones within a repository
+#'
+#' `view_milestones()` summarises milestones in a table with the properties as columns and a
+#' row for each milestone in the repository. `view_milestone()` returns a list of all
+#' properties for a single milestone. `browse_milestone()` opens the web page for the
+#' milestone in the default browser.
+#'
+#' You can summarise all the milestones of a repository in a specified `state` and change the
+#' order they are returned using `sort` and `direction`.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository>
+#'
+#' @param milestone (string or character) The number or title of the milestone.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param state (string, optional) The state of the milestones to filter the result. Can be
+#'   either `"open"`, `"closed"` or `"all"`. Default: `"open"`.
+#' @param sort (string, optional) The property to order the returned milestones by. Can
+#'   be either `"due_on"` or `"completeness"`. Default: `"due_on"`.
+#' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
+#'   `"desc"`. Default: `"asc"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_milestones()` returns a tibble of milestone properties. `view_milestones()`
+#'   returns a list of properties for a single milestone. `browse_milestone()` opens the
+#'   default browser on the milestone's page and returns the URL.
+#'
+#' **Milestone Properties:**
+#'
+#' - **id**: The ID assigned to the milestone.
+#' - **number**: The number assigned to the milestone within the repository.
+#' - **title**: The title of the milestone.
+#' - **description**: The description of the milestone.
+#' - **state**: The state of the milestone - either "open" or "closed".
+#' - **open_issues**: The number of open issues within the milestone.
+#' - **closed_issues**: The number of closed issues within the milestone.
+#' - **html_url**: The URL of the milestone's web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the milestone was created.
+#' - **updated_at**: When the milestone was last updated.
+#' - **due_on**: When the milestone is due.
+#' - **closed_at**: When the milestone was closed.
+#'
+#' @examples
+#' \dontrun{
+#'   # View open milestones in a repository
+#'   view_milestones("ChadGoymer/test-githapi")
+#'
+#'   # View closed milestones in a repository
+#'   view_milestones("ChadGoymer/test-githapi", state = "closed")
+#'
+#'   # View a single milestone
+#'   view_milestone(
+#'     milestone = "test milestone",
+#'     repo      = "ChadGoymer/test-githapi")
+#'
+#'   # Open a milestone's page in a browser
+#'   browse_milestone(
+#'     milestone = "test milestone",
+#'     repo      = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+view_milestones <- function(
+  repo,
+  state     = "open",
+  sort      = "due_on",
+  direction = "asc",
+  n_max     = 1000,
+  ...)
+{
+  assert(
+    is_scalar_character(state) && state %in% values$milestone$state,
+    "'state' must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+  assert(
+    is_scalar_character(sort) && sort %in% values$milestone$sort,
+    "'sort' must be either '", paste(values$milestone$sort, collapse = "', '"), "':\n  ", sort)
+  assert(
+    is_scalar_character(direction) && direction %in% values$milestone$direction,
+    "'direction' must be either '", paste(values$milestone$direction, collapse = "', '"), "':\n  ", direction)
+
+  info("Viewing milestones for respository '", repo, "'")
+  milestones_lst <- gh_url("repos", repo, "milestones", state = state, sort = sort, direction = direction) %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  milestones_gh <- bind_properties(milestones_lst, properties$milestone)
+
+  info("Done", level = 7)
+  milestones_gh
+}

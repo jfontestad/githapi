@@ -140,3 +140,56 @@ test_that("update_milestone changes a milestone and returns a list of the proper
   expect_identical(closed_milestone$state, "closed")
 
 })
+
+
+# TEST: view_milestones -----------------------------------------------------------------------
+
+test_that("view_milestones returns a tibble of milestone properties", {
+
+  milestones <- view_milestones(paste0("ChadGoymer/test-milestones-", now))
+
+  expect_is(milestones, "tbl")
+  expect_identical(attr(milestones, "status"), 200L)
+  expect_identical(
+    map_chr(milestones, ~ class(.)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      title         = "character",
+      description   = "character",
+      state         = "character",
+      open_issues   = "integer",
+      closed_issues = "integer",
+      html_url      = "character",
+      creator       = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      due_on        = "POSIXct",
+      closed_at     = "POSIXct"))
+
+  expect_true(paste("test detailed milestone", now) %in% milestones$title)
+
+  closed_milestones <- view_milestones(
+    repo  = paste0("ChadGoymer/test-milestones-", now),
+    state = "closed")
+
+  expect_is(closed_milestones, "tbl")
+  expect_identical(attr(closed_milestones, "status"), 200L)
+  expect_identical(
+    map_chr(closed_milestones, ~ class(.)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      title         = "character",
+      description   = "character",
+      state         = "character",
+      open_issues   = "integer",
+      closed_issues = "integer",
+      html_url      = "character",
+      creator       = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      due_on        = "POSIXct",
+      closed_at     = "POSIXct"))
+
+  expect_true(paste("test updated milestone", now) %in% closed_milestones$title)
+
+})
