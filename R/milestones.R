@@ -348,3 +348,50 @@ browse_milestone <- function(
     status  = attr(milestone, "status"),
     header  = attr(milestone, "header"))
 }
+
+
+#  FUNCTION: delete_milestone -----------------------------------------------------------------
+#
+#' Delete a milestone from a repository
+#'
+#' This function deletes a milestone from a repository, as long as you have appropriate
+#' permissions. Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/milestones/#delete-a-milestone>
+#'
+#' @param milestone (string or character) The number or title of the milestone.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_milestone()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   # Delete a milestone
+#'   delete_milestone(
+#'     milestone = "test milestone",
+#'     repo      = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+delete_milestone <- function(
+  milestone,
+  repo,
+  ...)
+{
+  milestone <- view_milestone(milestone = milestone, repo = repo)
+
+  info("Deleting milestone '", milestone$title, "' in repository '", repo, "'")
+  response <- gh_url("repos", repo, "milestones", milestone$number) %>% gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}

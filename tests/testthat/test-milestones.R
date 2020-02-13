@@ -271,3 +271,24 @@ test_that("browse_milestone opens the milestone's page in the browser", {
     paste0("https://github.com/ChadGoymer/test-milestones-", now, "/milestone/1"))
 
 })
+
+
+# TEST: delete_milestone ----------------------------------------------------------------------
+
+test_that("delete_milestone removes a milestone and returns TRUE", {
+
+  first_milestone <- delete_milestone(1, repo = paste0("ChadGoymer/test-milestones-", now))
+
+  expect_is(first_milestone, "logical")
+  expect_identical(attr(first_milestone, "status"), 204L)
+  expect_identical(as.logical(first_milestone), TRUE)
+
+  named_milestone <- delete_milestone(
+    milestone = paste("test detailed milestone", now),
+    repo      = paste0("ChadGoymer/test-milestones-", now))
+
+  expect_is(named_milestone, "logical")
+  expect_identical(attr(named_milestone, "status"), 204L)
+  expect_identical(as.logical(named_milestone), TRUE)
+
+})
