@@ -82,3 +82,109 @@ create_milestone <- function(
   info("Done", level = 7)
   milestone_gh
 }
+
+
+#  FUNCTION: update_milestone -----------------------------------------------------------------
+#
+#' Update a milestone in a repository
+#'
+#' This function updates a milestone for the specified repository in GitHub. It can be used to
+#' change title, description or due date, but can also be used to close the milestone.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/milestones/#update-a-milestone>
+#'
+#' @param milestone (string or character) The number or title of the milestone.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param title (string, optional) The title of the milestone.
+#' @param description (string, optional) A description of the milestone.
+#' @param due_on (string, optional) The milestone due date. This is in the format:
+#'   `YYYY-MM-DD HH:MM:SS`.
+#' @param state (string, optional) The state of the milestone. Either `"open"` or `"closed"`.
+#'   Default: `"open"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_milestone()` returns a list of the milestone properties.
+#'
+#' **Milestone Properties:**
+#'
+#' - **id**: The ID assigned to the milestone.
+#' - **number**: The number assigned to the milestone within the repository.
+#' - **title**: The title of the milestone.
+#' - **description**: The description of the milestone.
+#' - **state**: The state of the milestone - either "open" or "closed".
+#' - **open_issues**: The number of open issues within the milestone.
+#' - **closed_issues**: The number of closed issues within the milestone.
+#' - **html_url**: The URL of the milestone's web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the milestone was created.
+#' - **updated_at**: When the milestone was last updated.
+#' - **due_on**: When the milestone is due.
+#' - **closed_at**: When the milestone was closed.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update the properties of a milestone
+#'   update_milestone(
+#'     milestone   = "test milestone",
+#'     repo        = "ChadGoymer/test-githapi",
+#'     title       = "updated test milestone",
+#'     description = "This is an updated test milestone",
+#'     due_on      = "2020-12-01")
+#'
+#'   # Close a milestone
+#'   update_milestone(
+#'     milestone = "updated test milestone",
+#'     repo      = "ChadGoymer/test-githapi",
+#'     state     = "closed")
+#' }
+#'
+#' @export
+#'
+update_milestone <- function(
+  milestone,
+  repo,
+  title,
+  description,
+  due_on,
+  state,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  payload <- list()
+
+  if (!missing(title)) {
+    assert(is_scalar_character(title), "'title' must be a string:\n  ", title)
+    payload$title <- title
+  }
+
+  if (!missing(description)) {
+    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    payload$description <- description
+  }
+
+  if (!missing(due_on)) {
+    assert(is_character(due_on), "'due_on' must be a character vector:\n  ", due_on)
+    payload$due_on <- (as.POSIXct(due_on) + 12*60*60) %>% format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+  }
+
+  if (!missing(state)) {
+    assert(
+      is_scalar_character(state) && state %in% values$milestone$state,
+      "'state' for milestones must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+    payload$state <- state
+  }
+
+  milestone <- view_milestone(milestone, repo = repo)
+
+  info("Updating milestone '", milestone$title, "' in repository '", repo, "'")
+  milestone_lst <- gh_url("repos", repo, "milestones", milestone$number) %>%
+    gh_request("PATCH", payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  milestone_gh <- select_properties(milestone_lst, properties$milestone)
+
+  info("Done", level = 7)
+  milestone_gh
+}

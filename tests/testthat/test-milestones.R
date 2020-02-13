@@ -79,3 +79,64 @@ test_that("create_milestone creates a milestone and returns a list of the proper
   expect_identical(detailed_milestone$state, "open")
 
 })
+
+
+# TEST: update_milestone ----------------------------------------------------------------------
+
+test_that("update_milestone changes a milestone and returns a list of the properties", {
+
+  updated_milestone <- update_milestone(
+    milestone   = paste("test simple milestone", now),
+    repo        = paste0("ChadGoymer/test-milestones-", now),
+    title       = paste("test updated milestone", now),
+    description = "This is an updated test milestone",
+    due_on      = format(Sys.Date() + 28))
+
+  expect_is(updated_milestone, "list")
+  expect_identical(attr(updated_milestone, "status"), 200L)
+  expect_identical(
+    map_chr(updated_milestone, ~ class(.)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      title         = "character",
+      description   = "character",
+      state         = "character",
+      open_issues   = "integer",
+      closed_issues = "integer",
+      html_url      = "character",
+      creator       = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      due_on        = "POSIXct",
+      closed_at     = "POSIXct"))
+
+  expect_identical(updated_milestone$title, paste("test updated milestone", now))
+  expect_identical(updated_milestone$description, "This is an updated test milestone")
+  expect_identical(format(updated_milestone$due_on, "%Y-%m-%d"), format(Sys.Date() + 28))
+
+  closed_milestone <- update_milestone(
+    milestone = paste("test updated milestone", now),
+    repo      = paste0("ChadGoymer/test-milestones-", now),
+    state     = "closed")
+
+  expect_is(closed_milestone, "list")
+  expect_identical(attr(closed_milestone, "status"), 200L)
+  expect_identical(
+    map_chr(closed_milestone, ~ class(.)[[1]]),
+    c(id            = "integer",
+      number        = "integer",
+      title         = "character",
+      description   = "character",
+      state         = "character",
+      open_issues   = "integer",
+      closed_issues = "integer",
+      html_url      = "character",
+      creator       = "character",
+      created_at    = "POSIXct",
+      updated_at    = "POSIXct",
+      due_on        = "POSIXct",
+      closed_at     = "POSIXct"))
+
+  expect_identical(closed_milestone$state, "closed")
+
+})
