@@ -34,7 +34,7 @@ be either \code{"created"}, \code{"updated"}, \code{"pushed"} or \code{"full_nam
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 }
 \value{
 \code{view_repositories()} returns a tibble of repository properties.

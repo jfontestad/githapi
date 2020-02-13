@@ -23,9 +23,9 @@ update_repository(
 )
 }
 \arguments{
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{name}{(string) The name of the repository.}
+\item{name}{(string, optional) The name of the repository.}
 
 \item{description}{(string, optional) A short description of the repository.}
 
