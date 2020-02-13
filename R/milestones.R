@@ -322,3 +322,29 @@ view_milestone <- function(
   info("Done", level = 7)
   milestone_gh
 }
+
+
+#  FUNCTION: browse_milestone -----------------------------------------------------------------
+#
+#' @rdname view_milestones
+#' @export
+#'
+browse_milestone <- function(
+  milestone,
+  repo,
+  ...)
+{
+  milestone <- view_milestone(milestone = milestone, repo = repo)
+
+  info("Browsing milestone '", milestone$title, "' in repository '", repo, "'")
+  httr::BROWSE(milestone$html_url)
+
+  info("Done", level = 7)
+  structure(
+    milestone$html_url,
+    class   = c("github", "character"),
+    url     = attr(milestone, "url"),
+    request = attr(milestone, "request"),
+    status  = attr(milestone, "status"),
+    header  = attr(milestone, "header"))
+}

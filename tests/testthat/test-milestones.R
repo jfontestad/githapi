@@ -254,3 +254,20 @@ test_that("view_milestone throws an error if invalid arguments are supplied", {
     "'milestone' must be either an integer or a string")
 
 })
+
+
+# TEST: browse_milestone ----------------------------------------------------------------------
+
+test_that("browse_milestone opens the milestone's page in the browser", {
+
+  skip_if(!interactive(), "browse_milestone must be tested manually")
+
+  milestone_url <- browse_milestone(1, repo = paste0("ChadGoymer/test-milestones-", now))
+
+  expect_is(milestone_url, "character")
+  expect_identical(attr(milestone_url, "status"), 200L)
+  expect_identical(
+    as.character(milestone_url),
+    paste0("https://github.com/ChadGoymer/test-milestones-", now, "/milestone/1"))
+
+})

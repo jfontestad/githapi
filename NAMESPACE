@@ -3,6 +3,7 @@
 S3method(print,github)
 export(blobs_exist)
 export(branches_exist)
+export(browse_milestone)
 export(browse_organization)
 export(browse_project)
 export(browse_repository)
