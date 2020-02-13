@@ -46,6 +46,14 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
+\section{Issues, labels and milestones}{
+
+\itemize{
+\item \code{\link[=gh_milestone]{gh_milestone()}}: replace with \code{\link[=view_milestone]{view_milestone()}}
+\item \code{\link[=gh_milestones]{gh_milestones()}}: replace with \code{\link[=view_milestones]{view_milestones()}}
+}
+}
+
 \section{Projects Functions}{
 
 \itemize{

@@ -268,6 +268,8 @@ update_repository <- function(
   archived,
   ...)
 {
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
   payload <- list()
 
   if (!missing(name)) {

@@ -212,5 +212,7 @@ reference:
     - '`gh_repository`'
     - '`is_repository`'
     - '`gh_repositories`'
+    - '`gh_milestone`'
+    - '`gh_milestones`'
 news:
 - one_page: false

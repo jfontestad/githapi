@@ -117,7 +117,7 @@ test_that("gh_issue_comment returns a list describing the comment", {
 
 #  FUNCTION: gh_label -------------------------------------------------------------------------
 test_that("gh_label returns a list describing the label", {
-  label <- gh_label("bug", "ChadGoymer/githapi")
+  label <- suppressWarnings(gh_label("bug", "ChadGoymer/githapi"))
   expect_is(label, "list")
   expect_named(label, c("id", "node_id", "url", "name", "color", "default", "description"))
   expect_identical(label$name, "bug")
@@ -126,7 +126,7 @@ test_that("gh_label returns a list describing the label", {
 
 #  FUNCTION: gh_labels ------------------------------------------------------------------------
 test_that("gh_labels returns a tibble of information about the labels", {
-  labels <- gh_labels("ChadGoymer/githapi")
+  labels <- suppressWarnings(gh_labels("ChadGoymer/githapi"))
   expect_is(labels, "tbl")
 
   expect_identical(
@@ -140,7 +140,7 @@ test_that("gh_labels returns a tibble of information about the labels", {
   expect_true("bug" %in% labels$name)
   expect_true("d73a4a" %in% labels$color)
 
-  issue_labels <- gh_labels("ChadGoymer/githapi", issue = 1)
+  issue_labels <- suppressWarnings(gh_labels("ChadGoymer/githapi", issue = 1))
   expect_is(labels, "tbl")
 
   expect_identical(
@@ -154,7 +154,7 @@ test_that("gh_labels returns a tibble of information about the labels", {
   expect_true("test" %in% labels$name)
   expect_true("e39af9" %in% labels$color)
 
-  milestone_labels <- gh_labels("ChadGoymer/githapi", milestone = 1)
+  milestone_labels <- suppressWarnings(gh_labels("ChadGoymer/githapi", milestone = 1))
   expect_is(labels, "tbl")
 
   expect_identical(
@@ -171,7 +171,7 @@ test_that("gh_labels returns a tibble of information about the labels", {
 
 #  FUNCTION: gh_milestone ---------------------------------------------------------------------
 test_that("gh_milestone returns a list describing a milestone", {
-  milestone <- gh_milestone(1, "ChadGoymer/githapi")
+  milestone <- suppressWarnings(gh_milestone(1, "ChadGoymer/githapi"))
   expect_is(milestone, "list")
   expect_named(
     milestone,
@@ -183,7 +183,7 @@ test_that("gh_milestone returns a list describing a milestone", {
 
 #  FUNCTION: gh_milestones --------------------------------------------------------------------
 test_that("gh_milestones returns a tibble describing the milestones", {
-  milestones <- gh_milestones("ChadGoymer/githapi", state = "all")
+  milestones <- suppressWarnings(gh_milestones("ChadGoymer/githapi", state = "all"))
   expect_is(milestones, "tbl")
 
   expect_identical(

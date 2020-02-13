@@ -371,6 +371,8 @@ gh_label <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_label", package = "githapi")
+
   assert(is_scalar_character(name))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -412,6 +414,8 @@ gh_labels <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_labels", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -465,6 +469,8 @@ gh_milestone <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_milestone", package = "githapi")
+
   assert(is_scalar_integerish(milestone) && isTRUE(milestone > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -504,6 +510,8 @@ gh_milestones <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_milestones", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_null(state) || is_scalar_character(state))
   assert(is_null(sort) || is_scalar_character(sort))
