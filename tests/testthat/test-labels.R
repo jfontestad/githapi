@@ -104,3 +104,22 @@ test_that("view_labels returns a tibble of label properties", {
   expect_true("detailed-label" %in% labels$name)
 
 })
+
+
+# TEST: view_label ----------------------------------------------------------------------------
+
+test_that("view_label returns a list of repository properties", {
+
+  detailed_label <- view_label("detailed-label", repo = paste0("ChadGoymer/test-labels-", now))
+
+  expect_is(detailed_label, "list")
+  expect_identical(attr(detailed_label, "status"), 200L)
+  expect_identical(
+    map_chr(detailed_label, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_identical(detailed_label$name, "detailed-label")
+
+})

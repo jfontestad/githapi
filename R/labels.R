@@ -188,3 +188,28 @@ view_labels <- function(
   info("Done", level = 7)
   labels_gh
 }
+
+
+#  FUNCTION: view_label -----------------------------------------------------------------------
+#
+#' @rdname view_labels
+#' @export
+#'
+view_label <- function(
+  label,
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
+
+  info("Viewing label '", label, "' for repository '", repo, "'")
+  label_lst <- gh_url("repos", repo, "labels", label) %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  label_gh <- select_properties(label_lst, properties$label)
+
+  info("Done", level = 7)
+  label_gh
+}
