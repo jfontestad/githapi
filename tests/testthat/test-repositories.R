@@ -449,7 +449,7 @@ test_that("browse_repository opens the repository's page in the browser", {
 
 # TEST: delete_repository ---------------------------------------------------------------------
 
-test_that("delete_repository removes a respository and returns TRUE", {
+test_that("delete_repository removes a repository and returns TRUE", {
 
   user_repo <- delete_repository(paste0("ChadGoymer/updated-user-repository-", now))
 

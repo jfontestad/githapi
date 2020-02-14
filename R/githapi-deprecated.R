@@ -39,6 +39,11 @@
 #' - [gh_repositories()]: replace with [view_repositories()]
 #' - [is_repository()]: is being removed
 #'
+#' @section Issues, labels and milestones:
+#'
+#' - [gh_milestone()]: replace with [view_milestone()]
+#' - [gh_milestones()]: replace with [view_milestones()]
+#'
 #' @section Projects Functions:
 #'
 #' - [gh_project()]: replace with [view_project()]

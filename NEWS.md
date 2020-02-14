@@ -1,3 +1,12 @@
+# githapi 0.9.14
+
+- Added `create_milestone()`
+- Added `update_milestone()`
+- Added `view_milestones()`
+- Added `view_milestone()`
+- Added `browse_milestone()`
+- Added `delete_milestone()`
+
 # githapi 0.9.13
 
 - Added `create_repository()`

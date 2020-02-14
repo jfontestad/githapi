@@ -170,7 +170,7 @@ create_repository <- function(
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/repos/#edit>
 #'
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param name (string, optional) The name of the repository.
 #' @param description (string, optional) A short description of the repository.
 #' @param homepage (string, optional) A URL with more information about the repository.
@@ -268,6 +268,8 @@ update_repository <- function(
   archived,
   ...)
 {
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
   payload <- list()
 
   if (!missing(name)) {
@@ -373,7 +375,7 @@ update_repository <- function(
 #' - <https://developer.github.com/v3/repos/#list-organization-repositories>
 #' - <https://developer.github.com/v3/repos/#list-your-repositories>
 #'
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param sort (string, optional) The property to order the returned repositories by. Can

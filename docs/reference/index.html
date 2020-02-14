@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.14</span>
       </span>
     </div>
 
@@ -120,8 +120,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-repositories-issues-and-pull-requests" class="hasAnchor"><a href="#section-repositories-issues-and-pull-requests" class="anchor"></a>Repositories, Issues and Pull Requests</h2>
-          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting repositories, issues and pull requests.</p></p>
+          <h2 id="section-repositories" class="hasAnchor"><a href="#section-repositories" class="anchor"></a>Repositories</h2>
+          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting Repositories.</p></p>
         </th>
       </tr>
       <tr>
@@ -148,6 +148,38 @@
           <p><code><a href="delete_repository.html">delete_repository()</a></code> </p>
         </td>
         <td><p>Delete a user or organization repository</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-issues-pull-requests-labels-and-milestones" class="hasAnchor"><a href="#section-issues-pull-requests-labels-and-milestones" class="anchor"></a>Issues, Pull Requests, Labels and Milestones</h2>
+          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting issues and pull requests.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="create_milestone.html">create_milestone()</a></code> </p>
+        </td>
+        <td><p>Create a milestone in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="update_milestone.html">update_milestone()</a></code> </p>
+        </td>
+        <td><p>Update a milestone in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_milestones.html">view_milestones()</a></code> <code><a href="view_milestones.html">view_milestone()</a></code> <code><a href="view_milestones.html">browse_milestone()</a></code> </p>
+        </td>
+        <td><p>View milestones within a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="delete_milestone.html">delete_milestone()</a></code> </p>
+        </td>
+        <td><p>Delete a milestone from a repository</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -324,7 +356,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-repositories" class="hasAnchor"><a href="#section-repositories" class="anchor"></a>Repositories</h2>
+          <h2 id="section-repository-contents" class="hasAnchor"><a href="#section-repository-contents" class="anchor"></a>Repository contents</h2>
           <p class="section-desc"><p>Functions for accessing information about repositories and their content.</p></p>
         </th>
       </tr>
@@ -1194,6 +1226,18 @@
           <p><code><a href="gh_repositories.html">gh_repositories()</a></code> </p>
         </td>
         <td><p>Get information about a user's, organization's or team's repositories.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_milestone.html">gh_milestone()</a></code> </p>
+        </td>
+        <td><p>Get a single milestone</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_milestones.html">gh_milestones()</a></code> </p>
+        </td>
+        <td><p>List milestones for a repository</p></td>
       </tr>
     </tbody>
     </table>
@@ -1202,10 +1246,11 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-repositories-issues-and-pull-requests">Repositories, Issues and Pull Requests</a></li>
+      <li><a href="#section-repositories">Repositories</a></li>
+      <li><a href="#section-issues-pull-requests-labels-and-milestones">Issues, Pull Requests, Labels and Milestones</a></li>
       <li><a href="#section-users-organizations-and-teams">Users, Organizations and Teams</a></li>
       <li><a href="#section-projects">Projects</a></li>
-      <li><a href="#section-repositories">Repositories</a></li>
+      <li><a href="#section-repository-contents">Repository contents</a></li>
       <li><a href="#section-git-data">Git Data</a></li>
       <li><a href="#section-gists">Gists</a></li>
       <li><a href="#section-issues">Issues</a></li>

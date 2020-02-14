@@ -142,7 +142,22 @@ properties <- list(
     disabled                                 = c("disabled",                                 as = "logical"),
     pushed_at                                = c("pushed_at",                                as = "datetime"),
     created_at                               = c("created_at",                               as = "datetime"),
-    updated_at                               = c("updated_at",                               as = "datetime"))
+    updated_at                               = c("updated_at",                               as = "datetime")),
+
+  milestone = list(
+    id                                       = c("id",                                       as = "integer"),
+    number                                   = c("number",                                   as = "integer"),
+    title                                    = c("title",                                    as = "character"),
+    description                              = c("description",                              as = "character"),
+    state                                    = c("state",                                    as = "character"),
+    open_issues                              = c("open_issues",                              as = "integer"),
+    closed_issues                            = c("closed_issues",                            as = "integer"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    creator                                  = c("creator", "login",                         as = "character"),
+    created_at                               = c("created_at",                               as = "datetime"),
+    updated_at                               = c("updated_at",                               as = "datetime"),
+    due_on                                   = c("due_on",                                   as = "datetime"),
+    closed_at                                = c("closed_at",                                as = "datetime"))
 
 )
 
@@ -188,6 +203,11 @@ values <- list(
   repository = list(
     sort                          = c("created", "updated", "pushed", "full_name"),
     direction                     = c("asc", "desc"),
-    permission                    = c("pull", "push", "admin"))
+    permission                    = c("pull", "push", "admin")),
+
+  milestone = list(
+    state                         = c("open", "closed", "all"),
+    sort                          = c("due_on", "completeness"),
+    direction                     = c("asc", "desc"))
 
 )
