@@ -26,7 +26,6 @@ Default: \code{"open"}.}
 
 \strong{Milestone Properties:}
 \itemize{
-\item \strong{id}: The ID assigned to the milestone.
 \item \strong{number}: The number assigned to the milestone within the repository.
 \item \strong{title}: The title of the milestone.
 \item \strong{description}: The description of the milestone.

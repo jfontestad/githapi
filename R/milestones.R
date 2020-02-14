@@ -21,7 +21,6 @@
 #'
 #' **Milestone Properties:**
 #'
-#' - **id**: The ID assigned to the milestone.
 #' - **number**: The number assigned to the milestone within the repository.
 #' - **title**: The title of the milestone.
 #' - **description**: The description of the milestone.
@@ -108,7 +107,6 @@ create_milestone <- function(
 #'
 #' **Milestone Properties:**
 #'
-#' - **id**: The ID assigned to the milestone.
 #' - **number**: The number assigned to the milestone within the repository.
 #' - **title**: The title of the milestone.
 #' - **description**: The description of the milestone.
@@ -222,7 +220,6 @@ update_milestone <- function(
 #'
 #' **Milestone Properties:**
 #'
-#' - **id**: The ID assigned to the milestone.
 #' - **number**: The number assigned to the milestone within the repository.
 #' - **title**: The title of the milestone.
 #' - **description**: The description of the milestone.
@@ -265,6 +262,8 @@ view_milestones <- function(
   n_max     = 1000,
   ...)
 {
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
   assert(
     is_scalar_character(state) && state %in% values$milestone$state,
     "'state' must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)

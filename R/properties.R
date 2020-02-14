@@ -145,7 +145,6 @@ properties <- list(
     updated_at                               = c("updated_at",                               as = "datetime")),
 
   milestone = list(
-    id                                       = c("id",                                       as = "integer"),
     number                                   = c("number",                                   as = "integer"),
     title                                    = c("title",                                    as = "character"),
     description                              = c("description",                              as = "character"),

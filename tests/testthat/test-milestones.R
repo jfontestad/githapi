@@ -32,8 +32,7 @@ test_that("create_milestone creates a milestone and returns a list of the proper
   expect_identical(attr(simple_milestone, "status"), 201L)
   expect_identical(
     map_chr(simple_milestone, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
@@ -59,8 +58,7 @@ test_that("create_milestone creates a milestone and returns a list of the proper
   expect_identical(attr(detailed_milestone, "status"), 201L)
   expect_identical(
     map_chr(detailed_milestone, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
@@ -96,8 +94,7 @@ test_that("update_milestone changes a milestone and returns a list of the proper
   expect_identical(attr(updated_milestone, "status"), 200L)
   expect_identical(
     map_chr(updated_milestone, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
@@ -123,8 +120,7 @@ test_that("update_milestone changes a milestone and returns a list of the proper
   expect_identical(attr(closed_milestone, "status"), 200L)
   expect_identical(
     map_chr(closed_milestone, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
@@ -152,8 +148,7 @@ test_that("view_milestones returns a tibble of milestone properties", {
   expect_identical(attr(milestones, "status"), 200L)
   expect_identical(
     map_chr(milestones, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
@@ -176,8 +171,7 @@ test_that("view_milestones returns a tibble of milestone properties", {
   expect_identical(attr(closed_milestones, "status"), 200L)
   expect_identical(
     map_chr(closed_milestones, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
@@ -205,8 +199,7 @@ test_that("view_milestone returns a list of repository properties", {
   expect_identical(attr(first_milestone, "status"), 200L)
   expect_identical(
     map_chr(first_milestone, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
@@ -229,8 +222,7 @@ test_that("view_milestone returns a list of repository properties", {
   expect_identical(attr(named_milestone, "status"), 200L)
   expect_identical(
     map_chr(named_milestone, ~ class(.)[[1]]),
-    c(id            = "integer",
-      number        = "integer",
+    c(number        = "integer",
       title         = "character",
       description   = "character",
       state         = "character",
