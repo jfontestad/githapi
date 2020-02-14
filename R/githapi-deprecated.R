@@ -41,6 +41,8 @@
 #'
 #' @section Issues, labels and milestones:
 #'
+#' - [gh_label()]: replace with [view_label()]
+#' - [gh_labels()]: replace with [view_labels()]
 #' - [gh_milestone()]: replace with [view_milestone()]
 #' - [gh_milestones()]: replace with [view_milestones()]
 #'

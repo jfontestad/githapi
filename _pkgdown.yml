@@ -134,10 +134,6 @@ reference:
     - '`gh_assignees`'
     - '`gh_issue_comments`'
     - '`gh_issue_comment`'
-    - '`gh_label`'
-    - '`gh_labels`'
-    - '`gh_milestone`'
-    - '`gh_milestones`'
     - '`gh_event`'
     - '`gh_events`'
 - title: Pull Requests
@@ -219,6 +215,8 @@ reference:
     - '`gh_repository`'
     - '`is_repository`'
     - '`gh_repositories`'
+    - '`gh_label`'
+    - '`gh_labels`'
     - '`gh_milestone`'
     - '`gh_milestones`'
 news:
