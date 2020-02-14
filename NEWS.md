@@ -1,3 +1,12 @@
+# githapi 0.9.15
+
+- Added `create_label()`
+- Added `update_label()`
+- Added `view_labels()`
+- Added `view_label()`
+- Added `delete_label()`
+- Removed `ID` from milestone properties
+
 # githapi 0.9.14
 
 - Added `create_milestone()`

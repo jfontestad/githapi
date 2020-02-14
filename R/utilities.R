@@ -37,6 +37,38 @@ is_repo <- function(x)
 }
 
 
+# FUNCTION: is_hex ----------------------------------------------------------------------------
+#
+# Checks whether the supplied object is a hexidecimal color code
+#
+# @param x Object to check
+#
+# @return TRUE if x is a valid hexidecimal color code, FALSE otherwise
+#
+is_hex <- function(x)
+{
+  is_scalar_character(x) && nchar(x) == 7 && startsWith(x, "#")
+}
+
+
+# FUNCTION: as_hex ----------------------------------------------------------------------------
+#
+# convert a vector of color names into hexidecimal codes
+#
+# @param x (character) The vector to convert
+#
+# @return A character vector of hexidecimal codes
+#
+as_hex <- function(color_name)
+{
+  color_matrix <- grDevices::col2rgb(color_name)
+  grDevices::rgb(
+    red   = color_matrix[1,] / 255,
+    green = color_matrix[2,] / 255,
+    blue  = color_matrix[3,] / 255)
+}
+
+
 # FUNCTION: as.datetime -----------------------------------------------------------------------
 #
 # convert a vector into a date time (POSIXct) vector

@@ -24,6 +24,10 @@ reference:
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
   contents:
+    - '`create_label`'
+    - '`update_label`'
+    - '`view_labels`'
+    - '`delete_label`'
     - '`create_milestone`'
     - '`update_milestone`'
     - '`view_milestones`'
@@ -134,10 +138,6 @@ reference:
     - '`gh_assignees`'
     - '`gh_issue_comments`'
     - '`gh_issue_comment`'
-    - '`gh_label`'
-    - '`gh_labels`'
-    - '`gh_milestone`'
-    - '`gh_milestones`'
     - '`gh_event`'
     - '`gh_events`'
 - title: Pull Requests
@@ -219,6 +219,8 @@ reference:
     - '`gh_repository`'
     - '`is_repository`'
     - '`gh_repositories`'
+    - '`gh_label`'
+    - '`gh_labels`'
     - '`gh_milestone`'
     - '`gh_milestones`'
 news:

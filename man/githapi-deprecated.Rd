@@ -49,6 +49,8 @@ possible, alternative functions with similar functionality are also mentioned.
 \section{Issues, labels and milestones}{
 
 \itemize{
+\item \code{\link[=gh_label]{gh_label()}}: replace with \code{\link[=view_label]{view_label()}}
+\item \code{\link[=gh_labels]{gh_labels()}}: replace with \code{\link[=view_labels]{view_labels()}}
 \item \code{\link[=gh_milestone]{gh_milestone()}}: replace with \code{\link[=view_milestone]{view_milestone()}}
 \item \code{\link[=gh_milestones]{gh_milestones()}}: replace with \code{\link[=view_milestones]{view_milestones()}}
 }
