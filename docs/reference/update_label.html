@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get organization and team membership — gh_membership • githapi</title>
+<title>Update a label in a repository — update_label • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Get organization and team membership — gh_membership" />
-<meta property="og:description" content="https://developer.github.com/v3/orgs/members/#get-organization-membership
-https://developer.github.com/v3/orgs/teams/#get-team-membership" />
+<meta property="og:title" content="Update a label in a repository — update_label" />
+<meta property="og:description" content="This function updates a label for the specified repository in GitHub. It can be used to
+change name, color or description." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,63 +109,67 @@ https://developer.github.com/v3/orgs/teams/#get-team-membership" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get organization and team membership</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/organizations-deprecated.R'><code>R/organizations-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_membership.Rd</code></div>
+    <h1>Update a label in a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/labels.R'><code>R/labels.R</code></a></small>
+    <div class="hidden name"><code>update_label.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://developer.github.com/v3/orgs/members/#get-organization-membership'>https://developer.github.com/v3/orgs/members/#get-organization-membership</a>
-<a href='https://developer.github.com/v3/orgs/teams/#get-team-membership'>https://developer.github.com/v3/orgs/teams/#get-team-membership</a></p>
+    <p>This function updates a label for the specified repository in GitHub. It can be used to
+change name, color or description.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_membership</span>(
-  <span class='no'>user</span>,
-  <span class='no'>org</span>,
-  <span class='no'>team</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_label</span>(<span class='no'>label</span>, <span class='no'>repo</span>, <span class='no'>name</span>, <span class='no'>color</span>, <span class='no'>description</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>user</th>
-      <td><p>(string, optional) The GitHub username of the user.</p></td>
+      <th>label</th>
+      <td><p>(string) The name of the label.</p></td>
     </tr>
     <tr>
-      <th>org</th>
-      <td><p>(string) The name of the organization.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>team</th>
-      <td><p>(integer) The GitHub ID of the team.</p></td>
+      <th>name</th>
+      <td><p>(string, optional) The name of the label.</p></td>
     </tr>
     <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+      <th>color</th>
+      <td><p>(string, optional) Either the color name (see <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code>) or a
+hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a>).</p></td>
     </tr>
     <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <th>description</th>
+      <td><p>(string, optional) A description of the label.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_get.html'>gh_get()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list describing the membership (see GitHub's API documentation for details).</p>
+    <p><code>update_label()</code> returns a list of the label properties.</p>
+<p><strong>Label Properties:</strong></p><ul>
+<li><p><strong>name</strong>: The name of the label.</p></li>
+<li><p><strong>color</strong>: The color of the label in hexidecimal code.</p></li>
+<li><p><strong>description</strong>: The description of the label.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: Must specify either <code>org</code> or <code>team</code>, but not both.</p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/issues/labels/#update-a-label'>https://developer.github.com/v3/issues/labels/#update-a-label</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,6 +177,7 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

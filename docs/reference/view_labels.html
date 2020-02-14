@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get organization and team membership — gh_membership • githapi</title>
+<title>View labels within a repository — view_labels • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,10 @@
 
 
 
-<meta property="og:title" content="Get organization and team membership — gh_membership" />
-<meta property="og:description" content="https://developer.github.com/v3/orgs/members/#get-organization-membership
-https://developer.github.com/v3/orgs/teams/#get-team-membership" />
+<meta property="og:title" content="View labels within a repository — view_labels" />
+<meta property="og:description" content="view_labels() summarises labels in a table with the properties as columns and a row for
+each label in the repository. view_label() returns a list of all properties for a single
+label." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,63 +110,64 @@ https://developer.github.com/v3/orgs/teams/#get-team-membership" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get organization and team membership</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/organizations-deprecated.R'><code>R/organizations-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_membership.Rd</code></div>
+    <h1>View labels within a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/labels.R'><code>R/labels.R</code></a></small>
+    <div class="hidden name"><code>view_labels.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://developer.github.com/v3/orgs/members/#get-organization-membership'>https://developer.github.com/v3/orgs/members/#get-organization-membership</a>
-<a href='https://developer.github.com/v3/orgs/teams/#get-team-membership'>https://developer.github.com/v3/orgs/teams/#get-team-membership</a></p>
+    <p><code>view_labels()</code> summarises labels in a table with the properties as columns and a row for
+each label in the repository. <code>view_label()</code> returns a list of all properties for a single
+label.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_membership</span>(
-  <span class='no'>user</span>,
-  <span class='no'>org</span>,
-  <span class='no'>team</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>view_labels</span>(<span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+
+<span class='fu'>view_label</span>(<span class='no'>label</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>user</th>
-      <td><p>(string, optional) The GitHub username of the user.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>org</th>
-      <td><p>(string) The name of the organization.</p></td>
-    </tr>
-    <tr>
-      <th>team</th>
-      <td><p>(integer) The GitHub ID of the team.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <th>n_max</th>
+      <td><p>(integer, optional) Maximum number to return. Default: <code>1000</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_get.html'>gh_get()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>(string) The name of the label.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list describing the membership (see GitHub's API documentation for details).</p>
+    <p><code>view_labels()</code> returns a tibble of label properties. <code>view_labels()</code>
+returns a list of properties for a single label. <code>browse_label()</code> opens the
+default browser on the label's page and returns the URL.</p>
+<p><strong>Label Properties:</strong></p><ul>
+<li><p><strong>name</strong>: The name of the label.</p></li>
+<li><p><strong>color</strong>: The color of the label in hexidecimal code.</p></li>
+<li><p><strong>description</strong>: The description of the label.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: Must specify either <code>org</code> or <code>team</code>, but not both.</p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository'>https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository</a></p></li>
+<li><p><a href='https://developer.github.com/v3/issues/labels/#get-a-single-label'>https://developer.github.com/v3/issues/labels/#get-a-single-label</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,6 +175,7 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
