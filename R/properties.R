@@ -144,6 +144,11 @@ properties <- list(
     created_at                               = c("created_at",                               as = "datetime"),
     updated_at                               = c("updated_at",                               as = "datetime")),
 
+  label = list(
+    name                                     = c("name",                                     as = "character"),
+    color                                    = c("color",                                    as = "character"),
+    description                              = c("description",                              as = "character")),
+
   milestone = list(
     number                                   = c("number",                                   as = "integer"),
     title                                    = c("title",                                    as = "character"),

@@ -1,0 +1,61 @@
+context("labels")
+
+
+# SETUP ---------------------------------------------------------------------------------------
+
+now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+
+setup(suppressMessages(try(silent = TRUE, {
+
+  test_repo <- create_repository(
+    name        = paste0("test-labels-", now),
+    description = "This is a repository to test labels")
+
+})))
+
+teardown(suppressMessages(try(silent = TRUE, {
+
+  delete_repository(paste0("ChadGoymer/test-labels-", now))
+
+})))
+
+
+# TEST: create_label --------------------------------------------------------------------------
+
+test_that("create_label creates a label and returns a list of the properties", {
+
+  simple_label <- create_label(
+    name  = "simple-label",
+    repo  = paste0("ChadGoymer/test-labels-", now),
+    color = "blue")
+
+  expect_is(simple_label, "list")
+  expect_identical(attr(simple_label, "status"), 201L)
+  expect_identical(
+    map_chr(simple_label, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_identical(simple_label$name, "simple-label")
+  expect_identical(simple_label$color, "0000FF")
+
+  detailed_label <- create_label(
+    name        = "detailed-label",
+    repo        = paste0("ChadGoymer/test-labels-", now),
+    color       = "green",
+    description = "This is a detailed label")
+
+  expect_is(detailed_label, "list")
+  expect_identical(attr(detailed_label, "status"), 201L)
+  expect_identical(
+    map_chr(detailed_label, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_identical(detailed_label$name, "detailed-label")
+  expect_identical(detailed_label$color, "00FF00")
+  expect_identical(detailed_label$description, "This is a detailed label")
+
+})
