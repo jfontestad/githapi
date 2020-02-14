@@ -213,3 +213,49 @@ view_label <- function(
   info("Done", level = 7)
   label_gh
 }
+
+
+#  FUNCTION: delete_label ---------------------------------------------------------------------
+#
+#' Delete a label from a repository
+#'
+#' This function deletes a label from a repository, as long as you have appropriate
+#' permissions. Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/labels/#delete-a-label>
+#'
+#' @param label (string) The name of the label.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_label()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   # Delete a label
+#'   delete_label(
+#'     label = "test label",
+#'     repo  = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+delete_label <- function(
+  label,
+  repo,
+  ...)
+{
+  info("Deleting label '", label, "' in repository '", repo, "'")
+  response <- gh_url("repos", repo, "labels", label) %>%
+    gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}

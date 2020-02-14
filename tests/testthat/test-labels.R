@@ -123,3 +123,22 @@ test_that("view_label returns a list of repository properties", {
   expect_identical(detailed_label$name, "detailed-label")
 
 })
+
+
+# TEST: delete_label --------------------------------------------------------------------------
+
+test_that("delete_label removes a label and returns TRUE", {
+
+  updated_label <- delete_label("updated-label", repo = paste0("ChadGoymer/test-labels-", now))
+
+  expect_is(updated_label, "logical")
+  expect_identical(attr(updated_label, "status"), 204L)
+  expect_identical(as.logical(updated_label), TRUE)
+
+  detailed_label <- delete_label("detailed-label", repo = paste0("ChadGoymer/test-labels-", now))
+
+  expect_is(detailed_label, "logical")
+  expect_identical(attr(detailed_label, "status"), 204L)
+  expect_identical(as.logical(detailed_label), TRUE)
+
+})
