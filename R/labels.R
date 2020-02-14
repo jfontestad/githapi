@@ -136,3 +136,55 @@ update_label <- function(
   info("Done", level = 7)
   label_gh
 }
+
+
+#  FUNCTION: view_labels ----------------------------------------------------------------------
+#
+#' View labels within a repository
+#'
+#' `view_labels()` summarises labels in a table with the properties as columns and a row for
+#' each label in the repository. `view_label()` returns a list of all properties for a single
+#' label.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository>
+#' - <https://developer.github.com/v3/issues/labels/#get-a-single-label>
+#'
+#' @param label (string) The name of the label.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_labels()` returns a tibble of label properties. `view_labels()`
+#'   returns a list of properties for a single label. `browse_label()` opens the
+#'   default browser on the label's page and returns the URL.
+#'
+#' **Label Properties:**
+#'
+#' - **name**: The name of the label.
+#' - **color**: The color of the label in hexidecimal code.
+#' - **description**: The description of the label.
+#'
+#' @examples
+#' \dontrun{
+#' }
+#'
+#' @export
+#'
+view_labels <- function(
+  repo,
+  n_max = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing labels for respository '", repo, "'")
+  labels_lst <- gh_url("repos", repo, "labels") %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  labels_gh <- bind_properties(labels_lst, properties$label)
+
+  info("Done", level = 7)
+  labels_gh
+}

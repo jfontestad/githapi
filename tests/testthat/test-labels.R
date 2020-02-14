@@ -85,3 +85,22 @@ test_that("update_label changes a label and returns a list of the properties", {
   expect_identical(updated_label$description, "This is an updated label")
 
 })
+
+
+# TEST: view_labels ---------------------------------------------------------------------------
+
+test_that("view_labels returns a tibble of label properties", {
+
+  labels <- view_labels(paste0("ChadGoymer/test-labels-", now))
+
+  expect_is(labels, "tbl")
+  expect_identical(attr(labels, "status"), 200L)
+  expect_identical(
+    map_chr(labels, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_true("detailed-label" %in% labels$name)
+
+})
