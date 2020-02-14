@@ -31,6 +31,30 @@ test_that("is_repo returns TRUE with a valid repo and FALSE otherwise", {
 })
 
 
+# TEST: is_hex --------------------------------------------------------------------------------
+
+test_that("is_hex returns TRUE with a valid hexadecimal color code and FALSE otherwise", {
+
+  expect_true(is_hex("#FFFFFF"))
+  expect_true(is_hex("#000000"))
+
+  expect_false(is_hex(NA))
+  expect_false(is_hex(NULL))
+  expect_false(is_hex(1))
+  expect_false(is_hex("bob"))
+
+})
+
+
+# TEST: as_hex --------------------------------------------------------------------------------
+
+test_that("as_hex converts a color name to a hexidecimal color code", {
+
+  expect_identical(as_hex("white"), "#FFFFFF")
+  expect_identical(as_hex("black"), "#000000")
+
+})
+
 
 # TEST: as.datetime ---------------------------------------------------------------------------
 
