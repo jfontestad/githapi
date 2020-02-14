@@ -24,6 +24,10 @@ reference:
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
   contents:
+    - '`create_label`'
+    - '`update_label`'
+    - '`view_labels`'
+    - '`delete_label`'
     - '`create_milestone`'
     - '`update_milestone`'
     - '`view_milestones`'
