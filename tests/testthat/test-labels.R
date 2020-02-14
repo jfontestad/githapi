@@ -59,3 +59,29 @@ test_that("create_label creates a label and returns a list of the properties", {
   expect_identical(detailed_label$description, "This is a detailed label")
 
 })
+
+
+# TEST: update_label --------------------------------------------------------------------------
+
+test_that("update_label changes a label and returns a list of the properties", {
+
+  updated_label <- update_label(
+    label       = "simple-label",
+    repo        = paste0("ChadGoymer/test-labels-", now),
+    name        = "updated-label",
+    color       = "pink",
+    description = "This is an updated label")
+
+  expect_is(updated_label, "list")
+  expect_identical(attr(updated_label, "status"), 200L)
+  expect_identical(
+    map_chr(updated_label, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_identical(updated_label$name, "updated-label")
+  expect_identical(updated_label$color, "FFC0CB")
+  expect_identical(updated_label$description, "This is an updated label")
+
+})
