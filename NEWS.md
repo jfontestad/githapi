@@ -1,3 +1,13 @@
+# githapi 0.9.16
+
+- Added `create_issue()`
+- Added `update_issue()`
+- Added `view_issues()`
+- Added `view_issue()`
+- Added `browse_issue()`
+- Corrected `gh_request`() error message
+- Made default color random in `create_label()`
+
 # githapi 0.9.15
 
 - Added `create_label()`
