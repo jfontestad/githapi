@@ -271,7 +271,6 @@ gh_request <- function(
   {
     assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
     httr::set_config(httr::use_proxy(proxy))
-    httr::set_config(httr::config(connecttimeout = 60))
     on.exit(httr::reset_config())
   }
 
@@ -301,8 +300,13 @@ gh_request <- function(
 
   if (httr::http_error(response))
   {
-    msg <- str_replace_all(parsed_response$message, "\\n\\n", "\n  ") %>%
-      c(map_chr(parsed_response$errors, "message")) %>%
+    message <- pluck(parsed_response, "message")
+    errors  <- pluck(parsed_response, "errors") %>%
+      map_chr(function(e) if (is_null(e$message)) str_c(e, collapse = " ") else e$message)
+    doc_url <- pluck(parsed_response, "documentation_url")
+
+    msg <- str_replace_all(message, "\\n\\n", "\n  ") %>%
+      c(errors) %>%
       str_c(collapse = "\n  ")
 
     error(
@@ -310,7 +314,7 @@ gh_request <- function(
       "\n[Status]  ", httr::status_code(response),
       "\n[URL]     ", url,
       "\n[Message] ", msg,
-      "\n[Details] ", parsed_response$documentation_url)
+      "\n[Details] ", doc_url)
   }
 
   structered_response <- structure(
