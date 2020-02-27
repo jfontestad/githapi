@@ -327,3 +327,112 @@ test_that("view_issues throws an error if invalid arguments are supplied", {
     "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss'")
 
 })
+
+
+# TEST: view_issue ----------------------------------------------------------------------------
+
+test_that("view_issue returns a list of issue properties", {
+
+  user_issue_number <- view_issue(1, str_c("ChadGoymer/test-issues-", now))
+
+  expect_is(user_issue_number, "list")
+  expect_identical(attr(user_issue_number, "status"), 200L)
+  expect_identical(
+    map_chr(user_issue_number, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_identical(user_issue_number$title, str_c("test updated issue ", now))
+
+  user_issue_title <- view_issue(str_c("test updated issue ", now), str_c("ChadGoymer/test-issues-", now))
+
+  expect_is(user_issue_title, "list")
+  expect_identical(attr(user_issue_title, "status"), 200L)
+  expect_identical(
+    map_chr(user_issue_title, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_identical(user_issue_title$title, str_c("test updated issue ", now))
+
+  org_issue_number <- view_issue(1, str_c("HairyCoos/test-issues-", now))
+
+  expect_is(org_issue_number, "list")
+  expect_identical(attr(org_issue_number, "status"), 200L)
+  expect_identical(
+    map_chr(org_issue_number, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_identical(org_issue_number$title, str_c("test organization issue ", now))
+
+  org_issue_title <- view_issue(
+    issue = str_c("test organization issue ", now),
+    repo  = str_c("HairyCoos/test-issues-", now))
+
+  expect_is(org_issue_title, "list")
+  expect_identical(attr(org_issue_title, "status"), 200L)
+  expect_identical(
+    map_chr(org_issue_title, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_identical(org_issue_title$title, str_c("test organization issue ", now))
+
+})
+
+test_that("view_issue throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_issue(TRUE, repo = str_c("ChadGoymer/test-issues-", now)),
+    "'issue' must be either an integer or a string")
+
+})

@@ -441,3 +441,52 @@ view_issues <- function(
   info("Done", level = 7)
   issues_gh
 }
+
+
+#  FUNCTION: view_issue -----------------------------------------------------------------------
+#
+#' @rdname view_issues
+#' @export
+#'
+view_issue <- function(
+  issue,
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (is_scalar_integerish(issue))
+  {
+    info("Viewing issue '", issue, "' for repository '", repo, "'")
+    issue_lst <- gh_url("repos", repo, "issues", issue) %>%
+      gh_request("GET", ...)
+  }
+  else if (is_scalar_character(issue))
+  {
+    info("Viewing issue '", issue, "' for repository '", repo, "'")
+    issue_lst <- gh_url("repos", repo, "issues", state = "all") %>%
+      gh_find(property  = "title", value = issue, ...)
+  }
+  else
+  {
+    error("'issue' must be either an integer or a string:\n  ", issue)
+  }
+
+  info("Transforming results", level = 4)
+  issue_gh <- select_properties(issue_lst, properties$issue) %>%
+    modify_list(
+      assignees = collapse_property(list(issue_lst), "assignees", "login"),
+      labels = collapse_property(list(issue_lst), "labels", "name"),
+      .before = "milestone") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(repository = repo)
+
+  info("Done", level = 7)
+  structure(
+    issue_gh,
+    class   = class(issue_lst),
+    url     = attr(issue_lst, "url"),
+    request = attr(issue_lst, "request"),
+    status  = attr(issue_lst, "status"),
+    header  = attr(issue_lst, "header"))
+}
