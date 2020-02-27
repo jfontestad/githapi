@@ -100,7 +100,6 @@ create_milestone <- function(
 #' @param due_on (string, optional) The milestone due date. This is in the format:
 #'   `YYYY-MM-DD HH:MM:SS`.
 #' @param state (string, optional) The state of the milestone. Either `"open"` or `"closed"`.
-#'   Default: `"open"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `update_milestone()` returns a list of the milestone properties.
@@ -214,7 +213,7 @@ update_milestone <- function(
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return `view_milestones()` returns a tibble of milestone properties. `view_milestones()`
+#' @return `view_milestones()` returns a tibble of milestone properties. `view_milestone()`
 #'   returns a list of properties for a single milestone. `browse_milestone()` opens the
 #'   default browser on the milestone's page and returns the URL.
 #'

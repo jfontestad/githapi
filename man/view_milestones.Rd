@@ -38,7 +38,7 @@ be either \code{"due_on"} or \code{"completeness"}. Default: \code{"due_on"}.}
 \item{milestone}{(string or character) The number or title of the milestone.}
 }
 \value{
-\code{view_milestones()} returns a tibble of milestone properties. \code{view_milestones()}
+\code{view_milestones()} returns a tibble of milestone properties. \code{view_milestone()}
 returns a list of properties for a single milestone. \code{browse_milestone()} opens the
 default browser on the milestone's page and returns the URL.
 

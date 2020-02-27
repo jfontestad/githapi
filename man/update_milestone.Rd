@@ -18,8 +18,7 @@ update_milestone(milestone, repo, title, description, due_on, state, ...)
 \item{due_on}{(string, optional) The milestone due date. This is in the format:
 \verb{YYYY-MM-DD HH:MM:SS}.}
 
-\item{state}{(string, optional) The state of the milestone. Either \code{"open"} or \code{"closed"}.
-Default: \code{"open"}.}
+\item{state}{(string, optional) The state of the milestone. Either \code{"open"} or \code{"closed"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }

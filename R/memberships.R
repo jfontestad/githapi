@@ -273,10 +273,10 @@ view_membership <- function(
 #' @examples
 #' \dontrun{
 #'   # Remove a user from an organization
-#'   delete_membership("HeadCoos", "HairyCoos")
+#'   delete_membership("ChadGoymer", "HairyCoos")
 #'
 #'   # Remove a user from a team
-#'   delete_membership("HeadCoos", "HairyCoos", "HeadCoos")
+#'   delete_membership("ChadGoymer", "HairyCoos", "HeadCoos")
 #' }
 #'
 #' @export
