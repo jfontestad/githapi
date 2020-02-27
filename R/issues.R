@@ -118,3 +118,150 @@ create_issue <- function(
     status  = attr(issue_lst, "status"),
     header  = attr(issue_lst, "header"))
 }
+
+
+#  FUNCTION: update_issue ---------------------------------------------------------------------
+#
+#' Update an issue in a repository
+#'
+#' This function updates an issue for the specified repository in GitHub. It can be used to
+#' change the title, body, or assignees, it can also be used to replace labels and milestones,
+#' or to close the issue.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/#edit-an-issue>
+#'
+#' @param issue (string or character) The number or title of the issue.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param title (string, optional) The title of the issue.
+#' @param body (string, optional) The contents of the issue.
+#' @param assignees (character, optional) Logins for Users to assign to this issue. NOTE: Only
+#'   users with push access can set assignees for new issues. Setting to `NULL` clears all
+#'   assignees.
+#' @param labels (character, optional) Labels to associate with this issue. NOTE: Only users
+#'   with push access can set labels for new issues. Setting to `NULL` clears all labels.
+#' @param milestone (character or integer, optional) The title or number of the milestone to
+#'   associate this issue with. NOTE: Only users with push access can set the milestone for
+#'   new issues. Setting to `NULL` clears the current milestone.
+#' @param state (string, optional) The state of the issue. Either `"open"` or `"closed"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_issue()` returns a list of the issue's properties.
+#'
+#' **Issue Properties:**
+#'
+#' - **number**: The number assigned to the issue.
+#' - **title**: The title of the issue.
+#' - **body**: The body contents of the issue.
+#' - **assignees**: The user assigned to the issue.
+#' - **labels**: The labels attached to the issue.
+#' - **milestone**: The milestone assigned to the issue.
+#' - **state**: The state of the issue - either `"open"` or `"closed"`.
+#' - **repository**: The repository the issue is in.
+#' - **pull_request**: Whether the issue is a pull request.
+#' - **html_url**: The URL of the issue's web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the issue was created.
+#' - **updated_at**: When the issue was last updated.
+#' - **closed_at**: When the issue was closed.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update the properties of a issue
+#'   update_issue(
+#'     issue   = "test issue",
+#'     repo        = "ChadGoymer/test-githapi",
+#'     title       = "updated test issue",
+#'     description = "This is an updated test issue",
+#'     due_on      = "2020-12-01")
+#'
+#'   # Close a issue
+#'   update_issue(
+#'     issue = "updated test issue",
+#'     repo      = "ChadGoymer/test-githapi",
+#'     state     = "closed")
+#' }
+#'
+#' @export
+#'
+update_issue <- function(
+  issue,
+  repo,
+  title,
+  body,
+  assignees,
+  labels,
+  milestone,
+  state,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  payload <- list()
+
+  if (!missing(title)) {
+    assert(is_scalar_character(title), "'title' must be a string:\n  ", title)
+    payload$title <- title
+  }
+
+  if (!missing(body)) {
+    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    payload$body <- body
+  }
+
+  if (!missing(assignees)) {
+    assert(
+      is_null(assignees) || is_character(assignees),
+      "'assignees' must be NULL or a character vector:\n  ", assignees)
+    payload$assignees <- as.list(assignees)
+  }
+
+  if (!missing(labels)) {
+    assert(
+      is_null(labels) || is_character(labels),
+      "'labels' must be NULL or a character vector:\n  ", labels)
+    payload$labels <- as.list(labels)
+  }
+
+  if (!missing(milestone)) {
+    if (is_scalar_character(milestone)) {
+      milestone <- view_milestone(milestone, repo = repo)$number
+    }
+
+    assert(
+      is_null(milestone) || is_scalar_integerish(milestone),
+      "'milestone' must be NULL or a string or integer:\n  ", milestone)
+    payload <- c(payload, list(milestone = milestone))
+  }
+
+  if (!missing(state)) {
+    assert(
+      is_scalar_character(state) && state %in% values$issue$state,
+      "'state' for milestones must be either '", str_c(values$issue$state, collapse = "', '"), "':\n  ", state)
+    payload$state <- state
+  }
+
+  issue <- view_issue(issue, repo = repo)
+
+  info("Updating issue '", issue$title, "' in repository '", repo, "'")
+  issue_lst <- gh_url("repos", repo, "issues", issue$number) %>%
+    gh_request("PATCH", payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  issue_gh <- select_properties(issue_lst, properties$issue) %>%
+    modify_list(
+      assignees = collapse_property(list(issue_lst), "assignees", "login"),
+      labels = collapse_property(list(issue_lst), "labels", "name"),
+      .before = "milestone") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(repository = repo)
+
+  info("Done", level = 7)
+  structure(
+    issue_gh,
+    class   = class(issue_lst),
+    url     = attr(issue_lst, "url"),
+    request = attr(issue_lst, "request"),
+    status  = attr(issue_lst, "status"),
+    header  = attr(issue_lst, "header"))
+}
