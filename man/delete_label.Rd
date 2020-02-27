@@ -28,10 +28,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
-  # Delete a label
-  delete_label(
-    label = "test label",
-    repo  = "ChadGoymer/test-githapi")
+  delete_label("new-label", repo = "ChadGoymer/test-githapi")
 }
 
 }
