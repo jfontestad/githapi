@@ -51,6 +51,8 @@
 #' - [gh_assignees()]: is being removed
 #' - [gh_issue_comments()]: replace with [view_issue()]
 #' - [gh_issue_comment()]: is being removed
+#' - [gh_event()]: is being removed
+#' - [gh_events()]: is being removed
 #'
 #' @section Projects Functions:
 #'

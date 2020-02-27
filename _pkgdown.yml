@@ -129,17 +129,6 @@ reference:
     - '`gh_gist_comments`'
     - '`gh_save_gist`'
     - '`gh_source_gist`'
-- title: Issues
-  desc: Functions for accessing information about issues and their contents.
-  contents:
-    - '`gh_issue`'
-    - '`gh_issues`'
-    - '`gh_user_issues`'
-    - '`gh_assignees`'
-    - '`gh_issue_comments`'
-    - '`gh_issue_comment`'
-    - '`gh_event`'
-    - '`gh_events`'
 - title: Pull Requests
   desc: Functions for accessing information about pull requests and their contents.
   contents:
@@ -229,5 +218,7 @@ reference:
     - '`gh_assignees`'
     - '`gh_issue_comments`'
     - '`gh_issue_comment`'
+    - '`gh_event`'
+    - '`gh_events`'
 news:
 - one_page: false

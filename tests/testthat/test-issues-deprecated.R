@@ -206,7 +206,7 @@ test_that("gh_milestones returns a tibble describing the milestones", {
 
 #  FUNCTION: gh_event -------------------------------------------------------------------------
 test_that("gh_event returns a list describing the event", {
-  event <- gh_event(1227046339, "ChadGoymer/githapi")
+  event <- suppressWarnings(gh_event(1227046339, "ChadGoymer/githapi"))
   expect_is(event, "list")
   expect_named(
     event,
@@ -216,7 +216,7 @@ test_that("gh_event returns a list describing the event", {
 
 #  FUNCTION: gh_events ------------------------------------------------------------------------
 test_that("gh_events returns a tibble describing the issue events", {
-  events <- gh_events("ChadGoymer/githapi", n_max = 10)
+  events <- suppressWarnings(gh_events("ChadGoymer/githapi", n_max = 10))
   expect_is(events, "tbl")
 
   expect_identical(

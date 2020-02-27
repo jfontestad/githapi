@@ -295,7 +295,7 @@ gh_issue_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
-  .Deprecated("view_issue", package = "githapi")
+  .Deprecated(msg = "This function will be removed in a future version")
 
   assert(is_repo(repo))
   assert(is_null(since) || is_scalar_character(since))
@@ -576,6 +576,8 @@ gh_event <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(event) && isTRUE(event > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -612,6 +614,8 @@ gh_events <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
