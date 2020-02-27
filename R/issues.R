@@ -265,3 +265,179 @@ update_issue <- function(
     status  = attr(issue_lst, "status"),
     header  = attr(issue_lst, "header"))
 }
+
+
+#  FUNCTION: view_issues ----------------------------------------------------------------------
+#
+#' View issues within a repository or organization
+#'
+#' `view_issues()` summarises issues in a table with the properties as columns and a row for
+#' each issue in the repository or organization. `view_issue()` returns a list of all
+#' properties for a single issue. `browse_issue()` opens the web page for the issue in the
+#' default browser.
+#'
+#' You can summarise all the issues in a repository or organization by specifying the
+#' arguments. If neither are specified then all the issues assigned to the authenticated user
+#' are returned. You can filter the issues based on the labels, milestone, whether they have
+#' been updated since a specified date or whether they are `"open"` or `"closed"`. Finally,
+#' the order the results are returned can be controlled with `sort` and `direction`.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/#list-issues>
+#' - <https://developer.github.com/v3/issues/#list-issues-for-a-repository>
+#' - <https://developer.github.com/v3/issues/#get-a-single-issue>
+#'
+#' @param issue (string or character) The number or title of the issue.
+#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param org (string, optional) The name of the organization.
+#' @param labels (character, optional) Label names to filter by.
+#' @param milestone (string or integer) Milestone number or title to filter by.
+#' @param since (string, optional) A date & time to filter by. Must be in the format:
+#'   `YYYY-MM-DD HH:MM:SS`.
+#' @param state (string, optional) The state of the issues to return. Can be either `"open"`,
+#' `"closed"`, or `"all"`. Default: `"open"`.
+#' @param sort (string, optional) The property to order the returned repositories by. Can
+#'   be either `"created"`, `"updated"`, or `"comments"`. Default: `"created"`.
+#' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
+#'   `"desc"`. Default: `"desc"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_issues()` returns a tibble of issue properties. `view_issue()` returns a
+#'   list of properties for a single issue. `browse_issue()` opens the default browser on
+#'   the issue's page and returns the URL.
+#'
+#' **Issue Properties:**
+#'
+#' - **number**: The number assigned to the issue.
+#' - **title**: The title of the issue.
+#' - **body**: The body contents of the issue.
+#' - **assignees**: The user assigned to the issue.
+#' - **labels**: The labels attached to the issue.
+#' - **milestone**: The milestone assigned to the issue.
+#' - **state**: The state of the issue - either `"open"` or `"closed"`.
+#' - **repository**: The repository the issue is in.
+#' - **pull_request**: Whether the issue is a pull request.
+#' - **html_url**: The URL of the issue's web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the issue was created.
+#' - **updated_at**: When the issue was last updated.
+#' - **closed_at**: When the issue was closed.
+#'
+#' @examples
+#' \dontrun{
+#'   # View open issues in a repository
+#'   view_issues("ChadGoymer/test-githapi")
+#'
+#'   # View closed issues in a repository
+#'   view_issues("ChadGoymer/test-githapi", state = "closed")
+#'
+#'   # View a single issue
+#'   view_issue("test issue", "ChadGoymer/test-githapi")
+#'
+#'   # Open a issue's page in a browser
+#'   browse_issue("test issue", "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+view_issues <- function(
+  repo,
+  org,
+  labels,
+  milestone,
+  since,
+  state     = "open",
+  sort      = "created",
+  direction = "desc",
+  n_max     = 1000,
+  ...)
+{
+  assert(
+    is_scalar_character(state) && state %in% values$issue$state,
+    "'state' must be either '", str_c(values$issue$state, collapse = "', '"), "':\n  ", state)
+  assert(
+    is_scalar_character(sort) && sort %in% values$issue$sort,
+    "'sort' must be either '", str_c(values$issue$sort, collapse = "', '"), "':\n  ", sort)
+  assert(
+    is_scalar_character(direction) && direction %in% values$issue$direction,
+    "'direction' must be either '", str_c(values$issue$direction, collapse = "', '"), "':\n  ", direction)
+
+  if (!missing(since)) {
+    assert(is_character(since), "'since' must be a character vector:\n  ", since)
+    since <- tryCatch({
+      as.POSIXct(since) %>% format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    },
+    error = function(e) {
+      error("'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
+    })
+  }
+  else {
+    since <- NULL
+  }
+
+  if (!missing(labels)) {
+    assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+    labels <- str_c(labels, collapse = ",")
+  }
+  else {
+    labels <- NULL
+  }
+
+  if (!missing(repo)) {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+    if (!missing(milestone)) {
+      if (is_scalar_character(milestone)) {
+        milestone <- view_milestone(milestone = milestone, repo = repo) %>% pluck("number")
+      }
+      assert(is_scalar_integerish(milestone), "'milestone' must be a string or an integer:\n  ", milestone)
+    }
+    else {
+      milestone <- NULL
+    }
+
+    info("Viewing issues for repository '", repo, "'")
+    url <- gh_url(
+      "repos", repo, "issues",
+      labels    = labels,
+      milestone = milestone,
+      state     = state,
+      sort      = sort,
+      direction = direction,
+      since     = since)
+  }
+  else if (!missing(org)) {
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+    info("Viewing issues for organization '", org, "'")
+    url <- gh_url(
+      "orgs", org, "issues",
+      labels    = labels,
+      state     = state,
+      sort      = sort,
+      direction = direction,
+      since     = since)
+  }
+  else {
+    info("Viewing issues assigned to the authenticated user")
+    url <- gh_url(
+      "issues",
+      labels    = labels,
+      state     = state,
+      sort      = sort,
+      direction = direction,
+      since     = since)
+  }
+
+  issues_lst <- gh_page(url = url, n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  issues_gh <- bind_properties(issues_lst, properties$issue) %>%
+    add_column(labels = collapse_property(issues_lst, "labels", "name"), .before = "milestone") %>%
+    add_column(assignees = collapse_property(issues_lst, "assignees", "login"), .before = "labels") %>%
+    add_column(pull_request = map_lgl(issues_lst, ~ !is_null(.$pull_request)), .before = "html_url")
+
+  info("Done", level = 7)
+  issues_gh
+}

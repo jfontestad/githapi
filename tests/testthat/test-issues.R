@@ -216,3 +216,114 @@ test_that("update_issue changes a milestone and returns a list of the properties
   expect_identical(closed_issue$creator, "ChadGoymer")
 
 })
+
+
+# TEST: view_issues ---------------------------------------------------------------------------
+
+test_that("view_issues returns a tibble of issue properties", {
+
+  open_repo_issues <- view_issues(str_c("ChadGoymer/test-issues-", now))
+
+  expect_is(open_repo_issues, "tbl")
+  expect_identical(attr(open_repo_issues, "status"), 200L)
+  expect_identical(
+    map_chr(open_repo_issues, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_true(str_c("test updated issue ", now) %in% open_repo_issues$title)
+
+  filtered_repo_issues <- view_issues(
+    repo      = str_c("ChadGoymer/test-issues-", now),
+    since     = "2020-01-01 00:00:00",
+    labels    = str_c("test-issues-", now),
+    milestone = str_c("test-issues-", now))
+
+  expect_is(filtered_repo_issues, "tbl")
+  expect_identical(attr(filtered_repo_issues, "status"), 200L)
+  expect_identical(
+    map_chr(filtered_repo_issues, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_true(str_c("test updated issue ", now) %in% filtered_repo_issues$title)
+
+  org_issues <- view_issues(org = "HairyCoos", state = "closed")
+
+  expect_is(org_issues, "tbl")
+  expect_identical(attr(org_issues, "status"), 200L)
+  expect_identical(
+    map_chr(org_issues, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_true(str_c("test organization issue ", now) %in% org_issues$title)
+
+  user_issues <- view_issues()
+
+  expect_is(user_issues, "tbl")
+  expect_identical(attr(user_issues, "status"), 200L)
+  expect_identical(
+    map_chr(user_issues, ~ class(.)[[1]]),
+    c(number       = "integer",
+      title        = "character",
+      body         = "character",
+      assignees    = "character",
+      labels       = "character",
+      milestone    = "character",
+      state        = "character",
+      repository   = "character",
+      pull_request = "logical",
+      html_url     = "character",
+      creator      = "character",
+      created_at   = "POSIXct",
+      updated_at   = "POSIXct",
+      closed_at    = "POSIXct"))
+
+  expect_true(all(str_detect(user_issues$assignees, "ChadGoymer")))
+
+})
+
+test_that("view_issues throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_issues(str_c("ChadGoymer/test-issues-", now), since = "Bob"),
+    "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss'")
+
+})
