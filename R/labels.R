@@ -10,9 +10,10 @@
 #'
 #' @param name (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param color (string) Either the color name (see [grDevices::colors()]) or a hexidecimal
-#'   color code (see [color-hex.com](http://www.color-hex.com/)).
 #' @param description (string, optional) A description of the label.
+#' @param color (string, optional) Either the color name (see [grDevices::colors()]) or a
+#'   hexidecimal color code (see [color-hex.com](http://www.color-hex.com/)). If not
+#'   supplied a color is chosen at random.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `create_label()` returns a list of the label's properties.
@@ -37,8 +38,8 @@
 create_label <- function(
   name,
   repo,
-  color,
   description,
+  color = random_color(),
   ...)
 {
   assert(is_scalar_character(name), "'name' must be a string:\n  ", name)

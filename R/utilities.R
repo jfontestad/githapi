@@ -53,7 +53,7 @@ is_hex <- function(x)
 
 # FUNCTION: as_hex ----------------------------------------------------------------------------
 #
-# convert a vector of color names into hexidecimal codes
+# Convert a vector of color names into hexidecimal codes
 #
 # @param x (character) The vector to convert
 #
@@ -66,6 +66,18 @@ as_hex <- function(color_name)
     red   = color_matrix[1,] / 255,
     green = color_matrix[2,] / 255,
     blue  = color_matrix[3,] / 255)
+}
+
+
+# FUNCTION: random_color ----------------------------------------------------------------------
+#
+# Select a color at random
+#
+# @return A color name sampled from [grDevices::colors()]
+#
+random_color <- function()
+{
+  sample(grDevices::colors(), 1)
 }
 
 

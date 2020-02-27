@@ -46,6 +46,25 @@ test_that("is_hex returns TRUE with a valid hexadecimal color code and FALSE oth
 })
 
 
+
+# TEST: random_color --------------------------------------------------------------------------
+
+test_that("random_color returns a color name", {
+
+  color1 <- random_color()
+
+  expect_true(is_scalar_character(color1))
+  expect_true(color1 %in% grDevices::colors())
+
+  color2 <- random_color()
+
+  expect_true(is_scalar_character(color2))
+  expect_true(color2 %in% grDevices::colors())
+  expect_false(color1 == color2)
+
+})
+
+
 # TEST: as_hex --------------------------------------------------------------------------------
 
 test_that("as_hex converts a color name to a hexidecimal color code", {
