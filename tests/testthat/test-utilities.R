@@ -295,3 +295,22 @@ test_that("bind_properties returns an empty data.frame for an empty list of enti
   expect_identical(empty_result, expected_empty_result)
 
 })
+
+
+# TEST: collapse_property ---------------------------------------------------------------------
+
+test_that("collapse_property returns a character vector of collapsed sub-properties", {
+
+  collection <- list(
+    list(
+      names  = list(list(first = "bob", second = "smith"), list(first = "jane", second = "jones")),
+      emails = c("bob@acme.com")),
+    list(
+      names  = list(list(first = "jim", second = "walker")),
+      emails = c("jim@acme.com", "hester@acme.com")))
+
+  result <- collapse_property(collection, "names", "first")
+
+  expect_identical(result, c("bob,jane", "jim" ))
+
+})
