@@ -314,3 +314,28 @@ test_that("collapse_property returns a character vector of collapsed sub-propert
   expect_identical(result, c("bob,jane", "jim" ))
 
 })
+
+
+# TEST: modify_list ---------------------------------------------------------------------------
+
+test_that("modify_list adds or modifies a list", {
+
+  test_list <- list(a = 1, b = 2, c = 3)
+
+  prepend_list <- modify_list(test_list, x = 10, .before = "b")
+
+  expect_identical(prepend_list, list(a = 1, x = 10, b = 2, c = 3))
+
+  append_list <- modify_list(test_list, x = 10, .after = "b")
+
+  expect_identical(append_list, list(a = 1, b = 2, x = 10, c = 3))
+
+  replace_list <- modify_list(test_list, b = 10)
+
+  expect_identical(replace_list, list(a = 1, b = 10, c = 3))
+
+  add_list <- modify_list(test_list, x = 10)
+
+  expect_identical(add_list, list(a = 1, b = 2, c = 3, x = 10))
+
+})

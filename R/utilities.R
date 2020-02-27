@@ -235,3 +235,35 @@ collapse_property <- function(
     }
   })
 }
+
+
+# FUNCTION: modify_list -----------------------------------------------------------------------
+#
+# Modify a list
+#
+# This function can add elements before or after existing elements or replaces them.
+#
+# @param .x (list) The list to modify
+# @param ... (any) The elements to add or modify
+# @param .before (string) The element to add the new one(s) before
+# @param .after (string) The element to add the new one(s) after
+#
+# @return A list with specified modifications
+#
+modify_list <- function(
+  .x,
+  ...,
+  .before,
+  .after)
+{
+  dots <- list(...)
+  if (!missing(.before)) {
+    prepend(.x, dots, before = which(names(.x) == .before))
+  }
+  else if (!missing(.after)) {
+    append(.x, dots, after = which(names(.x) == .after))
+  }
+  else {
+    utils::modifyList(.x, dots)
+  }
+}
