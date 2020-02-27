@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a team in a GitHub organization — create_team • githapi</title>
+<title>Create an issue in a repository — create_issue • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Create a team in a GitHub organization — create_team" />
-<meta property="og:description" content="This function creates a new team in the specified organization in GitHub. It can also
-be used to specify the maintainers, the repositories to add the team to and a parent
-team." />
+<meta property="og:title" content="Create an issue in a repository — create_issue" />
+<meta property="og:description" content="This function creates a new issue for the specified repository in GitHub. It can also be
+used to assign the issue to a user and add labels or a milestone." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,74 +109,48 @@ team." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a team in a GitHub organization</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/teams.R'><code>R/teams.R</code></a></small>
-    <div class="hidden name"><code>create_team.Rd</code></div>
+    <h1>Create an issue in a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/issues.R'><code>R/issues.R</code></a></small>
+    <div class="hidden name"><code>create_issue.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function creates a new team in the specified organization in GitHub. It can also
-be used to specify the maintainers, the repositories to add the team to and a parent
-team.</p>
+    <p>This function creates a new issue for the specified repository in GitHub. It can also be
+used to assign the issue to a user and add labels or a milestone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_team</span>(
-  <span class='no'>name</span>,
-  <span class='no'>org</span>,
-  <span class='no'>description</span>,
-  <span class='no'>maintainers</span>,
-  <span class='no'>repo_names</span>,
-  <span class='no'>privacy</span>,
-  <span class='no'>parent_team</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>create_issue</span>(<span class='no'>title</span>, <span class='no'>repo</span>, <span class='no'>body</span>, <span class='no'>assignees</span>, <span class='no'>labels</span>, <span class='no'>milestone</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>name</th>
-      <td><p>(string) The name of the team.</p></td>
+      <th>title</th>
+      <td><p>(string) The title of the issue.</p></td>
     </tr>
     <tr>
-      <th>org</th>
-      <td><p>(string) The login of the organization.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>description</th>
-      <td><p>(string, optional) The description of the team.</p></td>
+      <th>body</th>
+      <td><p>(string, optional) The contents of the issue.</p></td>
     </tr>
     <tr>
-      <th>maintainers</th>
-      <td><p>(character, optional) The logins of organization members to add as
-maintainers of the team. If you do not specify any maintainers, then you will
-automatically become a team maintainer when you create a new team.</p></td>
+      <th>assignees</th>
+      <td><p>(character, optional) Logins for Users to assign to this issue. NOTE: Only
+users with push access can set assignees for new issues.</p></td>
     </tr>
     <tr>
-      <th>repo_names</th>
-      <td><p>(character, optional) The full name (e.g.
-"organization-name/repository-name") of repositories to add the team to.</p></td>
+      <th>labels</th>
+      <td><p>(character, optional) Labels to associate with this issue. NOTE: Only users
+with push access can set labels for new issues.</p></td>
     </tr>
     <tr>
-      <th>privacy</th>
-      <td><p>(string, optional) The level of privacy this team should have. The
-options are:
-For a non-nested team:</p><ul>
-<li><p><code>"secret"</code>: only visible to organization owners and members of this team.</p></li>
-<li><p><code>"closed"</code>: visible to all members of this organization.</p></li>
-</ul>
-
-<p>Default: <code>"secret"</code>.</p>
-<p>For a parent or child team:</p><ul>
-<li><p><code>"closed"</code>: visible to all members of this organization.</p></li>
-</ul>
-
-<p>Default for child team: <code>"closed"</code></p></td>
-    </tr>
-    <tr>
-      <th>parent_team</th>
-      <td><p>(integer or string, optional) The ID or name of a team to set as the
-parent team.</p></td>
+      <th>milestone</th>
+      <td><p>(character or integer, optional) The title or number of the milestone to
+associate this issue with. NOTE: Only users with push access can set the milestone for
+new issues.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -187,43 +160,46 @@ parent team.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>create_team()</code> returns a list of the team's properties.</p>
-<p><strong>Team Properties:</strong></p><ul>
-<li><p><strong>id</strong>: The ID of the team.</p></li>
-<li><p><strong>name</strong>: The name of the team.</p></li>
-<li><p><strong>organization</strong>: The organization the team is associated with.</p></li>
-<li><p><strong>slug</strong>: The team slug name.</p></li>
-<li><p><strong>description</strong>: The description of the team.</p></li>
-<li><p><strong>privacy</strong>: The privacy setting of the team - either "closed" or "secret".</p></li>
-<li><p><strong>permission</strong>: The default repository permissions of the team.</p></li>
-<li><p><strong>parent</strong>: The parent team.</p></li>
-<li><p><strong>members_count</strong>: The number of members.</p></li>
-<li><p><strong>repos_count</strong>: The number of repositories the team has access to.</p></li>
-<li><p><strong>created_at</strong>: When it was created.</p></li>
-<li><p><strong>updated_at</strong>: When it was last updated.</p></li>
-<li><p><strong>html_url</strong>: The URL of the team page in GitHub</p></li>
+    <p><code>create_issue()</code> returns a list of the issue's properties.</p>
+<p><strong>Issue Properties:</strong></p><ul>
+<li><p><strong>number</strong>: The number assigned to the issue.</p></li>
+<li><p><strong>title</strong>: The title of the issue.</p></li>
+<li><p><strong>body</strong>: The body contents of the issue.</p></li>
+<li><p><strong>assignees</strong>: The user assigned to the issue.</p></li>
+<li><p><strong>labels</strong>: The labels attached to the issue.</p></li>
+<li><p><strong>milestone</strong>: The milestone assigned to the issue.</p></li>
+<li><p><strong>state</strong>: The state of the issue - either <code>"open"</code> or <code>"closed"</code>.</p></li>
+<li><p><strong>repository</strong>: The repository the issue is in.</p></li>
+<li><p><strong>pull_request</strong>: Whether the issue is a pull request.</p></li>
+<li><p><strong>html_url</strong>: The URL of the issue's web page in GitHub.</p></li>
+<li><p><strong>creator</strong>: The creator's login.</p></li>
+<li><p><strong>created_at</strong>: When the issue was created.</p></li>
+<li><p><strong>updated_at</strong>: When the issue was last updated.</p></li>
+<li><p><strong>closed_at</strong>: When the issue was closed.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/teams/#create-team'>https://developer.github.com/v3/teams/#create-team</a></p></li>
+<li><p><a href='https://developer.github.com/v3/issues/#create-an-issue'>https://developer.github.com/v3/issues/#create-an-issue</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='co'># Create a team in an organization</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>create_issue</span>(
+    <span class='kw'>title</span>     <span class='kw'>=</span> <span class='st'>"user issue"</span>,
+    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-issues"</span>,
+    <span class='kw'>body</span>      <span class='kw'>=</span> <span class='st'>"This is an issue to test create_issue()"</span>,
+    <span class='kw'>assignees</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>,
+    <span class='kw'>labels</span>    <span class='kw'>=</span> <span class='st'>"feature"</span>,
+    <span class='kw'>milestone</span> <span class='kw'>=</span> <span class='st'>"release-1.0"</span>)
 
-  <span class='co'># Create a team and specify maintainers</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam2"</span>, <span class='st'>"HairyCoos"</span>, <span class='kw'>maintainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"chris-walker1"</span>))
-
-  <span class='co'># Create a team and set the privacy</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam3"</span>, <span class='st'>"HairyCoos"</span>, <span class='kw'>privacy</span> <span class='kw'>=</span> <span class='st'>"closed"</span>)
-
-  <span class='co'># Create a team and specify a parent team</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam4"</span>, <span class='st'>"HairyCoos"</span>, <span class='kw'>parent_team</span> <span class='kw'>=</span> <span class='st'>"TestTeam3"</span>)
+  <span class='fu'>create_issue</span>(
+    <span class='kw'>title</span>     <span class='kw'>=</span> <span class='st'>"organization issue"</span>,
+    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"HairyCoos/test-issues"</span>,
+    <span class='kw'>body</span>      <span class='kw'>=</span> <span class='st'>"This is an issue to test create_issue()"</span>,
+    <span class='kw'>assignees</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

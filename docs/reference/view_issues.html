@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View milestones within a repository — view_milestones • githapi</title>
+<title>View issues within a repository or organization — view_issues • githapi</title>
 
 
 <!-- jquery -->
@@ -35,11 +35,11 @@
 
 
 
-<meta property="og:title" content="View milestones within a repository — view_milestones" />
-<meta property="og:description" content="view_milestones() summarises milestones in a table with the properties as columns and a
-row for each milestone in the repository. view_milestone() returns a list of all
-properties for a single milestone. browse_milestone() opens the web page for the
-milestone in the default browser." />
+<meta property="og:title" content="View issues within a repository or organization — view_issues" />
+<meta property="og:description" content="view_issues() summarises issues in a table with the properties as columns and a row for
+each issue in the repository or organization. view_issue() returns a list of all
+properties for a single issue. browse_issue() opens the web page for the issue in the
+default browser." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -111,52 +111,73 @@ milestone in the default browser." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View milestones within a repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/milestones.R'><code>R/milestones.R</code></a></small>
-    <div class="hidden name"><code>view_milestones.Rd</code></div>
+    <h1>View issues within a repository or organization</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/issues.R'><code>R/issues.R</code></a></small>
+    <div class="hidden name"><code>view_issues.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>view_milestones()</code> summarises milestones in a table with the properties as columns and a
-row for each milestone in the repository. <code>view_milestone()</code> returns a list of all
-properties for a single milestone. <code>browse_milestone()</code> opens the web page for the
-milestone in the default browser.</p>
+    <p><code>view_issues()</code> summarises issues in a table with the properties as columns and a row for
+each issue in the repository or organization. <code>view_issue()</code> returns a list of all
+properties for a single issue. <code>browse_issue()</code> opens the web page for the issue in the
+default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_milestones</span>(
+    <pre class="usage"><span class='fu'>view_issues</span>(
   <span class='no'>repo</span>,
+  <span class='no'>org</span>,
+  <span class='no'>labels</span>,
+  <span class='no'>milestone</span>,
+  <span class='no'>since</span>,
   <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"open"</span>,
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='st'>"due_on"</span>,
-  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"asc"</span>,
+  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='st'>"created"</span>,
+  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"desc"</span>,
   <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
   <span class='no'>...</span>
 )
 
-<span class='fu'>view_milestone</span>(<span class='no'>milestone</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+<span class='fu'>view_issue</span>(<span class='no'>issue</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
 
-<span class='fu'>browse_milestone</span>(<span class='no'>milestone</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>browse_issue</span>(<span class='no'>issue</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+    </tr>
+    <tr>
+      <th>org</th>
+      <td><p>(string, optional) The name of the organization.</p></td>
+    </tr>
+    <tr>
+      <th>labels</th>
+      <td><p>(character, optional) Label names to filter by.</p></td>
+    </tr>
+    <tr>
+      <th>milestone</th>
+      <td><p>(string or integer) Milestone number or title to filter by.</p></td>
+    </tr>
+    <tr>
+      <th>since</th>
+      <td><p>(string, optional) A date &amp; time to filter by. Must be in the format:
+<code>YYYY-MM-DD HH:MM:SS</code>.</p></td>
     </tr>
     <tr>
       <th>state</th>
-      <td><p>(string, optional) The state of the milestones to filter the result. Can be
-either <code>"open"</code>, <code>"closed"</code> or <code>"all"</code>. Default: <code>"open"</code>.</p></td>
+      <td><p>(string, optional) The state of the issues to return. Can be either <code>"open"</code>,
+<code>"closed"</code>, or <code>"all"</code>. Default: <code>"open"</code>.</p></td>
     </tr>
     <tr>
       <th>sort</th>
-      <td><p>(string, optional) The property to order the returned milestones by. Can
-be either <code>"due_on"</code> or <code>"completeness"</code>. Default: <code>"due_on"</code>.</p></td>
+      <td><p>(string, optional) The property to order the returned repositories by. Can
+be either <code>"created"</code>, <code>"updated"</code>, or <code>"comments"</code>. Default: <code>"created"</code>.</p></td>
     </tr>
     <tr>
       <th>direction</th>
       <td><p>(string, optional) The direction of the sort. Can be either <code>"asc"</code> or
-<code>"desc"</code>. Default: <code>"asc"</code>.</p></td>
+<code>"desc"</code>. Default: <code>"desc"</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -167,57 +188,60 @@ be either <code>"due_on"</code> or <code>"completeness"</code>. Default: <code>"
       <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>milestone</th>
-      <td><p>(string or character) The number or title of the milestone.</p></td>
+      <th>issue</th>
+      <td><p>(string or character) The number or title of the issue.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_milestones()</code> returns a tibble of milestone properties. <code>view_milestone()</code>
-returns a list of properties for a single milestone. <code>browse_milestone()</code> opens the
-default browser on the milestone's page and returns the URL.</p>
-<p><strong>Milestone Properties:</strong></p><ul>
-<li><p><strong>number</strong>: The number assigned to the milestone within the repository.</p></li>
-<li><p><strong>title</strong>: The title of the milestone.</p></li>
-<li><p><strong>description</strong>: The description of the milestone.</p></li>
-<li><p><strong>state</strong>: The state of the milestone - either "open" or "closed".</p></li>
-<li><p><strong>open_issues</strong>: The number of open issues within the milestone.</p></li>
-<li><p><strong>closed_issues</strong>: The number of closed issues within the milestone.</p></li>
-<li><p><strong>html_url</strong>: The URL of the milestone's web page in GitHub.</p></li>
+    <p><code>view_issues()</code> returns a tibble of issue properties. <code>view_issue()</code> returns a
+list of properties for a single issue. <code>browse_issue()</code> opens the default browser on
+the issue's page and returns the URL.</p>
+<p><strong>Issue Properties:</strong></p><ul>
+<li><p><strong>number</strong>: The number assigned to the issue.</p></li>
+<li><p><strong>title</strong>: The title of the issue.</p></li>
+<li><p><strong>body</strong>: The body contents of the issue.</p></li>
+<li><p><strong>assignees</strong>: The user assigned to the issue.</p></li>
+<li><p><strong>labels</strong>: The labels attached to the issue.</p></li>
+<li><p><strong>milestone</strong>: The milestone assigned to the issue.</p></li>
+<li><p><strong>state</strong>: The state of the issue - either <code>"open"</code> or <code>"closed"</code>.</p></li>
+<li><p><strong>repository</strong>: The repository the issue is in.</p></li>
+<li><p><strong>pull_request</strong>: Whether the issue is a pull request.</p></li>
+<li><p><strong>html_url</strong>: The URL of the issue's web page in GitHub.</p></li>
 <li><p><strong>creator</strong>: The creator's login.</p></li>
-<li><p><strong>created_at</strong>: When the milestone was created.</p></li>
-<li><p><strong>updated_at</strong>: When the milestone was last updated.</p></li>
-<li><p><strong>due_on</strong>: When the milestone is due.</p></li>
-<li><p><strong>closed_at</strong>: When the milestone was closed.</p></li>
+<li><p><strong>created_at</strong>: When the issue was created.</p></li>
+<li><p><strong>updated_at</strong>: When the issue was last updated.</p></li>
+<li><p><strong>closed_at</strong>: When the issue was closed.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the milestones of a repository in a specified <code>state</code> and change the
-order they are returned using <code>sort</code> and <code>direction</code>.</p>
+    <p>You can summarise all the issues in a repository or organization by specifying the
+arguments. If neither are specified then all the issues assigned to the authenticated user
+are returned. You can filter the issues based on the labels, milestone, whether they have
+been updated since a specified date or whether they are <code>"open"</code> or <code>"closed"</code>. Finally,
+the order the results are returned can be controlled with <code>sort</code> and <code>direction</code>.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository'>https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository</a></p></li>
+<li><p><a href='https://developer.github.com/v3/issues/#list-issues'>https://developer.github.com/v3/issues/#list-issues</a></p></li>
+<li><p><a href='https://developer.github.com/v3/issues/#list-issues-for-a-repository'>https://developer.github.com/v3/issues/#list-issues-for-a-repository</a></p></li>
+<li><p><a href='https://developer.github.com/v3/issues/#get-a-single-issue'>https://developer.github.com/v3/issues/#get-a-single-issue</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='co'># View open milestones in a repository</span>
-  <span class='fu'>view_milestones</span>(<span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='co'># View open issues in a repository</span>
+  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/test-githapi"</span>)
 
-  <span class='co'># View closed milestones in a repository</span>
-  <span class='fu'>view_milestones</span>(<span class='st'>"ChadGoymer/test-githapi"</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"closed"</span>)
+  <span class='co'># View closed issues in a repository</span>
+  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/test-githapi"</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"closed"</span>)
 
-  <span class='co'># View a single milestone</span>
-  <span class='fu'>view_milestone</span>(
-    <span class='kw'>milestone</span> <span class='kw'>=</span> <span class='st'>"test milestone"</span>,
-    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='co'># View a single issue</span>
+  <span class='fu'>view_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/test-githapi"</span>)
 
-  <span class='co'># Open a milestone's page in a browser</span>
-  <span class='fu'>browse_milestone</span>(
-    <span class='kw'>milestone</span> <span class='kw'>=</span> <span class='st'>"test milestone"</span>,
-    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='co'># Open a issue's page in a browser</span>
+  <span class='fu'>browse_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/test-githapi"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

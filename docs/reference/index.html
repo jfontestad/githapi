@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
       </span>
     </div>
 
@@ -157,6 +157,24 @@
         </th>
       </tr>
       <tr>
+        
+        <td>
+          <p><code><a href="create_issue.html">create_issue()</a></code> </p>
+        </td>
+        <td><p>Create an issue in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="update_issue.html">update_issue()</a></code> </p>
+        </td>
+        <td><p>Update an issue in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_issues.html">view_issues()</a></code> <code><a href="view_issues.html">view_issue()</a></code> <code><a href="view_issues.html">browse_issue()</a></code> </p>
+        </td>
+        <td><p>View issues within a repository or organization</p></td>
+      </tr><tr>
         
         <td>
           <p><code><a href="create_label.html">create_label()</a></code> </p>
@@ -740,62 +758,6 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-issues" class="hasAnchor"><a href="#section-issues" class="anchor"></a>Issues</h2>
-          <p class="section-desc"><p>Functions for accessing information about issues and their contents.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="gh_issue.html">gh_issue()</a></code> </p>
-        </td>
-        <td><p>Get a single issue</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_issues.html">gh_issues()</a></code> </p>
-        </td>
-        <td><p>List issues for a repository</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_user_issues.html">gh_user_issues()</a></code> </p>
-        </td>
-        <td><p>List issues assigned to the authenticated user</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_assignees.html">gh_assignees()</a></code> </p>
-        </td>
-        <td><p>List assignees for issues in a repository</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_issue_comments.html">gh_issue_comments()</a></code> </p>
-        </td>
-        <td><p>List comments on an issue</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_issue_comment.html">gh_issue_comment()</a></code> </p>
-        </td>
-        <td><p>Get a single issue comment</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_event.html">gh_event()</a></code> </p>
-        </td>
-        <td><p>Get a single event</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gh_events.html">gh_events()</a></code> </p>
-        </td>
-        <td><p>List events for an issue or all issues in a repository</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
           <h2 id="section-pull-requests" class="hasAnchor"><a href="#section-pull-requests" class="anchor"></a>Pull Requests</h2>
           <p class="section-desc"><p>Functions for accessing information about pull requests and their contents.</p></p>
         </th>
@@ -1250,6 +1212,54 @@
           <p><code><a href="gh_milestones.html">gh_milestones()</a></code> </p>
         </td>
         <td><p>List milestones for a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_issue.html">gh_issue()</a></code> </p>
+        </td>
+        <td><p>Get a single issue</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_issues.html">gh_issues()</a></code> </p>
+        </td>
+        <td><p>List issues for a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_user_issues.html">gh_user_issues()</a></code> </p>
+        </td>
+        <td><p>List issues assigned to the authenticated user</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_assignees.html">gh_assignees()</a></code> </p>
+        </td>
+        <td><p>List assignees for issues in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_issue_comments.html">gh_issue_comments()</a></code> </p>
+        </td>
+        <td><p>List comments on an issue</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_issue_comment.html">gh_issue_comment()</a></code> </p>
+        </td>
+        <td><p>Get a single issue comment</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_event.html">gh_event()</a></code> </p>
+        </td>
+        <td><p>Get a single event</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gh_events.html">gh_events()</a></code> </p>
+        </td>
+        <td><p>List events for an issue or all issues in a repository</p></td>
       </tr>
     </tbody>
     </table>
@@ -1265,7 +1275,6 @@
       <li><a href="#section-repository-contents">Repository contents</a></li>
       <li><a href="#section-git-data">Git Data</a></li>
       <li><a href="#section-gists">Gists</a></li>
-      <li><a href="#section-issues">Issues</a></li>
       <li><a href="#section-pull-requests">Pull Requests</a></li>
       <li><a href="#section-utilities">Utilities</a></li>
       <li><a href="#section-github-api">GitHub API</a></li>

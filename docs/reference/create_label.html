@@ -70,7 +70,7 @@ repository in GitHub. It can also be used to set the colour and description." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
       </span>
     </div>
 
@@ -119,7 +119,7 @@ repository in GitHub. It can also be used to set the colour and description." />
 repository in GitHub. It can also be used to set the colour and description.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_label</span>(<span class='no'>name</span>, <span class='no'>repo</span>, <span class='no'>color</span>, <span class='no'>description</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>create_label</span>(<span class='no'>name</span>, <span class='no'>repo</span>, <span class='no'>description</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>random_color</span>(), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,13 +133,14 @@ repository in GitHub. It can also be used to set the colour and description.</p>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>color</th>
-      <td><p>(string) Either the color name (see <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code>) or a hexidecimal
-color code (see <a href='http://www.color-hex.com/'>color-hex.com</a>).</p></td>
-    </tr>
-    <tr>
       <th>description</th>
       <td><p>(string, optional) A description of the label.</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p>(string, optional) Either the color name (see <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code>) or a
+hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a>). If not
+supplied a color is chosen at random.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -165,6 +166,11 @@ color code (see <a href='http://www.color-hex.com/'>color-hex.com</a>).</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='fu'>create_label</span>(
+    <span class='kw'>name</span>        <span class='kw'>=</span> <span class='st'>"new-label"</span>,
+    <span class='kw'>repo</span>        <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>color</span>       <span class='kw'>=</span> <span class='st'>"blue"</span>,
+    <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"This is a detailed label"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

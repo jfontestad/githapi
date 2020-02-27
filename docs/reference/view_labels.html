@@ -71,7 +71,7 @@ label." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
       </span>
     </div>
 
@@ -167,6 +167,11 @@ default browser on the label's page and returns the URL.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='co'># View all labels in a repository</span>
+  <span class='fu'>view_labels</span>(<span class='st'>"ChadGoymer/test-githapi"</span>)
+
+  <span class='co'># View a single label</span>
+  <span class='fu'>view_label</span>(<span class='st'>"new-label"</span>, <span class='st'>"ChadGoymer/test-githapi"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
