@@ -436,3 +436,20 @@ test_that("view_issue throws an error if invalid arguments are supplied", {
     "'issue' must be either an integer or a string")
 
 })
+
+
+# TEST: browse_issue --------------------------------------------------------------------------
+
+test_that("browse_issue opens the issue's page in the browser", {
+
+  skip_if(!interactive(), "browse_issue must be tested manually")
+
+  issue_url <- browse_issue(1, repo = str_c("ChadGoymer/test-issues-", now))
+
+  expect_is(issue_url, "character")
+  expect_identical(attr(issue_url, "status"), 200L)
+  expect_identical(
+    as.character(issue_url),
+    str_c("https://github.com/ChadGoymer/test-issues-", now, "/issues/1"))
+
+})

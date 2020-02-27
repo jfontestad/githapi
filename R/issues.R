@@ -490,3 +490,29 @@ view_issue <- function(
     status  = attr(issue_lst, "status"),
     header  = attr(issue_lst, "header"))
 }
+
+
+#  FUNCTION: browse_issue ---------------------------------------------------------------------
+#
+#' @rdname view_issues
+#' @export
+#'
+browse_issue <- function(
+  issue,
+  repo,
+  ...)
+{
+  issue <- view_issue(issue = issue, repo = repo)
+
+  info("Browsing issue '", issue$title, "' in repository '", repo, "'")
+  httr::BROWSE(issue$html_url)
+
+  info("Done", level = 7)
+  structure(
+    issue$html_url,
+    class   = c("github", "character"),
+    url     = attr(issue, "url"),
+    request = attr(issue, "request"),
+    status  = attr(issue, "status"),
+    header  = attr(issue, "header"))
+}
