@@ -57,7 +57,7 @@ create_milestone <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(
     is_scalar_character(state) && state %in% values$milestone$state,
-    "'state' for milestones must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+    "'state' for milestones must be either '", str_c(values$milestone$state, collapse = "', '"), "':\n  ", state)
 
   payload <- list(title = title, state = state)
 
@@ -170,7 +170,7 @@ update_milestone <- function(
   if (!missing(state)) {
     assert(
       is_scalar_character(state) && state %in% values$milestone$state,
-      "'state' for milestones must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+      "'state' for milestones must be either '", str_c(values$milestone$state, collapse = "', '"), "':\n  ", state)
     payload$state <- state
   }
 
@@ -266,15 +266,15 @@ view_milestones <- function(
 
   assert(
     is_scalar_character(state) && state %in% values$milestone$state,
-    "'state' must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+    "'state' must be either '", str_c(values$milestone$state, collapse = "', '"), "':\n  ", state)
   assert(
     is_scalar_character(sort) && sort %in% values$milestone$sort,
-    "'sort' must be either '", paste(values$milestone$sort, collapse = "', '"), "':\n  ", sort)
+    "'sort' must be either '", str_c(values$milestone$sort, collapse = "', '"), "':\n  ", sort)
   assert(
     is_scalar_character(direction) && direction %in% values$milestone$direction,
-    "'direction' must be either '", paste(values$milestone$direction, collapse = "', '"), "':\n  ", direction)
+    "'direction' must be either '", str_c(values$milestone$direction, collapse = "', '"), "':\n  ", direction)
 
-  info("Viewing milestones for respository '", repo, "'")
+  info("Viewing milestones for repository '", repo, "'")
   milestones_lst <- gh_url("repos", repo, "milestones", state = state, sort = sort, direction = direction) %>%
     gh_page(n_max = n_max, ...)
 

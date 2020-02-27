@@ -8,7 +8,7 @@ now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 setup(suppressMessages(try(silent = TRUE, {
 
   test_project <- create_project(
-    name = paste("Test collaborators", now),
+    name = str_c("Test collaborators ", now),
     body = "A project to test collaborator functions",
     org  = "HairyCoos")
 
@@ -17,7 +17,7 @@ setup(suppressMessages(try(silent = TRUE, {
 teardown(suppressMessages(try(silent = TRUE, {
 
   delete_project(
-    project = paste("Test collaborators", now),
+    project = str_c("Test collaborators ", now),
     org     = "HairyCoos")
 
 })))
@@ -46,7 +46,7 @@ test_that("update_collaborator adds a collaborator to a repository or project", 
 
   project_result <- update_collaborator(
     user    = "ChadGoymer2",
-    project = paste("Test collaborators", now),
+    project = str_c("Test collaborators ", now),
     org     = "HairyCoos")
 
   expect_is(project_result, "logical")
@@ -55,7 +55,7 @@ test_that("update_collaborator adds a collaborator to a repository or project", 
 
   updated_project_result <- update_collaborator(
     user       = "ChadGoymer2",
-    project    = paste("Test collaborators", now),
+    project    = str_c("Test collaborators ", now),
     org        = "HairyCoos",
     permission = "admin")
 
@@ -91,7 +91,7 @@ test_that("view_collaborators returns a tibble summarising the collaborators", {
 
   expect_true("ChadGoymer" %in% repo_collaborators$login)
 
-  project_collaborators <- view_collaborators(project = paste("Test collaborators", now), org = "HairyCoos")
+  project_collaborators <- view_collaborators(project = str_c("Test collaborators ", now), org = "HairyCoos")
 
   expect_is(project_collaborators, "tbl")
   expect_identical(attr(project_collaborators, "status"), 200L)
@@ -158,7 +158,7 @@ test_that("view_collaborator returns a list of a collaborator's properties", {
 
   project_collaborator <- view_collaborator(
     user    = "ChadGoymer2",
-    project = paste("Test collaborators", now),
+    project = str_c("Test collaborators ", now),
     org     = "HairyCoos")
 
   expect_is(project_collaborator, "list")
@@ -197,7 +197,7 @@ test_that("delete_collaborator removes a collaborator from a repo, project or or
 
   project_collaborator <- delete_collaborator(
     user    = "ChadGoymer2",
-    project = paste("Test collaborators", now),
+    project = str_c("Test collaborators ", now),
     org     = "HairyCoos")
 
   expect_is(project_collaborator, "logical")

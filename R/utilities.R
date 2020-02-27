@@ -97,7 +97,7 @@ as.datetime <- function(x)
 #
 property_names <- function(properties)
 {
-  names <- map_chr(properties, paste, collapse = "_")
+  names <- map_chr(properties, str_c, collapse = "_")
 
   if (!is_null(names(properties))) {
     for (property in seq_along(properties)) {
@@ -140,7 +140,7 @@ select_properties <- function(entity, properties)
   }
 
   map2(selected_properties, conversions, function(prop, conv) {
-    if (is_na(conv)) prop else exec(paste0("as.", conv), prop)
+    if (is_na(conv)) prop else exec(str_c("as.", conv), prop)
   }) %>%
     structure(
       class   = c("github", class(.)),
@@ -183,7 +183,7 @@ bind_properties <- function(collection, properties)
   }
 
   map2(selected_properties, conversions, function(prop, conv) {
-    if (is_na(conv)) prop else exec(paste0("as.", conv), prop)
+    if (is_na(conv)) prop else exec(str_c("as.", conv), prop)
   }) %>%
     as_tibble() %>%
     structure(

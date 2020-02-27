@@ -68,7 +68,7 @@ update_collaborator <- function(
     {
       assert(
         is_scalar_character(permission) && permission %in% values$repository$permission,
-        "'permission' for repositories must be either '", paste(values$repository$permission, collapse = "', '"), "':\n  ", permission)
+        "'permission' for repositories must be either '", str_c(values$repository$permission, collapse = "', '"), "':\n  ", permission)
       payload$permission <- permission
     }
 
@@ -83,7 +83,7 @@ update_collaborator <- function(
     {
       assert(
         is_scalar_character(permission) && permission %in% values$project$permission,
-        "'permission' for projects must be either '", paste(values$project$permission, collapse = "', '"), "':\n  ", permission)
+        "'permission' for projects must be either '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
       payload$permission <- permission
     }
 
@@ -185,7 +185,7 @@ view_collaborators <- function(
 {
   assert(
     is_scalar_character(affiliation) && affiliation %in% values$collaborator$affiliation,
-    "'affiliation' for repositories must be either '", paste(values$collaborator$affiliation, collapse = "', '"), "':\n  ", affiliation)
+    "'affiliation' for repositories must be either '", str_c(values$collaborator$affiliation, collapse = "', '"), "':\n  ", affiliation)
 
   if (!missing(repo))
   {

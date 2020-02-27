@@ -456,10 +456,10 @@ view_repositories <- function(
 {
   assert(
     is_scalar_character(sort) && sort %in% values$repository$sort,
-    "'sort' must be either '", paste(values$repository$sort, collapse = "', '"), "':\n  ", sort)
+    "'sort' must be either '", str_c(values$repository$sort, collapse = "', '"), "':\n  ", sort)
   assert(
     is_scalar_character(direction) && direction %in% values$repository$direction,
-    "'direction' must be either '", paste(values$repository$direction, collapse = "', '"), "':\n  ", direction)
+    "'direction' must be either '", str_c(values$repository$direction, collapse = "', '"), "':\n  ", direction)
 
   if (!missing(user))
   {
