@@ -65,7 +65,7 @@ update_membership <- function(
     {
       assert(
         is_scalar_character(role) && role %in% values$membership$org_role,
-        "organization 'role' must be either '", paste(values$membership$org_role, collapse = "', '"), "':\n  ", role)
+        "organization 'role' must be either '", str_c(values$membership$org_role, collapse = "', '"), "':\n  ", role)
       payload <- list(role = role)
     }
 
@@ -82,7 +82,7 @@ update_membership <- function(
     {
       assert(
         is_scalar_character(role) && role %in% values$membership$team_role,
-        "organization 'role' must be either '", paste(values$membership$team_role, collapse = "', '"), "':\n  ", role)
+        "organization 'role' must be either '", str_c(values$membership$team_role, collapse = "', '"), "':\n  ", role)
       payload <- list(role = role)
     }
 
@@ -273,10 +273,10 @@ view_membership <- function(
 #' @examples
 #' \dontrun{
 #'   # Remove a user from an organization
-#'   delete_membership("HeadCoos", "HairyCoos")
+#'   delete_membership("ChadGoymer", "HairyCoos")
 #'
 #'   # Remove a user from a team
-#'   delete_membership("HeadCoos", "HairyCoos", "HeadCoos")
+#'   delete_membership("ChadGoymer", "HairyCoos", "HeadCoos")
 #' }
 #'
 #' @export

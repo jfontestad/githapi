@@ -24,6 +24,9 @@ reference:
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
   contents:
+    - '`create_issue`'
+    - '`update_issue`'
+    - '`view_issues`'
     - '`create_label`'
     - '`update_label`'
     - '`view_labels`'
@@ -129,17 +132,6 @@ reference:
     - '`gh_gist_comments`'
     - '`gh_save_gist`'
     - '`gh_source_gist`'
-- title: Issues
-  desc: Functions for accessing information about issues and their contents.
-  contents:
-    - '`gh_issue`'
-    - '`gh_issues`'
-    - '`gh_user_issues`'
-    - '`gh_assignees`'
-    - '`gh_issue_comments`'
-    - '`gh_issue_comment`'
-    - '`gh_event`'
-    - '`gh_events`'
 - title: Pull Requests
   desc: Functions for accessing information about pull requests and their contents.
   contents:
@@ -223,5 +215,13 @@ reference:
     - '`gh_labels`'
     - '`gh_milestone`'
     - '`gh_milestones`'
+    - '`gh_issue`'
+    - '`gh_issues`'
+    - '`gh_user_issues`'
+    - '`gh_assignees`'
+    - '`gh_issue_comments`'
+    - '`gh_issue_comment`'
+    - '`gh_event`'
+    - '`gh_events`'
 news:
 - one_page: false

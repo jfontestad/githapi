@@ -9,7 +9,7 @@ test_that("gh_token returns a valid GitHub personal access token", {
   on.exit(options(msgr.level = existing_msgr_level), add = TRUE)
   options(msgr.level = 10)
 
-  token1 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% paste(collapse = "")
+  token1 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% str_c(collapse = "")
 
   expect_message(
     token1_result <- gh_token(token = token1),
@@ -17,7 +17,7 @@ test_that("gh_token returns a valid GitHub personal access token", {
 
   expect_identical(token1_result, token1)
 
-  token2 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% paste(collapse = "")
+  token2 <- sample(c(0:9, letters[1:6]), size = 40, replace = TRUE) %>% str_c(collapse = "")
 
   existing_token <- getOption("github.token")
   on.exit(options(github.token = existing_token), add = TRUE)

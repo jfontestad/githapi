@@ -4,17 +4,18 @@
 \alias{create_label}
 \title{Create an issue label in a repository}
 \usage{
-create_label(name, repo, color, description, ...)
+create_label(name, repo, description, color = random_color(), ...)
 }
 \arguments{
 \item{name}{(string) The name of the label.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{color}{(string) Either the color name (see \code{\link[grDevices:colors]{grDevices::colors()}}) or a hexidecimal
-color code (see \href{http://www.color-hex.com/}{color-hex.com}).}
-
 \item{description}{(string, optional) A description of the label.}
+
+\item{color}{(string, optional) Either the color name (see \code{\link[grDevices:colors]{grDevices::colors()}}) or a
+hexidecimal color code (see \href{http://www.color-hex.com/}{color-hex.com}). If not
+supplied a color is chosen at random.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -40,6 +41,11 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+  create_label(
+    name        = "new-label",
+    repo        = "ChadGoymer/test-githapi",
+    color       = "blue",
+    description = "This is a detailed label")
 }
 
 }

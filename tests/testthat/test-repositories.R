@@ -11,7 +11,7 @@ now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 test_that("create_repository creates a repository and returns its properties", {
 
   user_repo <- create_repository(
-    name        = paste0("user-repository-", now),
+    name        = str_c("user-repository-", now),
     description = "This is a user repository",
     homepage    = "https://user-repository.com",
     auto_init   = TRUE)
@@ -47,13 +47,13 @@ test_that("create_repository creates a repository and returns its properties", {
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_identical(user_repo$full_name, paste0("ChadGoymer/user-repository-", now))
+  expect_identical(user_repo$full_name, str_c("ChadGoymer/user-repository-", now))
   expect_identical(user_repo$description, "This is a user repository")
   expect_identical(user_repo$homepage, "https://user-repository.com")
 
 
   org_repo <- create_repository(
-    name        = paste0("org-repository-", now),
+    name        = str_c("org-repository-", now),
     org         = "HairyCoos",
     description = "This is an organization respository",
     homepage    = "https://org-repository.com")
@@ -89,7 +89,7 @@ test_that("create_repository creates a repository and returns its properties", {
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_identical(org_repo$full_name, paste0("HairyCoos/org-repository-", now))
+  expect_identical(org_repo$full_name, str_c("HairyCoos/org-repository-", now))
   expect_identical(org_repo$description, "This is an organization respository")
   expect_identical(org_repo$homepage, "https://org-repository.com")
 
@@ -101,8 +101,8 @@ test_that("create_repository creates a repository and returns its properties", {
 test_that("update_repository changes a repository's properties and returns them as a list", {
 
   user_repo <- update_repository(
-    repo           = paste0("ChadGoymer/user-repository-", now),
-    name           = paste0("updated-user-repository-", now),
+    repo           = str_c("ChadGoymer/user-repository-", now),
+    name           = str_c("updated-user-repository-", now),
     description    = "This is an updated user respository",
     homepage       = "https://updated-user-repository.com",
     has_issues     = FALSE,
@@ -141,7 +141,7 @@ test_that("update_repository changes a repository's properties and returns them 
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_identical(user_repo$full_name, paste0("ChadGoymer/updated-user-repository-", now))
+  expect_identical(user_repo$full_name, str_c("ChadGoymer/updated-user-repository-", now))
   expect_identical(user_repo$description, "This is an updated user respository")
   expect_identical(user_repo$homepage, "https://updated-user-repository.com")
   expect_false(user_repo$has_issues)
@@ -151,8 +151,8 @@ test_that("update_repository changes a repository's properties and returns them 
 
 
   org_repo <- update_repository(
-    repo                   = paste0("HairyCoos/org-repository-", now),
-    name                   = paste0("updated-org-repository-", now),
+    repo                   = str_c("HairyCoos/org-repository-", now),
+    name                   = str_c("updated-org-repository-", now),
     description            = "This is an updated organization respository",
     homepage               = "https://updated-org-repository.com",
     private                = FALSE,
@@ -192,7 +192,7 @@ test_that("update_repository changes a repository's properties and returns them 
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_identical(org_repo$full_name, paste0("HairyCoos/updated-org-repository-", now))
+  expect_identical(org_repo$full_name, str_c("HairyCoos/updated-org-repository-", now))
   expect_identical(org_repo$description, "This is an updated organization respository")
   expect_identical(org_repo$homepage, "https://updated-org-repository.com")
   expect_false(org_repo$private)
@@ -201,7 +201,7 @@ test_that("update_repository changes a repository's properties and returns them 
   expect_true(org_repo$allow_rebase_merge)
 
 
-  archived_repo <- update_repository(paste0("HairyCoos/updated-org-repository-", now), archived = TRUE)
+  archived_repo <- update_repository(str_c("HairyCoos/updated-org-repository-", now), archived = TRUE)
 
   expect_is(archived_repo, "list")
   expect_identical(attr(archived_repo, "status"), 200L)
@@ -276,7 +276,7 @@ test_that("view_repositories returns a tibble summarising the repositories", {
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_true(paste0("updated-user-repository-", now) %in% user_repos$name)
+  expect_true(str_c("updated-user-repository-", now) %in% user_repos$name)
   expect_identical(sort(user_repos$created_at, decreasing = TRUE), user_repos$created_at)
 
 
@@ -349,7 +349,7 @@ test_that("view_repositories returns a tibble summarising the repositories", {
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_true(paste0("updated-org-repository-", now) %in% org_repos$name)
+  expect_true(str_c("updated-org-repository-", now) %in% org_repos$name)
 
 
   auth_repos <- view_repositories()
@@ -385,7 +385,7 @@ test_that("view_repositories returns a tibble summarising the repositories", {
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_true(paste0("updated-user-repository-", now) %in% auth_repos$name)
+  expect_true(str_c("updated-user-repository-", now) %in% auth_repos$name)
 
 })
 
@@ -394,7 +394,7 @@ test_that("view_repositories returns a tibble summarising the repositories", {
 
 test_that("view_repository returns a list of repository properties", {
 
-  test_repo <- view_repository(paste0("ChadGoymer/updated-user-repository-", now))
+  test_repo <- view_repository(str_c("ChadGoymer/updated-user-repository-", now))
 
   expect_is(test_repo, "list")
   expect_identical(attr(test_repo, "status"), 200L)
@@ -427,7 +427,7 @@ test_that("view_repository returns a list of repository properties", {
       created_at         = "POSIXct",
       updated_at         = "POSIXct"))
 
-  expect_identical(test_repo$name, paste0("updated-user-repository-", now))
+  expect_identical(test_repo$name, str_c("updated-user-repository-", now))
 
 })
 
@@ -438,11 +438,11 @@ test_that("browse_repository opens the repository's page in the browser", {
 
   skip_if(!interactive(), "browse_repository must be tested manually")
 
-  repo <- browse_repository(paste0("ChadGoymer/updated-user-repository-", now))
+  repo <- browse_repository(str_c("ChadGoymer/updated-user-repository-", now))
 
   expect_is(repo, "character")
   expect_identical(attr(repo, "status"), 200L)
-  expect_identical(as.character(repo), paste0("https://github.com/ChadGoymer/updated-user-repository-", now))
+  expect_identical(as.character(repo), str_c("https://github.com/ChadGoymer/updated-user-repository-", now))
 
 })
 
@@ -451,13 +451,13 @@ test_that("browse_repository opens the repository's page in the browser", {
 
 test_that("delete_repository removes a repository and returns TRUE", {
 
-  user_repo <- delete_repository(paste0("ChadGoymer/updated-user-repository-", now))
+  user_repo <- delete_repository(str_c("ChadGoymer/updated-user-repository-", now))
 
   expect_is(user_repo, "logical")
   expect_identical(attr(user_repo, "status"), 204L)
   expect_identical(as.logical(user_repo), TRUE)
 
-  org_repo <- delete_repository(paste0("HairyCoos/updated-org-repository-", now))
+  org_repo <- delete_repository(str_c("HairyCoos/updated-org-repository-", now))
 
   expect_is(org_repo, "logical")
   expect_identical(attr(org_repo, "status"), 204L)

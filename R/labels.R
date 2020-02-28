@@ -10,9 +10,10 @@
 #'
 #' @param name (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param color (string) Either the color name (see [grDevices::colors()]) or a hexidecimal
-#'   color code (see [color-hex.com](http://www.color-hex.com/)).
 #' @param description (string, optional) A description of the label.
+#' @param color (string, optional) Either the color name (see [grDevices::colors()]) or a
+#'   hexidecimal color code (see [color-hex.com](http://www.color-hex.com/)). If not
+#'   supplied a color is chosen at random.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `create_label()` returns a list of the label's properties.
@@ -25,6 +26,11 @@
 #'
 #' @examples
 #' \dontrun{
+#'   create_label(
+#'     name        = "new-label",
+#'     repo        = "ChadGoymer/test-githapi",
+#'     color       = "blue",
+#'     description = "This is a detailed label")
 #' }
 #'
 #' @export
@@ -32,8 +38,8 @@
 create_label <- function(
   name,
   repo,
-  color,
   description,
+  color = random_color(),
   ...)
 {
   assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
@@ -92,6 +98,12 @@ create_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'   update_label(
+#'     label       = "new-label",
+#'     repo        = "ChadGoymer/test-githapi",
+#'     name        = "updated-label",
+#'     color       = "green",
+#'     description = "This is an updated label")
 #' }
 #'
 #' @export
@@ -167,6 +179,11 @@ update_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'   # View all labels in a repository
+#'   view_labels("ChadGoymer/test-githapi")
+#'
+#'   # View a single label
+#'   view_label("new-label", "ChadGoymer/test-githapi")
 #' }
 #'
 #' @export
@@ -233,10 +250,7 @@ view_label <- function(
 #'
 #' @examples
 #' \dontrun{
-#'   # Delete a label
-#'   delete_label(
-#'     label = "test label",
-#'     repo  = "ChadGoymer/test-githapi")
+#'   delete_label("new-label", repo = "ChadGoymer/test-githapi")
 #' }
 #'
 #' @export

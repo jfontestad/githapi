@@ -39,12 +39,20 @@
 #' - [gh_repositories()]: replace with [view_repositories()]
 #' - [is_repository()]: is being removed
 #'
-#' @section Issues, labels and milestones:
+#' @section Issues, Pull Requests, labels and milestones:
 #'
 #' - [gh_label()]: replace with [view_label()]
 #' - [gh_labels()]: replace with [view_labels()]
 #' - [gh_milestone()]: replace with [view_milestone()]
 #' - [gh_milestones()]: replace with [view_milestones()]
+#' - [gh_issue()]: replace with [view_issue()]
+#' - [gh_issues()]: replace with [view_issues()]
+#' - [gh_user_issues()]: replace with [view_issues()]
+#' - [gh_assignees()]: is being removed
+#' - [gh_issue_comments()]: replace with [view_issue()]
+#' - [gh_issue_comment()]: is being removed
+#' - [gh_event()]: is being removed
+#' - [gh_events()]: is being removed
 #'
 #' @section Projects Functions:
 #'

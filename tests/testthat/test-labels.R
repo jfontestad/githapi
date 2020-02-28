@@ -8,14 +8,14 @@ now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 setup(suppressMessages(try(silent = TRUE, {
 
   test_repo <- create_repository(
-    name        = paste0("test-labels-", now),
+    name        = str_c("test-labels-", now),
     description = "This is a repository to test labels")
 
 })))
 
 teardown(suppressMessages(try(silent = TRUE, {
 
-  delete_repository(paste0("ChadGoymer/test-labels-", now))
+  delete_repository(str_c("ChadGoymer/test-labels-", now))
 
 })))
 
@@ -26,7 +26,7 @@ test_that("create_label creates a label and returns a list of the properties", {
 
   simple_label <- create_label(
     name  = "simple-label",
-    repo  = paste0("ChadGoymer/test-labels-", now),
+    repo  = str_c("ChadGoymer/test-labels-", now),
     color = "blue")
 
   expect_is(simple_label, "list")
@@ -42,7 +42,7 @@ test_that("create_label creates a label and returns a list of the properties", {
 
   detailed_label <- create_label(
     name        = "detailed-label",
-    repo        = paste0("ChadGoymer/test-labels-", now),
+    repo        = str_c("ChadGoymer/test-labels-", now),
     color       = "green",
     description = "This is a detailed label")
 
@@ -67,7 +67,7 @@ test_that("update_label changes a label and returns a list of the properties", {
 
   updated_label <- update_label(
     label       = "simple-label",
-    repo        = paste0("ChadGoymer/test-labels-", now),
+    repo        = str_c("ChadGoymer/test-labels-", now),
     name        = "updated-label",
     color       = "pink",
     description = "This is an updated label")
@@ -91,7 +91,7 @@ test_that("update_label changes a label and returns a list of the properties", {
 
 test_that("view_labels returns a tibble of label properties", {
 
-  labels <- view_labels(paste0("ChadGoymer/test-labels-", now))
+  labels <- view_labels(str_c("ChadGoymer/test-labels-", now))
 
   expect_is(labels, "tbl")
   expect_identical(attr(labels, "status"), 200L)
@@ -110,7 +110,7 @@ test_that("view_labels returns a tibble of label properties", {
 
 test_that("view_label returns a list of repository properties", {
 
-  detailed_label <- view_label("detailed-label", repo = paste0("ChadGoymer/test-labels-", now))
+  detailed_label <- view_label("detailed-label", repo = str_c("ChadGoymer/test-labels-", now))
 
   expect_is(detailed_label, "list")
   expect_identical(attr(detailed_label, "status"), 200L)
@@ -129,13 +129,13 @@ test_that("view_label returns a list of repository properties", {
 
 test_that("delete_label removes a label and returns TRUE", {
 
-  updated_label <- delete_label("updated-label", repo = paste0("ChadGoymer/test-labels-", now))
+  updated_label <- delete_label("updated-label", repo = str_c("ChadGoymer/test-labels-", now))
 
   expect_is(updated_label, "logical")
   expect_identical(attr(updated_label, "status"), 204L)
   expect_identical(as.logical(updated_label), TRUE)
 
-  detailed_label <- delete_label("detailed-label", repo = paste0("ChadGoymer/test-labels-", now))
+  detailed_label <- delete_label("detailed-label", repo = str_c("ChadGoymer/test-labels-", now))
 
   expect_is(detailed_label, "logical")
   expect_identical(attr(detailed_label, "status"), 204L)

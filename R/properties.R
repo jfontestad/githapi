@@ -161,6 +161,19 @@ properties <- list(
     created_at                               = c("created_at",                               as = "datetime"),
     updated_at                               = c("updated_at",                               as = "datetime"),
     due_on                                   = c("due_on",                                   as = "datetime"),
+    closed_at                                = c("closed_at",                                as = "datetime")),
+
+  issue = list(
+    number                                   = c("number",                                   as = "integer"),
+    title                                    = c("title",                                    as = "character"),
+    body                                     = c("body",                                     as = "character"),
+    milestone                                = c("milestone", "title",                       as = "character"),
+    state                                    = c("state",                                    as = "character"),
+    repository                               = c("repository", "full_name",                  as = "character"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    creator                                  = c("user", "login",                            as = "character"),
+    created_at                               = c("created_at",                               as = "datetime"),
+    updated_at                               = c("updated_at",                               as = "datetime"),
     closed_at                                = c("closed_at",                                as = "datetime"))
 
 )
@@ -212,6 +225,11 @@ values <- list(
   milestone = list(
     state                         = c("open", "closed", "all"),
     sort                          = c("due_on", "completeness"),
+    direction                     = c("asc", "desc")),
+
+  issue = list(
+    state                         = c("open", "closed", "all"),
+    sort                          = c("created", "updated", "comments"),
     direction                     = c("asc", "desc"))
 
 )

@@ -44,6 +44,11 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+  # View all labels in a repository
+  view_labels("ChadGoymer/test-githapi")
+
+  # View a single label
+  view_label("new-label", "ChadGoymer/test-githapi")
 }
 
 }

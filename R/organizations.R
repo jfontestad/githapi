@@ -150,7 +150,7 @@ update_organization <- function(
   {
     assert(
       is_scalar_character(default_repository_permission) && default_repository_permission %in% values$organization$default_repository_permission,
-      "'default_repository_permission' must be either '", paste(values$organization$default_repository_permission, collapse = "', '"), "':\n  ", default_repository_permission)
+      "'default_repository_permission' must be either '", str_c(values$organization$default_repository_permission, collapse = "', '"), "':\n  ", default_repository_permission)
     payload$default_repository_permission <- default_repository_permission
   }
 

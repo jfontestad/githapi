@@ -46,13 +46,21 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
-\section{Issues, labels and milestones}{
+\section{Issues, Pull Requests, labels and milestones}{
 
 \itemize{
 \item \code{\link[=gh_label]{gh_label()}}: replace with \code{\link[=view_label]{view_label()}}
 \item \code{\link[=gh_labels]{gh_labels()}}: replace with \code{\link[=view_labels]{view_labels()}}
 \item \code{\link[=gh_milestone]{gh_milestone()}}: replace with \code{\link[=view_milestone]{view_milestone()}}
 \item \code{\link[=gh_milestones]{gh_milestones()}}: replace with \code{\link[=view_milestones]{view_milestones()}}
+\item \code{\link[=gh_issue]{gh_issue()}}: replace with \code{\link[=view_issue]{view_issue()}}
+\item \code{\link[=gh_issues]{gh_issues()}}: replace with \code{\link[=view_issues]{view_issues()}}
+\item \code{\link[=gh_user_issues]{gh_user_issues()}}: replace with \code{\link[=view_issues]{view_issues()}}
+\item \code{\link[=gh_assignees]{gh_assignees()}}: is being removed
+\item \code{\link[=gh_issue_comments]{gh_issue_comments()}}: replace with \code{\link[=view_issue]{view_issue()}}
+\item \code{\link[=gh_issue_comment]{gh_issue_comment()}}: is being removed
+\item \code{\link[=gh_event]{gh_event()}}: is being removed
+\item \code{\link[=gh_events]{gh_events()}}: is being removed
 }
 }
 

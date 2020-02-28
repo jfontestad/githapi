@@ -46,6 +46,25 @@ test_that("is_hex returns TRUE with a valid hexadecimal color code and FALSE oth
 })
 
 
+
+# TEST: random_color --------------------------------------------------------------------------
+
+test_that("random_color returns a color name", {
+
+  color1 <- random_color()
+
+  expect_true(is_scalar_character(color1))
+  expect_true(color1 %in% grDevices::colors())
+
+  color2 <- random_color()
+
+  expect_true(is_scalar_character(color2))
+  expect_true(color2 %in% grDevices::colors())
+  expect_false(color1 == color2)
+
+})
+
+
 # TEST: as_hex --------------------------------------------------------------------------------
 
 test_that("as_hex converts a color name to a hexidecimal color code", {
@@ -274,5 +293,49 @@ test_that("bind_properties returns an empty data.frame for an empty list of enti
   class(expected_empty_result) <- c("github", class(expected_empty_result))
 
   expect_identical(empty_result, expected_empty_result)
+
+})
+
+
+# TEST: collapse_property ---------------------------------------------------------------------
+
+test_that("collapse_property returns a character vector of collapsed sub-properties", {
+
+  collection <- list(
+    list(
+      names  = list(list(first = "bob", second = "smith"), list(first = "jane", second = "jones")),
+      emails = c("bob@acme.com")),
+    list(
+      names  = list(list(first = "jim", second = "walker")),
+      emails = c("jim@acme.com", "hester@acme.com")))
+
+  result <- collapse_property(collection, "names", "first")
+
+  expect_identical(result, c("bob,jane", "jim" ))
+
+})
+
+
+# TEST: modify_list ---------------------------------------------------------------------------
+
+test_that("modify_list adds or modifies a list", {
+
+  test_list <- list(a = 1, b = 2, c = 3)
+
+  prepend_list <- modify_list(test_list, x = 10, .before = "b")
+
+  expect_identical(prepend_list, list(a = 1, x = 10, b = 2, c = 3))
+
+  append_list <- modify_list(test_list, x = 10, .after = "b")
+
+  expect_identical(append_list, list(a = 1, b = 2, x = 10, c = 3))
+
+  replace_list <- modify_list(test_list, b = 10)
+
+  expect_identical(replace_list, list(a = 1, b = 10, c = 3))
+
+  add_list <- modify_list(test_list, x = 10)
+
+  expect_identical(add_list, list(a = 1, b = 2, c = 3, x = 10))
 
 })

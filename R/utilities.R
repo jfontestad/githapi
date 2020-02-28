@@ -53,7 +53,7 @@ is_hex <- function(x)
 
 # FUNCTION: as_hex ----------------------------------------------------------------------------
 #
-# convert a vector of color names into hexidecimal codes
+# Convert a vector of color names into hexidecimal codes
 #
 # @param x (character) The vector to convert
 #
@@ -66,6 +66,18 @@ as_hex <- function(color_name)
     red   = color_matrix[1,] / 255,
     green = color_matrix[2,] / 255,
     blue  = color_matrix[3,] / 255)
+}
+
+
+# FUNCTION: random_color ----------------------------------------------------------------------
+#
+# Select a color at random
+#
+# @return A color name sampled from [grDevices::colors()]
+#
+random_color <- function()
+{
+  sample(grDevices::colors(), 1)
 }
 
 
@@ -97,7 +109,7 @@ as.datetime <- function(x)
 #
 property_names <- function(properties)
 {
-  names <- map_chr(properties, paste, collapse = "_")
+  names <- map_chr(properties, str_c, collapse = "_")
 
   if (!is_null(names(properties))) {
     for (property in seq_along(properties)) {
@@ -140,7 +152,7 @@ select_properties <- function(entity, properties)
   }
 
   map2(selected_properties, conversions, function(prop, conv) {
-    if (is_na(conv)) prop else exec(paste0("as.", conv), prop)
+    if (is_na(conv)) prop else exec(str_c("as.", conv), prop)
   }) %>%
     structure(
       class   = c("github", class(.)),
@@ -183,7 +195,7 @@ bind_properties <- function(collection, properties)
   }
 
   map2(selected_properties, conversions, function(prop, conv) {
-    if (is_na(conv)) prop else exec(paste0("as.", conv), prop)
+    if (is_na(conv)) prop else exec(str_c("as.", conv), prop)
   }) %>%
     as_tibble() %>%
     structure(
@@ -192,4 +204,66 @@ bind_properties <- function(collection, properties)
       request = attr(collection, "request"),
       status  = attr(collection, "status"),
       header  = attr(collection, "header"))
+}
+
+
+# FUNCTION: collapse_property -----------------------------------------------------------------
+#
+# Collapse a property's sub-properties
+#
+# This function can be used to collapse a sub-property of a list of properties into a
+# character vector.
+#
+# @param collection (list) A collection of entities with common properties
+# @param property (string) The property to collapse
+# @param subproperty (string) The sub-property of the property to combine
+# @param sep (string, optional) The separater to use in the collapsed sub-properties
+#
+# @return A character vector of collapsed sub-properties
+#
+collapse_property <- function(
+  collection,
+  property,
+  sub_property,
+  sep = ",")
+{
+  map_chr(collection, function(entity) {
+    if (length(entity[[property]]) > 0) {
+      map(entity[[property]], sub_property) %>% str_c(collapse = sep)
+    } else {
+      NA_character_
+    }
+  })
+}
+
+
+# FUNCTION: modify_list -----------------------------------------------------------------------
+#
+# Modify a list
+#
+# This function can add elements before or after existing elements or replaces them.
+#
+# @param .x (list) The list to modify
+# @param ... (any) The elements to add or modify
+# @param .before (string) The element to add the new one(s) before
+# @param .after (string) The element to add the new one(s) after
+#
+# @return A list with specified modifications
+#
+modify_list <- function(
+  .x,
+  ...,
+  .before,
+  .after)
+{
+  dots <- list(...)
+  if (!missing(.before)) {
+    prepend(.x, dots, before = which(names(.x) == .before))
+  }
+  else if (!missing(.after)) {
+    append(.x, dots, after = which(names(.x) == .after))
+  }
+  else {
+    utils::modifyList(.x, dots)
+  }
 }

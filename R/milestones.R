@@ -57,7 +57,7 @@ create_milestone <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(
     is_scalar_character(state) && state %in% values$milestone$state,
-    "'state' for milestones must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+    "'state' for milestones must be either '", str_c(values$milestone$state, collapse = "', '"), "':\n  ", state)
 
   payload <- list(title = title, state = state)
 
@@ -100,7 +100,6 @@ create_milestone <- function(
 #' @param due_on (string, optional) The milestone due date. This is in the format:
 #'   `YYYY-MM-DD HH:MM:SS`.
 #' @param state (string, optional) The state of the milestone. Either `"open"` or `"closed"`.
-#'   Default: `"open"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `update_milestone()` returns a list of the milestone properties.
@@ -170,7 +169,7 @@ update_milestone <- function(
   if (!missing(state)) {
     assert(
       is_scalar_character(state) && state %in% values$milestone$state,
-      "'state' for milestones must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+      "'state' for milestones must be either '", str_c(values$milestone$state, collapse = "', '"), "':\n  ", state)
     payload$state <- state
   }
 
@@ -214,7 +213,7 @@ update_milestone <- function(
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return `view_milestones()` returns a tibble of milestone properties. `view_milestones()`
+#' @return `view_milestones()` returns a tibble of milestone properties. `view_milestone()`
 #'   returns a list of properties for a single milestone. `browse_milestone()` opens the
 #'   default browser on the milestone's page and returns the URL.
 #'
@@ -266,15 +265,15 @@ view_milestones <- function(
 
   assert(
     is_scalar_character(state) && state %in% values$milestone$state,
-    "'state' must be either '", paste(values$milestone$state, collapse = "', '"), "':\n  ", state)
+    "'state' must be either '", str_c(values$milestone$state, collapse = "', '"), "':\n  ", state)
   assert(
     is_scalar_character(sort) && sort %in% values$milestone$sort,
-    "'sort' must be either '", paste(values$milestone$sort, collapse = "', '"), "':\n  ", sort)
+    "'sort' must be either '", str_c(values$milestone$sort, collapse = "', '"), "':\n  ", sort)
   assert(
     is_scalar_character(direction) && direction %in% values$milestone$direction,
-    "'direction' must be either '", paste(values$milestone$direction, collapse = "', '"), "':\n  ", direction)
+    "'direction' must be either '", str_c(values$milestone$direction, collapse = "', '"), "':\n  ", direction)
 
-  info("Viewing milestones for respository '", repo, "'")
+  info("Viewing milestones for repository '", repo, "'")
   milestones_lst <- gh_url("repos", repo, "milestones", state = state, sort = sort, direction = direction) %>%
     gh_page(n_max = n_max, ...)
 
