@@ -2,7 +2,7 @@ context("pull request api")
 
 #  FUNCTION: gh_pull_request ------------------------------------------------------------------
 test_that("gh_pull_request returns a list describing the pull request", {
-  pull_request <- gh_pull_request(8, "ChadGoymer/githapi")
+  pull_request <- suppressWarnings(gh_pull_request(8, "ChadGoymer/githapi"))
   expect_is(pull_request, "list")
   expect_named(
     pull_request,
@@ -20,7 +20,7 @@ test_that("gh_pull_request returns a list describing the pull request", {
 
 #  FUNCTION: gh_pull_requests -----------------------------------------------------------------
 test_that("gh_pull_requests returns a tibble describing the pull requests", {
-  pulls <- gh_pull_requests("ChadGoymer/githapi", state = "all")
+  pulls <- suppressWarnings(gh_pull_requests("ChadGoymer/githapi", state = "all"))
   expect_is(pulls, "tbl")
 
   expect_identical(
@@ -48,7 +48,7 @@ test_that("gh_pull_requests returns a tibble describing the pull requests", {
 
 #  FUNCTION: gh_pull_commits ------------------------------------------------------------------
 test_that("gh_pull_commits returns a tibble describing the commits on a pull request", {
-  commits <- gh_pull_commits(8, "ChadGoymer/githapi")
+  commits <- suppressWarnings(gh_pull_commits(8, "ChadGoymer/githapi"))
   expect_is(commits, "tbl")
 
   expect_identical(
@@ -65,7 +65,7 @@ test_that("gh_pull_commits returns a tibble describing the commits on a pull req
 
 #  FUNCTION: gh_pull_files --------------------------------------------------------------------
 test_that("gh_pull_files returns a tibble describing the files changed on a pull request", {
-  files <- gh_pull_files(8, "ChadGoymer/githapi")
+  files <- suppressWarnings(gh_pull_files(8, "ChadGoymer/githapi"))
   expect_is(files, "tbl")
 
   expect_identical(
@@ -92,40 +92,40 @@ test_that("is_pull_merged returns TRUE if the pull request has been merged and F
 #  FUNCTION: gh_pull_review -------------------------------------------------------------------
 test_that("gh_pull_review returns a list describing the pull request review", {
   # TODO: Add a collaborator so they can be assigned to review
-  # review <- gh_pull_review(1, 8, "ChadGoymer/githapi")
+  # review <- suppressWarnings(gh_pull_review(1, 8, "ChadGoymer/githapi"))
   # expect_is(review, "list")
 })
 
 #  FUNCTION: gh_pull_reviews ------------------------------------------------------------------
 test_that("gh_pull_reviews returns a tibble describing the pull request reviews", {
   # TODO: Add a collaborator so they can be assigned to review
-  # reviews <- gh_pull_reviews(13, "ChadGoymer/githapi")
+  # reviews <- suppressWarnings(gh_pull_reviews(13, "ChadGoymer/githapi"))
   # expect_is(reviews, "tbl")
 })
 
 #  FUNCTION: gh_pull_comment ------------------------------------------------------------------
 test_that("gh_pull_comment returns a list describing the pull request review comment", {
   # TODO: Add a collaborator so they can be assigned to review
-  # comment <- gh_pull_comment(1, "ChadGoymer/githapi")
+  # comment <- suppressWarnings(gh_pull_comment(1, "ChadGoymer/githapi"))
   # expect_is(reviews, "list")
 })
 
 #  FUNCTION: gh_pull_comments -----------------------------------------------------------------
 test_that("gh_pull_comments returns a tibble describing the pull request comments", {
   # TODO: Add a collaborator so they can be assigned to review
-  # repo_comments <- gh_pull_comments("ChadGoymer/githapi")
+  # repo_comments <- suppressWarnings(gh_pull_comments("ChadGoymer/githapi"))
   # expect_is(repo_comments, "tbl")
   #
-  # pull_comments <- gh_pull_comments("ChadGoymer/githapi", 13)
+  # pull_comments <- suppressWarnings(gh_pull_comments("ChadGoymer/githapi", 13))
   # expect_is(pull_comments, "tbl")
   #
-  # review_comments <- gh_pull_comments("ChadGoymer/githapi", 13, 1)
+  # review_comments <- suppressWarnings(gh_pull_comments("ChadGoymer/githapi", 13, 1))
   # expect_is(review_comments, "tbl")
 })
 
 #  FUNCTION: gh_pull_review_requests ----------------------------------------------------------
 test_that("gh_pull_review_requests returns a tibble describing the pull request review requests", {
   # TODO: Add a collaborator so they can be assigned to review
-  # review_requests <- gh_pull_review_requests(13, "ChadGoymer/githapi")
+  # review_requests <- suppressWarnings(gh_pull_review_requests(13, "ChadGoymer/githapi"))
   # expect_is(review_requests, "tbl")
 })

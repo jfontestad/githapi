@@ -23,6 +23,8 @@ gh_pull_request <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_pull_request", package = "githapi")
+
   assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -70,6 +72,8 @@ gh_pull_requests <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_pull_requests", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_null(state) || is_scalar_character(state))
   assert(is_null(head) || is_scalar_character(head))
@@ -133,6 +137,8 @@ gh_pull_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_pull_request", package = "githapi")
+
   assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
@@ -183,6 +189,8 @@ gh_pull_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_pull_request", package = "githapi")
+
   assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
@@ -231,6 +239,8 @@ is_pull_merged <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -278,6 +288,8 @@ gh_pull_review <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(review) && isTRUE(review > 0))
   assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
@@ -317,6 +329,8 @@ gh_pull_reviews <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_pull_request", package = "githapi")
+
   assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
@@ -354,6 +368,8 @@ gh_pull_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -403,6 +419,8 @@ gh_pull_comments <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_pull_request", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -451,6 +469,8 @@ gh_pull_review_requests <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_pull_request", package = "githapi")
+
   assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))

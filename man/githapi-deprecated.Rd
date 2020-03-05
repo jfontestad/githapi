@@ -97,4 +97,20 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
+\section{Pull requests}{
+
+\itemize{
+\item \code{\link[=gh_pull_request]{gh_pull_request()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=gh_pull_requests]{gh_pull_requests()}}: replace with \code{\link[=view_pull_requests]{view_pull_requests()}}
+\item \code{\link[=gh_pull_commits]{gh_pull_commits()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=gh_pull_files]{gh_pull_files()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=is_pull_merged]{is_pull_merged()}}: is being removed
+\item \code{\link[=gh_pull_review]{gh_pull_review()}}: is being removed
+\item \code{\link[=gh_pull_reviews]{gh_pull_reviews()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=gh_pull_comment]{gh_pull_comment()}}: is being removed
+\item \code{\link[=gh_pull_comments]{gh_pull_comments()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=gh_pull_review_requests]{gh_pull_review_requests()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+}
+}
+
 \keyword{internal}
