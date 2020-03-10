@@ -57,8 +57,8 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_issues]{gh_issues()}}: replace with \code{\link[=view_issues]{view_issues()}}
 \item \code{\link[=gh_user_issues]{gh_user_issues()}}: replace with \code{\link[=view_issues]{view_issues()}}
 \item \code{\link[=gh_assignees]{gh_assignees()}}: is being removed
-\item \code{\link[=gh_issue_comments]{gh_issue_comments()}}: replace with \code{\link[=view_comments]{view_comments()}}
-\item \code{\link[=gh_issue_comment]{gh_issue_comment()}}: is being removed
+\item \code{\link[=gh_issue_comment]{gh_issue_comment()}}: replace with \code{view_comment()}
+\item \code{\link[=gh_issue_comments]{gh_issue_comments()}}: replace with \code{view_comments()}
 \item \code{\link[=gh_event]{gh_event()}}: is being removed
 \item \code{\link[=gh_events]{gh_events()}}: is being removed
 }
