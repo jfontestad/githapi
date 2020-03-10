@@ -90,8 +90,8 @@
 #' - [is_pull_merged()]: is being removed
 #' - [gh_pull_review()]: is being removed
 #' - [gh_pull_reviews()]: replace with [view_pull_request()]
-#' - [gh_pull_comment()]: is being removed
-#' - [gh_pull_comments()]: replace with [view_comments()]
+#' - [gh_pull_comment()]: replace with `view_comment()`
+#' - [gh_pull_comments()]: replace with `view_comments()`
 #' - [gh_pull_review_requests()]: is being removed
 #'
 NULL

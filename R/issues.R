@@ -1,4 +1,4 @@
-#  FUNCTION: create_issue ------------------------------------------------------------------
+#  FUNCTION: create_issue ---------------------------------------------------------------------
 #
 #' Create an issue in a repository
 #'
@@ -27,7 +27,7 @@
 #' - **number**: The number assigned to the issue.
 #' - **title**: The title of the issue.
 #' - **body**: The body contents of the issue.
-#' - **assignees**: The user assigned to the issue.
+#' - **assignees**: The users assigned to the issue.
 #' - **labels**: The labels attached to the issue.
 #' - **milestone**: The milestone assigned to the issue.
 #' - **state**: The state of the issue - either `"open"` or `"closed"`.
@@ -153,7 +153,7 @@ create_issue <- function(
 #' - **number**: The number assigned to the issue.
 #' - **title**: The title of the issue.
 #' - **body**: The body contents of the issue.
-#' - **assignees**: The user assigned to the issue.
+#' - **assignees**: The users assigned to the issue.
 #' - **labels**: The labels attached to the issue.
 #' - **milestone**: The milestone assigned to the issue.
 #' - **state**: The state of the issue - either `"open"` or `"closed"`.
@@ -296,8 +296,8 @@ update_issue <- function(
 #'   `YYYY-MM-DD HH:MM:SS`.
 #' @param state (string, optional) The state of the issues to return. Can be either `"open"`,
 #' `"closed"`, or `"all"`. Default: `"open"`.
-#' @param sort (string, optional) The property to order the returned repositories by. Can
-#'   be either `"created"`, `"updated"`, or `"comments"`. Default: `"created"`.
+#' @param sort (string, optional) The property to order the returned issues by. Can be either
+#'   `"created"`, `"updated"`, or `"comments"`. Default: `"created"`.
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
@@ -312,7 +312,7 @@ update_issue <- function(
 #' - **number**: The number assigned to the issue.
 #' - **title**: The title of the issue.
 #' - **body**: The body contents of the issue.
-#' - **assignees**: The user assigned to the issue.
+#' - **assignees**: The users assigned to the issue.
 #' - **labels**: The labels attached to the issue.
 #' - **milestone**: The milestone assigned to the issue.
 #' - **state**: The state of the issue - either `"open"` or `"closed"`.

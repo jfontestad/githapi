@@ -48,7 +48,7 @@ new issues. Setting to \code{NULL} clears the current milestone.}
 \item \strong{number}: The number assigned to the issue.
 \item \strong{title}: The title of the issue.
 \item \strong{body}: The body contents of the issue.
-\item \strong{assignees}: The user assigned to the issue.
+\item \strong{assignees}: The users assigned to the issue.
 \item \strong{labels}: The labels attached to the issue.
 \item \strong{milestone}: The milestone assigned to the issue.
 \item \strong{state}: The state of the issue - either \code{"open"} or \code{"closed"}.
