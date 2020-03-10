@@ -441,3 +441,20 @@ test_that("view_pull_request throws an error if invalid arguments are supplied",
     "'pull_request' must be either an integer or a string")
 
 })
+
+
+# TEST: browse_pull_request -------------------------------------------------------------------
+
+test_that("browse_pull_request opens the pull request's page in the browser", {
+
+  skip_if(!interactive(), "browse_pull_request must be tested manually")
+
+  pull_url <- browse_pull_request(1, repo = str_c("ChadGoymer/test-pulls-", now))
+
+  expect_is(pull_url, "character")
+  expect_identical(attr(pull_url, "status"), 200L)
+  expect_identical(
+    as.character(pull_url),
+    str_c("https://github.com/ChadGoymer/test-pulls-", now, "/pull/1"))
+
+})

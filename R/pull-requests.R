@@ -610,3 +610,29 @@ view_pull_request <- function(
     status  = attr(pull_lst, "status"),
     header  = attr(pull_lst, "header"))
 }
+
+
+#  FUNCTION: browse_pull_request --------------------------------------------------------------
+#
+#' @rdname view_pull_requests
+#' @export
+#'
+browse_pull_request <- function(
+  pull_request,
+  repo,
+  ...)
+{
+  pull_request <- view_pull_request(pull_request = pull_request, repo = repo)
+
+  info("Browsing pull request '", pull_request$title, "' in repository '", repo, "'")
+  httr::BROWSE(pull_request$html_url)
+
+  info("Done", level = 7)
+  structure(
+    pull_request$html_url,
+    class   = c("github", "character"),
+    url     = attr(pull_request, "url"),
+    request = attr(pull_request, "request"),
+    status  = attr(pull_request, "status"),
+    header  = attr(pull_request, "header"))
+}
