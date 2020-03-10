@@ -9,7 +9,7 @@ test_that("gh_pull_request returns a list describing the pull request", {
     c("url", "id", "node_id", "html_url", "diff_url", "patch_url", "issue_url", "number",
       "state", "locked", "title", "user", "body", "created_at", "updated_at", "closed_at",
       "merged_at", "merge_commit_sha", "assignee", "assignees", "requested_reviewers",
-      "requested_teams", "labels", "milestone", "commits_url", "review_comments_url",
+      "requested_teams", "labels", "milestone", "draft", "commits_url", "review_comments_url",
       "review_comment_url", "comments_url", "statuses_url", "head", "base", "_links",
       "author_association", "merged", "mergeable", "rebaseable", "mergeable_state",
       "merged_by", "comments", "review_comments", "maintainer_can_modify", "commits",
@@ -85,8 +85,8 @@ test_that("gh_pull_files returns a tibble describing the files changed on a pull
 
 #  FUNCTION: is_pull_merged -------------------------------------------------------------------
 test_that("is_pull_merged returns TRUE if the pull request has been merged and FALSE otherwise", {
-  expect_true(is_pull_merged(8, "ChadGoymer/githapi"))
-  expect_false(is_pull_merged(24, "ChadGoymer/githapi"))
+  expect_true(suppressWarnings(is_pull_merged(8, "ChadGoymer/githapi")))
+  expect_false(suppressWarnings(is_pull_merged(24, "ChadGoymer/githapi")))
 })
 
 #  FUNCTION: gh_pull_review -------------------------------------------------------------------
