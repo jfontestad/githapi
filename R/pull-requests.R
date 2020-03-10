@@ -364,3 +364,182 @@ update_pull_request <- function(
     status  = attr(pull_lst, "status"),
     header  = attr(pull_lst, "header"))
 }
+
+
+#  FUNCTION: view_pull_requests ---------------------------------------------------------------
+#
+#' View pull requests within a repository
+#'
+#' `view_pull_requests()` summarises pull requests in a table with the properties as columns
+#' and a row for each pull request in the repository. `view_pull_request()` returns a list of
+#' all properties for a single pull request. `browse_pull_request()` opens the web page for
+#' the pull request in the default browser.
+#'
+#' You can filter the pull requests by the head and base branches (the branch to merge in and
+#' the branch to merge into) or the state (whether they are `"open"` or `"closed"`). You can
+#' also order the results with `sort` and `direction`.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/pulls/#list-pull-requests>
+#' - <https://developer.github.com/v3/pulls/#get-a-single-pull-request>
+#'
+#' @param pull_request (string or character) The number or title of the pull request.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param head (string) The branch to merge in. If it is not in the specified `repo` then the
+#'   owner must prefix the branch name, e.g. `"owner:branch"`.
+#' @param base (string) The branch to merge into.
+#' @param state (string, optional) The state of the pull requests to return. Can be either
+#'   `"open"`, `"closed"`, or `"all"`. Default: `"open"`.
+#' @param sort (string, optional) The property to order the returned pull requests by. Can
+#'   be either `"created"`, `"updated"`, `"popularity"` (comment count) or `"long-running"`
+#'   (age, filtering by pulls updated in the last month). Default: `"created"`.
+#' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
+#'   `"desc"`. Default: `"desc"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_pull_requests()` returns a tibble of pull request properties.
+#'   `view_pull_request()` returns a list of properties for a single pull request.
+#'   `browse_pull_request()` opens the default browser on the pull request's page and returns
+#'   the URL.
+#'
+#' **Pull Request Properties:**
+#'
+#' - **number**: The number assigned to the pull request.
+#' - **title**: The title of the pull request.
+#' - **body**: The body contents of the pull request.
+#' - **head_sha**: The SHA of the commit to merge in.
+#' - **head_ref**: The reference, or branch, to merge in.
+#' - **head_repo**: The repository containing the branch to merge in.
+#' - **base_sha**: The SHA of the commit to merge onto.
+#' - **base_ref**: The reference, or branch, to merge onto.
+#' - **merge_sha**: The SHA of the merge commit, if the merge has been completed.
+#' - **assignees**: The users assigned to the pull request.
+#' - **reviewers**: The users reviewing the pull request.
+#' - **labels**: The labels attached to the pull request.
+#' - **milestone**: The milestone assigned to the pull request.
+#' - **state**: The state of the pull request - either `"open"` or `"closed"`.
+#' - **repository**: The repository the pull request is in.
+#' - **html_url**: The URL of the pull request's web page in GitHub.
+#' - **diff_url**: The URL of the pull request's diff web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the pull request was created.
+#' - **updated_at**: When the pull request was last updated.
+#' - **mergeable**: Whether the pull request can be merged.
+#' - **rebaseable**: Whether the pull request can be rebased.
+#' - **merged**: Whether the pull request has been merged
+#' - **merged_by**: Who merged the pull request.
+#' - **merged_at**: When the pull request was merged.
+#' - **closed_at**: When the pull request was closed.
+#'
+#' Additionally, the `view_pull_request()` function also returns:
+#'
+#' - **commits**: Information about the commits made on the branch.
+#'   - **message**: The message specified for the commit.
+#'   - **author_name**: The author's name.
+#'   - **author_email**: The author's email address.
+#'   - **author_date**: The date/time it was authored.
+#'   - **committer_name**: The committer's name.
+#'   - **committer_email**: The committer's email address.
+#'   - **committer_date**: The date/time it was committed.
+#'   - **parent_sha**: The SHA of the parent commit(s).
+#'   - **html_url**: The URL of the commit's web page in GitHub.
+#'
+#' - **files**: Information about the files changed.
+#'   - **sha**: The SHA of the file.
+#'   - **filename**: The name of the file.
+#'   - **status**: The status of the file.
+#'   - **additions**: The number of lines added.
+#'   - **deletions**: The number of lines deleted.
+#'   - **changes**: The number of lines changed.
+#'   - **patch**: The patch information.
+#'   - **html_url**: The URL of the file's web page in GitHub.
+#'
+#' - **reviews**: The reviews registered.
+#'   - **body**: The contents of the review.
+#'   - **state**: The state of the review.
+#'   - **user**: The user who added the review.
+#'   - **html_url**: Th URL of the review's web page in GitHub.
+#'   - **submitted_at**: When the review was submitted.
+#'
+#' @examples
+#' \dontrun{
+#'   # View all open pull requests
+#'   view_pull_requests("ChadGoymer/test-githapi")
+#'
+#'   # View all closed pull requests
+#'   view_pull_requests("ChadGoymer/test-githapi", state = "closed")
+#'
+#'   # View all pull requests for the "master" branch
+#'   view_pull_requests("ChadGoymer/test-githapi", base = "master")
+#'
+#'   # View pull requests, sorted by the most recently updated
+#'   view_pull_requests("ChadGoymer/test-githapi", sort = "updated", direction = "desc")
+#'
+#'   # View single pull request
+#'   view_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#'
+#'   # Open a pull request's page in a browser
+#'   browse_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+view_pull_requests <- function(
+  repo,
+  head,
+  base,
+  state     = "open",
+  sort      = "created",
+  direction = "desc",
+  n_max     = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (!missing(head)) {
+    assert(is_scalar_character(head), "'head' must be a string:\n  ", head)
+    if (!str_detect(head, ":")) {
+      head <- str_c(dirname(repo), ":", head)
+    }
+  }
+  else {
+    head <- NULL
+  }
+
+  if (!missing(base)) {
+    assert(is_scalar_character(base), "'base' must be a string:\n  ", base)
+  }
+  else {
+    base <- NULL
+  }
+
+  assert(
+    is_scalar_character(state) && state %in% values$pull_request$state,
+    "'state' must be either '", str_c(values$pull_request$state, collapse = "', '"), "':\n  ", state)
+  assert(
+    is_scalar_character(sort) && sort %in% values$pull_request$sort,
+    "'sort' must be either '", str_c(values$pull_request$sort, collapse = "', '"), "':\n  ", sort)
+  assert(
+    is_scalar_character(direction) && direction %in% values$pull_request$direction,
+    "'direction' must be either '", str_c(values$pull_request$direction, collapse = "', '"), "':\n  ", direction)
+
+  info("Viewing pull requests for repository '", repo, "'")
+  pulls_lst <- gh_url(
+    "repos", repo, "pulls",
+    head      = head,
+    base      = base,
+    state     = state,
+    sort      = sort,
+    direction = direction) %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  pulls_gh <- bind_properties(pulls_lst, properties$pull_request) %>%
+    add_column(labels = collapse_property(pulls_lst, "labels", "name"), .before = "milestone") %>%
+    add_column(assignees = collapse_property(pulls_lst, "assignees", "login"), .before = "labels") %>%
+    add_column(reviewers = collapse_property(pulls_lst, "requested_reviewers", "login"), .before = "labels")
+
+  info("Done", level = 7)
+  pulls_gh
+}

@@ -260,3 +260,85 @@ test_that("update_pull_request throws an error if invalid arguments are supplied
     "'pull_request' must be either an integer or a string")
 
 })
+
+
+# TEST: view_pull_requests --------------------------------------------------------------------
+
+test_that("view_issues returns a tibble of issue properties", {
+
+  open_pull_requests <- view_pull_requests(
+    repo = str_c("ChadGoymer/test-pulls-", now),
+    base = "master")
+
+  expect_is(open_pull_requests, "tbl")
+  expect_identical(attr(open_pull_requests, "status"), 200L)
+  expect_identical(
+    map_chr(open_pull_requests, ~ class(.)[[1]]),
+    c(number     = "integer",
+      title      = "character",
+      body       = "character",
+      head_sha   = "character",
+      head_ref   = "character",
+      head_repo  = "character",
+      base_sha   = "character",
+      base_ref   = "character",
+      merge_sha  = "character",
+      assignees  = "character",
+      reviewers  = "character",
+      labels     = "character",
+      milestone  = "character",
+      state      = "character",
+      repository = "character",
+      html_url   = "character",
+      diff_url   = "character",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      mergeable  = "logical",
+      rebaseable = "logical",
+      merged     = "logical",
+      merged_by  = "character",
+      merged_at  = "POSIXct",
+      closed_at  = "POSIXct"))
+
+  expect_true(str_c("test assigned pull request ", now) %in% open_pull_requests$title)
+
+  closed_pull_requests <- view_pull_requests(
+    repo  = str_c("ChadGoymer/test-pulls-", now),
+    head  = str_c("test-pulls-1-", now),
+    state = "closed")
+
+  expect_is(closed_pull_requests, "tbl")
+  expect_identical(attr(closed_pull_requests, "status"), 200L)
+  expect_identical(
+    map_chr(closed_pull_requests, ~ class(.)[[1]]),
+    c(number     = "integer",
+      title      = "character",
+      body       = "character",
+      head_sha   = "character",
+      head_ref   = "character",
+      head_repo  = "character",
+      base_sha   = "character",
+      base_ref   = "character",
+      merge_sha  = "character",
+      assignees  = "character",
+      reviewers  = "character",
+      labels     = "character",
+      milestone  = "character",
+      state      = "character",
+      repository = "character",
+      html_url   = "character",
+      diff_url   = "character",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      mergeable  = "logical",
+      rebaseable = "logical",
+      merged     = "logical",
+      merged_by  = "character",
+      merged_at  = "POSIXct",
+      closed_at  = "POSIXct"))
+
+  expect_true(str_c("test updated pull request ", now) %in% closed_pull_requests$title)
+
+})
