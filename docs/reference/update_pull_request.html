@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update an issue in a repository — update_issue • githapi</title>
+<title>Update a pull request in a repository — update_pull_request • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="Update an issue in a repository — update_issue" />
-<meta property="og:description" content="This function updates an issue for the specified repository in GitHub. It can be used to
-change the title, body, or assignees, it can also be used to replace labels and milestones,
-or to close the issue." />
+<meta property="og:title" content="Update a pull request in a repository — update_pull_request" />
+<meta property="og:description" content="This function updates a pull request for the specified repository in GitHub. It can be used
+to change the title or body, or used to close the pull request. It can also be used to
+assign the pull request to a user, request reviewers and replace labels or a milestone." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,25 +110,27 @@ or to close the issue." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update an issue in a repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/issues.R'><code>R/issues.R</code></a></small>
-    <div class="hidden name"><code>update_issue.Rd</code></div>
+    <h1>Update a pull request in a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/pull-requests.R'><code>R/pull-requests.R</code></a></small>
+    <div class="hidden name"><code>update_pull_request.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function updates an issue for the specified repository in GitHub. It can be used to
-change the title, body, or assignees, it can also be used to replace labels and milestones,
-or to close the issue.</p>
+    <p>This function updates a pull request for the specified repository in GitHub. It can be used
+to change the title or body, or used to close the pull request. It can also be used to
+assign the pull request to a user, request reviewers and replace labels or a milestone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_issue</span>(
-  <span class='no'>issue</span>,
+    <pre class="usage"><span class='fu'>update_pull_request</span>(
+  <span class='no'>pull_request</span>,
   <span class='no'>repo</span>,
   <span class='no'>title</span>,
   <span class='no'>body</span>,
   <span class='no'>assignees</span>,
+  <span class='no'>reviewers</span>,
   <span class='no'>labels</span>,
   <span class='no'>milestone</span>,
+  <span class='no'>base</span>,
   <span class='no'>state</span>,
   <span class='no'>...</span>
 )</pre>
@@ -137,8 +139,8 @@ or to close the issue.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>issue</th>
-      <td><p>(string or character) The number or title of the issue.</p></td>
+      <th>pull_request</th>
+      <td><p>(string or character) The number or title of the pull request.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -146,32 +148,42 @@ or to close the issue.</p>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>(string, optional) The title of the issue.</p></td>
+      <td><p>(string, optional) The new title of the pull request.</p></td>
     </tr>
     <tr>
       <th>body</th>
-      <td><p>(string, optional) The contents of the issue.</p></td>
+      <td><p>(string, optional) The contents of the pull request.</p></td>
     </tr>
     <tr>
       <th>assignees</th>
-      <td><p>(character, optional) Logins for Users to assign to this issue. NOTE: Only
-users with push access can set assignees for new issues. Setting to <code>NULL</code> clears all
-assignees.</p></td>
+      <td><p>(character, optional) Logins for Users to assign to this pull request.
+NOTE: Only users with push access can set assignees for new pull requests.</p></td>
+    </tr>
+    <tr>
+      <th>reviewers</th>
+      <td><p>(character, optional) Logins for Users to review this pull request.
+NOTE: Only users with push access can set reviewers for new pull requests.</p></td>
     </tr>
     <tr>
       <th>labels</th>
-      <td><p>(character, optional) Labels to associate with this issue. NOTE: Only users
-with push access can set labels for new issues. Setting to <code>NULL</code> clears all labels.</p></td>
+      <td><p>(character, optional) Labels to associate with this pull request. NOTE: Only
+users with push access can set labels for new pull requests.</p></td>
     </tr>
     <tr>
       <th>milestone</th>
       <td><p>(character or integer, optional) The title or number of the milestone to
-associate this issue with. NOTE: Only users with push access can set the milestone for
-new issues. Setting to <code>NULL</code> clears the current milestone.</p></td>
+associate this pull request with. NOTE: Only users with push access can set the
+milestone for new pull requests.</p></td>
+    </tr>
+    <tr>
+      <th>base</th>
+      <td><p>(string, optional) The name of the branch you want the changes pulled into.
+This should be an existing branch on the current repository.</p></td>
     </tr>
     <tr>
       <th>state</th>
-      <td><p>(string, optional) The state of the issue. Either <code>"open"</code> or <code>"closed"</code>.</p></td>
+      <td><p>(string, optional) The state of the pull request. Either <code>"open"</code> or
+<code>"closed"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -181,46 +193,59 @@ new issues. Setting to <code>NULL</code> clears the current milestone.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_issue()</code> returns a list of the issue's properties.</p>
-<p><strong>Issue Properties:</strong></p><ul>
-<li><p><strong>number</strong>: The number assigned to the issue.</p></li>
-<li><p><strong>title</strong>: The title of the issue.</p></li>
-<li><p><strong>body</strong>: The body contents of the issue.</p></li>
-<li><p><strong>assignees</strong>: The users assigned to the issue.</p></li>
-<li><p><strong>labels</strong>: The labels attached to the issue.</p></li>
-<li><p><strong>milestone</strong>: The milestone assigned to the issue.</p></li>
-<li><p><strong>state</strong>: The state of the issue - either <code>"open"</code> or <code>"closed"</code>.</p></li>
-<li><p><strong>repository</strong>: The repository the issue is in.</p></li>
-<li><p><strong>pull_request</strong>: Whether the issue is a pull request.</p></li>
-<li><p><strong>html_url</strong>: The URL of the issue's web page in GitHub.</p></li>
+    <p><code>update_pull_request()</code> returns a list of the pull request's properties.</p>
+<p><strong>Pull Request Properties:</strong></p><ul>
+<li><p><strong>number</strong>: The number assigned to the pull request.</p></li>
+<li><p><strong>title</strong>: The title of the pull request.</p></li>
+<li><p><strong>body</strong>: The body contents of the pull request.</p></li>
+<li><p><strong>head_sha</strong>: The SHA of the commit to merge in.</p></li>
+<li><p><strong>head_ref</strong>: The reference, or branch, to merge in.</p></li>
+<li><p><strong>head_repo</strong>: The repository containing the branch to merge in.</p></li>
+<li><p><strong>base_sha</strong>: The SHA of the commit to merge onto.</p></li>
+<li><p><strong>base_ref</strong>: The reference, or branch, to merge onto.</p></li>
+<li><p><strong>merge_sha</strong>: The SHA of the merge commit, if the merge has been completed.</p></li>
+<li><p><strong>assignees</strong>: The users assigned to the pull request.</p></li>
+<li><p><strong>reviewers</strong>: The users reviewing the pull request.</p></li>
+<li><p><strong>labels</strong>: The labels attached to the pull request.</p></li>
+<li><p><strong>milestone</strong>: The milestone assigned to the pull request.</p></li>
+<li><p><strong>state</strong>: The state of the pull request - either <code>"open"</code> or <code>"closed"</code>.</p></li>
+<li><p><strong>repository</strong>: The repository the pull request is in.</p></li>
+<li><p><strong>html_url</strong>: The URL of the pull request's web page in GitHub.</p></li>
+<li><p><strong>diff_url</strong>: The URL of the pull request's diff web page in GitHub.</p></li>
 <li><p><strong>creator</strong>: The creator's login.</p></li>
-<li><p><strong>created_at</strong>: When the issue was created.</p></li>
-<li><p><strong>updated_at</strong>: When the issue was last updated.</p></li>
-<li><p><strong>closed_at</strong>: When the issue was closed.</p></li>
+<li><p><strong>created_at</strong>: When the pull request was created.</p></li>
+<li><p><strong>updated_at</strong>: When the pull request was last updated.</p></li>
+<li><p><strong>mergeable</strong>: Whether the pull request can be merged.</p></li>
+<li><p><strong>rebaseable</strong>: Whether the pull request can be rebased.</p></li>
+<li><p><strong>merged</strong>: Whether the pull request has been merged</p></li>
+<li><p><strong>merged_by</strong>: Who merged the pull request.</p></li>
+<li><p><strong>merged_at</strong>: When the pull request was merged.</p></li>
+<li><p><strong>closed_at</strong>: When the pull request was closed.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/pulls/#update-a-pull-request'>https://developer.github.com/v3/pulls/#update-a-pull-request</a></p></li>
 <li><p><a href='https://developer.github.com/v3/issues/#edit-an-issue'>https://developer.github.com/v3/issues/#edit-an-issue</a></p></li>
+<li><p><a href='https://developer.github.com/v3/pulls/review_requests/#create-a-review-request'>https://developer.github.com/v3/pulls/review_requests/#create-a-review-request</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='co'># Update the properties of a issue</span>
-  <span class='fu'>update_issue</span>(
-    <span class='kw'>issue</span>   <span class='kw'>=</span> <span class='st'>"test issue"</span>,
-    <span class='kw'>repo</span>        <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
-    <span class='kw'>title</span>       <span class='kw'>=</span> <span class='st'>"updated test issue"</span>,
-    <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"This is an updated test issue"</span>,
-    <span class='kw'>due_on</span>      <span class='kw'>=</span> <span class='st'>"2020-12-01"</span>)
+  <span class='co'># Update a pull request's properties</span>
+  <span class='fu'>update_pull_request</span>(
+    <span class='kw'>pull_request</span> <span class='kw'>=</span> <span class='st'>"test pull request"</span>,
+    <span class='kw'>repo</span>         <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>title</span>        <span class='kw'>=</span> <span class='st'>"test updated pull request"</span>,
+    <span class='kw'>body</span>         <span class='kw'>=</span> <span class='st'>"This is an updated pull request to test create_pull_request()"</span>)
 
-  <span class='co'># Close a issue</span>
-  <span class='fu'>update_issue</span>(
-    <span class='kw'>issue</span> <span class='kw'>=</span> <span class='st'>"updated test issue"</span>,
-    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
-    <span class='kw'>state</span>     <span class='kw'>=</span> <span class='st'>"closed"</span>)
+  <span class='co'># Close a pull request</span>
+  <span class='fu'>update_pull_request</span>(
+    <span class='kw'>pull_request</span> <span class='kw'>=</span> <span class='st'>"test updated pull request"</span>,
+    <span class='kw'>repo</span>         <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>state</span>        <span class='kw'>=</span> <span class='st'>"closed"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
