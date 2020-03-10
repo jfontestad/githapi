@@ -342,3 +342,102 @@ test_that("view_issues returns a tibble of issue properties", {
   expect_true(str_c("test updated pull request ", now) %in% closed_pull_requests$title)
 
 })
+
+
+# TEST: view_pull_request ---------------------------------------------------------------------
+
+test_that("view_pull_request returns a list of pull request properties", {
+
+  pull_request <- view_pull_request(
+    pull_request = str_c("test assigned pull request ", now),
+    repo         = str_c("ChadGoymer/test-pulls-", now))
+
+  expect_is(pull_request, "list")
+  expect_identical(attr(pull_request, "status"), 200L)
+  expect_identical(
+    map_chr(pull_request, ~ class(.)[[1]]),
+    c(number     = "integer",
+      title      = "character",
+      body       = "character",
+      head_sha   = "character",
+      head_ref   = "character",
+      head_repo  = "character",
+      base_sha   = "character",
+      base_ref   = "character",
+      merge_sha  = "character",
+      assignees  = "character",
+      reviewers  = "character",
+      labels     = "character",
+      milestone  = "character",
+      state      = "character",
+      repository = "character",
+      html_url   = "character",
+      diff_url   = "character",
+      creator    = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
+      mergeable  = "logical",
+      rebaseable = "logical",
+      merged     = "logical",
+      merged_by  = "character",
+      merged_at  = "POSIXct",
+      closed_at  = "POSIXct",
+      commits    = "github",
+      files      = "github",
+      reviews    = "github"))
+
+  expect_identical(pull_request$title, str_c("test assigned pull request ", now))
+  expect_identical(pull_request$repository, str_c("ChadGoymer/test-pulls-", now))
+  expect_identical(pull_request$body, "This is a pull request to test create_pull_request()")
+  expect_identical(pull_request$state, "open")
+
+  expect_identical(
+    map_chr(pull_request$commits, ~ class(.)[[1]]),
+    c(message         = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      parent_sha      = "character",
+      html_url        = "character"))
+
+  expect_identical(pull_request$commits$message, "Commit to test pull requests")
+  expect_identical(pull_request$commits$author_name, "Chad Goymer")
+  expect_identical(pull_request$commits$committer_name, "Chad Goymer")
+
+  expect_identical(
+    map_chr(pull_request$files, ~ class(.)[[1]]),
+    c(sha       = "character",
+      filename  = "character",
+      status    = "character",
+      additions = "integer",
+      deletions = "integer",
+      changes   = "integer",
+      patch     = "character",
+      html_url  = "character"))
+
+  expect_identical(pull_request$files$filename, str_c("test-pulls-", now, ".txt"))
+  expect_identical(pull_request$files$status, "added")
+  expect_identical(pull_request$files$additions, 1L)
+  expect_identical(pull_request$files$deletions, 0L)
+  expect_identical(pull_request$files$changes, 1L)
+
+  expect_identical(
+    map_chr(pull_request$reviews, ~ class(.)[[1]]),
+    c(body         = "character",
+      state        = "character",
+      user         = "character",
+      html_url     = "character",
+      submitted_at = "POSIXct"))
+
+})
+
+test_that("view_pull_request throws an error if invalid arguments are supplied", {
+
+  expect_error(
+    view_pull_request(TRUE, repo = str_c("ChadGoymer/test-pulls-", now)),
+    "'pull_request' must be either an integer or a string")
+
+})

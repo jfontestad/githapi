@@ -543,3 +543,70 @@ view_pull_requests <- function(
   info("Done", level = 7)
   pulls_gh
 }
+
+
+#  FUNCTION: view_pull_request ----------------------------------------------------------------
+#
+#' @rdname view_pull_requests
+#' @export
+#'
+view_pull_request <- function(
+  pull_request,
+  repo,
+  n_max = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (is_scalar_integerish(pull_request))
+  {
+    info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
+    pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
+      gh_request("GET", ...)
+  }
+  else if (is_scalar_character(pull_request))
+  {
+    info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
+    pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
+      gh_find(property  = "title", value = pull_request, ...)
+  }
+  else
+  {
+    error("'pull_request' must be either an integer or a string:\n  ", pull_request)
+  }
+
+  info("Transforming results", level = 4)
+  commits_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "commits") %>%
+    gh_page(n_max = n_max, ...)
+  commits <- bind_properties(commits_lst, properties$pull_commits) %>%
+    add_column(parent_sha = collapse_property(commits_lst, "parents", "sha"), .before = "html_url")
+
+  files <- gh_url("repos", repo, "pulls", pull_lst$number, "files") %>%
+    gh_page(n_max = n_max, ...) %>%
+    bind_properties(properties$pull_files)
+
+  reviews <- gh_url("repos", repo, "pulls", pull_lst$number, "reviews") %>%
+    gh_page(n_max = n_max, ...) %>%
+    bind_properties(properties$pull_reviews)
+
+  pull_gh <- select_properties(pull_lst, properties$pull_request) %>%
+    modify_list(
+      assignees = collapse_property(list(pull_lst), "assignees", "login"),
+      reviewers = collapse_property(list(pull_lst), "requested_reviewers", "login"),
+      labels = collapse_property(list(pull_lst), "labels", "name"),
+      .before = "milestone") %>%
+    modify_list(
+      repository = repo,
+      commits    = commits,
+      files      = files,
+      reviews    = reviews)
+
+  info("Done", level = 7)
+  structure(
+    pull_gh,
+    class   = class(pull_lst),
+    url     = attr(pull_lst, "url"),
+    request = attr(pull_lst, "request"),
+    status  = attr(pull_lst, "status"),
+    header  = attr(pull_lst, "header"))
+}
