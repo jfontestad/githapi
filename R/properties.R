@@ -169,12 +169,64 @@ properties <- list(
     body                                     = c("body",                                     as = "character"),
     milestone                                = c("milestone", "title",                       as = "character"),
     state                                    = c("state",                                    as = "character"),
-    repository                               = c("repository", "full_name",                  as = "character"),
+    repository                               = c("repo", "full_name",                        as = "character"),
     html_url                                 = c("html_url",                                 as = "character"),
     creator                                  = c("user", "login",                            as = "character"),
     created_at                               = c("created_at",                               as = "datetime"),
     updated_at                               = c("updated_at",                               as = "datetime"),
-    closed_at                                = c("closed_at",                                as = "datetime"))
+    closed_at                                = c("closed_at",                                as = "datetime")),
+
+  pull_request = list(
+    number                                   = c("number",                                   as = "integer"),
+    title                                    = c("title",                                    as = "character"),
+    body                                     = c("body",                                     as = "character"),
+    head_sha                                 = c("head", "sha",                              as = "character"),
+    head_ref                                 = c("head", "ref",                              as = "character"),
+    head_repo                                = c("head", "repo", "full_name",                as = "character"),
+    base_sha                                 = c("base", "sha",                              as = "character"),
+    base_ref                                 = c("base", "ref",                              as = "character"),
+    merge_sha                                = c("merge_commit_sha",                         as = "character"),
+    milestone                                = c("milestone", "title",                       as = "character"),
+    state                                    = c("state",                                    as = "character"),
+    repository                               = c("repo", "full_name",                        as = "character"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    diff_url                                 = c("diff_url",                                 as = "character"),
+    creator                                  = c("user", "login",                            as = "character"),
+    created_at                               = c("created_at",                               as = "datetime"),
+    updated_at                               = c("updated_at",                               as = "datetime"),
+    mergeable                                = c("mergeable",                                as = "logical"),
+    rebaseable                               = c("rebaseable",                               as = "logical"),
+    merged                                   = c("merged",                                   as = "logical"),
+    merged_by                                = c("merged_by", "login",                       as = "character"),
+    merged_at                                = c("merged_at",                                as = "datetime"),
+    closed_at                                = c("closed_at",                                as = "datetime")),
+
+  pull_commits = list(
+    message                                  = c("commit", "message",                        as = "character"),
+    author_name                              = c("commit", "author", "name",                 as = "character"),
+    author_email                             = c("commit", "author", "email",                as = "character"),
+    author_date                              = c("commit", "author", "date",                 as = "datetime"),
+    committer_name                           = c("commit", "committer", "name",              as = "character"),
+    committer_email                          = c("commit", "committer", "email",             as = "character"),
+    committer_date                           = c("commit", "committer", "date",              as = "datetime"),
+    html_url                                 = c("html_url",                                 as = "character")),
+
+  pull_files = list(
+    sha                                      = c("sha",                                      as = "character"),
+    filename                                 = c("filename",                                 as = "character"),
+    status                                   = c("status",                                   as = "character"),
+    additions                                = c("additions",                                as = "integer"),
+    deletions                                = c("deletions",                                as = "integer"),
+    changes                                  = c("changes",                                  as = "integer"),
+    patch                                    = c("patch",                                    as = "character"),
+    html_url                                 = c("blob_url",                                 as = "character")),
+
+  pull_reviews = list(
+    body                                     = c("body",                                     as = "character"),
+    state                                    = c("state",                                    as = "character"),
+    user                                     = c("user", "login",                            as = "character"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    submitted_at                             = c("submitted_at",                             as = "datetime"))
 
 )
 
@@ -230,6 +282,11 @@ values <- list(
   issue = list(
     state                         = c("open", "closed", "all"),
     sort                          = c("created", "updated", "comments"),
+    direction                     = c("asc", "desc")),
+
+  pull_request = list(
+    state                         = c("open", "closed", "all"),
+    sort                          = c("created", "updated", "popularity", "long-running"),
     direction                     = c("asc", "desc"))
 
 )

@@ -1,3 +1,11 @@
+# githapi 0.9.17
+
+- Added `create_pull_request()`
+- Added `update_pull_request()`
+- Added `view_pull_requests()`
+- Added `view_pull_request()`
+- Added `browse_pull_request()`
+
 # githapi 0.9.16
 
 - Added `create_issue()`

@@ -38,8 +38,8 @@ browse_issue(issue, repo, ...)
 \item{state}{(string, optional) The state of the issues to return. Can be either \code{"open"},
 \code{"closed"}, or \code{"all"}. Default: \code{"open"}.}
 
-\item{sort}{(string, optional) The property to order the returned repositories by. Can
-be either \code{"created"}, \code{"updated"}, or \code{"comments"}. Default: \code{"created"}.}
+\item{sort}{(string, optional) The property to order the returned issues by. Can be either
+\code{"created"}, \code{"updated"}, or \code{"comments"}. Default: \code{"created"}.}
 
 \item{direction}{(string, optional) The direction of the sort. Can be either \code{"asc"} or
 \code{"desc"}. Default: \code{"desc"}.}
@@ -60,7 +60,7 @@ the issue's page and returns the URL.
 \item \strong{number}: The number assigned to the issue.
 \item \strong{title}: The title of the issue.
 \item \strong{body}: The body contents of the issue.
-\item \strong{assignees}: The user assigned to the issue.
+\item \strong{assignees}: The users assigned to the issue.
 \item \strong{labels}: The labels attached to the issue.
 \item \strong{milestone}: The milestone assigned to the issue.
 \item \strong{state}: The state of the issue - either \code{"open"} or \code{"closed"}.

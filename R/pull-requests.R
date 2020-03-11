@@ -1,463 +1,638 @@
-#  FUNCTION: gh_pull_request ------------------------------------------------------------------
+#  FUNCTION: create_pull_request --------------------------------------------------------------
 #
-#' Get a single pull request
+#' Create an pull request in a repository
 #'
-#' <https://developer.github.com/v3/pulls/#get-a-single-pull-request>
+#' This function creates a new pull request for the specified repository in GitHub. It can
+#' also be used to assign the pull request to a user, request reviewers and add labels or a
+#' milestone.
 #'
-#' @param pull_request (integer) The number assigned to the pull request.
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/pulls/#create-a-pull-request>
+#' - <https://developer.github.com/v3/issues/#edit-an-issue>
+#' - <https://developer.github.com/v3/pulls/review_requests/#create-a-review-request>
+#'
+#' @param title (string) The title of the pull request.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+#' @param head (string) The name of the branch where your changes are implemented. For
+#'   cross-repository pull requests, prefix `head` with an owner, e.g. `"username:branch"`.
+#' @param base (string) The name of the branch you want the changes pulled into. This should
+#'   be an existing branch in the specified repository.
+#' @param body (string, optional) The contents of the pull request.
+#' @param assignees (character, optional) Logins for Users to assign to this pull request.
+#'   NOTE: Only users with push access can set assignees for new pull requests.
+#' @param reviewers (character, optional) Logins for Users to review this pull request.
+#'   NOTE: Only users with push access can set reviewers for new pull requests.
+#' @param labels (character, optional) Labels to associate with this pull request. NOTE: Only
+#'   users with push access can set labels for new pull requests.
+#' @param milestone (character or integer, optional) The title or number of the milestone to
+#'   associate this pull request with. NOTE: Only users with push access can set the
+#'   milestone for new pull requests.
+#' @param ... Parameters passed to [gh_request()].
 #'
-#' @return A list describing the pull request (see GitHub's API documentation for details).
+#' @return `create_pull_request()` returns a list of the pull request's properties.
+#'
+#' **Pull Request Properties:**
+#'
+#' - **number**: The number assigned to the pull request.
+#' - **title**: The title of the pull request.
+#' - **body**: The body contents of the pull request.
+#' - **head_sha**: The SHA of the commit to merge in.
+#' - **head_ref**: The reference, or branch, to merge in.
+#' - **head_repo**: The repository containing the branch to merge in.
+#' - **base_sha**: The SHA of the commit to merge onto.
+#' - **base_ref**: The reference, or branch, to merge onto.
+#' - **merge_sha**: The SHA of the merge commit, if the merge has been completed.
+#' - **assignees**: The users assigned to the pull request.
+#' - **reviewers**: The users reviewing the pull request.
+#' - **labels**: The labels attached to the pull request.
+#' - **milestone**: The milestone assigned to the pull request.
+#' - **state**: The state of the pull request - either `"open"` or `"closed"`.
+#' - **repository**: The repository the pull request is in.
+#' - **html_url**: The URL of the pull request's web page in GitHub.
+#' - **diff_url**: The URL of the pull request's diff web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the pull request was created.
+#' - **updated_at**: When the pull request was last updated.
+#' - **mergeable**: Whether the pull request can be merged.
+#' - **rebaseable**: Whether the pull request can be rebased.
+#' - **merged**: Whether the pull request has been merged
+#' - **merged_by**: Who merged the pull request.
+#' - **merged_at**: When the pull request was merged.
+#' - **closed_at**: When the pull request was closed.
+#'
+#' @examples
+#' \dontrun{
+#'   create_pull_request(
+#'     title = "test pull request",
+#'     repo  = "ChadGoymer/test-githapi",
+#'     head  = "test-pulls",
+#'     base  = "master",
+#'     body  = "This is a pull request to test create_pull_request()")
+#'
+#'   create_pull_request(
+#'     title     = "test assigned pull request",
+#'     repo      = "ChadGoymer/test-githapi",
+#'     head      = "test-pulls-2",
+#'     base      = "master",
+#'     body      = "This is a pull request to test create_pull_request()",
+#'     assignees = "ChadGoymer",
+#'     reviewers = c("BobSmith", "JaneJones"),
+#'     labels    = "enhancement",
+#'     milestone = "Release-1.0")
+#' }
 #'
 #' @export
 #'
-gh_pull_request <- function(
-  pull_request,
+create_pull_request <- function(
+  title,
   repo,
-  token = gh_token(),
-  api   = getOption("github.api"),
+  head,
+  base,
+  body,
+  assignees,
+  reviewers,
+  labels,
+  milestone,
   ...)
 {
-  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(title), "'title' must be a string:\n  ", title)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  assert(is_scalar_character(head), "'head' must be a string:\n  ", head)
+  assert(is_scalar_character(base), "'base' must be a string:\n  ", base)
 
-  gh_get(gh_url("repos", repo, "pulls", pull_request, api = api), token = token, ...)
-}
+  payload <- list(title = title, head = head, base = base)
 
-#  FUNCTION: gh_pull_requests -----------------------------------------------------------------
-#
-#' List pull requests
-#'
-#' <https://developer.github.com/v3/pulls/#list-pull-requests>
-#'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param state (string) Either open, closed, or all to filter by state. Default: open
-#' @param head (string) Filter pulls by head user and branch name in the format of
-#'   `user:ref-name`. Example: `github:new-script-format`.
-#' @param base (string) Filter pulls by base branch name. Example: gh-pages.
-#' @param sort (string) What to sort results by. Can be either created, updated, popularity
-#'   (comment count) or long-running (age, filtering by pulls updated in the last month).
-#'   Default: created
-#' @param direction (string) The direction of the sort. Can be either asc or desc.
-#'   Default: desc when sort is created or sort is not specified, otherwise asc."
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the pull requests (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_pull_requests <- function(
-  repo,
-  state     = NULL,
-  head      = NULL,
-  base      = NULL,
-  sort      = NULL,
-  direction = NULL,
-  n_max     = 1000L,
-  token     = gh_token(),
-  api       = getOption("github.api"),
-  ...)
-{
-  assert(is_repo(repo))
-  assert(is_null(state) || is_scalar_character(state))
-  assert(is_null(head) || is_scalar_character(head))
-  assert(is_null(base) || is_scalar_character(base))
-  assert(is_null(sort) || is_scalar_character(sort))
-  assert(is_null(direction) || is_scalar_character(direction))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  pull_requests <- gh_url(
-    "repos", repo, "pulls", api = api,
-    state = state, head = head, base = base, sort = sort, direction = direction) %>%
-    gh_page(n_max = n_max, token = token, ...)
-
-  bind_fields(pull_requests, list(
-    id                  = c("id",                        as = "integer"),
-    number              = c("number",                    as = "integer"),
-    title               = c("title",                     as = "character"),
-    body                = c("body",                      as = "character"),
-    user_login          = c("user", "login",             as = "character"),
-    state               = c("state",                     as = "character"),
-    created_at          = c("created_at",                as = "datetime"),
-    updated_at          = c("updated_at",                as = "datetime"),
-    closed_at           = c("closed_at",                 as = "datetime"),
-    merged_at           = c("merged_at",                 as = "datetime"),
-    merge_commit_sha    = c("merge_commit_sha",          as = "character"),
-    head_ref            = c("head", "ref",               as = "character"),
-    head_sha            = c("head", "sha",               as = "character"),
-    head_user_login     = c("head", "user", "login",     as = "character"),
-    head_repo_full_name = c("head", "repo", "full_name", as = "character"),
-    locked              = c("locked",                    as = "logical"),
-    url                 = c("url",                       as = "character")))
-}
-
-#  FUNCTION: gh_pull_commits ------------------------------------------------------------------
-#
-#' List commits on a pull request
-#'
-#' <https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request>
-#'
-#' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the commits on a pull request (see GitHub's API documentation
-#'   for details).
-#'
-#' @export
-#'
-gh_pull_commits <- function(
-  pull_request,
-  repo,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-  assert(is_repo(repo))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  commits <- gh_page(
-    gh_url("repos", repo, "pulls", pull_request, "commits", api = api),
-    n_max = n_max, token = token, ...)
-
-  bind_fields(commits, list(
-    sha            = c("sha",                      as = "character"),
-    author_login   = c("author", "login",          as = "character"),
-    commit_date    = c("commit", "author", "date", as = "datetime"),
-    commit_message = c("commit", "message",        as = "character"),
-    url            = c("url",                      as = "character"),
-    parents_sha    = "")) %>%
-    mutate(parents_sha = sapply(commits, function(commit) {
-      sapply(commit[["parents"]], getElement, "sha")
-    }))
-}
-
-#  FUNCTION: gh_pull_files --------------------------------------------------------------------
-#
-#' List pull requests files
-#'
-#' <https://developer.github.com/v3/pulls/#list-pull-requests-files>
-#'
-#' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the files changed on a pull request (see GitHub's API
-#'   documentation for details).
-#'
-#' @export
-#'
-gh_pull_files <- function(
-  pull_request,
-  repo,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-  assert(is_repo(repo))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  files <- gh_page(
-    gh_url("repos", repo, "pulls", pull_request, "files", api = api),
-    n_max = n_max, token = token, ...)
-
-  bind_fields(files, list(
-    sha          = c("sha",          as = "character"),
-    filename     = c("filename",     as = "character"),
-    status       = c("status",       as = "character"),
-    additions    = c("additions",    as = "integer"),
-    deletions    = c("deletions",    as = "integer"),
-    changes      = c("changes",      as = "integer"),
-    blob_url     = c("blob_url",     as = "character"),
-    contents_url = c("contents_url", as = "character"),
-    patch        = c("patch",        as = "character")))
-}
-
-#  FUNCTION: is_pull_merged -------------------------------------------------------------------
-#
-#' Get if a pull request has been merged
-#'
-#' <https://developer.github.com/v3/pulls/#get-if-a-pull-request-has-been-merged>
-#'
-#' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return TRUE if the pull request has been merged, FALSE otherwise (see GitHub's API
-#'   documentation for details).
-#'
-#' @export
-#'
-is_pull_merged <- function(
-  pull_request,
-  repo,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  response <- try(silent = TRUE, suppressMessages({
-    gh_get(
-      gh_url("repos", repo, "pulls", pull_request, "merge", api = api),
-      accept = "raw", token = token, ...)
-  }))
-
-  attributes(response) <- NULL
-  if (identical(response, "")) {
-    TRUE
-  } else {
-    FALSE
-  }
-}
-
-#  FUNCTION: gh_pull_review -------------------------------------------------------------------
-#
-#' Get a single review
-#'
-#' <https://developer.github.com/v3/pulls/reviews/#get-a-single-review>
-#'
-#' @param review (integer) The number assigned to the review.
-#' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return A list describing the pull request review (see GitHub's API documentation for
-#'   details).
-#'
-#' @export
-#'
-gh_pull_review <- function(
-  review,
-  pull_request,
-  repo,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(review) && isTRUE(review > 0))
-  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  gh_get(
-    gh_url("repos", repo, "pulls", pull_request, "reviews", review, api = api),
-    token = token, ...)
-}
-
-#  FUNCTION: gh_pull_reviews ------------------------------------------------------------------
-#
-#' List reviews on a pull request
-#'
-#' <https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request>
-#'
-#' @param pull_request (integer) The number assigned to the pull request.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the pull request reviews (see GitHub's API documentation for
-#'   details).
-#'
-#' @export
-#'
-gh_pull_reviews <- function(
-  pull_request,
-  repo,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-  assert(is_repo(repo))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  gh_page(
-    gh_url("repos", repo, "pulls", pull_request, "reviews", api = api),
-    n_max = n_max, token = token, ...)
-}
-
-#  FUNCTION: gh_pull_comment ------------------------------------------------------------------
-#
-#' Get a single pull request review comment
-#'
-#' <https://developer.github.com/v3/pulls/comments/#get-a-single-comment>
-#'
-#' @param comment (integer) The number assigned to the review comment.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return A list describing the pull request review comment (see GitHub's API documentation
-#'   for details).
-#'
-#' @export
-#'
-gh_pull_comment <- function(
-  comment,
-  repo,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
-  assert(is_repo(repo))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  gh_get(gh_url("repos", repo, "pulls/comments", comment, api = api), token = token, ...)
-}
-
-#  FUNCTION: gh_pull_comments -----------------------------------------------------------------
-#
-#' List review comments on a pull request or all pull requests in a repository
-#'
-#' <https://developer.github.com/v3/pulls/reviews/#get-comments-for-a-single-review>
-#' <https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request>
-#' <https://developer.github.com/v3/pulls/comments/#list-comments-in-a-repository>
-#'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param pull_request (integer, optional) The number assigned to the pull request. If
-#'   not specified, the comments on all pull requests are listed.
-#' @param review (integer, optional) The number assigned to the review. If specified,
-#'   along with a `pull_request`, only the comments on this review are returned.
-#' @param sort (string) Can be either created or updated. Default: created
-#' @param direction (string) Can be either asc or desc. Ignored without sort parameter.
-#' @param since (string) Only comments updated at or after this time are returned. This is a
-#'   timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the pull request comments (see GitHub's API documentation for
-#'   details).
-#'
-#' @export
-#'
-gh_pull_comments <- function(
-  repo,
-  pull_request,
-  review,
-  sort      = NULL,
-  direction = NULL,
-  since     = NULL,
-  n_max     = 1000L,
-  token     = gh_token(),
-  api       = getOption("github.api"),
-  ...)
-{
-  assert(is_repo(repo))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  if (missing(pull_request)) {
-    url <- gh_url(
-      "repos", repo, "pulls/comments", api = api,
-      sort = sort, direction = direction, since = since)
-  } else if (missing(review)) {
-    assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-    url <- gh_url("repos", repo, "pulls", pull_request, "comments", api = api)
-  } else {
-    assert(is_scalar_integerish(review) && isTRUE(review > 0))
-    url <- gh_url("repos", repo, "pulls", pull_request, "reviews", review, "comments", api = api)
+  if (!missing(body)) {
+    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    payload$body <- body
   }
 
-  gh_page(url, n_max = n_max, token = token, ...)
+  info("Creating pull request '", title, "' for repository '", repo, "'")
+  pull_lst <- gh_url("repos", repo, "pulls") %>%
+    gh_request("POST", payload = payload, ...)
+
+  payload <- list()
+
+  if (!missing(assignees)) {
+    assert(is_character(assignees), "'assignees' must be a character vector:\n  ", assignees)
+    payload$assignees <- as.list(assignees)
+  }
+
+  if (!missing(labels)) {
+    assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+    payload$labels <- as.list(labels)
+  }
+
+  if (!missing(milestone)) {
+    if (is_scalar_character(milestone)) {
+      milestone <- view_milestone(milestone, repo = repo)$number
+    }
+
+    assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
+    payload$milestone <- milestone
+  }
+
+  issue_lst <- list(milestone = list(title = NA_character_))
+  if (length(payload) > 0) {
+    info("Adding assignees, labels or milestone to pull request '", pull_lst$title, "'")
+    issue_lst <- gh_url("repos", repo, "issues", pull_lst$number) %>%
+      gh_request("PATCH", payload = payload, ...)
+  }
+
+  reviewers_lst <- list()
+  if (!missing(reviewers)) {
+    assert(is_character(reviewers), "'reviewers' must be a character vector:\n  ", reviewers)
+    info("Adding reviewers to pull request '", pull_lst$title, "'")
+    reviewers_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "requested_reviewers") %>%
+      gh_request("POST", payload = list(reviewers = as.list(reviewers)), ...)
+  }
+
+  info("Transforming results", level = 4)
+  pull_gh <- select_properties(pull_lst, properties$pull_request) %>%
+    modify_list(
+      assignees = collapse_property(list(issue_lst), "assignees", "login"),
+      reviewers = collapse_property(list(reviewers_lst), "requested_reviewers", "login"),
+      labels    = collapse_property(list(issue_lst), "labels", "name"),
+      .before   = "milestone") %>%
+    modify_list(repository = repo, milestone = issue_lst$milestone$title)
+
+  info("Done", level = 7)
+  structure(
+    pull_gh,
+    class   = class(pull_lst),
+    url     = attr(pull_lst, "url"),
+    request = attr(pull_lst, "request"),
+    status  = attr(pull_lst, "status"),
+    header  = attr(pull_lst, "header"))
 }
 
-#  FUNCTION: gh_pull_review_requests ----------------------------------------------------------
+
+#  FUNCTION: update_pull_request --------------------------------------------------------------
 #
-#' List pull request review requests
+#' Update a pull request in a repository
 #'
-#' <https://developer.github.com/v3/pulls/review_requests/#list-review-requests>
+#' This function updates a pull request for the specified repository in GitHub. It can be used
+#' to change the title or body, or used to close the pull request. It can also be used to
+#' assign the pull request to a user, request reviewers and replace labels or a milestone.
 #'
-#' @param pull_request (integer) The number assigned to the pull request.
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/pulls/#update-a-pull-request>
+#' - <https://developer.github.com/v3/issues/#edit-an-issue>
+#' - <https://developer.github.com/v3/pulls/review_requests/#create-a-review-request>
+#'
+#' @param pull_request (string or character) The number or title of the pull request.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param title (string, optional) The new title of the pull request.
+#' @param body (string, optional) The contents of the pull request.
+#' @param assignees (character, optional) Logins for Users to assign to this pull request.
+#'   NOTE: Only users with push access can set assignees for new pull requests.
+#' @param reviewers (character, optional) Logins for Users to review this pull request.
+#'   NOTE: Only users with push access can set reviewers for new pull requests.
+#' @param labels (character, optional) Labels to associate with this pull request. NOTE: Only
+#'   users with push access can set labels for new pull requests.
+#' @param milestone (character or integer, optional) The title or number of the milestone to
+#'   associate this pull request with. NOTE: Only users with push access can set the
+#'   milestone for new pull requests.
+#' @param state (string, optional) The state of the pull request. Either `"open"` or
+#'   `"closed"`.
+#' @param base (string, optional) The name of the branch you want the changes pulled into.
+#'   This should be an existing branch on the current repository.
+#' @param ... Parameters passed to [gh_request()].
 #'
-#' @return A tibble describing the pull request review requests (see GitHub's API
-#'   documentation for details).
+#' @return `update_pull_request()` returns a list of the pull request's properties.
+#'
+#' **Pull Request Properties:**
+#'
+#' - **number**: The number assigned to the pull request.
+#' - **title**: The title of the pull request.
+#' - **body**: The body contents of the pull request.
+#' - **head_sha**: The SHA of the commit to merge in.
+#' - **head_ref**: The reference, or branch, to merge in.
+#' - **head_repo**: The repository containing the branch to merge in.
+#' - **base_sha**: The SHA of the commit to merge onto.
+#' - **base_ref**: The reference, or branch, to merge onto.
+#' - **merge_sha**: The SHA of the merge commit, if the merge has been completed.
+#' - **assignees**: The users assigned to the pull request.
+#' - **reviewers**: The users reviewing the pull request.
+#' - **labels**: The labels attached to the pull request.
+#' - **milestone**: The milestone assigned to the pull request.
+#' - **state**: The state of the pull request - either `"open"` or `"closed"`.
+#' - **repository**: The repository the pull request is in.
+#' - **html_url**: The URL of the pull request's web page in GitHub.
+#' - **diff_url**: The URL of the pull request's diff web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the pull request was created.
+#' - **updated_at**: When the pull request was last updated.
+#' - **mergeable**: Whether the pull request can be merged.
+#' - **rebaseable**: Whether the pull request can be rebased.
+#' - **merged**: Whether the pull request has been merged
+#' - **merged_by**: Who merged the pull request.
+#' - **merged_at**: When the pull request was merged.
+#' - **closed_at**: When the pull request was closed.
+#'
+#' @examples
+#' \dontrun{
+#'   # Update a pull request's properties
+#'   update_pull_request(
+#'     pull_request = "test pull request",
+#'     repo         = "ChadGoymer/test-githapi",
+#'     title        = "test updated pull request",
+#'     body         = "This is an updated pull request to test create_pull_request()")
+#'
+#'   # Close a pull request
+#'   update_pull_request(
+#'     pull_request = "test updated pull request",
+#'     repo         = "ChadGoymer/test-githapi",
+#'     state        = "closed")
+#' }
 #'
 #' @export
 #'
-gh_pull_review_requests <- function(
+update_pull_request <- function(
   pull_request,
   repo,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
+  title,
+  body,
+  assignees,
+  reviewers,
+  labels,
+  milestone,
+  base,
+  state,
   ...)
 {
-  assert(is_scalar_integerish(pull_request) && isTRUE(pull_request > 0))
-  assert(is_repo(repo))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  gh_page(
-    gh_url("repos", repo, "pulls", pull_request, "requested_reviewers", api = api),
-    n_max = n_max, token = token, ...)
+  payload <- list()
+
+  if (!missing(title)) {
+    assert(is_scalar_character(title), "'title' must be a string:\n  ", title)
+    payload$title <- title
+  }
+
+  if (!missing(body)) {
+    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    payload$body <- body
+  }
+
+  if (!missing(state)) {
+    assert(
+      is_scalar_character(state) && state %in% values$pull_request$state,
+      "'state' for milestones must be either '", str_c(values$pull_request$state, collapse = "', '"), "':\n  ", state)
+    payload$state <- state
+  }
+
+  if (!missing(base)) {
+    assert(is_scalar_character(base), "'base' must be a string:\n  ", base)
+    payload$base <- base
+  }
+
+  if (is_scalar_integerish(pull_request))
+  {
+    info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
+    pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
+      gh_request("GET", ...)
+  }
+  else if (is_scalar_character(pull_request))
+  {
+    info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
+    pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
+      gh_find(property  = "title", value = pull_request, ...)
+  }
+  else
+  {
+    error("'pull_request' must be either an integer or a string:\n  ", pull_request)
+  }
+
+  if (length(payload) > 0) {
+    info("Updating pull request '", pull_lst$title, "' in repository '", repo, "'")
+    pull_lst <- gh_url("repos", repo, "issues", pull_lst$number) %>%
+      gh_request("PATCH", payload = payload, ...)
+  }
+
+  payload <- list()
+
+  if (!missing(assignees)) {
+    assert(is_character(assignees), "'assignees' must be a character vector:\n  ", assignees)
+    payload$assignees <- as.list(assignees)
+  }
+
+  if (!missing(labels)) {
+    assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+    payload$labels <- as.list(labels)
+  }
+
+  if (!missing(milestone)) {
+    if (is_scalar_character(milestone)) {
+      milestone <- view_milestone(milestone, repo = repo)$number
+    }
+
+    assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
+    payload$milestone <- milestone
+  }
+
+  issue_lst <- list(milestone = list(title = NA_character_))
+  if (length(payload) > 0) {
+    info("Adding assignees, labels or milestone to pull request '", pull_lst$title, "'")
+    issue_lst <- gh_url("repos", repo, "issues", pull_lst$number) %>%
+      gh_request("PATCH", payload = payload, ...)
+  }
+
+  reviewers_lst <- list()
+  if (!missing(reviewers)) {
+    assert(is_character(reviewers), "'reviewers' must be a character vector:\n  ", reviewers)
+    info("Adding reviewers to pull request '", pull_lst$title, "'")
+    reviewers_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "requested_reviewers") %>%
+      gh_request("POST", payload = list(reviewers = as.list(reviewers)), ...)
+  }
+
+  info("Transforming results", level = 4)
+  pull_gh <- select_properties(pull_lst, properties$pull_request) %>%
+    modify_list(
+      assignees = collapse_property(list(issue_lst), "assignees", "login"),
+      reviewers = collapse_property(list(reviewers_lst), "requested_reviewers", "login"),
+      labels    = collapse_property(list(issue_lst), "labels", "name"),
+      .before   = "milestone") %>%
+    modify_list(repository = repo, milestone = issue_lst$milestone$title)
+
+  info("Done", level = 7)
+  structure(
+    pull_gh,
+    class   = class(pull_lst),
+    url     = attr(pull_lst, "url"),
+    request = attr(pull_lst, "request"),
+    status  = attr(pull_lst, "status"),
+    header  = attr(pull_lst, "header"))
+}
+
+
+#  FUNCTION: view_pull_requests ---------------------------------------------------------------
+#
+#' View pull requests within a repository
+#'
+#' `view_pull_requests()` summarises pull requests in a table with the properties as columns
+#' and a row for each pull request in the repository. `view_pull_request()` returns a list of
+#' all properties for a single pull request. `browse_pull_request()` opens the web page for
+#' the pull request in the default browser.
+#'
+#' You can filter the pull requests by the head and base branches (the branch to merge in and
+#' the branch to merge into) or the state (whether they are `"open"` or `"closed"`). You can
+#' also order the results with `sort` and `direction`.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/pulls/#list-pull-requests>
+#' - <https://developer.github.com/v3/pulls/#get-a-single-pull-request>
+#'
+#' @param pull_request (string or character) The number or title of the pull request.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param head (string) The branch to merge in. If it is not in the specified `repo` then the
+#'   owner must prefix the branch name, e.g. `"owner:branch"`.
+#' @param base (string) The branch to merge into.
+#' @param state (string, optional) The state of the pull requests to return. Can be either
+#'   `"open"`, `"closed"`, or `"all"`. Default: `"open"`.
+#' @param sort (string, optional) The property to order the returned pull requests by. Can
+#'   be either `"created"`, `"updated"`, `"popularity"` (comment count) or `"long-running"`
+#'   (age, filtering by pulls updated in the last month). Default: `"created"`.
+#' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
+#'   `"desc"`. Default: `"desc"`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_pull_requests()` returns a tibble of pull request properties.
+#'   `view_pull_request()` returns a list of properties for a single pull request.
+#'   `browse_pull_request()` opens the default browser on the pull request's page and returns
+#'   the URL.
+#'
+#' **Pull Request Properties:**
+#'
+#' - **number**: The number assigned to the pull request.
+#' - **title**: The title of the pull request.
+#' - **body**: The body contents of the pull request.
+#' - **head_sha**: The SHA of the commit to merge in.
+#' - **head_ref**: The reference, or branch, to merge in.
+#' - **head_repo**: The repository containing the branch to merge in.
+#' - **base_sha**: The SHA of the commit to merge onto.
+#' - **base_ref**: The reference, or branch, to merge onto.
+#' - **merge_sha**: The SHA of the merge commit, if the merge has been completed.
+#' - **assignees**: The users assigned to the pull request.
+#' - **reviewers**: The users reviewing the pull request.
+#' - **labels**: The labels attached to the pull request.
+#' - **milestone**: The milestone assigned to the pull request.
+#' - **state**: The state of the pull request - either `"open"` or `"closed"`.
+#' - **repository**: The repository the pull request is in.
+#' - **html_url**: The URL of the pull request's web page in GitHub.
+#' - **diff_url**: The URL of the pull request's diff web page in GitHub.
+#' - **creator**: The creator's login.
+#' - **created_at**: When the pull request was created.
+#' - **updated_at**: When the pull request was last updated.
+#' - **mergeable**: Whether the pull request can be merged.
+#' - **rebaseable**: Whether the pull request can be rebased.
+#' - **merged**: Whether the pull request has been merged
+#' - **merged_by**: Who merged the pull request.
+#' - **merged_at**: When the pull request was merged.
+#' - **closed_at**: When the pull request was closed.
+#'
+#' Additionally, the `view_pull_request()` function also returns:
+#'
+#' - **commits**: Information about the commits made on the branch.
+#'   - **message**: The message specified for the commit.
+#'   - **author_name**: The author's name.
+#'   - **author_email**: The author's email address.
+#'   - **author_date**: The date/time it was authored.
+#'   - **committer_name**: The committer's name.
+#'   - **committer_email**: The committer's email address.
+#'   - **committer_date**: The date/time it was committed.
+#'   - **parent_sha**: The SHA of the parent commit(s).
+#'   - **html_url**: The URL of the commit's web page in GitHub.
+#'
+#' - **files**: Information about the files changed.
+#'   - **sha**: The SHA of the file.
+#'   - **filename**: The name of the file.
+#'   - **status**: The status of the file.
+#'   - **additions**: The number of lines added.
+#'   - **deletions**: The number of lines deleted.
+#'   - **changes**: The number of lines changed.
+#'   - **patch**: The patch information.
+#'   - **html_url**: The URL of the file's web page in GitHub.
+#'
+#' - **reviews**: The reviews registered.
+#'   - **body**: The contents of the review.
+#'   - **state**: The state of the review.
+#'   - **user**: The user who added the review.
+#'   - **html_url**: Th URL of the review's web page in GitHub.
+#'   - **submitted_at**: When the review was submitted.
+#'
+#' @examples
+#' \dontrun{
+#'   # View all open pull requests
+#'   view_pull_requests("ChadGoymer/test-githapi")
+#'
+#'   # View all closed pull requests
+#'   view_pull_requests("ChadGoymer/test-githapi", state = "closed")
+#'
+#'   # View all pull requests for the "master" branch
+#'   view_pull_requests("ChadGoymer/test-githapi", base = "master")
+#'
+#'   # View pull requests, sorted by the most recently updated
+#'   view_pull_requests("ChadGoymer/test-githapi", sort = "updated", direction = "desc")
+#'
+#'   # View single pull request
+#'   view_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#'
+#'   # Open a pull request's page in a browser
+#'   browse_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+view_pull_requests <- function(
+  repo,
+  head,
+  base,
+  state     = "open",
+  sort      = "created",
+  direction = "desc",
+  n_max     = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (!missing(head)) {
+    assert(is_scalar_character(head), "'head' must be a string:\n  ", head)
+    if (!str_detect(head, ":")) {
+      head <- str_c(dirname(repo), ":", head)
+    }
+  }
+  else {
+    head <- NULL
+  }
+
+  if (!missing(base)) {
+    assert(is_scalar_character(base), "'base' must be a string:\n  ", base)
+  }
+  else {
+    base <- NULL
+  }
+
+  assert(
+    is_scalar_character(state) && state %in% values$pull_request$state,
+    "'state' must be either '", str_c(values$pull_request$state, collapse = "', '"), "':\n  ", state)
+  assert(
+    is_scalar_character(sort) && sort %in% values$pull_request$sort,
+    "'sort' must be either '", str_c(values$pull_request$sort, collapse = "', '"), "':\n  ", sort)
+  assert(
+    is_scalar_character(direction) && direction %in% values$pull_request$direction,
+    "'direction' must be either '", str_c(values$pull_request$direction, collapse = "', '"), "':\n  ", direction)
+
+  info("Viewing pull requests for repository '", repo, "'")
+  pulls_lst <- gh_url(
+    "repos", repo, "pulls",
+    head      = head,
+    base      = base,
+    state     = state,
+    sort      = sort,
+    direction = direction) %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  pulls_gh <- bind_properties(pulls_lst, properties$pull_request) %>%
+    add_column(labels = collapse_property(pulls_lst, "labels", "name"), .before = "milestone") %>%
+    add_column(assignees = collapse_property(pulls_lst, "assignees", "login"), .before = "labels") %>%
+    add_column(reviewers = collapse_property(pulls_lst, "requested_reviewers", "login"), .before = "labels")
+
+  info("Done", level = 7)
+  pulls_gh
+}
+
+
+#  FUNCTION: view_pull_request ----------------------------------------------------------------
+#
+#' @rdname view_pull_requests
+#' @export
+#'
+view_pull_request <- function(
+  pull_request,
+  repo,
+  n_max = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (is_scalar_integerish(pull_request))
+  {
+    info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
+    pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
+      gh_request("GET", ...)
+  }
+  else if (is_scalar_character(pull_request))
+  {
+    info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
+    pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
+      gh_find(property  = "title", value = pull_request, ...)
+  }
+  else
+  {
+    error("'pull_request' must be either an integer or a string:\n  ", pull_request)
+  }
+
+  info("Transforming results", level = 4)
+  commits_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "commits") %>%
+    gh_page(n_max = n_max, ...)
+  commits <- bind_properties(commits_lst, properties$pull_commits) %>%
+    add_column(parent_sha = collapse_property(commits_lst, "parents", "sha"), .before = "html_url")
+
+  files <- gh_url("repos", repo, "pulls", pull_lst$number, "files") %>%
+    gh_page(n_max = n_max, ...) %>%
+    bind_properties(properties$pull_files)
+
+  reviews <- gh_url("repos", repo, "pulls", pull_lst$number, "reviews") %>%
+    gh_page(n_max = n_max, ...) %>%
+    bind_properties(properties$pull_reviews)
+
+  pull_gh <- select_properties(pull_lst, properties$pull_request) %>%
+    modify_list(
+      assignees = collapse_property(list(pull_lst), "assignees", "login"),
+      reviewers = collapse_property(list(pull_lst), "requested_reviewers", "login"),
+      labels = collapse_property(list(pull_lst), "labels", "name"),
+      .before = "milestone") %>%
+    modify_list(
+      repository = repo,
+      commits    = commits,
+      files      = files,
+      reviews    = reviews)
+
+  info("Done", level = 7)
+  structure(
+    pull_gh,
+    class   = class(pull_lst),
+    url     = attr(pull_lst, "url"),
+    request = attr(pull_lst, "request"),
+    status  = attr(pull_lst, "status"),
+    header  = attr(pull_lst, "header"))
+}
+
+
+#  FUNCTION: browse_pull_request --------------------------------------------------------------
+#
+#' @rdname view_pull_requests
+#' @export
+#'
+browse_pull_request <- function(
+  pull_request,
+  repo,
+  ...)
+{
+  pull_request <- view_pull_request(pull_request = pull_request, repo = repo)
+
+  info("Browsing pull request '", pull_request$title, "' in repository '", repo, "'")
+  httr::BROWSE(pull_request$html_url)
+
+  info("Done", level = 7)
+  structure(
+    pull_request$html_url,
+    class   = c("github", "character"),
+    url     = attr(pull_request, "url"),
+    request = attr(pull_request, "request"),
+    status  = attr(pull_request, "status"),
+    header  = attr(pull_request, "header"))
 }

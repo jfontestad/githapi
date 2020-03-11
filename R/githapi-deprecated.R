@@ -49,8 +49,8 @@
 #' - [gh_issues()]: replace with [view_issues()]
 #' - [gh_user_issues()]: replace with [view_issues()]
 #' - [gh_assignees()]: is being removed
-#' - [gh_issue_comments()]: replace with [view_issue()]
-#' - [gh_issue_comment()]: is being removed
+#' - [gh_issue_comment()]: replace with `view_comment()`
+#' - [gh_issue_comments()]: replace with `view_comments()`
 #' - [gh_event()]: is being removed
 #' - [gh_events()]: is being removed
 #'
@@ -80,6 +80,19 @@
 #' - [is_collaborator()]: is being removed
 #' - [gh_collaborators()]: replace with [view_collaborators()]
 #' - [gh_permissions()]: replace with [view_collaborator()]
+#'
+#' @section Pull requests:
+#'
+#' - [gh_pull_request()]: replace with [view_pull_request()]
+#' - [gh_pull_requests()]: replace with [view_pull_requests()]
+#' - [gh_pull_commits()]: replace with [view_pull_request()]
+#' - [gh_pull_files()]: replace with [view_pull_request()]
+#' - [is_pull_merged()]: is being removed
+#' - [gh_pull_review()]: is being removed
+#' - [gh_pull_reviews()]: replace with [view_pull_request()]
+#' - [gh_pull_comment()]: replace with `view_comment()`
+#' - [gh_pull_comments()]: replace with `view_comments()`
+#' - [gh_pull_review_requests()]: is being removed
 #'
 NULL
 

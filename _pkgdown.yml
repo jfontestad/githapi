@@ -27,6 +27,9 @@ reference:
     - '`create_issue`'
     - '`update_issue`'
     - '`view_issues`'
+    - '`create_pull_request`'
+    - '`update_pull_request`'
+    - '`view_pull_requests`'
     - '`create_label`'
     - '`update_label`'
     - '`view_labels`'
@@ -132,19 +135,6 @@ reference:
     - '`gh_gist_comments`'
     - '`gh_save_gist`'
     - '`gh_source_gist`'
-- title: Pull Requests
-  desc: Functions for accessing information about pull requests and their contents.
-  contents:
-    - '`gh_pull_request`'
-    - '`gh_pull_requests`'
-    - '`gh_pull_commits`'
-    - '`gh_pull_files`'
-    - '`is_pull_merged`'
-    - '`gh_pull_review`'
-    - '`gh_pull_reviews`'
-    - '`gh_pull_comment`'
-    - '`gh_pull_comments`'
-    - '`gh_pull_review_requests`'
 - title: Utilities
   desc: Useful functions.
   contents:
@@ -223,5 +213,15 @@ reference:
     - '`gh_issue_comment`'
     - '`gh_event`'
     - '`gh_events`'
+    - '`gh_pull_request`'
+    - '`gh_pull_requests`'
+    - '`gh_pull_commits`'
+    - '`gh_pull_files`'
+    - '`is_pull_merged`'
+    - '`gh_pull_review`'
+    - '`gh_pull_reviews`'
+    - '`gh_pull_comment`'
+    - '`gh_pull_comments`'
+    - '`gh_pull_review_requests`'
 news:
 - one_page: false
