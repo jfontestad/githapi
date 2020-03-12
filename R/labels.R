@@ -273,3 +273,66 @@ delete_label <- function(
     status  = attr(response, "status"),
     header  = attr(response, "header"))
 }
+
+
+#  FUNCTION: add_labels -----------------------------------------------------------------------
+#
+#' Add or remove labels from an issue or pull request
+#'
+#' `add_labels()` adds labels to an existing issue or pull request within a GitHub repository.
+#' `remove_labels()` removes labels from an issue or pull request.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue>
+#' - <https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue>
+#'
+#' @param labels (character) The name of the labels.
+#' @param issue (string or character) The number or title of the issue.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `add_labels()` returns a tibble of the added labels properties. `remove_labels()`
+#'   returns a tibble of the remaining labels properties.
+#'
+#' **Label Properties:**
+#'
+#' - **name**: The name of the label.
+#' - **color**: The color of the label in hexidecimal code.
+#' - **description**: The description of the label.
+#'
+#' @examples
+#' \dontrun{
+#'   add_labels(
+#'     labels = c("feature", "new-label"),
+#'     issue  = "Test issue",
+#'     repo   = "ChadGoymer/test-githapi")
+#'
+#'   remove_labels(
+#'     labels = c("feature", "new-label"),
+#'     issue  = "Test issue",
+#'     repo   = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+add_labels <- function(
+  labels,
+  issue,
+  repo,
+  ...)
+{
+  assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  issue <- view_issue(issue, repo = repo)
+
+  info("Adding labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
+  labels_lst <- gh_url("repos", repo, "issues", issue$number, "labels") %>%
+    gh_request("POST", payload = list(labels = as.list(labels)), ...)
+
+  info("Transforming results", level = 4)
+  labels_gh <- bind_properties(labels_lst, properties$label)
+
+  info("Done", level = 7)
+  labels_gh
+}

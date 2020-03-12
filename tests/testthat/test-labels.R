@@ -11,6 +11,11 @@ setup(suppressMessages(try(silent = TRUE, {
     name        = str_c("test-labels-", now),
     description = "This is a repository to test labels")
 
+  test_issue <- create_issue(
+    title     = str_c("test labels ", now),
+    repo      = str_c("ChadGoymer/test-labels-", now),
+    body      = "This is an issue to test add_labels() and remove_labels()")
+
 })))
 
 teardown(suppressMessages(try(silent = TRUE, {
@@ -83,6 +88,28 @@ test_that("update_label changes a label and returns a list of the properties", {
   expect_identical(updated_label$name, "updated-label")
   expect_identical(updated_label$color, "FFC0CB")
   expect_identical(updated_label$description, "This is an updated label")
+
+})
+
+
+# TEST: add_labels ----------------------------------------------------------------------------
+
+test_that("add_labels adds labels to an issue and returns the properties", {
+
+  added_labels <- add_labels(
+    labels = c("updated-label", "detailed-label"),
+    issue  = str_c("test labels ", now),
+    repo   = str_c("ChadGoymer/test-labels-", now))
+
+  expect_is(added_labels, "tbl")
+  expect_identical(attr(added_labels, "status"), 200L)
+  expect_identical(
+    map_chr(added_labels, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_true(all(c("updated-label", "detailed-label") %in% added_labels$name))
 
 })
 
