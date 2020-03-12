@@ -11,6 +11,11 @@ setup(suppressMessages(try(silent = TRUE, {
     name        = str_c("test-labels-", now),
     description = "This is a repository to test labels")
 
+  test_issue <- create_issue(
+    title     = str_c("test labels ", now),
+    repo      = str_c("ChadGoymer/test-labels-", now),
+    body      = "This is an issue to test add_labels() and remove_labels()")
+
 })))
 
 teardown(suppressMessages(try(silent = TRUE, {
@@ -87,21 +92,57 @@ test_that("update_label changes a label and returns a list of the properties", {
 })
 
 
-# TEST: view_labels ---------------------------------------------------------------------------
+# TEST: add_labels ----------------------------------------------------------------------------
 
-test_that("view_labels returns a tibble of label properties", {
+test_that("add_labels adds labels to an issue and returns the properties", {
 
-  labels <- view_labels(str_c("ChadGoymer/test-labels-", now))
+  added_labels <- add_labels(
+    labels = c("updated-label", "detailed-label"),
+    issue  = str_c("test labels ", now),
+    repo   = str_c("ChadGoymer/test-labels-", now))
 
-  expect_is(labels, "tbl")
-  expect_identical(attr(labels, "status"), 200L)
+  expect_is(added_labels, "tbl")
+  expect_identical(attr(added_labels, "status"), 200L)
   expect_identical(
-    map_chr(labels, ~ class(.)[[1]]),
+    map_chr(added_labels, ~ class(.)[[1]]),
     c(name        = "character",
       color       = "character",
       description = "character"))
 
-  expect_true("detailed-label" %in% labels$name)
+  expect_true(all(c("updated-label", "detailed-label") %in% added_labels$name))
+
+})
+
+
+# TEST: view_labels ---------------------------------------------------------------------------
+
+test_that("view_labels returns a tibble of label properties", {
+
+  repo_labels <- view_labels(str_c("ChadGoymer/test-labels-", now))
+
+  expect_is(repo_labels, "tbl")
+  expect_identical(attr(repo_labels, "status"), 200L)
+  expect_identical(
+    map_chr(repo_labels, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_true(all(c("updated-label", "detailed-label") %in% repo_labels$name))
+
+  issue_labels <- view_labels(
+    issue = str_c("test labels ", now),
+    repo  = str_c("ChadGoymer/test-labels-", now))
+
+  expect_is(issue_labels, "tbl")
+  expect_identical(attr(issue_labels, "status"), 200L)
+  expect_identical(
+    map_chr(issue_labels, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_true(all(c("updated-label", "detailed-label") %in% issue_labels$name))
 
 })
 
@@ -121,6 +162,28 @@ test_that("view_label returns a list of repository properties", {
       description = "character"))
 
   expect_identical(detailed_label$name, "detailed-label")
+
+})
+
+
+# TEST: remove_labels -------------------------------------------------------------------------
+
+test_that("add_labels adds labels to an issue and returns the properties", {
+
+  removed_labels <- remove_labels(
+    labels = c("updated-label", "detailed-label"),
+    issue  = str_c("test labels ", now),
+    repo   = str_c("ChadGoymer/test-labels-", now))
+
+  expect_is(removed_labels, "tbl")
+  expect_identical(attr(removed_labels, "status"), 200L)
+  expect_identical(
+    map_chr(removed_labels, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_identical(nrow(removed_labels), 0L)
 
 })
 

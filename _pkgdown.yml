@@ -32,6 +32,7 @@ reference:
     - '`view_pull_requests`'
     - '`create_label`'
     - '`update_label`'
+    - '`add_labels`'
     - '`view_labels`'
     - '`delete_label`'
     - '`create_milestone`'

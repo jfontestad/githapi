@@ -1,3 +1,9 @@
+# githapi 0.9.18
+
+- Added `add_labels()`
+- Added `remove_labels()`
+- Updated `view_labels()` to allow viewing labels on an issue
+
 # githapi 0.9.17
 
 - Added `create_pull_request()`

@@ -116,6 +116,7 @@ update_label <- function(
   description,
   ...)
 {
+  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   payload <- list()
@@ -155,15 +156,17 @@ update_label <- function(
 #' View labels within a repository
 #'
 #' `view_labels()` summarises labels in a table with the properties as columns and a row for
-#' each label in the repository. `view_label()` returns a list of all properties for a single
-#' label.
+#' each label in the repository. It can also be used to view the labels assigned to a single
+#' issue. `view_label()` returns a list of all properties for a single label.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository>
+#' - <https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue>
 #' - <https://developer.github.com/v3/issues/labels/#get-a-single-label>
 #'
 #' @param label (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param issue (string or character, optional) The number or title of the issue.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
@@ -190,14 +193,23 @@ update_label <- function(
 #'
 view_labels <- function(
   repo,
+  issue,
   n_max = 1000,
   ...)
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  info("Viewing labels for respository '", repo, "'")
-  labels_lst <- gh_url("repos", repo, "labels") %>%
-    gh_page(n_max = n_max, ...)
+  if (missing(issue)) {
+    info("Viewing labels for respository '", repo, "'")
+    url <- gh_url("repos", repo, "labels")
+  }
+  else {
+    issue <- view_issue(issue, repo = repo)
+    info("Viewing labels for issue '", issue$title, "' in respository '", repo, "'")
+    url <- gh_url("repos", repo, "issues", issue$number, "labels")
+  }
+
+  labels_lst <- gh_page(url = url, n_max = n_max, ...)
 
   info("Transforming results", level = 4)
   labels_gh <- bind_properties(labels_lst, properties$label)
@@ -217,8 +229,8 @@ view_label <- function(
   repo,
   ...)
 {
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   info("Viewing label '", label, "' for repository '", repo, "'")
   label_lst <- gh_url("repos", repo, "labels", label) %>%
@@ -260,6 +272,9 @@ delete_label <- function(
   repo,
   ...)
 {
+  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
   info("Deleting label '", label, "' in repository '", repo, "'")
   response <- gh_url("repos", repo, "labels", label) %>%
     gh_request("DELETE", ...)
@@ -272,4 +287,97 @@ delete_label <- function(
     request = attr(response, "request"),
     status  = attr(response, "status"),
     header  = attr(response, "header"))
+}
+
+
+#  FUNCTION: add_labels -----------------------------------------------------------------------
+#
+#' Add or remove labels from an issue or pull request
+#'
+#' `add_labels()` adds labels to an existing issue or pull request within a GitHub repository.
+#' `remove_labels()` removes labels from an issue or pull request.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue>
+#' - <https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue>
+#'
+#' @param labels (character) The name of the labels.
+#' @param issue (string or character) The number or title of the issue.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `add_labels()` returns a tibble of the added labels properties. `remove_labels()`
+#'   returns a tibble of the remaining labels properties.
+#'
+#' **Label Properties:**
+#'
+#' - **name**: The name of the label.
+#' - **color**: The color of the label in hexidecimal code.
+#' - **description**: The description of the label.
+#'
+#' @examples
+#' \dontrun{
+#'   add_labels(
+#'     labels = c("feature", "new-label"),
+#'     issue  = "Test issue",
+#'     repo   = "ChadGoymer/test-githapi")
+#'
+#'   remove_labels(
+#'     labels = c("feature", "new-label"),
+#'     issue  = "Test issue",
+#'     repo   = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+add_labels <- function(
+  labels,
+  issue,
+  repo,
+  ...)
+{
+  assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  issue <- view_issue(issue, repo = repo)
+
+  info("Adding labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
+  labels_lst <- gh_url("repos", repo, "issues", issue$number, "labels") %>%
+    gh_request("POST", payload = list(labels = as.list(labels)), ...)
+
+  info("Transforming results", level = 4)
+  labels_gh <- bind_properties(labels_lst, properties$label)
+
+  info("Done", level = 7)
+  labels_gh
+}
+
+
+#  FUNCTION: remove_label ---------------------------------------------------------------------
+#
+#' @rdname add_labels
+#' @export
+#'
+remove_labels <- function(
+  labels,
+  issue,
+  repo,
+  ...)
+{
+  assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  issue <- view_issue(issue, repo = repo)
+
+  info("Deleting labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
+  labels_lst <- try_map(labels, function(label) {
+    gh_url("repos", repo, "issues", issue$number, "labels", label) %>%
+      gh_request("DELETE", ...)
+  })
+
+  info("Transforming results", level = 4)
+  labels_gh <- bind_properties(last(labels_lst), properties$label)
+
+  info("Done", level = 7)
+  labels_gh
 }

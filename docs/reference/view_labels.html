@@ -37,8 +37,8 @@
 
 <meta property="og:title" content="View labels within a repository — view_labels" />
 <meta property="og:description" content="view_labels() summarises labels in a table with the properties as columns and a row for
-each label in the repository. view_label() returns a list of all properties for a single
-label." />
+each label in the repository. It can also be used to view the labels assigned to a single
+issue. view_label() returns a list of all properties for a single label." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +71,7 @@ label." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.18</span>
       </span>
     </div>
 
@@ -117,11 +117,11 @@ label." />
 
     <div class="ref-description">
     <p><code>view_labels()</code> summarises labels in a table with the properties as columns and a row for
-each label in the repository. <code>view_label()</code> returns a list of all properties for a single
-label.</p>
+each label in the repository. It can also be used to view the labels assigned to a single
+issue. <code>view_label()</code> returns a list of all properties for a single label.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_labels</span>(<span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>view_labels</span>(<span class='no'>repo</span>, <span class='no'>issue</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
 
 <span class='fu'>view_label</span>(<span class='no'>label</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
@@ -131,6 +131,10 @@ label.</p>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+    </tr>
+    <tr>
+      <th>issue</th>
+      <td><p>(string or character, optional) The number or title of the issue.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -161,6 +165,7 @@ default browser on the label's page and returns the URL.</p>
 
     <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository'>https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository</a></p></li>
+<li><p><a href='https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue'>https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue</a></p></li>
 <li><p><a href='https://developer.github.com/v3/issues/labels/#get-a-single-label'>https://developer.github.com/v3/issues/labels/#get-a-single-label</a></p></li>
 </ul>
 
