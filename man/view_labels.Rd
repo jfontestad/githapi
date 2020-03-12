@@ -5,12 +5,14 @@
 \alias{view_label}
 \title{View labels within a repository}
 \usage{
-view_labels(repo, n_max = 1000, ...)
+view_labels(repo, issue, n_max = 1000, ...)
 
 view_label(label, repo, ...)
 }
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
+
+\item{issue}{(string or character, optional) The number or title of the issue.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -32,13 +34,14 @@ default browser on the label's page and returns the URL.
 }
 \description{
 \code{view_labels()} summarises labels in a table with the properties as columns and a row for
-each label in the repository. \code{view_label()} returns a list of all properties for a single
-label.
+each label in the repository. It can also be used to view the labels assigned to a single
+issue. \code{view_label()} returns a list of all properties for a single label.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
 \item \url{https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository}
+\item \url{https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue}
 \item \url{https://developer.github.com/v3/issues/labels/#get-a-single-label}
 }
 }

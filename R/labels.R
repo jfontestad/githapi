@@ -116,6 +116,7 @@ update_label <- function(
   description,
   ...)
 {
+  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   payload <- list()
@@ -155,15 +156,17 @@ update_label <- function(
 #' View labels within a repository
 #'
 #' `view_labels()` summarises labels in a table with the properties as columns and a row for
-#' each label in the repository. `view_label()` returns a list of all properties for a single
-#' label.
+#' each label in the repository. It can also be used to view the labels assigned to a single
+#' issue. `view_label()` returns a list of all properties for a single label.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository>
+#' - <https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue>
 #' - <https://developer.github.com/v3/issues/labels/#get-a-single-label>
 #'
 #' @param label (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param issue (string or character, optional) The number or title of the issue.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
@@ -190,14 +193,23 @@ update_label <- function(
 #'
 view_labels <- function(
   repo,
+  issue,
   n_max = 1000,
   ...)
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  info("Viewing labels for respository '", repo, "'")
-  labels_lst <- gh_url("repos", repo, "labels") %>%
-    gh_page(n_max = n_max, ...)
+  if (missing(issue)) {
+    info("Viewing labels for respository '", repo, "'")
+    url <- gh_url("repos", repo, "labels")
+  }
+  else {
+    issue <- view_issue(issue, repo = repo)
+    info("Viewing labels for issue '", issue$title, "' in respository '", repo, "'")
+    url <- gh_url("repos", repo, "issues", issue$number, "labels")
+  }
+
+  labels_lst <- gh_page(url = url, n_max = n_max, ...)
 
   info("Transforming results", level = 4)
   labels_gh <- bind_properties(labels_lst, properties$label)
@@ -217,8 +229,8 @@ view_label <- function(
   repo,
   ...)
 {
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   info("Viewing label '", label, "' for repository '", repo, "'")
   label_lst <- gh_url("repos", repo, "labels", label) %>%
@@ -260,6 +272,9 @@ delete_label <- function(
   repo,
   ...)
 {
+  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
   info("Deleting label '", label, "' in repository '", repo, "'")
   response <- gh_url("repos", repo, "labels", label) %>%
     gh_request("DELETE", ...)

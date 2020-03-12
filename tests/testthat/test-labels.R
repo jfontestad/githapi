@@ -118,17 +118,31 @@ test_that("add_labels adds labels to an issue and returns the properties", {
 
 test_that("view_labels returns a tibble of label properties", {
 
-  labels <- view_labels(str_c("ChadGoymer/test-labels-", now))
+  repo_labels <- view_labels(str_c("ChadGoymer/test-labels-", now))
 
-  expect_is(labels, "tbl")
-  expect_identical(attr(labels, "status"), 200L)
+  expect_is(repo_labels, "tbl")
+  expect_identical(attr(repo_labels, "status"), 200L)
   expect_identical(
-    map_chr(labels, ~ class(.)[[1]]),
+    map_chr(repo_labels, ~ class(.)[[1]]),
     c(name        = "character",
       color       = "character",
       description = "character"))
 
-  expect_true("detailed-label" %in% labels$name)
+  expect_true(all(c("updated-label", "detailed-label") %in% repo_labels$name))
+
+  issue_labels <- view_labels(
+    issue = str_c("test labels ", now),
+    repo  = str_c("ChadGoymer/test-labels-", now))
+
+  expect_is(issue_labels, "tbl")
+  expect_identical(attr(issue_labels, "status"), 200L)
+  expect_identical(
+    map_chr(issue_labels, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_true(all(c("updated-label", "detailed-label") %in% issue_labels$name))
 
 })
 
