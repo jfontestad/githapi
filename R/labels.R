@@ -336,3 +336,33 @@ add_labels <- function(
   info("Done", level = 7)
   labels_gh
 }
+
+
+#  FUNCTION: remove_label ---------------------------------------------------------------------
+#
+#' @rdname add_labels
+#' @export
+#'
+remove_labels <- function(
+  labels,
+  issue,
+  repo,
+  ...)
+{
+  assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  issue <- view_issue(issue, repo = repo)
+
+  info("Deleting labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
+  labels_lst <- try_map(labels, function(label) {
+    gh_url("repos", repo, "issues", issue$number, "labels", label) %>%
+      gh_request("DELETE", ...)
+  })
+
+  info("Transforming results", level = 4)
+  labels_gh <- bind_properties(last(labels_lst), properties$label)
+
+  info("Done", level = 7)
+  labels_gh
+}

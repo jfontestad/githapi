@@ -152,6 +152,28 @@ test_that("view_label returns a list of repository properties", {
 })
 
 
+# TEST: remove_labels -------------------------------------------------------------------------
+
+test_that("add_labels adds labels to an issue and returns the properties", {
+
+  removed_labels <- remove_labels(
+    labels = c("updated-label", "detailed-label"),
+    issue  = str_c("test labels ", now),
+    repo   = str_c("ChadGoymer/test-labels-", now))
+
+  expect_is(removed_labels, "tbl")
+  expect_identical(attr(removed_labels, "status"), 200L)
+  expect_identical(
+    map_chr(removed_labels, ~ class(.)[[1]]),
+    c(name        = "character",
+      color       = "character",
+      description = "character"))
+
+  expect_identical(nrow(removed_labels), 0L)
+
+})
+
+
 # TEST: delete_label --------------------------------------------------------------------------
 
 test_that("delete_label removes a label and returns TRUE", {
