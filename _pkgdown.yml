@@ -224,5 +224,10 @@ reference:
     - '`gh_pull_comment`'
     - '`gh_pull_comments`'
     - '`gh_pull_review_requests`'
+    - '`create_branches`'
+    - '`update_branches`'
+    - '`view_branches`' for specific branches
+    - '`delete_branches`'
+    - '`branches_exist`'
 news:
 - one_page: false

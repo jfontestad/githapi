@@ -10,6 +10,11 @@ possible, alternative functions with similar functionality are also mentioned.
 \section{Git Data Functions}{
 
 \itemize{
+\item \code{\link[=create_branches]{create_branches()}}: replace with \code{\link[=create_branch]{create_branch()}}
+\item \code{\link[=update_branches]{update_branches()}}: replace with \code{\link[=update_branch]{update_branch()}}
+\item \code{\link[=view_branches]{view_branches()}} for specifying branches: replace with \code{\link[=view_branch]{view_branch()}}
+\item \code{\link[=delete_branches]{delete_branches()}}: replace with \code{\link[=delete_branch]{delete_branch()}}
+\item \code{\link[=branches_exist]{branches_exist()}}: is being removed
 \item \code{\link[=gh_git_blob]{gh_git_blob()}}: use \code{\link[=view_blobs]{view_blobs()}} instead.
 \item \code{\link[=gh_git_commit]{gh_git_commit()}}: use \code{\link[=view_commits]{view_commits()}} instead.
 \item \code{\link[=gh_git_reference]{gh_git_reference()}}: use \code{\link[=view_tags]{view_tags()}} or \code{\link[=view_branches]{view_branches()}} instead.
@@ -61,6 +66,16 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_issue_comments]{gh_issue_comments()}}: replace with \code{view_comments()}
 \item \code{\link[=gh_event]{gh_event()}}: is being removed
 \item \code{\link[=gh_events]{gh_events()}}: is being removed
+\item \code{\link[=gh_pull_request]{gh_pull_request()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=gh_pull_requests]{gh_pull_requests()}}: replace with \code{\link[=view_pull_requests]{view_pull_requests()}}
+\item \code{\link[=gh_pull_commits]{gh_pull_commits()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=gh_pull_files]{gh_pull_files()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=is_pull_merged]{is_pull_merged()}}: is being removed
+\item \code{\link[=gh_pull_review]{gh_pull_review()}}: is being removed
+\item \code{\link[=gh_pull_reviews]{gh_pull_reviews()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
+\item \code{\link[=gh_pull_comment]{gh_pull_comment()}}: replace with \code{view_comment()}
+\item \code{\link[=gh_pull_comments]{gh_pull_comments()}}: replace with \code{view_comments()}
+\item \code{\link[=gh_pull_review_requests]{gh_pull_review_requests()}}: is being removed
 }
 }
 
@@ -94,22 +109,6 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=is_collaborator]{is_collaborator()}}: is being removed
 \item \code{\link[=gh_collaborators]{gh_collaborators()}}: replace with \code{\link[=view_collaborators]{view_collaborators()}}
 \item \code{\link[=gh_permissions]{gh_permissions()}}: replace with \code{\link[=view_collaborator]{view_collaborator()}}
-}
-}
-
-\section{Pull requests}{
-
-\itemize{
-\item \code{\link[=gh_pull_request]{gh_pull_request()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
-\item \code{\link[=gh_pull_requests]{gh_pull_requests()}}: replace with \code{\link[=view_pull_requests]{view_pull_requests()}}
-\item \code{\link[=gh_pull_commits]{gh_pull_commits()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
-\item \code{\link[=gh_pull_files]{gh_pull_files()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
-\item \code{\link[=is_pull_merged]{is_pull_merged()}}: is being removed
-\item \code{\link[=gh_pull_review]{gh_pull_review()}}: is being removed
-\item \code{\link[=gh_pull_reviews]{gh_pull_reviews()}}: replace with \code{\link[=view_pull_request]{view_pull_request()}}
-\item \code{\link[=gh_pull_comment]{gh_pull_comment()}}: replace with \code{view_comment()}
-\item \code{\link[=gh_pull_comments]{gh_pull_comments()}}: replace with \code{view_comments()}
-\item \code{\link[=gh_pull_review_requests]{gh_pull_review_requests()}}: is being removed
 }
 }
 

@@ -66,6 +66,8 @@ view_branches <- function(
         n_max = n_max, token = token, ...)
     })
   } else {
+    .Deprecated(msg = "Specifying branches within view_branches() has been deprecated. Please use view_branch() instead.")
+
     (is_character(branches)) ||
       error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
 
@@ -130,6 +132,8 @@ create_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("create_branch", package = "githapi")
+
   {
     (is_character(branches)) ||
       error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
@@ -206,6 +210,8 @@ update_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("update_branch", package = "githapi")
+
   {
     (is_character(branches)) ||
       error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
@@ -272,6 +278,8 @@ delete_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("delete_branch", package = "githapi")
+
   {
     (is_character(branches)) ||
       error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
@@ -324,6 +332,8 @@ branches_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   {
     (is_character(branches)) ||
       error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
