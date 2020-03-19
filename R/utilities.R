@@ -37,6 +37,64 @@ is_repo <- function(x)
 }
 
 
+#  FUNCTION: is_ref ---------------------------------------------------------------------------
+#
+#' Checks whether the supplied object is a valid reference name
+#'
+#' A valid reference has restrictions on the special characters allowed (see details).
+#'
+#' Git imposes the following rules when naming references:
+#' 1. They can include slash '/' for hierarchical (directory) grouping, but no slash-separated
+#'    component can begin with a dot '.' or dash '-' or end with the sequence '.lock'.
+#' 2. They cannot have two consecutive dots '..' anywhere.
+#' 3. They cannot have the special characters: space ' ', tilde '~', caret '^', or colon ':',
+#'    question-mark '?', asterisk '*', backslash '\\', or open bracket '\[' anywhere.
+#' 5. They cannot begin or end with a slash '/' or contain multiple consecutive slashes
+#' 6. They cannot end with a dot '.'.
+#' 7. They cannot contain a sequence '@\{'.
+#' 8. They cannot be the single character '@'.
+#'
+#' @param x Object to check
+#'
+#' @return TRUE if x is a valid reference name, FALSE otherwise
+#'
+#' @export
+#'
+is_ref <- function(x)
+{
+  if (!is_scalar_character(x))
+    return(FALSE)
+
+  invalid <- c(
+    "\\.\\.", # double dot '..'
+    "\\ ",    # space ' '
+    "\\~",    # tilde '~'
+    "\\^",    # caret '^'
+    "\\:",    # colon ':'
+    "\\?",    # question-mark '?'
+    "\\*",    # asterisk '*'
+    "\\\\",   # backslash '\'
+    "\\[",    # open bracket '['
+    "^\\/",   # starts with slash '/'
+    "\\/$",   # ends with slash '/'
+    "\\/\\/", # double slash '//'
+    "\\@\\{", # pattern '@{'
+    "^\\@$")  # only contains '@'
+  if (any(str_detect(x, invalid)))
+    return(FALSE)
+
+  split_invalid <- c(
+    "^\\.",     # starts with dot '.'
+    "\\.$",     # ends with dot '.'
+    "^\\-",     # starts with dash '-'
+    "\\-$",     # ends with dash '-'
+    "\\.lock$") # ends with ',lock'
+  if (any(map_lgl(str_split(x, "/")[[1]], ~ any(str_detect(., pattern = split_invalid)))))
+    return(FALSE)
+
+  TRUE
+}
+
 # FUNCTION: is_hex ----------------------------------------------------------------------------
 #
 # Checks whether the supplied object is a hexidecimal color code
