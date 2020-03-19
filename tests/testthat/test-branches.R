@@ -123,3 +123,18 @@ test_that("view_branch returns a list of branch properties", {
   expect_identical(branch$name, str_c("test-branches-1-", now))
 
 })
+
+
+# TEST: delete_branch -------------------------------------------------------------------------
+
+test_that("delete_branch deletes a branch", {
+
+  deleted_branch <- delete_branch(
+    branch = str_c("test-branches-1-", now),
+    repo   = str_c("ChadGoymer/test-branches-", now))
+
+  expect_is(deleted_branch, "logical")
+  expect_identical(attr(deleted_branch, "status"), 204L)
+  expect_identical(as.logical(deleted_branch), TRUE)
+
+})

@@ -238,3 +238,49 @@ view_branch <- function(
     status  = attr(branch_lst, "status"),
     header  = attr(branch_lst, "header"))
 }
+
+
+#  FUNCTION: delete_branch --------------------------------------------------------------------
+#
+#' Delete a branch from a repository
+#'
+#' This function deletes a branch from a repository, as long as you have appropriate
+#' permissions. Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/git/refs/#delete-a-reference>
+#'
+#' @param branch (string) The name of the branch.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_branch()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   delete_branch("new-branch", repo = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+delete_branch <- function(
+  branch,
+  repo,
+  ...)
+{
+  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Deleting branch '", branch, "' in repository '", repo, "'")
+  response <- gh_url("repos", repo, "git/refs/heads", branch) %>%
+    gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
