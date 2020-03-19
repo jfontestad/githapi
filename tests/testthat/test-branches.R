@@ -56,3 +56,29 @@ test_that("create_branch creates a branch and returns a list of the properties",
   expect_identical(new_branch$sha, as.character(master_sha))
 
 })
+
+
+# TEST: update_branch -------------------------------------------------------------------------
+
+test_that("update_branch updates a branch and returns a list of the properties", {
+
+  update_sha <- gh_url("repos", str_c("ChadGoymer/test-branches-", now), "commits/heads", str_c("test-branches-1-", now)) %>%
+    gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+
+  updated_branch <- update_branch(
+    branch = str_c("test-branches-2-", now),
+    repo   = str_c("ChadGoymer/test-branches-", now),
+    ref    = str_c("test-branches-1-", now))
+
+  expect_is(updated_branch, "list")
+  expect_identical(attr(updated_branch, "status"), 200L)
+  expect_identical(
+    map_chr(updated_branch, ~ class(.)[[1]]),
+    c(name = "character",
+      ref  = "character",
+      sha  = "character"))
+
+  expect_identical(updated_branch$name, str_c("test-branches-2-", now))
+  expect_identical(updated_branch$sha, as.character(update_sha))
+
+})
