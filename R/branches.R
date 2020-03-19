@@ -142,3 +142,69 @@ update_branch <- function(
     status  = attr(branch_lst, "status"),
     header  = attr(branch_lst, "header"))
 }
+
+
+#  FUNCTION: view_branches --------------------------------------------------------------------
+#
+#' View branches within a repository
+#'
+#' `view_branches()` summarises branches in a table with the properties as columns and a row
+#' for each branch in the repository. `view_branch()` returns a list of all properties for a
+#' single branch.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/git/refs/#list-matching-references>
+#' - <https://developer.github.com/v3/git/refs/#get-a-single-reference>
+#'
+#' @param branch (string) The name of the branch.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+# @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_branches()` returns a tibble of branch properties. `view_branch()`
+#'   returns a list of properties for a single branch.
+#'
+#' **Branch Properties:**
+#'
+#' - **name**: The name of the branch.
+#' - **ref**: The full Git reference of the branch.
+#' - **sha**: The commit SHA the branch is pointing at.
+#'
+#' @examples
+#' \dontrun{
+#'   # View all branches in a repository
+#'   view_branches("ChadGoymer/test-githapi")
+#'
+#'   # View a single branch
+#'   view_label("new-branch", "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+# TODO: Uncomment in version 1.0
+# view_branches <- function(
+#   repo,
+#   n_max = 1000,
+#   ...)
+# {
+#   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+#
+#   info("Viewing branches for respository '", repo, "'")
+#   branches_lst <- gh_url("repos", repo, "git/refs/heads") %>%
+#     gh_page(n_max = n_max, ...)
+#
+#   info("Transforming results", level = 4)
+#   branches_gh <- bind_properties(branches_lst, properties$branch) %>%
+#     add_column(name = basename(.$ref), .before = "ref")
+#
+#   info("Done", level = 7)
+#   structure(
+#     branches_gh,
+#     class   = class(branches_gh),
+#     url     = attr(branches_lst, "url"),
+#     request = attr(branches_lst, "request"),
+#     status  = attr(branches_lst, "status"),
+#     header  = attr(branches_lst, "header"))
+# }
+#
+#

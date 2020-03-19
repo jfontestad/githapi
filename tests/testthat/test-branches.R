@@ -82,3 +82,23 @@ test_that("update_branch updates a branch and returns a list of the properties",
   expect_identical(updated_branch$sha, as.character(update_sha))
 
 })
+
+
+# TEST: view_branches -------------------------------------------------------------------------
+
+# TODO: Uncomment in version 1.0
+# test_that("view_branches returns a tibble of branch properties", {
+#
+#   all_branches <- view_branches(str_c("ChadGoymer/test-branches-", now))
+#
+#   expect_is(all_branches, "tbl")
+#   expect_identical(attr(all_branches, "status"), 200L)
+#   expect_identical(
+#     map_chr(all_branches, ~ class(.)[[1]]),
+#     c(name = "character",
+#       ref  = "character",
+#       sha  = "character"))
+#
+#   expect_true(all(str_c("test-branches-", 1:2, "-", now) %in% all_branches$name))
+#
+# })
