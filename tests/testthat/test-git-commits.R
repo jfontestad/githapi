@@ -20,7 +20,7 @@ teardown(suppressMessages(tryCatch({
       repo     = "ChadGoymer/test-githapi")
   })
 
-}))))
+})))
 
 
 # TEST: view_commits --------------------------------------------------------------------------
