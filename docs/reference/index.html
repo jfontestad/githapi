@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.19</span>
       </span>
     </div>
 
@@ -148,6 +148,30 @@
           <p><code><a href="delete_repository.html">delete_repository()</a></code> </p>
         </td>
         <td><p>Delete a user or organization repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_branch.html">create_branch()</a></code> </p>
+        </td>
+        <td><p>Create a branch in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="update_branch.html">update_branch()</a></code> </p>
+        </td>
+        <td><p>Update a branch in a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_branch.html">view_branch()</a></code> </p>
+        </td>
+        <td><p>View branches within a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="delete_branch.html">delete_branch()</a></code> </p>
+        </td>
+        <td><p>Delete a branch from a repository</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -599,36 +623,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="view_branches.html">view_branches()</a></code> </p>
-        </td>
-        <td><p>View information about branches</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_branches.html">create_branches()</a></code> </p>
-        </td>
-        <td><p>Create branches at specified commits.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="update_branches.html">update_branches()</a></code> </p>
-        </td>
-        <td><p>Update branches to new commits.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="delete_branches.html">delete_branches()</a></code> </p>
-        </td>
-        <td><p>Delete branches.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="branches_exist.html">branches_exist()</a></code> </p>
-        </td>
-        <td><p>Determine whether branches exist in the specified repository.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="view_commits.html">view_commits()</a></code> </p>
         </td>
         <td><p>View information about Git commits.</p></td>
@@ -792,6 +786,12 @@
           <p><code><a href="is_sha.html">is_sha()</a></code> </p>
         </td>
         <td><p>Checks whether the supplied object is a valid SHA</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_ref.html">is_ref()</a></code> </p>
+        </td>
+        <td><p>Checks whether the supplied object is a valid reference name</p></td>
       </tr><tr>
         
         <td>
@@ -1276,6 +1276,36 @@
           <p><code><a href="gh_pull_review_requests.html">gh_pull_review_requests()</a></code> </p>
         </td>
         <td><p>List pull request review requests</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_branches.html">create_branches()</a></code> </p>
+        </td>
+        <td><p>Create branches at specified commits.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="update_branches.html">update_branches()</a></code> </p>
+        </td>
+        <td><p>Update branches to new commits.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_branches.html">view_branches()</a></code> </p>
+        </td>
+        <td><p>View information about branches</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="delete_branches.html">delete_branches()</a></code> </p>
+        </td>
+        <td><p>Delete branches.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="branches_exist.html">branches_exist()</a></code> </p>
+        </td>
+        <td><p>Determine whether branches exist in the specified repository.</p></td>
       </tr>
     </tbody>
     </table>

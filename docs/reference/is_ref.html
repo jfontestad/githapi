@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Organization or team members list — gh_members • githapi</title>
+<title>Checks whether the supplied object is a valid reference name — is_ref • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,8 @@
 
 
 
-<meta property="og:title" content="Get Organization or team members list — gh_members" />
-<meta property="og:description" content="https://developer.github.com/v3/orgs/members/#members-list
-https://developer.github.com/v3/orgs/teams/#list-team-members" />
+<meta property="og:title" content="Checks whether the supplied object is a valid reference name — is_ref" />
+<meta property="og:description" content="A valid reference has restrictions on the special characters allowed (see details)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,82 +108,43 @@ https://developer.github.com/v3/orgs/teams/#list-team-members" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Organization or team members list</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/organizations-deprecated.R'><code>R/organizations-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_members.Rd</code></div>
+    <h1>Checks whether the supplied object is a valid reference name</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
+    <div class="hidden name"><code>is_ref.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://developer.github.com/v3/orgs/members/#members-list'>https://developer.github.com/v3/orgs/members/#members-list</a>
-<a href='https://developer.github.com/v3/orgs/teams/#list-team-members'>https://developer.github.com/v3/orgs/teams/#list-team-members</a></p>
+    <p>A valid reference has restrictions on the special characters allowed (see details).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_members</span>(
-  <span class='no'>org</span>,
-  <span class='no'>team</span>,
-  <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>role</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>is_ref</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>org</th>
-      <td><p>(string) The name of the organization.</p></td>
-    </tr>
-    <tr>
-      <th>team</th>
-      <td><p>(integer) The GitHub ID of the team.</p></td>
-    </tr>
-    <tr>
-      <th>filter</th>
-      <td><p>(string) Filter members returned in the list. Can be one of:</p><ul>
-<li><p><code>2fa_disabled</code>: Members without two-factor authentication enabled. Available for
-organization owners.</p></li>
-<li><p><code>all</code>: All members the authenticated user can see.</p></li>
-<li><p><code>Default</code>: all.</p></li>
-</ul></td>
-    </tr>
-    <tr>
-      <th>role</th>
-      <td><p>(string) Filter members returned by their role. Can be one of:</p><ul>
-<li><p><code>all</code>: All members of the organization, regardless of role.</p></li>
-<li><p><code>admin</code>: Organization owners.</p></li>
-<li><p><code>member</code>: Non-owner organization members.</p></li>
-<li><p><code>Default</code>: all.</p></li>
-</ul></td>
-    </tr>
-    <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <th>x</th>
+      <td><p>Object to check</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the members (see GitHub's API documentation for details).</p>
+    <p>TRUE if x is a valid reference name, FALSE otherwise</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: Must specify either <code>org</code> or <code>team</code>, but not both.</p>
+    <p>Git imposes the following rules when naming references:</p><ol>
+<li><p>They can include slash '/' for hierarchical (directory) grouping, but no slash-separated
+component can begin with a dot '.' or dash '-' or end with the sequence '.lock'.</p></li>
+<li><p>They cannot have two consecutive dots '..' anywhere.</p></li>
+<li><p>They cannot have the special characters: space ' ', tilde '~', caret '^', or colon ':',
+question-mark '?', asterisk '*', backslash '\', or open bracket '[' anywhere.</p></li>
+<li><p>They cannot begin or end with a slash '/' or contain multiple consecutive slashes</p></li>
+<li><p>They cannot end with a dot '.'.</p></li>
+<li><p>They cannot contain a sequence '@{'.</p></li>
+<li><p>They cannot be the single character '@'.</p></li>
+</ol>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -226,7 +226,7 @@ reference:
     - '`gh_pull_review_requests`'
     - '`create_branches`'
     - '`update_branches`'
-    - '`view_branches`' for specific branches
+    - '`view_branches`'
     - '`delete_branches`'
     - '`branches_exist`'
 news:

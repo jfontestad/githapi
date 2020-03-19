@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Organization or team members list — gh_members • githapi</title>
+<title>Update a branch in a repository — update_branch • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,10 @@
 
 
 
-<meta property="og:title" content="Get Organization or team members list — gh_members" />
-<meta property="og:description" content="https://developer.github.com/v3/orgs/members/#members-list
-https://developer.github.com/v3/orgs/teams/#list-team-members" />
+<meta property="og:title" content="Update a branch in a repository — update_branch" />
+<meta property="og:description" content="This function updates a branch in the specified repository to point at a new commit. It
+must be pointed at a commit by providing a Git reference, which can be either a SHA, branch
+or tag. For a branch, the head commit is used." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,83 +110,69 @@ https://developer.github.com/v3/orgs/teams/#list-team-members" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Organization or team members list</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/organizations-deprecated.R'><code>R/organizations-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_members.Rd</code></div>
+    <h1>Update a branch in a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/branches.R'><code>R/branches.R</code></a></small>
+    <div class="hidden name"><code>update_branch.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://developer.github.com/v3/orgs/members/#members-list'>https://developer.github.com/v3/orgs/members/#members-list</a>
-<a href='https://developer.github.com/v3/orgs/teams/#list-team-members'>https://developer.github.com/v3/orgs/teams/#list-team-members</a></p>
+    <p>This function updates a branch in the specified repository to point at a new commit. It
+must be pointed at a commit by providing a Git reference, which can be either a SHA, branch
+or tag. For a branch, the head commit is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_members</span>(
-  <span class='no'>org</span>,
-  <span class='no'>team</span>,
-  <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>role</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_branch</span>(<span class='no'>branch</span>, <span class='no'>repo</span>, <span class='no'>ref</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>org</th>
-      <td><p>(string) The name of the organization.</p></td>
+      <th>branch</th>
+      <td><p>(string) The name of the branch.</p></td>
     </tr>
     <tr>
-      <th>team</th>
-      <td><p>(integer) The GitHub ID of the team.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>filter</th>
-      <td><p>(string) Filter members returned in the list. Can be one of:</p><ul>
-<li><p><code>2fa_disabled</code>: Members without two-factor authentication enabled. Available for
-organization owners.</p></li>
-<li><p><code>all</code>: All members the authenticated user can see.</p></li>
-<li><p><code>Default</code>: all.</p></li>
-</ul></td>
+      <th>ref</th>
+      <td><p>(string) Either a SHA, branch or tag used to identify the new commit the branch
+is pointing at.</p></td>
     </tr>
     <tr>
-      <th>role</th>
-      <td><p>(string) Filter members returned by their role. Can be one of:</p><ul>
-<li><p><code>all</code>: All members of the organization, regardless of role.</p></li>
-<li><p><code>admin</code>: Organization owners.</p></li>
-<li><p><code>member</code>: Non-owner organization members.</p></li>
-<li><p><code>Default</code>: all.</p></li>
-</ul></td>
-    </tr>
-    <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <th>force</th>
+      <td><p>(boolean, optional) Whether to force the update if it is not a simple
+fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the members (see GitHub's API documentation for details).</p>
+    <p><code>update_branch()</code> returns a list of the branch properties.</p>
+<p><strong>Branch Properties:</strong></p><ul>
+<li><p><strong>name</strong>: The name of the branch.</p></li>
+<li><p><strong>ref</strong>: The full Git reference of the branch.</p></li>
+<li><p><strong>sha</strong>: The commit SHA the branch is pointing at.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: Must specify either <code>org</code> or <code>team</code>, but not both.</p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/git/refs/#update-a-reference'>https://developer.github.com/v3/git/refs/#update-a-reference</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='fu'>update_branch</span>(
+    <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"new-branch"</span>,
+    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"6b7b5a090d47fd3ef495620513a3f80da2487b1d"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -193,6 +180,7 @@ environment variable <code>GITHUB_API</code> or <code>https://api.github.com</co
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
