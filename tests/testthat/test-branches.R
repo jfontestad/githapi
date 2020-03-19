@@ -102,3 +102,24 @@ test_that("update_branch updates a branch and returns a list of the properties",
 #   expect_true(all(str_c("test-branches-", 1:2, "-", now) %in% all_branches$name))
 #
 # })
+
+
+# TEST: view_branch ---------------------------------------------------------------------------
+
+test_that("view_branch returns a list of branch properties", {
+
+  branch <- view_branch(
+    branch = str_c("test-branches-1-", now),
+    repo   = str_c("ChadGoymer/test-branches-", now))
+
+  expect_is(branch, "list")
+  expect_identical(attr(branch, "status"), 200L)
+  expect_identical(
+    map_chr(branch, ~ class(.)[[1]]),
+    c(name = "character",
+      ref  = "character",
+      sha  = "character"))
+
+  expect_identical(branch$name, str_c("test-branches-1-", now))
+
+})

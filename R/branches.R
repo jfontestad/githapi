@@ -208,3 +208,33 @@ update_branch <- function(
 # }
 #
 #
+#  FUNCTION: view_branch ----------------------------------------------------------------------
+#
+# @rdname view_branches
+# @export
+#
+view_branch <- function(
+  branch,
+  repo,
+  ...)
+{
+  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing branch '", branch, "' in repository '", repo, "'")
+  branch_lst <- gh_url("repos", repo, "git/ref/heads", branch) %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  branch_gh <- select_properties(branch_lst, properties$branch) %>%
+    modify_list(name = basename(branch_lst$ref), .before = "ref")
+
+  info("Done", level = 7)
+  structure(
+    branch_gh,
+    class   = class(branch_lst),
+    url     = attr(branch_lst, "url"),
+    request = attr(branch_lst, "request"),
+    status  = attr(branch_lst, "status"),
+    header  = attr(branch_lst, "header"))
+}
