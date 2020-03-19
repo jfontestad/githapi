@@ -21,9 +21,8 @@ view_label(label, repo, ...)
 \item{label}{(string) The name of the label.}
 }
 \value{
-\code{view_labels()} returns a tibble of label properties. \code{view_labels()}
-returns a list of properties for a single label. \code{browse_label()} opens the
-default browser on the label's page and returns the URL.
+\code{view_labels()} returns a tibble of label properties. \code{view_label()}
+returns a list of properties for a single label.
 
 \strong{Label Properties:}
 \itemize{

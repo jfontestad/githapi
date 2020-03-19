@@ -3,20 +3,22 @@ context("git commits")
 git_commits_branch <- str_c("test-git-commits-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
 
-setup(suppressMessages({
+setup(suppressMessages(suppressWarnings({
 
   create_branches(
     branches = git_commits_branch,
     shas     = master_sha,
     repo     = "ChadGoymer/test-githapi")
 
-}))
+})))
 
 teardown(suppressMessages(tryCatch({
 
-  delete_branches(
-    branches = git_commits_branch,
-    repo     = "ChadGoymer/test-githapi")
+  suppressWarnings({
+    delete_branches(
+      branches = git_commits_branch,
+      repo     = "ChadGoymer/test-githapi")
+  })
 
 })))
 
@@ -110,12 +112,14 @@ test_that("create_commit creates a new commit in a repository", {
 test_that("upload_commit uploads files and directory structure to github", {
   skip_on_travis()
 
-  flat_commit <- upload_commit(
-    branch  = git_commits_branch,
-    message = "Test commit made with upload_commit",
-    path    = system.file("test-data/upload-tree/test-dir", package = "githapi"),
-    parents = git_commits_branch,
-    repo    = "ChadGoymer/test-githapi")
+  suppressWarnings({
+    flat_commit <- upload_commit(
+      branch  = git_commits_branch,
+      message = "Test commit made with upload_commit",
+      path    = system.file("test-data/upload-tree/test-dir", package = "githapi"),
+      parents = git_commits_branch,
+      repo    = "ChadGoymer/test-githapi")
+  })
 
   expect_is(flat_commit, "tbl")
   expect_identical(

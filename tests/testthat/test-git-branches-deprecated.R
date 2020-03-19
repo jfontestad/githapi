@@ -27,10 +27,10 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
   expect_true("master" %in% all_branches$name)
 
-  created_branches <- create_branches(
+  created_branches <- suppressWarnings(create_branches(
     branches = new_branches,
     shas = c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"),
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(created_branches, "tbl")
   expect_identical(
@@ -47,7 +47,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
     created_branches$object_sha,
     c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
 
-  viewed_branches <- view_branches(new_branches, "ChadGoymer/test-githapi")
+  viewed_branches <- suppressWarnings(view_branches(new_branches, "ChadGoymer/test-githapi"))
 
   expect_is(viewed_branches, "tbl")
   expect_identical(
@@ -64,10 +64,10 @@ test_that("create_branches creates some branches, view_branches retreives them a
     viewed_branches$object_sha,
     c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
 
-  updated_branches <- update_branches(
+  updated_branches <- suppressWarnings(update_branches(
     branches = new_branches,
     shas = c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"),
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(updated_branches, "tbl")
   expect_identical(
@@ -84,7 +84,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
     updated_branches$object_sha,
     c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"))
 
-  delete_results <- delete_branches(new_branches, "ChadGoymer/test-githapi")
+  delete_results <- suppressWarnings(delete_branches(new_branches, "ChadGoymer/test-githapi"))
 
   expect_identical(delete_results, list(TRUE, TRUE) %>% set_names(new_branches))
   expect_error(suppressWarnings(view_branches(new_branches[[1]], "ChadGoymer/test-githapi")), "Not Found")
@@ -93,7 +93,7 @@ test_that("create_branches creates some branches, view_branches retreives them a
 
 test_that("veiwing tags that do not exist throws an appropriate error", {
 
-  no_repo_error_msg <- tryCatch(view_branches("ChadGoymer/no-repo"), error = function(e) e$message)
+  no_repo_error_msg <- tryCatch(suppressWarnings(view_branches("ChadGoymer/no-repo")), error = function(e) e$message)
 
   expect_match(no_repo_error_msg, "In view_branches\\(\\): GitHub GET request failed")
   expect_match(no_repo_error_msg, "\\[Status\\]  404")
@@ -110,10 +110,10 @@ test_that("veiwing tags that do not exist throws an appropriate error", {
 # TEST: branches_exist ------------------------------------------------------------------------
 
 test_that("branches_exist returns TRUE or FALSE depending on whether the branch exists in the repo", {
-  expect_true(branches_exist("master", "ChadGoymer/test-githapi"))
-  expect_false(branches_exist("no-such-branch", "ChadGoymer/test-githapi"))
+  expect_true(suppressWarnings(branches_exist("master", "ChadGoymer/test-githapi")))
+  expect_false(suppressWarnings(branches_exist("no-such-branch", "ChadGoymer/test-githapi")))
 
   expect_identical(
-    branches_exist(c("master", "no-such-branch"), "ChadGoymer/test-githapi"),
+    suppressWarnings(branches_exist(c("master", "no-such-branch"), "ChadGoymer/test-githapi")),
     c(master = TRUE, `no-such-branch` = FALSE))
 })

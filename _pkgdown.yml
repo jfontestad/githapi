@@ -21,6 +21,10 @@ reference:
     - '`update_repository`'
     - '`view_repositories`'
     - '`delete_repository`'
+    - '`create_branch`'
+    - '`update_branch`'
+    - '`view_branch`'
+    - '`delete_branch`'
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
   contents:
@@ -104,11 +108,6 @@ reference:
     - '`update_tags`'
     - '`delete_tags`'
     - '`tags_exist`'
-    - '`view_branches`'
-    - '`create_branches`'
-    - '`update_branches`'
-    - '`delete_branches`'
-    - '`branches_exist`'
     - '`view_commits`'
     - '`create_commit`'
     - '`upload_commit`'
@@ -140,6 +139,7 @@ reference:
   desc: Useful functions.
   contents:
     - '`is_sha`'
+    - '`is_ref`'
     - '`is_repo`'
 - title: GitHub API
   desc: Functions for accessing the GitHub API.
@@ -224,5 +224,10 @@ reference:
     - '`gh_pull_comment`'
     - '`gh_pull_comments`'
     - '`gh_pull_review_requests`'
+    - '`create_branches`'
+    - '`update_branches`'
+    - '`view_branches`'
+    - '`delete_branches`'
+    - '`branches_exist`'
 news:
 - one_page: false

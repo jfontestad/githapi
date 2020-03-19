@@ -31,6 +31,46 @@ test_that("is_repo returns TRUE with a valid repo and FALSE otherwise", {
 })
 
 
+# TEST: is_ref --------------------------------------------------------------------------------
+
+test_that("is_ref returns TRUE for a valid reference name and FALSE otherwise", {
+
+  expect_true(is_ref("branch"))
+  expect_true(is_ref("12-branch"))
+  expect_true(is_ref("feature/branch"))
+  expect_true(is_ref("feature/12-branch"))
+
+  expect_false(is_ref(TRUE))
+  expect_false(is_ref(1))
+
+  expect_false(is_ref("branch..name"))
+  expect_false(is_ref("branch name"))
+  expect_false(is_ref("branch~name"))
+  expect_false(is_ref("branch^name"))
+  expect_false(is_ref("branch:name"))
+  expect_false(is_ref("branch?"))
+  expect_false(is_ref("br*nch"))
+  expect_false(is_ref("branch\\name"))
+  expect_false(is_ref("branch[name]"))
+  expect_false(is_ref("branch@{name}"))
+  expect_false(is_ref("@"))
+
+  expect_false(is_ref("/branch"))
+  expect_false(is_ref("branch/"))
+  expect_false(is_ref("branch//name"))
+
+  expect_false(is_ref(".feature/branch"))
+  expect_false(is_ref("feature/.branch"))
+  expect_false(is_ref("feature./branch"))
+  expect_false(is_ref("feature/branch."))
+  expect_false(is_ref("-feature/branch"))
+  expect_false(is_ref("feature/-branch"))
+  expect_false(is_ref("feature/branch.lock"))
+  expect_false(is_ref("feature.lock/branch"))
+
+})
+
+
 # TEST: is_hex --------------------------------------------------------------------------------
 
 test_that("is_hex returns TRUE with a valid hexadecimal color code and FALSE otherwise", {

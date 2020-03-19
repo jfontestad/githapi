@@ -1,3 +1,12 @@
+# githapi 0.9.19
+
+- Added `create_branch()`
+- Added `update_branch()`
+- Added `view_branches()` commented out
+- Added `view_branch()`
+- Added `delete_branch()`
+- Added `is_ref()`
+
 # githapi 0.9.18
 
 - Added `add_labels()`

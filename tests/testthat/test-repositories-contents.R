@@ -4,25 +4,27 @@ repo_contents_branch <- str_c("test-repo-contents-", format(Sys.time(), "%Y-%m-%
 new_files_branch <- str_c("test-create-files-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 master_sha <- view_shas(refs = "unedited-contents", repo = "ChadGoymer/test-githapi")[[1]]
 
-setup(suppressMessages({
+setup(suppressMessages(suppressWarnings({
 
   create_branches(
     branches = repo_contents_branch,
     shas     = master_sha,
     repo     = "ChadGoymer/test-githapi")
 
-}))
+})))
 
 teardown(suppressMessages(tryCatch({
 
-  delete_branches(
-    branches = c(repo_contents_branch, new_files_branch),
-    repo     = "ChadGoymer/test-githapi")
+  suppressWarnings({
+    delete_branches(
+      branches = c(repo_contents_branch, new_files_branch),
+      repo     = "ChadGoymer/test-githapi")
 
-  update_branches(
-    branches = "master",
-    shas     = master_sha,
-    repo     = "ChadGoymer/test-githapi")
+    update_branches(
+      branches = "master",
+      shas     = master_sha,
+      repo     = "ChadGoymer/test-githapi")
+  })
 
 })))
 
@@ -268,12 +270,14 @@ teardown(suppressMessages(tryCatch({
 # })
 
 test_that("view_files, create_files, update_files and delete files on the specified branch works", {
-  created_files <- create_files(
-    paths    = "aaaa.txt",
-    contents = "Created to test:\n\n  `create_files()`",
-    messages = "Testing create_files() on test branch",
-    branches = repo_contents_branch,
-    repo     = "ChadGoymer/test-githapi")
+  suppressWarnings({
+    created_files <- create_files(
+      paths    = "aaaa.txt",
+      contents = "Created to test:\n\n  `create_files()`",
+      messages = "Testing create_files() on test branch",
+      branches = repo_contents_branch,
+      repo     = "ChadGoymer/test-githapi")
+  })
 
   expect_is(created_files, "tbl")
   expect_identical(
@@ -372,13 +376,16 @@ test_that("view_files, create_files, update_files and delete files on the specif
 })
 
 test_that("when creating files on a branch that does not exist, it is created", {
-  created_files <- create_files(
-    paths    = "aaaa.txt",
-    contents = "Created to test:\n\n  `create_files()`",
-    messages = "Testing create_files() on test branch",
-    branches = new_files_branch,
-    parent   = "master",
-    repo     = "ChadGoymer/test-githapi")
+
+  suppressWarnings({
+    created_files <- create_files(
+      paths    = "aaaa.txt",
+      contents = "Created to test:\n\n  `create_files()`",
+      messages = "Testing create_files() on test branch",
+      branches = new_files_branch,
+      parent   = "master",
+      repo     = "ChadGoymer/test-githapi")
+  })
 
   expect_is(created_files, "tbl")
   expect_identical(
@@ -423,14 +430,16 @@ test_that("when creating files on a branch that does not exist, it is created", 
 })
 
 test_that("author and committer can be set when creating, updating and deleting files", {
-  created_files <- create_files(
-    paths     = "aaaa.txt",
-    contents  = "Created to test:\n\n  `create_files()`",
-    messages  = "Testing create_files()",
-    branches  = repo_contents_branch,
-    author    = list(name = "Bob Smith", email = "bob.smith@acme.com"),
-    committer = list(name = "Jane Jones", email = "jane.jones@acme.com"),
-    repo      = "ChadGoymer/test-githapi")
+  suppressWarnings({
+    created_files <- create_files(
+      paths     = "aaaa.txt",
+      contents  = "Created to test:\n\n  `create_files()`",
+      messages  = "Testing create_files()",
+      branches  = repo_contents_branch,
+      author    = list(name = "Bob Smith", email = "bob.smith@acme.com"),
+      committer = list(name = "Jane Jones", email = "jane.jones@acme.com"),
+      repo      = "ChadGoymer/test-githapi")
+  })
 
   expect_is(created_files, "tbl")
   expect_identical(

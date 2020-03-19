@@ -226,7 +226,11 @@ properties <- list(
     state                                    = c("state",                                    as = "character"),
     user                                     = c("user", "login",                            as = "character"),
     html_url                                 = c("html_url",                                 as = "character"),
-    submitted_at                             = c("submitted_at",                             as = "datetime"))
+    submitted_at                             = c("submitted_at",                             as = "datetime")),
+
+  branch = list(
+    ref                                      = c("ref",                                      as = "character"),
+    sha                                      = c("object", "sha",                            as = "character"))
 
 )
 

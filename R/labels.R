@@ -170,9 +170,8 @@ update_label <- function(
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return `view_labels()` returns a tibble of label properties. `view_labels()`
-#'   returns a list of properties for a single label. `browse_label()` opens the
-#'   default browser on the label's page and returns the URL.
+#' @return `view_labels()` returns a tibble of label properties. `view_label()`
+#'   returns a list of properties for a single label.
 #'
 #' **Label Properties:**
 #'

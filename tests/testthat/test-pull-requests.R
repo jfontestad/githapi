@@ -13,21 +13,23 @@ setup(suppressMessages(try(silent = TRUE, {
     auto_init   = TRUE)
 
   # TODO: replace with new `create_file()` function
-  create_files(
-    paths    = str_c("test-pulls-", now, ".txt"),
-    contents = "This is a repository to test pull requests",
-    messages = "Commit to test pull requests",
-    branches = str_c("test-pulls-1-", now),
-    parents  = "master",
-    repo     = str_c("ChadGoymer/test-pulls-", now))
+  suppressWarnings({
+    create_files(
+      paths    = str_c("test-pulls-", now, ".txt"),
+      contents = "This is a commit to test pull requests",
+      messages = "Commit to test pull requests",
+      branches = str_c("test-pulls-1-", now),
+      parents  = "master",
+      repo     = str_c("ChadGoymer/test-pulls-", now))
 
-  create_files(
-    paths    = str_c("test-pulls-", now, ".txt"),
-    contents = "This is a repository to test pull requests",
-    messages = "Commit to test pull requests",
-    branches = str_c("test-pulls-2-", now),
-    parents  = "master",
-    repo     = str_c("ChadGoymer/test-pulls-", now))
+    create_files(
+      paths    = str_c("test-pulls-", now, ".txt"),
+      contents = "This is a repository to test pull requests",
+      messages = "Commit to test pull requests",
+      branches = str_c("test-pulls-2-", now),
+      parents  = "master",
+      repo     = str_c("ChadGoymer/test-pulls-", now))
+  })
 
   create_milestone(
     title       = str_c("test-pulls-", now),
@@ -264,7 +266,7 @@ test_that("update_pull_request throws an error if invalid arguments are supplied
 
 # TEST: view_pull_requests --------------------------------------------------------------------
 
-test_that("view_issues returns a tibble of issue properties", {
+test_that("view_pull_requests returns a tibble of issue properties", {
 
   open_pull_requests <- view_pull_requests(
     repo = str_c("ChadGoymer/test-pulls-", now),

@@ -8,6 +8,11 @@
 #'
 #' @section Git Data Functions:
 #'
+#' - [create_branches()]: replace with [create_branch()]
+#' - [update_branches()]: replace with [update_branch()]
+#' - [view_branches()] for specifying branches: replace with [view_branch()]
+#' - [delete_branches()]: replace with [delete_branch()]
+#' - [branches_exist()]: is being removed
 #' - [gh_git_blob()]: use [view_blobs()] instead.
 #' - [gh_git_commit()]: use [view_commits()] instead.
 #' - [gh_git_reference()]: use [view_tags()] or [view_branches()] instead.
@@ -53,6 +58,16 @@
 #' - [gh_issue_comments()]: replace with `view_comments()`
 #' - [gh_event()]: is being removed
 #' - [gh_events()]: is being removed
+#' - [gh_pull_request()]: replace with [view_pull_request()]
+#' - [gh_pull_requests()]: replace with [view_pull_requests()]
+#' - [gh_pull_commits()]: replace with [view_pull_request()]
+#' - [gh_pull_files()]: replace with [view_pull_request()]
+#' - [is_pull_merged()]: is being removed
+#' - [gh_pull_review()]: is being removed
+#' - [gh_pull_reviews()]: replace with [view_pull_request()]
+#' - [gh_pull_comment()]: replace with `view_comment()`
+#' - [gh_pull_comments()]: replace with `view_comments()`
+#' - [gh_pull_review_requests()]: is being removed
 #'
 #' @section Projects Functions:
 #'
@@ -80,19 +95,6 @@
 #' - [is_collaborator()]: is being removed
 #' - [gh_collaborators()]: replace with [view_collaborators()]
 #' - [gh_permissions()]: replace with [view_collaborator()]
-#'
-#' @section Pull requests:
-#'
-#' - [gh_pull_request()]: replace with [view_pull_request()]
-#' - [gh_pull_requests()]: replace with [view_pull_requests()]
-#' - [gh_pull_commits()]: replace with [view_pull_request()]
-#' - [gh_pull_files()]: replace with [view_pull_request()]
-#' - [is_pull_merged()]: is being removed
-#' - [gh_pull_review()]: is being removed
-#' - [gh_pull_reviews()]: replace with [view_pull_request()]
-#' - [gh_pull_comment()]: replace with `view_comment()`
-#' - [gh_pull_comments()]: replace with `view_comments()`
-#' - [gh_pull_review_requests()]: is being removed
 #'
 NULL
 

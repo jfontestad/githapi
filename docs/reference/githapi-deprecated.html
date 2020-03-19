@@ -70,7 +70,7 @@ possible, alternative functions with similar functionality are also mentioned." 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.19</span>
       </span>
     </div>
 
@@ -126,6 +126,11 @@ possible, alternative functions with similar functionality are also mentioned.</
     
 
 <ul>
+<li><p><code><a href='create_branches.html'>create_branches()</a></code>: replace with <code><a href='create_branch.html'>create_branch()</a></code></p></li>
+<li><p><code><a href='update_branches.html'>update_branches()</a></code>: replace with <code><a href='update_branch.html'>update_branch()</a></code></p></li>
+<li><p><code><a href='view_branches.html'>view_branches()</a></code> for specifying branches: replace with <code><a href='view_branch.html'>view_branch()</a></code></p></li>
+<li><p><code><a href='delete_branches.html'>delete_branches()</a></code>: replace with <code><a href='delete_branch.html'>delete_branch()</a></code></p></li>
+<li><p><code><a href='branches_exist.html'>branches_exist()</a></code>: is being removed</p></li>
 <li><p><code><a href='gh_git_blob.html'>gh_git_blob()</a></code>: use <code><a href='view_blobs.html'>view_blobs()</a></code> instead.</p></li>
 <li><p><code><a href='gh_git_commit.html'>gh_git_commit()</a></code>: use <code><a href='view_commits.html'>view_commits()</a></code> instead.</p></li>
 <li><p><code><a href='gh_git_reference.html'>gh_git_reference()</a></code>: use <code><a href='view_tags.html'>view_tags()</a></code> or <code><a href='view_branches.html'>view_branches()</a></code> instead.</p></li>
@@ -179,6 +184,16 @@ possible, alternative functions with similar functionality are also mentioned.</
 <li><p><code><a href='gh_issue_comments.html'>gh_issue_comments()</a></code>: replace with <code>view_comments()</code></p></li>
 <li><p><code><a href='gh_event.html'>gh_event()</a></code>: is being removed</p></li>
 <li><p><code><a href='gh_events.html'>gh_events()</a></code>: is being removed</p></li>
+<li><p><code><a href='gh_pull_request.html'>gh_pull_request()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
+<li><p><code><a href='gh_pull_requests.html'>gh_pull_requests()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_requests()</a></code></p></li>
+<li><p><code><a href='gh_pull_commits.html'>gh_pull_commits()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
+<li><p><code><a href='gh_pull_files.html'>gh_pull_files()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
+<li><p><code><a href='is_pull_merged.html'>is_pull_merged()</a></code>: is being removed</p></li>
+<li><p><code><a href='gh_pull_review.html'>gh_pull_review()</a></code>: is being removed</p></li>
+<li><p><code><a href='gh_pull_reviews.html'>gh_pull_reviews()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
+<li><p><code><a href='gh_pull_comment.html'>gh_pull_comment()</a></code>: replace with <code>view_comment()</code></p></li>
+<li><p><code><a href='gh_pull_comments.html'>gh_pull_comments()</a></code>: replace with <code>view_comments()</code></p></li>
+<li><p><code><a href='gh_pull_review_requests.html'>gh_pull_review_requests()</a></code>: is being removed</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="projects-functions"><a class="anchor" href="#projects-functions"></a>Projects Functions</h2>
@@ -216,23 +231,6 @@ possible, alternative functions with similar functionality are also mentioned.</
 <li><p><code><a href='gh_permissions.html'>gh_permissions()</a></code>: replace with <code><a href='view_collaborators.html'>view_collaborator()</a></code></p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="pull-requests"><a class="anchor" href="#pull-requests"></a>Pull requests</h2>
-
-    
-
-<ul>
-<li><p><code><a href='gh_pull_request.html'>gh_pull_request()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
-<li><p><code><a href='gh_pull_requests.html'>gh_pull_requests()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_requests()</a></code></p></li>
-<li><p><code><a href='gh_pull_commits.html'>gh_pull_commits()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
-<li><p><code><a href='gh_pull_files.html'>gh_pull_files()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
-<li><p><code><a href='is_pull_merged.html'>is_pull_merged()</a></code>: is being removed</p></li>
-<li><p><code><a href='gh_pull_review.html'>gh_pull_review()</a></code>: is being removed</p></li>
-<li><p><code><a href='gh_pull_reviews.html'>gh_pull_reviews()</a></code>: replace with <code><a href='view_pull_requests.html'>view_pull_request()</a></code></p></li>
-<li><p><code><a href='gh_pull_comment.html'>gh_pull_comment()</a></code>: replace with <code>view_comment()</code></p></li>
-<li><p><code><a href='gh_pull_comments.html'>gh_pull_comments()</a></code>: replace with <code>view_comments()</code></p></li>
-<li><p><code><a href='gh_pull_review_requests.html'>gh_pull_review_requests()</a></code>: is being removed</p></li>
-</ul>
-
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -243,7 +241,6 @@ possible, alternative functions with similar functionality are also mentioned.</
       <li><a href="#issues-pull-requests-labels-and-milestones">Issues, Pull Requests, labels and milestones</a></li>
       <li><a href="#projects-functions">Projects Functions</a></li>
       <li><a href="#organizations-teams-and-users">Organizations, teams and users</a></li>
-      <li><a href="#pull-requests">Pull requests</a></li>
     </ul>
 
   </div>
