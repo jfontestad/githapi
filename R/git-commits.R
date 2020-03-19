@@ -331,6 +331,7 @@ upload_commit <- function(
   if (replace) {
     base_tree <- NA
   } else {
+    # TODO: This does not work if parent is not specified
     parent_commit <- view_history(ref = parents[[1]], repo = repo, n_max = 1)
     base_tree <- parent_commit$tree_sha
   }
@@ -353,21 +354,23 @@ upload_commit <- function(
     token     = token,
     api       = api)
 
-  if (branches_exist(branches = branch, repo = repo, token = token, api = api)) {
-    update_branches(
-      branches  = branch,
-      shas      = commit$sha,
-      repo      = repo,
-      token     = token,
-      api       = api)
-  } else {
-    create_branches(
-      branches  = branch,
-      shas      = commit$sha,
-      repo      = repo,
-      token     = token,
-      api       = api)
-  }
+  suppressWarnings({
+    if (branches_exist(branches = branch, repo = repo, token = token, api = api)) {
+      update_branches(
+        branches  = branch,
+        shas      = commit$sha,
+        repo      = repo,
+        token     = token,
+        api       = api)
+    } else {
+      create_branches(
+        branches  = branch,
+        shas      = commit$sha,
+        repo      = repo,
+        token     = token,
+        api       = api)
+    }
+  })
 
   commit
 }
