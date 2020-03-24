@@ -56,7 +56,7 @@ create_branch <- function(
     gh_request("POST", payload = payload, ...)
 
   info("Transforming results", level = 4)
-  branch_gh <- select_properties(branch_lst, properties$branch) %>%
+  branch_gh <- select_properties(branch_lst, properties$reference) %>%
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
@@ -130,7 +130,7 @@ update_branch <- function(
     gh_request("PATCH", payload = list(sha = ref, force = force), ...)
 
   info("Transforming results", level = 4)
-  branch_gh <- select_properties(branch_lst, properties$branch) %>%
+  branch_gh <- select_properties(branch_lst, properties$reference) %>%
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
@@ -189,12 +189,12 @@ update_branch <- function(
 # {
 #   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 #
-#   info("Viewing branches for respository '", repo, "'")
+#   info("Viewing branches for repository '", repo, "'")
 #   branches_lst <- gh_url("repos", repo, "git/refs/heads") %>%
 #     gh_page(n_max = n_max, ...)
 #
 #   info("Transforming results", level = 4)
-#   branches_gh <- bind_properties(branches_lst, properties$branch) %>%
+#   branches_gh <- bind_properties(branches_lst, properties$reference) %>%
 #     add_column(name = basename(.$ref), .before = "ref")
 #
 #   info("Done", level = 7)
@@ -226,7 +226,7 @@ view_branch <- function(
     gh_request("GET", ...)
 
   info("Transforming results", level = 4)
-  branch_gh <- select_properties(branch_lst, properties$branch) %>%
+  branch_gh <- select_properties(branch_lst, properties$reference) %>%
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
