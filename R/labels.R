@@ -199,12 +199,12 @@ view_labels <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   if (missing(issue)) {
-    info("Viewing labels for respository '", repo, "'")
+    info("Viewing labels for repository '", repo, "'")
     url <- gh_url("repos", repo, "labels")
   }
   else {
     issue <- view_issue(issue, repo = repo)
-    info("Viewing labels for issue '", issue$title, "' in respository '", repo, "'")
+    info("Viewing labels for issue '", issue$title, "' in repository '", repo, "'")
     url <- gh_url("repos", repo, "issues", issue$number, "labels")
   }
 

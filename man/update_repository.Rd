@@ -106,7 +106,7 @@ For more details see the GitHub API documentation:
   update_repository(
     repo           = "ChadGoymer/user-repository",
     name           = "updated-user-repository",
-    description    = "This is an updated user respository",
+    description    = "This is an updated user repository",
     homepage       = "https://updated-user-repository.com",
     has_issues     = FALSE,
     has_projects   = FALSE,
@@ -117,7 +117,7 @@ For more details see the GitHub API documentation:
   update_repository(
     repo                   = "HairyCoos/org-repository",
     name                   = "updated-org-repository",
-    description            = "This is an updated organization respository",
+    description            = "This is an updated organization repository",
     homepage               = "https://updated-org-repository.com",
     private                = FALSE,
     allow_squash_merge     = FALSE,
