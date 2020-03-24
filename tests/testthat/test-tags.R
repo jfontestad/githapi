@@ -1,0 +1,77 @@
+context("tags")
+
+
+# SETUP ---------------------------------------------------------------------------------------
+
+now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+
+setup(suppressMessages(try(silent = TRUE, {
+
+  test_repo <- create_repository(
+    name        = str_c("test-tags-", now),
+    description = "This is a repository to test tags",
+    auto_init   = TRUE)
+
+  # TODO: replace with new `create_file()` function
+  suppressWarnings({
+    create_files(
+      paths    = str_c("test-tags-", now, ".txt"),
+      contents = "This is a commit to test tags",
+      messages = "Commit to test tags",
+      branches = str_c("test-tags-1-", now),
+      parents  = "master",
+      repo     = str_c("ChadGoymer/test-tags-", now))
+  })
+
+})))
+
+teardown(suppressMessages(try(silent = TRUE, {
+
+  delete_repository(str_c("ChadGoymer/test-tags-", now))
+
+})))
+
+
+# TEST: create_tag ----------------------------------------------------------------------------
+
+test_that("create_tag creates a tag and returns a list of the properties", {
+
+  branch_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", now), "commits/heads", str_c("test-tags-1-", now)) %>%
+    gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+
+  branch_tag <- create_tag(
+    name = str_c("test-tags-1-", now),
+    repo = str_c("ChadGoymer/test-tags-", now),
+    ref  = branch_sha)
+
+  expect_is(branch_tag, "list")
+  expect_identical(attr(branch_tag, "status"), 201L)
+  expect_identical(
+    map_chr(branch_tag, ~ class(.)[[1]]),
+    c(name = "character",
+      ref  = "character",
+      sha  = "character"))
+
+  expect_identical(branch_tag$name, str_c("test-tags-1-", now))
+  expect_identical(branch_tag$sha, as.character(branch_sha))
+
+  master_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", now), "commits/heads/master") %>%
+    gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+
+  master_tag <- create_tag(
+    name = str_c("test-tags-2-", now),
+    repo = str_c("ChadGoymer/test-tags-", now),
+    ref  = "master")
+
+  expect_is(master_tag, "list")
+  expect_identical(attr(master_tag, "status"), 201L)
+  expect_identical(
+    map_chr(master_tag, ~ class(.)[[1]]),
+    c(name = "character",
+      ref  = "character",
+      sha  = "character"))
+
+  expect_identical(master_tag$name, str_c("test-tags-2-", now))
+  expect_identical(master_tag$sha, as.character(master_sha))
+
+})
