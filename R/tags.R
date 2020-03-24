@@ -142,3 +142,66 @@ update_tag <- function(
     status  = attr(tag_lst, "status"),
     header  = attr(tag_lst, "header"))
 }
+
+
+#  FUNCTION: view_tags ------------------------------------------------------------------------
+#
+#' View tags within a repository
+#'
+#' `view_tags()` summarises tags in a table with the properties as columns and a row for each
+#' tag in the repository. `view_tag()` returns a list of all properties for a single tag.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/git/refs/#list-matching-references>
+#' - <https://developer.github.com/v3/git/refs/#get-a-single-reference>
+#'
+#' @param tag (string) The name of the tag.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+# @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
+#'   properties for a single tag.
+#'
+#' **Tag Properties:**
+#'
+#' - **name**: The name of the tag.
+#' - **ref**: The full Git reference of the tag.
+#' - **sha**: The commit SHA the tag is pointing at.
+#'
+#' @examples
+#' \dontrun{
+#'   # View all tags in a repository
+#'   view_tags("ChadGoymer/test-githapi")
+#'
+#'   # View a single tag
+#'   view_tag("new-tag", "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+# TODO: Uncomment in version 1.0
+# view_tags <- function(
+#   repo,
+#   n_max = 1000,
+#   ...)
+# {
+#   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+#
+#   info("Viewing tags for repository '", repo, "'")
+#   tags_lst <- gh_url("repos", repo, "git/refs/tags") %>%
+#     gh_page(n_max = n_max, ...)
+#
+#   info("Transforming results", level = 4)
+#   tags_gh <- bind_properties(tags_lst, properties$reference) %>%
+#     add_column(name = basename(.$ref), .before = "ref")
+#
+#   info("Done", level = 7)
+#   structure(
+#     tags_gh,
+#     class   = class(tags_gh),
+#     url     = attr(tags_lst, "url"),
+#     request = attr(tags_lst, "request"),
+#     status  = attr(tags_lst, "status"),
+#     header  = attr(tags_lst, "header"))
+# }

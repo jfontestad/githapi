@@ -101,3 +101,23 @@ test_that("update_tag updates a tag and returns a list of the properties", {
   expect_identical(updated_tag$sha, as.character(update_sha))
 
 })
+
+
+# TEST: view_tags -----------------------------------------------------------------------------
+
+# TODO: Uncomment in version 1.0
+# test_that("view_tags returns a tibble of tag properties", {
+#
+#   all_tags <- view_tags(str_c("ChadGoymer/test-tags-", now))
+#
+#   expect_is(all_tags, "tbl")
+#   expect_identical(attr(all_tags, "status"), 200L)
+#   expect_identical(
+#     map_chr(all_tags, ~ class(.)[[1]]),
+#     c(name = "character",
+#       ref  = "character",
+#       sha  = "character"))
+#
+#   expect_true(all(str_c("test-tags-", 1:2, "-", now) %in% all_tags$name))
+#
+# })
