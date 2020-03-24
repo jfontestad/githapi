@@ -103,11 +103,6 @@ reference:
 - title: Git Data
   desc: Functions for accessing git data directly.
   contents:
-    - '`view_tags`'
-    - '`create_tags`'
-    - '`update_tags`'
-    - '`delete_tags`'
-    - '`tags_exist`'
     - '`view_commits`'
     - '`create_commit`'
     - '`upload_commit`'
@@ -229,5 +224,10 @@ reference:
     - '`view_branches`'
     - '`delete_branches`'
     - '`branches_exist`'
+    - '`view_tags`'
+    - '`create_tags`'
+    - '`update_tags`'
+    - '`delete_tags`'
+    - '`tags_exist`'
 news:
 - one_page: false
