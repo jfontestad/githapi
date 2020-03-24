@@ -1,3 +1,12 @@
+# githapi 0.9.20
+
+- Added `create_tag()`
+- Added `update_tag()`
+- Added `view_tags()` commented out
+- Added `view_tag()`
+- Added `delete_tag()`
+- Fixed OAuth error by setting scope
+
 # githapi 0.9.19
 
 - Added `create_branch()`
