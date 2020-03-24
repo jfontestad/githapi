@@ -13,4 +13,5 @@
 ^githapi.*\.tgz$
 ^appveyor\.yml$
 ^~/\.githapi\.oauth$
+^~/\.github\.oauth$
 ^ci$
