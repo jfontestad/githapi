@@ -205,3 +205,35 @@ update_tag <- function(
 #     status  = attr(tags_lst, "status"),
 #     header  = attr(tags_lst, "header"))
 # }
+#
+#
+#  FUNCTION: view_tag -------------------------------------------------------------------------
+#
+# @rdname view_tags
+# @export
+#
+view_tag <- function(
+  tag,
+  repo,
+  ...)
+{
+  assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing tag '", tag, "' in repository '", repo, "'")
+  tag_lst <- gh_url("repos", repo, "git/ref/tags", tag) %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  tag_gh <- select_properties(tag_lst, properties$reference) %>%
+    modify_list(name = basename(tag_lst$ref), .before = "ref")
+
+  info("Done", level = 7)
+  structure(
+    tag_gh,
+    class   = class(tag_lst),
+    url     = attr(tag_lst, "url"),
+    request = attr(tag_lst, "request"),
+    status  = attr(tag_lst, "status"),
+    header  = attr(tag_lst, "header"))
+}

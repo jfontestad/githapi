@@ -121,3 +121,24 @@ test_that("update_tag updates a tag and returns a list of the properties", {
 #   expect_true(all(str_c("test-tags-", 1:2, "-", now) %in% all_tags$name))
 #
 # })
+
+
+# TEST: view_tag ------------------------------------------------------------------------------
+
+test_that("view_tag returns a list of tag properties", {
+
+  tag <- view_tag(
+    tag  = str_c("test-tags-1-", now),
+    repo = str_c("ChadGoymer/test-tags-", now))
+
+  expect_is(tag, "list")
+  expect_identical(attr(tag, "status"), 200L)
+  expect_identical(
+    map_chr(tag, ~ class(.)[[1]]),
+    c(name = "character",
+      ref  = "character",
+      sha  = "character"))
+
+  expect_identical(tag$name, str_c("test-tags-1-", now))
+
+})
