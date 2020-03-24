@@ -237,3 +237,49 @@ view_tag <- function(
     status  = attr(tag_lst, "status"),
     header  = attr(tag_lst, "header"))
 }
+
+
+#  FUNCTION: delete_tag -----------------------------------------------------------------------
+#
+#' Delete a tag from a repository
+#'
+#' This function deletes a tag from a repository, as long as you have appropriate permissions.
+#' Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/git/refs/#delete-a-reference>
+#'
+#' @param tag (string) The name of the tag.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_tag()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   delete_tag("new-tag", repo = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+delete_tag <- function(
+  tag,
+  repo,
+  ...)
+{
+  assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Deleting tag '", tag, "' in repository '", repo, "'")
+  response <- gh_url("repos", repo, "git/refs/tags", tag) %>%
+    gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}

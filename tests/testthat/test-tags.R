@@ -142,3 +142,18 @@ test_that("view_tag returns a list of tag properties", {
   expect_identical(tag$name, str_c("test-tags-1-", now))
 
 })
+
+
+# TEST: delete_tag ----------------------------------------------------------------------------
+
+test_that("delete_tag deletes a tag", {
+
+  deleted_tag <- delete_tag(
+    tag  = str_c("test-tags-1-", now),
+    repo = str_c("ChadGoymer/test-tags-", now))
+
+  expect_is(deleted_tag, "logical")
+  expect_identical(attr(deleted_tag, "status"), 204L)
+  expect_identical(as.logical(deleted_tag), TRUE)
+
+})
