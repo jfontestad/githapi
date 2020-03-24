@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List reviews on a pull request — gh_pull_reviews • githapi</title>
+<title>Update a tag in a repository — update_tag • githapi</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,10 @@
 
 
 
-<meta property="og:title" content="List reviews on a pull request — gh_pull_reviews" />
-<meta property="og:description" content="https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request" />
+<meta property="og:title" content="Update a tag in a repository — update_tag" />
+<meta property="og:description" content="This function updates a tag in the specified repository to point at a new commit. It must
+be pointed at a commit by providing a Git reference, which can be either a SHA, branch or
+tag. For a branch, the head commit is used." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,66 +110,77 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List reviews on a pull request</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/pull-requests-deprecated.R'><code>R/pull-requests-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_pull_reviews.Rd</code></div>
+    <h1>Update a tag in a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/tags.R'><code>R/tags.R</code></a></small>
+    <div class="hidden name"><code>update_tag.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request'>https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request</a></p>
+    <p>This function updates a tag in the specified repository to point at a new commit. It must
+be pointed at a commit by providing a Git reference, which can be either a SHA, branch or
+tag. For a branch, the head commit is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_pull_reviews</span>(
-  <span class='no'>pull_request</span>,
-  <span class='no'>repo</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_tag</span>(<span class='no'>tag</span>, <span class='no'>repo</span>, <span class='no'>ref</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pull_request</th>
-      <td><p>(integer) The number assigned to the pull request.</p></td>
+      <th>tag</th>
+      <td><p>(string) The name of the tag.</p></td>
     </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
+      <th>ref</th>
+      <td><p>(string) Either a SHA, branch or tag used to identify the new commit the tag
+is pointing at.</p></td>
     </tr>
     <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <th>force</th>
+      <td><p>(boolean, optional) Whether to force the update if it is not a simple
+fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the pull request reviews (see GitHub's API documentation for
-details).</p>
+    <p><code>update_tag()</code> returns a list of the tag properties.</p>
+<p><strong>Tag Properties:</strong></p><ul>
+<li><p><strong>name</strong>: The name of the tag.</p></li>
+<li><p><strong>ref</strong>: The full Git reference of the tag.</p></li>
+<li><p><strong>sha</strong>: The commit SHA the tag is pointing at.</p></li>
+</ul>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/git/refs/#update-a-reference'>https://developer.github.com/v3/git/refs/#update-a-reference</a></p></li>
+</ul>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='fu'>update_tag</span>(
+    <span class='kw'>tag</span>  <span class='kw'>=</span> <span class='st'>"new-tag"</span>,
+    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"6b7b5a090d47fd3ef495620513a3f80da2487b1d"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
