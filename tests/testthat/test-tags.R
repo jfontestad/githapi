@@ -75,3 +75,29 @@ test_that("create_tag creates a tag and returns a list of the properties", {
   expect_identical(master_tag$sha, as.character(master_sha))
 
 })
+
+
+# TEST: update_tag ----------------------------------------------------------------------------
+
+test_that("update_tag updates a tag and returns a list of the properties", {
+
+  update_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", now), "commits/heads", str_c("test-tags-1-", now)) %>%
+    gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+
+  updated_tag <- update_tag(
+    tag  = str_c("test-tags-2-", now),
+    repo = str_c("ChadGoymer/test-tags-", now),
+    ref  = str_c("test-tags-1-", now))
+
+  expect_is(updated_tag, "list")
+  expect_identical(attr(updated_tag, "status"), 200L)
+  expect_identical(
+    map_chr(updated_tag, ~ class(.)[[1]]),
+    c(name = "character",
+      ref  = "character",
+      sha  = "character"))
+
+  expect_identical(updated_tag$name, str_c("test-tags-2-", now))
+  expect_identical(updated_tag$sha, as.character(update_sha))
+
+})
