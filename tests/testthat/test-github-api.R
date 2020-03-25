@@ -108,8 +108,11 @@ test_that("gh_url returns a valid URL for the GitHub API", {
 
 test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified repository", {
 
-  master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
-  test_sha   <- view_shas(refs = "test-files", repo = "ChadGoymer/test-githapi")[[1]]
+  # TODO: replace test-githapi with a created repository
+  master_sha <- gh_url("repos/ChadGoymer/test-githapi/commits/heads/master") %>%
+    gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+  test_sha <- gh_url("repos/ChadGoymer/test-githapi/commits/heads/test-files") %>%
+    gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
   test_tag <- str_c("refs/tags/test-gh-request-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 
@@ -120,7 +123,7 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
 
   expect_is(created_tag, "list")
   expect_identical(created_tag$ref, test_tag)
-  expect_identical(created_tag$object$sha, master_sha)
+  expect_identical(created_tag$object$sha, as.character(master_sha))
 
   expect_identical(attr(created_tag, "url"), "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs")
   expect_identical(attr(created_tag, "request"), "POST")
@@ -131,7 +134,7 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
 
   expect_is(viewed_tag, "list")
   expect_identical(viewed_tag$ref, test_tag)
-  expect_identical(viewed_tag$object$sha, master_sha)
+  expect_identical(viewed_tag$object$sha, as.character(master_sha))
 
   expect_identical(attr(viewed_tag, "url"), str_c("https://api.github.com/repos/ChadGoymer/test-githapi/git/", test_tag))
   expect_identical(attr(viewed_tag, "request"), "GET")
@@ -145,7 +148,7 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
 
   expect_is(updated_tag, "list")
   expect_identical(updated_tag$ref, test_tag)
-  expect_identical(updated_tag$object$sha, test_sha)
+  expect_identical(updated_tag$object$sha, as.character(test_sha))
 
   expect_identical(attr(updated_tag, "url"), str_c("https://api.github.com/repos/ChadGoymer/test-githapi/git/", test_tag))
   expect_identical(attr(updated_tag, "request"), "PATCH")

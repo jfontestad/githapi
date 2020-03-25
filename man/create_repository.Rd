@@ -108,13 +108,13 @@ For more details see the GitHub API documentation:
 \dontrun{
   create_repository(
     name        = "user-repository",
-    description = "This is a user respository",
+    description = "This is a user repository",
     homepage    = "https://user-repository.com")
 
   create_repository(
     name        = "org-repository",
     org         = "HairyCoos",
-    description = "This is a organization respository",
+    description = "This is a organization repository",
     homepage    = "https://org-repository.com")
 }
 

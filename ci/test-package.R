@@ -31,6 +31,7 @@ devtools::test_file("tests/testthat/test-milestones.R")
 devtools::test_file("tests/testthat/test-issues.R")
 devtools::test_file("tests/testthat/test-pull-requests.R")
 devtools::test_file("tests/testthat/test-branches.R")
+devtools::test_file("tests/testthat/test-tags.R")
 
 
 devtools::test_coverage_file("tests/testthat/test-github-api.R")
@@ -49,3 +50,4 @@ devtools::test_coverage_file("tests/testthat/test-milestones.R")
 devtools::test_coverage_file("tests/testthat/test-issues.R")
 devtools::test_coverage_file("tests/testthat/test-pull-requests.R")
 devtools::test_coverage_file("tests/testthat/test-branches.R")
+devtools::test_coverage_file("tests/testthat/test-tags.R")

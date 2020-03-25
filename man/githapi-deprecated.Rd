@@ -15,6 +15,11 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=view_branches]{view_branches()}} for specifying branches: replace with \code{\link[=view_branch]{view_branch()}}
 \item \code{\link[=delete_branches]{delete_branches()}}: replace with \code{\link[=delete_branch]{delete_branch()}}
 \item \code{\link[=branches_exist]{branches_exist()}}: is being removed
+\item \code{\link[=create_tags]{create_tags()}}: replace with \code{\link[=create_tag]{create_tag()}}
+\item \code{\link[=update_tags]{update_tags()}}: replace with \code{\link[=update_tag]{update_tag()}}
+\item \code{\link[=view_tags]{view_tags()}} for specifying tags: replace with \code{\link[=view_tag]{view_tag()}}
+\item \code{\link[=delete_tags]{delete_tags()}}: replace with \code{\link[=delete_tag]{delete_tag()}}
+\item \code{\link[=tags_exist]{tags_exist()}}: is being removed
 \item \code{\link[=gh_git_blob]{gh_git_blob()}}: use \code{\link[=view_blobs]{view_blobs()}} instead.
 \item \code{\link[=gh_git_commit]{gh_git_commit()}}: use \code{\link[=view_commits]{view_commits()}} instead.
 \item \code{\link[=gh_git_reference]{gh_git_reference()}}: use \code{\link[=view_tags]{view_tags()}} or \code{\link[=view_branches]{view_branches()}} instead.

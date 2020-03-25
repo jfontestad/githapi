@@ -22,10 +22,10 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
     "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d")
 
   new_tags <- format(Sys.time(), "%Y-%m-%d-%H-%M-%S-") %>% str_c(1:2)
-  created_tags <- create_tags(
+  created_tags <- suppressWarnings(create_tags(
     tags = new_tags,
     shas = c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"),
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(created_tags, "tbl")
   expect_identical(
@@ -42,7 +42,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
     created_tags$object_sha,
     c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
 
-  viewed_tags <- view_tags(new_tags, "ChadGoymer/test-githapi")
+  viewed_tags <- suppressWarnings(view_tags(new_tags, "ChadGoymer/test-githapi"))
 
   expect_is(viewed_tags, "tbl")
   expect_identical(
@@ -59,10 +59,10 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
     viewed_tags$object_sha,
     c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "310c21d3f1601a46e014e68e94814b23406bf574"))
 
-  updated_tags <- update_tags(
+  updated_tags <- suppressWarnings(update_tags(
     tags = new_tags,
     shas = c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"),
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(updated_tags, "tbl")
   expect_identical(
@@ -79,7 +79,7 @@ test_that("create_tags creates some tags, view_tags retreives them and delete_ta
     updated_tags$object_sha,
     c("32d3c5c4f6aba7ae9679480407e1b9f94ad04843", "68f01be0dad53f366337c9d87fad939b2a2853c8"))
 
-  delete_results <- delete_tags(new_tags, "ChadGoymer/test-githapi")
+  delete_results <- suppressWarnings(delete_tags(new_tags, "ChadGoymer/test-githapi"))
 
   expect_identical(delete_results, list(TRUE, TRUE) %>% set_names(new_tags))
   expect_error(suppressWarnings(view_tags(new_tags[[1]], "ChadGoymer/test-githapi")), "Not Found")
@@ -107,11 +107,11 @@ test_that("veiwing tags that do not exist throws an appropriate error", {
 
 test_that("tags_exist returns TRUE or FALSE depending on whether the tag exists in the repo", {
 
-  expect_true(tags_exist("0.0.0", "ChadGoymer/test-githapi"))
-  expect_false(tags_exist("no-such-tag", "ChadGoymer/test-githapi"))
+  expect_true(suppressWarnings(tags_exist("0.0.0", "ChadGoymer/test-githapi")))
+  expect_false(suppressWarnings(tags_exist("no-such-tag", "ChadGoymer/test-githapi")))
 
   expect_identical(
-    tags_exist(c("0.0.0", "no-such-tag"), "ChadGoymer/test-githapi"),
+    suppressWarnings(tags_exist(c("0.0.0", "no-such-tag"), "ChadGoymer/test-githapi")),
     c(`0.0.0` = TRUE, `no-such-tag` = FALSE))
 
 })

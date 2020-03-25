@@ -81,6 +81,7 @@ gh_token <- function(
   token <- try_catch(httr::oauth2.0_token(
     endpoint = github_endpoint,
     app      = githapi_app,
+    scope    = c("admin:org", "user", "repo", "delete_repo", "gist"),
     cache    = cache))
 
   if (("error" %in% names(token$credentials)) && (nchar(token$credentials$error) > 0))

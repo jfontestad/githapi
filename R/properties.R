@@ -228,7 +228,7 @@ properties <- list(
     html_url                                 = c("html_url",                                 as = "character"),
     submitted_at                             = c("submitted_at",                             as = "datetime")),
 
-  branch = list(
+  reference = list(
     ref                                      = c("ref",                                      as = "character"),
     sha                                      = c("object", "sha",                            as = "character"))
 

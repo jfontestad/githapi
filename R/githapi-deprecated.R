@@ -13,6 +13,11 @@
 #' - [view_branches()] for specifying branches: replace with [view_branch()]
 #' - [delete_branches()]: replace with [delete_branch()]
 #' - [branches_exist()]: is being removed
+#' - [create_tags()]: replace with [create_tag()]
+#' - [update_tags()]: replace with [update_tag()]
+#' - [view_tags()] for specifying tags: replace with [view_tag()]
+#' - [delete_tags()]: replace with [delete_tag()]
+#' - [tags_exist()]: is being removed
 #' - [gh_git_blob()]: use [view_blobs()] instead.
 #' - [gh_git_commit()]: use [view_commits()] instead.
 #' - [gh_git_reference()]: use [view_tags()] or [view_branches()] instead.

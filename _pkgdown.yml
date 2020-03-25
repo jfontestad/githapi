@@ -15,7 +15,7 @@ navbar:
       href: http://github.com/ChadGoymer/githapi
 reference:
 - title: Repositories
-  desc: Functions for creating, updating, viewing and deleting Repositories.
+  desc: Functions for creating, updating, viewing and deleting Repositories and their contents.
   contents:
     - '`create_repository`'
     - '`update_repository`'
@@ -25,6 +25,10 @@ reference:
     - '`update_branch`'
     - '`view_branch`'
     - '`delete_branch`'
+    - '`create_tag`'
+    - '`update_tag`'
+    - '`view_tag`'
+    - '`delete_tag`'
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
   contents:
@@ -103,11 +107,6 @@ reference:
 - title: Git Data
   desc: Functions for accessing git data directly.
   contents:
-    - '`view_tags`'
-    - '`create_tags`'
-    - '`update_tags`'
-    - '`delete_tags`'
-    - '`tags_exist`'
     - '`view_commits`'
     - '`create_commit`'
     - '`upload_commit`'
@@ -229,5 +228,10 @@ reference:
     - '`view_branches`'
     - '`delete_branches`'
     - '`branches_exist`'
+    - '`view_tags`'
+    - '`create_tags`'
+    - '`update_tags`'
+    - '`delete_tags`'
+    - '`tags_exist`'
 news:
 - one_page: false

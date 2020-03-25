@@ -66,6 +66,8 @@ view_tags <- function(
         n_max = n_max, token = token, ...)
     })
   } else {
+    .Deprecated(msg = "Specifying tags within view_tags() has been deprecated. Please use view_tag() instead.")
+
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
 
@@ -130,6 +132,8 @@ create_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("create_tag", package = "githapi")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
@@ -206,6 +210,8 @@ update_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("update_tag", package = "githapi")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
@@ -272,6 +278,8 @@ delete_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("delete_tag", package = "githapi")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
@@ -324,6 +332,8 @@ tags_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
