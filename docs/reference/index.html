@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.21</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-repositories" class="hasAnchor"><a href="#section-repositories" class="anchor"></a>Repositories</h2>
-          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting Repositories and their contents.</p></p>
+          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting repositories and their contents.</p></p>
         </th>
       </tr>
       <tr>
@@ -173,6 +173,44 @@
         </td>
         <td><p>Delete a branch from a repository</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="upload_commit.html">upload_commit()</a></code> </p>
+        </td>
+        <td><p>Upload a directory of files and create a commit on a branch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="download_commit.html">download_commit()</a></code> </p>
+        </td>
+        <td><p>Download the contents of a commit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_commits.html">view_commits()</a></code> </p>
+        </td>
+        <td><p>View information about Git commits.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_commit.html">view_commit()</a></code> <code><a href="view_commit.html">browse_commits()</a></code> <code><a href="view_commit.html">browse_commit()</a></code> </p>
+        </td>
+        <td><p>View commits within a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_sha.html">view_sha()</a></code> </p>
+        </td>
+        <td><p>View the SHA for a commit</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-tags-and-releases" class="hasAnchor"><a href="#section-tags-and-releases" class="anchor"></a>Tags and Releases</h2>
+          <p class="section-desc"><p>Functions for creating, updating, viewing and deleting tags and releases.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="create_tag.html">create_tag()</a></code> </p>
@@ -507,30 +545,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="download_commit.html">download_commit()</a></code> </p>
-        </td>
-        <td><p>Download the contents of a commit</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="view_history.html">view_history()</a></code> </p>
-        </td>
-        <td><p>Get information about the history of commits</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="view_shas.html">view_shas()</a></code> </p>
-        </td>
-        <td><p>Look up the SHA-1 of commit references</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shas_exist.html">shas_exist()</a></code> </p>
-        </td>
-        <td><p>Determine whether commit SHAs exist in the specified repository.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="compare_commits.html">compare_commits()</a></code> </p>
         </td>
         <td><p>Compare two commits</p></td>
@@ -615,30 +629,6 @@
         </th>
       </tr>
       <tr>
-        
-        <td>
-          <p><code><a href="view_commits.html">view_commits()</a></code> </p>
-        </td>
-        <td><p>View information about Git commits.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_commit.html">create_commit()</a></code> </p>
-        </td>
-        <td><p>Create a commit</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="upload_commit.html">upload_commit()</a></code> </p>
-        </td>
-        <td><p>Upload a directory of files and create a commit on a branch</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="commits_exist.html">commits_exist()</a></code> </p>
-        </td>
-        <td><p>Determine whether commits exist in the specified repository.</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="view_trees.html">view_trees()</a></code> </p>
@@ -1330,6 +1320,36 @@
           <p><code><a href="tags_exist.html">tags_exist()</a></code> </p>
         </td>
         <td><p>Determine whether tags exist in the specified repository.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_history.html">view_history()</a></code> </p>
+        </td>
+        <td><p>Get information about the history of commits</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="view_shas.html">view_shas()</a></code> </p>
+        </td>
+        <td><p>Look up the SHA-1 of commit references</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shas_exist.html">shas_exist()</a></code> </p>
+        </td>
+        <td><p>Determine whether commit SHAs exist in the specified repository.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_commit.html">create_commit()</a></code> </p>
+        </td>
+        <td><p>Create a commit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="commits_exist.html">commits_exist()</a></code> </p>
+        </td>
+        <td><p>Determine whether commits exist in the specified repository.</p></td>
       </tr>
     </tbody>
     </table>
@@ -1339,6 +1359,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-repositories">Repositories</a></li>
+      <li><a href="#section-tags-and-releases">Tags and Releases</a></li>
       <li><a href="#section-issues-pull-requests-labels-and-milestones">Issues, Pull Requests, Labels and Milestones</a></li>
       <li><a href="#section-users-organizations-and-teams">Users, Organizations and Teams</a></li>
       <li><a href="#section-projects">Projects</a></li>
