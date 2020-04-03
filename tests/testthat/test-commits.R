@@ -347,3 +347,105 @@ teardown(suppressMessages(try(silent = TRUE, {
 #   expect_true(length(files) > 0)
 #
 # })
+
+
+# TEST: view_commits --------------------------------------------------------------------------
+
+# TODO: Uncomment in version 1.0
+# test_that("view_commits returns a tibble of commit properties", {
+#
+#   master_commits <- view_commits("master", str_c("ChadGoymer/test-commits-", now))
+#
+#   expect_is(master_commits, "tbl")
+#   expect_identical(attr(master_commits, "status"), 200L)
+#   expect_identical(
+#     map_chr(master_commits, ~ class(.)[[1]]),
+#     c(sha             = "character",
+#       message         = "character",
+#       author_login    = "character",
+#       author_name     = "character",
+#       author_email    = "character",
+#       committer_login = "character",
+#       committer_name  = "character",
+#       committer_email = "character",
+#       tree_sha        = "character",
+#       parents         = "list",
+#       date            = "POSIXct",
+#       html_url        = "character"))
+#
+#   expect_identical(last(master_commits$message), "Initial commit")
+#
+#   readme_commits <- view_commits(
+#     ref  = "master",
+#     repo = str_c("ChadGoymer/test-commits-", now),
+#     path = "README.md")
+#
+#   expect_is(readme_commits, "tbl")
+#   expect_identical(attr(readme_commits, "status"), 200L)
+#   expect_identical(
+#     map_chr(readme_commits, ~ class(.)[[1]]),
+#     c(sha             = "character",
+#       message         = "character",
+#       author_login    = "character",
+#       author_name     = "character",
+#       author_email    = "character",
+#       committer_login = "character",
+#       committer_name  = "character",
+#       committer_email = "character",
+#       tree_sha        = "character",
+#       parents         = "list",
+#       date            = "POSIXct",
+#       html_url        = "character"))
+#
+#   expect_identical(last(readme_commits$message), "Initial commit")
+#
+#   author_commits <- view_commits(
+#     ref    = "master",
+#     repo   = str_c("ChadGoymer/test-commits-", now),
+#     author = "ChadGoymer")
+#
+#   expect_is(author_commits, "tbl")
+#   expect_identical(attr(author_commits, "status"), 200L)
+#   expect_identical(
+#     map_chr(author_commits, ~ class(.)[[1]]),
+#     c(sha             = "character",
+#       message         = "character",
+#       author_login    = "character",
+#       author_name     = "character",
+#       author_email    = "character",
+#       committer_login = "character",
+#       committer_name  = "character",
+#       committer_email = "character",
+#       tree_sha        = "character",
+#       parents         = "list",
+#       date            = "POSIXct",
+#       html_url        = "character"))
+#
+#   expect_identical(last(author_commits$message), "Initial commit")
+#
+#   time_commits <- view_commits(
+#     ref   = "master",
+#     repo  = str_c("ChadGoymer/test-commits-", now),
+#     since = format(Sys.time() - 60*60*24, "%Y-%m-%d %H:%M:%S"),
+#     until = format(Sys.time(), "%Y-%m-%d %H:%M:%S"))
+#
+#   expect_is(time_commits, "tbl")
+#   expect_identical(attr(time_commits, "status"), 200L)
+#   expect_identical(
+#     map_chr(time_commits, ~ class(.)[[1]]),
+#     c(sha             = "character",
+#       message         = "character",
+#       author_login    = "character",
+#       author_name     = "character",
+#       author_email    = "character",
+#       committer_login = "character",
+#       committer_name  = "character",
+#       committer_email = "character",
+#       tree_sha        = "character",
+#       parents         = "list",
+#       date            = "POSIXct",
+#       html_url        = "character"))
+#
+#   expect_identical(last(time_commits$message), "Initial commit")
+#
+# })

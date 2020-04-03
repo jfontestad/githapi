@@ -247,3 +247,156 @@
 #     status  = attr(path_gh, "status"),
 #     header  = attr(path_gh, "header"))
 # }
+
+
+#  FUNCTION: view_commits ---------------------------------------------------------------------
+#
+#' View commits within a repository
+#'
+#' `view_commits()` summarises commits in a table with the properties as columns and a row for
+#' each commit in the history of the given reference. `view_commit()` returns a list of all
+#' properties for a single commit. `browse_commits()` and `browse_commit()` opens the web page
+#' for the commit history and commit details respectively in the default browser.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
+#' - <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
+#'
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+# @param path (string, optional) Only commits containing this file path will be returned.
+# @param author (string, optional) Author login to filter commits by.
+# @param since (string, optional) A date & time to filter by. Must be in the format:
+#   `YYYY-MM-DD HH:MM:SS`.
+# @param until (string, optional) A date & time to filter by. Must be in the format:
+#   `YYYY-MM-DD HH:MM:SS`.
+# @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `view_commits()` returns a tibble of commit properties. `view_commit()` returns
+#'   a list of properties for a single commit. `browse_commits()` and `browse_commit` opens
+#'   the default browser on the commit's history or details page and returns the URL.
+#'
+#' **Commit Properties:**
+#'
+#' - **sha**: The commit SHA.
+#' - **message**: The commit message.
+#' - **author_login**: The author's account login.
+#' - **author_name**: The author's name.
+#' - **author_email**: The author's email address.
+#' - **committer_login**: The committer's account login.
+#' - **committer_name**: The committer's name.
+#' - **committer_email**: The committer's email address.
+#' - **tree_sha**: The SHA of the commit's file tree.
+#' - **parents**: The SHAs of the parent commits.
+#' - **date**: The time and date the commit was made.
+#' - **html_url**: The address of the commit's web page.
+#'
+#' @examples
+#' \dontrun{
+#'   # View the history of commits for the master branch
+#'   view_commits("master", "ChadGoymer/test-githapi")
+#'
+#'   # View commits where the README.md file has been changed
+#'   view_commits(
+#'     ref  = "master",
+#'     repo = "ChadGoymer/test-githapi",
+#'     path = "README.md")
+#'
+#'   # View commits created by an author
+#'   view_commits(
+#'     ref    = "master",
+#'     repo   = "ChadGoymer/test-githapi",
+#'     author = "ChadGoymer")
+#'
+#'   # View commits within a time window
+#'   view_commits(
+#'     ref   = "master",
+#'     repo  = "ChadGoymer/test-githapi",
+#'     since = "2020-01-01 00:00:00",
+#'     until = "2020-04-01 00:00:00")
+#'
+#'   # View the properties of the last commit on the master branch
+#'   view_commit("master", "ChadGoymer/test-githapi")
+#'
+#'   # View the properties of the commit with tag "0.8.7"
+#'   view_commit("0.8.7", "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+# TODO: Uncomment in version 1.0
+# view_commits <- function(
+#   ref,
+#   repo,
+#   path,
+#   author,
+#   since,
+#   until,
+#   n_max = 1000,
+#   ...)
+# {
+#   assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+#   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+#
+#   if (!missing(path))
+#   {
+#     assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+#     path <- str_c(path, collapse = ",")
+#   }
+#   else
+#   {
+#     path <- NULL
+#   }
+#
+#   if (!missing(author))
+#   {
+#     assert(is_scalar_character(author), "'author' must be a string:\n  ", author)
+#     author <- str_c(author, collapse = ",")
+#   }
+#   else
+#   {
+#     author <- NULL
+#   }
+#
+#   if (!missing(since))
+#   {
+#     assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
+#     since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
+#       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+#     assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
+#   }
+#   else
+#   {
+#     since <- NULL
+#   }
+#
+#   if (!missing(until))
+#   {
+#     assert(is_scalar_character(until), "'until' must be a string:\n  ", until)
+#     until <- as.POSIXct(until, format = "%Y-%m-%d %H:%M:%S") %>%
+#       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+#     assert(!is.na(until), "'until' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", until)
+#   }
+#   else
+#   {
+#     until <- NULL
+#   }
+#
+#   info("Viewing commits for reference '", ref, "' in repository '", repo, "'")
+#   commits_lst <- gh_url(
+#     "repos", repo, "commits",
+#     sha    = ref,
+#     path   = path,
+#     author = author,
+#     since  = since,
+#     until  = until) %>%
+#     gh_page(n_max = n_max, ...)
+#
+#   info("Transforming results", level = 4)
+#   commits_gh <- bind_properties(commits_lst, properties$commit) %>%
+#     add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "date")
+#
+#   info("Done", level = 7)
+#   commits_gh
+# }
