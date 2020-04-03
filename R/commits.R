@@ -400,3 +400,35 @@
 #   info("Done", level = 7)
 #   commits_gh
 # }
+#
+#
+#  FUNCTION: view_commit ----------------------------------------------------------------------
+#
+# @rdname view_commits
+# @export
+#
+view_commit <- function(
+  ref,
+  repo,
+  ...)
+{
+  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing commit for reference '", ref, "' in repository '", repo, "'")
+  commit_lst <- gh_url("repos", repo, "commits", ref) %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  commit_gh <- select_properties(commit_lst, properties$commit) %>%
+    modify_list(parents = map_chr(commit_lst$parents, "sha"), .before = "date")
+
+  info("Done", level = 7)
+  structure(
+    commit_gh,
+    class   = class(commit_lst),
+    url     = attr(commit_lst, "url"),
+    request = attr(commit_lst, "request"),
+    status  = attr(commit_lst, "status"),
+    header  = attr(commit_lst, "header"))
+}

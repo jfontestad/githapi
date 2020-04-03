@@ -449,3 +449,31 @@ teardown(suppressMessages(try(silent = TRUE, {
 #   expect_identical(last(time_commits$message), "Initial commit")
 #
 # })
+
+
+# TEST: view_commit ---------------------------------------------------------------------------
+
+test_that("view_commit returns a list of commit properties", {
+
+  master_commit <- view_commit("master", str_c("ChadGoymer/test-commits-", now))
+
+  expect_is(master_commit, "list")
+  expect_identical(attr(master_commit, "status"), 200L)
+  expect_identical(
+    map_chr(master_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      tree_sha        = "character",
+      parents         = "character",
+      date            = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(master_commit$author_login, "ChadGoymer")
+
+})
