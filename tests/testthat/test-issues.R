@@ -147,8 +147,8 @@ test_that("update_issue changes a milestone and returns a list of the properties
 
   expect_identical(updated_issue$title, str_c("test updated issue ", now))
   expect_identical(updated_issue$body, "This is an issue to test update_issue()")
-  expect_identical(updated_issue$assignees, NA_character_)
-  expect_identical(updated_issue$labels, NA_character_)
+  expect_identical(updated_issue$assignees, character())
+  expect_identical(updated_issue$labels, character())
   expect_identical(updated_issue$milestone, NA_character_)
   expect_identical(updated_issue$state, "open")
   expect_identical(updated_issue$repository, str_c("ChadGoymer/test-issues-", now))
@@ -231,8 +231,8 @@ test_that("view_issues returns a tibble of issue properties", {
     c(number       = "integer",
       title        = "character",
       body         = "character",
-      assignees    = "character",
-      labels       = "character",
+      assignees    = "list",
+      labels       = "list",
       milestone    = "character",
       state        = "character",
       repository   = "character",
@@ -258,8 +258,8 @@ test_that("view_issues returns a tibble of issue properties", {
     c(number       = "integer",
       title        = "character",
       body         = "character",
-      assignees    = "character",
-      labels       = "character",
+      assignees    = "list",
+      labels       = "list",
       milestone    = "character",
       state        = "character",
       repository   = "character",
@@ -281,8 +281,8 @@ test_that("view_issues returns a tibble of issue properties", {
     c(number       = "integer",
       title        = "character",
       body         = "character",
-      assignees    = "character",
-      labels       = "character",
+      assignees    = "list",
+      labels       = "list",
       milestone    = "character",
       state        = "character",
       repository   = "character",
@@ -304,8 +304,8 @@ test_that("view_issues returns a tibble of issue properties", {
     c(number       = "integer",
       title        = "character",
       body         = "character",
-      assignees    = "character",
-      labels       = "character",
+      assignees    = "list",
+      labels       = "list",
       milestone    = "character",
       state        = "character",
       repository   = "character",

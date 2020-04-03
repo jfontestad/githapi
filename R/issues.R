@@ -103,9 +103,9 @@ create_issue <- function(
   info("Transforming results", level = 4)
   issue_gh <- select_properties(issue_lst, properties$issue) %>%
     modify_list(
-      assignees = collapse_property(list(issue_lst), "assignees", "login"),
-      labels = collapse_property(list(issue_lst), "labels", "name"),
-      .before = "milestone") %>%
+      assignees = map_chr(issue_lst$assignees, "login"),
+      labels    = map_chr(issue_lst$labels, "name"),
+      .before   = "milestone") %>%
     modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
     modify_list(repository = repo)
 
@@ -250,9 +250,9 @@ update_issue <- function(
   info("Transforming results", level = 4)
   issue_gh <- select_properties(issue_lst, properties$issue) %>%
     modify_list(
-      assignees = collapse_property(list(issue_lst), "assignees", "login"),
-      labels = collapse_property(list(issue_lst), "labels", "name"),
-      .before = "milestone") %>%
+      assignees = map_chr(issue_lst$assignees, "login"),
+      labels    = map_chr(issue_lst$labels, "name"),
+      .before   = "milestone") %>%
     modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
     modify_list(repository = repo)
 
@@ -364,13 +364,10 @@ view_issues <- function(
     "'direction' must be either '", str_c(values$issue$direction, collapse = "', '"), "':\n  ", direction)
 
   if (!missing(since)) {
-    assert(is_character(since), "'since' must be a character vector:\n  ", since)
-    since <- tryCatch({
-      as.POSIXct(since) %>% format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-    },
-    error = function(e) {
-      error("'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
-    })
+    assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
+    since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
+      format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
   }
   else {
     since <- NULL
@@ -434,8 +431,8 @@ view_issues <- function(
 
   info("Transforming results", level = 4)
   issues_gh <- bind_properties(issues_lst, properties$issue) %>%
-    add_column(labels = collapse_property(issues_lst, "labels", "name"), .before = "milestone") %>%
-    add_column(assignees = collapse_property(issues_lst, "assignees", "login"), .before = "labels") %>%
+    add_column(labels       = map(issues_lst, ~ map_chr(.$labels, "name")), .before = "milestone") %>%
+    add_column(assignees    = map(issues_lst, ~ map_chr(.$assignees, "login")), .before = "labels") %>%
     add_column(pull_request = map_lgl(issues_lst, ~ !is_null(.$pull_request)), .before = "html_url")
 
   info("Done", level = 7)
@@ -475,9 +472,9 @@ view_issue <- function(
   info("Transforming results", level = 4)
   issue_gh <- select_properties(issue_lst, properties$issue) %>%
     modify_list(
-      assignees = collapse_property(list(issue_lst), "assignees", "login"),
-      labels = collapse_property(list(issue_lst), "labels", "name"),
-      .before = "milestone") %>%
+      assignees = map_chr(issue_lst$assignees, "login"),
+      labels    = map_chr(issue_lst$labels, "name"),
+      .before   = "milestone") %>%
     modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
     modify_list(repository = repo)
 

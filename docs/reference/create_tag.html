@@ -71,7 +71,7 @@ tag. For a branch, the head commit is used." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.21</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@ pointed at a commit by providing a Git reference, which can be either a SHA, bra
 tag. For a branch, the head commit is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_tag</span>(<span class='no'>name</span>, <span class='no'>repo</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"master"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>create_tag</span>(<span class='no'>name</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,13 +131,13 @@ tag. For a branch, the head commit is used.</p>
       <td><p>(string) The name of the tag.</p></td>
     </tr>
     <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <th>ref</th>
+      <td><p>(string) Either a SHA, branch or tag used to identify the commit the tag is
+pointing at.</p></td>
     </tr>
     <tr>
-      <th>ref</th>
-      <td><p>(string, optional) Either a SHA, branch or tag used to identify the commit
-the tag is pointing at. Default: <code>"master"</code>.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -165,8 +165,8 @@ the tag is pointing at. Default: <code>"master"</code>.</p></td>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='fu'>create_tag</span>(
     <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"new-tag"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>)
+    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

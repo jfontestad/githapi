@@ -4,9 +4,9 @@ new_branches <- str_c("test-branches-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S-")
 
 teardown(suppressMessages(try(silent = TRUE, {
 
-  delete_branches(
+  suppressWarnings(delete_branches(
     branches = new_branches,
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi"))
 
 })))
 

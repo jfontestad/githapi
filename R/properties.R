@@ -230,8 +230,20 @@ properties <- list(
 
   reference = list(
     ref                                      = c("ref",                                      as = "character"),
-    sha                                      = c("object", "sha",                            as = "character"))
+    sha                                      = c("object", "sha",                            as = "character")),
 
+  commit = list(
+    sha                                      = c("sha",                                      as = "character"),
+    message                                  = c("commit", "message",                        as = "character"),
+    author_login                             = c("author", "login",                          as = "character"),
+    author_name                              = c("commit", "author", "name",                 as = "character"),
+    author_email                             = c("commit", "author", "email",                as = "character"),
+    committer_login                          = c("committer", "login",                       as = "character"),
+    committer_name                           = c("commit", "committer", "name",              as = "character"),
+    committer_email                          = c("commit", "committer", "email",             as = "character"),
+    tree_sha                                 = c("commit", "tree", "sha",                    as = "character"),
+    date                                     = c("commit", "committer", "date",              as = "datetime"),
+    html_url                                 = c("html_url",                                 as = "character"))
 )
 
 

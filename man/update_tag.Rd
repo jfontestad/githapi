@@ -4,15 +4,15 @@
 \alias{update_tag}
 \title{Update a tag in a repository}
 \usage{
-update_tag(tag, repo, ref, force = FALSE, ...)
+update_tag(tag, ref, repo, force = FALSE, ...)
 }
 \arguments{
 \item{tag}{(string) The name of the tag.}
 
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{ref}{(string) Either a SHA, branch or tag used to identify the new commit the tag
 is pointing at.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{force}{(boolean, optional) Whether to force the update if it is not a simple
 fast-forward. Default: \code{FALSE}.}
@@ -44,8 +44,8 @@ For more details see the GitHub API documentation:
 \dontrun{
   update_tag(
     tag  = "new-tag",
-    repo = "ChadGoymer/test-githapi",
-    ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d")
+    ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d",
+    repo = "ChadGoymer/test-githapi")
 }
 
 }

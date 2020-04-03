@@ -3,7 +3,7 @@ context("repositories commits")
 # TEST: view_history --------------------------------------------------------------------------
 
 test_that("view_history returns a tibble describing the history of commits", {
-  commits <- view_history("ChadGoymer/test-githapi", n_max = 10)
+  commits <- suppressWarnings(view_history("ChadGoymer/test-githapi", n_max = 10))
 
   expect_is(commits, "tbl")
   expect_identical(
@@ -21,7 +21,7 @@ test_that("view_history returns a tibble describing the history of commits", {
       parent_sha      = "list",
       parent_url      = "list"))
 
-  first_commits <- view_history("310c21d3f1601a46e014e68e94814b23406bf574", "ChadGoymer/test-githapi")
+  first_commits <- suppressWarnings(view_history("310c21d3f1601a46e014e68e94814b23406bf574", "ChadGoymer/test-githapi"))
 
   expect_is(commits, "tbl")
   expect_identical(
@@ -46,7 +46,7 @@ test_that("view_history returns a tibble describing the history of commits", {
 # TEST: view_shas -----------------------------------------------------------------------------
 
 test_that("view_shas returns a named character vector with the SHAs", {
-  shas <- view_shas(c("0.0.0", "master"), "ChadGoymer/test-githapi")
+  shas <- suppressWarnings(view_shas(c("0.0.0", "master"), "ChadGoymer/test-githapi"))
 
   expect_is(shas, "character")
   expect_identical(names(shas), c("0.0.0", "master"))
@@ -56,11 +56,11 @@ test_that("view_shas returns a named character vector with the SHAs", {
 # TEST: shas_exist ----------------------------------------------------------------------------
 
 test_that("shas_exist returns TRUE is the commit exists and FALSE otherwise", {
-  expect_true(shas_exist("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "ChadGoymer/test-githapi"))
-  expect_false(shas_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi"))
+  expect_true(suppressWarnings(shas_exist("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "ChadGoymer/test-githapi")))
+  expect_false(suppressWarnings(shas_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi")))
 
   expect_identical(
-    shas_exist(c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi"),
+    suppressWarnings(shas_exist(c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi")),
     c(`cbd94cf24a4c62761b3ae59ca3c69f868591cf7d` = TRUE, `0000000000000000000000000000000000000000` = FALSE))
 })
 

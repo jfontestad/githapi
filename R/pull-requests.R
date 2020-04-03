@@ -150,9 +150,9 @@ create_pull_request <- function(
   info("Transforming results", level = 4)
   pull_gh <- select_properties(pull_lst, properties$pull_request) %>%
     modify_list(
-      assignees = collapse_property(list(issue_lst), "assignees", "login"),
-      reviewers = collapse_property(list(reviewers_lst), "requested_reviewers", "login"),
-      labels    = collapse_property(list(issue_lst), "labels", "name"),
+      assignees = map_chr(issue_lst$assignees, "login"),
+      reviewers = map_chr(reviewers_lst$requested_reviewers, "login"),
+      labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
@@ -349,9 +349,9 @@ update_pull_request <- function(
   info("Transforming results", level = 4)
   pull_gh <- select_properties(pull_lst, properties$pull_request) %>%
     modify_list(
-      assignees = collapse_property(list(issue_lst), "assignees", "login"),
-      reviewers = collapse_property(list(reviewers_lst), "requested_reviewers", "login"),
-      labels    = collapse_property(list(issue_lst), "labels", "name"),
+      assignees = map_chr(issue_lst$assignees, "login"),
+      reviewers = map_chr(reviewers_lst$requested_reviewers, "login"),
+      labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
@@ -536,9 +536,9 @@ view_pull_requests <- function(
 
   info("Transforming results", level = 4)
   pulls_gh <- bind_properties(pulls_lst, properties$pull_request) %>%
-    add_column(labels = collapse_property(pulls_lst, "labels", "name"), .before = "milestone") %>%
-    add_column(assignees = collapse_property(pulls_lst, "assignees", "login"), .before = "labels") %>%
-    add_column(reviewers = collapse_property(pulls_lst, "requested_reviewers", "login"), .before = "labels")
+    add_column(labels    = map(pulls_lst, ~ map_chr(.$labels, "name")), .before = "milestone") %>%
+    add_column(assignees = map(pulls_lst, ~ map_chr(.$assignees, "login")), .before = "labels") %>%
+    add_column(reviewers = map(pulls_lst, ~ map_chr(.$requested_reviewers, "login")), .before = "labels")
 
   info("Done", level = 7)
   pulls_gh
@@ -579,7 +579,7 @@ view_pull_request <- function(
   commits_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "commits") %>%
     gh_page(n_max = n_max, ...)
   commits <- bind_properties(commits_lst, properties$pull_commits) %>%
-    add_column(parent_sha = collapse_property(commits_lst, "parents", "sha"), .before = "html_url")
+    add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "html_url")
 
   files <- gh_url("repos", repo, "pulls", pull_lst$number, "files") %>%
     gh_page(n_max = n_max, ...) %>%
@@ -591,10 +591,10 @@ view_pull_request <- function(
 
   pull_gh <- select_properties(pull_lst, properties$pull_request) %>%
     modify_list(
-      assignees = collapse_property(list(pull_lst), "assignees", "login"),
-      reviewers = collapse_property(list(pull_lst), "requested_reviewers", "login"),
-      labels = collapse_property(list(pull_lst), "labels", "name"),
-      .before = "milestone") %>%
+      assignees = map_chr(pull_lst$assignees, "login"),
+      reviewers = map_chr(pull_lst$requested_reviewers, "login"),
+      labels    = map_chr(pull_lst$labels, "name"),
+      .before   = "milestone") %>%
     modify_list(
       repository = repo,
       commits    = commits,

@@ -2,7 +2,7 @@ context("repositories contents")
 
 repo_contents_branch <- str_c("test-repo-contents-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 new_files_branch <- str_c("test-create-files-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
-master_sha <- view_shas(refs = "unedited-contents", repo = "ChadGoymer/test-githapi")[[1]]
+master_sha <- suppressWarnings(view_shas(refs = "unedited-contents", repo = "ChadGoymer/test-githapi")[[1]])
 
 setup(suppressMessages(suppressWarnings({
 

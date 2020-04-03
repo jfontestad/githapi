@@ -10,9 +10,9 @@
 #' - <https://developer.github.com/v3/git/refs/#create-a-reference>
 #'
 #' @param name (string) The name of the branch.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit the branch is
+#'   pointing at.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param ref (string, optional) Either a SHA, branch or tag used to identify the commit
-#'   the branch is pointing at. Default: `"master"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `create_branch()` returns a list of the branch's properties.
@@ -27,16 +27,16 @@
 #' \dontrun{
 #'   create_branch(
 #'     name = "new-branch",
-#'     repo = "ChadGoymer/test-githapi",
-#'     ref  = "master")
+#'     ref  = "master",
+#'     repo = "ChadGoymer/test-githapi")
 #' }
 #'
 #' @export
 #'
 create_branch <- function(
   name,
+  ref,
   repo,
-  ref = "master",
   ...)
 {
   assert(is_ref(name), "'name' must be a valid git reference - see help(is_ref):\n  ", name)
@@ -44,8 +44,7 @@ create_branch <- function(
 
   if (!is_sha(ref))
   {
-    ref <- gh_url("repos", repo, "commits", ref) %>%
-      gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+    ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -82,9 +81,9 @@ create_branch <- function(
 #' - <https://developer.github.com/v3/git/refs/#update-a-reference>
 #'
 #' @param branch (string) The name of the branch.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ref (string) Either a SHA, branch or tag used to identify the new commit the branch
 #'   is pointing at.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param force (boolean, optional) Whether to force the update if it is not a simple
 #'   fast-forward. Default: `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
@@ -109,8 +108,8 @@ create_branch <- function(
 #'
 update_branch <- function(
   branch,
-  repo,
   ref,
+  repo,
   force = FALSE,
   ...)
 {
@@ -120,8 +119,7 @@ update_branch <- function(
 
   if (!is_sha(ref))
   {
-    ref <- gh_url("repos", repo, "commits", ref) %>%
-      gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+    ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -198,13 +196,7 @@ update_branch <- function(
 #     add_column(name = basename(.$ref), .before = "ref")
 #
 #   info("Done", level = 7)
-#   structure(
-#     branches_gh,
-#     class   = class(branches_gh),
-#     url     = attr(branches_lst, "url"),
-#     request = attr(branches_lst, "request"),
-#     status  = attr(branches_lst, "status"),
-#     header  = attr(branches_lst, "header"))
+#   branches_gh
 # }
 #
 #

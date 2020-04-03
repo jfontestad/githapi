@@ -265,36 +265,6 @@ bind_properties <- function(collection, properties)
 }
 
 
-# FUNCTION: collapse_property -----------------------------------------------------------------
-#
-# Collapse a property's sub-properties
-#
-# This function can be used to collapse a sub-property of a list of properties into a
-# character vector.
-#
-# @param collection (list) A collection of entities with common properties
-# @param property (string) The property to collapse
-# @param subproperty (string) The sub-property of the property to combine
-# @param sep (string, optional) The separater to use in the collapsed sub-properties
-#
-# @return A character vector of collapsed sub-properties
-#
-collapse_property <- function(
-  collection,
-  property,
-  sub_property,
-  sep = ",")
-{
-  map_chr(collection, function(entity) {
-    if (length(entity[[property]]) > 0) {
-      map(entity[[property]], sub_property) %>% str_c(collapse = sep)
-    } else {
-      NA_character_
-    }
-  })
-}
-
-
 # FUNCTION: modify_list -----------------------------------------------------------------------
 #
 # Modify a list

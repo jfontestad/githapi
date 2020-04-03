@@ -71,7 +71,7 @@ or tag. For a branch, the head commit is used." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.21</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@ must be pointed at a commit by providing a Git reference, which can be either a 
 or tag. For a branch, the head commit is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_branch</span>(<span class='no'>branch</span>, <span class='no'>repo</span>, <span class='no'>ref</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_branch</span>(<span class='no'>branch</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,13 +131,13 @@ or tag. For a branch, the head commit is used.</p>
       <td><p>(string) The name of the branch.</p></td>
     </tr>
     <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
-    </tr>
-    <tr>
       <th>ref</th>
       <td><p>(string) Either a SHA, branch or tag used to identify the new commit the branch
 is pointing at.</p></td>
+    </tr>
+    <tr>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>force</th>
