@@ -178,3 +178,72 @@
 #
 #   view_commit(commit_lst$sha, repo = repo)
 # }
+
+
+#  FUNCTION: download_commit ------------------------------------------------------------------
+#
+# Download a commit from GitHub
+#
+# This function downloads all the files in a commit, plus any folders, into the path
+# specified.
+#
+# @param ref (string) Either a SHA, branch or tag used to identify the commit the tag is
+#   pointing at.
+# @param repo (string) The repository specified in the format: `owner/repo`.
+# @param path (string, optional) The path to the directory to upload. It must be readable.
+#   Default: working directory.
+# @param ... Parameters passed to [gh_request()].
+#
+# @return `download_commit()` returns the path where the commit is downloaded to.
+#
+# @examples
+# \dontrun{
+#
+#   # Download the head of the master branch to the home directory
+#   download_commit(
+#     ref  = "master",
+#     repo = "ChadGoymer/test-githapi",
+#     path = "~")
+# }
+#
+# @export
+#
+# download_commit <- function(
+#   ref,
+#   repo,
+#   path = getwd(),
+#   ...)
+# {
+#   assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+#   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+#
+#   if (!file.exists(path)) dir.create(path, recursive = TRUE)
+#
+#   archive_path <- str_replace(repo, "/", "-") %>% str_c("-", ref, ".zip") %>% file.path(path, .)
+#   on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
+#
+#   info("Downloading commit '", ref, "' from repository '", repo, "'")
+#   path_gh <- gh_url("repos", repo, "zipball", ref) %>%
+#     gh_download(archive_path, ...)
+#
+#   info("Unpacking commit into '", path, "'", level = 3)
+#   utils::unzip(archive_path, exdir = path)
+#
+#   archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
+#   on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
+#
+#   subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
+#   walk(file.path(path, subfolders[subfolders != ""]), dir.create)
+#
+#   files <- list.files(archive_folder, recursive = TRUE)
+#   file.rename(file.path(archive_folder, files), file.path(path, files))
+#
+#   info("Done", level = 3)
+#   structure(
+#     normalizePath(path, winslash = "/"),
+#     class   = class(path_gh),
+#     url     = attr(path_gh, "url"),
+#     request = attr(path_gh, "request"),
+#     status  = attr(path_gh, "status"),
+#     header  = attr(path_gh, "header"))
+# }

@@ -321,3 +321,29 @@ teardown(suppressMessages(try(silent = TRUE, {
 #   expect_identical(merge_branch_commit$parents, c(merge_master_commit$sha, new_branch_commit$sha))
 #
 # })
+
+
+# TEST: download_commit -----------------------------------------------------------------------
+
+# TODO: Uncomment in version 1.0
+# test_that("download_commit downloads a commit to the specified path", {
+#
+#   temp_path <- file.path(tempdir(), "test-download-commit") %>%
+#     normalizePath(winslash = "/", mustWork = FALSE)
+#   if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
+#   on.exit(unlink(temp_path))
+#
+#   path <- download_commit(
+#     ref  = "master",
+#     repo = str_c("ChadGoymer/test-commits-", now),
+#     path = temp_path)
+#
+#   expect_is(path, "character")
+#   expect_identical(attr(path, "status"), 200L)
+#   expect_identical(as.character(path), temp_path)
+#
+#   files <- list.files(temp_path)
+#
+#   expect_true(length(files) > 0)
+#
+# })
