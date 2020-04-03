@@ -1,7 +1,7 @@
 context("git commits")
 
 git_commits_branch <- str_c("test-git-commits-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
-master_sha <- view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]]
+master_sha <- suppressWarnings(view_shas(refs = "master", repo = "ChadGoymer/test-githapi")[[1]])
 
 setup(suppressMessages(suppressWarnings({
 
@@ -26,9 +26,9 @@ teardown(suppressMessages(tryCatch({
 # TEST: view_commits --------------------------------------------------------------------------
 
 test_that("view_commits returns a tibble of information about the commits", {
-  commits <- view_commits(
+  commits <- suppressWarnings(view_commits(
     shas = c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "ccb62ec75de7e40c689be427cd038c8a1a9d3c44"),
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(commits, "tbl")
   expect_identical(
@@ -57,11 +57,11 @@ test_that("view_commits returns a tibble of information about the commits", {
 # TEST: create_commit -------------------------------------------------------------------------
 
 test_that("create_commit creates a new commit in a repository", {
-  created_commit <- create_commit(
+  created_commit <- suppressWarnings(create_commit(
     message = "This is created with create_commit()",
     tree    = "bbac77ba8fc1afa9a815a0cc8fc17e221cb0c027",
     parents = git_commits_branch,
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/test-githapi"))
 
   expect_is(created_commit, "tbl")
   expect_identical(
@@ -79,13 +79,13 @@ test_that("create_commit creates a new commit in a repository", {
       parent_sha      = "list",
       parent_url      = "list"))
 
-  viewed_commit <- view_commits(created_commit$sha, "ChadGoymer/test-githapi")
+  viewed_commit <- suppressWarnings(view_commits(created_commit$sha, "ChadGoymer/test-githapi"))
   expect_identical(created_commit, viewed_commit)
 
-  orphan_commit <- create_commit(
+  orphan_commit <- suppressWarnings(create_commit(
     message = "This is an orphan created with create_commit()",
     tree    = "bbac77ba8fc1afa9a815a0cc8fc17e221cb0c027",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/test-githapi"))
 
   expect_is(orphan_commit, "tbl")
   expect_identical(
@@ -190,13 +190,13 @@ test_that("upload_commit uploads files and directory structure to github", {
   now <- as.character(Sys.time())
   writeLines(c("This file was updated:", now), temp_file)
 
-  updated_commit <- upload_commit(
+  updated_commit <- suppressWarnings(upload_commit(
     branch    = git_commits_branch,
     message   = "Update commit made with upload_commit",
     path      = temp_path,
     parents   = git_commits_branch,
     repo      = "ChadGoymer/test-githapi",
-    replace   = FALSE)
+    replace   = FALSE))
 
   expect_is(updated_commit, "tbl")
   expect_identical(
@@ -234,7 +234,7 @@ test_that("upload_commit uploads files and directory structure to github", {
     path    = system.file("test-data/upload-tree", package = "githapi"),
     parents = git_commits_branch,
     repo    = "ChadGoymer/test-githapi")
-  on.exit(delete_branches("test-upload-commit", "ChadGoymer/test-githapi"), add = TRUE)
+  on.exit(suppressWarnings(delete_branches("test-upload-commit", "ChadGoymer/test-githapi")), add = TRUE)
 
   expect_is(new_branch_commit, "tbl")
   expect_identical(
@@ -258,10 +258,10 @@ test_that("upload_commit uploads files and directory structure to github", {
 # TEST: commits_exist -------------------------------------------------------------------------
 
 test_that("commits_exist returns TRUE or FALSE depending on whether the commit exists in the repo", {
-  expect_true(commits_exist("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "ChadGoymer/test-githapi"))
-  expect_false(commits_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi"))
+  expect_true(suppressWarnings(commits_exist("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "ChadGoymer/test-githapi")))
+  expect_false(suppressWarnings(commits_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi")))
 
   expect_identical(
-    commits_exist(c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi"),
+    suppressWarnings(commits_exist(c("cbd94cf24a4c62761b3ae59ca3c69f868591cf7d", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi")),
     c(`cbd94cf24a4c62761b3ae59ca3c69f868591cf7d` = TRUE, `0000000000000000000000000000000000000000` = FALSE))
 })

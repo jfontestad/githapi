@@ -224,10 +224,10 @@ create_files <- function(
         error("Specified branch '", branch, "' does not exist. To create it a parent commit must be specified!")
 
       if (!is_sha(parent)) {
-        parent <- view_shas(refs = parent, repo = repo, token = token, api = api)
+        parent <- suppressWarnings(view_shas(refs = parent, repo = repo, token = token, api = api))
       }
 
-      create_branches(branches = branch, shas = parent, repo = repo, token = token, api = api)
+      suppressWarnings(create_branches(branches = branch, shas = parent, repo = repo, token = token, api = api))
     }
 
     payload <- list(

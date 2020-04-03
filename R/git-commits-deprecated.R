@@ -40,6 +40,8 @@ view_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_commit", package = "githapi")
+
   {
     (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
@@ -139,6 +141,8 @@ create_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("upload_commit", package = "githapi")
+
   {
     if (missing(parents) || is_null(parents)) {
       parents <- NA
@@ -170,7 +174,7 @@ create_commit <- function(
 
   parents <- gh_map(parents, use_names = FALSE, function(p) {
     if (!is_na(p) && !is_sha(p)) {
-      p <- view_shas(p, repo = repo) %>% unname()
+      p <- suppressWarnings(view_shas(p, repo = repo)) %>% unname()
     }
     p
   })
@@ -331,8 +335,9 @@ upload_commit <- function(
   if (replace) {
     base_tree <- NA
   } else {
-    # TODO: This does not work if parent is not specified
-    parent_commit <- view_history(ref = parents[[1]], repo = repo, n_max = 1)
+    .Deprecated(msg = "Using replace = FALSE has been deprecated - use upload_file() instead.")
+    (!any(is.na(parents))) || error("If replace is FALSE a parent commit must be specified!")
+    parent_commit <- suppressWarnings(view_history(ref = parents[[1]], repo = repo, n_max = 1))
     base_tree <- parent_commit$tree_sha
   }
 
@@ -344,7 +349,7 @@ upload_commit <- function(
     token     = token,
     api       = api)
 
-  commit <- create_commit(
+  commit <- suppressWarnings(create_commit(
     message   = message,
     tree      = tree$tree_sha[[1]],
     parents   = parents,
@@ -352,7 +357,7 @@ upload_commit <- function(
     author    = author,
     repo      = repo,
     token     = token,
-    api       = api)
+    api       = api))
 
   suppressWarnings({
     if (branches_exist(branches = branch, repo = repo, token = token, api = api)) {
@@ -403,6 +408,8 @@ commits_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "this function will be removed in a future version")
+
   {
     (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")

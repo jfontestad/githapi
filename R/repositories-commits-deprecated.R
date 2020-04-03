@@ -44,6 +44,8 @@ view_history <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_commits", package = "githapi")
+
   {
     if (missing(repo)) {
       info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
@@ -125,6 +127,8 @@ view_shas <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_sha", package = "githapi")
+
   {
     (is_character(refs)) ||
       error("'refs' must be a character vector:\n  '", paste(refs, collapse = "'\n  '"), "'")
@@ -179,6 +183,8 @@ shas_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "this function will be removed in a future version")
+
   {
     (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
