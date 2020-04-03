@@ -1,3 +1,15 @@
+# githapi 0.9.21
+
+- Added `upload_commit()` commented out
+- Added `download_commit()` commented out
+- Added `view_commits()` commented out
+- Added `view_commit()`
+- Added `browse_commits()`
+- Added `browse_commit()`
+- Added `view_sha()`
+- Reorganised arguments in branch and tag functions
+- Removed collapsing of properties with more than one value in issue and pull request functions
+
 # githapi 0.9.20
 
 - Added `create_tag()`

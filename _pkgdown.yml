@@ -15,7 +15,7 @@ navbar:
       href: http://github.com/ChadGoymer/githapi
 reference:
 - title: Repositories
-  desc: Functions for creating, updating, viewing and deleting Repositories and their contents.
+  desc: Functions for creating, updating, viewing and deleting repositories and their contents.
   contents:
     - '`create_repository`'
     - '`update_repository`'
@@ -25,6 +25,14 @@ reference:
     - '`update_branch`'
     - '`view_branch`'
     - '`delete_branch`'
+    - '`upload_commit`'
+    - '`download_commit`'
+    - '`view_commits`'
+    - '`view_commit`'
+    - '`view_sha`'
+- title: Tags and Releases
+  desc: Functions for creating, updating, viewing and deleting tags and releases.
+  contents:
     - '`create_tag`'
     - '`update_tag`'
     - '`view_tag`'
@@ -87,10 +95,6 @@ reference:
     - '`update_files`'
     - '`delete_files`'
     - '`files_exist`'
-    - '`download_commit`'
-    - '`view_history`'
-    - '`view_shas`'
-    - '`shas_exist`'
     - '`compare_commits`'
     - '`compare_files`'
     - '`view_releases`'
@@ -107,10 +111,6 @@ reference:
 - title: Git Data
   desc: Functions for accessing git data directly.
   contents:
-    - '`view_commits`'
-    - '`create_commit`'
-    - '`upload_commit`'
-    - '`commits_exist`'
     - '`view_trees`'
     - '`create_tree`'
     - '`upload_tree`'
@@ -233,5 +233,10 @@ reference:
     - '`update_tags`'
     - '`delete_tags`'
     - '`tags_exist`'
+    - '`view_history`'
+    - '`view_shas`'
+    - '`shas_exist`'
+    - '`create_commit`'
+    - '`commits_exist`'
 news:
 - one_page: false
