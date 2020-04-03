@@ -4,15 +4,15 @@
 \alias{create_tag}
 \title{Create a tag in a repository}
 \usage{
-create_tag(name, repo, ref = "master", ...)
+create_tag(name, ref, repo, ...)
 }
 \arguments{
 \item{name}{(string) The name of the tag.}
 
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
+\item{ref}{(string) Either a SHA, branch or tag used to identify the commit the tag is
+pointing at.}
 
-\item{ref}{(string, optional) Either a SHA, branch or tag used to identify the commit
-the tag is pointing at. Default: \code{"master"}.}
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -41,8 +41,8 @@ For more details see the GitHub API documentation:
 \dontrun{
   create_tag(
     name = "new-tag",
-    repo = "ChadGoymer/test-githapi",
-    ref  = "master")
+    ref  = "master",
+    repo = "ChadGoymer/test-githapi")
 }
 
 }

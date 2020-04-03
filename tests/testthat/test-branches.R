@@ -41,8 +41,8 @@ test_that("create_branch creates a branch and returns a list of the properties",
 
   new_branch <- create_branch(
     name = str_c("test-branches-2-", now),
-    repo = str_c("ChadGoymer/test-branches-", now),
-    ref  = "master")
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-branches-", now))
 
   expect_is(new_branch, "list")
   expect_identical(attr(new_branch, "status"), 201L)
@@ -67,8 +67,8 @@ test_that("update_branch updates a branch and returns a list of the properties",
 
   updated_branch <- update_branch(
     branch = str_c("test-branches-2-", now),
-    repo   = str_c("ChadGoymer/test-branches-", now),
-    ref    = str_c("test-branches-1-", now))
+    ref    = str_c("test-branches-1-", now),
+    repo   = str_c("ChadGoymer/test-branches-", now))
 
   expect_is(updated_branch, "list")
   expect_identical(attr(updated_branch, "status"), 200L)

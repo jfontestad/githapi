@@ -41,8 +41,8 @@ test_that("create_tag creates a tag and returns a list of the properties", {
 
   branch_tag <- create_tag(
     name = str_c("test-tags-1-", now),
-    repo = str_c("ChadGoymer/test-tags-", now),
-    ref  = branch_sha)
+    ref  = branch_sha,
+    repo = str_c("ChadGoymer/test-tags-", now))
 
   expect_is(branch_tag, "list")
   expect_identical(attr(branch_tag, "status"), 201L)
@@ -60,8 +60,8 @@ test_that("create_tag creates a tag and returns a list of the properties", {
 
   master_tag <- create_tag(
     name = str_c("test-tags-2-", now),
-    repo = str_c("ChadGoymer/test-tags-", now),
-    ref  = "master")
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-tags-", now))
 
   expect_is(master_tag, "list")
   expect_identical(attr(master_tag, "status"), 201L)
@@ -86,8 +86,8 @@ test_that("update_tag updates a tag and returns a list of the properties", {
 
   updated_tag <- update_tag(
     tag  = str_c("test-tags-2-", now),
-    repo = str_c("ChadGoymer/test-tags-", now),
-    ref  = str_c("test-tags-1-", now))
+    ref  = str_c("test-tags-1-", now),
+    repo = str_c("ChadGoymer/test-tags-", now))
 
   expect_is(updated_tag, "list")
   expect_identical(attr(updated_tag, "status"), 200L)

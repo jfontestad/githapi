@@ -10,9 +10,9 @@
 #' - <https://developer.github.com/v3/git/refs/#create-a-reference>
 #'
 #' @param name (string) The name of the tag.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit the tag is
+#'   pointing at.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param ref (string, optional) Either a SHA, branch or tag used to identify the commit
-#'   the tag is pointing at. Default: `"master"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `create_tag()` returns a list of the tag's properties.
@@ -27,16 +27,16 @@
 #' \dontrun{
 #'   create_tag(
 #'     name = "new-tag",
-#'     repo = "ChadGoymer/test-githapi",
-#'     ref  = "master")
+#'     ref  = "master",
+#'     repo = "ChadGoymer/test-githapi")
 #' }
 #'
 #' @export
 #'
 create_tag <- function(
   name,
+  ref,
   repo,
-  ref = "master",
   ...)
 {
   assert(is_ref(name), "'name' must be a valid git reference - see help(is_ref):\n  ", name)
@@ -82,9 +82,9 @@ create_tag <- function(
 #' - <https://developer.github.com/v3/git/refs/#update-a-reference>
 #'
 #' @param tag (string) The name of the tag.
-#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ref (string) Either a SHA, branch or tag used to identify the new commit the tag
 #'   is pointing at.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param force (boolean, optional) Whether to force the update if it is not a simple
 #'   fast-forward. Default: `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
@@ -101,16 +101,16 @@ create_tag <- function(
 #' \dontrun{
 #'   update_tag(
 #'     tag  = "new-tag",
-#'     repo = "ChadGoymer/test-githapi",
-#'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d")
+#'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d",
+#'     repo = "ChadGoymer/test-githapi")
 #' }
 #'
 #' @export
 #'
 update_tag <- function(
   tag,
-  repo,
   ref,
+  repo,
   force = FALSE,
   ...)
 {

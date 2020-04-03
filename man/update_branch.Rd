@@ -4,15 +4,15 @@
 \alias{update_branch}
 \title{Update a branch in a repository}
 \usage{
-update_branch(branch, repo, ref, force = FALSE, ...)
+update_branch(branch, ref, repo, force = FALSE, ...)
 }
 \arguments{
 \item{branch}{(string) The name of the branch.}
 
-\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
-
 \item{ref}{(string) Either a SHA, branch or tag used to identify the new commit the branch
 is pointing at.}
+
+\item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{force}{(boolean, optional) Whether to force the update if it is not a simple
 fast-forward. Default: \code{FALSE}.}
