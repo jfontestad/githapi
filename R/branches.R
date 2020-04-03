@@ -44,8 +44,7 @@ create_branch <- function(
 
   if (!is_sha(ref))
   {
-    ref <- gh_url("repos", repo, "commits", ref) %>%
-      gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+    ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -120,8 +119,7 @@ update_branch <- function(
 
   if (!is_sha(ref))
   {
-    ref <- gh_url("repos", repo, "commits", ref) %>%
-      gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+    ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -198,13 +196,7 @@ update_branch <- function(
 #     add_column(name = basename(.$ref), .before = "ref")
 #
 #   info("Done", level = 7)
-#   structure(
-#     branches_gh,
-#     class   = class(branches_gh),
-#     url     = attr(branches_lst, "url"),
-#     request = attr(branches_lst, "request"),
-#     status  = attr(branches_lst, "status"),
-#     header  = attr(branches_lst, "header"))
+#   branches_gh
 # }
 #
 #

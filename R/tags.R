@@ -44,8 +44,7 @@ create_tag <- function(
 
   if (!is_sha(ref))
   {
-    ref <- gh_url("repos", repo, "commits", ref) %>%
-      gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+    ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -120,8 +119,7 @@ update_tag <- function(
 
   if (!is_sha(ref))
   {
-    ref <- gh_url("repos", repo, "commits", ref) %>%
-      gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+    ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -197,13 +195,7 @@ update_tag <- function(
 #     add_column(name = basename(.$ref), .before = "ref")
 #
 #   info("Done", level = 7)
-#   structure(
-#     tags_gh,
-#     class   = class(tags_gh),
-#     url     = attr(tags_lst, "url"),
-#     request = attr(tags_lst, "request"),
-#     status  = attr(tags_lst, "status"),
-#     header  = attr(tags_lst, "header"))
+#   tags_gh
 # }
 #
 #
