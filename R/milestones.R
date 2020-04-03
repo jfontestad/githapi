@@ -67,8 +67,11 @@ create_milestone <- function(
   }
 
   if (!missing(due_on)) {
-    assert(is_character(due_on), "'due_on' must be a character vector:\n  ", due_on)
-    payload$due_on <- (as.POSIXct(due_on) + 12*60*60) %>% format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    assert(is_scalar_character(due_on), "'due_on' must be a string:\n  ", due_on)
+    due_on <- (as.POSIXct(due_on, format = "%Y-%m-%d") + 12*60*60) %>%
+      format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    assert(!is.na(due_on), "'due_on' must be specified in the format 'YYYY-MM-DD':\n  ", due_on)
+    payload$due_on <- due_on
   }
 
   info("Creating milestone '", title, "' for repository '", repo, "'")
@@ -162,8 +165,11 @@ update_milestone <- function(
   }
 
   if (!missing(due_on)) {
-    assert(is_character(due_on), "'due_on' must be a character vector:\n  ", due_on)
-    payload$due_on <- (as.POSIXct(due_on) + 12*60*60) %>% format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    assert(is_scalar_character(due_on), "'due_on' must be a string:\n  ", due_on)
+    due_on <- (as.POSIXct(due_on, format = "%Y-%m-%d") + 12*60*60) %>%
+      format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    assert(!is.na(due_on), "'due_on' must be specified in the format 'YYYY-MM-DD':\n  ", due_on)
+    payload$due_on <- due_on
   }
 
   if (!missing(state)) {

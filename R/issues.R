@@ -364,13 +364,10 @@ view_issues <- function(
     "'direction' must be either '", str_c(values$issue$direction, collapse = "', '"), "':\n  ", direction)
 
   if (!missing(since)) {
-    assert(is_character(since), "'since' must be a character vector:\n  ", since)
-    since <- tryCatch({
-      as.POSIXct(since) %>% format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-    },
-    error = function(e) {
-      error("'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
-    })
+    assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
+    since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
+      format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
   }
   else {
     since <- NULL
