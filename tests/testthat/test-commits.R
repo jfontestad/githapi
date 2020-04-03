@@ -511,3 +511,28 @@ test_that("browse_commit opens the commit's history page in the browser", {
     str_c("https://github.com/ChadGoymer/test-commits-", now, "/commit"))
 
 })
+
+
+# TEST: view_sha ------------------------------------------------------------------------------
+
+test_that("view_sha returns the commit SHA given the reference", {
+
+  master_sha <- view_sha("master", repo = str_c("ChadGoymer/test-commits-", now))
+
+  expect_is(master_sha, "character")
+  expect_identical(attr(master_sha, "status"), 200L)
+  expect_true(is_sha(master_sha))
+
+  tag <- create_tag(
+    name = "test-commits",
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-commits-", now))
+
+  tag_sha <- view_sha("test-commits", repo = str_c("ChadGoymer/test-commits-", now))
+
+  expect_is(tag_sha, "character")
+  expect_identical(attr(tag_sha, "status"), 200L)
+  expect_true(is_sha(tag_sha))
+  expect_identical(as.character(master_sha), as.character(tag_sha))
+
+})

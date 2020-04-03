@@ -494,3 +494,38 @@ browse_commit <- function(
     status  = attr(commit, "status"),
     header  = attr(commit, "header"))
 }
+
+
+#  FUNCTION: view_sha -------------------------------------------------------------------------
+#
+#' View the SHA for a commit
+#'
+#' This function returns the commit SHA given a git reference. A reference can be either a
+#' SHA, branch or tag. If it is a branch then the head commit is used.
+#'
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `view_sha()` returns the commit SHA as a string.
+#'
+#' @examples
+#' \dontrun{
+#'   view_sha("a-tag", repo = "ChadGoymer/test-githapi")
+#'   view_sha("a-branch", repo = "ChadGoymer/test-githapi")
+#' }
+#'
+#' @export
+#'
+view_sha <- function(
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing SHA for ref '", ref, "' from repository '", repo, "'")
+  gh_url("repos", repo, "commits", ref) %>%
+    gh_request("GET", accept = "application/vnd.github.VERSION.sha", ...)
+}
