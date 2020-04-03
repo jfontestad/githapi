@@ -477,3 +477,20 @@ test_that("view_commit returns a list of commit properties", {
   expect_identical(master_commit$author_login, "ChadGoymer")
 
 })
+
+
+# TEST: browse_commits ------------------------------------------------------------------------
+
+test_that("browse_commits opens the commit's history page in the browser", {
+
+  skip_if(!interactive(), "browse_commits must be tested manually")
+
+  commits <- browse_commits("master", str_c("ChadGoymer/test-commits-", now))
+
+  expect_is(commits, "character")
+  expect_identical(attr(commits, "status"), 200L)
+  expect_identical(
+    dirname(commits),
+    str_c("https://github.com/ChadGoymer/test-commits-", now, "/commits"))
+
+})
