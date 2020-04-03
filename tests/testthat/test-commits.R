@@ -494,3 +494,20 @@ test_that("browse_commits opens the commit's history page in the browser", {
     str_c("https://github.com/ChadGoymer/test-commits-", now, "/commits"))
 
 })
+
+
+# TEST: browse_commit -------------------------------------------------------------------------
+
+test_that("browse_commit opens the commit's history page in the browser", {
+
+  skip_if(!interactive(), "browse_commit must be tested manually")
+
+  commit <- browse_commit("master", str_c("ChadGoymer/test-commits-", now))
+
+  expect_is(commit, "character")
+  expect_identical(attr(commit, "status"), 200L)
+  expect_identical(
+    dirname(commit),
+    str_c("https://github.com/ChadGoymer/test-commits-", now, "/commit"))
+
+})

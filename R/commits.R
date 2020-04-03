@@ -465,3 +465,32 @@ browse_commits <- function(
     status  = attr(commit, "status"),
     header  = attr(commit, "header"))
 }
+
+
+#  FUNCTION: browse_commit --------------------------------------------------------------------
+#
+# TODO: Replace with view_commits in version 1.0
+#' @rdname view_commit
+#' @export
+#'
+browse_commit <- function(
+  ref,
+  repo,
+  ...)
+{
+  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Browsing repository '", repo, "'")
+  commit <- gh_url("repos", repo, "commits", ref) %>% gh_request("GET", ...)
+  httr::BROWSE(commit$html_url)
+
+  info("Done", level = 7)
+  structure(
+    commit$html_url,
+    class   = c("github", "character"),
+    url     = attr(commit, "url"),
+    request = attr(commit, "request"),
+    status  = attr(commit, "status"),
+    header  = attr(commit, "header"))
+}
