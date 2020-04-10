@@ -139,15 +139,15 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_identical(flat_commit$message, "Test commit made with upload_commit")
 
-  master_files <- view_trees(flat_commit$sha, "ChadGoymer/test-githapi")
+  master_files <- suppressWarnings(view_trees(flat_commit$sha, "ChadGoymer/test-githapi"))
   expect_identical(master_files$path, c("file-in-dir-1.txt", "file-in-dir-2.txt"))
 
-  recursive_commit <- upload_commit(
+  recursive_commit <- suppressWarnings(upload_commit(
     branch  = git_commits_branch,
     message = "Recursive commit made with upload_commit",
     path    = system.file("test-data/upload-tree", package = "githapi"),
     parents = git_commits_branch,
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/test-githapi"))
 
   expect_is(recursive_commit, "tbl")
   expect_identical(
@@ -167,7 +167,7 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_identical(recursive_commit$message, "Recursive commit made with upload_commit")
 
-  master_files <- view_trees(recursive_commit$sha, "ChadGoymer/test-githapi")
+  master_files <- suppressWarnings(view_trees(recursive_commit$sha, "ChadGoymer/test-githapi"))
   expect_identical(
     master_files$path,
     c("README.md",
@@ -180,11 +180,11 @@ test_that("upload_commit uploads files and directory structure to github", {
   if (!dir.exists(temp_path)) dir.create(temp_path)
   on.exit(unlink(temp_path, recursive = TRUE))
 
-  download_files(
+  suppressWarnings(download_files(
     paths    = "test-file.txt",
     location = temp_path,
     ref      = git_commits_branch,
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi"))
 
   temp_file <- file.path(temp_path, "test-file.txt")
   now <- as.character(Sys.time())
@@ -216,7 +216,7 @@ test_that("upload_commit uploads files and directory structure to github", {
 
   expect_identical(updated_commit$message, "Update commit made with upload_commit")
 
-  master_files <- view_trees(updated_commit$sha, "ChadGoymer/test-githapi")
+  master_files <- suppressWarnings(view_trees(updated_commit$sha, "ChadGoymer/test-githapi"))
   expect_identical(
     master_files$path,
     c("README.md",
@@ -225,15 +225,15 @@ test_that("upload_commit uploads files and directory structure to github", {
       "test-dir/file-in-dir-2.txt",
       "test-file.txt"))
 
-  file_contents <- read_files("test-file.txt", ref = git_commits_branch, repo = "ChadGoymer/test-githapi")
+  file_contents <- suppressWarnings(read_files("test-file.txt", ref = git_commits_branch, repo = "ChadGoymer/test-githapi"))
   expect_match(file_contents, now)
 
-  new_branch_commit <- upload_commit(
+  new_branch_commit <- suppressWarnings(upload_commit(
     branch  = "test-upload-commit",
     message = "Commit made on new branch with upload_commit",
     path    = system.file("test-data/upload-tree", package = "githapi"),
     parents = git_commits_branch,
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/test-githapi"))
   on.exit(suppressWarnings(delete_branches("test-upload-commit", "ChadGoymer/test-githapi")), add = TRUE)
 
   expect_is(new_branch_commit, "tbl")

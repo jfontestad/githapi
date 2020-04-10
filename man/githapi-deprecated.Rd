@@ -29,6 +29,15 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_git_tree]{gh_git_tree()}}: replace with \code{\link[=view_trees]{view_trees()}}
 \item \code{\link[=gh_save]{gh_save()}}: replace with \code{\link[=download_files]{download_files()}}
 \item \code{\link[=gh_source]{gh_source()}}: replace with \code{\link[=source_files]{source_files()}}
+\item \code{\link[=view_trees]{view_trees()}}: replace with \code{\link[=view_files]{view_files()}}
+\item \code{\link[=create_tree]{create_tree()}}: replace with \code{\link[=upload_files]{upload_files()}}
+\item \code{\link[=upload_tree]{upload_tree()}}: replace with \code{\link[=upload_files]{upload_files()}}
+\item \code{\link[=trees_exist]{trees_exist()}}: is being removed
+\item \code{\link[=view_blobs]{view_blobs()}}: replace with \code{\link[=view_files]{view_files()}}
+\item \code{\link[=create_blobs]{create_blobs()}}: replace with \code{\link[=create_file]{create_file()}}
+\item \code{\link[=upload_blobs]{upload_blobs()}}: replace with \code{\link[=upload_files]{upload_files()}}
+\item \code{\link[=download_files]{download_files()}}: replace with \code{\link[=download_file]{download_file()}}
+\item \code{\link[=blobs_exist]{blobs_exist()}}: is being removed
 }
 }
 
@@ -53,6 +62,11 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=gh_repository]{gh_repository()}}: replace with \code{\link[=view_repository]{view_repository()}}
 \item \code{\link[=gh_repositories]{gh_repositories()}}: replace with \code{\link[=view_repositories]{view_repositories()}}
 \item \code{\link[=is_repository]{is_repository()}}: is being removed
+\item \code{\link[=view_files]{view_files()}}: for specifying files: replace with \code{\link[=view_file]{view_file()}}
+\item \code{\link[=create_files]{create_files()}}: replace with \code{\link[=create_file]{create_file()}}
+\item \code{\link[=update_files]{update_files()}}: replace with \code{\link[=update_file]{update_file()}}
+\item \code{\link[=delete_files]{delete_files()}}: replace with \code{\link[=delete_file]{delete_file()}}
+\item \code{\link[=files_exist]{files_exist()}}: is being removed
 }
 }
 

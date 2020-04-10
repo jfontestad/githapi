@@ -75,6 +75,8 @@ view_files <- function(
         token = token, ...)
     })
   } else {
+    .Deprecated(msg = "Specifying paths within view_files() has been deprecated. Please use view_file() instead.")
+
     (is_character(paths)) ||
       error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
 
@@ -175,6 +177,8 @@ create_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("create_branch", package = "githapi")
+
   {
     if (missing(branches) || is_null(branches)) {
       branches <- NA
@@ -338,6 +342,8 @@ update_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("create_branch", package = "githapi")
+
   {
     if (missing(branches) || is_null(branches)) {
       branches <- NA
@@ -480,6 +486,8 @@ delete_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("create_branch", package = "githapi")
+
   {
     if (missing(branches) || is_null(branches)) {
       branches <- NA
@@ -584,6 +592,8 @@ files_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   {
     if (missing(ref) || is_null(ref)) {
       ref <- NULL

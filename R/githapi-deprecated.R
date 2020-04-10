@@ -27,6 +27,15 @@
 #' - [gh_git_tree()]: replace with [view_trees()]
 #' - [gh_save()]: replace with [download_files()]
 #' - [gh_source()]: replace with [source_files()]
+#' - [view_trees()]: replace with [view_files()]
+#' - [create_tree()]: replace with [upload_files()]
+#' - [upload_tree()]: replace with [upload_files()]
+#' - [trees_exist()]: is being removed
+#' - [view_blobs()]: replace with [view_files()]
+#' - [create_blobs()]: replace with [create_file()]
+#' - [upload_blobs()]: replace with [upload_files()]
+#' - [download_files()]: replace with [download_file()]
+#' - [blobs_exist()]: is being removed
 #'
 #' @section Repositories Functions:
 #'
@@ -48,6 +57,11 @@
 #' - [gh_repository()]: replace with [view_repository()]
 #' - [gh_repositories()]: replace with [view_repositories()]
 #' - [is_repository()]: is being removed
+#' - [view_files()]: for specifying files: replace with [view_file()]
+#' - [create_files()]: replace with [create_file()]
+#' - [update_files()]: replace with [update_file()]
+#' - [delete_files()]: replace with [delete_file()]
+#' - [files_exist()]: is being removed
 #'
 #' @section Issues, Pull Requests, labels and milestones:
 #'
