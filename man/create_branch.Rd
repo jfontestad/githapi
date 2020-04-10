@@ -9,8 +9,7 @@ create_branch(name, ref, repo, ...)
 \arguments{
 \item{name}{(string) The name of the branch.}
 
-\item{ref}{(string) Either a SHA, branch or tag used to identify the commit the branch is
-pointing at.}
+\item{ref}{(string) Either a SHA, branch or tag used to identify the commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 

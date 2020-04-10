@@ -9,8 +9,7 @@ update_branch(branch, ref, repo, force = FALSE, ...)
 \arguments{
 \item{branch}{(string) The name of the branch.}
 
-\item{ref}{(string) Either a SHA, branch or tag used to identify the new commit the branch
-is pointing at.}
+\item{ref}{(string) Either a SHA, branch or tag used to identify the new commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
