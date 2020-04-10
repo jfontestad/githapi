@@ -1,5 +1,23 @@
 # githapi 0.9.21
 
+- Renamed `view_branches()` to `.view_branches()`
+- Renamed `view_tags()` to `.view_tags()`
+- Renamed `upload_commit()` to `.upload_commit()`
+- Renamed `download_commit()` to `.download_commit()`
+- Renamed `view_commits()` to `.view_commits()`
+- Renamed `gh_download()` to `.gh_download()`
+- Added `upload_files()`
+- Added `download_file()`
+- Added `create_file()`
+- Added `update_file()`
+- Added `delete_file()`
+- Added `.view_files()`
+- Added `view_file()`
+- Added `browse_files()`
+- Added `browse_file()`
+
+# githapi 0.9.21
+
 - Added `upload_commit()` commented out
 - Added `download_commit()` commented out
 - Added `view_commits()` commented out

@@ -64,8 +64,8 @@
 #'     branch    = "master",
 #'     message   = "Commit to test .upload_commit()",
 #'     repo      = "ChadGoymer/test-githapi",
-#'     author    = list(name = "Bob",   email = "bob\@acme.com"),
-#'     committer = list(name = "Jane",  email = "jane\@acme.com"))
+#'     author    = list(name = "Bob",   email = "bob@acme.com"),
+#'     committer = list(name = "Jane",  email = "jane@acme.com"))
 #'
 #'   # Create a commit on a new branch
 #'   .upload_commit(

@@ -94,8 +94,8 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     branch    = "master",
     message   = "Commit to test .upload_commit()",
     repo      = "ChadGoymer/test-githapi",
-    author    = list(name = "Bob",   email = "bob\@acme.com"),
-    committer = list(name = "Jane",  email = "jane\@acme.com"))
+    author    = list(name = "Bob",   email = "bob@acme.com"),
+    committer = list(name = "Jane",  email = "jane@acme.com"))
 
   # Create a commit on a new branch
   .upload_commit(
