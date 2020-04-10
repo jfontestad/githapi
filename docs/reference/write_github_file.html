@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Upload files and create a commit — upload_files • githapi</title>
+<title>Write a file to a branch — write_github_file • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,12 @@
 
 
 
-<meta property="og:title" content="Upload files and create a commit — upload_files" />
-<meta property="og:description" content="This function uploads the specified files to a repository in GitHub and creates a commit
-on the specified branch." />
+<meta property="og:title" content="Write a file to a branch — write_github_file" />
+<meta property="og:description" content="These functions writes files to a repository by creating a new commit on the specified
+branch. write_github_file() writes the content to a text file, using
+readr::write_file(); write_github_lines() writes to a text file, using
+readr::write_lines() and write_github_csv() writes a CSV file, using
+readr::write_csv()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,39 +112,44 @@ on the specified branch." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Upload files and create a commit</h1>
+    <h1>Write a file to a branch</h1>
     <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/files.R'><code>R/files.R</code></a></small>
-    <div class="hidden name"><code>upload_files.Rd</code></div>
+    <div class="hidden name"><code>write_github_file.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function uploads the specified files to a repository in GitHub and creates a commit
-on the specified branch.</p>
+    <p>These functions writes files to a repository by creating a new commit on the specified
+branch. <code>write_github_file()</code> writes the <code>content</code> to a text file, using
+<code><a href='https://readr.tidyverse.org/reference/read_file.html'>readr::write_file()</a></code>; <code>write_github_lines()</code> writes to a text file, using
+<code><a href='https://readr.tidyverse.org/reference/read_lines.html'>readr::write_lines()</a></code> and <code>write_github_csv()</code> writes a CSV file, using
+<code><a href='https://readr.tidyverse.org/reference/write_delim.html'>readr::write_csv()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>upload_files</span>(
-  <span class='no'>from_path</span>,
-  <span class='no'>to_path</span>,
+    <pre class="usage"><span class='fu'>write_github_file</span>(<span class='no'>content</span>, <span class='no'>path</span>, <span class='no'>branch</span>, <span class='no'>message</span>, <span class='no'>repo</span>, <span class='no'>author</span>, <span class='no'>committer</span>, <span class='no'>...</span>)
+
+<span class='fu'>write_github_lines</span>(
+  <span class='no'>content</span>,
+  <span class='no'>path</span>,
   <span class='no'>branch</span>,
   <span class='no'>message</span>,
   <span class='no'>repo</span>,
   <span class='no'>author</span>,
   <span class='no'>committer</span>,
-  <span class='no'>parent</span>,
-  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
-)</pre>
+)
+
+<span class='fu'>write_github_csv</span>(<span class='no'>content</span>, <span class='no'>path</span>, <span class='no'>branch</span>, <span class='no'>message</span>, <span class='no'>repo</span>, <span class='no'>author</span>, <span class='no'>committer</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>from_path</th>
-      <td><p>(string) The paths to the files to upload. They must be readable.</p></td>
+      <th>content</th>
+      <td><p>(character or data.frame) The content of the file.</p></td>
     </tr>
     <tr>
-      <th>to_path</th>
-      <td><p>(string) The paths to write the files to, within the repository.</p></td>
+      <th>path</th>
+      <td><p>(string) The path to create the file at, within the repository.</p></td>
     </tr>
     <tr>
       <th>branch</th>
@@ -166,25 +174,16 @@ changes in the commit.</p></td>
 the commit.</p></td>
     </tr>
     <tr>
-      <th>parent</th>
-      <td><p>(string, optional) Reference for the commit to use as a parent, can be
-either a SHA, branch or tag. If it is a branch then the head commit is used. See the
-details section for more information.</p></td>
-    </tr>
-    <tr>
-      <th>force</th>
-      <td><p>(boolean, optional) Whether to force the update if it is not a simple
-fast-forward. Default: <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://readr.tidyverse.org/reference/read_file.html'>readr::write_file()</a></code>, <code><a href='https://readr.tidyverse.org/reference/read_lines.html'>readr::write_lines()</a></code> or
+<code><a href='https://readr.tidyverse.org/reference/write_delim.html'>readr::write_csv()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>upload_files()</code> returns a list of the commit properties.</p>
+    <p><code>write_github_file()</code>, <code>write_github_lines()</code> and <code>write_github_csv()</code> return a
+list of the commit properties.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
@@ -197,56 +196,30 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
 <li><p><strong>date</strong>: The date the commit was made.</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function uploads the specified files to a repository and creates a new commit on the
-specified branch. Note: the files are created, or updated if they already exist, and any
-other files in the parent are left unchanged.</p>
-<p>The <code>author</code> and <code>committer</code> arguments are optional and if not supplied the current
-authenticated user is used. However, if you want to set them explicitly you must specify
-a named list with <code>name</code> and <code>email</code> as the elements (see examples).</p>
-<p>If a parent has been specified the files are created or updated. If a parent has not been
-specified, but the branch exists the current head commit is used as a parent. If the
-branch does not exist then an orphan commit is created.</p>
-<p>Note: The GitHub API imposes a file size limit of 100MB for this request.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='co'># Upload files to the master branch</span>
-  <span class='fu'>upload_files</span>(
-    <span class='kw'>from_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>),
-    <span class='kw'>to_path</span>   <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"file1.txt"</span>, <span class='st'>"file2.txt"</span>),
+  <span class='fu'>write_github_file</span>(
+    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `write_github_file()`"</span>,
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Created a new file with write_github_file()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='fu'>write_github_lines</span>(
+    <span class='kw'>content</span>   <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"# This is a new file"</span>, <span class='st'>""</span>, <span class='st'>"Created by `write_github_lines()`"</span>),
+    <span class='kw'>path</span>      <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
     <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Commit to test upload_files()"</span>,
+    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Created a new file with write_github_lines()"</span>,
     <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
-  <span class='co'># Upload files into directories within the master branch</span>
-  <span class='fu'>upload_files</span>(
-    <span class='kw'>from_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>, <span class='st'>"c:/test/file3.txt"</span>),
-    <span class='kw'>to_path</span>   <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dir-1/file-1.txt"</span>, <span class='st'>"dir-1/dir-1-1/file-2.txt"</span>, <span class='st'>"dir-2/file-3.txt"</span>),
-    <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Commit to test upload_files()"</span>,
-    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='fu'>str_c</span>(<span class='st'>"ChadGoymer/test-files-"</span>, <span class='no'>now</span>))
-
-  <span class='co'># Upload files to the master branch specifying an author and committer</span>
-  <span class='fu'>upload_files</span>(
-    <span class='kw'>from_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>),
-    <span class='kw'>to_path</span>   <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"file1.txt"</span>, <span class='st'>"file2.txt"</span>),
-    <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Commit to test upload_files()"</span>,
-    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>author</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Bob"</span>,  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"bob@acme.com"</span>),
-    <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Jane"</span>, <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"jane@acme.com"</span>))
-
-  <span class='co'># Create a new branch from the master branch</span>
-  <span class='fu'>upload_files</span>(
-    <span class='kw'>from_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>),
-    <span class='kw'>to_path</span>   <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"file1.txt"</span>, <span class='st'>"file2.txt"</span>),
-    <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"new-branch"</span>,
-    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Commit to test upload_files()"</span>,
-    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>parent</span>    <span class='kw'>=</span> <span class='st'>"master"</span>)
+  <span class='fu'>write_github_csv</span>(
+    <span class='kw'>content</span> <span class='kw'>=</span> <span class='fu'>tibble</span>(<span class='kw'>letters</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>, <span class='kw'>numbers</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>26</span>),
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Updated an existing file with write_github_csv()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -254,7 +227,6 @@ branch does not exist then an orphan commit is created.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

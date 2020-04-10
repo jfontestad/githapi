@@ -70,7 +70,7 @@ the specified URL." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.22</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.23</span>
       </span>
     </div>
 
@@ -126,7 +126,8 @@ the specified URL.</p>
   <span class='kw'>headers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>accept</span> <span class='kw'>=</span> <span class='st'>"application/vnd.github.v3+json"</span>,
   <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>)
+  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -165,6 +166,10 @@ request. If <code>NULL</code> the OAuth process is triggered. Default: <code>NUL
       <td><p>(character, optional) The proxy server to use to connect to the github API.
 If <code>NULL</code> then no proxy is used. Can be set in the option <code>github.proxy</code> or the
 environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Ignored.</p></td>
     </tr>
     </table>
 

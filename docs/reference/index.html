@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.22</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.23</span>
       </span>
     </div>
 
@@ -217,15 +217,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="view_files.html">view_files()</a></code> </p>
-        </td>
-        <td><p>View information about a files</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="dot-view_files.html">.view_files()</a></code> <code><a href="dot-view_files.html">view_file()</a></code> <code><a href="dot-view_files.html">browse_files()</a></code> <code><a href="dot-view_files.html">browse_file()</a></code> </p>
         </td>
         <td><p>View files within a repository</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="write_github_file.html">write_github_file()</a></code> <code><a href="write_github_file.html">write_github_lines()</a></code> <code><a href="write_github_file.html">write_github_csv()</a></code> </p>
+        </td>
+        <td><p>Write a file to a branch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_github_file.html">read_github_file()</a></code> <code><a href="read_github_file.html">read_github_lines()</a></code> <code><a href="read_github_file.html">read_github_csv()</a></code> </p>
+        </td>
+        <td><p>Read files from a commit</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="github_source.html">github_source()</a></code> </p>
+        </td>
+        <td><p>Source a R script from a commit</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -696,26 +708,6 @@
           <p><code><a href="gh_assets.html">gh_assets()</a></code> </p>
         </td>
         <td><p>List assets for a release</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-git-data" class="hasAnchor"><a href="#section-git-data" class="anchor"></a>Git Data</h2>
-          <p class="section-desc"><p>Functions for accessing git data directly.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="read_files.html">read_files()</a></code> </p>
-        </td>
-        <td><p>Read the contents of text files</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="source_files.html">source_files()</a></code> </p>
-        </td>
-        <td><p>Source R files from a GitHub repository</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -1335,6 +1327,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="view_files.html">view_files()</a></code> </p>
+        </td>
+        <td><p>View information about a files</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="delete_files.html">delete_files()</a></code> </p>
         </td>
         <td><p>Delete files.</p></td>
@@ -1392,6 +1390,18 @@
           <p><code><a href="blobs_exist.html">blobs_exist()</a></code> </p>
         </td>
         <td><p>Determine whether blobs exist in the specified repository.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_files.html">read_files()</a></code> </p>
+        </td>
+        <td><p>Read the contents of text files</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="source_files.html">source_files()</a></code> </p>
+        </td>
+        <td><p>Source R files from a GitHub repository</p></td>
       </tr>
     </tbody>
     </table>
@@ -1408,7 +1418,6 @@
       <li><a href="#section-utilities">Utilities</a></li>
       <li><a href="#section-github-api">GitHub API</a></li>
       <li><a href="#section-repository-contents">Repository contents</a></li>
-      <li><a href="#section-git-data">Git Data</a></li>
       <li><a href="#section-gists">Gists</a></li>
       <li><a href="#section-deprecated">Deprecated</a></li>
     </ul>
