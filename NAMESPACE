@@ -2,6 +2,7 @@
 
 S3method(print,github)
 export(.view_branches)
+export(.view_tags)
 export(add_labels)
 export(blobs_exist)
 export(branches_exist)

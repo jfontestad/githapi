@@ -9,8 +9,7 @@ create_tag(name, ref, repo, ...)
 \arguments{
 \item{name}{(string) The name of the tag.}
 
-\item{ref}{(string) Either a SHA, branch or tag used to identify the commit the tag is
-pointing at.}
+\item{ref}{(string) Either a SHA, branch or tag used to identify the commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 

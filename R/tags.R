@@ -10,8 +10,7 @@
 #' - <https://developer.github.com/v3/git/refs/#create-a-reference>
 #'
 #' @param name (string) The name of the tag.
-#' @param ref (string) Either a SHA, branch or tag used to identify the commit the tag is
-#'   pointing at.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -81,8 +80,7 @@ create_tag <- function(
 #' - <https://developer.github.com/v3/git/refs/#update-a-reference>
 #'
 #' @param tag (string) The name of the tag.
-#' @param ref (string) Either a SHA, branch or tag used to identify the new commit the tag
-#'   is pointing at.
+#' @param ref (string) Either a SHA, branch or tag used to identify the new commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param force (boolean, optional) Whether to force the update if it is not a simple
 #'   fast-forward. Default: `FALSE`.
@@ -142,11 +140,11 @@ update_tag <- function(
 }
 
 
-#  FUNCTION: view_tags ------------------------------------------------------------------------
+#  FUNCTION: .view_tags ------------------------------------------------------------------------
 #
 #' View tags within a repository
 #'
-#' `view_tags()` summarises tags in a table with the properties as columns and a row for each
+#' `.view_tags()` summarises tags in a table with the properties as columns and a row for each
 #' tag in the repository. `view_tag()` returns a list of all properties for a single tag.
 #'
 #' For more details see the GitHub API documentation:
@@ -155,10 +153,10 @@ update_tag <- function(
 #'
 #' @param tag (string) The name of the tag.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-# @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return `view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
+#' @return `.view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
 #'   properties for a single tag.
 #'
 #' **Tag Properties:**
@@ -170,7 +168,7 @@ update_tag <- function(
 #' @examples
 #' \dontrun{
 #'   # View all tags in a repository
-#'   view_tags("ChadGoymer/test-githapi")
+#'   .view_tags("ChadGoymer/test-githapi")
 #'
 #'   # View a single tag
 #'   view_tag("new-tag", "ChadGoymer/test-githapi")
@@ -178,32 +176,31 @@ update_tag <- function(
 #'
 #' @export
 #'
-# TODO: Uncomment in version 1.0
-# view_tags <- function(
-#   repo,
-#   n_max = 1000,
-#   ...)
-# {
-#   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-#
-#   info("Viewing tags for repository '", repo, "'")
-#   tags_lst <- gh_url("repos", repo, "git/refs/tags") %>%
-#     gh_page(n_max = n_max, ...)
-#
-#   info("Transforming results", level = 4)
-#   tags_gh <- bind_properties(tags_lst, properties$reference) %>%
-#     add_column(name = basename(.$ref), .before = "ref")
-#
-#   info("Done", level = 7)
-#   tags_gh
-# }
-#
-#
+.view_tags <- function(
+  repo,
+  n_max = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing tags for repository '", repo, "'")
+  tags_lst <- gh_url("repos", repo, "git/refs/tags") %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  tags_gh <- bind_properties(tags_lst, properties$reference) %>%
+    add_column(name = basename(.$ref), .before = "ref")
+
+  info("Done", level = 7)
+  tags_gh
+}
+
+
 #  FUNCTION: view_tag -------------------------------------------------------------------------
 #
-# @rdname view_tags
-# @export
-#
+#' @rdname dot-view_tags
+#' @export
+#'
 view_tag <- function(
   tag,
   repo,

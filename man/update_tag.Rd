@@ -9,8 +9,7 @@ update_tag(tag, ref, repo, force = FALSE, ...)
 \arguments{
 \item{tag}{(string) The name of the tag.}
 
-\item{ref}{(string) Either a SHA, branch or tag used to identify the new commit the tag
-is pointing at.}
+\item{ref}{(string) Either a SHA, branch or tag used to identify the new commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
