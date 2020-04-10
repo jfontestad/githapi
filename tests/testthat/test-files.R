@@ -697,3 +697,158 @@ test_that("delete_file creates a new commit with the file deleted", {
   expect_identical(author_commit$committer_email, "jane@acme.com")
 
 })
+
+
+# TEST: write_github_file & read_github_file --------------------------------------------------
+
+test_that("write_github_file creates a new commit with a new file and read_github_file reads it", {
+
+  file_commit <- write_github_file(
+    content = "# This is a new file\\n\\n Created by `write_github_file()`",
+    path    = "new-file.md",
+    branch  = "master",
+    message = "Created a new file with write_github_file()",
+    repo    = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(file_commit, "list")
+  expect_identical(attr(file_commit, "status"), 200L)
+  expect_identical(
+    map_chr(file_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      tree_sha        = "character",
+      parents         = "character",
+      date            = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(file_commit$message, "Created a new file with write_github_file()")
+
+  file_contents <- read_github_file(
+    path = "new-file.md",
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(file_contents, "character")
+  expect_identical(attr(file_contents, "status"), 200L)
+  expect_identical(
+    as.character(file_contents),
+    "# This is a new file\\n\\n Created by `write_github_file()`")
+
+})
+
+
+# TEST: write_github_lines & read_github_lines ------------------------------------------------
+
+test_that("write_github_lines creates a new commit with a new file and read_github_lines reads it", {
+
+  lines_commit <- write_github_lines(
+    content = c("# This is a new file", "", "Created by `write_github_lines()`"),
+    path    = "new-lines.md",
+    branch  = "master",
+    message = "Created a new file with write_github_lines()",
+    repo    = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(lines_commit, "list")
+  expect_identical(attr(lines_commit, "status"), 200L)
+  expect_identical(
+    map_chr(lines_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      tree_sha        = "character",
+      parents         = "character",
+      date            = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(lines_commit$message, "Created a new file with write_github_lines()")
+
+  lines_contents <- read_github_lines(
+    path = "new-lines.md",
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(lines_contents, "character")
+  expect_identical(attr(lines_contents, "status"), 200L)
+  expect_identical(
+    as.character(lines_contents),
+    c("# This is a new file", "", "Created by `write_github_lines()`"))
+
+})
+
+
+# TEST: write_github_csv & read_github_csv ----------------------------------------------------
+
+test_that("write_github_csv creates a new commit with a new file and read_github_csv reads it", {
+
+  csv_commit <- write_github_csv(
+    content = tibble(letters = LETTERS, numbers = 1:26),
+    path    = "new-csv.csv",
+    branch  = "master",
+    message = "Created a new file with write_github_csv()",
+    repo    = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(csv_commit, "list")
+  expect_identical(attr(csv_commit, "status"), 200L)
+  expect_identical(
+    map_chr(csv_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      tree_sha        = "character",
+      parents         = "character",
+      date            = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(csv_commit$message, "Created a new file with write_github_csv()")
+
+  csv_contents <- read_github_csv(
+    path = "new-csv.csv",
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(csv_contents, "tbl")
+  expect_identical(attr(csv_contents, "status"), 200L)
+  expect_equal(
+    as_tibble(csv_contents),
+    tibble(letters = LETTERS, numbers = 1:26*1.0))
+
+})
+
+
+# TEST: github_source -------------------------------------------------------------------------
+
+test_that("github_source sources a file in GitHub", {
+
+  write_github_file(
+    content = "test_source <- function() return(\"Testing github_source\")",
+    path    = "test-source.R",
+    branch  = "master",
+    message = "Created a new R script to test github_source()",
+    repo    = str_c("ChadGoymer/test-files-", now))
+
+  result <- github_source(
+    path = "test-source.R",
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-files-", now))
+
+  expect_true(exists("test_source"))
+  expect_is(test_source, "function")
+  expect_identical(test_source(), "Testing github_source")
+
+})

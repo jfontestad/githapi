@@ -349,6 +349,8 @@ download_file <- function(
     gh_request("GET", ...) %>%
     pluck(which(map_chr(., "name") == basename(from_path)))
 
+  assert(!is_null(file), "Cannot find file '", basename(from_path), "' in commit '", ref, "'")
+
   info("Downloading file '", basename(from_path), "' in repository '", repo, "'")
   path_gh <- gh_url("repos", repo, "git/blobs", file$sha) %>%
     .gh_download(to_path, accept = "application/vnd.github.v3.raw", ...)
@@ -384,7 +386,8 @@ download_file <- function(
 #'   the commit.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `create_file()` returns a list of the commit properties.
+#' @return `create_file()`, `update_file()` and `delete_file()` return a list of the commit
+#'   properties.
 #'
 #' **Commit Properties:**
 #'
@@ -792,4 +795,394 @@ browse_file <- function(
     request = attr(file, "request"),
     status  = attr(file, "status"),
     header  = attr(file, "header"))
+}
+
+
+#  FUNCTION: write_github_file ----------------------------------------------------------------
+#
+#' Write a file to a branch
+#'
+#' These functions writes files to a repository by creating a new commit on the specified
+#' branch. `write_github_file()` writes the `content` to a text file, using
+#' [readr::write_file()]; `write_github_lines()` writes to a text file, using
+#' [readr::write_lines()] and `write_github_csv()` writes a CSV file, using
+#' [readr::write_csv()].
+#'
+#' @param content (character or data.frame) The content of the file.
+#' @param path (string) The path to create the file at, within the repository.
+#' @param branch (string) The name of the branch to make the new commit on.
+#' @param message (string) The commit message.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param author (list, optional) A the name and email address of the user who wrote the
+#'   changes in the commit.
+#' @param committer (list, optional) A the name and email address of the user who created
+#'   the commit.
+#' @param ... Parameters passed to [readr::write_file()], [readr::write_lines()] or
+#'   [readr::write_csv()].
+#'
+#' @return `write_github_file()`, `write_github_lines()` and `write_github_csv()` return a
+#'   list of the commit properties.
+#'
+#' **Commit Properties:**
+#'
+#' - **sha**: The commit SHA.
+#' - **message**: The commit message.
+#' - **author_name**: The author's name.
+#' - **author_email**: The author's email address.
+#' - **committer_name**: The committer's name.
+#' - **committer_email**: The committer's email address.
+#' - **tree_sha**: The SHA of the file tree.
+#' - **parent_sha**: The commit SHA of the parent(s).
+#' - **date**: The date the commit was made.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   write_github_file(
+#'     content = "# This is a new file\\n\\n Created by `write_github_file()`",
+#'     path    = "new-file.md",
+#'     branch  = "master",
+#'     message = "Created a new file with write_github_file()",
+#'     repo    = "ChadGoymer/githapi")
+#'
+#'   write_github_lines(
+#'     content   = c("# This is a new file", "", "Created by `write_github_lines()`"),
+#'     path      = "new-file.md",
+#'     branch    = "master",
+#'     message   = "Created a new file with write_github_lines()",
+#'     repo      = "ChadGoymer/githapi")
+#'
+#'   write_github_csv(
+#'     content = tibble(letters = LETTERS, numbers = 1:26),
+#'     path    = "new-file.md",
+#'     branch  = "master",
+#'     message = "Updated an existing file with write_github_csv()",
+#'     repo    = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+write_github_file <- function(
+  content,
+  path,
+  branch,
+  message,
+  repo,
+  author,
+  committer,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
+  assert(is_scalar_character(message), "'message' must be a string:\n  ", message)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  temp_file <- file.path(temp_path, basename(path))
+
+  info("Writing file '", basename(path), "'")
+  readr::write_file(x = content, path = temp_file, ...)
+
+  upload_files(
+    from_path = temp_file,
+    to_path   = path,
+    branch    = branch,
+    message   = message,
+    repo      = repo,
+    author    = author,
+    committer = committer)
+}
+
+
+#  FUNCTION: write_github_lines ---------------------------------------------------------------
+#
+#' @rdname write_github_file
+#' @export
+#'
+write_github_lines <- function(
+  content,
+  path,
+  branch,
+  message,
+  repo,
+  author,
+  committer,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
+  assert(is_scalar_character(message), "'message' must be a string:\n  ", message)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  temp_file <- file.path(temp_path, basename(path))
+
+  info("Writing file '", basename(path), "'")
+  readr::write_lines(x = content, path = temp_file, ...)
+
+  upload_files(
+    from_path = temp_file,
+    to_path   = path,
+    branch    = branch,
+    message   = message,
+    repo      = repo,
+    author    = author,
+    committer = committer)
+}
+
+
+#  FUNCTION: write_github_csv -----------------------------------------------------------------
+#
+#' @rdname write_github_file
+#' @export
+#'
+write_github_csv <- function(
+  content,
+  path,
+  branch,
+  message,
+  repo,
+  author,
+  committer,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
+  assert(is_scalar_character(message), "'message' must be a string:\n  ", message)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  temp_file <- file.path(temp_path, basename(path))
+
+  info("Writing file '", basename(path), "'")
+  readr::write_csv(x = content, path = temp_file, ...)
+
+  upload_files(
+    from_path = temp_file,
+    to_path   = path,
+    branch    = branch,
+    message   = message,
+    repo      = repo,
+    author    = author,
+    committer = committer)
+}
+
+
+#  FUNCTION: read_github_file -----------------------------------------------------------------
+#
+#' Read files from a commit
+#'
+#' These functions read a file from a commit in a repository. `read_github_file()` reads a
+#' text file, using [readr::read_file()], and returns the result as a string.
+#' `read_github_lines()` reads a text file, using [readr::read_lines()], and returns the
+#' result as a character vector, one element per line. `read_github_csv()` reads a CSV file,
+#' using [readr::read_csv()], and returns the result as a tibble.
+#'
+#' @param path (string) The path to the file, within the repository.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [readr::read_file()], [readr::read_lines()] or
+#'   [readr::read_csv()].
+#'
+#' @return `read_github_file()` returns a string containing the file contents,
+#'   `read_github_lines()` returns a character vector, and `read_github_csv()` returns a
+#'   tibble.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   read_github_file(
+#'     path = "README.md",
+#'     ref  = "master",
+#'     repo = "ChadGoymer/githapi")
+#'
+#'   read_github_lines(
+#'     path = "README.md",
+#'     ref  = "master",
+#'     repo = "ChadGoymer/githapi")
+#'
+#'   read_github_csv(
+#'     path = "inst/test-data/test.csv",
+#'     ref  = "master",
+#'     repo = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+read_github_file <- function(
+  path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  file_path <- download_file(
+    from_path = path,
+    to_path   = file.path(temp_path, basename(path)),
+    ref       = ref,
+    repo      = repo)
+
+  info("Reading file '", basename(path), "'")
+  file_contents <- readr::read_file(file_path, ...)
+
+  info("Done", level = 7)
+  structure(
+    file_contents,
+    class   = c("github", class(file_contents)),
+    url     = attr(file_path, "url"),
+    request = attr(file_path, "request"),
+    status  = attr(file_path, "status"),
+    header  = attr(file_path, "header"))
+}
+
+
+#  FUNCTION: read_github_lines ----------------------------------------------------------------
+#
+#' @rdname read_github_file
+#' @export
+#'
+read_github_lines <- function(
+  path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  file_path <- download_file(
+    from_path = path,
+    to_path   = file.path(temp_path, basename(path)),
+    ref       = ref,
+    repo      = repo)
+
+  info("Reading file '", basename(path), "'")
+  file_contents <- readr::read_lines(file_path, ...)
+
+  info("Done", level = 7)
+  structure(
+    file_contents,
+    class   = c("github", class(file_contents)),
+    url     = attr(file_path, "url"),
+    request = attr(file_path, "request"),
+    status  = attr(file_path, "status"),
+    header  = attr(file_path, "header"))
+}
+
+
+#  FUNCTION: read_github_csv ------------------------------------------------------------------
+#
+#' @rdname read_github_file
+#' @export
+#'
+read_github_csv <- function(
+  path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  file_path <- download_file(
+    from_path = path,
+    to_path   = file.path(temp_path, basename(path)),
+    ref       = ref,
+    repo      = repo)
+
+  info("Reading file '", basename(path), "'")
+  file_contents <- readr::read_csv(file_path, ...)
+
+  info("Done", level = 7)
+  structure(
+    file_contents,
+    class   = c("github", class(file_contents)),
+    url     = attr(file_path, "url"),
+    request = attr(file_path, "request"),
+    status  = attr(file_path, "status"),
+    header  = attr(file_path, "header"))
+}
+
+
+#  FUNCTION: github_source --------------------------------------------------------------------
+#
+#' Source a R script from a commit
+#'
+#' This function sources an R script from a commit in a repository using [source()].
+#'
+#' @param path (string) The path to the file, within the repository.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [source()].
+#'
+#' @return The result of the sourced script.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   github_source(
+#'     path = "inst/test-data/test-script.R",
+#'     ref  = "master",
+#'     repo = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+github_source <- function(
+  path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  file_path <- download_file(
+    from_path = path,
+    to_path   = file.path(temp_path, basename(path)),
+    ref       = ref,
+    repo      = repo)
+
+  info("Sourcing file '", basename(path), "'")
+  result <- source(file_path, ...)
+
+  info("Done", level = 7)
+  structure(
+    result,
+    class   = c("github", class(result)),
+    url     = attr(file_path, "url"),
+    request = attr(file_path, "request"),
+    status  = attr(file_path, "status"),
+    header  = attr(file_path, "header"))
 }

@@ -10,7 +10,8 @@
   headers = NULL,
   accept = NULL,
   token = getOption("github.token"),
-  proxy = getOption("github.proxy")
+  proxy = getOption("github.proxy"),
+  ...
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ request. If \code{NULL} the OAuth process is triggered. Default: \code{NULL}.}
 \item{proxy}{(character, optional) The proxy server to use to connect to the github API.
 If \code{NULL} then no proxy is used. Can be set in the option \code{github.proxy} or the
 environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
+
+\item{...}{Ignored.}
 }
 \value{
 A \code{github} string object containing the path, with the attributes:

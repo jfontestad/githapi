@@ -1,4 +1,15 @@
-# githapi 0.9.21
+# githapi 0.9.23
+
+- Added `write_github_file()`
+- Added `write_github_lines()`
+- Added `write_github_csv()`
+- Added `read_github_file()`
+- Added `read_github_lines()`
+- Added `read_github_csv()`
+- Added `github_source()`
+- Added `...` argument to `gh_request()`, `gh_page()`, `gh_find()` and `gh_download()`
+
+# githapi 0.9.22
 
 - Renamed `view_branches()` to `.view_branches()`
 - Renamed `view_tags()` to `.view_tags()`

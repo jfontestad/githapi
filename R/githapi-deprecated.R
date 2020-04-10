@@ -36,6 +36,8 @@
 #' - [upload_blobs()]: replace with [upload_files()]
 #' - [download_files()]: replace with [download_file()]
 #' - [blobs_exist()]: is being removed
+#' - [read_files()]: replace with [read_github_file()]
+#' - [source_files()]: replace with [github_source()]
 #'
 #' @section Repositories Functions:
 #'

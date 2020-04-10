@@ -195,6 +195,7 @@ gh_url <- function(
 #' @param proxy (character, optional) The proxy server to use to connect to the github API.
 #'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
 #'   environment variable `GITHUB_PROXY`. Default: `NULL`.
+#' @param ... Ignored.
 #'
 #' @return A `github` list object consisting of the response, parsed into a list, with the
 #'   attributes:
@@ -240,7 +241,8 @@ gh_request <- function(
   headers = NULL,
   accept  = "application/vnd.github.v3+json",
   token   = getOption("github.token"),
-  proxy   = getOption("github.proxy"))
+  proxy   = getOption("github.proxy"),
+  ...)
 {
   assert(is_url(url), "'url' must be a valid URL:\n  ", url)
   assert(is_scalar_character(type), "'type' must be a string:\n  ", type)
@@ -351,6 +353,7 @@ gh_request <- function(
 #' @param proxy (character, optional) The proxy server to use to connect to the github API.
 #'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
 #'   environment variable `GITHUB_PROXY`. Default: `NULL`.
+#' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A `github` list object consisting of the response, parsed into a list, with the
 #'   attributes:
@@ -381,7 +384,8 @@ gh_page <- function(
   headers = NULL,
   accept  = "application/vnd.github.v3+json",
   token   = gh_token(),
-  proxy   = getOption("github.proxy"))
+  proxy   = getOption("github.proxy"),
+  ...)
 {
   assert(is_url(url), "'url' must be a valid URL:\n  ", url)
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0), "'n_max' must be a positive integer:\n  ", n_max)
@@ -400,7 +404,14 @@ gh_page <- function(
   {
     parsed_url$query$per_page <- as.character(p)
     page_url <- httr::build_url(parsed_url)
-    page <- gh_request("GET", url = page_url, accept = accept, token = token, headers = headers, proxy = proxy)
+    page <- gh_request(
+      type    = "GET",
+      url     = page_url,
+      accept  = accept,
+      token   = token,
+      headers = headers,
+      proxy   = proxy,
+      ...)
 
     response_list        <- c(response_list, page)
     response_attr$url    <- c(response_attr$url, page_url)
@@ -455,6 +466,7 @@ gh_page <- function(
 #' @param proxy (character, optional) The proxy server to use to connect to the github API.
 #'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
 #'   environment variable `GITHUB_PROXY`. Default: `NULL`.
+#' @param ... Parameters passed to [gh_request()].
 #'
 #' @return A `github` list object consisting of the response, parsed into a list, with the
 #'   attributes:
@@ -483,7 +495,8 @@ gh_find <- function(
   headers   = NULL,
   accept    = "application/vnd.github.v3+json",
   token     = gh_token(),
-  proxy     = getOption("github.proxy"))
+  proxy     = getOption("github.proxy"),
+  ...)
 {
   assert(is_url(url), "'url' must be a valid URL:\n  ", url)
   assert(is_scalar_character(property), "'property' must be a string:\n  ", property)
@@ -500,7 +513,14 @@ gh_find <- function(
 
   for (p in 1:max_pages)
   {
-    page <- gh_request("GET", url = page_url, accept = accept, token = token, headers = headers, proxy = proxy)
+    page <- gh_request(
+      type    = "GET",
+      url     = page_url,
+      accept  = accept,
+      token   = token,
+      headers = headers,
+      proxy   = proxy,
+      ...)
     matched_results <- keep(page, ~.[[property]] == as.character(value))
 
     if (length(matched_results) > 0)
@@ -550,6 +570,7 @@ gh_find <- function(
 #' @param proxy (character, optional) The proxy server to use to connect to the github API.
 #'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
 #'   environment variable `GITHUB_PROXY`. Default: `NULL`.
+#' @param ... Ignored.
 #'
 #' @return A `github` string object containing the path, with the attributes:
 #'   - **url**: The URLs the request was sent to
@@ -574,7 +595,8 @@ gh_find <- function(
   headers = NULL,
   accept  = NULL,
   token   = getOption("github.token"),
-  proxy   = getOption("github.proxy"))
+  proxy   = getOption("github.proxy"),
+  ...)
 {
   assert(is_url(url), "'url' must be a valid URL:\n  ", url)
   assert(

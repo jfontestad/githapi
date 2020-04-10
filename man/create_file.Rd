@@ -32,7 +32,8 @@ the commit.}
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{create_file()} returns a list of the commit properties.
+\code{create_file()}, \code{update_file()} and \code{delete_file()} return a list of the commit
+properties.
 
 \strong{Commit Properties:}
 \itemize{
