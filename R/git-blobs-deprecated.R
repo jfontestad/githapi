@@ -237,6 +237,8 @@ read_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("read_github_file", package = "githapi")
+
   {
     if (missing(repo)) {
       info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
@@ -463,6 +465,8 @@ source_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("github_source", package = "githapi")
+
   {
     if (missing(repo)) {
       info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)

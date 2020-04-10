@@ -38,6 +38,8 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=upload_blobs]{upload_blobs()}}: replace with \code{\link[=upload_files]{upload_files()}}
 \item \code{\link[=download_files]{download_files()}}: replace with \code{\link[=download_file]{download_file()}}
 \item \code{\link[=blobs_exist]{blobs_exist()}}: is being removed
+\item \code{\link[=read_files]{read_files()}}: replace with \code{\link[=read_github_file]{read_github_file()}}
+\item \code{\link[=source_files]{source_files()}}: replace with \code{\link[=github_source]{github_source()}}
 }
 }
 
