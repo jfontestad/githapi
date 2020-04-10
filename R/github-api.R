@@ -534,111 +534,113 @@ gh_find <- function(
 }
 
 
-#  FUNCTION: gh_download ----------------------------------------------------------------------
+#  FUNCTION: .gh_download ---------------------------------------------------------------------
 #
-# Download a file from GitHub
-#
-# This function downloads a file from GitHub in as a binary object.
-#
-# @param url (string) The address of the API endpoint.
-# @param path (string) The path to download the file to.
-# @param headers (character, optional) Headers to add to the request. Default: `NULL`.
-# @param token (string or Token, optional) An authorisation token to include with the
-# request. If `NULL` the OAuth process is triggered. Default: `NULL`.
-# @param proxy (character, optional) The proxy server to use to connect to the github API.
-#   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
-#   environment variable `GITHUB_PROXY`. Default: `NULL`.
-#
-# @return A `github` string object containing the path, with the attributes:
-#   - **url**: The URLs the request was sent to
-#   - **request**: The type of HTTP request made
-#   - **status**: The HTTP status code returned
-#   - **header**: The HTTP header returned
-#
-# @examples
-# \dontrun{
-#
-#   # Find an issue by title
-#   gh_download(
-#     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/zipball/master",
-#     path = "~/githapi-master.zip")
-# }
-#
-# @export
-#
-# gh_download <- function(
-#   url,
-#   path,
-#   headers,
-#   token = getOption("github.token"),
-#   proxy = getOption("github.proxy"))
-# {
-#   assert(is_url(url), "'url' must be a valid URL:\n  ", url)
-#   assert(
-#     is_dir(dirname(path)) && is_writeable(dirname(path)),
-#     "'path' must be a writeable path:\n  ", path)
-#
-#   if (missing(headers))
-#   {
-#     headers <- httr::add_headers(.headers = NULL)
-#   }
-#   else
-#   {
-#     assert(is_character(headers), "'headers' must be a character vector:\n  ", headers)
-#     headers <- httr::add_headers(.headers = headers)
-#   }
-#
-#   token <- gh_token(proxy = proxy, token = token)
-#   if (is_sha(token))
-#   {
-#     headers <- c(headers, httr::add_headers(Authorization = str_c("token ", token)))
-#   }
-#   else
-#   {
-#     headers <- c(headers, httr::config(token = token))
-#   }
-#
-#   if (!is_null(proxy))
-#   {
-#     assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
-#     httr::set_config(httr::use_proxy(proxy))
-#     on.exit(httr::reset_config())
-#   }
-#
-#   info("> DOWNLOAD: ", url, level = 3)
-#   response <- httr::GET(url, httr::write_disk(path, overwrite = TRUE), headers)
-#
-#   if (httr::http_error(response))
-#   {
-#     parsed_response <- httr::content(response, as = "text", encoding = "UTF-8")
-#     message <- pluck(parsed_response, "message")
-#     errors  <- pluck(parsed_response, "errors") %>%
-#       map_chr(function(e) if (is_null(e$message)) str_c(e, collapse = " ") else e$message)
-#     doc_url <- pluck(parsed_response, "documentation_url")
-#
-#     msg <- str_replace_all(message, "\\n\\n", "\n  ") %>%
-#       c(errors) %>%
-#       str_c(collapse = "\n  ")
-#
-#     error(
-#       "GitHub GET request failed:\n",
-#       "\n[Status]  ", httr::status_code(response),
-#       "\n[URL]     ", url,
-#       "\n[Message] ", msg,
-#       "\n[Details] ", doc_url)
-#   }
-#
-#   structered_path <- structure(
-#     path,
-#     class   = c("github", "character"),
-#     url     = url,
-#     request = "GET",
-#     status  = httr::status_code(response),
-#     header  = httr::headers(response))
-#
-#   info("> Done", level = 9)
-#   invisible(structered_path)
-# }
+#' Download a file from GitHub
+#'
+#' This function downloads a file from GitHub in as a binary object.
+#'
+#' @param url (string) The address of the API endpoint.
+#' @param path (string) The path to download the file to.
+#' @param headers (character, optional) Headers to add to the request. Default: `NULL`.
+#' @param accept (string, optional) The mime format to accept when making the call.
+#'   Default: `NULL`.
+#' @param token (string or Token, optional) An authorisation token to include with the
+#' request. If `NULL` the OAuth process is triggered. Default: `NULL`.
+#' @param proxy (character, optional) The proxy server to use to connect to the github API.
+#'   If `NULL` then no proxy is used. Can be set in the option `github.proxy` or the
+#'   environment variable `GITHUB_PROXY`. Default: `NULL`.
+#'
+#' @return A `github` string object containing the path, with the attributes:
+#'   - **url**: The URLs the request was sent to
+#'   - **request**: The type of HTTP request made
+#'   - **status**: The HTTP status code returned
+#'   - **header**: The HTTP header returned
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Find an issue by title
+#'   .gh_download(
+#'     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/zipball/master",
+#'     path = "~/githapi-master.zip")
+#' }
+#'
+#' @export
+#'
+.gh_download <- function(
+  url,
+  path,
+  headers = NULL,
+  accept  = NULL,
+  token   = getOption("github.token"),
+  proxy   = getOption("github.proxy"))
+{
+  assert(is_url(url), "'url' must be a valid URL:\n  ", url)
+  assert(
+    is_dir(dirname(path)) && is_writeable(dirname(path)),
+    "'path' must be a writeable path:\n  ", path)
+  assert(is_null(headers) || is_character(headers), "'headers' must be a character vector:\n  ", headers)
+
+  headers <- httr::add_headers(.headers = headers)
+
+  if (!is_null(accept))
+  {
+    headers <- c(headers, httr::accept(accept))
+  }
+
+  token <- gh_token(proxy = proxy, token = token)
+  if (is_sha(token))
+  {
+    headers <- c(headers, httr::add_headers(Authorization = str_c("token ", token)))
+  }
+  else
+  {
+    headers <- c(headers, httr::config(token = token))
+  }
+
+  if (!is_null(proxy))
+  {
+    assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
+    httr::set_config(httr::use_proxy(proxy))
+    on.exit(httr::reset_config())
+  }
+
+  info("> DOWNLOAD: ", url, level = 3)
+  response <- httr::GET(url, httr::write_disk(path, overwrite = TRUE), headers)
+
+  if (httr::http_error(response))
+  {
+    parsed_response <- httr::content(response, as = "text", encoding = "UTF-8") %>%
+      jsonlite::fromJSON(simplifyVector = FALSE)
+    message <- pluck(parsed_response, "message")
+    errors  <- pluck(parsed_response, "errors") %>%
+      map_chr(function(e) if (is_null(e$message)) str_c(e, collapse = " ") else e$message)
+    doc_url <- pluck(parsed_response, "documentation_url")
+
+    msg <- str_replace_all(message, "\\n\\n", "\n  ") %>%
+      c(errors) %>%
+      str_c(collapse = "\n  ")
+
+    error(
+      "GitHub GET request failed:\n",
+      "\n[Status]  ", httr::status_code(response),
+      "\n[URL]     ", url,
+      "\n[Message] ", msg,
+      "\n[Details] ", doc_url)
+  }
+
+  structered_path <- structure(
+    normalizePath(path, winslash = "/", mustWork = TRUE),
+    class   = c("github", "character"),
+    url     = url,
+    request = "GET",
+    status  = httr::status_code(response),
+    header  = httr::headers(response))
+
+  info("> Done", level = 9)
+  invisible(structered_path)
+}
 
 
 #  FUNCTION: print.github -----------------------------------------------------------------------

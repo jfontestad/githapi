@@ -2,6 +2,7 @@
 
 S3method(print,github)
 export(.download_commit)
+export(.gh_download)
 export(.upload_commit)
 export(.view_branches)
 export(.view_commits)
