@@ -384,7 +384,8 @@ download_file <- function(
 #'   the commit.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `create_file()` returns a list of the commit properties.
+#' @return `create_file()`, `update_file()` and `delete_file()` return a list of the commit
+#'   properties.
 #'
 #' **Commit Properties:**
 #'
