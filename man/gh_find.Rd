@@ -12,7 +12,8 @@ gh_find(
   headers = NULL,
   accept = "application/vnd.github.v3+json",
   token = gh_token(),
-  proxy = getOption("github.proxy")
+  proxy = getOption("github.proxy"),
+  ...
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ request. If \code{NULL} the OAuth process is triggered. Default: \code{NULL}.}
 \item{proxy}{(character, optional) The proxy server to use to connect to the github API.
 If \code{NULL} then no proxy is used. Can be set in the option \code{github.proxy} or the
 environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
+
+\item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
 A \code{github} list object consisting of the response, parsed into a list, with the
