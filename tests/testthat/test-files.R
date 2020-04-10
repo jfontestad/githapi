@@ -427,3 +427,28 @@ test_that("upload_files uploads files and creates a new commit", {
   expect_identical(new_branch_commit$parents, flat_commit$sha)
 
 })
+
+
+# TEST: download_file -------------------------------------------------------------------------
+
+test_that("download_file downloads a file and returns its path", {
+
+  temp_path <- file.path(tempdir(), "test-download-file")
+  if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
+  dir.create(temp_path)
+  on.exit(unlink(temp_path))
+
+  file_path <- download_file(
+    from_path = "README.md",
+    to_path   = file.path(temp_path, "README.md"),
+    ref       = "master",
+    repo      = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(file_path, "character")
+  expect_identical(attr(file_path, "status"), 200L)
+  expect_identical(
+    as.character(file_path),
+    normalizePath(file.path(temp_path, "README.md"), winslash = "/"))
+  expect_true(file.exists(file_path))
+
+})

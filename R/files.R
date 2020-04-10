@@ -301,3 +301,58 @@ upload_files <- function(
 
   view_commit(commit$sha, repo = repo, ...)
 }
+
+
+#  FUNCTION: download_file --------------------------------------------------------------------
+#
+#' Download a file from GitHub
+#'
+#' This function downloads a file in the specified commit to the path provided.
+#'
+#' Note: The GitHub API imposes a file size limit of 100MB for this request.
+#'
+#' @param from_path (string) The path to the file to download, within the repository.
+#' @param to_path (string) The path to download the file to.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `download_file()` returns the path where the file is downloaded to.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Download the README file from the master branch
+#'   download_file(
+#'     from_path = "README.md",
+#'     to_path   = "~/README.md",
+#'     ref       = "master",
+#'     repo      = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+download_file <- function(
+  from_path,
+  to_path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(from_path), "'from_path' must be a string:\n  ", from_path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing file '", basename(from_path), "' in repository '", repo, "'")
+  file <- gh_url("repos", repo, "contents", from_path) %>%
+    dirname() %>%
+    gh_request("GET", ...) %>%
+    pluck(which(map_chr(., "name") == basename(from_path)))
+
+  info("Downloading file '", basename(from_path), "' in repository '", repo, "'")
+  path_gh <- gh_url("repos", repo, "git/blobs", file$sha) %>%
+    .gh_download(to_path, accept = "application/vnd.github.v3.raw", ...)
+
+  info("Done", level = 3)
+  path_gh
+}
