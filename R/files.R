@@ -695,3 +695,40 @@ delete_file <- function(
     status  = attr(files_lst, "status"),
     header  = attr(files_lst, "header"))
 }
+
+
+#  FUNCTION: view_file ------------------------------------------------------------------------
+#
+#' @rdname dot-view_files
+#' @export
+#'
+view_file <- function(
+  path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing file '", basename(path), "' in repository '", repo, "'")
+  files_lst <- gh_url("repos", repo, "contents", path) %>%
+    dirname() %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  file_gh <- files_lst %>%
+    pluck(which(map_chr(files_lst, "name") == basename(path))) %>%
+    select_properties(properties$file) %>%
+    discard(names(.) == "type")
+
+  info("Done", level = 7)
+  structure(
+    file_gh,
+    class   = class(files_lst),
+    url     = attr(files_lst, "url"),
+    request = attr(files_lst, "request"),
+    status  = attr(files_lst, "status"),
+    header  = attr(files_lst, "header"))
+}

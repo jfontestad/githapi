@@ -595,6 +595,26 @@ test_that(".view_files returns a tibble of file properties", {
 })
 
 
+# TEST: view_file -----------------------------------------------------------------------------
+
+test_that("view_file returns a list of file properties", {
+
+  readme_file <- view_file("README.md", "master", str_c("ChadGoymer/test-files-", now))
+
+  expect_is(readme_file, "list")
+  expect_identical(attr(readme_file, "status"), 200L)
+  expect_identical(
+    map_chr(readme_file, ~ class(.)[[1]]),
+    c(path     = "character",
+      sha      = "character",
+      size     = "numeric",
+      html_url = "character"))
+
+  expect_identical(readme_file$path, "README.md")
+
+})
+
+
 # TEST: delete_file ---------------------------------------------------------------------------
 
 test_that("delete_file creates a new commit with the file deleted", {
