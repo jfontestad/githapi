@@ -599,3 +599,99 @@ delete_file <- function(
 
   view_commit(commit$sha, repo = repo, ...)
 }
+
+
+#  FUNCTION: .view_files -----------------------------------------------------------------------
+#
+#' View files within a repository
+#'
+#' `.view_files()` summarises files in a table with the properties as columns and a row for
+#' each file in the repository. `view_file()` returns a list of all properties for a single
+#' file. `browse_files()` and `browse_file()` open the web page for the commit tree and
+#' blob respectively in the default browser.
+#'
+#' You can summarise all the milestones of a repository in a specified `state` and change the
+#' order they are returned using `sort` and `direction`.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository>
+#'
+#' @param path (string) The path to the file, within the repository.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param recursive (boolean, optional) Whether to list files in subfolders as well.
+#'   Default: `TRUE`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `.view_files()` returns a tibble of file properties. `view_file()` returns a list
+#'   of properties for a single file. `browse_files()` and `browse_file()` opens the default
+#'   browser on the tree or blob page and returns the URL.
+#'
+#' **File Properties:**
+#'
+#' - **path**: The path to the file within the repository.
+#' - **sha**: The SHA of the file blob.
+#' - **size**: The size of the file in bytes.
+#' - **html_url**: The URL of the blob's web page in GitHub.
+#'
+#' @examples
+#' \dontrun{
+#'   # View files on the master branch in a repository
+#'   .view_files("master", "ChadGoymer/githapi")
+#'
+#'   # View properties of a single file in a repository
+#'   view_file(
+#'     path = "README.md",
+#'     ref  = "master",
+#'     repo = "ChadGoymer/githapi")
+#'
+#'   # Open the commit's tree page in the default browser
+#'   browse_files("master", "ChadGoymer/githapi")
+#'
+#'   # Open the file's blob page in the default browser
+#'   browse_file(
+#'     path = "README.md",
+#'     ref  = "master",
+#'     repo = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+.view_files <- function(
+  ref,
+  repo,
+  recursive = TRUE,
+  ...)
+{
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  assert(is_scalar_logical(recursive), "'recursive' must be a boolean:\n  ", recursive)
+
+  if (!recursive)
+  {
+    recursive <- NULL
+  }
+
+  commit <- view_commit(ref = ref, repo = repo, ...)
+  blob_base_url <- commit$html_url %>%
+    str_replace(str_c(repo, "/", "commit"), str_c(repo, "/", "blob"))
+
+  info("Viewing files for commit with reference '", ref, "' in repository '", repo, "'")
+  files_lst <- gh_url("repos", repo, "git/trees", commit$tree_sha, recursive = recursive) %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  files_gh <- bind_properties(files_lst$tree, properties$file) %>%
+    filter(.data$type == "blob") %>%
+    select(-"type") %>%
+    mutate(html_url = file.path(blob_base_url, .data$path))
+
+  info("Done", level = 7)
+  structure(
+    files_gh,
+    class   = class(files_gh),
+    url     = attr(files_lst, "url"),
+    request = attr(files_lst, "request"),
+    status  = attr(files_lst, "status"),
+    header  = attr(files_lst, "header"))
+}

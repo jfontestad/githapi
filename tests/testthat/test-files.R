@@ -558,6 +558,43 @@ test_that("update_file creates a new commit with the file updated", {
 })
 
 
+# TEST: .view_files ----------------------------------------------------------------------------
+
+test_that(".view_files returns a tibble of file properties", {
+
+  master_files <- .view_files("master", str_c("ChadGoymer/test-files-", now))
+
+  expect_is(master_files, "tbl")
+  expect_identical(attr(master_files, "status"), 200L)
+  expect_identical(
+    map_chr(master_files, ~ class(.)[[1]]),
+    c(path     = "character",
+      sha      = "character",
+      size     = "numeric",
+      html_url = "character"))
+
+  expect_true("README.md" %in% master_files$path)
+
+  non_recursive_files <- .view_files(
+    ref       = "master",
+    repo      = str_c("ChadGoymer/test-files-", now),
+    recursive = FALSE)
+
+  expect_is(non_recursive_files, "tbl")
+  expect_identical(attr(non_recursive_files, "status"), 200L)
+  expect_identical(
+    map_chr(non_recursive_files, ~ class(.)[[1]]),
+    c(path     = "character",
+      sha      = "character",
+      size     = "numeric",
+      html_url = "character"))
+
+  expect_true("README.md" %in% non_recursive_files$path)
+  expect_true(nrow(non_recursive_files) < nrow(master_files))
+
+})
+
+
 # TEST: delete_file ---------------------------------------------------------------------------
 
 test_that("delete_file creates a new commit with the file deleted", {
