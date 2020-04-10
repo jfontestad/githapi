@@ -808,7 +808,7 @@ browse_file <- function(
 #' [readr::write_lines()] and `write_github_csv()` writes a CSV file, using
 #' [readr::write_csv()].
 #'
-#' @param content (string) The content of the file specified as a single string.
+#' @param content (character or data.frame) The content of the file.
 #' @param path (string) The path to create the file at, within the repository.
 #' @param branch (string) The name of the branch to make the new commit on.
 #' @param message (string) The commit message.

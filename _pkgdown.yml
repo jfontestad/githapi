@@ -32,8 +32,10 @@ reference:
     - '`upload_files`'
     - '`download_file`'
     - '`create_file`'
-    - '`view_files`'
-    - '`view_file`'
+    - '`.view_files`'
+    - '`write_github_file`'
+    - '`read_github_file`'
+    - '`github_source`'
 - title: Tags and Releases
   desc: Functions for creating, updating, viewing and deleting tags and releases.
   contents:
@@ -124,11 +126,6 @@ reference:
     - '`gh_languages`'
     - '`gh_asset`'
     - '`gh_assets`'
-- title: Git Data
-  desc: Functions for accessing git data directly.
-  contents:
-    - '`read_files`'
-    - '`source_files`'
 - title: Gists
   desc: Functions for accessing information about gists and their contents.
   contents:
@@ -235,6 +232,7 @@ reference:
     - '`download_files`'
     - '`create_files`'
     - '`update_files`'
+    - '`view_files`'
     - '`delete_files`'
     - '`files_exist`'
     - '`view_trees`'
@@ -245,5 +243,7 @@ reference:
     - '`create_blobs`'
     - '`upload_blobs`'
     - '`blobs_exist`'
+    - '`read_files`'
+    - '`source_files`'
 news:
 - one_page: false

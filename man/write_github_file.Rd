@@ -22,7 +22,7 @@ write_github_lines(
 write_github_csv(content, path, branch, message, repo, author, committer, ...)
 }
 \arguments{
-\item{content}{(string) The content of the file specified as a single string.}
+\item{content}{(character or data.frame) The content of the file.}
 
 \item{path}{(string) The path to create the file at, within the repository.}
 
