@@ -33,6 +33,8 @@ view_blobs <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_files", package = "githapi")
+
   {
     (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
@@ -100,6 +102,8 @@ create_blobs <- function(
   api      = getOption("github.api"),
   ...)
 {
+  .Deprecated("create_file", package = "githapi")
+
   {
     (is_character(contents)) ||
       error("'contents' must be a character vector:\n  '", paste(contents, collapse = "'\n  '"), "'")
@@ -166,6 +170,8 @@ upload_blobs <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("upload_files", package = "githapi")
+
   {
     (all(gh_map(paths, simplify = TRUE, function(p) is_file(p) && is_readable(p)))) ||
       error("'paths' must be a character vector of readable file paths:\n  '", paste(paths, collapse = "'\n  '"), "'")
@@ -314,6 +320,8 @@ download_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("download_file", package = "githapi")
+
   {
     if (missing(repo)) {
       info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
@@ -393,6 +401,8 @@ blobs_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   {
     (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must be a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")

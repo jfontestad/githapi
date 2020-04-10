@@ -138,7 +138,6 @@ test_that("gh_labels returns a tibble of information about the labels", {
       url     = "character"))
 
   expect_true("bug" %in% labels$name)
-  expect_true("d73a4a" %in% labels$color)
 
   issue_labels <- suppressWarnings(gh_labels("ChadGoymer/githapi", issue = 1))
   expect_is(labels, "tbl")
@@ -151,8 +150,7 @@ test_that("gh_labels returns a tibble of information about the labels", {
       default = "logical",
       url     = "character"))
 
-  expect_true("test" %in% labels$name)
-  expect_true("e39af9" %in% labels$color)
+  expect_true("tests" %in% labels$name)
 
   milestone_labels <- suppressWarnings(gh_labels("ChadGoymer/githapi", milestone = 1))
   expect_is(labels, "tbl")

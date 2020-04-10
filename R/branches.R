@@ -10,8 +10,7 @@
 #' - <https://developer.github.com/v3/git/refs/#create-a-reference>
 #'
 #' @param name (string) The name of the branch.
-#' @param ref (string) Either a SHA, branch or tag used to identify the commit the branch is
-#'   pointing at.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -81,8 +80,7 @@ create_branch <- function(
 #' - <https://developer.github.com/v3/git/refs/#update-a-reference>
 #'
 #' @param branch (string) The name of the branch.
-#' @param ref (string) Either a SHA, branch or tag used to identify the new commit the branch
-#'   is pointing at.
+#' @param ref (string) Either a SHA, branch or tag used to identify the new commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param force (boolean, optional) Whether to force the update if it is not a simple
 #'   fast-forward. Default: `FALSE`.
@@ -142,11 +140,11 @@ update_branch <- function(
 }
 
 
-#  FUNCTION: view_branches --------------------------------------------------------------------
+#  FUNCTION: .view_branches --------------------------------------------------------------------
 #
 #' View branches within a repository
 #'
-#' `view_branches()` summarises branches in a table with the properties as columns and a row
+#' `.view_branches()` summarises branches in a table with the properties as columns and a row
 #' for each branch in the repository. `view_branch()` returns a list of all properties for a
 #' single branch.
 #'
@@ -156,10 +154,10 @@ update_branch <- function(
 #'
 #' @param branch (string) The name of the branch.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-# @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
 #'
-#' @return `view_branches()` returns a tibble of branch properties. `view_branch()`
+#' @return `.view_branches()` returns a tibble of branch properties. `view_branch()`
 #'   returns a list of properties for a single branch.
 #'
 #' **Branch Properties:**
@@ -171,7 +169,7 @@ update_branch <- function(
 #' @examples
 #' \dontrun{
 #'   # View all branches in a repository
-#'   view_branches("ChadGoymer/test-githapi")
+#'   .view_branches("ChadGoymer/test-githapi")
 #'
 #'   # View a single branch
 #'   view_label("new-branch", "ChadGoymer/test-githapi")
@@ -179,32 +177,31 @@ update_branch <- function(
 #'
 #' @export
 #'
-# TODO: Uncomment in version 1.0
-# view_branches <- function(
-#   repo,
-#   n_max = 1000,
-#   ...)
-# {
-#   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-#
-#   info("Viewing branches for repository '", repo, "'")
-#   branches_lst <- gh_url("repos", repo, "git/refs/heads") %>%
-#     gh_page(n_max = n_max, ...)
-#
-#   info("Transforming results", level = 4)
-#   branches_gh <- bind_properties(branches_lst, properties$reference) %>%
-#     add_column(name = basename(.$ref), .before = "ref")
-#
-#   info("Done", level = 7)
-#   branches_gh
-# }
-#
-#
+.view_branches <- function(
+  repo,
+  n_max = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing branches for repository '", repo, "'")
+  branches_lst <- gh_url("repos", repo, "git/refs/heads") %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  branches_gh <- bind_properties(branches_lst, properties$reference) %>%
+    add_column(name = basename(.$ref), .before = "ref")
+
+  info("Done", level = 7)
+  branches_gh
+}
+
+
 #  FUNCTION: view_branch ----------------------------------------------------------------------
 #
-# @rdname view_branches
-# @export
-#
+#' @rdname dot-view_branches
+#' @export
+#'
 view_branch <- function(
   branch,
   repo,

@@ -23,19 +23,23 @@ reference:
     - '`delete_repository`'
     - '`create_branch`'
     - '`update_branch`'
-    - '`view_branch`'
+    - '`.view_branches`'
     - '`delete_branch`'
-    - '`upload_commit`'
-    - '`download_commit`'
-    - '`view_commits`'
-    - '`view_commit`'
+    - '`.upload_commit`'
+    - '`.download_commit`'
+    - '`.view_commits`'
     - '`view_sha`'
+    - '`upload_files`'
+    - '`download_file`'
+    - '`create_file`'
+    - '`view_files`'
+    - '`view_file`'
 - title: Tags and Releases
   desc: Functions for creating, updating, viewing and deleting tags and releases.
   contents:
     - '`create_tag`'
     - '`update_tag`'
-    - '`view_tag`'
+    - '`.view_tags`'
     - '`delete_tag`'
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
@@ -55,6 +59,21 @@ reference:
     - '`update_milestone`'
     - '`view_milestones`'
     - '`delete_milestone`'
+- title: Projects
+  desc: Functions for creating, updating, viewing and deleting projects.
+  contents:
+    - '`create_project`'
+    - '`update_project`'
+    - '`view_projects`'
+    - '`delete_project`'
+    - '`create_column`'
+    - '`update_column`'
+    - '`view_columns`'
+    - '`delete_column`'
+    - '`create_card`'
+    - '`update_card`'
+    - '`view_cards`'
+    - '`delete_card`'
 - title: Users, Organizations and Teams
   desc: Functions for creating, updating, viewing and deleting users, organizations and teams.
   contents:
@@ -72,29 +91,26 @@ reference:
     - '`update_collaborator`'
     - '`view_collaborators`'
     - '`delete_collaborator`'
-- title: Projects
-  desc: Functions for creating, updating, viewing and deleting projects.
+- title: Utilities
+  desc: Useful functions.
   contents:
-    - '`create_project`'
-    - '`update_project`'
-    - '`view_projects`'
-    - '`delete_project`'
-    - '`create_column`'
-    - '`update_column`'
-    - '`view_columns`'
-    - '`delete_column`'
-    - '`create_card`'
-    - '`update_card`'
-    - '`view_cards`'
-    - '`delete_card`'
+    - '`is_sha`'
+    - '`is_ref`'
+    - '`is_repo`'
+- title: GitHub API
+  desc: Functions for accessing the GitHub API.
+  contents:
+    - '`gh_token`'
+    - '`gh_url`'
+    - '`gh_request`'
+    - '`gh_page`'
+    - '`gh_find`'
+    - '`.gh_download`'
+    - '`gh_get`'
+    - '`gh_download_binary`'
 - title: Repository contents
   desc: Functions for accessing information about repositories and their content.
   contents:
-    - '`view_files`'
-    - '`create_files`'
-    - '`update_files`'
-    - '`delete_files`'
-    - '`files_exist`'
     - '`compare_commits`'
     - '`compare_files`'
     - '`view_releases`'
@@ -111,16 +127,7 @@ reference:
 - title: Git Data
   desc: Functions for accessing git data directly.
   contents:
-    - '`view_trees`'
-    - '`create_tree`'
-    - '`upload_tree`'
-    - '`trees_exist`'
-    - '`view_blobs`'
-    - '`create_blobs`'
-    - '`upload_blobs`'
-    - '`blobs_exist`'
     - '`read_files`'
-    - '`download_files`'
     - '`source_files`'
 - title: Gists
   desc: Functions for accessing information about gists and their contents.
@@ -134,22 +141,6 @@ reference:
     - '`gh_gist_comments`'
     - '`gh_save_gist`'
     - '`gh_source_gist`'
-- title: Utilities
-  desc: Useful functions.
-  contents:
-    - '`is_sha`'
-    - '`is_ref`'
-    - '`is_repo`'
-- title: GitHub API
-  desc: Functions for accessing the GitHub API.
-  contents:
-    - '`gh_token`'
-    - '`gh_url`'
-    - '`gh_request`'
-    - '`gh_page`'
-    - '`gh_find`'
-    - '`gh_get`'
-    - '`gh_download_binary`'
 - title: Deprecated
   desc: These functions have been deprecated.
   contents:
@@ -236,7 +227,23 @@ reference:
     - '`view_history`'
     - '`view_shas`'
     - '`shas_exist`'
+    - '`upload_commit`'
+    - '`download_commit`'
+    - '`view_commits`'
     - '`create_commit`'
     - '`commits_exist`'
+    - '`download_files`'
+    - '`create_files`'
+    - '`update_files`'
+    - '`delete_files`'
+    - '`files_exist`'
+    - '`view_trees`'
+    - '`create_tree`'
+    - '`upload_tree`'
+    - '`trees_exist`'
+    - '`view_blobs`'
+    - '`create_blobs`'
+    - '`upload_blobs`'
+    - '`blobs_exist`'
 news:
 - one_page: false

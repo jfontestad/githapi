@@ -303,7 +303,7 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_identical(created_files$name, "aaaa.txt")
 
-  viewed_files <- view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = repo_contents_branch)
+  viewed_files <- suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = repo_contents_branch))
 
   expect_is(viewed_files, "tbl")
   expect_identical(
@@ -320,12 +320,12 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_identical(viewed_files$name, "aaaa.txt")
 
-  updated_files <- update_files(
+  updated_files <- suppressWarnings(update_files(
     paths    = "aaaa.txt",
     contents = "Updated to test:\n\n  `update_files()`",
     messages = "Testing update_files()",
     branches = repo_contents_branch,
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi"))
 
   expect_is(updated_files, "tbl")
   expect_identical(
@@ -351,11 +351,11 @@ test_that("view_files, create_files, update_files and delete files on the specif
 
   expect_identical(updated_files$commit_message, "Testing update_files() - updated aaaa.txt")
 
-  deleted_files <- delete_files(
+  deleted_files <- suppressWarnings(delete_files(
     paths    = "aaaa.txt",
     messages = "Testing delete_files()",
     branches = repo_contents_branch,
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi"))
 
   expect_is(deleted_files, "tbl")
   expect_identical(
@@ -411,7 +411,7 @@ test_that("when creating files on a branch that does not exist, it is created", 
 
   expect_identical(created_files$name, "aaaa.txt")
 
-  viewed_files <- view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = new_files_branch)
+  viewed_files <- suppressWarnings(view_files("aaaa.txt", "ChadGoymer/test-githapi", ref = new_files_branch))
 
   expect_is(viewed_files, "tbl")
   expect_identical(
@@ -466,14 +466,14 @@ test_that("author and committer can be set when creating, updating and deleting 
   expect_identical(created_files$commit_author, "Bob Smith")
   expect_identical(created_files$commit_committer, "Jane Jones")
 
-  updated_files <- update_files(
+  updated_files <- suppressWarnings(update_files(
     paths     = "aaaa.txt",
     contents  = "Updated to test:\n\n  `update_files()`",
     messages  = "Testing update_files()",
     branches  = repo_contents_branch,
     author    = list(name = "Jane Jones", email = "jane.jones@acme.com"),
     committer = list(name = "Bob Smith", email = "bob.smith@acme.com"),
-    repo      = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/test-githapi"))
 
   expect_is(updated_files, "tbl")
   expect_identical(
@@ -500,13 +500,13 @@ test_that("author and committer can be set when creating, updating and deleting 
   expect_identical(updated_files$commit_author, "Jane Jones")
   expect_identical(updated_files$commit_committer, "Bob Smith")
 
-  deleted_files <- delete_files(
+  deleted_files <- suppressWarnings(delete_files(
     paths     = "aaaa.txt",
     messages  = "Testing delete_files()",
     branches  = repo_contents_branch,
     author    = list(name = "Jane Jones", email = "jane.jones@acme.com"),
     committer = list(name = "Bob Smith", email = "bob.smith@acme.com"),
-    repo      = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/test-githapi"))
 
   expect_is(deleted_files, "tbl")
   expect_identical(
@@ -529,11 +529,11 @@ test_that("author and committer can be set when creating, updating and deleting 
 
 test_that("files_exist returns TRUE or FALSE depending on whether the file exists in the repo", {
 
-  expect_true(files_exist("README.md", "ChadGoymer/test-githapi"))
-  expect_false(files_exist("no-such-file", "ChadGoymer/test-githapi"))
+  expect_true(suppressWarnings(files_exist("README.md", "ChadGoymer/test-githapi")))
+  expect_false(suppressWarnings(files_exist("no-such-file", "ChadGoymer/test-githapi")))
 
   expect_identical(
-    files_exist(c("README.md", "no-such-file"), "ChadGoymer/test-githapi"),
+    suppressWarnings(files_exist(c("README.md", "no-such-file"), "ChadGoymer/test-githapi")),
     c(`README.md` = TRUE, `no-such-file` = FALSE))
 
 })

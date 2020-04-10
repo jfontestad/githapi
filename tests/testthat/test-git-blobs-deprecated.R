@@ -3,9 +3,9 @@ context("git blobs")
 # TEST: view_blobs ----------------------------------------------------------------------------
 
 test_that("view_blobs returns information about files in the repository", {
-  blobs <- view_blobs(
+  blobs <- suppressWarnings(view_blobs(
     shas = c("72b5faa9dc9e4bba87108bf302a5b453e985feec", "6de7b8c69d65923eb48b10a560f3d72939df256a"),
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(blobs, "tbl")
   expect_identical(
@@ -29,9 +29,9 @@ test_that("create_blobs creates files in the repository and returns the SHA", {
     paste(sample(LETTERS, 40, replace = TRUE), collapse = ""),
     paste(sample(LETTERS, 40, replace = TRUE), collapse = ""))
 
-  blobs <- create_blobs(
+  blobs <- suppressWarnings(create_blobs(
     contents = random_contents,
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi"))
 
   expect_is(blobs, "tbl")
   expect_identical(
@@ -50,9 +50,9 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
   write("This is the first test file", temp_file1)
   write("This is the second test file", temp_file2)
 
-  blobs <- upload_blobs(
+  blobs <- suppressWarnings(upload_blobs(
     paths = c(temp_file1, temp_file2),
-    repo  = "ChadGoymer/test-githapi")
+    repo  = "ChadGoymer/test-githapi"))
 
   expect_is(blobs, "tbl")
   expect_identical(
@@ -62,9 +62,9 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
       url  = "character"))
   expect_true(all(gh_map(blobs$sha, is_sha, simplify = TRUE)))
 
-  created_blobs <- view_blobs(
+  created_blobs <- suppressWarnings(view_blobs(
     shas = blobs$sha,
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_match(
     jsonlite::base64_dec(created_blobs$content[[1]]) %>% readBin("character"),
@@ -77,19 +77,19 @@ test_that("upload_blobs reads the specified files and uploads them to specified 
 # TEST: read_files ----------------------------------------------------------------------------
 
 test_that("read_files returns the contents of the specified files", {
-  files <- read_files(
+  files <- suppressWarnings(read_files(
     paths = c("README.md", "test-file.txt"),
     ref   = "test-files",
-    repo  = "ChadGoymer/test-githapi")
+    repo  = "ChadGoymer/test-githapi"))
 
   expect_is(files, "character")
   expect_match(files["README.md"], "^# test-githapi")
   expect_match(files["test-file.txt"], "This is a test file.")
 
-  files_dd72be1 <- read_files(
+  files_dd72be1 <- suppressWarnings(read_files(
     paths = c("README.md", "test-file.txt"),
     ref   = "dd72be153e9edae67a659f1cb441f8dfe4486f1f",
-    repo  = "ChadGoymer/test-githapi")
+    repo  = "ChadGoymer/test-githapi"))
 
   expect_is(files_dd72be1, "character")
   expect_identical(
@@ -107,11 +107,11 @@ test_that("download_files saves the specified files to disk", {
     normalizePath(winslash = "/", mustWork = FALSE)
   on.exit(unlink(temp_path, recursive = TRUE), add = TRUE)
 
-  paths <- download_files(
+  paths <- suppressWarnings(download_files(
     paths    = c("README.md", "test-file.txt"),
     location = temp_path,
     ref      = "test-files",
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi"))
 
   expect_is(paths, "character")
   expect_true(all(file.exists(paths)))
@@ -121,11 +121,11 @@ test_that("download_files saves the specified files to disk", {
     normalizePath(winslash = "/", mustWork = FALSE)
   on.exit(unlink(temp_path_dd72be1, recursive = TRUE), add = TRUE)
 
-  paths_dd72be1 <- download_files(
+  paths_dd72be1 <- suppressWarnings(download_files(
     paths    = c("README.md", "test-file.txt"),
     location = temp_path_dd72be1,
     ref      = "dd72be153e9edae67a659f1cb441f8dfe4486f1f",
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/test-githapi"))
 
   expect_identical(
     paths_dd72be1,
@@ -141,18 +141,18 @@ test_that("download_files saves the specified files to disk", {
 # TEST: blobs_exist ---------------------------------------------------------------------------
 
 test_that("blobs_exist returns TRUE or FALSE depending on whether the blob exists in the repo", {
-  expect_true(blobs_exist("72b5faa9dc9e4bba87108bf302a5b453e985feec", "ChadGoymer/test-githapi"))
-  expect_false(blobs_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi"))
+  expect_true(suppressWarnings(blobs_exist("72b5faa9dc9e4bba87108bf302a5b453e985feec", "ChadGoymer/test-githapi")))
+  expect_false(suppressWarnings(blobs_exist("0000000000000000000000000000000000000000", "ChadGoymer/test-githapi")))
 
   expect_identical(
-    blobs_exist(c("72b5faa9dc9e4bba87108bf302a5b453e985feec", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi"),
+    suppressWarnings(blobs_exist(c("72b5faa9dc9e4bba87108bf302a5b453e985feec", "0000000000000000000000000000000000000000"), "ChadGoymer/test-githapi")),
     c(`72b5faa9dc9e4bba87108bf302a5b453e985feec` = TRUE, `0000000000000000000000000000000000000000` = FALSE))
 })
 
 # TEST: source_files --------------------------------------------------------------------------
 
 test_that("source_files sources a file in GitHub", {
-  source_files("test-source.R", "test-files", "ChadGoymer/test-githapi")
+  suppressWarnings(source_files("test-source.R", "test-files", "ChadGoymer/test-githapi"))
   expect_true(exists("test_source"))
   expect_is(test_source, "function")
   expect_identical(test_source(), "Testing source_files")

@@ -37,6 +37,8 @@ view_trees <- function(
   api       = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_files", package = "githapi")
+
   {
     (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
@@ -124,6 +126,8 @@ create_tree <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("upload_files", package = "githapi")
+
   {
     if (missing(base_tree)) {
       base_tree <- NA
@@ -231,6 +235,8 @@ upload_tree <- function(
   api    = getOption("github.api"),
   ...)
 {
+  .Deprecated("upload_files", package = "githapi")
+
   {
     if (missing(base_tree)) {
       base_tree <- NA
@@ -311,6 +317,8 @@ trees_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   {
     (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
       error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")

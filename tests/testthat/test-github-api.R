@@ -286,6 +286,59 @@ test_that("gh_find throws an error if it cannot find the specified property valu
 })
 
 
+# TEST: .gh_download ---------------------------------------------------------------------------
+
+test_that(".gh_download downloads a file to the specified location and returns the path", {
+
+  temp_path <- file.path(tempdir(), "test-gh-download")
+  if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
+  dir.create(temp_path)
+  on.exit(unlink(temp_path))
+
+  file_path <- file.path(getOption("github.api"), "repos/ChadGoymer/test-githapi/contents/README.md") %>%
+    .gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw")
+
+  expect_is(file_path, "character")
+  expect_identical(attr(file_path, "status"), 200L)
+  expect_identical(
+    as.character(file_path),
+    normalizePath(file.path(temp_path, "README.md"), winslash = "/"))
+  expect_true(file.exists(file_path))
+
+  expect_error(
+    file.path(getOption("github.api"), "repos/ChadGoymer/test-githapi/contents/Bob.txt") %>%
+      .gh_download(path = file.path(temp_path, "Bob.txt")),
+    "Not Found")
+
+})
+
+test_that(".gh_download can make a request using an OAuth token", {
+
+  skip_if_not(interactive(), "OAuth authentication must be run manually")
+
+  existing_msgr_level    <- getOption("msgr.level")
+  existing_githapi_cache <- getOption("githapi.cache")
+  options(msgr.level = 10, githapi.cache = "~/.githapi.oauth")
+  on.exit(options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache))
+
+  temp_path <- file.path(tempdir(), "test-gh-download")
+  if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
+  dir.create(temp_path)
+  on.exit(unlink(temp_path))
+
+  file_path <- file.path(getOption("github.api"), "repos/ChadGoymer/test-githapi/contents/README.md") %>%
+    .gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw", token = NULL)
+
+  expect_is(file_path, "character")
+  expect_identical(attr(file_path, "status"), 200L)
+  expect_identical(
+    as.character(file_path),
+    normalizePath(file.path(temp_path, "README.md"), winslash = "/"))
+  expect_true(file.exists(file_path))
+
+})
+
+
 # TEST: print.github --------------------------------------------------------------------------
 
 test_that("print.github correctly prints lists", {
