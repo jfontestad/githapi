@@ -764,3 +764,32 @@ browse_files <- function(
     status  = attr(commit, "status"),
     header  = attr(commit, "header"))
 }
+
+
+#  FUNCTION: browse_file ----------------------------------------------------------------------
+#
+#' @rdname dot-view_files
+#' @export
+#'
+browse_file <- function(
+  path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  file <- view_file(path = path, ref = ref, repo = repo, ...)
+  httr::BROWSE(file$html_url)
+
+  info("Done", level = 7)
+  structure(
+    file$html_url,
+    class   = c("github", "character"),
+    url     = attr(file, "url"),
+    request = attr(file, "request"),
+    status  = attr(file, "status"),
+    header  = attr(file, "header"))
+}

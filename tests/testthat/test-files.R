@@ -632,6 +632,23 @@ test_that("browse_files opens the file's history page in the browser", {
 })
 
 
+# TEST: browse_file ---------------------------------------------------------------------------
+
+test_that("browse_file opens the file's history page in the browser", {
+
+  skip_if(!interactive(), "browse_file must be tested manually")
+
+  file_url <- browse_file("README.md", "master", str_c("ChadGoymer/test-files-", now))
+
+  expect_is(file_url, "character")
+  expect_identical(attr(file_url, "status"), 200L)
+  expect_identical(
+    as.character(file_url),
+    str_c("https://github.com/ChadGoymer/test-files-", now, "/blob/master/README.md"))
+
+})
+
+
 # TEST: delete_file ---------------------------------------------------------------------------
 
 test_that("delete_file creates a new commit with the file deleted", {
