@@ -8,11 +8,6 @@
 #
 # @return `.upload_blob()` returns a list of the blob's properties.
 #
-# **Blob Properties:**
-#
-# - **sha**: The SHA-1 hash of the blob.
-# - **url**: The URL of the blob API.
-#
 .upload_blob <- function(
   path,
   repo,
@@ -35,28 +30,23 @@
 #
 # @param path (string) The path to the directory to upload. It must be readable.
 # @param repo (string) The repository specified in the format: `owner/repo`.
+# @param base_commit (string, optional) Either a SHA, branch or tag used to identify the
+#   commit to base the specified file change to. If not supplied the tree will just contain
+#   the files specified.
+# @param placeholder (boolean, optional) Whether the files are placeholders, containing the
+#   SHA of the blob, of the actual contents. Default: `FALSE`.
 # @param ignore (character, optional) The files to ignore in the directory. Default:
 #   `".git"`, `".Rproj.user"`, `".Rhistory"`, `".RData"` and `".Ruserdata"`.
 # @param ... Parameters passed to [gh_request()].
 #
-# @return `.upload_tree()` returns a list of the tre's properties.
-#
-# **Blob Properties:**
-#
-# - **sha**: The SHA-1 hash of the blob.
-# - **url**: The URL of the blob API.
-# - **tree**: list of files and directories, each having properties:
-#   - **path**: The file or directory path.
-#   - **mode**: The file or directory mode.
-#   - **type**: Whether it is a blob (file) or a tree (directory).
-#   - **size**: The size in bytes.
-#   - **sha**: The SHA-1 hash of the blob or tree.
-#   - **url**: The URL of the blob or tree API.
+# @return `.upload_tree()` returns a list containing the tree SHA and the base commit SHA.
 #
 .upload_tree <- function(
   path,
   repo,
-  ignore = c(".git", ".Rproj.user", ".Rhistory", ".RData", ".Ruserdata"),
+  base_commit = NULL,
+  placeholder = FALSE,
+  ignore      = c(".git", ".Rproj.user", ".Rhistory", ".RData", ".Ruserdata"),
   ...)
 {
   assert(is_dir(path) && is_readable(path), "'path' must be a readable directory path:\n  ", path)
@@ -73,9 +63,25 @@
     mutate(sha = map2_chr(.data$path, .data$isdir, function(path, isdir)
     {
       if (isdir)
-        .upload_tree(path = path, repo = repo)$sha
+      {
+        .upload_tree(
+          path = path,
+          repo = repo,
+          placeholder = placeholder,
+          ignore = ignore,
+          ...)$tree_sha
+      }
       else
-        .upload_blob(path = path, repo = repo)$sha
+      {
+        if (placeholder)
+        {
+          readr::read_lines(file = path)
+        }
+        else
+        {
+          .upload_blob(path = path, repo = repo, ...)$sha
+        }
+      }
     })) %>%
     mutate(
       type = ifelse(.data$isdir, "tree", "blob"),
@@ -91,7 +97,16 @@
     pmap(list) %>%
     list(tree = .)
 
+  if (!is_null(base_commit))
+  {
+    base_commit <- try_catch(
+      view_commit(ref = base_commit, repo = repo, ...),
+      on_error = function(e) NULL)
+    payload$base_tree <- base_commit$tree_sha
+  }
+
   info("Creating tree in repository '", repo, "'", level = 2)
-  gh_url("repos", repo, "git/trees") %>%
-    gh_request("POST", payload = payload, ...)
+  tree <- gh_url("repos", repo, "git/trees") %>% gh_request("POST", payload = payload, ...)
+
+  list(commit_sha = base_commit$sha, tree_sha = tree$sha)
 }
