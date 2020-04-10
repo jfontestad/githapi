@@ -545,3 +545,57 @@ update_file <- function(
 
   view_commit(commit$sha, repo = repo, ...)
 }
+
+
+#  FUNCTION: delete_file ----------------------------------------------------------------------
+#
+#' @rdname create_file
+#' @export
+#'
+delete_file <- function(
+  path,
+  branch,
+  message,
+  repo,
+  author,
+  committer,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
+  assert(is_scalar_character(message), "'message' must be a string:\n  ", message)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  payload <- list(branch = branch, message = message)
+
+  if (!missing(author))
+  {
+    assert(
+      is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
+      "'author' must be a list containing 'name' and 'email':\n ", author)
+    payload$author <- author
+  }
+
+  if (!missing(committer))
+  {
+    assert(
+      is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
+      "'committer' must be a list containing 'name' and 'email':\n ", committer)
+    payload$committer <- committer
+  }
+
+  info("Checking if a file with path '", path, "' already exists in repository '", repo, "'", level = 3)
+  url   <- gh_url("repos", repo, "contents", path)
+  files <- dirname(url) %>% gh_request("GET", ...)
+
+  assert(
+    basename(path) %in% map_chr(files, "name"),
+    "A file with path '", path, "' does not exist in the commit")
+
+  payload$sha <- files[[which(basename(path) == map_chr(files, "name"))]]$sha
+
+  info("Deleting file '", basename(path), "' in repository '", repo, "'")
+  commit <- gh_request("DELETE", url = url, payload = payload, ...)$commit
+
+  view_commit(commit$sha, repo = repo, ...)
+}

@@ -556,3 +556,53 @@ test_that("update_file creates a new commit with the file updated", {
   expect_identical(author_commit$committer_email, "jane@acme.com")
 
 })
+
+
+# TEST: delete_file ---------------------------------------------------------------------------
+
+test_that("delete_file creates a new commit with the file deleted", {
+
+  master_commit <- delete_file(
+    path    = "new-file-1.md",
+    branch  = "master",
+    message = "Deleted a file with delete_file()",
+    repo    = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(master_commit, "list")
+  expect_identical(attr(master_commit, "status"), 200L)
+  expect_identical(
+    map_chr(master_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      tree_sha        = "character",
+      parents         = "character",
+      date            = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(master_commit$message, "Deleted a file with delete_file()")
+  expect_identical(master_commit$author_name, "Chad Goymer")
+  expect_identical(master_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(master_commit$committer_name, "Chad Goymer")
+  expect_identical(master_commit$committer_email, "chad.goymer@gmail.com")
+
+  author_commit <- delete_file(
+    path      = "new-file-2.md",
+    branch    = "master",
+    message   = "Deleted a file with delete_file()",
+    repo      = str_c("ChadGoymer/test-files-", now),
+    author    = list(name = "Bob",  email = "bob@acme.com"),
+    committer = list(name = "Jane", email = "jane@acme.com"))
+
+  expect_identical(author_commit$message, "Deleted a file with delete_file()")
+  expect_identical(author_commit$author_name, "Bob")
+  expect_identical(author_commit$author_email, "bob@acme.com")
+  expect_identical(author_commit$committer_name, "Jane")
+  expect_identical(author_commit$committer_email, "jane@acme.com")
+
+})
