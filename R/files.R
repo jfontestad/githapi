@@ -356,3 +356,134 @@ download_file <- function(
   info("Done", level = 3)
   path_gh
 }
+
+
+#  FUNCTION: create_file ----------------------------------------------------------------------
+#
+#' Create, update or delete a file in a new commit
+#'
+#' These functions create, update or delete a file in a repository in GitHub by creating a
+#' new commit on the specified branch. If the file already exists [create_file()] throws an
+#' error and if the file does not exist [delete_file()] throws as error.
+#'
+#' The `author` and `committer` arguments are optional and if not supplied the current
+#' authenticated user is used. However, if you want to set them explicitly you must specify
+#' a named list with `name` and `email` as the elements (see examples).
+#'
+#' Note: The GitHub API imposes a file size limit of 1MB for this request. For larger files
+#' use the [upload_files()] function.
+#'
+#' @param content (string) The content of the file specified as a single string.
+#' @param path (string) The path to create the file at, within the repository.
+#' @param branch (string) The name of the branch to make the new commit on.
+#' @param message (string) The commit message.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param author (list, optional) A the name and email address of the user who wrote the
+#'   changes in the commit.
+#' @param committer (list, optional) A the name and email address of the user who created
+#'   the commit.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `create_file()` returns a list of the commit properties.
+#'
+#' **Commit Properties:**
+#'
+#' - **sha**: The commit SHA.
+#' - **message**: The commit message.
+#' - **author_name**: The author's name.
+#' - **author_email**: The author's email address.
+#' - **committer_name**: The committer's name.
+#' - **committer_email**: The committer's email address.
+#' - **tree_sha**: The SHA of the file tree.
+#' - **parent_sha**: The commit SHA of the parent(s).
+#' - **date**: The date the commit was made.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Create a new file on the master branch
+#'   create_file(
+#'     content = "# This is a new file\\n\\n Created by `create_files()`",
+#'     path    = "new-file.md",
+#'     branch  = "master",
+#'     message = "Created a new file with create_file()",
+#'     repo    = "ChadGoymer/githapi")
+#'
+#'   # Create a new file on the master branch specifying an author and committer
+#'   create_file(
+#'     content   = "# This is a new file\\n\\n Created by `create_files()`",
+#'     path      = "new-file.md",
+#'     branch    = "master",
+#'     message   = "Created a new file with create_file()",
+#'     repo      = "ChadGoymer/githapi",
+#'     author    = list(name = "Bob",  email = "bob@acme.com"),
+#'     committer = list(name = "Jane", email = "jane@acme.com"))
+#'
+#'   # Update an existing file on the master branch
+#'   update_file(
+#'     content = "# This is an updated file\\n\\n Updated by `update_files()`",
+#'     path    = "new-file.md",
+#'     branch  = "master",
+#'     message = "Updated an existing file with update_file()",
+#'     repo    = "ChadGoymer/githapi")
+#'
+#'   # Delete an existing file on the master branch
+#'   delete_file(
+#'     path    = "new-file.md",
+#'     branch  = "master",
+#'     message = "Deleted an existing file with delete_file()",
+#'     repo    = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+create_file <- function(
+  content,
+  path,
+  branch,
+  message,
+  repo,
+  author,
+  committer,
+  ...)
+{
+  assert(is_scalar_character(content), "'content' must be a string:\n  ", content)
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
+  assert(is_scalar_character(message), "'message' must be a string:\n  ", message)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  payload <- list(
+    content = jsonlite::base64_enc(content),
+    branch  = branch,
+    message = message)
+
+  if (!missing(author))
+  {
+    assert(
+      is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
+      "'author' must be a list containing 'name' and 'email':\n ", author)
+    payload$author <- author
+  }
+
+  if (!missing(committer))
+  {
+    assert(
+      is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
+      "'committer' must be a list containing 'name' and 'email':\n ", committer)
+    payload$committer <- committer
+  }
+
+  info("Checking if a file with path '", path, "' already exists in repository '", repo, "'", level = 3)
+  url   <- gh_url("repos", repo, "contents", path)
+  files <- dirname(url) %>% gh_request("GET", ...)
+
+  assert(
+    !basename(path) %in% map_chr(files, "name"),
+    "A file with path '", path, "' already exists. To update it use update_file()")
+
+  info("Creating file '", basename(path), "' in repository '", repo, "'")
+  commit <- gh_request("PUT", url = url, payload = payload, ...)$commit
+
+  view_commit(commit$sha, repo = repo, ...)
+}
