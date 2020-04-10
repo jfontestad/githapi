@@ -1128,3 +1128,61 @@ read_github_csv <- function(
     status  = attr(file_path, "status"),
     header  = attr(file_path, "header"))
 }
+
+
+#  FUNCTION: github_source --------------------------------------------------------------------
+#
+#' Source a R script from a commit
+#'
+#' This function sources an R script from a commit in a repository using [source()].
+#'
+#' @param path (string) The path to the file, within the repository.
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [source()].
+#'
+#' @return The result of the sourced script.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   github_source(
+#'     path = "inst/test-data/test-script.R",
+#'     ref  = "master",
+#'     repo = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+github_source <- function(
+  path,
+  ref,
+  repo,
+  ...)
+{
+  assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  temp_path <- tempfile("read-file-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  file_path <- download_file(
+    from_path = path,
+    to_path   = file.path(temp_path, basename(path)),
+    ref       = ref,
+    repo      = repo)
+
+  info("Sourcing file '", basename(path), "'")
+  result <- source(file_path, ...)
+
+  info("Done", level = 7)
+  structure(
+    result,
+    class   = c("github", class(result)),
+    url     = attr(file_path, "url"),
+    request = attr(file_path, "request"),
+    status  = attr(file_path, "status"),
+    header  = attr(file_path, "header"))
+}

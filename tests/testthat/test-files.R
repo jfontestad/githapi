@@ -829,3 +829,26 @@ test_that("write_github_csv creates a new commit with a new file and read_github
     tibble(letters = LETTERS, numbers = 1:26*1.0))
 
 })
+
+
+# TEST: github_source -------------------------------------------------------------------------
+
+test_that("github_source sources a file in GitHub", {
+
+  write_github_file(
+    content = "test_source <- function() return(\"Testing github_source\")",
+    path    = "test-source.R",
+    branch  = "master",
+    message = "Created a new R script to test github_source()",
+    repo    = str_c("ChadGoymer/test-files-", now))
+
+  result <- github_source(
+    path = "test-source.R",
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-files-", now))
+
+  expect_true(exists("test_source"))
+  expect_is(test_source, "function")
+  expect_identical(test_source(), "Testing github_source")
+
+})
