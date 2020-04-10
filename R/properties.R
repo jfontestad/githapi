@@ -1,4 +1,4 @@
-  # LIST: properties ----------------------------------------------------------------------------
+# LIST: properties ----------------------------------------------------------------------------
 #
 # The properties to show for all GitHub entities
 #
@@ -243,7 +243,15 @@ properties <- list(
     committer_email                          = c("commit", "committer", "email",             as = "character"),
     tree_sha                                 = c("commit", "tree", "sha",                    as = "character"),
     date                                     = c("commit", "committer", "date",              as = "datetime"),
+    html_url                                 = c("html_url",                                 as = "character")),
+
+  file = list(
+    path                                     = c("path",                                     as = "character"),
+    type                                     = c("type",                                     as = "character"),
+    sha                                      = c("sha",                                      as = "character"),
+    size                                     = c("size",                                     as = "numeric"),
     html_url                                 = c("html_url",                                 as = "character"))
+
 )
 
 
