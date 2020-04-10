@@ -615,6 +615,23 @@ test_that("view_file returns a list of file properties", {
 })
 
 
+# TEST: browse_files --------------------------------------------------------------------------
+
+test_that("browse_files opens the file's history page in the browser", {
+
+  skip_if(!interactive(), "browse_files must be tested manually")
+
+  files_url <- browse_files("master", str_c("ChadGoymer/test-files-", now))
+
+  expect_is(files_url, "character")
+  expect_identical(attr(files_url, "status"), 200L)
+  expect_identical(
+    dirname(files_url),
+    str_c("https://github.com/ChadGoymer/test-files-", now, "/tree"))
+
+})
+
+
 # TEST: delete_file ---------------------------------------------------------------------------
 
 test_that("delete_file creates a new commit with the file deleted", {

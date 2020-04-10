@@ -732,3 +732,35 @@ view_file <- function(
     status  = attr(files_lst, "status"),
     header  = attr(files_lst, "header"))
 }
+
+
+#  FUNCTION: browse_files ---------------------------------------------------------------------
+#
+#' @rdname dot-view_files
+#' @export
+#'
+browse_files <- function(
+  ref,
+  repo,
+  ...)
+{
+  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Browsing commit '", ref, "' in repository '", repo, "'")
+  commit <- gh_url("repos", repo, "commits", ref) %>% gh_request("GET", ...)
+
+  tree_url <- commit$html_url %>%
+    str_replace(str_c(repo, "/", "commit"), str_c(repo, "/", "tree"))
+
+  httr::BROWSE(tree_url)
+
+  info("Done", level = 7)
+  structure(
+    tree_url,
+    class   = c("github", "character"),
+    url     = attr(commit, "url"),
+    request = attr(commit, "request"),
+    status  = attr(commit, "status"),
+    header  = attr(commit, "header"))
+}
