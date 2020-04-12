@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get information about a commit — gh_commit • githapi</title>
+<title>View file changes made between two commits — .compare_files • githapi</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,10 @@
 
 
 
-<meta property="og:title" content="Get information about a commit — gh_commit" />
-<meta property="og:description" content="NOTE: This function has been deprecated, please use view_commits() instead." />
+<meta property="og:title" content="View file changes made between two commits — .compare_files" />
+<meta property="og:description" content=".compare_files() summarises the file changes made between two commits in a table with the
+properties as columns and a row for each file. The base commit must be in the history
+of the head commit." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,51 +110,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get information about a commit</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-deprecated.R'><code>R/repositories-deprecated.R</code></a></small>
-    <div class="hidden name"><code>gh_commit.Rd</code></div>
+    <h1>View file changes made between two commits</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/files.R'><code>R/files.R</code></a></small>
+    <div class="hidden name"><code>dot-compare_files.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>NOTE: This function has been deprecated, please use <code><a href='view_commits.html'>view_commits()</a></code> instead.</p>
+    <p><code>.compare_files()</code> summarises the file changes made between two commits in a table with the
+properties as columns and a row for each file. The <code>base</code> commit must be in the history
+of the <code>head</code> commit.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_commit</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(), <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>.compare_files</span>(<span class='no'>base</span>, <span class='no'>head</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ref</th>
-      <td><p>(string) A git reference: either a SHA-1, tag or branch. If a branch is specified
-the head commit is used.</p></td>
+      <th>base</th>
+      <td><p>(string) Either a SHA, branch or tag used to identify the base commit.</p></td>
+    </tr>
+    <tr>
+      <th>head</th>
+      <td><p>(string) Either a SHA, branch or tag used to identify the head commit.</p></td>
     </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_get.html'>gh_get()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list describing the commit (see GitHub's API documentation for details).</p>
+    <p><code>.compare_files()</code> returns a tibble of file properties.</p>
+<p><strong>File Properties:</strong></p><ul>
+<li><p><strong>path</strong>: The path to the file within the repository.</p></li>
+<li><p><strong>sha</strong>: The SHA of the file blob.</p></li>
+<li><p><strong>status</strong>: Whether the file was "added", "modified" or "deleted".</p></li>
+<li><p><strong>additions</strong>: The number of lines added in the file.</p></li>
+<li><p><strong>deletions</strong>: The number of lines deleted in the file.</p></li>
+<li><p><strong>changes</strong>: The number of lines changed in the file.</p></li>
+<li><p><strong>patch</strong>: The git patch for the file.</p></li>
+<li><p><strong>html_url</strong>: The URL of the blob's web page in GitHub.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/repos/commits/#get-a-single-commit'>https://developer.github.com/v3/repos/commits/#get-a-single-commit</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/repos/commits/#compare-two-commits'>https://developer.github.com/v3/repos/commits/#compare-two-commits</a></p></li>
+</ul>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
