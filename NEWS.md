@@ -1,3 +1,8 @@
+# githapi 0.9.24
+
+- Added `.compare_commits()`
+- Added `.compare_files()`
+
 # githapi 0.9.23
 
 - Added `write_github_file()`
