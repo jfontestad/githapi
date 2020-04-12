@@ -852,3 +852,30 @@ test_that("github_source sources a file in GitHub", {
   expect_identical(test_source(), "Testing github_source")
 
 })
+
+
+# TEST: .compare_files ------------------------------------------------------------------------
+
+test_that(".compare_files returns all the file changes made between to commits", {
+
+  master_commits <- .view_commits("master", repo = str_c("ChadGoymer/test-files-", now))
+
+  file_changes <- .compare_files(
+    base = master_commits$sha[[3]],
+    head = "master",
+    repo = str_c("ChadGoymer/test-files-", now))
+
+  expect_is(file_changes, "tbl")
+  expect_identical(attr(file_changes, "status"), 200L)
+  expect_identical(
+    map_chr(file_changes, ~ class(.)[[1]]),
+    c(path      = "character",
+      sha       = "character",
+      status    = "character",
+      additions = "integer",
+      deletions = "integer",
+      changes   = "integer",
+      patch     = "character",
+      html_url  = "character"))
+
+})
