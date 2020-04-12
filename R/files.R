@@ -1186,3 +1186,70 @@ github_source <- function(
     status  = attr(file_path, "status"),
     header  = attr(file_path, "header"))
 }
+
+
+#  FUNCTION: .compare_files --------------------------------------------------------------------
+#
+#' View file changes made between two commits
+#'
+#' `.compare_files()` summarises the file changes made between two commits in a table with the
+#' properties as columns and a row for each file. The `base` commit must be in the history
+#' of the `head` commit.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/commits/#compare-two-commits>
+#'
+#' @param head (string) Either a SHA, branch or tag used to identify the head commit.
+#' @param base (string) Either a SHA, branch or tag used to identify the base commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `.compare_files()` returns a tibble of file properties.
+#'
+#' **File Properties:**
+#'
+#' - **path**: The path to the file within the repository.
+#' - **sha**: The SHA of the file blob.
+#' - **status**: Whether the file was "added", "modified" or "deleted".
+#' - **additions**: The number of lines added in the file.
+#' - **deletions**: The number of lines deleted in the file.
+#' - **changes**: The number of lines changed in the file.
+#' - **patch**: The git patch for the file.
+#' - **html_url**: The URL of the blob's web page in GitHub.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # View the files changes made between the current master branch and a release
+#'   .compare_files("master", "0.8.7, "ChadGoymer/githapi")
+#'
+#' }
+#'
+#' @export
+#'
+.compare_files <- function(
+  base,
+  head,
+  repo,
+  ...)
+{
+  assert(is_ref(base), "'base' must be a valid git reference - see help(is_ref):\n  ", base)
+  assert(is_ref(head), "'head' must be a valid git reference - see help(is_ref):\n  ", head)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Comparing commit '", head, "' with '", base, "' in repository '", repo, "'")
+  comparison_lst <- gh_url("repos", repo, "compare", str_c(base, "...", head)) %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  comparison_gh <- bind_properties(comparison_lst$files, properties$compare_files)
+
+  info("Done", level = 7)
+  structure(
+    comparison_gh,
+    class   = c("github", class(comparison_gh)),
+    url     = attr(comparison_lst, "url"),
+    request = attr(comparison_lst, "request"),
+    status  = attr(comparison_lst, "status"),
+    header  = attr(comparison_lst, "header"))
+}

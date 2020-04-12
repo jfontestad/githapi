@@ -14,31 +14,33 @@ navbar:
     - icon: fa-github fa-lg
       href: http://github.com/ChadGoymer/githapi
 reference:
-- title: Repositories
-  desc: Functions for creating, updating, viewing and deleting repositories and their contents.
+- title: Repositories, Commits and Files
+  desc: Functions for creating, updating, viewing and deleting repositories, commits and files.
   contents:
     - '`create_repository`'
     - '`update_repository`'
     - '`view_repositories`'
     - '`delete_repository`'
-    - '`create_branch`'
-    - '`update_branch`'
-    - '`.view_branches`'
-    - '`delete_branch`'
     - '`.upload_commit`'
     - '`.download_commit`'
     - '`.view_commits`'
+    - '`.compare_commits`'
     - '`view_sha`'
     - '`upload_files`'
     - '`download_file`'
     - '`create_file`'
     - '`.view_files`'
+    - '`.compare_files`'
     - '`write_github_file`'
     - '`read_github_file`'
     - '`github_source`'
-- title: Tags and Releases
-  desc: Functions for creating, updating, viewing and deleting tags and releases.
+- title: Branches, Tags and Releases
+  desc: Functions for creating, updating, viewing and deleting branches, tags and releases.
   contents:
+    - '`create_branch`'
+    - '`update_branch`'
+    - '`.view_branches`'
+    - '`delete_branch`'
     - '`create_tag`'
     - '`update_tag`'
     - '`.view_tags`'
@@ -61,8 +63,8 @@ reference:
     - '`update_milestone`'
     - '`view_milestones`'
     - '`delete_milestone`'
-- title: Projects
-  desc: Functions for creating, updating, viewing and deleting projects.
+- title: Projects, Columns and Cards
+  desc: Functions for creating, updating, viewing and deleting projects, columns and cards.
   contents:
     - '`create_project`'
     - '`update_project`'
@@ -113,8 +115,6 @@ reference:
 - title: Repository contents
   desc: Functions for accessing information about repositories and their content.
   contents:
-    - '`compare_commits`'
-    - '`compare_files`'
     - '`view_releases`'
     - '`create_releases`'
     - '`update_releases`'
@@ -245,5 +245,7 @@ reference:
     - '`blobs_exist`'
     - '`read_files`'
     - '`source_files`'
+    - '`compare_commits`'
+    - '`compare_files`'
 news:
 - one_page: false

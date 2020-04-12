@@ -257,6 +257,8 @@ compare_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "The returned columns will be changing in a future version - see ?.compare_commits")
+
   {
     (is_scalar_character(base)) ||
       error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
@@ -340,6 +342,8 @@ compare_files <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "The returned columns will be changing in a future version - see ?.compare_files")
+
   {
     (is_scalar_character(base)) ||
       error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")

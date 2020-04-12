@@ -67,10 +67,10 @@ test_that("shas_exist returns TRUE is the commit exists and FALSE otherwise", {
 # TEST: compare_commits -----------------------------------------------------------------------
 
 test_that("compare_commits returns information on the differences between two commits", {
-  comparison <- compare_commits(
+  comparison <- suppressWarnings(compare_commits(
     base = "0.0.0",
     head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44",
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(comparison, "tbl")
   expect_identical(
@@ -105,10 +105,10 @@ test_that("compare_commits returns information on the differences between two co
 # TEST: compare_files -------------------------------------------------------------------------
 
 test_that("compare_files returns a tibble of information of file differences between commits", {
-  comparison <- compare_files(
+  comparison <- suppressWarnings(compare_files(
     base = "0.0.0",
     head = "ccb62ec75de7e40c689be427cd038c8a1a9d3c44",
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/test-githapi"))
 
   expect_is(comparison, "tbl")
 

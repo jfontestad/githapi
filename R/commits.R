@@ -219,7 +219,7 @@
   path = getwd(),
   ...)
 {
-  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   if (!file.exists(path)) dir.create(path, recursive = TRUE)
@@ -340,7 +340,7 @@
   n_max = 1000,
   ...)
 {
-  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   if (!missing(path))
@@ -416,7 +416,7 @@ view_commit <- function(
   repo,
   ...)
 {
-  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   info("Viewing commit for reference '", ref, "' in repository '", repo, "'")
@@ -448,7 +448,7 @@ browse_commits <- function(
   repo,
   ...)
 {
-  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   info("Browsing commit '", ref, "' in repository '", repo, "'")
@@ -480,7 +480,7 @@ browse_commit <- function(
   repo,
   ...)
 {
-  assert(is_ref(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   info("Browsing commit '", ref, "' in repository '", repo, "'")
@@ -524,10 +524,82 @@ view_sha <- function(
   repo,
   ...)
 {
-  assert(is_scalar_character(ref), "'ref' must be a string:\n  ", ref)
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   info("Viewing SHA for ref '", ref, "' from repository '", repo, "'")
   gh_url("repos", repo, "commits", ref) %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha", ...)
+}
+
+
+#  FUNCTION: .compare_commits ------------------------------------------------------------------
+#
+#' View commits made between two commits
+#'
+#' `.compare_commits()` summarises the commits made between two commits in a table with the
+#' properties as columns and a row for each commit. The `base` commit must be in the history
+#' of the `head` commit.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/commits/#compare-two-commits>
+#'
+#' @param head (string) Either a SHA, branch or tag used to identify the head commit.
+#' @param base (string) Either a SHA, branch or tag used to identify the base commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `.compare_commits()` returns a tibble of commit properties.
+#'
+#' **Commit Properties:**
+#'
+#' - **sha**: The commit SHA.
+#' - **message**: The commit message.
+#' - **author_login**: The author's account login.
+#' - **author_name**: The author's name.
+#' - **author_email**: The author's email address.
+#' - **committer_login**: The committer's account login.
+#' - **committer_name**: The committer's name.
+#' - **committer_email**: The committer's email address.
+#' - **tree_sha**: The SHA of the commit's file tree.
+#' - **parents**: The SHAs of the parent commits.
+#' - **date**: The time and date the commit was made.
+#' - **html_url**: The address of the commit's web page.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # View the changes made between the current master branch and a release
+#'   .compare_commits("master", "0.8.7, "ChadGoymer/githapi")
+#'
+#' }
+#'
+#' @export
+#'
+.compare_commits <- function(
+  base,
+  head,
+  repo,
+  ...)
+{
+  assert(is_ref(base), "'base' must be a valid git reference - see help(is_ref):\n  ", base)
+  assert(is_ref(head), "'head' must be a valid git reference - see help(is_ref):\n  ", head)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Comparing commit '", head, "' with '", base, "' in repository '", repo, "'")
+  comparison_lst <- gh_url("repos", repo, "compare", str_c(base, "...", head)) %>%
+    gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  comparison_gh <- bind_properties(comparison_lst$commits, properties$commit) %>%
+    add_column(parents = map(comparison_lst$commits, ~ map_chr(.$parents, "sha")), .before = "date")
+
+  info("Done", level = 7)
+  structure(
+    comparison_gh,
+    class   = c("github", class(comparison_gh)),
+    url     = attr(comparison_lst, "url"),
+    request = attr(comparison_lst, "request"),
+    status  = attr(comparison_lst, "status"),
+    header  = attr(comparison_lst, "header"))
 }

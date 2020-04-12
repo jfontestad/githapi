@@ -250,7 +250,17 @@ properties <- list(
     type                                     = c("type",                                     as = "character"),
     sha                                      = c("sha",                                      as = "character"),
     size                                     = c("size",                                     as = "numeric"),
-    html_url                                 = c("html_url",                                 as = "character"))
+    html_url                                 = c("html_url",                                 as = "character")),
+
+  compare_files = list(
+    path                                     = c("filename",                                 as = "character"),
+    sha                                      = c("sha",                                      as = "character"),
+    status                                   = c("status",                                   as = "character"),
+    additions                                = c("additions",                                as = "integer"),
+    deletions                                = c("deletions",                                as = "integer"),
+    changes                                  = c("changes",                                  as = "integer"),
+    patch                                    = c("patch",                                    as = "character"),
+    html_url                                 = c("blob_url",                                 as = "character"))
 
 )
 

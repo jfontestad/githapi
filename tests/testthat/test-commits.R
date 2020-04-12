@@ -533,3 +533,36 @@ test_that("view_sha returns the commit SHA given the reference", {
   expect_identical(as.character(master_sha), as.character(tag_sha))
 
 })
+
+
+# TEST: .compare_commits ----------------------------------------------------------------------
+
+test_that(".compare_commits returns all the commits made between to commits", {
+
+  master_commits <- .view_commits("master", repo = str_c("ChadGoymer/test-commits-", now))
+
+  commits <- .compare_commits(
+    base = master_commits$sha[[3]],
+    head = "master",
+    repo = str_c("ChadGoymer/test-commits-", now))
+
+  expect_is(commits, "tbl")
+  expect_identical(attr(commits, "status"), 200L)
+  expect_identical(
+    map_chr(commits, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      tree_sha        = "character",
+      parents         = "list",
+      date            = "POSIXct",
+      html_url        = "character"))
+
+  expect_identical(commits$sha, master_commits$sha[2:1])
+
+})
