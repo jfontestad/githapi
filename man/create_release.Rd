@@ -77,7 +77,7 @@ For more details see the GitHub API documentation:
 
   # Create a draft pre-release
   create_release(
-    tag        = 1.0.9000,
+    tag        = "1.0.9000",
     repo       = "ChadGoymer/githapi",
     name       = "Draft 1.1 release",
     body       = "This is a release created by create_release()",

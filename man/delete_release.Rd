@@ -7,7 +7,7 @@
 delete_release(release, repo, ...)
 }
 \arguments{
-\item{release}{(string) The id or current tag of the release.}
+\item{release}{(string) The id or tag of the release.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 

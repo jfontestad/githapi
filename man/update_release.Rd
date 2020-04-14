@@ -57,9 +57,9 @@ Default: \code{FALSE}.}
 }
 }
 \description{
-This function updates a release in the specified repository to point at a new commit. It must
-be pointed at a commit by providing a Git reference, which can be either a SHA, branch or
-release. For a branch, the head commit is used.
+This function updates a release in the specified repository. It can be used to update
+properties, such as \code{name} or whether it is \code{draft}, or it can be used to point the release
+at a new commit by providing a Git reference, which can be either a SHA or branch.
 }
 \details{
 For more details see the GitHub API documentation:

@@ -19,7 +19,7 @@ browse_release(release, repo, ...)
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
 
-\item{release}{(string) The id or current tag of the release.}
+\item{release}{(string) The id or tag of the release.}
 }
 \value{
 \code{.view_releases()} returns a tibble of release properties. \code{view_release()}

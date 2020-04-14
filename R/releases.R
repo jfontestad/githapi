@@ -50,7 +50,7 @@
 #'
 #'   # Create a draft pre-release
 #'   create_release(
-#'     tag        = 1.0.9000,
+#'     tag        = "1.0.9000",
 #'     repo       = "ChadGoymer/githapi",
 #'     name       = "Draft 1.1 release",
 #'     body       = "This is a release created by create_release()",
@@ -119,9 +119,9 @@ create_release <- function(
 #
 #' Update a release in a repository
 #'
-#' This function updates a release in the specified repository to point at a new commit. It must
-#' be pointed at a commit by providing a Git reference, which can be either a SHA, branch or
-#' release. For a branch, the head commit is used.
+#' This function updates a release in the specified repository. It can be used to update
+#' properties, such as `name` or whether it is `draft`, or it can be used to point the release
+#' at a new commit by providing a Git reference, which can be either a SHA or branch.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/repos/releases/#edit-a-release>
@@ -256,7 +256,7 @@ update_release <- function(
 #' - <https://developer.github.com/v3/repos/releases/#get-a-single-release>
 #' - <https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name>
 #'
-#' @param release (string) The id or current tag of the release.
+#' @param release (string) The id or tag of the release.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()].
@@ -409,7 +409,7 @@ browse_release <- function(
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/repos/releases/#delete-a-release>
 #'
-#' @param release (string) The id or current tag of the release.
+#' @param release (string) The id or tag of the release.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'

@@ -1,3 +1,12 @@
+# githapi 0.9.25
+
+- Added `create_release()`
+- Added `update_release()`
+- Added `.view_releases()` commented out
+- Added `view_release()`
+- Added `browse_release()`
+- Added `delete_release()`
+
 # githapi 0.9.24
 
 - Added `.compare_commits()`
