@@ -240,3 +240,77 @@ update_release <- function(
     status  = attr(release_lst, "status"),
     header  = attr(release_lst, "header"))
 }
+
+
+#  FUNCTION: .view_releases -------------------------------------------------------------------
+#
+#' View releases within a repository
+#'
+#' `.view_releases()` summarises releases in a table with the properties as columns and a row
+#' for each release in the repository. `view_release()` returns a list of all properties for
+#' a single release. `browse_release()` opens the web page for the release in the default
+#' browser.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository>
+#' - <https://developer.github.com/v3/repos/releases/#get-a-single-release>
+#' - <https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name>
+#'
+#' @param release (string) The id or current tag of the release.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()].
+#'
+#' @return `.view_releases()` returns a tibble of release properties. `view_release()`
+#'   returns a list of properties for a single release. `browse_release` opens the
+#'   default browser on the release page and returns the URL.
+#'
+#' **Release Properties:**
+#'
+#' - **id**: The id of the release.
+#' - **tag**: The tags associated with the release.
+#' - **name**: The name of the release.
+#' - **body**: The description of the release.
+#' - **commit**: The commit associated with the release.
+#' - **draft**: Whether the release is draft.
+#' - **prerelease**:  Whether it is a pre-release.
+#' - **author_login**: The author's account login.
+#' - **assets**: The name of the assets associated with the release.
+#' - **html_url**: The address of the release's web page.
+#' - **created_at**: The time and date the release was created.
+#' - **published_at**: The time and date the release was published.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # View all releases in a repository
+#'   .view_releases("ChadGoymer/githapi")
+#'
+#'   # View a single release
+#'   view_release("1.0.1", "ChadGoymer/githapi")
+#'
+#'   # Browse the release web page
+#'   browse_release("1.0.1", "ChadGoymer/githapi")
+#'
+#' }
+#'
+#' @export
+#'
+.view_releases <- function(
+  repo,
+  n_max = 1000,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing releases for repository '", repo, "'")
+  releases_lst <- gh_url("repos", repo, "releases") %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  releases_gh <- bind_properties(releases_lst, properties$release) %>%
+    add_column(assets = map(releases_lst, ~ map_chr(.$assets, "name")), .before = "html_url")
+
+  info("Done", level = 7)
+  releases_gh
+}

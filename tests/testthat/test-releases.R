@@ -250,3 +250,33 @@ test_that("update_release updates a release and returns a list of the properties
   expect_identical(draft_release$author_login, "ChadGoymer")
 
 })
+
+
+# TEST: .view_releases -----------------------------------------------------------------------------
+
+test_that(".view_releases returns a tibble of release properties", {
+
+  all_releases <- .view_releases(str_c("ChadGoymer/test-releases-", now))
+
+  expect_is(all_releases, "tbl")
+  expect_identical(attr(all_releases, "status"), 200L)
+  expect_identical(
+    map_chr(all_releases, ~ class(.)[[1]]),
+    c(id           = "integer",
+      tag          = "character",
+      name         = "character",
+      body         = "character",
+      commit       = "character",
+      draft        = "logical",
+      prerelease   = "logical",
+      author_login = "character",
+      assets       = "list",
+      html_url     = "character",
+      created_at   = "POSIXct",
+      published_at = "POSIXct"))
+
+  expect_true(str_c("updated-master-release-", now) %in% all_releases$tag)
+  expect_true(str_c("updated-branch-release-", now) %in% all_releases$tag)
+  expect_true(str_c("updated-draft-release-", now) %in% all_releases$tag)
+
+})
