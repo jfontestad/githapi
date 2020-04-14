@@ -3,7 +3,7 @@ context("repositories releases")
 # TEST: view_releases, create_releases & delete_releases --------------------------------------
 
 test_that("create_releases creates some releases, view_releases retreives them and delete_releases deletes them", {
-  all_releases <- view_releases("ChadGoymer/test-githapi")
+  all_releases <- suppressWarnings(view_releases("ChadGoymer/test-githapi"))
 
   expect_is(all_releases, "tbl")
   expect_identical(
@@ -27,7 +27,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
     filter(all_releases, name == "Initial release") %>% pull(target_commitish),
     "cbd94cf24a4c62761b3ae59ca3c69f868591cf7d")
 
-  latest_release <- view_releases("latest", repo = "ChadGoymer/test-githapi")
+  latest_release <- suppressWarnings(view_releases("latest", repo = "ChadGoymer/test-githapi"))
 
   expect_is(latest_release, "tbl")
   expect_identical(
@@ -49,12 +49,12 @@ test_that("create_releases creates some releases, view_releases retreives them a
   latest_full_release <- filter(all_releases, draft == FALSE, prerelease == FALSE) %>% head(1)
   expect_identical(latest_release, latest_full_release)
 
-  created_releases <- create_releases(
+  created_releases <- suppressWarnings(create_releases(
     tags    = c("aaa", "bbb"),
     commits = c("310c21d3f1601a46e014e68e94814b23406bf574", "32d3c5c4f6aba7ae9679480407e1b9f94ad04843"),
     names   = c("AAA", "BBB"),
     bodies  = c("Created for testing: aaa", "Created for testing: bbb"),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/test-githapi"))
 
   expect_is(created_releases, "tbl")
   expect_identical(
@@ -78,7 +78,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
     created_releases$target_commitish,
     c("310c21d3f1601a46e014e68e94814b23406bf574", "32d3c5c4f6aba7ae9679480407e1b9f94ad04843"))
 
-  viewed_releases <- view_releases(c("aaa", "bbb"), "ChadGoymer/test-githapi")
+  viewed_releases <- suppressWarnings(view_releases(c("aaa", "bbb"), "ChadGoymer/test-githapi"))
 
   expect_is(viewed_releases, "tbl")
   expect_identical(
@@ -102,11 +102,11 @@ test_that("create_releases creates some releases, view_releases retreives them a
     viewed_releases$body,
     c("Created for testing: aaa", "Created for testing: bbb"))
 
-  updated_releases <- update_releases(
+  updated_releases <- suppressWarnings(update_releases(
     tags    = c("aaa", "bbb"),
     names   = c("AAA updated", "BBB updated"),
     bodies  = c("Updated for testing: aaa", "Updated for testing: bbb"),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/test-githapi"))
 
   expect_is(updated_releases, "tbl")
   expect_identical(
@@ -130,7 +130,7 @@ test_that("create_releases creates some releases, view_releases retreives them a
     updated_releases$body,
     c("Updated for testing: aaa", "Updated for testing: bbb"))
 
-  delete_results <- delete_releases(c("aaa", "bbb"), "ChadGoymer/test-githapi")
+  delete_results <- suppressWarnings(delete_releases(c("aaa", "bbb"), "ChadGoymer/test-githapi"))
 
   expect_identical(delete_results, list(aaa = TRUE, bbb = TRUE))
   expect_error(suppressWarnings(view_releases("aaa", "ChadGoymer/test-githapi")), "Not Found")
@@ -141,11 +141,11 @@ test_that("create_releases creates some releases, view_releases retreives them a
 
 test_that("releases_exist returns TRUE or FALSE depending on whether the tag exists in the repo", {
 
-  expect_true(releases_exist("0.0.0", "ChadGoymer/test-githapi"))
-  expect_false(releases_exist("no-such-tag", "ChadGoymer/test-githapi"))
+  expect_true(suppressWarnings(releases_exist("0.0.0", "ChadGoymer/test-githapi")))
+  expect_false(suppressWarnings(releases_exist("no-such-tag", "ChadGoymer/test-githapi")))
 
   expect_identical(
-    releases_exist(c("0.0.0", "no-such-tag"), "ChadGoymer/test-githapi"),
+    suppressWarnings(releases_exist(c("0.0.0", "no-such-tag"), "ChadGoymer/test-githapi")),
     c(`0.0.0` = TRUE, `no-such-tag` = FALSE))
 
 })

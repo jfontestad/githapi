@@ -64,6 +64,11 @@
 #' - [update_files()]: replace with [update_file()]
 #' - [delete_files()]: replace with [delete_file()]
 #' - [files_exist()]: is being removed
+#' - [create_releases()]: replace with [create_release()]
+#' - [update_releases()]: replace with [update_release()]
+#' - [view_releases()] for specifying branches: replace with [view_release()]
+#' - [delete_releases()]: replace with [delete_release()]
+#' - [releases_exist()]: is being removed
 #'
 #' @section Issues, Pull Requests, labels and milestones:
 #'
