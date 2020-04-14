@@ -136,3 +136,117 @@ test_that("create_release creates a release and returns a list of the properties
   expect_identical(draft_release$author_login, "ChadGoymer")
 
 })
+
+
+# TEST: update_release ----------------------------------------------------------------------------
+
+draft_release_id <- suppressMessages({
+  .view_releases(str_c("ChadGoymer/test-releases-", now)) %>%
+    filter(.data$name == str_c("Draft release ", now)) %>%
+    pull(id)
+})
+
+test_that("update_release updates a release and returns a list of the properties", {
+
+  master_release <- update_release(
+    release = str_c("master-release-", now),
+    repo    = str_c("ChadGoymer/test-releases-", now),
+    tag     = str_c("updated-master-release-", now),
+    name    = str_c("Updated master release ", now),
+    body    = "This release has been updated by update_release()")
+
+  expect_is(master_release, "list")
+  expect_identical(attr(master_release, "status"), 200L)
+  expect_identical(
+    map_chr(master_release, ~ class(.)[[1]]),
+    c(id           = "integer",
+      tag          = "character",
+      name         = "character",
+      body         = "character",
+      commit       = "character",
+      draft        = "logical",
+      prerelease   = "logical",
+      author_login = "character",
+      assets       = "character",
+      html_url     = "character",
+      created_at   = "POSIXct",
+      published_at = "POSIXct"))
+
+  expect_identical(master_release$tag, str_c("updated-master-release-", now))
+  expect_identical(master_release$name, str_c("Updated master release ", now))
+  expect_identical(master_release$body, "This release has been updated by update_release()")
+  expect_identical(master_release$commit, "master")
+  expect_false(master_release$draft)
+  expect_false(master_release$prerelease)
+  expect_identical(master_release$author_login, "ChadGoymer")
+
+
+  branch_release <- update_release(
+    release = str_c("branch-release-", now),
+    repo    = str_c("ChadGoymer/test-releases-", now),
+    tag     = str_c("updated-branch-release-", now),
+    name    = str_c("Updated branch release ", now),
+    body    = "This release has been updated by update_release()",
+    ref     = str_c("test-releases-", now))
+
+  expect_is(branch_release, "list")
+  expect_identical(attr(branch_release, "status"), 200L)
+  expect_identical(
+    map_chr(branch_release, ~ class(.)[[1]]),
+    c(id           = "integer",
+      tag          = "character",
+      name         = "character",
+      body         = "character",
+      commit       = "character",
+      draft        = "logical",
+      prerelease   = "logical",
+      author_login = "character",
+      assets       = "character",
+      html_url     = "character",
+      created_at   = "POSIXct",
+      published_at = "POSIXct"))
+
+  expect_identical(branch_release$tag, str_c("updated-branch-release-", now))
+  expect_identical(branch_release$name, str_c("Updated branch release ", now))
+  expect_identical(branch_release$body, "This release has been updated by update_release()")
+  expect_identical(branch_release$commit, str_c("test-releases-", now))
+  expect_false(branch_release$draft)
+  expect_false(branch_release$prerelease)
+  expect_identical(branch_release$author_login, "ChadGoymer")
+
+
+  draft_release <- update_release(
+    release    = draft_release_id,
+    tag        = str_c("updated-draft-release-", now),
+    repo       = str_c("ChadGoymer/test-releases-", now),
+    name       = str_c("Updated draft release ", now),
+    body       = "This release has been updated by update_release()",
+    draft      = FALSE,
+    prerelease = FALSE)
+
+  expect_is(draft_release, "list")
+  expect_identical(attr(draft_release, "status"), 200L)
+  expect_identical(
+    map_chr(draft_release, ~ class(.)[[1]]),
+    c(id           = "integer",
+      tag          = "character",
+      name         = "character",
+      body         = "character",
+      commit       = "character",
+      draft        = "logical",
+      prerelease   = "logical",
+      author_login = "character",
+      assets       = "character",
+      html_url     = "character",
+      created_at   = "POSIXct",
+      published_at = "POSIXct"))
+
+  expect_identical(draft_release$tag, str_c("updated-draft-release-", now))
+  expect_identical(draft_release$name, str_c("Updated draft release ", now))
+  expect_identical(draft_release$body, "This release has been updated by update_release()")
+  expect_identical(draft_release$commit, "master")
+  expect_false(draft_release$draft)
+  expect_false(draft_release$prerelease)
+  expect_identical(draft_release$author_login, "ChadGoymer")
+
+})
