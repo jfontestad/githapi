@@ -357,3 +357,43 @@ view_release <- function(
     status  = attr(release_lst, "status"),
     header  = attr(release_lst, "header"))
 }
+
+
+#  FUNCTION: browse_release -------------------------------------------------------------------
+#
+#' @rdname dot-view_releases
+#' @export
+#'
+browse_release <- function(
+  release,
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (is_scalar_integerish(release))
+  {
+    url <- gh_url("repos", repo, "releases", release)
+  }
+  else if (is_ref(release))
+  {
+    url <- gh_url("repos", repo, "releases/tags", release)
+  }
+  else
+  {
+    error("'release' must be either an integer or a valid git reference - see help(is_ref):\n  ", release)
+  }
+
+  info("Browsing release '", release, "' in repository '", repo, "'")
+  release <- gh_request("GET", url = url, ...)
+  httr::BROWSE(release$html_url)
+
+  info("Done", level = 7)
+  structure(
+    release$html_url,
+    class   = c("github", "character"),
+    url     = attr(release, "url"),
+    request = attr(release, "request"),
+    status  = attr(release, "status"),
+    header  = attr(release, "header"))
+}

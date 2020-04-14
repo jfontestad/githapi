@@ -356,3 +356,43 @@ test_that("view_release throws as error if invalid arguments are supplied", {
     "'release' must be either an integer or a valid git reference")
 
 })
+
+
+# TEST: browse_release ------------------------------------------------------------------------
+
+test_that("browse_release opens the release's page in the browser", {
+
+  skip_if(!interactive(), "browse_release must be tested manually")
+
+  master_release <- browse_release(
+    release = str_c("updated-master-release-", now),
+    repo    = str_c("ChadGoymer/test-releases-", now))
+
+  expect_is(master_release, "character")
+  expect_identical(attr(master_release, "status"), 200L)
+  expect_identical(
+    dirname(master_release),
+    str_c("https://github.com/ChadGoymer/test-releases-", now, "/releases/tag"))
+
+
+  draft_release <- browse_release(
+    release = draft_release_id,
+    repo    = str_c("ChadGoymer/test-releases-", now))
+
+  expect_is(draft_release, "character")
+  expect_identical(attr(draft_release, "status"), 200L)
+  expect_identical(
+    dirname(draft_release),
+    str_c("https://github.com/ChadGoymer/test-releases-", now, "/releases/tag"))
+
+})
+
+test_that("browse_release throws as error if invalid arguments are supplied", {
+
+  expect_error(
+    browse_release(
+      release = list(1),
+      repo    = str_c("ChadGoymer/test-releases-", now)),
+    "'release' must be either an integer or a valid git reference")
+
+})
