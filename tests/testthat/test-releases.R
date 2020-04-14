@@ -280,3 +280,79 @@ test_that(".view_releases returns a tibble of release properties", {
   expect_true(str_c("updated-draft-release-", now) %in% all_releases$tag)
 
 })
+
+
+# TEST: view_release ------------------------------------------------------------------------------
+
+test_that("view_release returns a list of release properties", {
+
+  master_release <- view_release(
+    release = str_c("updated-master-release-", now),
+    repo    = str_c("ChadGoymer/test-releases-", now))
+
+  expect_is(master_release, "list")
+  expect_identical(attr(master_release, "status"), 200L)
+  expect_identical(
+    map_chr(master_release, ~ class(.)[[1]]),
+    c(id           = "integer",
+      tag          = "character",
+      name         = "character",
+      body         = "character",
+      commit       = "character",
+      draft        = "logical",
+      prerelease   = "logical",
+      author_login = "character",
+      assets       = "character",
+      html_url     = "character",
+      created_at   = "POSIXct",
+      published_at = "POSIXct"))
+
+  expect_identical(master_release$tag, str_c("updated-master-release-", now))
+  expect_identical(master_release$name, str_c("Updated master release ", now))
+  expect_identical(master_release$body, "This release has been updated by update_release()")
+  expect_identical(master_release$commit, "master")
+  expect_false(master_release$draft)
+  expect_false(master_release$prerelease)
+  expect_identical(master_release$author_login, "ChadGoymer")
+
+
+  draft_release <- view_release(
+    release = draft_release_id,
+    repo    = str_c("ChadGoymer/test-releases-", now))
+
+  expect_is(draft_release, "list")
+  expect_identical(attr(draft_release, "status"), 200L)
+  expect_identical(
+    map_chr(draft_release, ~ class(.)[[1]]),
+    c(id           = "integer",
+      tag          = "character",
+      name         = "character",
+      body         = "character",
+      commit       = "character",
+      draft        = "logical",
+      prerelease   = "logical",
+      author_login = "character",
+      assets       = "character",
+      html_url     = "character",
+      created_at   = "POSIXct",
+      published_at = "POSIXct"))
+
+  expect_identical(draft_release$tag, str_c("updated-draft-release-", now))
+  expect_identical(draft_release$name, str_c("Updated draft release ", now))
+  expect_identical(draft_release$body, "This release has been updated by update_release()")
+  expect_identical(draft_release$commit, "master")
+  expect_false(draft_release$draft)
+  expect_false(draft_release$prerelease)
+  expect_identical(draft_release$author_login, "ChadGoymer")
+
+})
+
+test_that("view_release throws as error if invalid arguments are supplied", {
+
+  expect_error(
+    view_release(
+      release = list(1),
+      repo    = str_c("ChadGoymer/test-releases-", now)),
+    "'release' must be either an integer or a valid git reference")
+
+})

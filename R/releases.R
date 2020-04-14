@@ -314,3 +314,46 @@ update_release <- function(
   info("Done", level = 7)
   releases_gh
 }
+
+
+#  FUNCTION: view_release ---------------------------------------------------------------------
+#
+#' @rdname dot-view_releases
+#' @export
+#'
+view_release <- function(
+  release,
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (is_scalar_integerish(release))
+  {
+    url <- gh_url("repos", repo, "releases", release)
+  }
+  else if (is_ref(release))
+  {
+    url <- gh_url("repos", repo, "releases/tags", release)
+  }
+  else
+  {
+    error("'release' must be either an integer or a valid git reference - see help(is_ref):\n  ", release)
+  }
+
+  info("Viewing release '", release, "' in repository '", repo, "'")
+  release_lst <- gh_request("GET", url = url, ...)
+
+  info("Transforming results", level = 4)
+  release_gh <- select_properties(release_lst, properties$release) %>%
+    modify_list(assets = map_chr(release_lst$assets, "name"), .before = "html_url")
+
+  info("Done", level = 7)
+  structure(
+    release_gh,
+    class   = class(release_lst),
+    url     = attr(release_lst, "url"),
+    request = attr(release_lst, "request"),
+    status  = attr(release_lst, "status"),
+    header  = attr(release_lst, "header"))
+}
