@@ -260,7 +260,20 @@ properties <- list(
     deletions                                = c("deletions",                                as = "integer"),
     changes                                  = c("changes",                                  as = "integer"),
     patch                                    = c("patch",                                    as = "character"),
-    html_url                                 = c("blob_url",                                 as = "character"))
+    html_url                                 = c("blob_url",                                 as = "character")),
+
+  release = list(
+    id                                       = c("id",                                       as = "integer"),
+    tag                                      = c("tag_name",                                 as = "character"),
+    name                                     = c("name",                                     as = "character"),
+    body                                     = c("body",                                     as = "character"),
+    commit                                   = c("target_commitish",                         as = "character"),
+    draft                                    = c("draft",                                    as = "logical"),
+    prerelease                               = c("prerelease",                               as = "logical"),
+    author_login                             = c("author", "login",                          as = "character"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    created_at                               = c("created_at",                               as = "datetime"),
+    published_at                             = c("published_at",                             as = "datetime"))
 
 )
 

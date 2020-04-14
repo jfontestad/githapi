@@ -69,6 +69,11 @@ possible, alternative functions with similar functionality are also mentioned.
 \item \code{\link[=update_files]{update_files()}}: replace with \code{\link[=update_file]{update_file()}}
 \item \code{\link[=delete_files]{delete_files()}}: replace with \code{\link[=delete_file]{delete_file()}}
 \item \code{\link[=files_exist]{files_exist()}}: is being removed
+\item \code{\link[=create_releases]{create_releases()}}: replace with \code{\link[=create_release]{create_release()}}
+\item \code{\link[=update_releases]{update_releases()}}: replace with \code{\link[=update_release]{update_release()}}
+\item \code{\link[=view_releases]{view_releases()}} for specifying branches: replace with \code{\link[=view_release]{view_release()}}
+\item \code{\link[=delete_releases]{delete_releases()}}: replace with \code{\link[=delete_release]{delete_release()}}
+\item \code{\link[=releases_exist]{releases_exist()}}: is being removed
 }
 }
 

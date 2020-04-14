@@ -177,7 +177,7 @@ create_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  .Deprecated("create_branch", package = "githapi")
+  .Deprecated("create_file", package = "githapi")
 
   {
     if (missing(branches) || is_null(branches)) {
@@ -342,7 +342,7 @@ update_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  .Deprecated("create_branch", package = "githapi")
+  .Deprecated("update_file", package = "githapi")
 
   {
     if (missing(branches) || is_null(branches)) {
@@ -486,7 +486,7 @@ delete_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  .Deprecated("create_branch", package = "githapi")
+  .Deprecated("delete_file", package = "githapi")
 
   {
     if (missing(branches) || is_null(branches)) {

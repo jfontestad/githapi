@@ -41,3 +41,12 @@ For more details see the GitHub API documentation:
 \item \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
 }
 }
+\examples{
+\dontrun{
+
+  # View the files changes made between the current master branch and a release
+  .compare_files("master", "0.8.7", "ChadGoymer/githapi")
+
+}
+
+}

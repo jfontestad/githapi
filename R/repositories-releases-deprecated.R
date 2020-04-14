@@ -85,6 +85,8 @@ view_releases <- function(
         token = token, ...))
     })
   } else {
+    .Deprecated(msg = "Specifying tags within view_releases() has been deprecated. Please use view_release() instead.")
+
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
 
@@ -173,6 +175,8 @@ create_releases <- function(
   api        = getOption("github.api"),
   ...)
 {
+  .Deprecated("create_release", package = "githapi")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
@@ -293,6 +297,8 @@ update_releases <- function(
   api        = getOption("github.api"),
   ...)
 {
+  .Deprecated("update_release", package = "githapi")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
@@ -389,6 +395,8 @@ delete_releases <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("delete_release", package = "githapi")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
@@ -450,6 +458,8 @@ releases_exist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   {
     (is_character(tags)) ||
       error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")

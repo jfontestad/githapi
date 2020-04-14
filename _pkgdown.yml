@@ -45,6 +45,10 @@ reference:
     - '`update_tag`'
     - '`.view_tags`'
     - '`delete_tag`'
+    - '`create_release`'
+    - '`update_release`'
+    - '`.view_releases`'
+    - '`delete_release`'
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
   contents:
@@ -115,11 +119,6 @@ reference:
 - title: Repository contents
   desc: Functions for accessing information about repositories and their content.
   contents:
-    - '`view_releases`'
-    - '`create_releases`'
-    - '`update_releases`'
-    - '`delete_releases`'
-    - '`releases_exist`'
     - '`gh_commit_comment`'
     - '`gh_commit_comments`'
     - '`gh_contributers`'
@@ -247,5 +246,10 @@ reference:
     - '`source_files`'
     - '`compare_commits`'
     - '`compare_files`'
+    - '`view_releases`'
+    - '`create_releases`'
+    - '`update_releases`'
+    - '`delete_releases`'
+    - '`releases_exist`'
 news:
 - one_page: false

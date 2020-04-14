@@ -1221,7 +1221,7 @@ github_source <- function(
 #' \dontrun{
 #'
 #'   # View the files changes made between the current master branch and a release
-#'   .compare_files("master", "0.8.7, "ChadGoymer/githapi")
+#'   .compare_files("master", "0.8.7", "ChadGoymer/githapi")
 #'
 #' }
 #'

@@ -570,7 +570,7 @@ view_sha <- function(
 #' \dontrun{
 #'
 #'   # View the changes made between the current master branch and a release
-#'   .compare_commits("master", "0.8.7, "ChadGoymer/githapi")
+#'   .compare_commits("master", "0.8.7", "ChadGoymer/githapi")
 #'
 #' }
 #'
