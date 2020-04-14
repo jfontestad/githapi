@@ -397,3 +397,54 @@ browse_release <- function(
     status  = attr(release, "status"),
     header  = attr(release, "header"))
 }
+
+
+#  FUNCTION: delete_release -------------------------------------------------------------------
+#
+#' Delete a release from a repository
+#'
+#' This function deletes a release from a repository, as long as you have appropriate
+#' permissions. Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/releases/#delete-a-release>
+#'
+#' @param release (string) The id or current tag of the release.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_release()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'   delete_release("1.0.0", repo = "ChadGoymer/githapi")
+#' }
+#'
+#' @export
+#'
+delete_release <- function(
+  release,
+  repo,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  if (is_scalar_character(release))
+  {
+    release <- view_release(release = release, repo = repo, ...)$id
+  }
+  assert(is_scalar_integerish(release), "'release' must be an integer or a string:\n  ", release)
+
+  info("Deleting release '", release, "' in repository '", repo, "'")
+  response <- gh_url("repos", repo, "releases", release) %>%
+    gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}

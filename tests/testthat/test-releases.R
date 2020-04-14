@@ -396,3 +396,18 @@ test_that("browse_release throws as error if invalid arguments are supplied", {
     "'release' must be either an integer or a valid git reference")
 
 })
+
+
+# TEST: delete_release ------------------------------------------------------------------------
+
+test_that("delete_release deletes a release", {
+
+  deleted_release <- delete_release(
+    release = str_c("updated-master-release-", now),
+    repo    = str_c("ChadGoymer/test-releases-", now))
+
+  expect_is(deleted_release, "logical")
+  expect_identical(attr(deleted_release, "status"), 204L)
+  expect_identical(as.logical(deleted_release), TRUE)
+
+})
