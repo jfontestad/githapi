@@ -5,39 +5,41 @@ context("tags")
 
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
-setup(suppressMessages(try(silent = TRUE, {
+setup(suppressMessages({
 
   test_repo <- create_repository(
     name        = str_c("test-tags-", now),
     description = "This is a repository to test tags",
     auto_init   = TRUE)
 
-  # TODO: replace with new `create_file()` function
-  suppressWarnings({
-    create_files(
-      paths    = str_c("test-tags-", now, ".txt"),
-      contents = "This is a commit to test tags",
-      messages = "Commit to test tags",
-      branches = str_c("test-tags-1-", now),
-      parents  = "master",
-      repo     = str_c("ChadGoymer/test-tags-", now))
-  })
+  create_branch(
+    name = str_c("test-tags-1-", now),
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-tags-", now))
 
-})))
+  create_file(
+    content = "This is a commit to test tags",
+    path    = str_c("test-tags-", now, ".txt"),
+    branch  = str_c("test-tags-1-", now),
+    message = "Commit to test tags",
+    repo    = str_c("ChadGoymer/test-tags-", now))
 
-teardown(suppressMessages(try(silent = TRUE, {
+}))
+
+teardown(suppressMessages({
 
   delete_repository(str_c("ChadGoymer/test-tags-", now))
 
-})))
+}))
 
 
 # TEST: create_tag ----------------------------------------------------------------------------
 
 test_that("create_tag creates a tag and returns a list of the properties", {
 
-  branch_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", now), "commits/heads", str_c("test-tags-1-", now)) %>%
-    gh_request("GET", accept = "application/vnd.github.VERSION.sha")
+  branch_sha <- view_sha(
+    ref  = str_c("test-tags-1-", now),
+    repo = str_c("ChadGoymer/test-tags-", now))
 
   branch_tag <- create_tag(
     name = str_c("test-tags-1-", now),
