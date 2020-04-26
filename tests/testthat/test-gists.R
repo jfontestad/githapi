@@ -253,3 +253,39 @@ test_that("view_gists returns a tibble of gist properties", {
       updated_at  = "POSIXct"))
 
 })
+
+
+# TEST: view_gist -----------------------------------------------------------------------------
+
+test_that("view_gist returns a list of gist properties", {
+
+  gist <- view_gist(created_gists$id[[1]])
+
+  expect_is(gist, "list")
+  expect_identical(attr(gist, "status"), 200L)
+  expect_identical(
+    map_chr(gist, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(gist$description, "An updated description")
+  expect_identical(gist$owner, "ChadGoymer")
+  expect_true(gist$public)
+  expect_identical(gist$files$filename, "hello-world.R")
+  expect_identical(gist$files$content, "cat(\"Hello World!\")")
+
+})

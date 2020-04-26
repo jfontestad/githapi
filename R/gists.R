@@ -292,3 +292,32 @@ view_gists <- function(
   info("Done", level = 7)
   gists_gh
 }
+
+
+#  FUNCTION: view_gist ------------------------------------------------------------------------
+#
+#' @rdname view_gists
+#' @export
+#'
+view_gist <- function(
+  gist,
+  ...)
+{
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+
+  info("Viewing gist '", gist, "'")
+  gist_lst <- gh_url("gists", gist) %>% gh_request("GET", ...)
+
+  info("Transforming results", level = 4)
+  gist_gh <- select_properties(gist_lst, properties$gist) %>%
+    modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
+
+  info("Done", level = 7)
+  structure(
+    gist_gh,
+    class   = class(gist_lst),
+    url     = attr(gist_lst, "url"),
+    request = attr(gist_lst, "request"),
+    status  = attr(gist_lst, "status"),
+    header  = attr(gist_lst, "header"))
+}
