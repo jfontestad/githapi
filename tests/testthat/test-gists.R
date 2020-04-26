@@ -304,3 +304,16 @@ test_that("browse_gist opens the gist's page in the browser", {
   expect_identical(dirname(gist_url), "https://gist.github.com")
 
 })
+
+
+# TEST: delete_gist ---------------------------------------------------------------------------
+
+test_that("delete_gist deletes a gist", {
+
+  deleted_gist <- delete_gist(created_gists$id[[1]])
+
+  expect_is(deleted_gist, "logical")
+  expect_identical(attr(deleted_gist, "status"), 204L)
+  expect_identical(as.logical(deleted_gist), TRUE)
+
+})

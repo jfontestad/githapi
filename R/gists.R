@@ -347,3 +347,47 @@ browse_gist <- function(
     status  = attr(gist, "status"),
     header  = attr(gist, "header"))
 }
+
+
+#  FUNCTION: delete_gist ----------------------------------------------------------------------
+#
+#' Delete a gist in GitHub
+#'
+#' This function deletes a gist from github, as long as you have appropriate permissions.
+#' Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/gists/#delete-a-gist>
+#'
+#' @param gist (string) The id of the gist.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_gist()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   view_gist("806dca6b09a39e7b6326a0c8137583e6")
+#'
+#' }
+#'
+#' @export
+#'
+delete_gist <- function(
+  gist,
+  ...)
+{
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+
+  info("Deleting gist '", gist, "'")
+  response <- gh_url("gists", gist) %>% gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
