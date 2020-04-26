@@ -198,3 +198,58 @@ test_that("update_gist updates a gist and returns its properties", {
   expect_identical(updated_files$files$content, "cat(\"Hello World!\")")
 
 })
+
+
+# TEST: view_gists ----------------------------------------------------------------------------
+
+test_that("view_gists returns a tibble of gist properties", {
+
+  expect_is(created_gists, "tbl")
+  expect_identical(attr(created_gists, "status"), 200L)
+  expect_identical(
+    map_chr(created_gists, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "list",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_true("A public gist" %in% created_gists$description)
+  expect_true("A gist with multiple files" %in% created_gists$description)
+
+
+  user_gists <- view_gists("ChadGoymer", n_max = 10)
+
+  expect_is(user_gists, "tbl")
+  expect_identical(attr(user_gists, "status"), 200L)
+  expect_identical(
+    map_chr(user_gists, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "list",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+
+  public_gists <- view_gists("public", n_max = 10)
+
+  expect_is(public_gists, "tbl")
+  expect_identical(attr(public_gists, "status"), 200L)
+  expect_identical(
+    map_chr(public_gists, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "list",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+})
