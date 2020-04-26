@@ -273,7 +273,23 @@ properties <- list(
     author_login                             = c("author", "login",                          as = "character"),
     html_url                                 = c("html_url",                                 as = "character"),
     created_at                               = c("created_at",                               as = "datetime"),
-    published_at                             = c("published_at",                             as = "datetime"))
+    published_at                             = c("published_at",                             as = "datetime")),
+
+  gist = list(
+    id                                       = c("id",                                       as = "character"),
+    description                              = c("description",                              as = "character"),
+    owner                                    = c("owner", "login",                           as = "character"),
+    public                                   = c("public",                                   as = "logical"),
+    html_url                                 = c("html_url",                                 as = "character"),
+    created_at                               = c("created_at",                               as = "datetime"),
+    updated_at                               = c("updated_at",                               as = "datetime")),
+
+  gist_file = list(
+    filename                                 = c("filename",                                 as = "character"),
+    type                                     = c("type",                                     as = "character"),
+    content                                  = c("content",                                  as = "character"),
+    size                                     = c("size",                                     as = "integer"),
+    truncated                                = c("truncated",                                as = "logical"))
 
 )
 

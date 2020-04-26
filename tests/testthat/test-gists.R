@@ -1,0 +1,122 @@
+context("gists")
+
+
+# SETUP ---------------------------------------------------------------------------------------
+
+now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+
+teardown(suppressMessages({
+  created_gists <- view_gists(since = as.character(Sys.time() - 60*10)) %>%
+    filter(map_lgl(.data$files, ~ any(str_detect(., now))))
+
+  walk(created_gists$id, delete_gist)
+}))
+
+# TEST: create_gist ---------------------------------------------------------------------------
+
+test_that("create_gist creates a gist and returns its properties", {
+
+  basic_files <- list("print(\"Hello World!\")") %>%
+    set_names(str_c("helloworld-", now, ".R"))
+  basic_gist <- create_gist(files = basic_files)
+
+  expect_is(basic_gist, "list")
+  expect_identical(attr(basic_gist, "status"), 201L)
+  expect_identical(
+    map_chr(basic_gist, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(basic_gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(basic_gist$description, NA_character_)
+  expect_identical(basic_gist$owner, "ChadGoymer")
+  expect_false(basic_gist$public)
+  expect_identical(basic_gist$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(basic_gist$files$content, "print(\"Hello World!\")")
+
+
+  multiple_files <- list(
+    "print(\"Hello World!\")",
+    "helloworld <- function() print(\"Hello World!\")") %>%
+    set_names(str_c(c("helloworld-", "helloworld-fn-"), now, ".R"))
+
+  multiple_gist <- create_gist(
+    files       = multiple_files,
+    description = "A gist with multiple files")
+
+  expect_is(multiple_gist, "list")
+  expect_identical(attr(multiple_gist, "status"), 201L)
+  expect_identical(
+    map_chr(multiple_gist, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(multiple_gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(multiple_gist$description, "A gist with multiple files")
+  expect_identical(multiple_gist$owner, "ChadGoymer")
+  expect_false(multiple_gist$public)
+  expect_identical(multiple_gist$files$filename[[1]], str_c("helloworld-", now, ".R"))
+  expect_identical(multiple_gist$files$filename[[2]], str_c("helloworld-fn-", now, ".R"))
+  expect_identical(multiple_gist$files$content[[1]], "print(\"Hello World!\")")
+  expect_identical(multiple_gist$files$content[[2]], "helloworld <- function() print(\"Hello World!\")")
+
+
+  public_gist <- create_gist(
+    files  = basic_files,
+    description = "A public gist",
+    public = TRUE)
+
+  expect_is(public_gist, "list")
+  expect_identical(attr(public_gist, "status"), 201L)
+  expect_identical(
+    map_chr(public_gist, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(public_gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(public_gist$description, "A public gist")
+  expect_identical(public_gist$owner, "ChadGoymer")
+  expect_true(public_gist$public)
+  expect_identical(public_gist$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(public_gist$files$content, "print(\"Hello World!\")")
+
+})
