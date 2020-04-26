@@ -289,3 +289,18 @@ test_that("view_gist returns a list of gist properties", {
   expect_identical(gist$files$content, "cat(\"Hello World!\")")
 
 })
+
+
+# TEST: browse_gist ---------------------------------------------------------------------------
+
+test_that("browse_gist opens the gist's page in the browser", {
+
+  skip_if(!interactive(), "browse_gist must be tested manually")
+
+  gist_url <- browse_gist(created_gists$id[[1]])
+
+  expect_is(gist_url, "character")
+  expect_identical(attr(gist_url, "status"), 200L)
+  expect_identical(dirname(gist_url), "https://gist.github.com")
+
+})

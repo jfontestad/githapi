@@ -321,3 +321,29 @@ view_gist <- function(
     status  = attr(gist_lst, "status"),
     header  = attr(gist_lst, "header"))
 }
+
+
+#  FUNCTION: browse_gist ----------------------------------------------------------------------
+#
+#' @rdname view_gists
+#' @export
+#'
+browse_gist <- function(
+  gist,
+  ...)
+{
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+
+  info("Browsing gist '", gist, "'")
+  gist <- gh_url("gists", gist) %>% gh_request("GET", ...)
+  httr::BROWSE(gist$html_url)
+
+  info("Done", level = 7)
+  structure(
+    gist$html_url,
+    class   = c("github", "character"),
+    url     = attr(gist, "url"),
+    request = attr(gist, "request"),
+    status  = attr(gist, "status"),
+    header  = attr(gist, "header"))
+}
