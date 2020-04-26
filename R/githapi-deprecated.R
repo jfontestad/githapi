@@ -122,6 +122,16 @@
 #' - [gh_collaborators()]: replace with [view_collaborators()]
 #' - [gh_permissions()]: replace with [view_collaborator()]
 #'
+#' @section Gists:
+#'
+#' - [gh_gist()]: replace with [view_gist()]
+#' - [gh_gists()]: replace with [view_gists()]
+#' - [gh_gist_commits()]: is being removed
+#' - [is_gist_starred()]: is being removed
+#' - [gh_gist_forks()]: is being removed
+#' - [gh_save_gist()]: replace with [download_gist()]
+#' - [gh_source_gist()]: replace with [source_gist()]
+#'
 NULL
 
 #  FUNCTION: gh_get ---------------------------------------------------------------------------

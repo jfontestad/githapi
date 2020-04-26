@@ -24,6 +24,8 @@ gh_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_gist", package = "githapi")
+
   assert(is_scalar_character(gist))
   assert(is_sha(token))
   assert(is_url(api))
@@ -71,6 +73,8 @@ gh_gists <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_gists", package = "githapi")
+
   assert(is_null(since) || is_scalar_character(since))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -132,6 +136,8 @@ gh_gist_commits <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_character(gist))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -175,6 +181,8 @@ is_gist_starred <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_character(gist))
   assert(is_sha(token))
   assert(is_url(api))
@@ -218,6 +226,8 @@ gh_gist_forks <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_character(gist))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -347,6 +357,8 @@ gh_save_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("download_gist", package = "githapi")
+
   assert(is_scalar_character(gist))
   assert(is_scalar_character(path))
   assert(is_sha(token))
@@ -399,6 +411,8 @@ gh_source_gist <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("source_gist", package = "githapi")
+
   assert(is_scalar_character(file))
   assert(is_scalar_character(gist))
   assert(is_sha(token))
