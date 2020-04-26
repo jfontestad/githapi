@@ -120,3 +120,81 @@ test_that("create_gist creates a gist and returns its properties", {
   expect_identical(public_gist$files$content, "print(\"Hello World!\")")
 
 })
+
+
+# TEST: update_gist ---------------------------------------------------------------------------
+
+suppressMessages({
+  created_gists <- view_gists(since = as.character(Sys.time() - 60*10)) %>%
+    filter(map_lgl(.data$files, ~ any(str_detect(., now))))
+})
+
+test_that("update_gist updates a gist and returns its properties", {
+
+  updated_desc <- update_gist(
+    gist        = created_gists$id[[1]],
+    description = "An updated description")
+
+  expect_is(updated_desc, "list")
+  expect_identical(attr(updated_desc, "status"), 200L)
+  expect_identical(
+    map_chr(updated_desc, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(updated_desc$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(updated_desc$description, "An updated description")
+  expect_identical(updated_desc$owner, "ChadGoymer")
+  expect_true(updated_desc$public)
+  expect_identical(updated_desc$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(updated_desc$files$content, "print(\"Hello World!\")")
+
+
+  updated_files <- list(c("cat(\"Hello World!\")", filename = "hello-world.R")) %>%
+    set_names(str_c("helloworld-", now, ".R"))
+
+  updated_files <- update_gist(
+    gist  = created_gists$id[[1]],
+    files = updated_files)
+
+  expect_is(updated_files, "list")
+  expect_identical(attr(updated_files, "status"), 200L)
+  expect_identical(
+    map_chr(updated_files, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(updated_files$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(updated_files$description, "An updated description")
+  expect_identical(updated_files$owner, "ChadGoymer")
+  expect_true(updated_files$public)
+  expect_identical(updated_files$files$filename, "hello-world.R")
+  expect_identical(updated_files$files$content, "cat(\"Hello World!\")")
+
+})
