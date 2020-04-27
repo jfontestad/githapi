@@ -138,4 +138,17 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
+\section{Gists}{
+
+\itemize{
+\item \code{\link[=gh_gist]{gh_gist()}}: replace with \code{\link[=view_gist]{view_gist()}}
+\item \code{\link[=gh_gists]{gh_gists()}}: replace with \code{\link[=view_gists]{view_gists()}}
+\item \code{\link[=gh_gist_commits]{gh_gist_commits()}}: is being removed
+\item \code{\link[=is_gist_starred]{is_gist_starred()}}: is being removed
+\item \code{\link[=gh_gist_forks]{gh_gist_forks()}}: is being removed
+\item \code{\link[=gh_save_gist]{gh_save_gist()}}: replace with \code{\link[=download_gist]{download_gist()}}
+\item \code{\link[=gh_source_gist]{gh_source_gist()}}: replace with \code{\link[=source_gist]{source_gist()}}
+}
+}
+
 \keyword{internal}

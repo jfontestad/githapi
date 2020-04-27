@@ -1,3 +1,14 @@
+# githapi 0.9.26
+
+- Added `create_gist()`
+- Added `update_gist()`
+- Added `view_gists()`
+- Added `view_gist()`
+- Added `browse_gist()`
+- Added `delete_gist()`
+- Added `download_gist()`
+- Added `source_gist()`
+
 # githapi 0.9.25
 
 - Added `create_release()`

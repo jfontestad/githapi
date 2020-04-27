@@ -1,192 +1,351 @@
-context("gists api")
+context("gists")
 
-#  FUNCTION: gh_gist --------------------------------------------------------------------------
-test_that("gh_gist returns a list describing the gist", {
-  gist <- gh_gist("806dca6b09a39e7b6326a0c8137583e6")
-  expect_is(gist, "list")
-  expect_named(
-    gist,
-    c("url", "forks_url", "commits_url", "id", "node_id", "git_pull_url", "git_push_url",
-      "html_url","files", "public", "created_at", "updated_at", "description", "comments",
-      "user", "comments_url", "owner", "forks", "history", "truncated"))
-  expect_identical(gist$description, "An R script to test GitHub's Gist API")
 
-  gist_sha <- gh_gist("806dca6b09a39e7b6326a0c8137583e6", "4a239d53a0e38a3dd2b70e0cd5c7cb316369ab9f")
-  expect_is(gist_sha, "list")
-  expect_named(
-    gist_sha,
-    c("url", "forks_url", "commits_url", "id", "node_id", "git_pull_url", "git_push_url",
-      "html_url","files", "public", "created_at", "updated_at", "description", "comments",
-      "user", "comments_url", "owner", "forks", "history", "truncated"))
-  expect_identical(gist_sha$description, "An R script to test GitHub's Gist API")
-})
+# SETUP ---------------------------------------------------------------------------------------
 
-#  FUNCTION: gh_gists -------------------------------------------------------------------------
-test_that("gh_gists returns a tibble describing the gists", {
-  auth_user_gists <- gh_gists()
-  expect_is(auth_user_gists, "tbl")
+now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
+teardown(suppressMessages({
+  created_gists <- view_gists(since = as.character(Sys.time() - 60*10)) %>%
+    filter(map_lgl(.data$files, ~ any(str_detect(., now))))
+
+  walk(created_gists$id, delete_gist)
+}))
+
+
+# TEST: create_gist ---------------------------------------------------------------------------
+
+test_that("create_gist creates a gist and returns its properties", {
+
+  basic_files <- list("print(\"Hello World!\")") %>%
+    set_names(str_c("helloworld-", now, ".R"))
+  basic_gist <- create_gist(files = basic_files)
+
+  expect_is(basic_gist, "list")
+  expect_identical(attr(basic_gist, "status"), 201L)
   expect_identical(
-    sapply(auth_user_gists, function(field) class(field)[[1]]),
+    map_chr(basic_gist, ~ class(.)[[1]]),
     c(id          = "character",
       description = "character",
-      owner_login = "character",
-      created_at  = "POSIXct",
-      updated_at  = "POSIXct",
-      comments    = "integer",
-      files       = "list",
+      files       = "github",
+      owner       = "character",
       public      = "logical",
-      url         = "character"))
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
 
   expect_identical(
-    sapply(auth_user_gists$files[[1]], function(field) class(field)[[1]]),
-    c(filename = "character",
-      language = "character",
-      size     = "integer"))
+    map_chr(basic_gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
 
-  expect_true("An R script to test GitHub's Gist API" %in% auth_user_gists$description)
+  expect_identical(basic_gist$description, NA_character_)
+  expect_identical(basic_gist$owner, "ChadGoymer")
+  expect_false(basic_gist$public)
+  expect_identical(basic_gist$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(basic_gist$files$content, "print(\"Hello World!\")")
 
-  user_gists <- gh_gists("ChadGoymer")
+
+  multiple_files <- list(
+    "print(\"Hello World!\")",
+    "helloworld <- function() \"Hello World!\"") %>%
+    set_names(str_c(c("helloworld-", "helloworld-fn-"), now, ".R"))
+
+  multiple_gist <- create_gist(
+    files       = multiple_files,
+    description = "A gist with multiple files")
+
+  expect_is(multiple_gist, "list")
+  expect_identical(attr(multiple_gist, "status"), 201L)
+  expect_identical(
+    map_chr(multiple_gist, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(multiple_gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(multiple_gist$description, "A gist with multiple files")
+  expect_identical(multiple_gist$owner, "ChadGoymer")
+  expect_false(multiple_gist$public)
+  expect_identical(multiple_gist$files$filename[[1]], str_c("helloworld-", now, ".R"))
+  expect_identical(multiple_gist$files$filename[[2]], str_c("helloworld-fn-", now, ".R"))
+  expect_identical(multiple_gist$files$content[[1]], "print(\"Hello World!\")")
+  expect_identical(multiple_gist$files$content[[2]], "helloworld <- function() \"Hello World!\"")
+
+
+  public_gist <- create_gist(
+    files       = basic_files,
+    description = "A public gist",
+    public      = TRUE)
+
+  expect_is(public_gist, "list")
+  expect_identical(attr(public_gist, "status"), 201L)
+  expect_identical(
+    map_chr(public_gist, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(public_gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(public_gist$description, "A public gist")
+  expect_identical(public_gist$owner, "ChadGoymer")
+  expect_true(public_gist$public)
+  expect_identical(public_gist$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(public_gist$files$content, "print(\"Hello World!\")")
+
+})
+
+
+# TEST: update_gist ---------------------------------------------------------------------------
+
+suppressMessages({
+  created_gists <- view_gists(since = as.character(Sys.time() - 60*10)) %>%
+    filter(map_lgl(.data$files, ~ any(str_detect(., now))))
+})
+
+test_that("update_gist updates a gist and returns its properties", {
+
+  updated_desc <- update_gist(
+    gist        = created_gists$id[[1]],
+    description = "An updated description")
+
+  expect_is(updated_desc, "list")
+  expect_identical(attr(updated_desc, "status"), 200L)
+  expect_identical(
+    map_chr(updated_desc, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(updated_desc$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(updated_desc$description, "An updated description")
+  expect_identical(updated_desc$owner, "ChadGoymer")
+  expect_true(updated_desc$public)
+  expect_identical(updated_desc$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(updated_desc$files$content, "print(\"Hello World!\")")
+
+
+  updated_files <- list(c("cat(\"Hello World!\")", filename = "hello-world.R")) %>%
+    set_names(str_c("helloworld-", now, ".R"))
+
+  updated_files <- update_gist(
+    gist  = created_gists$id[[1]],
+    files = updated_files)
+
+  expect_is(updated_files, "list")
+  expect_identical(attr(updated_files, "status"), 200L)
+  expect_identical(
+    map_chr(updated_files, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "github",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(
+    map_chr(updated_files$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
+
+  expect_identical(updated_files$description, "An updated description")
+  expect_identical(updated_files$owner, "ChadGoymer")
+  expect_true(updated_files$public)
+  expect_identical(updated_files$files$filename, "hello-world.R")
+  expect_identical(updated_files$files$content, "cat(\"Hello World!\")")
+
+})
+
+
+# TEST: view_gists ----------------------------------------------------------------------------
+
+test_that("view_gists returns a tibble of gist properties", {
+
+  expect_is(created_gists, "tbl")
+  expect_identical(attr(created_gists, "status"), 200L)
+  expect_identical(
+    map_chr(created_gists, ~ class(.)[[1]]),
+    c(id          = "character",
+      description = "character",
+      files       = "list",
+      owner       = "character",
+      public      = "logical",
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_true("A public gist" %in% created_gists$description)
+  expect_true("A gist with multiple files" %in% created_gists$description)
+
+
+  user_gists <- view_gists("ChadGoymer", n_max = 10)
+
   expect_is(user_gists, "tbl")
-
+  expect_identical(attr(user_gists, "status"), 200L)
   expect_identical(
-    sapply(user_gists, function(field) class(field)[[1]]),
+    map_chr(user_gists, ~ class(.)[[1]]),
     c(id          = "character",
       description = "character",
-      owner_login = "character",
-      created_at  = "POSIXct",
-      updated_at  = "POSIXct",
-      comments    = "integer",
       files       = "list",
+      owner       = "character",
       public      = "logical",
-      url         = "character"))
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
 
-  expect_true("An R script to test GitHub's Gist API" %in% user_gists$description)
 
-  public_gists <- gh_gists("public", n_max = 10)
+  public_gists <- view_gists("public", n_max = 10)
+
   expect_is(public_gists, "tbl")
-
+  expect_identical(attr(public_gists, "status"), 200L)
   expect_identical(
-    sapply(public_gists, function(field) class(field)[[1]]),
+    map_chr(public_gists, ~ class(.)[[1]]),
     c(id          = "character",
       description = "character",
-      owner_login = "character",
-      created_at  = "POSIXct",
-      updated_at  = "POSIXct",
-      comments    = "integer",
       files       = "list",
+      owner       = "character",
       public      = "logical",
-      url         = "character"))
+      html_url    = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
 
-  expect_identical(nrow(public_gists), 10L)
+})
 
-  starred_gists <- gh_gists("starred")
-  expect_is(starred_gists, "tbl")
 
+# TEST: view_gist -----------------------------------------------------------------------------
+
+test_that("view_gist returns a list of gist properties", {
+
+  gist <- view_gist(created_gists$id[[1]])
+
+  expect_is(gist, "list")
+  expect_identical(attr(gist, "status"), 200L)
   expect_identical(
-    sapply(starred_gists, function(field) class(field)[[1]]),
+    map_chr(gist, ~ class(.)[[1]]),
     c(id          = "character",
       description = "character",
-      owner_login = "character",
-      created_at  = "POSIXct",
-      updated_at  = "POSIXct",
-      comments    = "integer",
-      files       = "list",
+      files       = "github",
+      owner       = "character",
       public      = "logical",
-      url         = "character"))
-
-  expect_true("An R script to test GitHub's Gist API" %in% starred_gists$description)
-})
-
-#  FUNCTION: gh_gist_commits ------------------------------------------------------------------
-test_that("gh_gist_commits returns a tibble describing the gist commits", {
-  git_commits <- gh_gist_commits("806dca6b09a39e7b6326a0c8137583e6")
-  expect_is(git_commits, "tbl")
-
-  expect_identical(
-    sapply(git_commits, function(field) class(field)[[1]]),
-    c(version           = "character",
-      user_login        = "character",
-      committed_at      = "POSIXct",
-      changes_total     = "integer",
-      changes_additions = "integer",
-      changes_deletions = "integer",
-      url               = "character"))
-
-  expect_true("4a239d53a0e38a3dd2b70e0cd5c7cb316369ab9f" %in% git_commits$version)
-})
-
-#  FUNCTION: is_gist_starred ------------------------------------------------------------------
-test_that("is_gist_starred returns TRUE if the gist has been starred, FALSE otherwise", {
-  expect_true(is_gist_starred("806dca6b09a39e7b6326a0c8137583e6"))
-  expect_false(is_gist_starred("8f4589b02a513914584b28593b9cdcda"))
-})
-
-#  FUNCTION: gh_gist_forks --------------------------------------------------------------------
-test_that("gh_gist_forks returns a tibble describing the forks", {
-  forks <- gh_gist_forks("109311bb0361f32d87a2", n_max = 10)
-  expect_is(forks, "tbl")
-  expect_identical(
-    sapply(forks, function(field) class(field)[[1]]),
-    c(id          = "character",
-      description = "character",
-      owner_login = "character",
+      html_url    = "character",
       created_at  = "POSIXct",
-      updated_at  = "POSIXct",
-      public      = "logical",
-      comments    = "integer",
-      url         = "character"))
-})
-
-#  FUNCTION: gh_gist_comment ------------------------------------------------------------------
-test_that("gh_gist_comment returns a list describing the gist comment", {
-  comment <- gh_gist_comment(2185561, "806dca6b09a39e7b6326a0c8137583e6")
-  expect_is(comment, "list")
-  expect_named(
-    comment,
-    c("url", "id", "node_id", "user", "author_association", "created_at", "updated_at", "body"))
-  expect_identical(comment$body, "This is a comment about the test gist.")
-})
-
-#  FUNCTION: gh_gist_comments -----------------------------------------------------------------
-test_that("gh_gist_comments returns a tibble describing the gist comments", {
-  comments <- gh_gist_comments("806dca6b09a39e7b6326a0c8137583e6")
-  expect_is(comments, "tbl")
+      updated_at  = "POSIXct"))
 
   expect_identical(
-    sapply(comments, function(field) class(field)[[1]]),
-    c(id         = "integer",
-      body       = "character",
-      user_login = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
-      url        = "character"))
+    map_chr(gist$files, ~ class(.)[[1]]),
+    c(filename  = "character",
+      type      = "character",
+      content   = "character",
+      size      = "integer",
+      truncated = "logical"))
 
-  expect_true("This is a comment about the test gist." %in% comments$body)
+  expect_identical(gist$description, "An updated description")
+  expect_identical(gist$owner, "ChadGoymer")
+  expect_true(gist$public)
+  expect_identical(gist$files$filename, "hello-world.R")
+  expect_identical(gist$files$content, "cat(\"Hello World!\")")
+
 })
 
-#  FUNCTION: gh_save_gist -------------------------------------------------------------------------
-test_that("gh_save_gist downloads the specified files", {
-  temp_path <- file.path(tempdir(), "test-gh_save_gist")
-  on.exit(unlink(temp_path, recursive = TRUE))
 
-  gh_save_gist("806dca6b09a39e7b6326a0c8137583e6", temp_path, files = "test-gist.R")
-  expect_true(file.exists(file.path(temp_path, "test-gist.R")))
-  expect_identical(
-    readLines(file.path(temp_path, "test-gist.R")),
-    c("test_gist <- function() {", "  \"this is a test gist\"", "}"))
+# TEST: browse_gist ---------------------------------------------------------------------------
 
-  gh_save_gist("806dca6b09a39e7b6326a0c8137583e6", temp_path)
-  expect_true(all(file.exists(file.path(temp_path, c("test-gist.R", "another-test-gist.R")))))
-  expect_identical(
-    readLines(file.path(temp_path, "another-test-gist.R")),
-    c("test_gist <- function() {", "  \"this is another test gist\"", "}"))
+test_that("browse_gist opens the gist's page in the browser", {
+
+  skip_if(!interactive(), "browse_gist must be tested manually")
+
+  gist_url <- browse_gist(created_gists$id[[1]])
+
+  expect_is(gist_url, "character")
+  expect_identical(attr(gist_url, "status"), 200L)
+  expect_identical(dirname(gist_url), "https://gist.github.com")
+
 })
 
-#  FUNCTION: gh_source_gist -------------------------------------------------------------------
-test_that("gh_source_gist sources a file in a gist", {
-  gh_source_gist("test-gist.R", "806dca6b09a39e7b6326a0c8137583e6")
-  expect_true(exists("test_gist"))
-  expect_is(test_gist, "function")
-  expect_identical(test_gist(), "this is a test gist")
+
+# TEST: download_gist -------------------------------------------------------------------------
+
+test_that("download_gist downloads a gist and returns its path", {
+
+  temp_path <- file.path(tempdir(), "test-download-gist")
+  if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
+  dir.create(temp_path)
+  on.exit(unlink(temp_path))
+
+  gist_path <- download_gist(gist = created_gists$id[[2]], path = temp_path)
+
+  expect_is(gist_path, "character")
+  expect_identical(attr(gist_path, "status"), 200L)
+  expect_identical(as.character(gist_path), normalizePath(temp_path, winslash = "/"))
+  expect_true(file.exists(file.path(gist_path, str_c("helloworld-", now, ".R"))))
+
+})
+
+
+# TEST: source_gist ---------------------------------------------------------------------------
+
+test_that("source_gist sources a file in GitHub", {
+
+  expect_output(source_gist(created_gists$id[[2]]), "Hello World!")
+  expect_true(exists("helloworld"))
+  expect_is(helloworld, "function")
+  expect_identical(helloworld(), "Hello World!")
+
+})
+
+
+# TEST: delete_gist ---------------------------------------------------------------------------
+
+test_that("delete_gist deletes a gist", {
+
+  deleted_gist <- delete_gist(created_gists$id[[1]])
+
+  expect_is(deleted_gist, "logical")
+  expect_identical(attr(deleted_gist, "status"), 204L)
+  expect_identical(as.logical(deleted_gist), TRUE)
+
 })

@@ -1,412 +1,521 @@
-#  FUNCTION: gh_gist --------------------------------------------------------------------------
+#  FUNCTION: create_gist ----------------------------------------------------------------------
 #
-#' Get a single gist
+#' Create a gist in github
 #'
-#' <https://developer.github.com/v3/gists/#get-a-single-gist>
-#' <https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist>
+#' This function creates a new gist in GitHub. You can specify one or more files by providing
+#' a named list (see examples).
 #'
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/repos/gists/#create-a-gist>
 #'
-#' @return A list describing the gist (see GitHub's API documentation for details).
+#' @param files (list) The file contents with the list names as the filenames.
+#' @param description (string, optional) A description for the gist.
+#' @param public (boolean, optional) Whether the gist is public. Default: `FALSE`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `create_gist()` returns a list of the gist's properties.
+#'
+#' **Gist Properties:**
+#'
+#' - **id**: The id for the gist
+#' - **description**: The description of the gist
+#' - **files**: A tibble of file properties:
+#'   - **filename**: The name of the file
+#'   - **type**: The type of file
+#'   - **content**: The file content
+#'   - **size**: The size of the file in bytes
+#'   - **truncated**: Whether the file content has been truncated
+#' - **owner**: The login if the gist's owner
+#' - **public**: Whether the gist is public
+#' - **html_url**: The address of the gist's web page.
+#' - **created_at**: The time and date the gist was created.
+#' - **updated_at**: The time and date the gist was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Create a gist with a single file
+#'   create_gist(files = list(hello_world.R = "print(\"Hello World!\")"))
+#'
+#'   # Create a gist with multiple files
+#'   create_gist(
+#'     files = list(
+#'       hello_world.R    = "print(\"Hello World!\")",
+#'       `hello_world-fn.R` = "helloworld <- function() print(\"Hello World!\")"),
+#'     description = "A new gist")
+#'
+#'   # Create a public gist
+#'   create_gist(
+#'     files       = list(hello_world.R = "print(\"Hello World!\")"),
+#'     description = "A new gist",
+#'     public      = TRUE)
+#'
+#' }
 #'
 #' @export
 #'
-gh_gist <- function(
-  gist,
-  sha,
-  token = gh_token(),
-  api   = getOption("github.api"),
+create_gist <- function(
+  files,
+  description,
+  public = FALSE,
   ...)
 {
-  assert(is_scalar_character(gist))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_list(files) & has_names(files), "'files' must be a named list:\n  ", files)
+  assert(all(map_lgl(files, is_scalar_character)), "'files' must be a list of string:\n  ", files)
+  assert(is_scalar_logical(public), "'public' must be a boolean:\n  ", public)
 
-  if (missing(sha)) {
-    url <- gh_url("gists", gist, api = api)
-  } else {
-    assert(is_sha(sha))
-    url <- gh_url("gists", gist, sha, api = api)
+  payload <- list(public = public)
+  payload$files <- map(files, ~ list(content = .))
+
+  if (!missing(description))
+  {
+    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    payload$description <- description
   }
 
-  gh_get(url, token = token, ...)
+  info("Creating gist")
+  gist_lst <- gh_url("gists") %>% gh_request("POST", payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  gist_gh <- select_properties(gist_lst, properties$gist) %>%
+    modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
+
+  info("Done", level = 7)
+  structure(
+    gist_gh,
+    class   = class(gist_lst),
+    url     = attr(gist_lst, "url"),
+    request = attr(gist_lst, "request"),
+    status  = attr(gist_lst, "status"),
+    header  = attr(gist_lst, "header"))
 }
 
-#  FUNCTION: gh_gists -------------------------------------------------------------------------
+
+#  FUNCTION: update_gist ----------------------------------------------------------------------
 #
-#' List a user's gists, or all public or starred gists
+#' Update a gist in GitHub
 #'
-#' <https://developer.github.com/v3/gists/#list-a-users-gists>
-#' <https://developer.github.com/v3/gists/#list-a-users-gists>
-#' <https://developer.github.com/v3/gists/#list-all-public-gists>
-#' <https://developer.github.com/v3/gists/#list-starred-gists>
+#' This function updates an existing gist in GitHub. You can specify add or update files by
+#' providing a named list and rename a file (see examples).
 #'
-#' @param user (string) The GitHub username of the user. If user set to 'public' all public
-#'   gists are returned; and if user is set to 'starred' all the starred repositories for the
-#'   authenticated user are returned.
-#' @param since (string) A timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. Only gists
-#'   updated at or after this time are returned."
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `"https://api.github.com"`.
-#' @param ... Parameters passed to [gh_page()].
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/gists/#update-a-gist>
 #'
-#' @return A tibble describing the gists (see GitHub's API documentation for details).
+#' @param gist (string) The ID of the gist
+#' @param files (list, optional) The file contents with the list names as the filenames.
+#'   Added a `filename` element changes the filename (see examples).
+#' @param description (string, optional) A description for the gist.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_gist()` returns a list of the gist's properties.
+#'
+#' **Gist Properties:**
+#'
+#' - **id**: The id for the gist
+#' - **description**: The description of the gist
+#' - **files**: A tibble of file properties:
+#'   - **filename**: The name of the file
+#'   - **type**: The type of file
+#'   - **content**: The file content
+#'   - **size**: The size of the file in bytes
+#'   - **truncated**: Whether the file content has been truncated
+#' - **owner**: The login if the gist's owner
+#' - **public**: Whether the gist is public
+#' - **html_url**: The address of the gist's web page.
+#' - **created_at**: The time and date the gist was created.
+#' - **updated_at**: The time and date the gist was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Update a gist's description
+#'   update_gist(
+#'     gist        = "806dca6b09a39e7b6326a0c8137583e6",
+#'     description = "An updated description")
+#'
+#'   # Update the contents of a file
+#'   update_gist(files = list(hello_world.R = "cat(\"Hello World!\")"))
+#'
+#'   # Update the contents of a file and the filename
+#'   update_gist(
+#'     files = list(hello_world.R = c("cat(\"Hello World!\")", filename = "new_filename.R")))
+#'
+#' }
 #'
 #' @export
 #'
-gh_gists <- function(
-  user,
-  since = NULL,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
+update_gist <- function(
+  gist,
+  files,
+  description,
   ...)
 {
-  assert(is_null(since) || is_scalar_character(since))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+
+  payload <- NULL
+
+  if (!missing(files))
+  {
+    assert(is_list(files) & has_names(files), "'files' must be a named list:\n  ", files)
+    assert(
+      all(map_lgl(files, ~ is_character(.) && all(names(.) %in% c("", "content", "filename")))),
+      "'files' must be a list of character vectors:\n  ", files)
+    payload$files <- map(files, function(f) {
+      as.list(set_names(f, ifelse(names(f) == "", "content", names(f))))
+    })
+  }
+
+  if (!missing(description))
+  {
+    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    payload$description <- description
+  }
+
+  info("Updating gist '", gist, "'")
+  gist_lst <- gh_url("gists", gist) %>% gh_request("PATCH", payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  gist_gh <- select_properties(gist_lst, properties$gist) %>%
+    modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
+
+  info("Done", level = 7)
+  structure(
+    gist_gh,
+    class   = class(gist_lst),
+    url     = attr(gist_lst, "url"),
+    request = attr(gist_lst, "request"),
+    status  = attr(gist_lst, "status"),
+    header  = attr(gist_lst, "header"))
+}
+
+
+#  FUNCTION: view_gists -----------------------------------------------------------------------
+#
+#' View gists in GitHub
+#'
+#' `view_gists()` summarises a user's gists in a table with the properties as columns and a
+#' row for each gist. `view_gist()` returns a list of all properties for a single gist.
+#' `browse_gist()` opens the web page for the gist in the default browser.
+#'
+#' When viewing gists, if a user is not specified the gists for the authenticated user are
+#' returned.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/gists/#list-gists-for-a-user>
+#' - <https://developer.github.com/v3/gists/#list-gists-for-the-authenticated-user>
+#' - <https://developer.github.com/v3/gists/#get-a-gist>
+#'
+#' @param gist (string) The id of the gist.
+#' @param user (string, optional) The login of the user. If not specified the authenticated
+#'   user is used.
+#' @param since (string, optional) A date & time to filter by. Must be in the format:
+#'   `YYYY-MM-DD HH:MM:SS`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `view_gists()` returns a tibble of gist properties. `view_gist()`
+#'   returns a list of properties for a single gist. `browse_gist` opens the
+#'   default browser on the gist page and returns the URL.
+#'
+#' **Gist Properties:**
+#'
+#' - **id**: The id for the gist
+#' - **description**: The description of the gist
+#' - **files**: For `view_gists()` just the filenames are returned, for `view_gist()` a
+#'   tibble of file properties is returned:
+#'   - **filename**: The name of the file
+#'   - **type**: The type of file
+#'   - **content**: The file content
+#'   - **size**: The size of the file in bytes
+#'   - **truncated**: Whether the file content has been truncated
+#' - **owner**: The login if the gist's owner
+#' - **public**: Whether the gist is public
+#' - **html_url**: The address of the gist's web page.
+#' - **created_at**: The time and date the gist was created.
+#' - **updated_at**: The time and date the gist was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # View the authenticated user's gists
+#'   view_gists()
+#'
+#'   # View a specific user's gists
+#'   view_gists("ChadGoymer")
+#'
+#'   # View a specific gist
+#'   view_gist("806dca6b09a39e7b6326a0c8137583e6")
+#'
+#'   # Browse a gist
+#'   browse_gist("806dca6b09a39e7b6326a0c8137583e6")
+#'
+#' }
+#'
+#' @export
+#'
+view_gists <- function(
+  user,
+  since,
+  n_max = 1000,
+  ...)
+{
+  if (!missing(since)) {
+    assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
+    since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
+      format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+    assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
+  }
+  else {
+    since <- NULL
+  }
 
   if (missing(user)) {
-    url <- gh_url("gists", since = since, api = api)
-  } else {
-    assert(is_scalar_character(user))
+    info("Viewing gists for authenticated user")
+    url <- gh_url("gists", since = since)
+  }
+  else {
+    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
     if (user %in% c("public", "starred")) {
-      url <- gh_url("gists", user, since = since, api = api)
-    } else {
-      url <- gh_url("users", user, "gists", since = since, api = api)
+      info("Viewing ", user, " gists")
+      url <- gh_url("gists", user, since = since)
+    }
+    else {
+      info("Viewing gists for user '", user, "'")
+      url <- gh_url("users", user, "gists", since = since)
     }
   }
 
-  gists <- gh_page(url, n_max = n_max, token = token, ...)
+  gists_lst <- gh_page(url, n_max = n_max, ...)
 
-  bind_fields(gists, list(
-    id          = c("id",             as = "character"),
-    description = c("description",    as = "character"),
-    owner_login = c("owner", "login", as = "character"),
-    created_at  = c("created_at",     as = "datetime"),
-    updated_at  = c("updated_at",     as = "datetime"),
-    comments    = c("comments",       as = "integer"),
-    files       = "",
-    public      = c("public",         as = "logical"),
-    url         = c("url",            as = "character"))) %>%
-    mutate(files = lapply(gists, function(g) {
-      bind_fields(g$files, list(
-        filename = c("filename", as = "character"),
-        language = c("language", as = "character"),
-        size     = c("size",     as = "integer")))
-    }))
+  info("Transforming results", level = 4)
+  gists_gh <- bind_properties(gists_lst, properties$gist) %>%
+    add_column(files = map(gists_lst, ~ names(.$files)), .before = "owner")
+
+  info("Done", level = 7)
+  gists_gh
 }
 
-#  FUNCTION: gh_gist_commits ------------------------------------------------------------------
+
+#  FUNCTION: view_gist ------------------------------------------------------------------------
 #
-#' List gist commits
-#'
-#' <https://developer.github.com/v3/gists/#list-gist-commits>
-#'
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the gist commits (see GitHub's API documentation for details).
-#'
+#' @rdname view_gists
 #' @export
 #'
-gh_gist_commits <- function(
+view_gist <- function(
   gist,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
   ...)
 {
-  assert(is_scalar_character(gist))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
 
-  commits <- gh_page(
-    gh_url("gists", gist, "commits", api = api),
-    n_max = n_max, token = token, ...)
+  info("Viewing gist '", gist, "'")
+  gist_lst <- gh_url("gists", gist) %>% gh_request("GET", ...)
 
-  bind_fields(commits, list(
-    version           = c("version",                    as = "character"),
-    user_login        = c("user", "login",              as = "character"),
-    committed_at      = c("committed_at",               as = "datetime"),
-    changes_total     = c("change_status", "total",     as = "integer"),
-    changes_additions = c("change_status", "additions", as = "integer"),
-    changes_deletions = c("change_status", "deletions", as = "integer"),
-    url               = c("url",                        as = "character")))
+  info("Transforming results", level = 4)
+  gist_gh <- select_properties(gist_lst, properties$gist) %>%
+    modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
+
+  info("Done", level = 7)
+  structure(
+    gist_gh,
+    class   = class(gist_lst),
+    url     = attr(gist_lst, "url"),
+    request = attr(gist_lst, "request"),
+    status  = attr(gist_lst, "status"),
+    header  = attr(gist_lst, "header"))
 }
 
-#  FUNCTION: is_gist_starred ------------------------------------------------------------------
+
+#  FUNCTION: browse_gist ----------------------------------------------------------------------
 #
-#' Check if a gist is starred
-#'
-#' <https://developer.github.com/v3/gists/#check-if-a-gist-is-starred>
-#'
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
-#'
-#' @return TRUE if the gist has been starred, FALSE otherwise (see GitHub's API documentation
-#'   for details).
-#'
+#' @rdname view_gists
 #' @export
 #'
-is_gist_starred <- function(
+browse_gist <- function(
   gist,
-  token = gh_token(),
-  api   = getOption("github.api"),
   ...)
 {
-  assert(is_scalar_character(gist))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
 
-  response <- try(silent = TRUE, suppressMessages({
-    gh_get(
-      gh_url("gists", gist, "star", api = api),
-      accept = "raw", token = token, ...)
-  }))
+  info("Browsing gist '", gist, "'")
+  gist <- gh_url("gists", gist) %>% gh_request("GET", ...)
+  httr::BROWSE(gist$html_url)
 
-  attributes(response) <- NULL
-  if (identical(response, "")) {
-    TRUE
-  } else {
-    FALSE
-  }
+  info("Done", level = 7)
+  structure(
+    gist$html_url,
+    class   = c("github", "character"),
+    url     = attr(gist, "url"),
+    request = attr(gist, "request"),
+    status  = attr(gist, "status"),
+    header  = attr(gist, "header"))
 }
 
-#  FUNCTION: gh_gist_forks --------------------------------------------------------------------
+
+#  FUNCTION: delete_gist ----------------------------------------------------------------------
 #
-#' List gist forks
+#' Delete a gist in GitHub
 #'
-#' <https://developer.github.com/v3/gists/#list-gist-forks>
+#' This function deletes a gist from github, as long as you have appropriate permissions.
+#' Care should be taken as it will not be recoverable.
 #'
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/gists/#delete-a-gist>
 #'
-#' @return A tibble describing the forks (see GitHub's API documentation for details).
+#' @param gist (string) The id of the gist.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_gist()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   delete_gist("806dca6b09a39e7b6326a0c8137583e6")
+#'
+#' }
 #'
 #' @export
 #'
-gh_gist_forks <- function(
+delete_gist <- function(
   gist,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
   ...)
 {
-  assert(is_scalar_character(gist))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
 
-  forks <- gh_page(
-    gh_url("gists", gist, "forks", api = api),
-    n_max = n_max, token = token, ...)
+  info("Deleting gist '", gist, "'")
+  response <- gh_url("gists", gist) %>% gh_request("DELETE", ...)
 
-  bind_fields(forks, list(
-    id          = c("id",             as = "character"),
-    description = c("description",    as = "character"),
-    owner_login = c("owner", "login", as = "character"),
-    created_at  = c("created_at",     as = "datetime"),
-    updated_at  = c("updated_at",     as = "datetime"),
-    public      = c("public",         as = "logical"),
-    comments    = c("comments",       as = "integer"),
-    url         = c("url",            as = "character")))
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
 }
 
-#  FUNCTION: gh_gist_comment ------------------------------------------------------------------
+
+#  FUNCTION: download_gist --------------------------------------------------------------------
 #
-#' Get a single comment
+#' Download a gist from GitHub
 #'
-#' <https://developer.github.com/v3/gists/comments/#get-a-single-comment>
+#' This function downloads the files in the specified gist to the path provided.
 #'
-#' @param comment (integer) The ID of the comment in GitHub.
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_get()].
+#' @param gist (string) The ID of the gist.
+#' @param path (string) The path to download the gist to.
+#' @param files (character, optional) The files to download. If not specified all the files
+#'   in the gist will be downloaded.
+#' @param ... Parameters passed to [gh_request()].
 #'
-#' @return A list describing the gist comment (see GitHub's API documentation for details).
+#' @return `download_gist()` returns the path where the file is downloaded to.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Download all the files in a gist
+#'   download_gist("806dca6b09a39e7b6326a0c8137583e6", "./gist")
+#'
+#'   # Download a single file in a gist
+#'   download_gist(
+#'     gist  = "806dca6b09a39e7b6326a0c8137583e6",
+#'     path  = "./gist",
+#'     files = "helloworld.R")
+#'
+#' }
 #'
 #' @export
 #'
-gh_gist_comment <- function(
-  comment,
-  gist,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
-  assert(is_scalar_character(gist))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  gh_get(
-    gh_url("gists", gist, "comments", comment, api = api),
-    token = token, ...)
-}
-
-#  FUNCTION: gh_gist_comments -----------------------------------------------------------------
-#
-#' List comments on a gist
-#'
-#' <https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist>
-#'
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param n_max (integer, optional) Maximum number to return. Default: 1000.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_page()].
-#'
-#' @return A tibble describing the gist comments (see GitHub's API documentation for details).
-#'
-#' @export
-#'
-gh_gist_comments <- function(
-  gist,
-  n_max = 1000L,
-  token = gh_token(),
-  api   = getOption("github.api"),
-  ...)
-{
-  assert(is_scalar_character(gist))
-  assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
-  assert(is_sha(token))
-  assert(is_url(api))
-
-  comments <- gh_page(
-    gh_url("gists", gist, "comments", api = api),
-    n_max = n_max, token = token, ...)
-
-  bind_fields(comments, list(
-    id         = c("id",            as = "integer"),
-    body       = c("body",          as = "character"),
-    user_login = c("user", "login", as = "character"),
-    created_at = c("created_at",    as = "datetime"),
-    updated_at = c("updated_at",    as = "datetime"),
-    url        = c("url",           as = "character")))
-}
-
-#  FUNCTION: gh_save_gist -------------------------------------------------------------------------
-#
-#' Save files in a gist
-#'
-#' <https://developer.github.com/v3/gists/#get-a-single-gist>
-#' <https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist>
-#'
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param path (string) The location to save the files to.
-#' @param files (character, optional) The name of the files to download. Default: all files in
-#'   the gist
-#' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [gh_gist()].
-#'
-#' @return The file path of the saved file (invisibly).
-#'
-#' @export
-#'
-gh_save_gist <- function(
+download_gist <- function(
   gist,
   path,
   files,
-  sha,
-  token = gh_token(),
-  api   = getOption("github.api"),
   ...)
 {
-  assert(is_scalar_character(gist))
-  assert(is_scalar_character(path))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
 
-  gist_files <- gh_gist(gist, sha = sha, token = token, api = api, ...)[["files"]]
-  gist_urls <- sapply(gist_files, getElement, "raw_url")
+  info("Viewing gist '", gist, "'")
+  gist <- gh_url("gists", gist) %>% gh_request("GET", ...)
 
-  if (!missing(files)) {
-    assert(is_character(files))
-    if (!all(files %in% names(gist_urls)))
-      error("Cannot find all specified files")
-    gist_urls <- gist_urls[names(gist_urls) %in% files]
+  if (missing(files)) {
+    files <- names(gist$files)
   }
+  assert(is_character(files), "'files' must be a character vector:\n  ", files)
 
-  if (!dir.exists(path)) dir.create(path)
+  walk(files, function(f) {
+    info("Writing file '", f, "'", level = 2)
+    readr::write_file(
+      x    = gist$files[[f]]$content,
+      path = file.path(path, gist$files[[f]]$filename))
+  })
 
-  for (gist in names(gist_urls)) {
-    gh_download_binary(gist_urls[[gist]], path = file.path(path, basename(gist)), token = token)
-  }
-
-  invisible(path)
+  info("Done", level = 7)
+  structure(
+    normalizePath(path, winslash = "/"),
+    class   = c("github", "character"),
+    url     = attr(gist, "url"),
+    request = attr(gist, "request"),
+    status  = attr(gist, "status"),
+    header  = attr(gist, "header"))
 }
 
-#  FUNCTION: gh_source_gist -------------------------------------------------------------------
+
+#  FUNCTION: source_gist ----------------------------------------------------------------------
 #
-#' Source an R file from a gist
+#' Source a gist from GitHub
 #'
-#' <https://developer.github.com/v3/gists/#get-a-single-gist>
-#' <https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist>
+#' This function downloads the files in the specified gist and then sources them using the
+#' [source()] function.
 #'
-#' @param file (string) The name of the file to source.
-#' @param gist (string) The ID of the gist in GitHub.
-#' @param sha (string, optional) The SHA-1 of the version required. Default: latest version.
-#' @param token (string, optional) The personal access token for GitHub authorisation. Default:
-#'   value stored in the environment variable `GITHUB_TOKEN` or `GITHUB_PAT`.
-#' @param api (string, optional) The URL of GitHub's API. Default: the value stored in the
-#'   environment variable `GITHUB_API` or `https://api.github.com`.
-#' @param ... Parameters passed to [base::source()].
+#' @param gist (string) The ID of the gist.
+#' @param files (character, optional) The files to source. If not specified all the files
+#'   in the gist will be sourced.
+#' @param ... Parameters passed to [gh_request()].
 #'
-#' @return Nothing. The file is sourced into global environment.
+#' @return `source_gist()` returns the result of sourcing the files.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Source all the files in a gist
+#'   source_gist("806dca6b09a39e7b6326a0c8137583e6", "./gist")
+#'
+#'   # Source a single file in a gist
+#'   source_gist(
+#'     gist  = "806dca6b09a39e7b6326a0c8137583e6",
+#'     path  = "./gist",
+#'     files = "helloworld.R")
+#'
+#' }
 #'
 #' @export
 #'
-gh_source_gist <- function(
-  file,
+source_gist <- function(
   gist,
-  sha,
-  token = gh_token(),
-  api   = getOption("github.api"),
+  files,
   ...)
 {
-  assert(is_scalar_character(file))
-  assert(is_scalar_character(gist))
-  assert(is_sha(token))
-  assert(is_url(api))
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
 
-  temp_path <- tempdir()
-  on.exit(unlink(file.path(tempdir(), basename(file)), recursive = TRUE))
+  info("Viewing gist '", gist, "'")
+  gist <- gh_url("gists", gist) %>% gh_request("GET")
 
-  gh_save_gist(gist = gist, path = temp_path, files = file, sha = sha, token = token, api = api)
-  source(file.path(tempdir(), basename(file)), ...)
+  if (missing(files)) {
+    files <- names(gist$files)
+  }
+  assert(is_character(files), "'files' must be a character vector:\n  ", files)
+  assert(
+    all(files %in% names(gist$files)),
+    "'files' must all exist in the gist:\n  ", files[!files %in% names(gist$files)])
+
+  temp_path <- tempfile("source-gist-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  walk(files, function(f) {
+    info("Sourcing file '", f, "'", level = 2)
+    readr::write_file(
+      x    = gist$files[[f]]$content,
+      path = file.path(temp_path, gist$files[[f]]$filename))
+    source(file.path(temp_path, gist$files[[f]]$filename), ...)
+  })
 }
