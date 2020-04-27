@@ -158,7 +158,7 @@ update_gist <- function(
   {
     assert(is_list(files) & has_names(files), "'files' must be a named list:\n  ", files)
     assert(
-      all(map_lgl(files, ~ is_character(.) && names(.) %in% c("", "content", "filename"))),
+      all(map_lgl(files, ~ is_character(.) && all(names(.) %in% c("", "content", "filename")))),
       "'files' must be a list of character vectors:\n  ", files)
     payload$files <- map(files, function(f) {
       as.list(set_names(f, ifelse(names(f) == "", "content", names(f))))
