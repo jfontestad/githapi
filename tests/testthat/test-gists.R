@@ -12,6 +12,7 @@ teardown(suppressMessages({
   walk(created_gists$id, delete_gist)
 }))
 
+
 # TEST: create_gist ---------------------------------------------------------------------------
 
 test_that("create_gist creates a gist and returns its properties", {
@@ -50,7 +51,7 @@ test_that("create_gist creates a gist and returns its properties", {
 
   multiple_files <- list(
     "print(\"Hello World!\")",
-    "helloworld <- function() print(\"Hello World!\")") %>%
+    "helloworld <- function() \"Hello World!\"") %>%
     set_names(str_c(c("helloworld-", "helloworld-fn-"), now, ".R"))
 
   multiple_gist <- create_gist(
@@ -84,13 +85,13 @@ test_that("create_gist creates a gist and returns its properties", {
   expect_identical(multiple_gist$files$filename[[1]], str_c("helloworld-", now, ".R"))
   expect_identical(multiple_gist$files$filename[[2]], str_c("helloworld-fn-", now, ".R"))
   expect_identical(multiple_gist$files$content[[1]], "print(\"Hello World!\")")
-  expect_identical(multiple_gist$files$content[[2]], "helloworld <- function() print(\"Hello World!\")")
+  expect_identical(multiple_gist$files$content[[2]], "helloworld <- function() \"Hello World!\"")
 
 
   public_gist <- create_gist(
-    files  = basic_files,
+    files       = basic_files,
     description = "A public gist",
-    public = TRUE)
+    public      = TRUE)
 
   expect_is(public_gist, "list")
   expect_identical(attr(public_gist, "status"), 201L)
@@ -302,6 +303,25 @@ test_that("browse_gist opens the gist's page in the browser", {
   expect_is(gist_url, "character")
   expect_identical(attr(gist_url, "status"), 200L)
   expect_identical(dirname(gist_url), "https://gist.github.com")
+
+})
+
+
+# TEST: download_gist -------------------------------------------------------------------------
+
+test_that("download_gist downloads a gist and returns its path", {
+
+  temp_path <- file.path(tempdir(), "test-download-gist")
+  if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
+  dir.create(temp_path)
+  on.exit(unlink(temp_path))
+
+  gist_path <- download_gist(gist = created_gists$id[[2]], path = temp_path)
+
+  expect_is(gist_path, "character")
+  expect_identical(attr(gist_path, "status"), 200L)
+  expect_identical(as.character(gist_path), normalizePath(temp_path, winslash = "/"))
+  expect_true(file.exists(file.path(gist_path, str_c("helloworld-", now, ".R"))))
 
 })
 

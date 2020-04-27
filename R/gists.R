@@ -391,3 +391,67 @@ delete_gist <- function(
     status  = attr(response, "status"),
     header  = attr(response, "header"))
 }
+
+
+#  FUNCTION: download_gist --------------------------------------------------------------------
+#
+#' Download a gist from GitHub
+#'
+#' This function downloads the files in the specified gist to the path provided.
+#'
+#' @param gist (string) The ID of the gist.
+#' @param path (string) The path to download the gist to.
+#' @param files (character, optional) The files to download. If not specified all the files
+#'   in the gist will be downloaded.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `download_gist()` returns the path where the file is downloaded to.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Download all the files in a gist
+#'   download_gist("806dca6b09a39e7b6326a0c8137583e6", "./gist")
+#'
+#'   # Download a single file in a gist
+#'   download_gist(
+#'     gist  = "806dca6b09a39e7b6326a0c8137583e6",
+#'     path  = "./gist",
+#'     files = "helloworld.R")
+#'
+#' }
+#'
+#' @export
+#'
+download_gist <- function(
+  gist,
+  path,
+  files,
+  ...)
+{
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+
+  info("Viewing gist '", gist, "'")
+  gist <- gh_url("gists", gist) %>% gh_request("GET", ...)
+
+  if (missing(files)) {
+    files <- names(gist$files)
+  }
+  assert(is_character(files), "'files' must be a character vector:\n  ", files)
+
+  walk(files, function(f) {
+    info("Writing file '", f, "'", level = 2)
+    readr::write_file(
+      x    = gist$files[[f]]$content,
+      path = file.path(path, gist$files[[f]]$filename))
+  })
+
+  info("Done", level = 7)
+  structure(
+    normalizePath(path, winslash = "/"),
+    class   = c("github", "character"),
+    url     = attr(gist, "url"),
+    request = attr(gist, "request"),
+    status  = attr(gist, "status"),
+    header  = attr(gist, "header"))
+}
