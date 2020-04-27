@@ -67,6 +67,15 @@ reference:
     - '`update_milestone`'
     - '`view_milestones`'
     - '`delete_milestone`'
+- title: Gists and Comments
+  desc: Functions for creating, updating, viewing and deleting gists and comments.
+  contents:
+    - '`create_gist`'
+    - '`update_gist`'
+    - '`view_gists`'
+    - '`delete_gist`'
+    - '`download_gist`'
+    - '`source_gist`'
 - title: Projects, Columns and Cards
   desc: Functions for creating, updating, viewing and deleting projects, columns and cards.
   contents:
