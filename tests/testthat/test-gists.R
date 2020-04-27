@@ -326,6 +326,18 @@ test_that("download_gist downloads a gist and returns its path", {
 })
 
 
+# TEST: source_gist ---------------------------------------------------------------------------
+
+test_that("source_gist sources a file in GitHub", {
+
+  expect_output(source_gist(created_gists$id[[2]]), "Hello World!")
+  expect_true(exists("helloworld"))
+  expect_is(helloworld, "function")
+  expect_identical(helloworld(), "Hello World!")
+
+})
+
+
 # TEST: delete_gist ---------------------------------------------------------------------------
 
 test_that("delete_gist deletes a gist", {

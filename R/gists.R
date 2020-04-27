@@ -455,3 +455,65 @@ download_gist <- function(
     status  = attr(gist, "status"),
     header  = attr(gist, "header"))
 }
+
+
+#  FUNCTION: source_gist ----------------------------------------------------------------------
+#
+#' Source a gist from GitHub
+#'
+#' This function downloads the files in the specified gist and then sources them using the
+#' [source()] function.
+#'
+#' @param gist (string) The ID of the gist.
+#' @param files (character, optional) The files to source. If not specified all the files
+#'   in the gist will be sourced.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `source_gist()` returns the result of sourcing the files.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Source all the files in a gist
+#'   source_gist("806dca6b09a39e7b6326a0c8137583e6", "./gist")
+#'
+#'   # Source a single file in a gist
+#'   source_gist(
+#'     gist  = "806dca6b09a39e7b6326a0c8137583e6",
+#'     path  = "./gist",
+#'     files = "helloworld.R")
+#'
+#' }
+#'
+#' @export
+#'
+source_gist <- function(
+  gist,
+  files,
+  ...)
+{
+  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+
+  info("Viewing gist '", gist, "'")
+  gist <- gh_url("gists", gist) %>% gh_request("GET")
+
+  if (missing(files)) {
+    files <- names(gist$files)
+  }
+  assert(is_character(files), "'files' must be a character vector:\n  ", files)
+  assert(
+    all(files %in% names(gist$files)),
+    "'files' must all exist in the gist:\n  ", files[!files %in% names(gist$files)])
+
+  temp_path <- tempfile("source-gist-")
+  dir.create(temp_path, recursive = TRUE)
+  on.exit(unlink(temp_path, recursive = TRUE))
+
+  walk(files, function(f) {
+    info("Sourcing file '", f, "'", level = 2)
+    readr::write_file(
+      x    = gist$files[[f]]$content,
+      path = file.path(temp_path, gist$files[[f]]$filename))
+    source(file.path(temp_path, gist$files[[f]]$filename), ...)
+  })
+}
