@@ -75,8 +75,8 @@ create_release <- function(
   assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_scalar_logical(draft), "'draft' must be a string:\n  ", draft)
-  assert(is_scalar_logical(prerelease), "'prerelease' must be a string:\n  ", prerelease)
+  assert(is_scalar_logical(draft), "'draft' must be a boolean:\n  ", draft)
+  assert(is_scalar_logical(prerelease), "'prerelease' must be a boolean:\n  ", prerelease)
 
   payload <- list(
     tag_name         = tag,
@@ -191,8 +191,8 @@ update_release <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_scalar_logical(draft), "'draft' must be a string:\n  ", draft)
-  assert(is_scalar_logical(prerelease), "'prerelease' must be a string:\n  ", prerelease)
+  assert(is_scalar_logical(draft), "'draft' must be a boolean:\n  ", draft)
+  assert(is_scalar_logical(prerelease), "'prerelease' must be a boolean:\n  ", prerelease)
 
   payload <- list(
     target_commitish = ref,
