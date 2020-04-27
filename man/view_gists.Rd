@@ -16,6 +16,9 @@ browse_gist(gist, ...)
 \item{user}{(string, optional) The login of the user. If not specified the authenticated
 user is used.}
 
+\item{since}{(string, optional) A date & time to filter by. Must be in the format:
+\verb{YYYY-MM-DD HH:MM:SS}.}
+
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}

@@ -57,10 +57,10 @@ For more details see the GitHub API documentation:
     description = "An updated description")
 
   # Update the contents of a file
-  create_gist(files = list(hello_world.R = "cat(\"Hello World!\")"))
+  update_gist(files = list(hello_world.R = "cat(\"Hello World!\")"))
 
   # Update the contents of a file and the filename
-  create_gist(
+  update_gist(
     files = list(hello_world.R = c("cat(\"Hello World!\")", filename = "new_filename.R")))
 
 }

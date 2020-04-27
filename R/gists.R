@@ -134,10 +134,10 @@ create_gist <- function(
 #'     description = "An updated description")
 #'
 #'   # Update the contents of a file
-#'   create_gist(files = list(hello_world.R = "cat(\"Hello World!\")"))
+#'   update_gist(files = list(hello_world.R = "cat(\"Hello World!\")"))
 #'
 #'   # Update the contents of a file and the filename
-#'   create_gist(
+#'   update_gist(
 #'     files = list(hello_world.R = c("cat(\"Hello World!\")", filename = "new_filename.R")))
 #'
 #' }
@@ -208,6 +208,8 @@ update_gist <- function(
 #' @param gist (string) The id of the gist.
 #' @param user (string, optional) The login of the user. If not specified the authenticated
 #'   user is used.
+#' @param since (string, optional) A date & time to filter by. Must be in the format:
+#'   `YYYY-MM-DD HH:MM:SS`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -367,7 +369,7 @@ browse_gist <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   view_gist("806dca6b09a39e7b6326a0c8137583e6")
+#'   delete_gist("806dca6b09a39e7b6326a0c8137583e6")
 #'
 #' }
 #'

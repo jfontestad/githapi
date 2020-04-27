@@ -27,7 +27,7 @@ For more details see the GitHub API documentation:
 \examples{
 \dontrun{
 
-  view_gist("806dca6b09a39e7b6326a0c8137583e6")
+  delete_gist("806dca6b09a39e7b6326a0c8137583e6")
 
 }
 
