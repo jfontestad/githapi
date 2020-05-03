@@ -368,7 +368,7 @@ gh_pull_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  .Deprecated(msg = "This function will be removed in a future version")
+  .Deprecated("view_comment", package = "githapi")
 
   assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_repo(repo))
@@ -419,7 +419,7 @@ gh_pull_comments <- function(
   api       = getOption("github.api"),
   ...)
 {
-  .Deprecated("view_pull_request", package = "githapi")
+  .Deprecated("view_comments", package = "githapi")
 
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))

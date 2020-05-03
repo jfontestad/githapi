@@ -295,7 +295,7 @@ gh_issue_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
-  .Deprecated(msg = "This function will be removed in a future version")
+  .Deprecated("view_comments", package = "githapi")
 
   assert(is_repo(repo))
   assert(is_null(since) || is_scalar_character(since))
@@ -348,7 +348,7 @@ gh_issue_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
-  .Deprecated(msg = "This function will be removed in a future version")
+  .Deprecated("view_comment", package = "githapi")
 
   assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_repo(repo))

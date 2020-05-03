@@ -132,6 +132,26 @@
 #' - [gh_save_gist()]: replace with [download_gist()]
 #' - [gh_source_gist()]: replace with [source_gist()]
 #'
+#' @section Comments:
+#'
+#' - [gh_gist_comment()]: replace with [view_comment()]
+#' - [gh_gist_comments()]: replace with [view_comments()]
+#' - [gh_issue_comments()]: replace with [view_comment()]
+#' - [gh_issue_comment()]: replace with [view_comments()]
+#' - [gh_pull_comment()]: replace with [view_comment()]
+#' - [gh_pull_comments()]: replace with [view_comments()]
+#' - [gh_commit_comment()]: replace with [view_comment()]
+#' - [gh_commit_comments()]: replace with [view_comments()]
+#'
+#' @section Miscellaneous:
+#'
+#' - [gh_contributers()]: is being removed
+#' - [gh_languages()]: is being removed
+#' - [gh_asset()]: is being removed
+#' - [gh_assets()]: is being removed
+#' - [gh_get()]: replace with [gh_request()]
+#' - [gh_download_binary()]: replace with [gh_download()]
+#'
 NULL
 
 #  FUNCTION: gh_get ---------------------------------------------------------------------------

@@ -941,6 +941,8 @@ gh_commit_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_comment", package = "githapi")
+
   assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -980,6 +982,8 @@ gh_commit_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_comments", package = "githapi")
+
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))
@@ -1034,6 +1038,8 @@ gh_contributers <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_repo(repo))
   assert(is_null(anon) || is_scalar_logical(anon))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
@@ -1077,6 +1083,8 @@ gh_languages <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_repo(repo))
   assert(is_sha(token))
   assert(is_url(api))
@@ -1220,6 +1228,8 @@ gh_asset <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(asset) && isTRUE(asset > 0))
   assert(is_repo(repo))
   assert(is_sha(token))
@@ -1257,6 +1267,8 @@ gh_assets <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated(msg = "This function will be removed in a future version")
+
   assert(is_scalar_integerish(release) && isTRUE(release > 0))
   assert(is_repo(repo))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
