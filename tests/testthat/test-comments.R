@@ -386,3 +386,100 @@ test_that("view_comments throws as error if invalid arguments are supplied", {
     "An 'issue', 'pull_request', 'commit' or 'gist' must be specified")
 
 })
+
+
+# TEST: view_comment --------------------------------------------------------------------------
+
+test_that("view_comment returns a list of the properties", {
+
+  gist_comment <- view_comment(
+    comment = gist_comment_id,
+    gist    = gist)
+
+  expect_is(gist_comment, "list")
+  expect_identical(attr(gist_comment, "status"), 200L)
+  expect_identical(
+    map_chr(gist_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(gist_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(gist_comment$user, "ChadGoymer")
+
+
+  issue_comment <- view_comment(
+    comment = issue_comment_id,
+    type    = "issue",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(issue_comment, "list")
+  expect_identical(attr(issue_comment, "status"), 200L)
+  expect_identical(
+    map_chr(issue_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(issue_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(issue_comment$user, "ChadGoymer")
+
+
+  pull_comment <- view_comment(
+    comment = pull_comment_id,
+    type    = "pull_request",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(pull_comment, "list")
+  expect_identical(attr(pull_comment, "status"), 200L)
+  expect_identical(
+    map_chr(pull_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      commit     = "character",
+      path       = "character",
+      position   = "integer",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(pull_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(pull_comment$commit, as.character(branch_sha))
+  expect_identical(pull_comment$path, "test-comments.txt")
+  expect_identical(pull_comment$position, 1L)
+  expect_identical(pull_comment$user, "ChadGoymer")
+
+
+  commit_comment <- view_comment(
+    comment = commit_comment_id,
+    type    = "commit",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(commit_comment, "list")
+  expect_identical(attr(commit_comment, "status"), 200L)
+  expect_identical(
+    map_chr(commit_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      commit     = "character",
+      path       = "character",
+      position   = "integer",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(commit_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(commit_comment$commit, as.character(master_sha))
+  expect_identical(commit_comment$path, "README.md")
+  expect_identical(commit_comment$position, 1L)
+  expect_identical(commit_comment$user, "ChadGoymer")
+
+})

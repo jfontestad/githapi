@@ -456,3 +456,56 @@ view_comments <- function(
   info("Done", level = 7)
   comment_gh
 }
+
+
+#  FUNCTION: view_comment ---------------------------------------------------------------------
+#
+#' @rdname view_comments
+#' @export
+#'
+view_comment <- function(
+  comment,
+  gist,
+  repo,
+  type = "gist",
+  ...)
+{
+  assert(is_scalar_integerish(comment), "'comment' must be a string or integer:\n  ", comment)
+
+  if (!missing(gist)) {
+    info("Viewing comment '", comment, "' for gist '", gist, "'")
+    url <- gh_url("gists", gist, "comments", comment)
+  }
+  else {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    assert(
+      is_scalar_character(type) && type %in% values$comment$type,
+      "'type' must be one of '", str_c(values$comment$type, collapse = "', '"), "':\n  ", type)
+
+    if (identical(type, "issue")) {
+      info("Viewing issue comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "issues/comments", comment)
+    }
+    else if (identical(type, "pull_request")) {
+      info("Viewing pull request comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "pulls/comments", comment)
+    }
+    else {
+      info("Viewing commit comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "comments", comment)
+    }
+  }
+
+  comment_lst <- gh_request("GET", url = url, ...)
+
+  info("Transforming results", level = 4)
+  if (!missing(gist) || identical(type, "issue")) {
+    comment_gh <- select_properties(comment_lst, properties$issue_comment)
+  }
+  else {
+    comment_gh <- select_properties(comment_lst, properties$commit_comment)
+  }
+
+  info("Done", level = 7)
+  comment_gh
+}
