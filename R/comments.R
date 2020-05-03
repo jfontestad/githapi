@@ -509,3 +509,47 @@ view_comment <- function(
   info("Done", level = 7)
   comment_gh
 }
+
+
+#  FUNCTION: browse_comment -------------------------------------------------------------------
+#
+#' @rdname view_comments
+#' @export
+#'
+browse_comment <- function(
+  comment,
+  repo,
+  type,
+  ...)
+{
+  assert(is_scalar_integerish(comment), "'comment' must be a string or integer:\n  ", comment)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  assert(
+    is_scalar_character(type) && type %in% values$comment$type,
+    "'type' must be one of '", str_c(values$comment$type, collapse = "', '"), "':\n  ", type)
+
+  if (identical(type, "issue")) {
+    info("Browsing issue comment '", comment, "' in repository '", repo, "'")
+    url <- gh_url("repos", repo, "issues/comments", comment)
+  }
+  else if (identical(type, "pull_request")) {
+    info("Browsing pull request comment '", comment, "' in repository '", repo, "'")
+    url <- gh_url("repos", repo, "pulls/comments", comment)
+  }
+  else {
+    info("Browsing commit comment '", comment, "' in repository '", repo, "'")
+    url <- gh_url("repos", repo, "comments", comment)
+  }
+
+  comment <- gh_request("GET", url = url, ...)
+  httr::BROWSE(comment$html_url)
+
+  info("Done", level = 7)
+  structure(
+    comment$html_url,
+    class   = c("github", "character"),
+    url     = attr(comment, "url"),
+    request = attr(comment, "request"),
+    status  = attr(comment, "status"),
+    header  = attr(comment, "header"))
+}

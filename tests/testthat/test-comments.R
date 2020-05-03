@@ -483,3 +483,45 @@ test_that("view_comment returns a list of the properties", {
   expect_identical(commit_comment$user, "ChadGoymer")
 
 })
+
+
+# TEST: browse_comment ------------------------------------------------------------------------
+
+test_that("browse_comment opens the comment's page in the browser", {
+
+  skip_if(!interactive(), "browse_comment must be tested manually")
+
+  issue_comment <- browse_comment(
+    comment = issue_comment_id,
+    type    = "issue",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(issue_comment, "character")
+  expect_identical(attr(issue_comment, "status"), 200L)
+  expect_identical(
+    dirname(issue_comment),
+    str_c("https://github.com/ChadGoymer/test-comments-", now, "/issues"))
+
+  pull_comment <- browse_comment(
+    comment = pull_comment_id,
+    type    = "pull_request",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(pull_comment, "character")
+  expect_identical(attr(pull_comment, "status"), 200L)
+  expect_identical(
+    dirname(pull_comment),
+    str_c("https://github.com/ChadGoymer/test-comments-", now, "/pull"))
+
+  commit_comment <- browse_comment(
+    comment = commit_comment_id,
+    type    = "commit",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(commit_comment, "character")
+  expect_identical(attr(commit_comment, "status"), 200L)
+  expect_identical(
+    dirname(commit_comment),
+    str_c("https://github.com/ChadGoymer/test-comments-", now, "/commit"))
+
+})
