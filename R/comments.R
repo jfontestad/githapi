@@ -283,3 +283,176 @@ update_comment <- function(
   info("Done", level = 7)
   comment_gh
 }
+
+
+#  FUNCTION: view_comments --------------------------------------------------------------------
+#
+#' View comments in GitHub
+#'
+#' `view_comments()` summarises comments in a table with the properties as columns and a row
+#' for each comment registered for the gist, issue, pull request or commit. `view_comment()`
+#' returns a list of all properties for a single comment. `browse_comment()` opens the web
+#' page for the comment in the default browser.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist>
+#' - <https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue>
+#' - <https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request>
+#' - <https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit>
+#' - <https://developer.github.com/v3/gists/comments/#get-a-single-comment>
+#' - <https://developer.github.com/v3/issues/comments/#get-a-single-comment>
+#' - <https://developer.github.com/v3/pulls/comments/#get-a-single-comment>
+#' - <https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment>
+#'
+#' @param gist (string, optional) The ID of the gist.
+#' @param issue (integer, optional) The issue number.
+#' @param pull_request (integer, optional) The pull request number.
+#' @param commit (string, optional) Either a SHA or branch used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `view_comments()` returns a tibble of comment properties. `view_comment()`
+#'   returns a list of properties for a single comment. `browse_comment()` opens the
+#'   default browser on the comment page and returns the URL.
+#'
+#' **Comment Properties:**
+#'
+#' - **id**: The id of the comment.
+#' - **body**: The content of the comment.
+#' - **commit**: The commit associated with the comment (only for pull request or commit
+#'   comments).
+#' - **path**: The path of the file to add the comment to (only for pull request or commit
+#'   comments).
+#' - **position**: The line number in the file to attach the comment to (only for pull
+#'   request or commit comments).
+#' - **user**: The comment author's account login.
+#' - **html_url**: The address of the comment's web page.
+#' - **created_at**: The time and date the comment was created.
+#' - **published_at**: The time and date the comment was published.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # View comments on a gist
+#'   view_comments(gist = "8e5be270de9a88168372293a813543f9")
+#'
+#'   # View comments on an issue
+#'   view_comments(
+#'     issue = "test issue",
+#'     repo  = "ChadGoymer/test-githapi")
+#'
+#'   # View comments on a pull request
+#'   view_comments(
+#'     pull_request = "test pull request",
+#'     repo         = "ChadGoymer/test-githapi")
+#'
+#'   # View comments on a commit
+#'   view_comments(
+#'     commit = "master",
+#'     repo   = "ChadGoymer/test-githapi")
+#'
+#'   # View a single gist comment
+#'   view_comment(gist_comment_id, gist = "8e5be270de9a88168372293a813543f9")
+#'
+#'   # View a single issue comment
+#'   view_comment(
+#'     comment = 622980929,
+#'     type    = "issue",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # View a single pull request comment
+#'   view_comment(
+#'     comment = 418979473,
+#'     type    = "pull_request",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # View a single commit comment
+#'   view_comment(
+#'     comment = 38899533,
+#'     type    = "commit",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Browse an issue comment
+#'   browse_comment(
+#'     comment = 622980929,
+#'     type    = "issue",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Browse a pull request comment
+#'   browse_comment(
+#'     comment = 418979473,
+#'     type    = "pull_request",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Browse a commit comment
+#'   browse_comment(
+#'     comment = 38899533,
+#'     type    = "commit",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#' }
+#'
+#' @export
+#'
+view_comments <- function(
+  gist,
+  issue,
+  pull_request,
+  commit,
+  repo,
+  n_max = 1000,
+  ...)
+{
+  if (!missing(gist)) {
+    info("Viewing comments for gist '", gist, "'")
+    url <- gh_url("gists", gist, "comments")
+  }
+  else {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+    if (!missing(issue)) {
+      if (is_scalar_character(issue)) {
+        issue <- view_issue(issue = issue, repo = repo, ...)$number
+      }
+      assert(is_scalar_integerish(issue), "'issue' must be a string or integer:\n  ", issue)
+
+      info("Viewing comments for issue '", issue, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "issues", issue, "comments")
+    }
+    else if (!missing(commit)) {
+      if (!is_sha(commit)) {
+        commit <- view_sha(ref = commit, repo = repo, ...)
+      }
+      assert(is_sha(commit), "'commit' must be a 40 character string:\n  ", commit)
+
+      info("Viewing comments for commit '", commit, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "commits", commit, "comments")
+    }
+    else if (!missing(pull_request)) {
+      if (is_scalar_character(pull_request)) {
+        pull_request <- view_pull_request(pull_request = pull_request, repo = repo, ...)$number
+      }
+      assert(is_scalar_integerish(pull_request), "'pull_request' must be a string or integer:\n  ", pull_request)
+
+      info("Viewing comments for pull request '", pull_request, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "pulls", pull_request, "comments")
+    }
+    else {
+      error("An 'issue', 'pull_request', 'commit' or 'gist' must be specified")
+    }
+  }
+
+  comment_lst <- gh_page(url = url, ...)
+
+  info("Transforming results", level = 4)
+  if (missing(commit) && missing(pull_request)) {
+    comment_gh <- bind_properties(comment_lst, properties$issue_comment)
+  }
+  else {
+    comment_gh <- bind_properties(comment_lst, properties$commit_comment)
+  }
+
+  info("Done", level = 7)
+  comment_gh
+}

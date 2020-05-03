@@ -310,3 +310,79 @@ test_that("update_comment updates a comment and returns a list of the properties
   expect_identical(commit_comment$user, "ChadGoymer")
 
 })
+
+
+# TEST: view_comments -------------------------------------------------------------------------
+
+test_that("view_comments returns a tibble of comment properties", {
+
+  expect_is(gist_comments, "tbl")
+  expect_identical(attr(gist_comments, "status"), 200L)
+  expect_identical(
+    map_chr(gist_comments, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_true("This is a comment created by create_comment()" %in% gist_comments$body)
+
+
+  expect_is(issue_comments, "tbl")
+  expect_identical(attr(issue_comments, "status"), 200L)
+  expect_identical(
+    map_chr(issue_comments, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_true("This is a comment created by create_comment()" %in% issue_comments$body)
+
+
+  expect_is(pull_comments, "tbl")
+  expect_identical(attr(pull_comments, "status"), 200L)
+  expect_identical(
+    map_chr(pull_comments, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      commit     = "character",
+      path       = "character",
+      position   = "integer",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_true("This is a comment created by create_comment()" %in% pull_comments$body)
+
+
+  expect_is(commit_comments, "tbl")
+  expect_identical(attr(commit_comments, "status"), 200L)
+  expect_identical(
+    map_chr(commit_comments, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      commit     = "character",
+      path       = "character",
+      position   = "integer",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_true("This is a comment created by create_comment()" %in% commit_comments$body)
+
+})
+
+test_that("view_comments throws as error if invalid arguments are supplied", {
+
+  expect_error(
+    view_comments(repo = str_c("ChadGoymer/test-comments-", now)),
+    "An 'issue', 'pull_request', 'commit' or 'gist' must be specified")
+
+})
