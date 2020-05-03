@@ -151,4 +151,30 @@ possible, alternative functions with similar functionality are also mentioned.
 }
 }
 
+\section{Comments}{
+
+\itemize{
+\item \code{\link[=gh_gist_comment]{gh_gist_comment()}}: replace with \code{\link[=view_comment]{view_comment()}}
+\item \code{\link[=gh_gist_comments]{gh_gist_comments()}}: replace with \code{\link[=view_comments]{view_comments()}}
+\item \code{\link[=gh_issue_comments]{gh_issue_comments()}}: replace with \code{\link[=view_comment]{view_comment()}}
+\item \code{\link[=gh_issue_comment]{gh_issue_comment()}}: replace with \code{\link[=view_comments]{view_comments()}}
+\item \code{\link[=gh_pull_comment]{gh_pull_comment()}}: replace with \code{\link[=view_comment]{view_comment()}}
+\item \code{\link[=gh_pull_comments]{gh_pull_comments()}}: replace with \code{\link[=view_comments]{view_comments()}}
+\item \code{\link[=gh_commit_comment]{gh_commit_comment()}}: replace with \code{\link[=view_comment]{view_comment()}}
+\item \code{\link[=gh_commit_comments]{gh_commit_comments()}}: replace with \code{\link[=view_comments]{view_comments()}}
+}
+}
+
+\section{Miscellaneous}{
+
+\itemize{
+\item \code{\link[=gh_contributers]{gh_contributers()}}: is being removed
+\item \code{\link[=gh_languages]{gh_languages()}}: is being removed
+\item \code{\link[=gh_asset]{gh_asset()}}: is being removed
+\item \code{\link[=gh_assets]{gh_assets()}}: is being removed
+\item \code{\link[=gh_get]{gh_get()}}: replace with \code{\link[=gh_request]{gh_request()}}
+\item \code{\link[=gh_download_binary]{gh_download_binary()}}: replace with \code{\link[=gh_download]{gh_download()}}
+}
+}
+
 \keyword{internal}

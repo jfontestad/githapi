@@ -303,7 +303,7 @@ test_that("gh_permissions returns a list describing the user's permissions", {
 
 #  FUNCTION: gh_commit_comment ----------------------------------------------------------------
 test_that("gh_commit_comment returns a list describing the commit comment", {
-  comment <- gh_commit_comment(24028377, "ChadGoymer/githapi")
+  comment <- suppressWarnings(gh_commit_comment(24028377, "ChadGoymer/githapi"))
   expect_is(comment, "list")
   expect_named(
     comment,
@@ -314,7 +314,7 @@ test_that("gh_commit_comment returns a list describing the commit comment", {
 
 #  FUNCTION: gh_commit_comments ---------------------------------------------------------------
 test_that("gh_commit_comments returns a tibble describing all the commit comments", {
-  repo_comments <- gh_commit_comments("ChadGoymer/githapi")
+  repo_comments <- suppressWarnings(gh_commit_comments("ChadGoymer/githapi"))
   expect_is(repo_comments, "tbl")
   expect_identical(
     sapply(repo_comments, function(field) class(field)[[1]]),
@@ -330,7 +330,7 @@ test_that("gh_commit_comments returns a tibble describing all the commit comment
       url        = "character"))
   expect_true("Wow, This is a cool commit!" %in% repo_comments$body)
 
-  commit_comments <- gh_commit_comments("ChadGoymer/githapi", "d378328243626794ca725946c4e0662622aeb933")
+  commit_comments <- suppressWarnings(gh_commit_comments("ChadGoymer/githapi", "d378328243626794ca725946c4e0662622aeb933"))
   expect_is(commit_comments, "tbl")
   expect_named(
     commit_comments,
@@ -341,7 +341,7 @@ test_that("gh_commit_comments returns a tibble describing all the commit comment
 
 #  FUNCTION: gh_contributers ------------------------------------------------------------------
 test_that("gh_contributers returns a tibble describing the contributers", {
-  contributers <- gh_contributers("ChadGoymer/githapi")
+  contributers <- suppressWarnings(gh_contributers("ChadGoymer/githapi"))
   expect_is(contributers, "tbl")
   expect_identical(
     sapply(contributers, function(field) class(field)[[1]]),
@@ -356,7 +356,7 @@ test_that("gh_contributers returns a tibble describing the contributers", {
 
 #  FUNCTION: gh_languages ---------------------------------------------------------------------
 test_that("gh_languages returns a tibble describing the languages", {
-  languages <- gh_languages("ChadGoymer/githapi")
+  languages <- suppressWarnings(gh_languages("ChadGoymer/githapi"))
   expect_is(languages, "list")
   expect_named(languages, "R")
 })
@@ -404,7 +404,7 @@ test_that("gh_release returns a list describing the release", {
 
 #  FUNCTION: gh_asset -------------------------------------------------------------------------
 test_that("gh_asset returns a list describing the release asset", {
-  asset <- gh_asset(4759932, "ChadGoymer/githapi")
+  asset <- suppressWarnings(gh_asset(4759932, "ChadGoymer/githapi"))
   expect_is(asset, "list")
   expect_named(
     asset,
@@ -415,7 +415,7 @@ test_that("gh_asset returns a list describing the release asset", {
 
 #  FUNCTION: gh_assets ------------------------------------------------------------------------
 test_that("gh_assets returns a tibble describing the assets for a release", {
-    assets <- gh_assets(7657161, "ChadGoymer/githapi")
+    assets <- suppressWarnings(gh_assets(7657161, "ChadGoymer/githapi"))
     expect_is(assets, "tbl")
     expect_identical(
       sapply(assets, function(field) class(field)[[1]]),

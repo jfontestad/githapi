@@ -273,6 +273,8 @@ gh_gist_comment <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_comment", package = "githapi")
+
   assert(is_scalar_integerish(comment) && isTRUE(comment > 0))
   assert(is_scalar_character(gist))
   assert(is_sha(token))
@@ -308,6 +310,8 @@ gh_gist_comments <- function(
   api   = getOption("github.api"),
   ...)
 {
+  .Deprecated("view_comments", package = "githapi")
+
   assert(is_scalar_character(gist))
   assert(is_scalar_integerish(n_max) && isTRUE(n_max > 0))
   assert(is_sha(token))

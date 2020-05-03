@@ -1,5 +1,14 @@
 # githapi 0.9.26
 
+- Added `create_comment()`
+- Added `update_comment()`
+- Added `view_comments()`
+- Added `view_comment()`
+- Added `browse_comment()`
+- Added `delete_comment()`
+
+# githapi 0.9.26
+
 - Added `create_gist()`
 - Added `update_gist()`
 - Added `view_gists()`
