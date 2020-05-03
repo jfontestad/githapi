@@ -525,3 +525,48 @@ test_that("browse_comment opens the comment's page in the browser", {
     str_c("https://github.com/ChadGoymer/test-comments-", now, "/commit"))
 
 })
+
+
+# TEST: delete_comment ------------------------------------------------------------------------
+
+test_that("delete_comment deletes a comment", {
+
+  gist_comment <- delete_comment(
+    comment = gist_comment_id,
+    gist    = gist)
+
+  expect_is(gist_comment, "logical")
+  expect_identical(attr(gist_comment, "status"), 204L)
+  expect_identical(as.logical(gist_comment), TRUE)
+
+
+  issue_comment <- delete_comment(
+    comment = issue_comment_id,
+    type    = "issue",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(issue_comment, "logical")
+  expect_identical(attr(issue_comment, "status"), 204L)
+  expect_identical(as.logical(issue_comment), TRUE)
+
+
+  pull_comment <- delete_comment(
+    comment = pull_comment_id,
+    type    = "pull_request",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(pull_comment, "logical")
+  expect_identical(attr(pull_comment, "status"), 204L)
+  expect_identical(as.logical(pull_comment), TRUE)
+
+
+  commit_comment <- delete_comment(
+    comment = commit_comment_id,
+    type    = "commit",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(commit_comment, "logical")
+  expect_identical(attr(commit_comment, "status"), 204L)
+  expect_identical(as.logical(commit_comment), TRUE)
+
+})

@@ -553,3 +553,99 @@ browse_comment <- function(
     status  = attr(comment, "status"),
     header  = attr(comment, "header"))
 }
+
+
+#  FUNCTION: delete_comment -------------------------------------------------------------------
+#
+#' Delete a comment from GitHub
+#'
+#' This function deletes a comment from a gist, issue, pull request or commit, as long as you
+#' have appropriate permissions. Care should be taken as it will not be recoverable.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/gists/comments/#delete-a-comment>
+#' - <https://developer.github.com/v3/issues/comments/#delete-a-comment>
+#' - <https://developer.github.com/v3/pulls/comments/#delete-a-comment>
+#' - <https://developer.github.com/v3/repos/comments/#delete-a-commit-comment>
+#'
+#' @param gist (string, optional) The ID of the gist.
+#' @param issue (integer, optional) The issue number.
+#' @param pull_request (integer, optional) The pull request number.
+#' @param commit (string, optional) Either a SHA or branch used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_comment()` returns a TRUE if successfully deleted.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Delete a gist comment
+#'   delete_comment(gist_comment_id, gist = "8e5be270de9a88168372293a813543f9")
+#'
+#'   # Delete a issue comment
+#'   delete_comment(
+#'     comment = 622980929,
+#'     type    = "issue",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Delete a pull request comment
+#'   delete_comment(
+#'     comment = 418979473,
+#'     type    = "pull_request",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Delete a commit comment
+#'   delete_comment(
+#'     comment = 38899533,
+#'     type    = "commit",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#' }
+#'
+#' @export
+#'
+delete_comment <- function(
+  comment,
+  gist,
+  repo,
+  type = "gist",
+  ...)
+{
+  assert(is_scalar_integerish(comment), "'comment' must be a string or integer:\n  ", comment)
+
+  if (!missing(gist)) {
+    info("Deleting comment '", comment, "' for gist '", gist, "'")
+    url <- gh_url("gists", gist, "comments", comment)
+  }
+  else {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    assert(
+      is_scalar_character(type) && type %in% values$comment$type,
+      "'type' must be one of '", str_c(values$comment$type, collapse = "', '"), "':\n  ", type)
+
+    if (identical(type, "issue")) {
+      info("Deleting issue comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "issues/comments", comment)
+    }
+    else if (identical(type, "pull_request")) {
+      info("Deleting pull request comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "pulls/comments", comment)
+    }
+    else {
+      info("Deleting commit comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "comments", comment)
+    }
+  }
+
+  response <- gh_request("DELETE", url = url, ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
