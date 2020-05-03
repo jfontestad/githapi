@@ -172,3 +172,141 @@ test_that("create_comment throws as error if invalid arguments are supplied", {
   "An 'issue', 'pull_request', 'commit' or 'gist' must be specified")
 
 })
+
+
+# TEST: update_comment ------------------------------------------------------------------------
+
+suppressMessages({
+
+  gist_comments <- view_comments(gist = gist, n_max = 10)
+  gist_comment_id <- gist_comments %>%
+    filter(body == "This is a comment created by create_comment()") %>%
+    pull(id) %>%
+    first()
+
+  issue_comments <- view_comments(
+    issue = str_c("issue to test comments ", now),
+    repo  = str_c("ChadGoymer/test-comments-", now),
+    n_max = 10)
+  issue_comment_id <- issue_comments %>%
+    filter(body == "This is a comment created by create_comment()") %>%
+    pull(id) %>%
+    first()
+
+  pull_comments <- view_comments(
+    pull_request = str_c("pull to test comments ", now),
+    repo         = str_c("ChadGoymer/test-comments-", now),
+    n_max        = 10)
+  pull_comment_id <- pull_comments %>%
+    filter(body == "This is a comment created by create_comment()") %>%
+    pull(id) %>%
+    first()
+
+  commit_comments <- view_comments(
+    commit = "master",
+    repo   = str_c("ChadGoymer/test-comments-", now),
+    n_max  = 10)
+  commit_comment_id <- commit_comments %>%
+    filter(body == "This is a comment created by create_comment()") %>%
+    pull(id) %>%
+    first()
+
+})
+
+test_that("update_comment updates a comment and returns a list of the properties", {
+
+  gist_comment <- update_comment(
+    comment = gist_comment_id,
+    body    = "This comment has been updated by update_comment()",
+    gist    = gist)
+
+  expect_is(gist_comment, "list")
+  expect_identical(attr(gist_comment, "status"), 200L)
+  expect_identical(
+    map_chr(gist_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(gist_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(gist_comment$user, "ChadGoymer")
+
+
+  issue_comment <- update_comment(
+    comment = issue_comment_id,
+    body    = "This comment has been updated by update_comment()",
+    type    = "issue",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(issue_comment, "list")
+  expect_identical(attr(issue_comment, "status"), 200L)
+  expect_identical(
+    map_chr(issue_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(issue_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(issue_comment$user, "ChadGoymer")
+
+
+  pull_comment <- update_comment(
+    comment = pull_comment_id,
+    body    = "This comment has been updated by update_comment()",
+    type    = "pull_request",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(pull_comment, "list")
+  expect_identical(attr(pull_comment, "status"), 200L)
+  expect_identical(
+    map_chr(pull_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      commit     = "character",
+      path       = "character",
+      position   = "integer",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(pull_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(pull_comment$commit, as.character(branch_sha))
+  expect_identical(pull_comment$path, "test-comments.txt")
+  expect_identical(pull_comment$position, 1L)
+  expect_identical(pull_comment$user, "ChadGoymer")
+
+
+  commit_comment <- update_comment(
+    comment = commit_comment_id,
+    body    = "This comment has been updated by update_comment()",
+    type    = "commit",
+    repo    = str_c("ChadGoymer/test-comments-", now))
+
+  expect_is(commit_comment, "list")
+  expect_identical(attr(commit_comment, "status"), 200L)
+  expect_identical(
+    map_chr(commit_comment, ~ class(.)[[1]]),
+    c(id         = "integer",
+      body       = "character",
+      commit     = "character",
+      path       = "character",
+      position   = "integer",
+      user       = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct"))
+
+  expect_identical(commit_comment$body, "This comment has been updated by update_comment()")
+  expect_identical(commit_comment$commit, as.character(master_sha))
+  expect_identical(commit_comment$path, "README.md")
+  expect_identical(commit_comment$position, 1L)
+  expect_identical(commit_comment$user, "ChadGoymer")
+
+})

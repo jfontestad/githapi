@@ -158,3 +158,128 @@ create_comment <- function(
   info("Done", level = 7)
   comment_gh
 }
+
+
+#  FUNCTION: update_comment -------------------------------------------------------------------
+#
+#' Update a comment in a repository
+#'
+#' This function updates a comment for a gist, issue, pull request or commit. It can be used
+#' to replace the content of the comment. The `repo` argument is not required if a gist is
+#' specified.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/gists/comments/#edit-a-comment>
+#' - <https://developer.github.com/v3/issues/comments/#edit-a-comment>
+#' - <https://developer.github.com/v3/pulls/comments/#edit-a-comment>
+#' - <https://developer.github.com/v3/repos/comments/#update-a-commit-comment>
+#'
+#' @param comment (integer) The id of the comment.
+#' @param body (string) The content of the comment.
+#' @param gist (string, optional) The ID of the gist.
+#' @param type (string, optional) Whether the comment is for a `"gist"`, `"issue"`,
+#'   `"pull_request"` or `"commit"`. Default: `"gist"`.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_comment()` returns a list of the comment properties.
+#'
+#' **Comment Properties:**
+#'
+#' - **id**: The id of the comment.
+#' - **body**: The content of the comment.
+#' - **commit**: The commit associated with the comment (only for pull request or commit
+#'   comments).
+#' - **path**: The path of the file to add the comment to (only for pull request or commit
+#'   comments).
+#' - **position**: The line number in the file to attach the comment to (only for pull
+#'   request or commit comments).
+#' - **user**: The comment author's account login.
+#' - **html_url**: The address of the comment's web page.
+#' - **created_at**: The time and date the comment was created.
+#' - **published_at**: The time and date the comment was published.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Update a gist comment
+#'   update_comment(
+#'     comment = 3281939,
+#'     body    = "This comment has been updated by update_comment()",
+#'     gist    = "8e5be270de9a88168372293a813543f9")
+#'
+#'   # Update an issue comment
+#'   update_comment(
+#'     comment = 622980929,
+#'     body    = "This comment has been updated by update_comment()",
+#'     type    = "issue",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Update an pull request comment
+#'   update_comment(
+#'     comment = 418979473,
+#'     body    = "This comment has been updated by update_comment()",
+#'     type    = "pull_request",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#'   # Update a commit comment
+#'   update_comment(
+#'     comment = 38899533,
+#'     body    = "This comment has been updated by update_comment()",
+#'     type    = "commit",
+#'     repo    = "ChadGoymer/test-githapi")
+#'
+#' }
+#'
+#' @export
+#'
+update_comment <- function(
+  comment,
+  body,
+  gist,
+  repo,
+  type = "gist",
+  ...)
+{
+  assert(is_scalar_integerish(comment), "'comment' must be a string or integer:\n  ", comment)
+  assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+
+  payload <- list(body = body)
+
+  if (!missing(gist)) {
+    info("Updating comment '", comment, "' for gist '", gist, "'")
+    url <- gh_url("gists", gist, "comments", comment)
+  }
+  else {
+    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    assert(
+      is_scalar_character(type) && type %in% values$comment$type,
+      "'type' must be one of '", str_c(values$comment$type, collapse = "', '"), "':\n  ", type)
+
+    if (identical(type, "issue")) {
+      info("Updating issue comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "issues/comments", comment)
+    }
+    else if (identical(type, "pull_request")) {
+      info("Updating pull request comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "pulls/comments", comment)
+    }
+    else {
+      info("Updating commit comment '", comment, "' in repository '", repo, "'")
+      url <- gh_url("repos", repo, "comments", comment)
+    }
+  }
+
+  comment_lst <- gh_request("PATCH", url = url, payload = payload, ...)
+
+  info("Transforming results", level = 4)
+  if (!missing(gist) || identical(type, "issue")) {
+    comment_gh <- select_properties(comment_lst, properties$issue_comment)
+  }
+  else {
+    comment_gh <- select_properties(comment_lst, properties$commit_comment)
+  }
+
+  info("Done", level = 7)
+  comment_gh
+}
