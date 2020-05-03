@@ -26,6 +26,11 @@ browse_comment(comment, repo, type, ...)
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
+
+\item{comment}{(integer) The id of the comment.}
+
+\item{type}{(string, optional) Whether the comment is for a \code{"gist"}, \code{"issue"},
+\code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
 }
 \value{
 \code{view_comments()} returns a tibble of comment properties. \code{view_comment()}

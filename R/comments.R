@@ -304,11 +304,14 @@ update_comment <- function(
 #' - <https://developer.github.com/v3/pulls/comments/#get-a-single-comment>
 #' - <https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment>
 #'
+#' @param comment (integer) The id of the comment.
 #' @param gist (string, optional) The ID of the gist.
 #' @param issue (integer, optional) The issue number.
 #' @param pull_request (integer, optional) The pull request number.
 #' @param commit (string, optional) Either a SHA or branch used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param type (string, optional) Whether the comment is for a `"gist"`, `"issue"`,
+#'   `"pull_request"` or `"commit"`. Default: `"gist"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -568,10 +571,10 @@ browse_comment <- function(
 #' - <https://developer.github.com/v3/pulls/comments/#delete-a-comment>
 #' - <https://developer.github.com/v3/repos/comments/#delete-a-commit-comment>
 #'
+#' @param comment (integer) The id of the comment.
 #' @param gist (string, optional) The ID of the gist.
-#' @param issue (integer, optional) The issue number.
-#' @param pull_request (integer, optional) The pull request number.
-#' @param commit (string, optional) Either a SHA or branch used to identify the commit.
+#' @param type (string, optional) Whether the comment is for a `"gist"`, `"issue"`,
+#'   `"pull_request"` or `"commit"`. Default: `"gist"`.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'

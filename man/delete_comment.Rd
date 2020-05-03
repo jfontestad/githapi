@@ -7,17 +7,16 @@
 delete_comment(comment, gist, repo, type = "gist", ...)
 }
 \arguments{
+\item{comment}{(integer) The id of the comment.}
+
 \item{gist}{(string, optional) The ID of the gist.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
+\item{type}{(string, optional) Whether the comment is for a \code{"gist"}, \code{"issue"},
+\code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
+
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
-
-\item{issue}{(integer, optional) The issue number.}
-
-\item{pull_request}{(integer, optional) The pull request number.}
-
-\item{commit}{(string, optional) Either a SHA or branch used to identify the commit.}
 }
 \value{
 \code{delete_comment()} returns a TRUE if successfully deleted.
