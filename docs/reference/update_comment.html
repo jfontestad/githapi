@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update a branch in a repository — update_branch • githapi</title>
+<title>Update a comment in a repository — update_comment • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="Update a branch in a repository — update_branch" />
-<meta property="og:description" content="This function updates a branch in the specified repository to point at a new commit. It
-must be pointed at a commit by providing a Git reference, which can be either a SHA, branch
-or tag. For a branch, the head commit is used." />
+<meta property="og:title" content="Update a comment in a repository — update_comment" />
+<meta property="og:description" content="This function updates a comment for a gist, issue, pull request or commit. It can be used
+to replace the content of the comment. The repo argument is not required if a gist is
+specified." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,38 +110,42 @@ or tag. For a branch, the head commit is used." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update a branch in a repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/branches.R'><code>R/branches.R</code></a></small>
-    <div class="hidden name"><code>update_branch.Rd</code></div>
+    <h1>Update a comment in a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/comments.R'><code>R/comments.R</code></a></small>
+    <div class="hidden name"><code>update_comment.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function updates a branch in the specified repository to point at a new commit. It
-must be pointed at a commit by providing a Git reference, which can be either a SHA, branch
-or tag. For a branch, the head commit is used.</p>
+    <p>This function updates a comment for a gist, issue, pull request or commit. It can be used
+to replace the content of the comment. The <code>repo</code> argument is not required if a gist is
+specified.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_branch</span>(<span class='no'>branch</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_comment</span>(<span class='no'>comment</span>, <span class='no'>body</span>, <span class='no'>gist</span>, <span class='no'>repo</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"gist"</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>branch</th>
-      <td><p>(string) The name of the branch.</p></td>
+      <th>comment</th>
+      <td><p>(integer) The id of the comment.</p></td>
     </tr>
     <tr>
-      <th>ref</th>
-      <td><p>(string) Either a SHA, branch or tag used to identify the new commit.</p></td>
+      <th>body</th>
+      <td><p>(string) The content of the comment.</p></td>
+    </tr>
+    <tr>
+      <th>gist</th>
+      <td><p>(string, optional) The ID of the gist.</p></td>
     </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>force</th>
-      <td><p>(boolean, optional) Whether to force the update if it is not a simple
-fast-forward. Default: <code>FALSE</code>.</p></td>
+      <th>type</th>
+      <td><p>(string, optional) Whether the comment is for a <code>"gist"</code>, <code>"issue"</code>,
+<code>"pull_request"</code> or <code>"commit"</code>. Default: <code>"gist"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -151,26 +155,62 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_branch()</code> returns a list of the branch properties.</p>
-<p><strong>Branch Properties:</strong></p><ul>
-<li><p><strong>name</strong>: The name of the branch.</p></li>
-<li><p><strong>ref</strong>: The full Git reference of the branch.</p></li>
-<li><p><strong>sha</strong>: The commit SHA the branch is pointing at.</p></li>
+    <p><code>update_comment()</code> returns a list of the comment properties.</p>
+<p><strong>Comment Properties:</strong></p><ul>
+<li><p><strong>id</strong>: The id of the comment.</p></li>
+<li><p><strong>body</strong>: The content of the comment.</p></li>
+<li><p><strong>commit</strong>: The commit associated with the comment (only for pull request or commit
+comments).</p></li>
+<li><p><strong>path</strong>: The path of the file to add the comment to (only for pull request or commit
+comments).</p></li>
+<li><p><strong>position</strong>: The line number in the file to attach the comment to (only for pull
+request or commit comments).</p></li>
+<li><p><strong>user</strong>: The comment author's account login.</p></li>
+<li><p><strong>html_url</strong>: The address of the comment's web page.</p></li>
+<li><p><strong>created_at</strong>: The time and date the comment was created.</p></li>
+<li><p><strong>published_at</strong>: The time and date the comment was published.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/git/refs/#update-a-reference'>https://developer.github.com/v3/git/refs/#update-a-reference</a></p></li>
+<li><p><a href='https://developer.github.com/v3/gists/comments/#edit-a-comment'>https://developer.github.com/v3/gists/comments/#edit-a-comment</a></p></li>
+<li><p><a href='https://developer.github.com/v3/issues/comments/#edit-a-comment'>https://developer.github.com/v3/issues/comments/#edit-a-comment</a></p></li>
+<li><p><a href='https://developer.github.com/v3/pulls/comments/#edit-a-comment'>https://developer.github.com/v3/pulls/comments/#edit-a-comment</a></p></li>
+<li><p><a href='https://developer.github.com/v3/repos/comments/#update-a-commit-comment'>https://developer.github.com/v3/repos/comments/#update-a-commit-comment</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'>update_branch</span>(
-    <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"new-branch"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"6b7b5a090d47fd3ef495620513a3f80da2487b1d"</span>)
+
+  <span class='co'># Update a gist comment</span>
+  <span class='fu'>update_comment</span>(
+    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>3281939</span>,
+    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    <span class='kw'>gist</span>    <span class='kw'>=</span> <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
+
+  <span class='co'># Update an issue comment</span>
+  <span class='fu'>update_comment</span>(
+    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>622980929</span>,
+    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"issue"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+
+  <span class='co'># Update an pull request comment</span>
+  <span class='fu'>update_comment</span>(
+    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>418979473</span>,
+    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"pull_request"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+
+  <span class='co'># Update a commit comment</span>
+  <span class='fu'>update_comment</span>(
+    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>38899533</span>,
+    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"commit"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
