@@ -100,19 +100,14 @@ create_project <- function(
   if (!missing(org))
   {
     project_gh <- project_gh %>%
-      append(
-        after = which(names(project_gh) == "state"),
-        list(private = project_lst$private, org_permission = project_lst$organization_permission))
+      modify_list(
+        private        = project_lst$private,
+        org_permission = project_lst$organization_permission,
+        .after = "state")
   }
 
   info("Done", level = 7)
-  structure(
-    project_gh,
-    class   = class(project_lst),
-    url     = attr(project_lst, "url"),
-    request = attr(project_lst, "request"),
-    status  = attr(project_lst, "status"),
-    header  = attr(project_lst, "header"))
+  project_gh
 }
 
 
@@ -315,19 +310,14 @@ update_project <- function(
     if (!missing(org))
     {
       project_gh <- project_gh %>%
-        append(
-          after = which(names(project_gh) == "state"),
-          list(private = project_lst$private, org_permission = project_lst$organization_permission))
+        modify_list(
+          private        = project_lst$private,
+          org_permission = project_lst$organization_permission,
+          .after = "state")
     }
 
     info("Done", level = 7)
-    structure(
-      project_gh,
-      class   = class(project_lst),
-      url     = attr(project_lst, "url"),
-      request = attr(project_lst, "request"),
-      status  = attr(project_lst, "status"),
-      header  = attr(project_lst, "header"))
+    project_gh
   }
 }
 
@@ -586,27 +576,22 @@ view_project <- function(
   if (!missing(team))
   {
     project_gh <- project_gh %>%
-      append(
-        after = which(names(project_gh) == "state"),
-        list(team_permission = names(project_lst$permissions)[max(which(as.logical(project_lst$permissions)))]))
+      modify_list(
+        team_permission = names(project_lst$permissions)[max(which(as.logical(project_lst$permissions)))],
+        .after = "state")
   }
 
   if (!missing(org))
   {
     project_gh <- project_gh %>%
-      append(
-        after = which(names(project_gh) == "state"),
-        list(private = project_lst$private, org_permission = project_lst$organization_permission))
+      modify_list(
+        private        = project_lst$private,
+        org_permission = project_lst$organization_permission,
+        .after = "state")
   }
 
   info("Done", level = 7)
-  structure(
-    project_gh,
-    class   = class(project_lst),
-    url     = attr(project_lst, "url"),
-    request = attr(project_lst, "request"),
-    status  = attr(project_lst, "status"),
-    header  = attr(project_lst, "header"))
+  project_gh
 }
 
 

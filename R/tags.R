@@ -58,13 +58,7 @@ create_tag <- function(
     modify_list(name = basename(tag_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    tag_gh,
-    class   = class(tag_lst),
-    url     = attr(tag_lst, "url"),
-    request = attr(tag_lst, "request"),
-    status  = attr(tag_lst, "status"),
-    header  = attr(tag_lst, "header"))
+  tag_gh
 }
 
 
@@ -130,13 +124,7 @@ update_tag <- function(
     modify_list(name = basename(tag_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    tag_gh,
-    class   = class(tag_lst),
-    url     = attr(tag_lst, "url"),
-    request = attr(tag_lst, "request"),
-    status  = attr(tag_lst, "status"),
-    header  = attr(tag_lst, "header"))
+  tag_gh
 }
 
 
@@ -218,13 +206,7 @@ view_tag <- function(
     modify_list(name = basename(tag_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    tag_gh,
-    class   = class(tag_lst),
-    url     = attr(tag_lst, "url"),
-    request = attr(tag_lst, "request"),
-    status  = attr(tag_lst, "status"),
-    header  = attr(tag_lst, "header"))
+  tag_gh
 }
 
 

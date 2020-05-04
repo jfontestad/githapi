@@ -110,13 +110,7 @@ create_issue <- function(
     modify_list(repository = repo)
 
   info("Done", level = 7)
-  structure(
-    issue_gh,
-    class   = class(issue_lst),
-    url     = attr(issue_lst, "url"),
-    request = attr(issue_lst, "request"),
-    status  = attr(issue_lst, "status"),
-    header  = attr(issue_lst, "header"))
+  issue_gh
 }
 
 
@@ -257,13 +251,7 @@ update_issue <- function(
     modify_list(repository = repo)
 
   info("Done", level = 7)
-  structure(
-    issue_gh,
-    class   = class(issue_lst),
-    url     = attr(issue_lst, "url"),
-    request = attr(issue_lst, "request"),
-    status  = attr(issue_lst, "status"),
-    header  = attr(issue_lst, "header"))
+  issue_gh
 }
 
 
@@ -479,13 +467,7 @@ view_issue <- function(
     modify_list(repository = repo)
 
   info("Done", level = 7)
-  structure(
-    issue_gh,
-    class   = class(issue_lst),
-    url     = attr(issue_lst, "url"),
-    request = attr(issue_lst, "request"),
-    status  = attr(issue_lst, "status"),
-    header  = attr(issue_lst, "header"))
+  issue_gh
 }
 
 

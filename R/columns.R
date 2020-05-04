@@ -232,17 +232,14 @@ move_column <- function(
       accept  = "application/vnd.github.inertia-preview+json",
       ...)
 
-  info("Transforming results", level = 4)
-  column_gh <- structure(
+  info("Done", level = 7)
+  structure(
     column,
     class   = class(column),
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
     header  = attr(response, "header"))
-
-  info("Done", level = 7)
-  column_gh
 }
 
 

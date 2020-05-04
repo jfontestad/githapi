@@ -157,13 +157,7 @@ create_pull_request <- function(
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
   info("Done", level = 7)
-  structure(
-    pull_gh,
-    class   = class(pull_lst),
-    url     = attr(pull_lst, "url"),
-    request = attr(pull_lst, "request"),
-    status  = attr(pull_lst, "status"),
-    header  = attr(pull_lst, "header"))
+  pull_gh
 }
 
 
@@ -356,13 +350,7 @@ update_pull_request <- function(
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
   info("Done", level = 7)
-  structure(
-    pull_gh,
-    class   = class(pull_lst),
-    url     = attr(pull_lst, "url"),
-    request = attr(pull_lst, "request"),
-    status  = attr(pull_lst, "status"),
-    header  = attr(pull_lst, "header"))
+  pull_gh
 }
 
 
@@ -602,13 +590,7 @@ view_pull_request <- function(
       reviews    = reviews)
 
   info("Done", level = 7)
-  structure(
-    pull_gh,
-    class   = class(pull_lst),
-    url     = attr(pull_lst, "url"),
-    request = attr(pull_lst, "request"),
-    status  = attr(pull_lst, "status"),
-    header  = attr(pull_lst, "header"))
+  pull_gh
 }
 
 

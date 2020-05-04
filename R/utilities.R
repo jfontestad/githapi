@@ -286,12 +286,20 @@ modify_list <- function(
 {
   dots <- list(...)
   if (!missing(.before)) {
-    prepend(.x, dots, before = which(names(.x) == .before))
+    x <- prepend(.x, dots, before = which(names(.x) == .before))
   }
   else if (!missing(.after)) {
-    append(.x, dots, after = which(names(.x) == .after))
+    x <- append(.x, dots, after = which(names(.x) == .after))
   }
   else {
-    utils::modifyList(.x, dots)
+    x <- utils::modifyList(.x, dots)
   }
+
+  structure(
+    x,
+    class   = class(.x),
+    url     = attr(.x, "url"),
+    request = attr(.x, "request"),
+    status  = attr(.x, "status"),
+    header  = attr(.x, "header"))
 }

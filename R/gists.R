@@ -81,13 +81,7 @@ create_gist <- function(
     modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
 
   info("Done", level = 7)
-  structure(
-    gist_gh,
-    class   = class(gist_lst),
-    url     = attr(gist_lst, "url"),
-    request = attr(gist_lst, "request"),
-    status  = attr(gist_lst, "status"),
-    header  = attr(gist_lst, "header"))
+  gist_gh
 }
 
 
@@ -179,13 +173,7 @@ update_gist <- function(
     modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
 
   info("Done", level = 7)
-  structure(
-    gist_gh,
-    class   = class(gist_lst),
-    url     = attr(gist_lst, "url"),
-    request = attr(gist_lst, "request"),
-    status  = attr(gist_lst, "status"),
-    header  = attr(gist_lst, "header"))
+  gist_gh
 }
 
 
@@ -315,13 +303,7 @@ view_gist <- function(
     modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
 
   info("Done", level = 7)
-  structure(
-    gist_gh,
-    class   = class(gist_lst),
-    url     = attr(gist_lst, "url"),
-    request = attr(gist_lst, "request"),
-    status  = attr(gist_lst, "status"),
-    header  = attr(gist_lst, "header"))
+  gist_gh
 }
 
 

@@ -261,16 +261,17 @@ view_collaborator <- function(
 
   info("Transforming results", level = 4)
   collaborators_gh <- select_properties(collaborators_lst$user, properties$users) %>%
-    append(list(permission = collaborators_lst$permission)) %>%
-    structure(
-      class   = class(collaborators_lst),
-      url     = attr(collaborators_lst, "url"),
-      request = attr(collaborators_lst, "request"),
-      status  = attr(collaborators_lst, "status"),
-      header  = attr(collaborators_lst, "header"))
+    modify_list(permission = collaborators_lst$permission)
 
   info("Done", level = 7)
-  collaborators_gh
+
+  structure(
+    collaborators_gh,
+    class   = class(collaborators_lst),
+    url     = attr(collaborators_lst, "url"),
+    request = attr(collaborators_lst, "request"),
+    status  = attr(collaborators_lst, "status"),
+    header  = attr(collaborators_lst, "header"))
 }
 
 

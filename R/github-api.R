@@ -322,16 +322,14 @@ gh_request <- function(
       "\n[Details] ", doc_url)
   }
 
-  structered_response <- structure(
+  info("> Done", level = 9)
+  structure(
     parsed_response,
     class   = c("github", class(parsed_response)),
     url     = url,
     request = type,
     status  = httr::status_code(response),
     header  = httr::headers(response))
-
-  info("> Done", level = 9)
-  structered_response
 }
 
 

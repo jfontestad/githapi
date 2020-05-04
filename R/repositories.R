@@ -144,18 +144,12 @@ create_repository <- function(
 
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    append(
-      list(permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))]),
-      after = which(names(.) == "default_branch"))
+    modify_list(
+      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
+      .after = "default_branch")
 
   info("Done", level = 7)
-  structure(
-    repo_gh,
-    class   = class(repo_lst),
-    url     = attr(repo_lst, "url"),
-    request = attr(repo_lst, "request"),
-    status  = attr(repo_lst, "status"),
-    header  = attr(repo_lst, "header"))
+  repo_gh
 }
 
 
@@ -342,18 +336,12 @@ update_repository <- function(
 
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    append(
-      list(permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))]),
-      after = which(names(.) == "default_branch"))
+    modify_list(
+      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
+      .after = "default_branch")
 
   info("Done", level = 7)
-  structure(
-    repo_gh,
-    class   = class(repo_lst),
-    url     = attr(repo_lst, "url"),
-    request = attr(repo_lst, "request"),
-    status  = attr(repo_lst, "status"),
-    header  = attr(repo_lst, "header"))
+  repo_gh
 }
 
 
@@ -510,18 +498,12 @@ view_repository <- function(
 
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    append(
-      list(permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))]),
-      after = which(names(.) == "default_branch"))
+    modify_list(
+      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
+      .after = "default_branch")
 
   info("Done", level = 7)
-  structure(
-    repo_gh,
-    class   = class(repo_lst),
-    url     = attr(repo_lst, "url"),
-    request = attr(repo_lst, "request"),
-    status  = attr(repo_lst, "status"),
-    header  = attr(repo_lst, "header"))
+  repo_gh
 }
 
 

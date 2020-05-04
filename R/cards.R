@@ -120,17 +120,17 @@ create_card <- function(
 
   info("Transforming results", level = 4)
   card_gh <- select_properties(card_lst, properties$card) %>%
-    append(list(content_id   = as.integer(content_id)), after = 1) %>%
-    discard(names(.) == "content_url") %>%
-    structure(
-      class   = class(card_lst),
-      url     = attr(card_lst, "url"),
-      request = attr(card_lst, "request"),
-      status  = attr(card_lst, "status"),
-      header  = attr(card_lst, "header"))
+    modify_list(content_id   = as.integer(content_id), .after = "id") %>%
+    discard(names(.) == "content_url")
 
   info("Done", level = 7)
-  card_gh
+  structure(
+    card_gh,
+    class   = class(card_lst),
+    url     = attr(card_lst, "url"),
+    request = attr(card_lst, "request"),
+    status  = attr(card_lst, "status"),
+    header  = attr(card_lst, "header"))
 }
 
 
@@ -231,17 +231,17 @@ update_card <- function(
 
   info("Transforming results", level = 4)
   card_gh <- select_properties(card_lst, properties$card) %>%
-    append(list(content_id   = as.integer(basename(.$content_url))), after = 1) %>%
-    discard(names(.) == "content_url") %>%
-    structure(
-      class   = class(card_lst),
-      url     = attr(card_lst, "url"),
-      request = attr(card_lst, "request"),
-      status  = attr(card_lst, "status"),
-      header  = attr(card_lst, "header"))
+    modify_list(content_id   = as.integer(basename(.$content_url)), .after = "id") %>%
+    discard(names(.) == "content_url")
 
   info("Done", level = 7)
-  card_gh
+  structure(
+    card_gh,
+    class   = class(card_lst),
+    url     = attr(card_lst, "url"),
+    request = attr(card_lst, "request"),
+    status  = attr(card_lst, "status"),
+    header  = attr(card_lst, "header"))
 }
 
 
@@ -304,17 +304,14 @@ move_card <- function(
 
   card <- view_card(card)
 
-  info("Transforming results", level = 4)
-  card_gh <- structure(
+  info("Done", level = 7)
+  structure(
     card,
     class   = class(card),
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
     header  = attr(response, "header"))
-
-  info("Done", level = 7)
-  card_gh
 }
 
 
@@ -408,16 +405,16 @@ view_cards <- function(
   info("Transforming results", level = 4)
   cards_gh <- bind_properties(cards_lst, properties$card) %>%
     mutate(content_id = as.integer(basename(.data$content_url))) %>%
-    select("id", "content_id", everything(), -"content_url") %>%
-    structure(
-      class   = c("github", class(.)),
-      url     = attr(cards_lst, "url"),
-      request = attr(cards_lst, "request"),
-      status  = attr(cards_lst, "status"),
-      header  = attr(cards_lst, "header"))
+    select("id", "content_id", everything(), -"content_url")
 
   info("Done", level = 7)
-  cards_gh
+  structure(
+    cards_gh,
+    class   = c("github", class(cards_gh)),
+    url     = attr(cards_lst, "url"),
+    request = attr(cards_lst, "request"),
+    status  = attr(cards_lst, "status"),
+    header  = attr(cards_lst, "header"))
 }
 
 
@@ -441,17 +438,17 @@ view_card <- function(
 
   info("Transforming results", level = 4)
   card_gh <- select_properties(card_lst, properties$card) %>%
-    append(list(content_id   = as.integer(basename(.$content_url))), after = 1) %>%
-    discard(names(.) == "content_url") %>%
-    structure(
-      class   = class(card_lst),
-      url     = attr(card_lst, "url"),
-      request = attr(card_lst, "request"),
-      status  = attr(card_lst, "status"),
-      header  = attr(card_lst, "header"))
+    modify_list(content_id = as.integer(basename(.$content_url)), .after = "id") %>%
+    discard(names(.) == "content_url")
 
   info("Done", level = 7)
-  card_gh
+  structure(
+    card_gh,
+    class   = class(card_lst),
+    url     = attr(card_lst, "url"),
+    request = attr(card_lst, "request"),
+    status  = attr(card_lst, "status"),
+    header  = attr(card_lst, "header"))
 }
 
 

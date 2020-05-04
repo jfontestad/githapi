@@ -100,14 +100,8 @@ update_membership <- function(
 
     info("Transforming results", level = 4)
     membership_gh <- select_properties(membership_lst, properties$memberships) %>%
-      utils::modifyList(list(user = user, organization = org)) %>%
-      append(list(team = team), after = which(names(.) == "organization")) %>%
-      structure(
-        class   = class(membership_lst),
-        url     = attr(membership_lst, "url"),
-        request = attr(membership_lst, "request"),
-        status  = attr(membership_lst, "status"),
-        header  = attr(membership_lst, "header"))
+      modify_list(user = user, organization = org) %>%
+      modify_list(team = team, .after = "organization")
   }
 
   info("Done", level = 7)
@@ -233,14 +227,8 @@ view_membership <- function(
 
     info("Transforming results", level = 4)
     membership_gh <- select_properties(membership_lst, properties$memberships) %>%
-      utils::modifyList(list(user = user, organization = org)) %>%
-      append(list(team = team), after = which(names(.) == "organization")) %>%
-      structure(
-        class   = class(membership_lst),
-        url     = attr(membership_lst, "url"),
-        request = attr(membership_lst, "request"),
-        status  = attr(membership_lst, "status"),
-        header  = attr(membership_lst, "header"))
+      modify_list(user = user, organization = org) %>%
+      modify_list(team = team, .after = "organization")
   }
 
   info("Done", level = 7)

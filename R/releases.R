@@ -105,13 +105,7 @@ create_release <- function(
     modify_list(assets = map_chr(release_lst$assets, "name"), .before = "html_url")
 
   info("Done", level = 7)
-  structure(
-    release_gh,
-    class   = class(release_lst),
-    url     = attr(release_lst, "url"),
-    request = attr(release_lst, "request"),
-    status  = attr(release_lst, "status"),
-    header  = attr(release_lst, "header"))
+  release_gh
 }
 
 
@@ -232,13 +226,7 @@ update_release <- function(
     modify_list(assets = map_chr(release_lst$assets, "name"), .before = "html_url")
 
   info("Done", level = 7)
-  structure(
-    release_gh,
-    class   = class(release_lst),
-    url     = attr(release_lst, "url"),
-    request = attr(release_lst, "request"),
-    status  = attr(release_lst, "status"),
-    header  = attr(release_lst, "header"))
+  release_gh
 }
 
 
@@ -349,13 +337,7 @@ view_release <- function(
     modify_list(assets = map_chr(release_lst$assets, "name"), .before = "html_url")
 
   info("Done", level = 7)
-  structure(
-    release_gh,
-    class   = class(release_lst),
-    url     = attr(release_lst, "url"),
-    request = attr(release_lst, "request"),
-    status  = attr(release_lst, "status"),
-    header  = attr(release_lst, "header"))
+  release_gh
 }
 
 

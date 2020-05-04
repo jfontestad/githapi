@@ -58,13 +58,7 @@ create_branch <- function(
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    branch_gh,
-    class   = class(branch_lst),
-    url     = attr(branch_lst, "url"),
-    request = attr(branch_lst, "request"),
-    status  = attr(branch_lst, "status"),
-    header  = attr(branch_lst, "header"))
+  branch_gh
 }
 
 
@@ -130,13 +124,7 @@ update_branch <- function(
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    branch_gh,
-    class   = class(branch_lst),
-    url     = attr(branch_lst, "url"),
-    request = attr(branch_lst, "request"),
-    status  = attr(branch_lst, "status"),
-    header  = attr(branch_lst, "header"))
+  branch_gh
 }
 
 
@@ -219,13 +207,7 @@ view_branch <- function(
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    branch_gh,
-    class   = class(branch_lst),
-    url     = attr(branch_lst, "url"),
-    request = attr(branch_lst, "request"),
-    status  = attr(branch_lst, "status"),
-    header  = attr(branch_lst, "header"))
+  branch_gh
 }
 
 

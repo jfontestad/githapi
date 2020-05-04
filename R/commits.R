@@ -428,13 +428,7 @@ view_commit <- function(
     modify_list(parents = map_chr(commit_lst$parents, "sha"), .before = "date")
 
   info("Done", level = 7)
-  structure(
-    commit_gh,
-    class   = class(commit_lst),
-    url     = attr(commit_lst, "url"),
-    request = attr(commit_lst, "request"),
-    status  = attr(commit_lst, "status"),
-    header  = attr(commit_lst, "header"))
+  commit_gh
 }
 
 
