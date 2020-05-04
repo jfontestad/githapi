@@ -7,7 +7,7 @@ now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
 setup(suppressMessages({
 
-  test_repo <- create_repository(
+  create_repository(
     name        = str_c("test-files-", now),
     description = "This is a repository to test files",
     auto_init   = TRUE)

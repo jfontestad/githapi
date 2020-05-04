@@ -37,7 +37,6 @@ test_that("create_team creates a team and returns its properties", {
   expect_identical(first_team$name, str_c("Test team ", now))
   expect_identical(first_team$organization, "HairyCoos")
   expect_identical(first_team$description, "This is a test team")
-  expect_identical(first_team$repos_count, 1L)
 
   maintainers_team <- create_team(
     name        = str_c("Test team 2 ", now),

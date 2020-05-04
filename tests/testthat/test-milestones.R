@@ -5,19 +5,19 @@ context("milestones")
 
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
-setup(suppressMessages(try(silent = TRUE, {
+setup(suppressMessages({
 
-  test_repo <- create_repository(
+  create_repository(
     name        = str_c("test-milestones-", now),
     description = "This is a repository to test milestones")
 
-})))
+}))
 
-teardown(suppressMessages(try(silent = TRUE, {
+teardown(suppressMessages({
 
   delete_repository(str_c("ChadGoymer/test-milestones-", now))
 
-})))
+}))
 
 
 # TEST: create_milestone ----------------------------------------------------------------------

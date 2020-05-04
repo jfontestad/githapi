@@ -5,7 +5,7 @@ context("issues")
 
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
-setup(suppressMessages(try(silent = TRUE, {
+setup(suppressMessages({
 
   create_repository(
     name        = str_c("test-issues-", now),
@@ -26,14 +26,14 @@ setup(suppressMessages(try(silent = TRUE, {
     repo        = str_c("ChadGoymer/test-issues-", now),
     description = "This is a label to test issues")
 
-})))
+}))
 
-teardown(suppressMessages(try(silent = TRUE, {
+teardown(suppressMessages({
 
   delete_repository(str_c("ChadGoymer/test-issues-", now))
   delete_repository(str_c("HairyCoos/test-issues-", now))
 
-})))
+}))
 
 
 # TEST: create_issue --------------------------------------------------------------------------

@@ -5,37 +5,54 @@ context("cards")
 
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
-setup(suppressMessages(try(silent = TRUE, {
+setup(suppressMessages({
 
-  test_project <- create_project(
+  create_repository(
+    name        = str_c("test-cards-", now),
+    description = "This is a repository to test cards",
+    auto_init   = TRUE)
+
+  create_project(
     name = str_c("Test cards ", now),
     body = "A project to test card functions",
-    repo = "ChadGoymer/test-githapi")
+    repo = str_c("ChadGoymer/test-cards-", now))
 
-  test_column <- create_column(
+  create_column(
     name    = str_c("Test cards ", now),
     project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-cards-", now))
 
-})))
+  create_issue(
+    title = "This is an issue to test cards",
+    repo  = str_c("ChadGoymer/test-cards-", now),
+    body  = "This is an issue to test cards")
 
-teardown(suppressMessages(try(silent = TRUE, {
+  create_branch(
+    name = str_c("test-cards-", now),
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-cards-", now))
 
-  delete_column(
-    column  = str_c("Test cards ", now),
-    project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+  create_file(
+    content = "This is a commit to test cards",
+    path    = str_c("test-cards-", now, ".txt"),
+    branch  = str_c("test-cards-", now),
+    message = "Commit to test cards",
+    repo    = str_c("ChadGoymer/test-cards-", now))
 
-  delete_column(
-    column  = str_c("Test cards 2 ", now),
-    project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+  create_pull_request(
+    title = "This is a pull request to test cards",
+    repo  = str_c("ChadGoymer/test-cards-", now),
+    head  = str_c("test-cards-", now),
+    base  = "master",
+    body  = "This is a pull request to test cards")
 
-  delete_project(
-    project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+}))
 
-})))
+teardown(suppressMessages({
+
+  delete_repository(str_c("ChadGoymer/test-cards-", now))
+
+}))
 
 
 # TEST: create_card ------------------------------------------------------------------------
@@ -47,7 +64,7 @@ test_that("create_cards creates a card and returns its properties", {
     content_type = "Issue",
     column       = str_c("Test cards ", now),
     project      = str_c("Test cards ", now),
-    repo         = "ChadGoymer/test-githapi")
+    repo         = str_c("ChadGoymer/test-cards-", now))
 
   expect_is(issue_card, "list")
   expect_identical(attr(issue_card, "status"), 201L)
@@ -68,7 +85,7 @@ test_that("create_cards creates a card and returns its properties", {
     content_type = "PullRequest",
     column       = str_c("Test cards ", now),
     project      = str_c("Test cards ", now),
-    repo         = "ChadGoymer/test-githapi")
+    repo         = str_c("ChadGoymer/test-cards-", now))
 
   expect_is(pull_card, "list")
   expect_identical(attr(pull_card, "status"), 201L)
@@ -88,7 +105,7 @@ test_that("create_cards creates a card and returns its properties", {
     note    = "Note Title\nThis is a note",
     column  = str_c("Test cards ", now),
     project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-cards-", now))
 
   expect_is(note_card, "list")
   expect_identical(attr(note_card, "status"), 201L)
@@ -112,7 +129,7 @@ test_that("create_card throws an error in invalid arguments are supplied", {
     create_card(
       column  = str_c("Test cards ", now),
       project = str_c("Test cards ", now),
-      repo    = "ChadGoymer/test-githapi"),
+      repo    = str_c("ChadGoymer/test-cards-", now)),
     "Either 'content_id' or 'note' must be supplied")
 
 })
@@ -124,7 +141,7 @@ suppressMessages({
   cards <- view_cards(
     column  = str_c("Test cards ", now),
     project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-cards-", now))
 })
 
 issue_card_id <- filter(cards, .data$content_id == 1) %>% pull(id)
@@ -237,14 +254,14 @@ test_that("move_card changes the column a card is in", {
   column2 <- create_column(
     name    = str_c("Test cards 2 ", now),
     project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-cards-", now))
 
   column_card <- move_card(
     card     = issue_card_id,
     position = "top",
     column   = str_c("Test cards 2 ", now),
     project  = str_c("Test cards ", now),
-    repo     = "ChadGoymer/test-githapi")
+    repo     = str_c("ChadGoymer/test-cards-", now))
 
   expect_is(column_card, "list")
   expect_identical(attr(column_card, "status"), 201L)
@@ -263,7 +280,7 @@ test_that("move_card changes the column a card is in", {
 test_that("move_card throws an error in invalid arguments are supplied", {
 
   expect_error(
-    move_card(issue_card_id, repo = "ChadGoymer/test-githapi"),
+    move_card(issue_card_id, repo = str_c("ChadGoymer/test-cards-", now)),
     "Either 'position' or 'after' must be supplied")
 
 })
@@ -276,7 +293,7 @@ test_that("view_cards returns a tibble summarising the cards", {
   cards <- view_cards(
     column  = str_c("Test cards ", now),
     project = str_c("Test cards ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-cards-", now))
 
   expect_is(cards, "tbl")
   expect_identical(attr(cards, "status"), 200L)

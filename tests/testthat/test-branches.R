@@ -5,31 +5,32 @@ context("branches")
 
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
-setup(suppressMessages(try(silent = TRUE, {
+setup(suppressMessages({
 
-  test_repo <- create_repository(
+  create_repository(
     name        = str_c("test-branches-", now),
     description = "This is a repository to test branches",
     auto_init   = TRUE)
 
-  # TODO: replace with new `create_file()` function
-  suppressWarnings({
-    create_files(
-      paths    = str_c("test-branches-", now, ".txt"),
-      contents = "This is a commit to test branches",
-      messages = "Commit to test branches",
-      branches = str_c("test-branches-1-", now),
-      parents  = "master",
-      repo     = str_c("ChadGoymer/test-branches-", now))
-  })
+  create_branch(
+    name = str_c("test-branches-1-", now),
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-branches-", now))
 
-})))
+  create_file(
+    content = "This is a commit to test branches",
+    path    = str_c("test-branches-", now, ".txt"),
+    branch  = str_c("test-branches-1-", now),
+    message = "Commit to test branches",
+    repo    = str_c("ChadGoymer/test-branches-", now))
 
-teardown(suppressMessages(try(silent = TRUE, {
+}))
+
+teardown(suppressMessages({
 
   delete_repository(str_c("ChadGoymer/test-branches-", now))
 
-})))
+}))
 
 
 # TEST: create_branch -------------------------------------------------------------------------
