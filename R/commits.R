@@ -146,9 +146,9 @@
   }
 
   info("Uploading files in '", path, "' to repository '", repo, "'")
-  payload$tree <- .upload_tree(path = path, repo = repo, ignore = ignore)$tree_sha
+  payload$tree <- .upload_tree(path = path, repo = repo, ignore = ignore, ...)$tree_sha
 
-  branch_sha <- try_catch(view_sha(ref = branch, repo = repo), on_error = function(e) NULL)
+  branch_sha <- try_catch(view_sha(ref = branch, repo = repo, ...), on_error = function(e) NULL)
 
   if (missing(parents)) {
     if (is_null(branch_sha)) {
@@ -160,7 +160,7 @@
   }
   else {
     assert(is_character(parents), "'parents' must be a character vector:\n  ", parents)
-    parents <- map(parents, function(p) if (!is_sha(p)) view_sha(ref = p, repo = repo) else p)
+    parents <- map(parents, function(p) if (!is_sha(p)) view_sha(ref = p, repo = repo, ...) else p)
   }
   payload$parents <- parents
 
@@ -169,13 +169,13 @@
     gh_request("POST", payload = payload, ...)
 
   if (is_null(branch_sha)) {
-    create_branch(name = branch, ref = commit_lst$sha, repo = repo)
+    create_branch(name = branch, ref = commit_lst$sha, repo = repo, ...)
   }
   else {
-    update_branch(branch = branch, ref = commit_lst$sha, repo = repo, force = force)
+    update_branch(branch = branch, ref = commit_lst$sha, repo = repo, force = force, ...)
   }
 
-  view_commit(commit_lst$sha, repo = repo)
+  view_commit(commit_lst$sha, repo = repo, ...)
 }
 
 

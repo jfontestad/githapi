@@ -89,7 +89,7 @@ create_issue <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
@@ -219,7 +219,7 @@ update_issue <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(
@@ -235,7 +235,7 @@ update_issue <- function(
     payload$state <- state
   }
 
-  issue <- view_issue(issue, repo = repo)
+  issue <- view_issue(issue, repo = repo, ...)
 
   info("Updating issue '", issue$title, "' in repository '", repo, "'")
   issue_lst <- gh_url("repos", repo, "issues", issue$number) %>%
@@ -374,7 +374,7 @@ view_issues <- function(
 
     if (!missing(milestone)) {
       if (is_scalar_character(milestone)) {
-        milestone <- view_milestone(milestone = milestone, repo = repo) %>% pluck("number")
+        milestone <- view_milestone(milestone = milestone, repo = repo, ...) %>% pluck("number")
       }
       assert(is_scalar_integerish(milestone), "'milestone' must be a string or an integer:\n  ", milestone)
     }
@@ -478,7 +478,7 @@ browse_issue <- function(
   repo,
   ...)
 {
-  issue <- view_issue(issue = issue, repo = repo)
+  issue <- view_issue(issue = issue, repo = repo, ...)
 
   info("Browsing issue '", issue$title, "' in repository '", repo, "'")
   httr::BROWSE(issue$html_url)

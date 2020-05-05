@@ -125,7 +125,7 @@ create_pull_request <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
@@ -315,7 +315,7 @@ update_pull_request <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
@@ -598,7 +598,7 @@ browse_pull_request <- function(
   repo,
   ...)
 {
-  pull_request <- view_pull_request(pull_request = pull_request, repo = repo)
+  pull_request <- view_pull_request(pull_request = pull_request, repo = repo, ...)
 
   info("Browsing pull request '", pull_request$title, "' in repository '", repo, "'")
   httr::BROWSE(pull_request$html_url)

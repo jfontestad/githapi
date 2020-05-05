@@ -83,7 +83,7 @@ update_collaborator <- function(
       payload$permission <- permission
     }
 
-    project <- view_project(project = project, org = org)
+    project <- view_project(project = project, org = org, ...)
 
     info("Updating collaborator '", user, "' for project '", project$name, "'")
     response <- gh_url("projects", project$id, "collaborators", user) %>%
@@ -189,7 +189,7 @@ view_collaborators <- function(
       gh_page(n_max = n_max, ...)
   }
   else if (!missing(project)) {
-    project <- view_project(project = project, org = org)
+    project <- view_project(project = project, org = org, ...)
 
     info("Viewing collaborators for project '", project$name, "'")
     collaborators_lst <- gh_url("projects", project$id, "collaborators", affiliation = affiliation) %>%
@@ -237,7 +237,7 @@ view_collaborator <- function(
       gh_request("GET", ...)
   }
   else if (!missing(project)) {
-    project <- view_project(project = project, org = org)
+    project <- view_project(project = project, org = org, ...)
 
     info("Viewing collaborator '", user, "' for project '", project$name, "'")
     collaborators_lst <- gh_url("projects", project$id, "collaborators", user, "permission") %>%
@@ -321,7 +321,7 @@ delete_collaborator <- function(
       gh_request("DELETE", ...)
   }
   else if (!missing(project)) {
-    project <- view_project(project = project, org = org)
+    project <- view_project(project = project, org = org, ...)
 
     info("Deleting collaborator '", user, "' from project '", project$name, "'")
     response <- gh_url("projects", project$id, "collaborators", user) %>%

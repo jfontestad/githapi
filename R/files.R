@@ -871,7 +871,8 @@ write_github_file <- function(
     message   = message,
     repo      = repo,
     author    = author,
-    committer = committer)
+    committer = committer,
+    ...)
 }
 
 
@@ -911,7 +912,8 @@ write_github_lines <- function(
     message   = message,
     repo      = repo,
     author    = author,
-    committer = committer)
+    committer = committer,
+    ...)
 }
 
 
@@ -951,7 +953,8 @@ write_github_csv <- function(
     message   = message,
     repo      = repo,
     author    = author,
-    committer = committer)
+    committer = committer,
+    ...)
 }
 
 
@@ -1014,7 +1017,8 @@ read_github_file <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Reading file '", basename(path), "'")
   file_contents <- readr::read_file(file_path, ...)
@@ -1053,7 +1057,8 @@ read_github_lines <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Reading file '", basename(path), "'")
   file_contents <- readr::read_lines(file_path, ...)
@@ -1092,7 +1097,8 @@ read_github_csv <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Reading file '", basename(path), "'")
   file_contents <- readr::read_csv(file_path, ...)
@@ -1150,7 +1156,8 @@ github_source <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Sourcing file '", basename(path), "'")
   result <- source(file_path, ...)

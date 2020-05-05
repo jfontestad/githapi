@@ -179,7 +179,7 @@ update_milestone <- function(
     payload$state <- state
   }
 
-  milestone <- view_milestone(milestone, repo = repo)
+  milestone <- view_milestone(milestone, repo = repo, ...)
 
   info("Updating milestone '", milestone$title, "' in repository '", repo, "'")
   milestone_lst <- gh_url("repos", repo, "milestones", milestone$number) %>%
@@ -335,7 +335,7 @@ browse_milestone <- function(
   repo,
   ...)
 {
-  milestone <- view_milestone(milestone = milestone, repo = repo)
+  milestone <- view_milestone(milestone = milestone, repo = repo, ...)
 
   info("Browsing milestone '", milestone$title, "' in repository '", repo, "'")
   httr::BROWSE(milestone$html_url)
@@ -382,7 +382,7 @@ delete_milestone <- function(
   repo,
   ...)
 {
-  milestone <- view_milestone(milestone = milestone, repo = repo)
+  milestone <- view_milestone(milestone = milestone, repo = repo, ...)
 
   info("Deleting milestone '", milestone$title, "' in repository '", repo, "'")
   response <- gh_url("repos", repo, "milestones", milestone$number) %>% gh_request("DELETE", ...)

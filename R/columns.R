@@ -160,7 +160,8 @@ update_column <- function(
     project = project,
     repo    = repo,
     user    = user,
-    org     = org)
+    org     = org,
+    ...)
 
   info("Updating column '", column$name, "' in project '", project, "'")
   column_lst <- gh_url("projects/columns", column$id) %>%
@@ -206,7 +207,8 @@ move_column <- function(
       project = project,
       repo    = repo,
       user    = user,
-      org     = org)
+      org     = org,
+      ...)
 
     payload <- list(position = str_c("after:", after_column$id))
   }
@@ -219,7 +221,8 @@ move_column <- function(
     project = project,
     repo    = repo,
     user    = user,
-    org     = org)
+    org     = org,
+    ...)
 
   info("Moving column '", column$name, "' in project '", project, "'")
   response <- gh_url("projects/columns", column$id, "moves") %>%
@@ -451,7 +454,8 @@ delete_column <- function(
     project = project,
     repo    = repo,
     user    = user,
-    org     = org)
+    org     = org,
+    ...)
 
   info("Deleting column '", column$name, "' in project '", project, "'")
   response <- gh_url("projects/columns", column$id) %>%

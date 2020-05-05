@@ -211,7 +211,8 @@ update_project <- function(
     project = project,
     repo    = repo,
     user    = user,
-    org     = org)
+    org     = org,
+    ...)
 
   payload <- NULL
 
@@ -243,7 +244,8 @@ update_project <- function(
     project_gh <- view_project(
       project = project$name,
       team    = team,
-      org     = org)
+      org     = org,
+      ...)
 
     info("Done", level = 7)
     structure(
@@ -661,7 +663,8 @@ delete_project <- function(
     repo    = repo,
     user    = user,
     team    = team,
-    org     = org)
+    org     = org,
+    ...)
 
   if (missing(team)) {
     info("Deleting project '", project$name, "'")

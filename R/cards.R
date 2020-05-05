@@ -280,7 +280,8 @@ move_card <- function(
       project = project,
       repo    = repo,
       user    = user,
-      org     = org)
+      org     = org,
+      ...)
 
     payload <- c(payload, column_id = column$id)
   }
@@ -293,7 +294,7 @@ move_card <- function(
       accept  = "application/vnd.github.inertia-preview+json",
       ...)
 
-  card <- view_card(card)
+  card <- view_card(card, ...)
 
   info("Done", level = 7)
   structure(

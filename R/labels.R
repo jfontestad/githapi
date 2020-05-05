@@ -203,7 +203,7 @@ view_labels <- function(
     url <- gh_url("repos", repo, "labels")
   }
   else {
-    issue <- view_issue(issue, repo = repo)
+    issue <- view_issue(issue, repo = repo, ...)
     info("Viewing labels for issue '", issue$title, "' in repository '", repo, "'")
     url <- gh_url("repos", repo, "issues", issue$number, "labels")
   }
@@ -338,7 +338,7 @@ add_labels <- function(
   assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  issue <- view_issue(issue, repo = repo)
+  issue <- view_issue(issue, repo = repo, ...)
 
   info("Adding labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
   labels_lst <- gh_url("repos", repo, "issues", issue$number, "labels") %>%
@@ -366,7 +366,7 @@ remove_labels <- function(
   assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  issue <- view_issue(issue, repo = repo)
+  issue <- view_issue(issue, repo = repo, ...)
 
   info("Deleting labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
   labels_lst <- try_map(labels, function(label) {
