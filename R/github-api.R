@@ -43,14 +43,12 @@ gh_token <- function(
   secret = getOption("githapi.secret"),
   cache  = getOption("githapi.cache"))
 {
-  if (!is_null(token))
-  {
+  if (!is_null(token)) {
     assert(is_sha(token) || "Token" %in% class(token), "'token' must be a SHA or a Token object:\n  ", token)
     info("> Using supplied token", level = 6)
     return(token)
   }
-  if (!is_null(.cache$token))
-  {
+  if (!is_null(.cache$token)) {
     info("> Retrieving cached token", level = 6)
     return(.cache$token)
   }
@@ -60,8 +58,7 @@ gh_token <- function(
   assert(is_scalar_character(secret), "'secret' must be a string:\n  ", secret)
   assert(is_scalar_logical(cache) || is_scalar_character(cache), "'cache' must be a boolean or a string:\n  ", cache)
 
-  if (!is_null(proxy))
-  {
+  if (!is_null(proxy)) {
     assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
     httr::set_config(httr::use_proxy(proxy))
     httr::set_config(httr::config(connecttimeout = 60))
@@ -84,8 +81,7 @@ gh_token <- function(
     scope    = c("admin:org", "user", "repo", "delete_repo", "gist"),
     cache    = cache))
 
-  if (("error" %in% names(token$credentials)) && (nchar(token$credentials$error) > 0))
-  {
+  if (("error" %in% names(token$credentials)) && (nchar(token$credentials$error) > 0)) {
     error(
       "GitHub token request failed:\n",
       "\n[Error]       ", str_replace_all(token$credentials$error, "_", " "),
@@ -138,24 +134,20 @@ gh_url <- function(
 
   dots <- list(...) %>% compact() %>% unlist()
 
-  if (is_null(names(dots)))
-  {
+  if (is_null(names(dots))) {
     path <- str_c(dots, collapse = "/")
   }
-  else
-  {
+  else {
     path <- str_c(dots[names(dots) == ""], collapse = "/")
   }
 
-  if (!identical(length(path), 0L))
-  {
+  if (!identical(length(path), 0L)) {
     url$path <- file.path(url$path, path)
   }
 
   query <- as.list(dots[names(dots) != ""])
 
-  if (!identical(length(query), 0L))
-  {
+  if (!identical(length(query), 0L)) {
     url$query <- query
   }
 
@@ -254,8 +246,7 @@ gh_request <- function(
 
   headers <- c(httr::add_headers(.headers = headers), httr::accept(accept))
 
-  if (!is_null(payload))
-  {
+  if (!is_null(payload)) {
     assert(is_list(payload), "'payload' must be a list:\n  ", payload)
     info("> Parsing payload", level = 6)
     payload <- jsonlite::toJSON(payload, auto_unbox = TRUE, null = "null", na = "null")
@@ -263,17 +254,14 @@ gh_request <- function(
   }
 
   token <- gh_token(proxy = proxy, token = token)
-  if (is_sha(token))
-  {
+  if (is_sha(token)) {
     headers <- c(headers, httr::add_headers(Authorization = str_c("token ", token)))
   }
-  else
-  {
+  else {
     headers <- c(headers, httr::config(token = token))
   }
 
-  if (!is_null(proxy))
-  {
+  if (!is_null(proxy)) {
     assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
     httr::set_config(httr::use_proxy(proxy))
     on.exit(httr::reset_config())
@@ -289,22 +277,18 @@ gh_request <- function(
     DELETE = httr::DELETE(url, body = payload, headers))
 
   info("> Parsing response", level = 6)
-  if (identical(httr::status_code(response), 204L))
-  {
+  if (identical(httr::status_code(response), 204L)) {
     parsed_response <- list()
   }
-  else if (identical(httr::http_type(response), "application/json"))
-  {
+  else if (identical(httr::http_type(response), "application/json")) {
     parsed_response <- httr::content(response, as = "text", encoding = "UTF-8") %>%
       jsonlite::fromJSON(simplifyVector = FALSE)
   }
-  else
-  {
+  else {
     parsed_response <- httr::content(response, as = "text", encoding = "UTF-8")
   }
 
-  if (httr::http_error(response))
-  {
+  if (httr::http_error(response)) {
     message <- pluck(parsed_response, "message")
     errors  <- pluck(parsed_response, "errors") %>%
       map_chr(function(e) if (is_null(e$message)) str_c(e, collapse = " ") else e$message)
@@ -398,8 +382,7 @@ gh_page <- function(
   response_list <- list()
   response_attr <- list()
 
-  for (p in per_page[per_page > 0])
-  {
+  for (p in per_page[per_page > 0]) {
     parsed_url$query$per_page <- as.character(p)
     page_url <- httr::build_url(parsed_url)
     page <- gh_request(
@@ -417,8 +400,7 @@ gh_page <- function(
     response_attr$header <- c(response_attr$header, attr(page, "header"))
 
     links <- attributes(page)[["header"]][["Link"]]
-    if (is_null(links) || !str_detect(links, "next"))
-    {
+    if (is_null(links) || !str_detect(links, "next")) {
       info("> Returned ", length(response_list), level = 4)
       break
     }
@@ -509,8 +491,7 @@ gh_find <- function(
   parsed_url$query$per_page <- "100"
   page_url <- httr::build_url(parsed_url)
 
-  for (p in 1:max_pages)
-  {
+  for (p in 1:max_pages) {
     page <- gh_request(
       type    = "GET",
       url     = page_url,
@@ -521,8 +502,7 @@ gh_find <- function(
       ...)
     matched_results <- keep(page, ~.[[property]] == as.character(value))
 
-    if (length(matched_results) > 0)
-    {
+    if (length(matched_results) > 0) {
       result <- structure(
         matched_results[[1]],
         class   = c("github", class(matched_results)),
@@ -534,8 +514,7 @@ gh_find <- function(
       return(result)
     }
 
-    if (is_null(attributes(page)[["header"]][["Link"]]))
-    {
+    if (is_null(attributes(page)[["header"]][["Link"]])) {
       break
     }
 
@@ -604,23 +583,19 @@ gh_find <- function(
 
   headers <- httr::add_headers(.headers = headers)
 
-  if (!is_null(accept))
-  {
+  if (!is_null(accept)) {
     headers <- c(headers, httr::accept(accept))
   }
 
   token <- gh_token(proxy = proxy, token = token)
-  if (is_sha(token))
-  {
+  if (is_sha(token)) {
     headers <- c(headers, httr::add_headers(Authorization = str_c("token ", token)))
   }
-  else
-  {
+  else {
     headers <- c(headers, httr::config(token = token))
   }
 
-  if (!is_null(proxy))
-  {
+  if (!is_null(proxy)) {
     assert(is_scalar_character(proxy), "'proxy' must be a string:\n  ", proxy)
     httr::set_config(httr::use_proxy(proxy))
     on.exit(httr::reset_config())
@@ -629,8 +604,7 @@ gh_find <- function(
   info("> DOWNLOAD: ", url, level = 3)
   response <- httr::GET(url, httr::write_disk(path, overwrite = TRUE), headers)
 
-  if (httr::http_error(response))
-  {
+  if (httr::http_error(response)) {
     parsed_response <- httr::content(response, as = "text", encoding = "UTF-8") %>%
       jsonlite::fromJSON(simplifyVector = FALSE)
     message <- pluck(parsed_response, "message")
@@ -672,28 +646,23 @@ gh_find <- function(
 print.github <- function(x, n_urls = 2, ...)
 {
   urls <- attr(x, "url")
-  if (!is_null(urls))
-  {
-    if (length(urls) > n_urls)
-    {
+  if (!is_null(urls)) {
+    if (length(urls) > n_urls) {
       urls <- c(urls[1:n_urls], "...")
     }
 
     cat("\033[34m", str_c("# ", attr(x, "request"), " \033[4m", str_replace_all(urls, "%20", " "), "\033[24m\n"), "\033[39m", sep = "")
   }
 
-  if (is.data.frame(x))
-  {
+  if (is.data.frame(x)) {
     class(x) <- class(x)[class(x) != "github"]
     print(x)
   }
-  else if (is_list(x))
-  {
+  else if (is_list(x)) {
     utils::capture.output(utils::str(x, max.level = 2, give.attr = FALSE, strict.width = "cut")) %>%
       str_replace("\\.\\.\\$", " ")  %>% str_replace("\\$", "") %>% cat(sep = "\n")
   }
-  else
-  {
+  else {
     added_attributes <- c("class", "url", "request", "status", "header", "github")
     attributes(x) <- attributes(x)[!names(attributes(x)) %in% added_attributes]
     print.default(x, ...)

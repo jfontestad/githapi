@@ -200,12 +200,10 @@ select_properties <- function(entity, properties)
     map(function(p) if (is_null(names(p))) p else p[names(p) != "as"]) %>%
     set_names(property_names(.))
 
-  if (is_null(entity) || identical(length(entity), 0L))
-  {
+  if (is_null(entity) || identical(length(entity), 0L)) {
     selected_properties <- map(properties, ~ logical())
   }
-  else
-  {
+  else {
     selected_properties <- map(properties, ~ pluck(.x = entity, !!!., .default = NA))
   }
 
@@ -240,14 +238,11 @@ bind_properties <- function(collection, properties)
     map(function(p) if (is_null(names(p))) p else p[names(p) != "as"]) %>%
     set_names(property_names(.))
 
-  if (identical(length(collection), 0L))
-  {
+  if (identical(length(collection), 0L)) {
     selected_properties <- map_dfc(properties, ~ logical())
   }
-  else
-  {
-    selected_properties <- map_dfr(collection, function(entity)
-    {
+  else {
+    selected_properties <- map_dfr(collection, function(entity) {
       map(properties, ~ pluck(.x = entity, !!!., .default = NA))
     })
   }

@@ -62,10 +62,8 @@ update_collaborator <- function(
 
   payload <- NULL
 
-  if (!missing(repo))
-  {
-    if (!missing(permission))
-    {
+  if (!missing(repo)) {
+    if (!missing(permission)) {
       assert(
         is_scalar_character(permission) && permission %in% values$repository$permission,
         "'permission' for repositories must be either '", str_c(values$repository$permission, collapse = "', '"), "':\n  ", permission)
@@ -77,10 +75,8 @@ update_collaborator <- function(
     response <- gh_url("repos", repo, "collaborators", user) %>%
       gh_request("PUT", payload = payload, ...)
   }
-  else if (!missing(project))
-  {
-    if (!missing(permission))
-    {
+  else if (!missing(project)) {
+    if (!missing(permission)) {
       assert(
         is_scalar_character(permission) && permission %in% values$project$permission,
         "'permission' for projects must be either '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
@@ -97,8 +93,7 @@ update_collaborator <- function(
         accept  = "application/vnd.github.inertia-preview+json",
         ...)
   }
-  else
-  {
+  else {
     error("A 'repo' or 'project' must be specified when creating a collaborator")
   }
 
@@ -187,15 +182,13 @@ view_collaborators <- function(
     is_scalar_character(affiliation) && affiliation %in% values$collaborator$affiliation,
     "'affiliation' for repositories must be either '", str_c(values$collaborator$affiliation, collapse = "', '"), "':\n  ", affiliation)
 
-  if (!missing(repo))
-  {
+  if (!missing(repo)) {
     assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
     info("Viewing collaborators for repository '", repo, "'")
     collaborators_lst <- gh_url("repos", repo, "collaborators", affiliation = affiliation) %>%
       gh_page(n_max = n_max, ...)
   }
-  else if (!missing(project))
-  {
+  else if (!missing(project)) {
     project <- view_project(project = project, org = org)
 
     info("Viewing collaborators for project '", project$name, "'")
@@ -205,15 +198,13 @@ view_collaborators <- function(
         n_max  = n_max,
         ...)
   }
-  else if (!missing(org))
-  {
+  else if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     info("Viewing collaborators for organization '", org, "'")
     collaborators_lst <- gh_url("orgs", org, "outside_collaborators", affiliation = affiliation) %>%
       gh_page(n_max = n_max, ...)
   }
-  else
-  {
+  else {
     error("A 'repo', 'project' or 'org' must be specified when viewing collaborators")
   }
 
@@ -239,23 +230,20 @@ view_collaborator <- function(
 {
   assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
 
-  if (!missing(repo))
-  {
+  if (!missing(repo)) {
     assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
     info("Viewing collaborator '", user, "' for repository '", repo, "'")
     collaborators_lst <- gh_url("repos", repo, "collaborators", user, "permission") %>%
       gh_request("GET", ...)
   }
-  else if (!missing(project))
-  {
+  else if (!missing(project)) {
     project <- view_project(project = project, org = org)
 
     info("Viewing collaborator '", user, "' for project '", project$name, "'")
     collaborators_lst <- gh_url("projects", project$id, "collaborators", user, "permission") %>%
       gh_request("GET", accept = "application/vnd.github.inertia-preview+json", ...)
   }
-  else
-  {
+  else {
     error("A 'repo' or 'project' must be specified when viewing a collaborator")
   }
 
@@ -326,30 +314,26 @@ delete_collaborator <- function(
 {
   assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
 
-  if (!missing(repo))
-  {
+  if (!missing(repo)) {
     assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
     info("Deleting collaborator '", user, "' from repository '", repo, "'")
     response <- gh_url("repos", repo, "collaborators", user) %>%
       gh_request("DELETE", ...)
   }
-  else if (!missing(project))
-  {
+  else if (!missing(project)) {
     project <- view_project(project = project, org = org)
 
     info("Deleting collaborator '", user, "' from project '", project$name, "'")
     response <- gh_url("projects", project$id, "collaborators", user) %>%
       gh_request("DELETE", accept  = "application/vnd.github.inertia-preview+json", ...)
   }
-  else if (!missing(org))
-  {
+  else if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     info("Deleting collaborator '", user, "' from organization '", org, "'")
     response <- gh_url("orgs", org, "outside_collaborators", user) %>%
       gh_request("DELETE", ...)
   }
-  else
-  {
+  else {
     error("A 'repo', 'project' or 'org' must be specified when deleting collaborators")
   }
 

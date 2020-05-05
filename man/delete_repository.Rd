@@ -29,7 +29,7 @@ For more details see the GitHub API documentation:
   # Delete a user's repository
   delete_repository("ChadGoymer/user-repository")
 
-  # Delete a organization's repository
+  # Delete an organization's repository
   delete_repository("HairyCoos/org-repository")
 }
 

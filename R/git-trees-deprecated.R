@@ -39,18 +39,16 @@ view_trees <- function(
 {
   .Deprecated("view_files", package = "githapi")
 
-  {
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_scalar_logical(recursive)) ||
-      error("'recursive' must be boolean:\n  '", paste(recursive, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_scalar_logical(recursive)) ||
+    error("'recursive' must be boolean:\n  '", paste(recursive, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   trees_list <- try_map(shas, function(sha) {
     info("Getting tree for sha '", sha, "' from repository '", repo, "'")
@@ -128,36 +126,34 @@ create_tree <- function(
 {
   .Deprecated("upload_files", package = "githapi")
 
-  {
-    if (missing(base_tree)) {
-      base_tree <- NA
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_character(modes) && all(modes %in% c("100644", "100755", "040000", "160000", "120000"))) ||
-      error("'modes' must be a character vector of valid modes (see ?create_tree):\n  '", paste(modes, collapse = "'\n  '"), "'")
-    (identical(length(modes), 1L) || identical(length(modes), length(paths))) ||
-      error("'modes' must be a string or the same length as paths:\n  'modes': ", length(modes), "\n  'paths': ", length(paths))
-    (is_character(types) && all(types %in% c("blob", "tree", "commit"))) ||
-      error("'types' must be a character vector of valid types (see ?create_tree):\n  '", paste(types, collapse = "'\n  '"), "'")
-    (identical(length(types), 1L) || identical(length(types), length(paths))) ||
-      error("'types' must be a string or the same length as paths:\n  'types': ", length(types), "\n  'paths': ", length(paths))
-    (all(is_na(shas)) || all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must be NA or a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (all(is_na(shas)) || (identical(length(shas), 1L) || identical(length(shas), length(paths)))) ||
-      error("'shas' must be NA, a string or the same length as 'paths':\n  'shas':  ", length(shas), "\n  'paths': ", length(paths))
-    (all(is_na(base_tree)) || all(gh_map(base_tree, is_sha, simplify = TRUE))) ||
-      error("'base_tree' must be NA or a vector of 40 character strings:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
-    (all(is_na(base_tree)) || (identical(length(base_tree), 1L)) || identical(length(base_tree), length(paths))) ||
-      error("'base_tree' must be NA, a string or the same length as 'paths':\n  'base_tree':", length(base_tree), "\n  'paths':     ", length(paths))
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(base_tree)) {
+    base_tree <- NA
   }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_character(modes) && all(modes %in% c("100644", "100755", "040000", "160000", "120000"))) ||
+    error("'modes' must be a character vector of valid modes (see ?create_tree):\n  '", paste(modes, collapse = "'\n  '"), "'")
+  (identical(length(modes), 1L) || identical(length(modes), length(paths))) ||
+    error("'modes' must be a string or the same length as paths:\n  'modes': ", length(modes), "\n  'paths': ", length(paths))
+  (is_character(types) && all(types %in% c("blob", "tree", "commit"))) ||
+    error("'types' must be a character vector of valid types (see ?create_tree):\n  '", paste(types, collapse = "'\n  '"), "'")
+  (identical(length(types), 1L) || identical(length(types), length(paths))) ||
+    error("'types' must be a string or the same length as paths:\n  'types': ", length(types), "\n  'paths': ", length(paths))
+  (all(is_na(shas)) || all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must be NA or a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (all(is_na(shas)) || (identical(length(shas), 1L) || identical(length(shas), length(paths)))) ||
+    error("'shas' must be NA, a string or the same length as 'paths':\n  'shas':  ", length(shas), "\n  'paths': ", length(paths))
+  (all(is_na(base_tree)) || all(gh_map(base_tree, is_sha, simplify = TRUE))) ||
+    error("'base_tree' must be NA or a vector of 40 character strings:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
+  (all(is_na(base_tree)) || (identical(length(base_tree), 1L)) || identical(length(base_tree), length(paths))) ||
+    error("'base_tree' must be NA, a string or the same length as 'paths':\n  'base_tree':", length(base_tree), "\n  'paths':     ", length(paths))
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   params <- tibble(
     path      = paths,
@@ -237,24 +233,22 @@ upload_tree <- function(
 {
   .Deprecated("upload_files", package = "githapi")
 
-  {
-    if (missing(base_tree)) {
-      base_tree <- NA
-    }
-
-    (is_dir(path) && is_readable(path)) ||
-      error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (all(is_na(base_tree)) || is_sha(base_tree)) ||
-      error("'base_tree' must be NA or a string of 40 characters:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
-    (is_character(ignore)) ||
-      error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(base_tree)) {
+    base_tree <- NA
   }
+
+  (is_dir(path) && is_readable(path)) ||
+    error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (all(is_na(base_tree)) || is_sha(base_tree)) ||
+    error("'base_tree' must be NA or a string of 40 characters:\n  '", paste(base_tree, collapse = "'\n  '"), "'")
+  (is_character(ignore)) ||
+    error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   ignore <- unique(c("^\\.$", "^\\.\\.$", ignore))
 
@@ -319,16 +313,14 @@ trees_exist <- function(
 {
   .Deprecated(msg = "This function will be removed in a future version")
 
-  {
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking tree '", sha, "' exists in repository '", repo, "'")

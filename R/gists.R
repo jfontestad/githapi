@@ -67,8 +67,7 @@ create_gist <- function(
   payload <- list(public = public)
   payload$files <- map(files, ~ list(content = .))
 
-  if (!missing(description))
-  {
+  if (!missing(description)) {
     assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
     payload$description <- description
   }
@@ -148,8 +147,7 @@ update_gist <- function(
 
   payload <- NULL
 
-  if (!missing(files))
-  {
+  if (!missing(files)) {
     assert(is_list(files) & has_names(files), "'files' must be a named list:\n  ", files)
     assert(
       all(map_lgl(files, ~ is_character(.) && all(names(.) %in% c("", "content", "filename")))),
@@ -159,8 +157,7 @@ update_gist <- function(
     })
   }
 
-  if (!missing(description))
-  {
+  if (!missing(description)) {
     assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
     payload$description <- description
   }

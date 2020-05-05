@@ -281,20 +281,17 @@ update_pull_request <- function(
     payload$base <- base
   }
 
-  if (is_scalar_integerish(pull_request))
-  {
+  if (is_scalar_integerish(pull_request)) {
     info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
       gh_request("GET", ...)
   }
-  else if (is_scalar_character(pull_request))
-  {
+  else if (is_scalar_character(pull_request)) {
     info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
       gh_find(property  = "title", value = pull_request, ...)
   }
-  else
-  {
+  else {
     error("'pull_request' must be either an integer or a string:\n  ", pull_request)
   }
 
@@ -546,20 +543,17 @@ view_pull_request <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_integerish(pull_request))
-  {
+  if (is_scalar_integerish(pull_request)) {
     info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
       gh_request("GET", ...)
   }
-  else if (is_scalar_character(pull_request))
-  {
+  else if (is_scalar_character(pull_request)) {
     info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
       gh_find(property  = "title", value = pull_request, ...)
   }
-  else
-  {
+  else {
     error("'pull_request' must be either an integer or a string:\n  ", pull_request)
   }
 

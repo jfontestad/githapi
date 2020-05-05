@@ -131,16 +131,14 @@
 
   payload <- list(message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -152,33 +150,28 @@
 
   branch_sha <- try_catch(view_sha(ref = branch, repo = repo), on_error = function(e) NULL)
 
-  if (missing(parents))
-  {
-    if (is_null(branch_sha))
-    {
+  if (missing(parents)) {
+    if (is_null(branch_sha)) {
       parents <- NULL
     }
-    else
-    {
+    else {
       parents <- as.list(branch_sha)
     }
   }
-  else
-  {
+  else {
     assert(is_character(parents), "'parents' must be a character vector:\n  ", parents)
     parents <- map(parents, function(p) if (!is_sha(p)) view_sha(ref = p, repo = repo) else p)
   }
   payload$parents <- parents
 
   info("Creating commit in repo '", repo, "'")
-  commit_lst <- gh_url("repos", repo, "git/commits") %>% gh_request("POST", payload = payload, ...)
+  commit_lst <- gh_url("repos", repo, "git/commits") %>%
+    gh_request("POST", payload = payload, ...)
 
-  if (is_null(branch_sha))
-  {
+  if (is_null(branch_sha)) {
     create_branch(name = branch, ref = commit_lst$sha, repo = repo)
   }
-  else
-  {
+  else {
     update_branch(branch = branch, ref = commit_lst$sha, repo = repo, force = force)
   }
 
@@ -343,47 +336,39 @@
   assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (!missing(path))
-  {
+  if (!missing(path)) {
     assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
     path <- str_c(path, collapse = ",")
   }
-  else
-  {
+  else {
     path <- NULL
   }
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(is_scalar_character(author), "'author' must be a string:\n  ", author)
     author <- str_c(author, collapse = ",")
   }
-  else
-  {
+  else {
     author <- NULL
   }
 
-  if (!missing(since))
-  {
+  if (!missing(since)) {
     assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
     since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
     assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
   }
-  else
-  {
+  else {
     since <- NULL
   }
 
-  if (!missing(until))
-  {
+  if (!missing(until)) {
     assert(is_scalar_character(until), "'until' must be a string:\n  ", until)
     until <- as.POSIXct(until, format = "%Y-%m-%d %H:%M:%S") %>%
       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
     assert(!is.na(until), "'until' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", until)
   }
-  else
-  {
+  else {
     until <- NULL
   }
 

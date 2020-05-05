@@ -75,8 +75,7 @@ create_card <- function(
   org,
   ...)
 {
-  if (!missing(content_id))
-  {
+  if (!missing(content_id)) {
     assert(is_scalar_integerish(content_id), "'content_id' must be an integer:\n  ", content_id)
     assert(
       is_scalar_character(content_type) && content_type %in% values$card$content_type,
@@ -90,16 +89,14 @@ create_card <- function(
     info("Creating card for ", str_to_lower(content_type), " '", content_id, "'")
     payload <- list(content_id = issue$id, content_type = content_type)
   }
-  else if (!missing(note))
-  {
+  else if (!missing(note)) {
     assert(is_scalar_character(note), "'note' must be an integer:\n  ", note)
 
     info("Creating card with specified note")
     payload    <- list(note = note)
     content_id <- NA
   }
-  else
-  {
+  else {
     error("Either 'content_id' or 'note' must be supplied")
   }
 
@@ -209,14 +206,12 @@ update_card <- function(
 {
   payload <- list()
 
-  if (!missing(note))
-  {
+  if (!missing(note)) {
     assert(is_scalar_character(note), "'note' must be a string:\n  ", note)
     payload$note <- note
   }
 
-  if (!missing(archived))
-  {
+  if (!missing(archived)) {
     assert(is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
     payload$archived <- archived
   }
@@ -263,27 +258,23 @@ move_card <- function(
 {
   payload <- list()
 
-  if (!missing(position))
-  {
+  if (!missing(position)) {
     assert(
       is_scalar_character(position) && position %in% values$card$position,
       "'position' must be one of '", str_c(values$card$position, collapse = "', '"), "':\n  ", position)
 
     payload <- list(position = position)
   }
-  else if (!missing(after))
-  {
+  else if (!missing(after)) {
     assert(is_scalar_integerish(after), "'after' must be an integer:\n  ", after)
 
     payload <- list(position = str_c("after:", after))
   }
-  else
-  {
+  else {
     error("Either 'position' or 'after' must be supplied")
   }
 
-  if (!missing(column))
-  {
+  if (!missing(column)) {
     column <- view_column(
       column  = column,
       project = project,

@@ -449,20 +449,17 @@ view_repositories <- function(
     is_scalar_character(direction) && direction %in% values$repository$direction,
     "'direction' must be either '", str_c(values$repository$direction, collapse = "', '"), "':\n  ", direction)
 
-  if (!missing(user))
-  {
+  if (!missing(user)) {
     assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
     info("Viewing repositories for user '", user, "'")
     url <- gh_url("users", user, "repos", type = "all", sort = sort, direction = direction)
   }
-  else if (!missing(org))
-  {
+  else if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     info("Viewing repositories for organization '", org, "'")
     url <- gh_url("orgs", org, "repos", type = "all", sort = sort, direction = direction)
   }
-  else
-  {
+  else {
     info("Viewing repositories for authenticated user")
     url <- gh_url("user/repos", type = "all", sort = sort, direction = direction)
   }
@@ -553,7 +550,7 @@ browse_repository <- function(
 #'   # Delete a user's repository
 #'   delete_repository("ChadGoymer/user-repository")
 #'
-#'   # Delete a organization's repository
+#'   # Delete an organization's repository
 #'   delete_repository("HairyCoos/org-repository")
 #' }
 #'

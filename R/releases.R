@@ -84,14 +84,12 @@ create_release <- function(
     draft            = draft,
     prerelease       = prerelease)
 
-  if (!missing(name))
-  {
+  if (!missing(name)) {
     assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
     payload$name <- name
   }
 
-  if (!missing(body))
-  {
+  if (!missing(body)) {
     assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
     payload$body <- body
   }
@@ -193,26 +191,22 @@ update_release <- function(
     draft            = draft,
     prerelease       = prerelease)
 
-  if (!missing(tag))
-  {
+  if (!missing(tag)) {
     assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
     payload$tag_name <- tag
   }
 
-  if (!missing(name))
-  {
+  if (!missing(name)) {
     assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
     payload$name <- name
   }
 
-  if (!missing(body))
-  {
+  if (!missing(body)) {
     assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
     payload$body <- body
   }
 
-  if (is_scalar_character(release))
-  {
+  if (is_scalar_character(release)) {
     release <- view_release(release = release, repo = repo, ...)$id
   }
   assert(is_scalar_integerish(release), "'release' must be an integer or a string:\n  ", release)
@@ -316,16 +310,13 @@ view_release <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_integerish(release))
-  {
+  if (is_scalar_integerish(release)) {
     url <- gh_url("repos", repo, "releases", release)
   }
-  else if (is_ref(release))
-  {
+  else if (is_ref(release)) {
     url <- gh_url("repos", repo, "releases/tags", release)
   }
-  else
-  {
+  else {
     error("'release' must be either an integer or a valid git reference - see help(is_ref):\n  ", release)
   }
 
@@ -353,16 +344,13 @@ browse_release <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_integerish(release))
-  {
+  if (is_scalar_integerish(release)) {
     url <- gh_url("repos", repo, "releases", release)
   }
-  else if (is_ref(release))
-  {
+  else if (is_ref(release)) {
     url <- gh_url("repos", repo, "releases/tags", release)
   }
-  else
-  {
+  else {
     error("'release' must be either an integer or a valid git reference - see help(is_ref):\n  ", release)
   }
 
@@ -411,8 +399,7 @@ delete_release <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_character(release))
-  {
+  if (is_scalar_character(release)) {
     release <- view_release(release = release, repo = repo, ...)$id
   }
   assert(is_scalar_integerish(release), "'release' must be an integer or a string:\n  ", release)

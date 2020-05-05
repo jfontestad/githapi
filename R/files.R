@@ -60,10 +60,8 @@
     discard(~ basename(.) %in% ignore) %>%
     file.info() %>%
     rownames_to_column("path") %>%
-    mutate(sha = map2_chr(.data$path, .data$isdir, function(path, isdir)
-    {
-      if (isdir)
-      {
+    mutate(sha = map2_chr(.data$path, .data$isdir, function(path, isdir) {
+      if (isdir) {
         .upload_tree(
           path = path,
           repo = repo,
@@ -71,14 +69,11 @@
           ignore = ignore,
           ...)$tree_sha
       }
-      else
-      {
-        if (placeholder)
-        {
+      else {
+        if (placeholder) {
           readr::read_lines(file = path)
         }
-        else
-        {
+        else {
           .upload_blob(path = path, repo = repo, ...)$sha
         }
       }
@@ -97,8 +92,7 @@
     pmap(list) %>%
     list(tree = .)
 
-  if (!is_null(base_commit))
-  {
+  if (!is_null(base_commit)) {
     base_commit <- try_catch(
       view_commit(ref = base_commit, repo = repo, ...),
       on_error = function(e) NULL)
@@ -230,24 +224,21 @@ upload_files <- function(
 
   payload <- list(message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
     payload$committer <- committer
   }
 
-  if (missing(parent))
-  {
+  if (missing(parent)) {
     parent <- branch
   }
   assert(is_scalar_character(parent), "'parent' must be a string:\n  ", parent)
@@ -259,8 +250,7 @@ upload_files <- function(
   dir.create(temp_path)
   on.exit(unlink(temp_path))
 
-  walk2(file.path(temp_path, to_path), blob_shas, function(path, sha)
-  {
+  walk2(file.path(temp_path, to_path), blob_shas, function(path, sha) {
     if (!dir.exists(dirname(path))) dir.create(dirname(path), recursive = TRUE)
     readr::write_lines(sha, path)
   })
@@ -279,22 +269,18 @@ upload_files <- function(
   info("Creating commit in repo '", repo, "'")
   commit <- gh_url("repos", repo, "git/commits") %>% gh_request("POST", payload = payload, ...)
 
-  if (identical(branch, parent) && is_null(result$commit_sha))
-  {
+  if (identical(branch, parent) && is_null(result$commit_sha)) {
     create_branch(name = branch, ref = commit$sha, repo = repo, ...)
   }
-  else
-  {
+  else {
     branch_sha <- try_catch(
       view_commit(ref = branch, repo = repo, ...),
       on_error = function(e) NULL)
 
-    if (is_null(branch_sha))
-    {
+    if (is_null(branch_sha)) {
       create_branch(name = branch, ref = commit$sha, repo = repo, ...)
     }
-    else
-    {
+    else {
       update_branch(branch = branch, ref = commit$sha, repo = repo, force = force, ...)
     }
   }
@@ -461,16 +447,14 @@ create_file <- function(
     branch  = branch,
     message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -518,16 +502,14 @@ update_file <- function(
     branch  = branch,
     message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -538,8 +520,7 @@ update_file <- function(
   url   <- gh_url("repos", repo, "contents", path)
   files <- dirname(url) %>% gh_request("GET", ...)
 
-  if (basename(path) %in% map_chr(files, "name"))
-  {
+  if (basename(path) %in% map_chr(files, "name")) {
     payload$sha <- files[[which(basename(path) == map_chr(files, "name"))]]$sha
   }
 
@@ -571,16 +552,14 @@ delete_file <- function(
 
   payload <- list(branch = branch, message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -670,8 +649,7 @@ delete_file <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_scalar_logical(recursive), "'recursive' must be a boolean:\n  ", recursive)
 
-  if (!recursive)
-  {
+  if (!recursive) {
     recursive <- NULL
   }
 

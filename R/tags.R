@@ -41,8 +41,7 @@ create_tag <- function(
   assert(is_ref(name), "'name' must be a valid git reference - see help(is_ref):\n  ", name)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (!is_sha(ref))
-  {
+  if (!is_sha(ref)) {
     ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
@@ -109,8 +108,7 @@ update_tag <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_scalar_logical(force), "'force' must be boolean:\n  ", force)
 
-  if (!is_sha(ref))
-  {
+  if (!is_sha(ref)) {
     ref <- view_sha(ref = ref, repo = repo)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)

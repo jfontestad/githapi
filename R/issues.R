@@ -440,20 +440,17 @@ view_issue <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_integerish(issue))
-  {
+  if (is_scalar_integerish(issue)) {
     info("Viewing issue '", issue, "' for repository '", repo, "'")
     issue_lst <- gh_url("repos", repo, "issues", issue) %>%
       gh_request("GET", ...)
   }
-  else if (is_scalar_character(issue))
-  {
+  else if (is_scalar_character(issue)) {
     info("Viewing issue '", issue, "' for repository '", repo, "'")
     issue_lst <- gh_url("repos", repo, "issues", state = "all") %>%
       gh_find(property  = "title", value = issue, ...)
   }
-  else
-  {
+  else {
     error("'issue' must be either an integer or a string:\n  ", issue)
   }
 

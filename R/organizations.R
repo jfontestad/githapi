@@ -98,64 +98,54 @@ update_organization <- function(
 {
   payload <- list()
 
-  if (!missing(name))
-  {
+  if (!missing(name)) {
     assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
     payload$name <- name
   }
 
-  if (!missing(description))
-  {
+  if (!missing(description)) {
     assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
     payload$description <- description
   }
 
-  if (!missing(email))
-  {
+  if (!missing(email)) {
     assert(is_scalar_character(email), "'email' must be a string:\n  ", email)
     payload$email <- email
   }
 
-  if (!missing(location))
-  {
+  if (!missing(location)) {
     assert(is_scalar_character(location), "'location' must be a string:\n  ", location)
     payload$location <- location
   }
 
-  if (!missing(company))
-  {
+  if (!missing(company)) {
     assert(is_scalar_character(company), "'company' must be a string:\n  ", company)
     payload$company <- company
   }
 
-  if (!missing(billing_email))
-  {
+  if (!missing(billing_email)) {
     assert(is_scalar_character(billing_email), "'billing_email' must be a string:\n  ", billing_email)
     payload$billing_email <- billing_email
   }
 
-  if (!missing(has_organization_projects))
-  {
+  if (!missing(has_organization_projects)) {
     assert(is_scalar_logical(has_organization_projects), "'has_organization_projects' must be a boolean:\n  ", has_organization_projects)
     payload$has_organization_projects <- has_organization_projects
   }
 
-  if (!missing(has_repository_projects))
-  {
+  if (!missing(has_repository_projects)) {
     assert(is_scalar_logical(has_repository_projects), "'has_repository_projects' must be a boolean:\n  ", has_repository_projects)
     payload$has_repository_projects <- has_repository_projects
   }
 
-  if (!missing(default_repository_permission))
-  {
+  if (!missing(default_repository_permission)) {
     assert(
       is_scalar_character(default_repository_permission) && default_repository_permission %in% values$organization$default_repository_permission,
       "'default_repository_permission' must be either '", str_c(values$organization$default_repository_permission, collapse = "', '"), "':\n  ", default_repository_permission)
     payload$default_repository_permission <- default_repository_permission
   }
 
-  if (!missing(members_can_create_repositories))
-  {
+  if (!missing(members_can_create_repositories)) {
     assert(is_scalar_logical(members_can_create_repositories), "'members_can_create_repositories' must be a string:\n  ", members_can_create_repositories)
     payload$members_can_create_repositories <- members_can_create_repositories
   }
@@ -258,23 +248,19 @@ view_organizations <- function(
   n_max = 1000,
   ...)
 {
-  if (!missing(user))
-  {
-    if (is_null(user))
-    {
+  if (!missing(user)) {
+    if (is_null(user)) {
       info("Viewing organizations for authenticated user")
       url <- gh_url("user/orgs")
     }
-    else
-    {
+    else {
       assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
 
       info("Viewing organizations for user '", user, "'")
       url <- gh_url("users", user, "orgs")
     }
   }
-  else
-  {
+  else {
     info("Viewing all organizations")
     url <- gh_url("organizations")
   }

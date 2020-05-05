@@ -106,8 +106,7 @@ create_team <- function(
   }
 
   if (!missing(parent_team)) {
-    if (is_scalar_character(parent_team))
-    {
+    if (is_scalar_character(parent_team)) {
       parent_team <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = parent_team, ...) %>%
         pluck("id")
@@ -215,8 +214,7 @@ update_team <- function(
   }
 
   if (!missing(parent_team)) {
-    if (is_scalar_character(parent_team))
-    {
+    if (is_scalar_character(parent_team)) {
       assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
       parent_team <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = parent_team, ...) %>%
@@ -226,8 +224,7 @@ update_team <- function(
     payload$parent_team_id <- parent_team
   }
 
-  if (is_scalar_character(team))
-  {
+  if (is_scalar_character(team)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...) %>%
@@ -312,10 +309,8 @@ view_teams <- function(
   n_max = 1000,
   ...)
 {
-  if (!missing(parent_team))
-  {
-    if (is_scalar_character(parent_team))
-    {
+  if (!missing(parent_team)) {
+    if (is_scalar_character(parent_team)) {
       assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
       parent_team <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = parent_team, ...) %>%
@@ -326,14 +321,12 @@ view_teams <- function(
     info("Viewing child teams of the team '", parent_team, "'")
     url <- gh_url("teams", parent_team, "teams")
   }
-  else if (!missing(org))
-  {
+  else if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     info("Viewing teams in organization '", org, "'")
     url <- gh_url("orgs", org, "teams")
   }
-  else
-  {
+  else {
     info("Viewing teams of authenticated user")
     url <- gh_url("user/teams")
   }
@@ -358,8 +351,7 @@ view_team <- function(
   org,
   ...)
 {
-  if (is_scalar_character(team))
-  {
+  if (is_scalar_character(team)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...) %>%
@@ -388,18 +380,15 @@ browse_team <- function(
   org,
   ...)
 {
-  if (is_scalar_character(team))
-  {
+  if (is_scalar_character(team)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...)
   }
-  else if (is_scalar_integerish(team))
-  {
+  else if (is_scalar_integerish(team)) {
     team <- gh_url("teams", team) %>% gh_request("GET", ...)
   }
-  else
-  {
+  else {
     error("'team' must be an integer or string:\n  ", team)
   }
 
@@ -446,8 +435,7 @@ delete_team <- function(
   org,
   ...)
 {
-  if (is_scalar_character(team))
-  {
+  if (is_scalar_character(team)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     team <- gh_url("orgs", org, "teams") %>%
       gh_find(property = "name", value = team, ...) %>%

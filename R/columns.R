@@ -193,16 +193,14 @@ move_column <- function(
   org,
   ...)
 {
-  if (!missing(position))
-  {
+  if (!missing(position)) {
     assert(
       is_scalar_character(position) && position %in% values$column$position,
       "'position' must be one of '", str_c(values$column$position, collapse = "', '"), "':\n  ", position)
 
     payload <- list(position = position)
   }
-  else if (!missing(after))
-  {
+  else if (!missing(after)) {
     after_column <- view_column(
       column  = after,
       project = project,
@@ -212,8 +210,7 @@ move_column <- function(
 
     payload <- list(position = str_c("after:", after_column$id))
   }
-  else
-  {
+  else {
     error("Either 'position' or 'after' must be supplied")
   }
 
@@ -360,8 +357,7 @@ view_column <- function(
   org,
   ...)
 {
-  if (is_scalar_integerish(column))
-  {
+  if (is_scalar_integerish(column)) {
     info("Viewing column '", column, "''")
     column_lst <- gh_url("projects/columns", column) %>%
       gh_request(
@@ -369,8 +365,7 @@ view_column <- function(
         accept = "application/vnd.github.inertia-preview+json",
         ...)
   }
-  else if (is_scalar_character(column))
-  {
+  else if (is_scalar_character(column)) {
     project <- view_project(
       project = project,
       repo    = repo,
@@ -386,8 +381,7 @@ view_column <- function(
         accept   = "application/vnd.github.inertia-preview+json",
         ...)
   }
-  else
-  {
+  else {
     error("'column' must be either an integer or a string:\n  ", column)
   }
 

@@ -61,8 +61,7 @@ test_that(".upload_tree uploads a directory structure to github", {
   flat_path <- file.path(temp_path, "flat")
   dir.create(flat_path)
 
-  walk(str_c("file", 1:2, ".txt"), function(f)
-  {
+  walk(str_c("file", 1:2, ".txt"), function(f) {
     map_chr(1:10, ~sample(LETTERS, 10, replace = TRUE) %>% str_c(collapse = "")) %>%
       writeLines(file.path(flat_path, f))
   })
@@ -92,8 +91,7 @@ test_that(".upload_tree uploads a directory structure to github", {
   file.path(recursive_path, c("dir-1/dir-1-1/dir-1-1-1", "dir-1/dir-1-2", "dir-2")) %>%
     walk(dir.create, recursive = TRUE)
 
-  walk(recursive_file_paths, function(f)
-  {
+  walk(recursive_file_paths, function(f) {
     map_chr(1:10, ~sample(LETTERS, 10, replace = TRUE) %>% str_c(collapse = "")) %>%
       writeLines(f)
   })
@@ -131,8 +129,7 @@ test_that(".upload_tree uploads a directory structure to github", {
   placeholder_path <- file.path(temp_path, "placeholders")
   dir.create(placeholder_path)
 
-  walk(str_c("file", 1:2, ".txt"), function(f)
-  {
+  walk(str_c("file", 1:2, ".txt"), function(f) {
     map_chr(1:10, ~sample(LETTERS, 10, replace = TRUE) %>% str_c(collapse = "")) %>%
       writeLines(file.path(placeholder_path, f))
   })
@@ -186,8 +183,7 @@ test_that("upload_files uploads files and creates a new commit", {
   flat_path <- file.path(temp_path, "flat")
   dir.create(flat_path)
 
-  walk(str_c("file", 1:2, ".txt"), function(f)
-  {
+  walk(str_c("file", 1:2, ".txt"), function(f) {
     map_chr(1:10, ~sample(LETTERS, 10, replace = TRUE) %>% str_c(collapse = "")) %>%
       writeLines(file.path(flat_path, f))
   })
@@ -233,8 +229,7 @@ test_that("upload_files uploads files and creates a new commit", {
   file.path(recursive_path, c("dir-1/dir-1-1/dir-1-1-1", "dir-1/dir-1-2", "dir-2")) %>%
     walk(dir.create, recursive = TRUE)
 
-  walk(recursive_file_paths, function(f)
-  {
+  walk(recursive_file_paths, function(f) {
     map_chr(1:10, ~sample(LETTERS, 10, replace = TRUE) %>% str_c(collapse = "")) %>%
       writeLines(f)
   })

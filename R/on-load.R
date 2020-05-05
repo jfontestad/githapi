@@ -23,31 +23,26 @@
   githapi_env <- as.list(Sys.getenv(names(githapi_env)))
 
   # Set github proxy
-  if (identical(githapi_env$GITHUB_PROXY, ""))
-  {
+  if (identical(githapi_env$GITHUB_PROXY, "")) {
     githapi_env$GITHUB_PROXY <- NULL
   }
 
   # Set github token
-  if (identical(githapi_env$GITHUB_TOKEN, "") && identical(githapi_env$GITHUB_PAT, ""))
-  {
+  if (identical(githapi_env$GITHUB_TOKEN, "") && identical(githapi_env$GITHUB_PAT, "")) {
     githapi_env$GITHUB_TOKEN <- NULL
   }
-  else
-  {
+  else {
     tokens <- c(githapi_env$GITHUB_TOKEN, githapi_env$GITHUB_PAT)
     githapi_env$GITHUB_TOKEN <- tokens[tokens != ""][[1]]
   }
 
   # Set github token cache
-  if (identical(githapi_env$GITHAPI_CACHE, ""))
-  {
+  if (identical(githapi_env$GITHAPI_CACHE, "")) {
     githapi_env$GITHAPI_CACHE <- FALSE
   }
 
   # Set log file name
-  if (!identical(githapi_env$GITHAPI_LOGS, ""))
-  {
+  if (!identical(githapi_env$GITHAPI_LOGS, "")) {
     githapi_env$GITHAPI_LOGS <- paste0(githapi_env$GITHAPI_LOGS, "/", "githapi-", Sys.info()[["login"]], "-", Sys.Date(), ".log")
   }
 

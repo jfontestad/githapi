@@ -42,16 +42,14 @@ view_commits <- function(
 {
   .Deprecated("view_commit", package = "githapi")
 
-  {
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   commits_list <- try_map(shas, function(sha) {
     info("Getting commit for sha '", sha, "' from repository '", repo, "'")
@@ -143,34 +141,32 @@ create_commit <- function(
 {
   .Deprecated("upload_commit", package = "githapi")
 
-  {
-    if (missing(parents) || is_null(parents)) {
-      parents <- NA
-    }
-    if (missing(committer) || is_null(committer)) {
-      committer <- NA
-    }
-    if (missing(author) || is_null(author)) {
-      author <- NA
-    }
-
-    (is_scalar_character(message)) ||
-      error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
-    (is_sha(tree)) ||
-      error("'tree' must be a 40 character string:\n  '", paste(tree, collapse = "'\n  '"), "'")
-    (all(is_na(parents)) || is_character(parents)) ||
-      error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
-      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
-      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(parents) || is_null(parents)) {
+    parents <- NA
   }
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+
+  (is_scalar_character(message)) ||
+    error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
+  (is_sha(tree)) ||
+    error("'tree' must be a 40 character string:\n  '", paste(tree, collapse = "'\n  '"), "'")
+  (all(is_na(parents)) || is_character(parents)) ||
+    error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
+  (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+  (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   parents <- gh_map(parents, use_names = FALSE, function(p) {
     if (!is_na(p) && !is_sha(p)) {
@@ -297,40 +293,38 @@ upload_commit <- function(
   api     = getOption("github.api"),
   ...)
 {
-  {
-    if (missing(parents) || is_null(parents)) {
-      parents <- NA
-    }
-    if (missing(committer) || is_null(committer)) {
-      committer <- NA
-    }
-    if (missing(author) || is_null(author)) {
-      author <- NA
-    }
-
-    (is_scalar_character(branch)) ||
-      error("'branch' must be a string:\n  '", paste(branch, collapse = "'\n  '"), "'")
-    (is_scalar_character(message)) ||
-      error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
-    (is_dir(path) && is_readable(path)) ||
-      error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (all(is_na(parents)) || is_character(parents)) ||
-      error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
-      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
-      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_scalar_logical(replace)) ||
-      error("'replace' must be boolean:\n  '", paste(replace, collapse = "'\n  '"), "'")
-    (is_character(ignore)) ||
-      error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(parents) || is_null(parents)) {
+    parents <- NA
   }
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+
+  (is_scalar_character(branch)) ||
+    error("'branch' must be a string:\n  '", paste(branch, collapse = "'\n  '"), "'")
+  (is_scalar_character(message)) ||
+    error("'message' must be a string:\n  '", paste(message, collapse = "'\n  '"), "'")
+  (is_dir(path) && is_readable(path)) ||
+    error("'path' must be a file path to a readable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
+  (all(is_na(parents)) || is_character(parents)) ||
+    error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
+  (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+  (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_scalar_logical(replace)) ||
+    error("'replace' must be boolean:\n  '", paste(replace, collapse = "'\n  '"), "'")
+  (is_character(ignore)) ||
+    error("'ignore' must be a character vector:\n  '", paste(ignore, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (replace) {
     base_tree <- NA
@@ -410,16 +404,14 @@ commits_exist <- function(
 {
   .Deprecated(msg = "this function will be removed in a future version")
 
-  {
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking commit '", sha, "' exists in repository '", repo, "'")
