@@ -85,15 +85,15 @@ test_that("create_pull_request creates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -133,15 +133,15 @@ test_that("create_pull_request creates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -154,8 +154,6 @@ test_that("create_pull_request creates a pull request and returns its properties
   expect_identical(assigned_pull_request$assignees, "ChadGoymer")
   expect_identical(assigned_pull_request$labels, str_c("test-pulls-", now))
   expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", now))
-
-  # TODO: Add a member to HairyCoos to test reviewers
 
 })
 
@@ -191,15 +189,15 @@ test_that("update_pull_request updates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -234,15 +232,15 @@ test_that("update_pull_request updates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -255,8 +253,6 @@ test_that("update_pull_request updates a pull request and returns its properties
   expect_identical(assigned_pull_request$assignees, "ChadGoymer")
   expect_identical(assigned_pull_request$labels, str_c("test-pulls-", now))
   expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", now))
-
-  # TODO: Add a member to HairyCoos to test reviewers
 
 })
 
@@ -296,15 +292,15 @@ test_that("view_pull_requests returns a tibble of issue properties", {
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -334,15 +330,15 @@ test_that("view_pull_requests returns a tibble of issue properties", {
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -378,15 +374,15 @@ test_that("view_pull_request returns a list of pull request properties", {
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct",
       commits    = "github",

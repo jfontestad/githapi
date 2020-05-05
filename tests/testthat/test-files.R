@@ -205,12 +205,13 @@ test_that("upload_files uploads files and creates a new commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(flat_commit$message, "Commit to test upload_files()")
@@ -251,12 +252,13 @@ test_that("upload_files uploads files and creates a new commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(recursive_commit$message, "Commit to test upload_files()")
@@ -280,12 +282,13 @@ test_that("upload_files uploads files and creates a new commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(author_commit$message, "Commit to test upload_files()")
@@ -311,12 +314,13 @@ test_that("upload_files uploads files and creates a new commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(orphan_commit$message, "Commit to test upload_files()")
@@ -340,12 +344,13 @@ test_that("upload_files uploads files and creates a new commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(valid_parent_commit$message, "Commit to test upload_files()")
@@ -381,12 +386,13 @@ test_that("upload_files uploads files and creates a new commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(force_parent_commit$message, "Commit to test upload_files()")
@@ -410,12 +416,13 @@ test_that("upload_files uploads files and creates a new commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(new_branch_commit$message, "Commit to test upload_files()")
@@ -469,12 +476,13 @@ test_that("create_file creates a new commit with the file added", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(master_commit$message, "Created a new file with create_file()")
@@ -521,12 +529,13 @@ test_that("update_file creates a new commit with the file updated", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(master_commit$message, "Updated a file with update_file()")
@@ -663,12 +672,13 @@ test_that("delete_file creates a new commit with the file deleted", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(master_commit$message, "Deleted a file with delete_file()")
@@ -714,12 +724,13 @@ test_that("write_github_file creates a new commit with a new file and read_githu
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(file_commit$message, "Created a new file with write_github_file()")
@@ -758,12 +769,13 @@ test_that("write_github_lines creates a new commit with a new file and read_gith
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(lines_commit$message, "Created a new file with write_github_lines()")
@@ -802,12 +814,13 @@ test_that("write_github_csv creates a new commit with a new file and read_github
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(csv_commit$message, "Created a new file with write_github_csv()")

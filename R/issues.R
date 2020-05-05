@@ -106,7 +106,7 @@ create_issue <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
-    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "creator") %>%
     modify_list(repository = repo)
 
   info("Done", level = 7)
@@ -247,7 +247,7 @@ update_issue <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
-    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "creator") %>%
     modify_list(repository = repo)
 
   info("Done", level = 7)
@@ -421,7 +421,7 @@ view_issues <- function(
   issues_gh <- bind_properties(issues_lst, properties$issue) %>%
     add_column(labels       = map(issues_lst, ~ map_chr(.$labels, "name")), .before = "milestone") %>%
     add_column(assignees    = map(issues_lst, ~ map_chr(.$assignees, "login")), .before = "labels") %>%
-    add_column(pull_request = map_lgl(issues_lst, ~ !is_null(.$pull_request)), .before = "html_url")
+    add_column(pull_request = map_lgl(issues_lst, ~ !is_null(.$pull_request)), .before = "creator")
 
   info("Done", level = 7)
   issues_gh
@@ -460,7 +460,7 @@ view_issue <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
-    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "creator") %>%
     modify_list(repository = repo)
 
   info("Done", level = 7)

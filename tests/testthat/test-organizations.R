@@ -52,8 +52,6 @@ test_that("update_organization changes the organization's properties", {
       has_repository_projects                  = "logical",
       public_repos                             = "integer",
       public_gists                             = "integer",
-      html_url                                 = "character",
-      created_at                               = "POSIXct",
       total_private_repos                      = "integer",
       owned_private_repos                      = "integer",
       private_gists                            = "integer",
@@ -65,7 +63,9 @@ test_that("update_organization changes the organization's properties", {
       plan_private_repos                       = "integer",
       default_repository_permission            = "character",
       two_factor_requirement_enabled           = "logical",
-      members_can_create_repositories          = "logical"))
+      members_can_create_repositories          = "logical",
+      html_url                                 = "character",
+      created_at                               = "POSIXct"))
 
   expect_identical(updated_organization$login, "HairyCoos")
   expect_identical(updated_organization$name, "ACME")
@@ -144,8 +144,6 @@ test_that("view_organization returns a list of organization properties", {
       has_repository_projects                  = "logical",
       public_repos                             = "integer",
       public_gists                             = "integer",
-      html_url                                 = "character",
-      created_at                               = "POSIXct",
       total_private_repos                      = "integer",
       owned_private_repos                      = "integer",
       private_gists                            = "integer",
@@ -157,7 +155,9 @@ test_that("view_organization returns a list of organization properties", {
       plan_private_repos                       = "integer",
       default_repository_permission            = "character",
       two_factor_requirement_enabled           = "logical",
-      members_can_create_repositories          = "logical"))
+      members_can_create_repositories          = "logical",
+      html_url                                 = "character",
+      created_at                               = "POSIXct"))
 
   expect_identical(organization$login, "HairyCoos")
 

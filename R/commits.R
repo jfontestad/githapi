@@ -384,7 +384,7 @@
 
   info("Transforming results", level = 4)
   commits_gh <- bind_properties(commits_lst, properties$commit) %>%
-    add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "date")
+    add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "html_url")
 
   info("Done", level = 7)
   commits_gh
@@ -410,7 +410,7 @@ view_commit <- function(
 
   info("Transforming results", level = 4)
   commit_gh <- select_properties(commit_lst, properties$commit) %>%
-    modify_list(parents = map_chr(commit_lst$parents, "sha"), .before = "date")
+    modify_list(parents = map_chr(commit_lst$parents, "sha"), .before = "html_url")
 
   info("Done", level = 7)
   commit_gh
@@ -571,7 +571,7 @@ view_sha <- function(
 
   info("Transforming results", level = 4)
   comparison_gh <- bind_properties(comparison_lst$commits, properties$commit) %>%
-    add_column(parents = map(comparison_lst$commits, ~ map_chr(.$parents, "sha")), .before = "date")
+    add_column(parents = map(comparison_lst$commits, ~ map_chr(.$parents, "sha")), .before = "html_url")
 
   info("Done", level = 7)
   structure(
