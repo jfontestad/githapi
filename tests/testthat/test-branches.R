@@ -12,17 +12,13 @@ setup(suppressMessages({
     description = "This is a repository to test branches",
     auto_init   = TRUE)
 
-  create_branch(
-    name = str_c("test-branches-1-", now),
-    ref  = "master",
-    repo = str_c("ChadGoymer/test-branches-", now))
-
   create_file(
     content = "This is a commit to test branches",
     path    = str_c("test-branches-", now, ".txt"),
     branch  = str_c("test-branches-1-", now),
     message = "Commit to test branches",
-    repo    = str_c("ChadGoymer/test-branches-", now))
+    repo    = str_c("ChadGoymer/test-branches-", now),
+    parent  = "master")
 
 }))
 

@@ -12,29 +12,21 @@ setup(suppressMessages({
     description = "This is a repository to test pull requests",
     auto_init   = TRUE)
 
-  create_branch(
-    name = str_c("test-pulls-1-", now),
-    ref  = "master",
-    repo = str_c("ChadGoymer/test-pulls-", now))
-
   create_file(
     content = "This is a commit to test pull requests",
     path    = str_c("test-pulls-", now, ".txt"),
     branch  = str_c("test-pulls-1-", now),
     message = "Commit to test pull requests",
-    repo    = str_c("ChadGoymer/test-pulls-", now))
-
-  create_branch(
-    name = str_c("test-pulls-2-", now),
-    ref  = "master",
-    repo = str_c("ChadGoymer/test-pulls-", now))
+    repo    = str_c("ChadGoymer/test-pulls-", now),
+    parent  = "master")
 
   create_file(
     content = "This is a repository to test pull requests",
     path    = str_c("test-pulls-", now, ".txt"),
     branch  = str_c("test-pulls-2-", now),
     message = "Commit to test pull requests",
-    repo    = str_c("ChadGoymer/test-pulls-", now))
+    repo    = str_c("ChadGoymer/test-pulls-", now),
+    parent  = "master")
 
   create_milestone(
     title       = str_c("test-pulls-", now),

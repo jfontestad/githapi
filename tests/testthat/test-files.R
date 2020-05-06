@@ -491,14 +491,66 @@ test_that("create_file creates a new commit with the file added", {
   expect_identical(master_commit$committer_name, "Chad Goymer")
   expect_identical(master_commit$committer_email, "chad.goymer@gmail.com")
 
+
+  branch_commit <- create_file(
+    content = "# This is a new file\\n\\nCreated by `create_file()`",
+    path    = "new-file-2.md",
+    branch  = str_c("create-file-", now),
+    message = "Created a new file with create_file()",
+    repo    = str_c("ChadGoymer/test-files-", now),
+    parent  = "master")
+
+  expect_is(branch_commit, "list")
+  expect_identical(attr(branch_commit, "status"), 200L)
+  expect_identical(
+    map_chr(branch_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      tree_sha        = "character",
+      parents         = "character",
+      html_url        = "character"))
+
+  expect_identical(branch_commit$message, "Created a new file with create_file()")
+  expect_identical(branch_commit$author_name, "Chad Goymer")
+  expect_identical(branch_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(branch_commit$committer_name, "Chad Goymer")
+  expect_identical(branch_commit$committer_email, "chad.goymer@gmail.com")
+
+
   author_commit <- create_file(
     content   = "# This is a new file\\n\\nCreated by `create_file()`",
-    path      = "new-file-2.md",
+    path      = "new-file-3.md",
     branch    = "master",
     message   = "Created a new file with create_file()",
     repo      = str_c("ChadGoymer/test-files-", now),
     author    = list(name = "Bob",  email = "bob@acme.com"),
     committer = list(name = "Jane", email = "jane@acme.com"))
+
+  expect_is(author_commit, "list")
+  expect_identical(attr(author_commit, "status"), 200L)
+  expect_identical(
+    map_chr(author_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      tree_sha        = "character",
+      parents         = "character",
+      html_url        = "character"))
 
   expect_identical(author_commit$message, "Created a new file with create_file()")
   expect_identical(author_commit$author_name, "Bob")
@@ -544,14 +596,66 @@ test_that("update_file creates a new commit with the file updated", {
   expect_identical(master_commit$committer_name, "Chad Goymer")
   expect_identical(master_commit$committer_email, "chad.goymer@gmail.com")
 
+
+  branch_commit <- update_file(
+    content = "# This is an updated file\\n\\nUpdated by `update_file()`",
+    path    = "new-file-2.md",
+    branch  = str_c("update-file-", now),
+    message = "Updated a file with update_file()",
+    repo    = str_c("ChadGoymer/test-files-", now),
+    parent  = str_c("create-file-", now))
+
+  expect_is(branch_commit, "list")
+  expect_identical(attr(branch_commit, "status"), 200L)
+  expect_identical(
+    map_chr(branch_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      tree_sha        = "character",
+      parents         = "character",
+      html_url        = "character"))
+
+  expect_identical(branch_commit$message, "Updated a file with update_file()")
+  expect_identical(branch_commit$author_name, "Chad Goymer")
+  expect_identical(branch_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(branch_commit$committer_name, "Chad Goymer")
+  expect_identical(branch_commit$committer_email, "chad.goymer@gmail.com")
+
+
   author_commit <- update_file(
     content = "# This is an updated file\\n\\nUpdated by `update_file()`",
-    path      = "new-file-2.md",
+    path      = "new-file-3.md",
     branch    = "master",
     message   = "Updated a file with update_file()",
     repo      = str_c("ChadGoymer/test-files-", now),
     author    = list(name = "Bob",  email = "bob@acme.com"),
     committer = list(name = "Jane", email = "jane@acme.com"))
+
+  expect_is(author_commit, "list")
+  expect_identical(attr(author_commit, "status"), 200L)
+  expect_identical(
+    map_chr(author_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      tree_sha        = "character",
+      parents         = "character",
+      html_url        = "character"))
 
   expect_identical(author_commit$message, "Updated a file with update_file()")
   expect_identical(author_commit$author_name, "Bob")
@@ -687,13 +791,64 @@ test_that("delete_file creates a new commit with the file deleted", {
   expect_identical(master_commit$committer_name, "Chad Goymer")
   expect_identical(master_commit$committer_email, "chad.goymer@gmail.com")
 
+
+  branch_commit <- delete_file(
+    path    = "new-file-2.md",
+    branch  = str_c("delete-file-", now),
+    message = "Deleted a file with delete_file()",
+    repo    = str_c("ChadGoymer/test-files-", now),
+    parent  = str_c("update-file-", now))
+
+  expect_is(branch_commit, "list")
+  expect_identical(attr(branch_commit, "status"), 200L)
+  expect_identical(
+    map_chr(branch_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      tree_sha        = "character",
+      parents         = "character",
+      html_url        = "character"))
+
+  expect_identical(branch_commit$message, "Deleted a file with delete_file()")
+  expect_identical(branch_commit$author_name, "Chad Goymer")
+  expect_identical(branch_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(branch_commit$committer_name, "Chad Goymer")
+  expect_identical(branch_commit$committer_email, "chad.goymer@gmail.com")
+
+
   author_commit <- delete_file(
-    path      = "new-file-2.md",
+    path      = "new-file-3.md",
     branch    = "master",
     message   = "Deleted a file with delete_file()",
     repo      = str_c("ChadGoymer/test-files-", now),
     author    = list(name = "Bob",  email = "bob@acme.com"),
     committer = list(name = "Jane", email = "jane@acme.com"))
+
+  expect_is(author_commit, "list")
+  expect_identical(attr(author_commit, "status"), 200L)
+  expect_identical(
+    map_chr(author_commit, ~ class(.)[[1]]),
+    c(sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      tree_sha        = "character",
+      parents         = "character",
+      html_url        = "character"))
 
   expect_identical(author_commit$message, "Deleted a file with delete_file()")
   expect_identical(author_commit$author_name, "Bob")

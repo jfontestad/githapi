@@ -27,17 +27,13 @@ setup(suppressMessages({
     repo  = str_c("ChadGoymer/test-cards-", now),
     body  = "This is an issue to test cards")
 
-  create_branch(
-    name = str_c("test-cards-", now),
-    ref  = "master",
-    repo = str_c("ChadGoymer/test-cards-", now))
-
   create_file(
     content = "This is a commit to test cards",
     path    = str_c("test-cards-", now, ".txt"),
     branch  = str_c("test-cards-", now),
     message = "Commit to test cards",
-    repo    = str_c("ChadGoymer/test-cards-", now))
+    repo    = str_c("ChadGoymer/test-cards-", now),
+    parent  = "master")
 
   create_pull_request(
     title = "This is a pull request to test cards",
