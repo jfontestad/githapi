@@ -130,11 +130,11 @@ update_branch <- function(
 }
 
 
-#  FUNCTION: .view_branches --------------------------------------------------------------------
+#  FUNCTION: view_branches --------------------------------------------------------------------
 #
 #' View branches within a repository
 #'
-#' `.view_branches()` summarises branches in a table with the properties as columns and a row
+#' `view_branches()` summarises branches in a table with the properties as columns and a row
 #' for each branch in the repository. `view_branch()` returns a list of all properties for a
 #' single branch.
 #'
@@ -147,7 +147,7 @@ update_branch <- function(
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `.view_branches()` returns a tibble of branch properties. `view_branch()`
+#' @return `view_branches()` returns a tibble of branch properties. `view_branch()`
 #'   returns a list of properties for a single branch.
 #'
 #' **Branch Properties:**
@@ -160,7 +160,7 @@ update_branch <- function(
 #' \dontrun{
 #'
 #'   # View all branches in a repository
-#'   .view_branches("ChadGoymer/githapi")
+#'   view_branches("ChadGoymer/githapi")
 #'
 #'   # View a single branch
 #'   view_label("new-branch", "ChadGoymer/githapi")
@@ -169,7 +169,7 @@ update_branch <- function(
 #'
 #' @export
 #'
-.view_branches <- function(
+view_branches <- function(
   repo,
   n_max = 1000,
   ...)
@@ -191,7 +191,7 @@ update_branch <- function(
 
 #  FUNCTION: view_branch ----------------------------------------------------------------------
 #
-#' @rdname dot-view_branches
+#' @rdname view_branches
 #' @export
 #'
 view_branch <- function(

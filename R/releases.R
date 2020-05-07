@@ -224,11 +224,11 @@ update_release <- function(
 }
 
 
-#  FUNCTION: .view_releases -------------------------------------------------------------------
+#  FUNCTION: view_releases --------------------------------------------------------------------
 #
 #' View releases within a repository
 #'
-#' `.view_releases()` summarises releases in a table with the properties as columns and a row
+#' `view_releases()` summarises releases in a table with the properties as columns and a row
 #' for each release in the repository. `view_release()` returns a list of all properties for
 #' a single release. `browse_release()` opens the web page for the release in the default
 #' browser.
@@ -243,7 +243,7 @@ update_release <- function(
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `.view_releases()` returns a tibble of release properties. `view_release()`
+#' @return `view_releases()` returns a tibble of release properties. `view_release()`
 #'   returns a list of properties for a single release. `browse_release` opens the
 #'   default browser on the release page and returns the URL.
 #'
@@ -266,7 +266,7 @@ update_release <- function(
 #' \dontrun{
 #'
 #'   # View all releases in a repository
-#'   .view_releases("ChadGoymer/githapi")
+#'   view_releases("ChadGoymer/githapi")
 #'
 #'   # View a single release
 #'   view_release("1.0.1", "ChadGoymer/githapi")
@@ -278,7 +278,7 @@ update_release <- function(
 #'
 #' @export
 #'
-.view_releases <- function(
+view_releases <- function(
   repo,
   n_max = 1000,
   ...)
@@ -300,7 +300,7 @@ update_release <- function(
 
 #  FUNCTION: view_release ---------------------------------------------------------------------
 #
-#' @rdname dot-view_releases
+#' @rdname view_releases
 #' @export
 #'
 view_release <- function(
@@ -334,7 +334,7 @@ view_release <- function(
 
 #  FUNCTION: browse_release -------------------------------------------------------------------
 #
-#' @rdname dot-view_releases
+#' @rdname view_releases
 #' @export
 #'
 browse_release <- function(

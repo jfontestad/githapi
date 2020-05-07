@@ -331,9 +331,9 @@ test_that("gh_find throws an error if it cannot find the specified property valu
 })
 
 
-# TEST: .gh_download ---------------------------------------------------------------------------
+# TEST: gh_download ---------------------------------------------------------------------------
 
-test_that(".gh_download downloads a file to the specified location and returns the path", {
+test_that("gh_download downloads a file to the specified location and returns the path", {
 
   temp_path <- file.path(tempdir(), "test-gh-download")
   if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
@@ -341,7 +341,7 @@ test_that(".gh_download downloads a file to the specified location and returns t
   on.exit(unlink(temp_path))
 
   file_path <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/contents/README.md") %>%
-    .gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw")
+    gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw")
 
   expect_is(file_path, "character")
   expect_identical(attr(file_path, "status"), 200L)
@@ -352,12 +352,12 @@ test_that(".gh_download downloads a file to the specified location and returns t
 
   expect_error(
     str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/contents/Bob.txt") %>%
-      .gh_download(path = file.path(temp_path, "Bob.txt")),
+      gh_download(path = file.path(temp_path, "Bob.txt")),
     "Not Found")
 
 })
 
-test_that(".gh_download can make a request using an OAuth token", {
+test_that("gh_download can make a request using an OAuth token", {
 
   skip_if_not(interactive(), "OAuth authentication must be run manually")
 
@@ -372,7 +372,7 @@ test_that(".gh_download can make a request using an OAuth token", {
   on.exit(unlink(temp_path))
 
   file_path <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/contents/README.md") %>%
-    .gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw", token = NULL)
+    gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw", token = NULL)
 
   expect_is(file_path, "character")
   expect_identical(attr(file_path, "status"), 200L)

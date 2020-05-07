@@ -542,7 +542,7 @@ gh_find <- function(
 }
 
 
-#  FUNCTION: .gh_download ---------------------------------------------------------------------
+#  FUNCTION: gh_download ----------------------------------------------------------------------
 #
 #' Download a file from GitHub
 #'
@@ -570,7 +570,7 @@ gh_find <- function(
 #' \dontrun{
 #'
 #'   # Find an issue by title
-#'   .gh_download(
+#'   gh_download(
 #'     url  = "https://api.github.com/repos/ChadGoymer/githapi/zipball/master",
 #'     path = "~/githapi-master.zip")
 #'
@@ -578,7 +578,7 @@ gh_find <- function(
 #'
 #' @export
 #'
-.gh_download <- function(
+gh_download <- function(
   url,
   path,
   headers = NULL,

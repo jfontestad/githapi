@@ -1,4 +1,5 @@
-#  FUNCTION: .upload_commit --------------------------------------------------------------------
+
+#  FUNCTION: upload_commit --------------------------------------------------------------------
 #
 #' Upload a directory of files and create a commit
 #'
@@ -35,7 +36,7 @@
 #'   fast-forward. Default: `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `.upload_commit()` returns a list of the commit properties.
+#' @return `upload_commit()` returns a list of the commit properties.
 #'
 #' **Commit Properties:**
 #'
@@ -53,58 +54,58 @@
 #' \dontrun{
 #'
 #'   # Add a commit to the master branch
-#'   .upload_commit(
+#'   upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
-#'     message = "Commit to test .upload_commit()",
+#'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi")
 #'
 #'   # override the author and committer
-#'   .upload_commit(
+#'   upload_commit(
 #'     path      = "C:/files-to-upload",
 #'     branch    = "master",
-#'     message   = "Commit to test .upload_commit()",
+#'     message   = "Commit to test upload_commit()",
 #'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",   email = "bob@acme.com"),
 #'     committer = list(name = "Jane",  email = "jane@acme.com"))
 #'
 #'   # Create a commit on a new branch
-#'   .upload_commit(
+#'   upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-1",
-#'     message = "Commit to test .upload_commit()",
+#'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
 #'     parents = "master")
 #'
 #'   # Create an orphan commit
-#'   .upload_commit(
+#'   upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-2",
-#'     message = "Commit to test .upload_commit()",
+#'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Force branch to point at the new commit
-#'   .upload_commit(
+#'   upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
-#'     message = "Commit to test .upload_commit()",
+#'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
 #'     parents = "test-commits-1",
 #'     force   = TRUE)
 #'
 #'   # Create a commit merging a branch into the master branch
-#'   .upload_commit(
+#'   upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
-#'     message = "Commit to test .upload_commit()",
+#'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
 #'     parents = c("master", "test-commits-1"))
 #'
 #'   # Create a commit merging two branches into a new branch
-#'   .upload_commit(
+#'   upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-3",
-#'     message = "Commit to test .upload_commit()",
+#'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
 #'     parents = c("master", "test-commits-2"))
 #'
@@ -112,7 +113,7 @@
 #'
 #' @export
 #'
-.upload_commit <- function(
+upload_commit <- function(
   path,
   branch,
   message,
@@ -181,7 +182,7 @@
 }
 
 
-#  FUNCTION: .download_commit ------------------------------------------------------------------
+#  FUNCTION: download_commit ------------------------------------------------------------------
 #
 #' Download a commit from GitHub
 #'
@@ -194,13 +195,13 @@
 #'   Default: working directory.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `.download_commit()` returns the path where the commit is downloaded to.
+#' @return `download_commit()` returns the path where the commit is downloaded to.
 #'
 #' @examples
 #' \dontrun{
 #'
 #'   # Download the head of the master branch to the home directory
-#'   .download_commit(
+#'   download_commit(
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi",
 #'     path = "~")
@@ -209,7 +210,7 @@
 #'
 #' @export
 #'
-.download_commit <- function(
+download_commit <- function(
   ref,
   repo,
   path = getwd(),
@@ -225,7 +226,7 @@
 
   info("Downloading commit '", ref, "' from repository '", repo, "'")
   path_gh <- gh_url("repos", repo, "zipball", ref) %>%
-    .gh_download(archive_path, ...)
+    gh_download(archive_path, ...)
 
   info("Unpacking commit into '", path, "'", level = 3)
   utils::unzip(archive_path, exdir = path)
@@ -250,11 +251,11 @@
 }
 
 
-#  FUNCTION: .view_commits ---------------------------------------------------------------------
+#  FUNCTION: view_commits ---------------------------------------------------------------------
 #
 #' View commits within a repository
 #'
-#' `.view_commits()` summarises commits in a table with the properties as columns and a row for
+#' `view_commits()` summarises commits in a table with the properties as columns and a row for
 #' each commit in the history of the given reference. `view_commit()` returns a list of all
 #' properties for a single commit. `browse_commits()` and `browse_commit()` opens the web page
 #' for the commit history and commit details respectively in the default browser.
@@ -274,7 +275,7 @@
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `.view_commits()` returns a tibble of commit properties. `view_commit()` returns
+#' @return `view_commits()` returns a tibble of commit properties. `view_commit()` returns
 #'   a list of properties for a single commit. `browse_commits()` and `browse_commit` opens
 #'   the default browser on the commit's history or details page and returns the URL.
 #'
@@ -297,22 +298,22 @@
 #' \dontrun{
 #'
 #'   # View the history of commits for the master branch
-#'   .view_commits("master", "ChadGoymer/githapi")
+#'   view_commits("master", "ChadGoymer/githapi")
 #'
 #'   # View commits where the README.md file has been changed
-#'   .view_commits(
+#'   view_commits(
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi",
 #'     path = "README.md")
 #'
 #'   # View commits created by an author
-#'   .view_commits(
+#'   view_commits(
 #'     ref    = "master",
 #'     repo   = "ChadGoymer/githapi",
 #'     author = "ChadGoymer")
 #'
 #'   # View commits within a time window
-#'   .view_commits(
+#'   view_commits(
 #'     ref   = "master",
 #'     repo  = "ChadGoymer/githapi",
 #'     since = "2020-01-01 00:00:00",
@@ -328,7 +329,7 @@
 #'
 #' @export
 #'
-.view_commits <- function(
+view_commits <- function(
   ref,
   repo,
   path,
@@ -398,7 +399,7 @@
 
 #  FUNCTION: view_commit ----------------------------------------------------------------------
 #
-#' @rdname dot-view_commits
+#' @rdname view_commits
 #' @export
 #'
 view_commit <- function(
@@ -424,7 +425,7 @@ view_commit <- function(
 
 #  FUNCTION: browse_commits -------------------------------------------------------------------
 #
-#' @rdname dot-view_commits
+#' @rdname view_commits
 #' @export
 #'
 browse_commits <- function(
@@ -456,7 +457,7 @@ browse_commits <- function(
 
 #  FUNCTION: browse_commit --------------------------------------------------------------------
 #
-#' @rdname dot-view_commits
+#' @rdname view_commits
 #' @export
 #'
 browse_commit <- function(
@@ -519,11 +520,11 @@ view_sha <- function(
 }
 
 
-#  FUNCTION: .compare_commits ------------------------------------------------------------------
+#  FUNCTION: compare_commits ------------------------------------------------------------------
 #
 #' View commits made between two commits
 #'
-#' `.compare_commits()` summarises the commits made between two commits in a table with the
+#' `compare_commits()` summarises the commits made between two commits in a table with the
 #' properties as columns and a row for each commit. The `base` commit must be in the history
 #' of the `head` commit.
 #'
@@ -535,7 +536,7 @@ view_sha <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `.compare_commits()` returns a tibble of commit properties.
+#' @return `compare_commits()` returns a tibble of commit properties.
 #'
 #' **Commit Properties:**
 #'
@@ -556,13 +557,13 @@ view_sha <- function(
 #' \dontrun{
 #'
 #'   # View the changes made between the current master branch and a release
-#'   .compare_commits("master", "0.8.7", "ChadGoymer/githapi")
+#'   compare_commits("master", "0.8.7", "ChadGoymer/githapi")
 #'
 #' }
 #'
 #' @export
 #'
-.compare_commits <- function(
+compare_commits <- function(
   base,
   head,
   repo,

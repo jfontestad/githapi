@@ -81,11 +81,11 @@ test_that("update_branch updates a branch and returns a list of the properties",
 })
 
 
-# TEST: .view_branches -------------------------------------------------------------------------
+# TEST: view_branches -------------------------------------------------------------------------
 
-test_that(".view_branches returns a tibble of branch properties", {
+test_that("view_branches returns a tibble of branch properties", {
 
-  all_branches <- .view_branches(str_c("ChadGoymer/test-branches-", now))
+  all_branches <- view_branches(str_c("ChadGoymer/test-branches-", now))
 
   expect_is(all_branches, "tbl")
   expect_identical(attr(all_branches, "status"), 200L)

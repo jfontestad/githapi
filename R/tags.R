@@ -130,11 +130,11 @@ update_tag <- function(
 }
 
 
-#  FUNCTION: .view_tags ------------------------------------------------------------------------
+#  FUNCTION: view_tags ------------------------------------------------------------------------
 #
 #' View tags within a repository
 #'
-#' `.view_tags()` summarises tags in a table with the properties as columns and a row for each
+#' `view_tags()` summarises tags in a table with the properties as columns and a row for each
 #' tag in the repository. `view_tag()` returns a list of all properties for a single tag.
 #'
 #' For more details see the GitHub API documentation:
@@ -146,7 +146,7 @@ update_tag <- function(
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `.view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
+#' @return `view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
 #'   properties for a single tag.
 #'
 #' **Tag Properties:**
@@ -159,7 +159,7 @@ update_tag <- function(
 #' \dontrun{
 #'
 #'   # View all tags in a repository
-#'   .view_tags("ChadGoymer/githapi")
+#'   view_tags("ChadGoymer/githapi")
 #'
 #'   # View a single tag
 #'   view_tag("new-tag", "ChadGoymer/githapi")
@@ -168,7 +168,7 @@ update_tag <- function(
 #'
 #' @export
 #'
-.view_tags <- function(
+view_tags <- function(
   repo,
   n_max = 1000,
   ...)
@@ -190,7 +190,7 @@ update_tag <- function(
 
 #  FUNCTION: view_tag -------------------------------------------------------------------------
 #
-#' @rdname dot-view_tags
+#' @rdname view_tags
 #' @export
 #'
 view_tag <- function(

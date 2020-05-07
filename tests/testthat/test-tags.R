@@ -101,11 +101,11 @@ test_that("update_tag updates a tag and returns a list of the properties", {
 })
 
 
-# TEST: .view_tags -----------------------------------------------------------------------------
+# TEST: view_tags -----------------------------------------------------------------------------
 
-test_that(".view_tags returns a tibble of tag properties", {
+test_that("view_tags returns a tibble of tag properties", {
 
-  all_tags <- .view_tags(str_c("ChadGoymer/test-tags-", now))
+  all_tags <- view_tags(str_c("ChadGoymer/test-tags-", now))
 
   expect_is(all_tags, "tbl")
   expect_identical(attr(all_tags, "status"), 200L)
