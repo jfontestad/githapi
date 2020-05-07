@@ -42,7 +42,7 @@ returns a list of properties for a single card.
 }
 }
 \description{
-\code{view_cards()} summarises cards in a table with the properties as columnss and a row
+\code{view_cards()} summarises cards in a table with the properties as columns and a row
 for each card in a column of a project. \code{view_card()} returns a list of all properties
 for a single card.
 }
