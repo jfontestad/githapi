@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test commits",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
 }))
 
 teardown(suppressMessages({
@@ -360,7 +362,7 @@ test_that("download_commit downloads a commit to the specified path", {
 
 test_that("view_commits returns a tibble of commit properties", {
 
-  master_commits <- view_commits("master", str_c("ChadGoymer/test-commits-", now))
+  master_commits <- view_commits("master", str_c("ChadGoymer/test-commits-", now), n_max = 10)
 
   expect_is(master_commits, "tbl")
   expect_identical(attr(master_commits, "status"), 200L)
@@ -383,9 +385,10 @@ test_that("view_commits returns a tibble of commit properties", {
   expect_identical(last(master_commits$message), "Initial commit")
 
   readme_commits <- view_commits(
-    ref  = "master",
-    repo = str_c("ChadGoymer/test-commits-", now),
-    path = "README.md")
+    ref   = "master",
+    repo  = str_c("ChadGoymer/test-commits-", now),
+    path  = "README.md",
+    n_max = 10)
 
   expect_is(readme_commits, "tbl")
   expect_identical(attr(readme_commits, "status"), 200L)
@@ -410,7 +413,8 @@ test_that("view_commits returns a tibble of commit properties", {
   author_commits <- view_commits(
     ref    = "master",
     repo   = str_c("ChadGoymer/test-commits-", now),
-    author = "ChadGoymer")
+    author = "ChadGoymer",
+    n_max  = 10)
 
   expect_is(author_commits, "tbl")
   expect_identical(attr(author_commits, "status"), 200L)
@@ -436,7 +440,8 @@ test_that("view_commits returns a tibble of commit properties", {
     ref   = "master",
     repo  = str_c("ChadGoymer/test-commits-", now),
     since = format(Sys.time() - 60*60*24, "%Y-%m-%d %H:%M:%S"),
-    until = format(Sys.time(), "%Y-%m-%d %H:%M:%S"))
+    until = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
+    n_max = 10)
 
   expect_is(time_commits, "tbl")
   expect_identical(attr(time_commits, "status"), 200L)
@@ -553,7 +558,10 @@ test_that("view_sha returns the commit SHA given the reference", {
 
 test_that("compare_commits returns all the commits made between to commits", {
 
-  master_commits <- view_commits("master", repo = str_c("ChadGoymer/test-commits-", now))
+  master_commits <- view_commits(
+    ref   = "master",
+    repo  = str_c("ChadGoymer/test-commits-", now),
+    n_max = 10)
 
   commits <- compare_commits(
     base = master_commits$sha[[3]],

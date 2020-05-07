@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test releases",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   create_file(
     content = "This is a commit to test releases",
     path    = str_c("test-releases-", now, ".txt"),
@@ -252,7 +254,7 @@ test_that("update_release updates a release and returns a list of the properties
 
 test_that("view_releases returns a tibble of release properties", {
 
-  all_releases <- view_releases(str_c("ChadGoymer/test-releases-", now))
+  all_releases <- view_releases(str_c("ChadGoymer/test-releases-", now), n_max = 10)
 
   expect_is(all_releases, "tbl")
   expect_identical(attr(all_releases, "status"), 200L)

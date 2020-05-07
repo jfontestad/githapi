@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test comments",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   create_issue(
     title = str_c("issue to test comments ", now),
     repo  = str_c("ChadGoymer/test-comments-", now),

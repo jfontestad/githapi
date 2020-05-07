@@ -1,4 +1,4 @@
-# FUNCTION: .upload_blob ----------------------------------------------------------------------
+# FUNCTION: upload_blob -----------------------------------------------------------------------
 #
 # Read a file and upload it to GitHub
 #
@@ -6,9 +6,9 @@
 # @param repo (string) The repository specified in the format: `owner/repo`.
 # @param ... Parameters passed to [gh_request()].
 #
-# @return `.upload_blob()` returns a list of the blob's properties.
+# @return `upload_blob()` returns a list of the blob's properties.
 #
-.upload_blob <- function(
+upload_blob <- function(
   path,
   repo,
   ...)
@@ -24,7 +24,7 @@
 }
 
 
-# FUNCTION: .upload_tree ----------------------------------------------------------------------
+# FUNCTION: upload_tree -----------------------------------------------------------------------
 #
 # Upload a directory of files as a tree
 #
@@ -39,9 +39,9 @@
 #   `".git"`, `".Rproj.user"`, `".Rhistory"`, `".RData"` and `".Ruserdata"`.
 # @param ... Parameters passed to [gh_request()].
 #
-# @return `.upload_tree()` returns a list containing the tree SHA and the base commit SHA.
+# @return `upload_tree()` returns a list containing the tree SHA and the base commit SHA.
 #
-.upload_tree <- function(
+upload_tree <- function(
   path,
   repo,
   base_commit = NULL,
@@ -62,7 +62,7 @@
     rownames_to_column("path") %>%
     mutate(sha = map2_chr(.data$path, .data$isdir, function(path, isdir) {
       if (isdir) {
-        .upload_tree(
+        upload_tree(
           path = path,
           repo = repo,
           placeholder = placeholder,
@@ -74,7 +74,7 @@
           readr::read_lines(file = path)
         }
         else {
-          .upload_blob(path = path, repo = repo, ...)$sha
+          upload_blob(path = path, repo = repo, ...)$sha
         }
       }
     })) %>%
@@ -245,7 +245,7 @@ upload_files <- function(
   assert(is_scalar_character(parent), "'parent' must be a string:\n  ", parent)
 
   info("Uploading files to repository '", repo, "'")
-  blob_shas <- map_chr(from_path, ~ .upload_blob(path = ., repo = repo, ...)$sha)
+  blob_shas <- map_chr(from_path, ~ upload_blob(path = ., repo = repo, ...)$sha)
 
   temp_path <- tempfile("tree-")
   dir.create(temp_path)
@@ -257,7 +257,7 @@ upload_files <- function(
   })
 
   info("Uploading tree to repository '", repo, "'", level = 3)
-  result <- .upload_tree(
+  result <- upload_tree(
     path        = temp_path,
     repo        = repo,
     base_commit = parent,

@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test files",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   create_branch(
     name = "test-api",
     ref  = "master",

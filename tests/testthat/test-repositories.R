@@ -16,6 +16,8 @@ test_that("create_repository creates a repository and returns its properties", {
     homepage    = "https://user-repository.com",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   expect_is(user_repo, "list")
   expect_identical(attr(user_repo, "status"), 201L)
   expect_identical(
@@ -243,7 +245,7 @@ test_that("update_repository changes a repository's properties and returns them 
 
 test_that("view_repositories returns a tibble summarising the repositories", {
 
-  user_repos <- view_repositories(user = "ChadGoymer")
+  user_repos <- view_repositories(user = "ChadGoymer", n_max = 10)
 
   expect_is(user_repos, "tbl")
   expect_identical(attr(user_repos, "status"), 200L)
@@ -280,7 +282,11 @@ test_that("view_repositories returns a tibble summarising the repositories", {
   expect_identical(sort(user_repos$created_at, decreasing = TRUE), user_repos$created_at)
 
 
-  ordered_repos <- view_repositories(user = "ChadGoymer", sort = "full_name", direction = "asc")
+  ordered_repos <- view_repositories(
+    user      = "ChadGoymer",
+    sort      = "full_name",
+    direction = "asc",
+    n_max     = 10)
 
   expect_is(ordered_repos, "tbl")
   expect_identical(attr(ordered_repos, "status"), 200L)
@@ -316,7 +322,7 @@ test_that("view_repositories returns a tibble summarising the repositories", {
   expect_identical(sort(ordered_repos$full_name), ordered_repos$full_name)
 
 
-  org_repos <- view_repositories(org = "HairyCoos")
+  org_repos <- view_repositories(org = "HairyCoos", n_max = 10)
 
   expect_is(org_repos, "tbl")
   expect_identical(attr(org_repos, "status"), 200L)
@@ -352,7 +358,7 @@ test_that("view_repositories returns a tibble summarising the repositories", {
   expect_true(str_c("updated-org-repository-", now) %in% org_repos$name)
 
 
-  auth_repos <- view_repositories()
+  auth_repos <- view_repositories(n_max = 10)
 
   expect_is(auth_repos, "tbl")
   expect_identical(attr(auth_repos, "status"), 200L)

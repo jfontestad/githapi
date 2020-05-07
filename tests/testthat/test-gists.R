@@ -7,7 +7,7 @@ now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
 teardown(suppressMessages({
 
-  created_gists <- view_gists(since = as.character(Sys.time() - 60*10)) %>%
+  created_gists <- view_gists(since = as.character(Sys.time() - 60*10), n_max = 10) %>%
     filter(map_lgl(.data$files, ~ any(str_detect(., now))))
 
   walk(created_gists$id, delete_gist)
@@ -128,7 +128,7 @@ test_that("create_gist creates a gist and returns its properties", {
 # TEST: update_gist ---------------------------------------------------------------------------
 
 suppressMessages({
-  created_gists <- view_gists(since = as.character(Sys.time() - 60*10)) %>%
+  created_gists <- view_gists(since = as.character(Sys.time() - 60*10, n_max = 10)) %>%
     filter(map_lgl(.data$files, ~ any(str_detect(., now))))
 })
 

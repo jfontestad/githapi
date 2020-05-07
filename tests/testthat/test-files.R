@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test files",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
 }))
 
 teardown(suppressMessages({
@@ -1021,7 +1023,10 @@ test_that("github_source sources a file in GitHub", {
 
 test_that("compare_files returns all the file changes made between to commits", {
 
-  master_commits <- view_commits("master", repo = str_c("ChadGoymer/test-files-", now))
+  master_commits <- view_commits(
+    ref   = "master",
+    repo  = str_c("ChadGoymer/test-files-", now),
+    n_max = 10)
 
   file_changes <- compare_files(
     base = master_commits$sha[[3]],

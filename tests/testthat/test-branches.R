@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test branches",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   create_file(
     content = "This is a commit to test branches",
     path    = str_c("test-branches-", now, ".txt"),
@@ -85,7 +87,7 @@ test_that("update_branch updates a branch and returns a list of the properties",
 
 test_that("view_branches returns a tibble of branch properties", {
 
-  all_branches <- view_branches(str_c("ChadGoymer/test-branches-", now))
+  all_branches <- view_branches(str_c("ChadGoymer/test-branches-", now), n_max = 10)
 
   expect_is(all_branches, "tbl")
   expect_identical(attr(all_branches, "status"), 200L)

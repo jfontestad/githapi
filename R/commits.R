@@ -149,7 +149,7 @@ upload_commit <- function(
   }
 
   info("Uploading files in '", path, "' to repository '", repo, "'")
-  payload$tree <- .upload_tree(path = path, repo = repo, ignore = ignore, ...)$tree_sha
+  payload$tree <- upload_tree(path = path, repo = repo, ignore = ignore, ...)$tree_sha
 
   branch_sha <- try_catch(view_sha(ref = branch, repo = repo, ...), on_error = function(e) NULL)
 

@@ -118,7 +118,7 @@ test_that("add_labels adds labels to an issue and returns the properties", {
 
 test_that("view_labels returns a tibble of label properties", {
 
-  repo_labels <- view_labels(str_c("ChadGoymer/test-labels-", now))
+  repo_labels <- view_labels(str_c("ChadGoymer/test-labels-", now), n_max = 10)
 
   expect_is(repo_labels, "tbl")
   expect_identical(attr(repo_labels, "status"), 200L)
@@ -132,7 +132,8 @@ test_that("view_labels returns a tibble of label properties", {
 
   issue_labels <- view_labels(
     issue = str_c("test labels ", now),
-    repo  = str_c("ChadGoymer/test-labels-", now))
+    repo  = str_c("ChadGoymer/test-labels-", now),
+    n_max = 10)
 
   expect_is(issue_labels, "tbl")
   expect_identical(attr(issue_labels, "status"), 200L)
