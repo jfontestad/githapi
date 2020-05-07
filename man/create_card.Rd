@@ -74,7 +74,7 @@ For more details see the GitHub API documentation:
     content_type = "Issue",
     column       = "Test column",
     project      = "Test project",
-    repo         = "ChadGoymer/test-githapi")
+    repo         = "ChadGoymer/githapi")
 
   # Create a pull request card in a user's project
   create_card(

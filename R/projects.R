@@ -44,7 +44,7 @@
 #'   create_project(
 #'     name = "Repo project",
 #'     body = "This is a repository's project",
-#'     repo = "ChadGoymer/test-githapi")
+#'     repo = "ChadGoymer/githapi")
 #'
 #'   # Create a project for the current user
 #'   create_project(
@@ -166,7 +166,7 @@ create_project <- function(
 #'     project = "Repo project",
 #'     name    = "Updated repo project",
 #'     body    = "This is an updated repository's project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Update the state of a project for a user
 #'   update_project(
@@ -636,7 +636,7 @@ browse_project <- function(
 #'   # Delete a project for a repository
 #'   delete_project(
 #'     project = "Repo project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Delete a project for a user
 #'   delete_project(

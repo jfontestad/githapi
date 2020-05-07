@@ -29,7 +29,7 @@ For more details see the GitHub API documentation:
 \examples{
 \dontrun{
 
-  delete_branch("new-branch", repo = "ChadGoymer/test-githapi")
+  delete_branch("new-branch", repo = "ChadGoymer/githapi")
 
 }
 

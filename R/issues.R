@@ -167,7 +167,7 @@ create_issue <- function(
 #'   # Update the properties of a issue
 #'   update_issue(
 #'     issue   = "test issue",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     title       = "updated test issue",
 #'     description = "This is an updated test issue",
 #'     due_on      = "2020-12-01")
@@ -175,7 +175,7 @@ create_issue <- function(
 #'   # Close a issue
 #'   update_issue(
 #'     issue = "updated test issue",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     state     = "closed")
 #'
 #' }
@@ -320,16 +320,16 @@ update_issue <- function(
 #' \dontrun{
 #'
 #'   # View open issues in a repository
-#'   view_issues("ChadGoymer/test-githapi")
+#'   view_issues("ChadGoymer/githapi")
 #'
 #'   # View closed issues in a repository
-#'   view_issues("ChadGoymer/test-githapi", state = "closed")
+#'   view_issues("ChadGoymer/githapi", state = "closed")
 #'
 #'   # View a single issue
-#'   view_issue("test issue", "ChadGoymer/test-githapi")
+#'   view_issue("test issue", "ChadGoymer/githapi")
 #'
 #'   # Open a issue's page in a browser
-#'   browse_issue("test issue", "ChadGoymer/test-githapi")
+#'   browse_issue("test issue", "ChadGoymer/githapi")
 #'
 #' }
 #'

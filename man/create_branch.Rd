@@ -42,7 +42,7 @@ For more details see the GitHub API documentation:
   create_branch(
     name = "new-branch",
     ref  = "master",
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/githapi")
 
 }
 

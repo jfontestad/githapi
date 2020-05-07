@@ -42,7 +42,7 @@ For more details see the GitHub API documentation:
   delete_column(
     column  = "Test column",
     project = "Test project",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Delete a column in a user's project
   delete_column(

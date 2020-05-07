@@ -28,7 +28,7 @@
 #'   create_tag(
 #'     name = "new-tag",
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi")
+#'     repo = "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -95,7 +95,7 @@ create_tag <- function(
 #'   update_tag(
 #'     tag  = "new-tag",
 #'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d",
-#'     repo = "ChadGoymer/test-githapi")
+#'     repo = "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -159,10 +159,10 @@ update_tag <- function(
 #' \dontrun{
 #'
 #'   # View all tags in a repository
-#'   .view_tags("ChadGoymer/test-githapi")
+#'   .view_tags("ChadGoymer/githapi")
 #'
 #'   # View a single tag
-#'   view_tag("new-tag", "ChadGoymer/test-githapi")
+#'   view_tag("new-tag", "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -233,7 +233,7 @@ view_tag <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   delete_tag("new-tag", repo = "ChadGoymer/test-githapi")
+#'   delete_tag("new-tag", repo = "ChadGoymer/githapi")
 #'
 #' }
 #'

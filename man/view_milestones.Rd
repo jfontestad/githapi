@@ -77,20 +77,20 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View open milestones in a repository
-  view_milestones("ChadGoymer/test-githapi")
+  view_milestones("ChadGoymer/githapi")
 
   # View closed milestones in a repository
-  view_milestones("ChadGoymer/test-githapi", state = "closed")
+  view_milestones("ChadGoymer/githapi", state = "closed")
 
   # View a single milestone
   view_milestone(
     milestone = "test milestone",
-    repo      = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/githapi")
 
   # Open a milestone's page in a browser
   browse_milestone(
     milestone = "test milestone",
-    repo      = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/githapi")
 
 }
 

@@ -87,14 +87,14 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     path    = "C:/files-to-upload",
     branch  = "master",
     message = "Commit to test .upload_commit()",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # override the author and committer
   .upload_commit(
     path      = "C:/files-to-upload",
     branch    = "master",
     message   = "Commit to test .upload_commit()",
-    repo      = "ChadGoymer/test-githapi",
+    repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",   email = "bob@acme.com"),
     committer = list(name = "Jane",  email = "jane@acme.com"))
 
@@ -103,7 +103,7 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     path    = "C:/files-to-upload",
     branch  = "test-commits-1",
     message = "Commit to test .upload_commit()",
-    repo    = "ChadGoymer/test-githapi",
+    repo    = "ChadGoymer/githapi",
     parents = "master")
 
   # Create an orphan commit
@@ -111,14 +111,14 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     path    = "C:/files-to-upload",
     branch  = "test-commits-2",
     message = "Commit to test .upload_commit()",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Force branch to point at the new commit
   .upload_commit(
     path    = "C:/files-to-upload",
     branch  = "master",
     message = "Commit to test .upload_commit()",
-    repo    = "ChadGoymer/test-githapi",
+    repo    = "ChadGoymer/githapi",
     parents = "test-commits-1",
     force   = TRUE)
 
@@ -127,7 +127,7 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     path    = "C:/files-to-upload",
     branch  = "master",
     message = "Commit to test .upload_commit()",
-    repo    = "ChadGoymer/test-githapi",
+    repo    = "ChadGoymer/githapi",
     parents = c("master", "test-commits-1"))
 
   # Create a commit merging two branches into a new branch
@@ -135,7 +135,7 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     path    = "C:/files-to-upload",
     branch  = "test-commits-3",
     message = "Commit to test .upload_commit()",
-    repo    = "ChadGoymer/test-githapi",
+    repo    = "ChadGoymer/githapi",
     parents = c("master", "test-commits-2"))
 
 }

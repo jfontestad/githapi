@@ -65,7 +65,7 @@ For more details see the GitHub API documentation:
     column  = "Test column",
     name    = "Updated test column",
     project = "Test project",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Move a column to the first position in a user's project
   move_column(

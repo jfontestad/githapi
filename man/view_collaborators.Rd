@@ -61,7 +61,7 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View collaborators on a repository
-  view_collaborators(repo = "ChadGoymer/test-githapi")
+  view_collaborators(repo = "ChadGoymer/githapi")
 
   # View collaborators on a project
   view_collaborators(project = test_project$name, org = "HairyCoos")
@@ -70,7 +70,7 @@ For more details see the GitHub API documentation:
   view_collaborators(org = "HairyCoos")
 
   # View collaborator on a repository
-  view_collaborator("ChadGoymer", repo = "ChadGoymer/test-githapi")
+  view_collaborator("ChadGoymer", repo = "ChadGoymer/githapi")
 
   # View collaborator on a project
   view_collaborator(

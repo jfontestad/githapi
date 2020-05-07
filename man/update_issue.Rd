@@ -78,7 +78,7 @@ For more details see the GitHub API documentation:
   # Update the properties of a issue
   update_issue(
     issue   = "test issue",
-    repo        = "ChadGoymer/test-githapi",
+    repo        = "ChadGoymer/githapi",
     title       = "updated test issue",
     description = "This is an updated test issue",
     due_on      = "2020-12-01")
@@ -86,7 +86,7 @@ For more details see the GitHub API documentation:
   # Close a issue
   update_issue(
     issue = "updated test issue",
-    repo      = "ChadGoymer/test-githapi",
+    repo      = "ChadGoymer/githapi",
     state     = "closed")
 
 }

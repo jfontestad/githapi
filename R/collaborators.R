@@ -27,7 +27,7 @@
 #' \dontrun{
 #'
 #'   # Invite a user to collaborate on a repository
-#'   update_collaborator("ChadGoymer2", repo = "ChadGoymer/test-githapi")
+#'   update_collaborator("ChadGoymer2", repo = "ChadGoymer/githapi")
 #'
 #'   # Invite a user to collaborate on a project
 #'   update_collaborator(
@@ -38,7 +38,7 @@
 #'   # Update a user's permissions on a repository
 #'   update_collaborator(
 #'     user       = "ChadGoymer2",
-#'     repo       = "ChadGoymer/test-githapi",
+#'     repo       = "ChadGoymer/githapi",
 #'     permission = "admin")
 #'
 #'   # Update a user's permissions on a project
@@ -153,7 +153,7 @@ update_collaborator <- function(
 #' \dontrun{
 #'
 #'   # View collaborators on a repository
-#'   view_collaborators(repo = "ChadGoymer/test-githapi")
+#'   view_collaborators(repo = "ChadGoymer/githapi")
 #'
 #'   # View collaborators on a project
 #'   view_collaborators(project = test_project$name, org = "HairyCoos")
@@ -162,7 +162,7 @@ update_collaborator <- function(
 #'   view_collaborators(org = "HairyCoos")
 #'
 #'   # View collaborator on a repository
-#'   view_collaborator("ChadGoymer", repo = "ChadGoymer/test-githapi")
+#'   view_collaborator("ChadGoymer", repo = "ChadGoymer/githapi")
 #'
 #'   # View collaborator on a project
 #'   view_collaborator(
@@ -296,7 +296,7 @@ view_collaborator <- function(
 #' \dontrun{
 #'
 #'   # Remove a collaborator from a repository
-#'   delete_collaborator("ChadGoymer", repo = "ChadGoymer/test-githapi")
+#'   delete_collaborator("ChadGoymer", repo = "ChadGoymer/githapi")
 #'
 #'   # Remove a collaborator from a project
 #'   delete_collaborator(

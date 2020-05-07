@@ -42,7 +42,7 @@ For more details see the GitHub API documentation:
   create_tag(
     name = "new-tag",
     ref  = "master",
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/githapi")
 
 }
 

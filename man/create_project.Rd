@@ -59,7 +59,7 @@ For more details see the GitHub API documentation:
   create_project(
     name = "Repo project",
     body = "This is a repository's project",
-    repo = "ChadGoymer/test-githapi")
+    repo = "ChadGoymer/githapi")
 
   # Create a project for the current user
   create_project(

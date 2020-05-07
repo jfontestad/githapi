@@ -34,7 +34,7 @@
 #'   create_column(
 #'     name    = "Test column",
 #'     project = "Test project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Create a column in a user's project
 #'   create_column(
@@ -130,7 +130,7 @@ create_column <- function(
 #'     column  = "Test column",
 #'     name    = "Updated test column",
 #'     project = "Test project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Move a column to the first position in a user's project
 #'   move_column(
@@ -286,7 +286,7 @@ move_column <- function(
 #'   # View columns in a repository project
 #'   view_columns(
 #'     project = "Test columns",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View columns in a user's project
 #'   view_columns(
@@ -302,7 +302,7 @@ move_column <- function(
 #'   view_column(
 #'     column  = "Test column",
 #'     project = "Test columns",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View a column in a user's project
 #'   view_column(
@@ -431,7 +431,7 @@ view_column <- function(
 #'   delete_column(
 #'     column  = "Test column",
 #'     project = "Test project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Delete a column in a user's project
 #'   delete_column(

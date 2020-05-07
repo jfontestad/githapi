@@ -57,14 +57,14 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # override the author and committer
 #'   .upload_commit(
 #'     path      = "C:/files-to-upload",
 #'     branch    = "master",
 #'     message   = "Commit to test .upload_commit()",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",   email = "bob@acme.com"),
 #'     committer = list(name = "Jane",  email = "jane@acme.com"))
 #'
@@ -73,7 +73,7 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-1",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = "master")
 #'
 #'   # Create an orphan commit
@@ -81,14 +81,14 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-2",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Force branch to point at the new commit
 #'   .upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = "test-commits-1",
 #'     force   = TRUE)
 #'
@@ -97,7 +97,7 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = c("master", "test-commits-1"))
 #'
 #'   # Create a commit merging two branches into a new branch
@@ -105,7 +105,7 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-3",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = c("master", "test-commits-2"))
 #'
 #' }
@@ -202,7 +202,7 @@
 #'   # Download the head of the master branch to the home directory
 #'   .download_commit(
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi",
+#'     repo = "ChadGoymer/githapi",
 #'     path = "~")
 #'
 #' }
@@ -297,32 +297,32 @@
 #' \dontrun{
 #'
 #'   # View the history of commits for the master branch
-#'   .view_commits("master", "ChadGoymer/test-githapi")
+#'   .view_commits("master", "ChadGoymer/githapi")
 #'
 #'   # View commits where the README.md file has been changed
 #'   .view_commits(
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi",
+#'     repo = "ChadGoymer/githapi",
 #'     path = "README.md")
 #'
 #'   # View commits created by an author
 #'   .view_commits(
 #'     ref    = "master",
-#'     repo   = "ChadGoymer/test-githapi",
+#'     repo   = "ChadGoymer/githapi",
 #'     author = "ChadGoymer")
 #'
 #'   # View commits within a time window
 #'   .view_commits(
 #'     ref   = "master",
-#'     repo  = "ChadGoymer/test-githapi",
+#'     repo  = "ChadGoymer/githapi",
 #'     since = "2020-01-01 00:00:00",
 #'     until = "2020-04-01 00:00:00")
 #'
 #'   # View the properties of the last commit on the master branch
-#'   view_commit("master", "ChadGoymer/test-githapi")
+#'   view_commit("master", "ChadGoymer/githapi")
 #'
 #'   # View the properties of the commit with tag "0.8.7"
-#'   view_commit("0.8.7", "ChadGoymer/test-githapi")
+#'   view_commit("0.8.7", "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -498,8 +498,8 @@ browse_commit <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   view_sha("a-tag", repo = "ChadGoymer/test-githapi")
-#'   view_sha("a-branch", repo = "ChadGoymer/test-githapi")
+#'   view_sha("a-tag", repo = "ChadGoymer/githapi")
+#'   view_sha("a-branch", repo = "ChadGoymer/githapi")
 #'
 #' }
 #'

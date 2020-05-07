@@ -39,7 +39,7 @@
 #'
 #'   create_milestone(
 #'     title       = "test milestone",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     description = "This is a test milestone",
 #'     due_on      = "2030-01-01 00:00:00")
 #'
@@ -130,7 +130,7 @@ create_milestone <- function(
 #'   # Update the properties of a milestone
 #'   update_milestone(
 #'     milestone   = "test milestone",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     title       = "updated test milestone",
 #'     description = "This is an updated test milestone",
 #'     due_on      = "2020-12-01")
@@ -138,7 +138,7 @@ create_milestone <- function(
 #'   # Close a milestone
 #'   update_milestone(
 #'     milestone = "updated test milestone",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     state     = "closed")
 #'
 #' }
@@ -246,20 +246,20 @@ update_milestone <- function(
 #' \dontrun{
 #'
 #'   # View open milestones in a repository
-#'   view_milestones("ChadGoymer/test-githapi")
+#'   view_milestones("ChadGoymer/githapi")
 #'
 #'   # View closed milestones in a repository
-#'   view_milestones("ChadGoymer/test-githapi", state = "closed")
+#'   view_milestones("ChadGoymer/githapi", state = "closed")
 #'
 #'   # View a single milestone
 #'   view_milestone(
 #'     milestone = "test milestone",
-#'     repo      = "ChadGoymer/test-githapi")
+#'     repo      = "ChadGoymer/githapi")
 #'
 #'   # Open a milestone's page in a browser
 #'   browse_milestone(
 #'     milestone = "test milestone",
-#'     repo      = "ChadGoymer/test-githapi")
+#'     repo      = "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -379,7 +379,7 @@ browse_milestone <- function(
 #'   # Delete a milestone
 #'   delete_milestone(
 #'     milestone = "test milestone",
-#'     repo      = "ChadGoymer/test-githapi")
+#'     repo      = "ChadGoymer/githapi")
 #'
 #' }
 #'

@@ -70,7 +70,7 @@ Finally, an authorisation token can be supplied if it is required.
 
   # Create a tag
   gh_request(
-    url     = "https://api.github.com/repos/ChadGoymer/test-githapi/git/refs",
+    url     = "https://api.github.com/repos/ChadGoymer/githapi/git/refs",
     type    = "POST",
     payload = list(
       ref = "test-tag",
@@ -78,18 +78,18 @@ Finally, an authorisation token can be supplied if it is required.
 
   # View a tag
   gh_request(
-    url  = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
+    url  = "https://api.github.com/repos/ChadGoymer/githapi/git/test-tag",
     type = "GET")
 
   # Update a tag
   gh_request(
-    url     = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
+    url     = "https://api.github.com/repos/ChadGoymer/githapi/git/test-tag",
     type    = "PATCH",
     payload = list(sha = "a4b6545671455234757313a42738e44c10b0ef37"))
 
   # Delete a tag
   gh_request(
-    url  = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
+    url  = "https://api.github.com/repos/ChadGoymer/githapi/git/test-tag",
     type = "DELETE")
 
 }

@@ -65,14 +65,14 @@
 #'
 #'   create_pull_request(
 #'     title = "test pull request",
-#'     repo  = "ChadGoymer/test-githapi",
+#'     repo  = "ChadGoymer/githapi",
 #'     head  = "test-pulls",
 #'     base  = "master",
 #'     body  = "This is a pull request to test create_pull_request()")
 #'
 #'   create_pull_request(
 #'     title     = "test assigned pull request",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     head      = "test-pulls-2",
 #'     base      = "master",
 #'     body      = "This is a pull request to test create_pull_request()",
@@ -232,14 +232,14 @@ create_pull_request <- function(
 #'   # Update a pull request's properties
 #'   update_pull_request(
 #'     pull_request = "test pull request",
-#'     repo         = "ChadGoymer/test-githapi",
+#'     repo         = "ChadGoymer/githapi",
 #'     title        = "test updated pull request",
 #'     body         = "This is an updated pull request to test create_pull_request()")
 #'
 #'   # Close a pull request
 #'   update_pull_request(
 #'     pull_request = "test updated pull request",
-#'     repo         = "ChadGoymer/test-githapi",
+#'     repo         = "ChadGoymer/githapi",
 #'     state        = "closed")
 #'
 #' }
@@ -455,22 +455,22 @@ update_pull_request <- function(
 #' \dontrun{
 #'
 #'   # View all open pull requests
-#'   view_pull_requests("ChadGoymer/test-githapi")
+#'   view_pull_requests("ChadGoymer/githapi")
 #'
 #'   # View all closed pull requests
-#'   view_pull_requests("ChadGoymer/test-githapi", state = "closed")
+#'   view_pull_requests("ChadGoymer/githapi", state = "closed")
 #'
 #'   # View all pull requests for the "master" branch
-#'   view_pull_requests("ChadGoymer/test-githapi", base = "master")
+#'   view_pull_requests("ChadGoymer/githapi", base = "master")
 #'
 #'   # View pull requests, sorted by the most recently updated
-#'   view_pull_requests("ChadGoymer/test-githapi", sort = "updated", direction = "desc")
+#'   view_pull_requests("ChadGoymer/githapi", sort = "updated", direction = "desc")
 #'
 #'   # View single pull request
-#'   view_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#'   view_pull_request("test pull request", repo = "ChadGoymer/githapi")
 #'
 #'   # Open a pull request's page in a browser
-#'   browse_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#'   browse_pull_request("test pull request", repo = "ChadGoymer/githapi")
 #'
 #' }
 #'

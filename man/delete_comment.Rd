@@ -44,19 +44,19 @@ For more details see the GitHub API documentation:
   delete_comment(
     comment = 622980929,
     type    = "issue",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Delete a pull request comment
   delete_comment(
     comment = 418979473,
     type    = "pull_request",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Delete a commit comment
   delete_comment(
     comment = 38899533,
     type    = "commit",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
 }
 

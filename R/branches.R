@@ -28,7 +28,7 @@
 #'   create_branch(
 #'     name = "new-branch",
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi")
+#'     repo = "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -94,7 +94,7 @@ create_branch <- function(
 #'
 #'   update_branch(
 #'     name = "new-branch",
-#'     repo = "ChadGoymer/test-githapi",
+#'     repo = "ChadGoymer/githapi",
 #'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d")
 #'
 #' }
@@ -160,10 +160,10 @@ update_branch <- function(
 #' \dontrun{
 #'
 #'   # View all branches in a repository
-#'   .view_branches("ChadGoymer/test-githapi")
+#'   .view_branches("ChadGoymer/githapi")
 #'
 #'   # View a single branch
-#'   view_label("new-branch", "ChadGoymer/test-githapi")
+#'   view_label("new-branch", "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -234,7 +234,7 @@ view_branch <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   delete_branch("new-branch", repo = "ChadGoymer/test-githapi")
+#'   delete_branch("new-branch", repo = "ChadGoymer/githapi")
 #'
 #' }
 #'

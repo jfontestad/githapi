@@ -48,10 +48,10 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View all labels in a repository
-  view_labels("ChadGoymer/test-githapi")
+  view_labels("ChadGoymer/githapi")
 
   # View a single label
-  view_label("new-label", "ChadGoymer/test-githapi")
+  view_label("new-label", "ChadGoymer/githapi")
 
 }
 

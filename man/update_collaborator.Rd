@@ -42,7 +42,7 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # Invite a user to collaborate on a repository
-  update_collaborator("ChadGoymer2", repo = "ChadGoymer/test-githapi")
+  update_collaborator("ChadGoymer2", repo = "ChadGoymer/githapi")
 
   # Invite a user to collaborate on a project
   update_collaborator(
@@ -53,7 +53,7 @@ For more details see the GitHub API documentation:
   # Update a user's permissions on a repository
   update_collaborator(
     user       = "ChadGoymer2",
-    repo       = "ChadGoymer/test-githapi",
+    repo       = "ChadGoymer/githapi",
     permission = "admin")
 
   # Update a user's permissions on a project

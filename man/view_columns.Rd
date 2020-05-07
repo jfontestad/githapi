@@ -57,7 +57,7 @@ For more details see the GitHub API documentation:
   # View columns in a repository project
   view_columns(
     project = "Test columns",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View columns in a user's project
   view_columns(
@@ -73,7 +73,7 @@ For more details see the GitHub API documentation:
   view_column(
     column  = "Test column",
     project = "Test columns",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View a column in a user's project
   view_column(

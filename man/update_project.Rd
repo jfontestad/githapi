@@ -88,7 +88,7 @@ For more details see the GitHub API documentation:
     project = "Repo project",
     name    = "Updated repo project",
     body    = "This is an updated repository's project",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Update the state of a project for a user
   update_project(

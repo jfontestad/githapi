@@ -45,10 +45,10 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View all branches in a repository
-  .view_branches("ChadGoymer/test-githapi")
+  .view_branches("ChadGoymer/githapi")
 
   # View a single branch
-  view_label("new-branch", "ChadGoymer/test-githapi")
+  view_label("new-branch", "ChadGoymer/githapi")
 
 }
 

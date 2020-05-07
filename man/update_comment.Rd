@@ -67,21 +67,21 @@ For more details see the GitHub API documentation:
     comment = 622980929,
     body    = "This comment has been updated by update_comment()",
     type    = "issue",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Update an pull request comment
   update_comment(
     comment = 418979473,
     body    = "This comment has been updated by update_comment()",
     type    = "pull_request",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Update a commit comment
   update_comment(
     comment = 38899533,
     body    = "This comment has been updated by update_comment()",
     type    = "commit",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
 }
 

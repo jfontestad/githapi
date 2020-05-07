@@ -46,12 +46,12 @@ For more details see the GitHub API documentation:
   add_labels(
     labels = c("feature", "new-label"),
     issue  = "Test issue",
-    repo   = "ChadGoymer/test-githapi")
+    repo   = "ChadGoymer/githapi")
 
   remove_labels(
     labels = c("feature", "new-label"),
     issue  = "Test issue",
-    repo   = "ChadGoymer/test-githapi")
+    repo   = "ChadGoymer/githapi")
 
 }
 

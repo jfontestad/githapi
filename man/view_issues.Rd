@@ -97,16 +97,16 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View open issues in a repository
-  view_issues("ChadGoymer/test-githapi")
+  view_issues("ChadGoymer/githapi")
 
   # View closed issues in a repository
-  view_issues("ChadGoymer/test-githapi", state = "closed")
+  view_issues("ChadGoymer/githapi", state = "closed")
 
   # View a single issue
-  view_issue("test issue", "ChadGoymer/test-githapi")
+  view_issue("test issue", "ChadGoymer/githapi")
 
   # Open a issue's page in a browser
-  browse_issue("test issue", "ChadGoymer/test-githapi")
+  browse_issue("test issue", "ChadGoymer/githapi")
 
 }
 

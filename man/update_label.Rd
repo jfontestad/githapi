@@ -45,7 +45,7 @@ For more details see the GitHub API documentation:
 
   update_label(
     label       = "new-label",
-    repo        = "ChadGoymer/test-githapi",
+    repo        = "ChadGoymer/githapi",
     name        = "updated-label",
     color       = "green",
     description = "This is an updated label")

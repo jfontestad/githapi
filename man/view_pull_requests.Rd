@@ -137,22 +137,22 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View all open pull requests
-  view_pull_requests("ChadGoymer/test-githapi")
+  view_pull_requests("ChadGoymer/githapi")
 
   # View all closed pull requests
-  view_pull_requests("ChadGoymer/test-githapi", state = "closed")
+  view_pull_requests("ChadGoymer/githapi", state = "closed")
 
   # View all pull requests for the "master" branch
-  view_pull_requests("ChadGoymer/test-githapi", base = "master")
+  view_pull_requests("ChadGoymer/githapi", base = "master")
 
   # View pull requests, sorted by the most recently updated
-  view_pull_requests("ChadGoymer/test-githapi", sort = "updated", direction = "desc")
+  view_pull_requests("ChadGoymer/githapi", sort = "updated", direction = "desc")
 
   # View single pull request
-  view_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+  view_pull_request("test pull request", repo = "ChadGoymer/githapi")
 
   # Open a pull request's page in a browser
-  browse_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+  browse_pull_request("test pull request", repo = "ChadGoymer/githapi")
 
 }
 

@@ -44,10 +44,10 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View all tags in a repository
-  .view_tags("ChadGoymer/test-githapi")
+  .view_tags("ChadGoymer/githapi")
 
   # View a single tag
-  view_tag("new-tag", "ChadGoymer/test-githapi")
+  view_tag("new-tag", "ChadGoymer/githapi")
 
 }
 

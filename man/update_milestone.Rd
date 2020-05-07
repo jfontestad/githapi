@@ -57,7 +57,7 @@ For more details see the GitHub API documentation:
   # Update the properties of a milestone
   update_milestone(
     milestone   = "test milestone",
-    repo        = "ChadGoymer/test-githapi",
+    repo        = "ChadGoymer/githapi",
     title       = "updated test milestone",
     description = "This is an updated test milestone",
     due_on      = "2020-12-01")
@@ -65,7 +65,7 @@ For more details see the GitHub API documentation:
   # Close a milestone
   update_milestone(
     milestone = "updated test milestone",
-    repo      = "ChadGoymer/test-githapi",
+    repo      = "ChadGoymer/githapi",
     state     = "closed")
 
 }

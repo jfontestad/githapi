@@ -63,7 +63,7 @@ For more details see the GitHub API documentation:
   cards <- view_cards(
     column  = "Test cards",
     project = "Test cards",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View cards in a user's project
   cards <- view_cards(

@@ -45,7 +45,7 @@
 #'     content_type = "Issue",
 #'     column       = "Test column",
 #'     project      = "Test project",
-#'     repo         = "ChadGoymer/test-githapi")
+#'     repo         = "ChadGoymer/githapi")
 #'
 #'   # Create a pull request card in a user's project
 #'   create_card(
@@ -196,7 +196,7 @@ create_card <- function(
 #'     position = "top",
 #'     column   = "Test column 2",
 #'     project  = "Test project",
-#'     repo     = "ChadGoymer/test-githapi")
+#'     repo     = "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -355,7 +355,7 @@ move_card <- function(
 #'   cards <- view_cards(
 #'     column  = "Test cards",
 #'     project = "Test cards",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View cards in a user's project
 #'   cards <- view_cards(
