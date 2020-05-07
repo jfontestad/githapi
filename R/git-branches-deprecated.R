@@ -40,22 +40,20 @@ view_branches <- function(
   api   = getOption("github.api"),
   ...)
 {
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'branches' argument: ", branches, level = 2)
-      repo <- branches
-      branches <- NULL
-    }
-
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
-      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'branches' argument: ", branches, level = 2)
+    repo <- branches
+    branches <- NULL
   }
+
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
+    error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (missing(branches) || is_null(branches) || all(is_na(branches))) {
     info("Getting up to ", n_max, " branches from repository '", repo, "'")
@@ -134,20 +132,18 @@ create_branches <- function(
 {
   .Deprecated("create_branch", package = "githapi")
 
-  {
-    (is_character(branches)) ||
-      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (identical(length(branches), length(shas))) ||
-      error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(branches)) ||
+    error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (identical(length(branches), length(shas))) ||
+    error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   branches_list <- try_pmap(list(branches, shas), function(branch, sha) {
     info("Posting branch '", branch, "' to repository '", repo, "'")
@@ -212,20 +208,18 @@ update_branches <- function(
 {
   .Deprecated("update_branch", package = "githapi")
 
-  {
-    (is_character(branches)) ||
-      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (identical(length(branches), length(shas))) ||
-      error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(branches)) ||
+    error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (identical(length(branches), length(shas))) ||
+    error("'branches' and 'shas' must have the same length:\n  'branches': ", length(branches), "\n  'shas':     ", length(shas))
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   branches_list <- try_pmap(list(branches, shas), function(branch, sha) {
     info("Updating branch '", branch, "' in repository '", repo, "'")
@@ -280,16 +274,14 @@ delete_branches <- function(
 {
   .Deprecated("delete_branch", package = "githapi")
 
-  {
-    (is_character(branches)) ||
-      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(branches)) ||
+    error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   branches_list <- try_map(branches, function(branch) {
     info("Deleting branch '", branch, "' from repository '", repo, "'")
@@ -334,16 +326,14 @@ branches_exist <- function(
 {
   .Deprecated(msg = "This function will be removed in a future version")
 
-  {
-    (is_character(branches)) ||
-      error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(branches)) ||
+    error("'branches' must be a character vector:\n  '", paste(branches, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(branches, simplify = TRUE, function(branch) {
     info("Checking branch '", branch, "' exists in repository '", repo, "'")

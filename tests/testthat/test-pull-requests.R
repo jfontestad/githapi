@@ -5,31 +5,28 @@ context("pull requests")
 
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
-setup(suppressMessages(try(silent = TRUE, {
+setup(suppressMessages({
 
   create_repository(
     name        = str_c("test-pulls-", now),
     description = "This is a repository to test pull requests",
     auto_init   = TRUE)
 
-  # TODO: replace with new `create_file()` function
-  suppressWarnings({
-    create_files(
-      paths    = str_c("test-pulls-", now, ".txt"),
-      contents = "This is a commit to test pull requests",
-      messages = "Commit to test pull requests",
-      branches = str_c("test-pulls-1-", now),
-      parents  = "master",
-      repo     = str_c("ChadGoymer/test-pulls-", now))
+  create_file(
+    content = "This is a commit to test pull requests",
+    path    = str_c("test-pulls-", now, ".txt"),
+    branch  = str_c("test-pulls-1-", now),
+    message = "Commit to test pull requests",
+    repo    = str_c("ChadGoymer/test-pulls-", now),
+    parent  = "master")
 
-    create_files(
-      paths    = str_c("test-pulls-", now, ".txt"),
-      contents = "This is a repository to test pull requests",
-      messages = "Commit to test pull requests",
-      branches = str_c("test-pulls-2-", now),
-      parents  = "master",
-      repo     = str_c("ChadGoymer/test-pulls-", now))
-  })
+  create_file(
+    content = "This is a repository to test pull requests",
+    path    = str_c("test-pulls-", now, ".txt"),
+    branch  = str_c("test-pulls-2-", now),
+    message = "Commit to test pull requests",
+    repo    = str_c("ChadGoymer/test-pulls-", now),
+    parent  = "master")
 
   create_milestone(
     title       = str_c("test-pulls-", now),
@@ -41,13 +38,13 @@ setup(suppressMessages(try(silent = TRUE, {
     repo        = str_c("ChadGoymer/test-pulls-", now),
     description = "This is a label to test pull requests")
 
-})))
+}))
 
-teardown(suppressMessages(try(silent = TRUE, {
+teardown(suppressMessages({
 
   delete_repository(str_c("ChadGoymer/test-pulls-", now))
 
-})))
+}))
 
 
 # TEST: create_pull_request -------------------------------------------------------------------
@@ -80,15 +77,15 @@ test_that("create_pull_request creates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -128,15 +125,15 @@ test_that("create_pull_request creates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -149,8 +146,6 @@ test_that("create_pull_request creates a pull request and returns its properties
   expect_identical(assigned_pull_request$assignees, "ChadGoymer")
   expect_identical(assigned_pull_request$labels, str_c("test-pulls-", now))
   expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", now))
-
-  # TODO: Add a member to HairyCoos to test reviewers
 
 })
 
@@ -186,15 +181,15 @@ test_that("update_pull_request updates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -229,15 +224,15 @@ test_that("update_pull_request updates a pull request and returns its properties
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -250,8 +245,6 @@ test_that("update_pull_request updates a pull request and returns its properties
   expect_identical(assigned_pull_request$assignees, "ChadGoymer")
   expect_identical(assigned_pull_request$labels, str_c("test-pulls-", now))
   expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", now))
-
-  # TODO: Add a member to HairyCoos to test reviewers
 
 })
 
@@ -291,15 +284,15 @@ test_that("view_pull_requests returns a tibble of issue properties", {
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -329,15 +322,15 @@ test_that("view_pull_requests returns a tibble of issue properties", {
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
@@ -373,15 +366,15 @@ test_that("view_pull_request returns a list of pull request properties", {
       milestone  = "character",
       state      = "character",
       repository = "character",
-      html_url   = "character",
       diff_url   = "character",
       creator    = "character",
-      created_at = "POSIXct",
-      updated_at = "POSIXct",
       mergeable  = "logical",
       rebaseable = "logical",
       merged     = "logical",
       merged_by  = "character",
+      html_url   = "character",
+      created_at = "POSIXct",
+      updated_at = "POSIXct",
       merged_at  = "POSIXct",
       closed_at  = "POSIXct",
       commits    = "github",

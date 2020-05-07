@@ -21,7 +21,7 @@ view_collaborator(user, repo, project, org, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{user}{(string) The login of the user.}
 }
@@ -59,8 +59,9 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View collaborators on a repository
-  view_collaborators(repo = "ChadGoymer/test-githapi")
+  view_collaborators(repo = "ChadGoymer/githapi")
 
   # View collaborators on a project
   view_collaborators(project = test_project$name, org = "HairyCoos")
@@ -69,13 +70,14 @@ For more details see the GitHub API documentation:
   view_collaborators(org = "HairyCoos")
 
   # View collaborator on a repository
-  view_collaborator("ChadGoymer", repo = "ChadGoymer/test-githapi")
+  view_collaborator("ChadGoymer", repo = "ChadGoymer/githapi")
 
   # View collaborator on a project
   view_collaborator(
     user    = "ChadGoymer",
     project = "Test project",
     org     = "HairyCoos")
+
 }
 
 }

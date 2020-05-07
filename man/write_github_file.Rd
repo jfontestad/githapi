@@ -88,6 +88,7 @@ branch. \code{write_github_file()} writes the \code{content} to a text file, usi
     branch  = "master",
     message = "Updated an existing file with write_github_csv()",
     repo    = "ChadGoymer/githapi")
+
 }
 
 }

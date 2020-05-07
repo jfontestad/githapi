@@ -60,10 +60,8 @@
     discard(~ basename(.) %in% ignore) %>%
     file.info() %>%
     rownames_to_column("path") %>%
-    mutate(sha = map2_chr(.data$path, .data$isdir, function(path, isdir)
-    {
-      if (isdir)
-      {
+    mutate(sha = map2_chr(.data$path, .data$isdir, function(path, isdir) {
+      if (isdir) {
         .upload_tree(
           path = path,
           repo = repo,
@@ -71,14 +69,11 @@
           ignore = ignore,
           ...)$tree_sha
       }
-      else
-      {
-        if (placeholder)
-        {
+      else {
+        if (placeholder) {
           readr::read_lines(file = path)
         }
-        else
-        {
+        else {
           .upload_blob(path = path, repo = repo, ...)$sha
         }
       }
@@ -97,8 +92,7 @@
     pmap(list) %>%
     list(tree = .)
 
-  if (!is_null(base_commit))
-  {
+  if (!is_null(base_commit)) {
     base_commit <- try_catch(
       view_commit(ref = base_commit, repo = repo, ...),
       on_error = function(e) NULL)
@@ -200,6 +194,7 @@
 #'     message   = "Commit to test upload_files()",
 #'     repo      = "ChadGoymer/githapi",
 #'     parent    = "master")
+#'
 #' }
 #'
 #' @export
@@ -230,24 +225,21 @@ upload_files <- function(
 
   payload <- list(message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
     payload$committer <- committer
   }
 
-  if (missing(parent))
-  {
+  if (missing(parent)) {
     parent <- branch
   }
   assert(is_scalar_character(parent), "'parent' must be a string:\n  ", parent)
@@ -259,8 +251,7 @@ upload_files <- function(
   dir.create(temp_path)
   on.exit(unlink(temp_path))
 
-  walk2(file.path(temp_path, to_path), blob_shas, function(path, sha)
-  {
+  walk2(file.path(temp_path, to_path), blob_shas, function(path, sha) {
     if (!dir.exists(dirname(path))) dir.create(dirname(path), recursive = TRUE)
     readr::write_lines(sha, path)
   })
@@ -279,22 +270,18 @@ upload_files <- function(
   info("Creating commit in repo '", repo, "'")
   commit <- gh_url("repos", repo, "git/commits") %>% gh_request("POST", payload = payload, ...)
 
-  if (identical(branch, parent) && is_null(result$commit_sha))
-  {
+  if (identical(branch, parent) && is_null(result$commit_sha)) {
     create_branch(name = branch, ref = commit$sha, repo = repo, ...)
   }
-  else
-  {
+  else {
     branch_sha <- try_catch(
       view_commit(ref = branch, repo = repo, ...),
       on_error = function(e) NULL)
 
-    if (is_null(branch_sha))
-    {
+    if (is_null(branch_sha)) {
       create_branch(name = branch, ref = commit$sha, repo = repo, ...)
     }
-    else
-    {
+    else {
       update_branch(branch = branch, ref = commit$sha, repo = repo, force = force, ...)
     }
   }
@@ -328,6 +315,7 @@ upload_files <- function(
 #'     to_path   = "~/README.md",
 #'     ref       = "master",
 #'     repo      = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -362,11 +350,12 @@ download_file <- function(
 
 #  FUNCTION: create_file ----------------------------------------------------------------------
 #
-#' Create, update or delete a file in a new commit
+#' Create a file in a new commit
 #'
-#' These functions create, update or delete a file in a repository in GitHub by creating a
-#' new commit on the specified branch. If the file already exists [create_file()] throws an
-#' error and if the file does not exist [delete_file()] throws as error.
+#' This function adds a file in a repository in GitHub by creating a new commit on the
+#' specified branch. If the branch does not already exist a `parent` commit must be specified
+#' and a new branch is created from it. If the file already exists `create_file()` throws an
+#' error.
 #'
 #' The `author` and `committer` arguments are optional and if not supplied the current
 #' authenticated user is used. However, if you want to set them explicitly you must specify
@@ -380,14 +369,15 @@ download_file <- function(
 #' @param branch (string) The name of the branch to make the new commit on.
 #' @param message (string) The commit message.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param parent (string, optional) If creating a new branch the the parent commit must
+#'   be specified as either a SHA, branch or tag.
 #' @param author (list, optional) A the name and email address of the user who wrote the
 #'   changes in the commit.
 #' @param committer (list, optional) A the name and email address of the user who created
 #'   the commit.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `create_file()`, `update_file()` and `delete_file()` return a list of the commit
-#'   properties.
+#' @return `create_file()`returns a list of the commit properties.
 #'
 #' **Commit Properties:**
 #'
@@ -406,15 +396,24 @@ download_file <- function(
 #'
 #'   # Create a new file on the master branch
 #'   create_file(
-#'     content = "# This is a new file\\n\\n Created by `create_files()`",
+#'     content = "# This is a new file\\n\\n Created by `create_file()`",
 #'     path    = "new-file.md",
 #'     branch  = "master",
 #'     message = "Created a new file with create_file()",
 #'     repo    = "ChadGoymer/githapi")
 #'
+#'   # Create a new file on a new branch
+#'   create_file(
+#'     content = "# This is a new file\\n\\n Created by `create_file()`",
+#'     path    = "new-file.md",
+#'     branch  = "new-branch",
+#'     message = "Created a new file with create_file()",
+#'     repo    = "ChadGoymer/githapi",
+#'     parent  = "master")
+#'
 #'   # Create a new file on the master branch specifying an author and committer
 #'   create_file(
-#'     content   = "# This is a new file\\n\\n Created by `create_files()`",
+#'     content   = "# This is a new file\\n\\n Created by `create_file()`",
 #'     path      = "new-file.md",
 #'     branch    = "master",
 #'     message   = "Created a new file with create_file()",
@@ -422,20 +421,6 @@ download_file <- function(
 #'     author    = list(name = "Bob",  email = "bob@acme.com"),
 #'     committer = list(name = "Jane", email = "jane@acme.com"))
 #'
-#'   # Update an existing file on the master branch
-#'   update_file(
-#'     content = "# This is an updated file\\n\\n Updated by `update_files()`",
-#'     path    = "new-file.md",
-#'     branch  = "master",
-#'     message = "Updated an existing file with update_file()",
-#'     repo    = "ChadGoymer/githapi")
-#'
-#'   # Delete an existing file on the master branch
-#'   delete_file(
-#'     path    = "new-file.md",
-#'     branch  = "master",
-#'     message = "Deleted an existing file with delete_file()",
-#'     repo    = "ChadGoymer/githapi")
 #' }
 #'
 #' @export
@@ -446,6 +431,7 @@ create_file <- function(
   branch,
   message,
   repo,
+  parent,
   author,
   committer,
   ...)
@@ -461,16 +447,19 @@ create_file <- function(
     branch  = branch,
     message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(parent) && !identical(parent, branch)) {
+    assert(is_ref(parent), "'parent' must be a valid git reference - see help(is_ref):\n  ", parent)
+    create_branch(name = branch, ref = parent, repo = repo, ...)
+  }
+
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -494,7 +483,78 @@ create_file <- function(
 
 #  FUNCTION: update_file ----------------------------------------------------------------------
 #
-#' @rdname create_file
+#' Update a file in a new commit
+#'
+#' This function updates a file in a repository in GitHub by creating a new commit on the
+#' specified branch. If the branch does not already exist a `parent` commit must be specified
+#' and a new branch is created from it.
+#'
+#' The `author` and `committer` arguments are optional and if not supplied the current
+#' authenticated user is used. However, if you want to set them explicitly you must specify
+#' a named list with `name` and `email` as the elements (see examples).
+#'
+#' Note: The GitHub API imposes a file size limit of 1MB for this request. For larger files
+#' use the [upload_files()] function.
+#'
+#' @param content (string) The content of the file specified as a single string.
+#' @param path (string) The path of the file to update, within the repository.
+#' @param branch (string) The name of the branch to make the new commit on.
+#' @param message (string) The commit message.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param parent (string, optional) If creating a new branch the the parent commit must
+#'   be specified as either a SHA, branch or tag.
+#' @param author (list, optional) A the name and email address of the user who wrote the
+#'   changes in the commit.
+#' @param committer (list, optional) A the name and email address of the user who created
+#'   the commit.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_file()`returns a list of the commit properties.
+#'
+#' **Commit Properties:**
+#'
+#' - **sha**: The commit SHA.
+#' - **message**: The commit message.
+#' - **author_name**: The author's name.
+#' - **author_email**: The author's email address.
+#' - **committer_name**: The committer's name.
+#' - **committer_email**: The committer's email address.
+#' - **tree_sha**: The SHA of the file tree.
+#' - **parent_sha**: The commit SHA of the parent(s).
+#' - **date**: The date the commit was made.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Update a file on the master branch
+#'   update_file(
+#'     content = "# This is a file\\n\\n Updated by `update_file()`",
+#'     path    = "updated-file.md",
+#'     branch  = "master",
+#'     message = "Updated a file with update_file()",
+#'     repo    = "ChadGoymer/githapi")
+#'
+#'   # Update a file on a new branch
+#'   update_file(
+#'     content = "# This is a file\\n\\n Updated by `update_file()`",
+#'     path    = "updated-file.md",
+#'     branch  = "new-branch",
+#'     message = "Updated a file with update_file()",
+#'     repo    = "ChadGoymer/githapi",
+#'     parent  = "master")
+#'
+#'   # Create a new file on the master branch specifying an author and committer
+#'   update_file(
+#'     content   = "# This is a file\\n\\n Updated by `update_file()`",
+#'     path      = "updated-file.md",
+#'     branch    = "master",
+#'     message   = "Updated a file with update_file()",
+#'     repo      = "ChadGoymer/githapi",
+#'     author    = list(name = "Bob",  email = "bob@acme.com"),
+#'     committer = list(name = "Jane", email = "jane@acme.com"))
+#'
+#' }
+#'
 #' @export
 #'
 update_file <- function(
@@ -503,6 +563,7 @@ update_file <- function(
   branch,
   message,
   repo,
+  parent,
   author,
   committer,
   ...)
@@ -518,16 +579,19 @@ update_file <- function(
     branch  = branch,
     message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(parent) && !identical(parent, branch)) {
+    assert(is_ref(parent), "'parent' must be a valid git reference - see help(is_ref):\n  ", parent)
+    create_branch(name = branch, ref = parent, repo = repo, ...)
+  }
+
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -536,10 +600,9 @@ update_file <- function(
 
   info("Checking if a file with path '", path, "' already exists in repository '", repo, "'", level = 3)
   url   <- gh_url("repos", repo, "contents", path)
-  files <- dirname(url) %>% gh_request("GET", ...)
+  files <- str_c(dirname(url), "?ref=", branch) %>% gh_request("GET", ...)
 
-  if (basename(path) %in% map_chr(files, "name"))
-  {
+  if (basename(path) %in% map_chr(files, "name")) {
     payload$sha <- files[[which(basename(path) == map_chr(files, "name"))]]$sha
   }
 
@@ -552,7 +615,75 @@ update_file <- function(
 
 #  FUNCTION: delete_file ----------------------------------------------------------------------
 #
-#' @rdname create_file
+#' Delete a file in a new commit
+#'
+#' This function deletes a file in a repository in GitHub by creating a new commit on the
+#' specified branch. If the branch does not already exist a `parent` commit must be specified
+#' and a new branch is created from it. If the file does not exist `delete_file()` throws as
+#' error.
+#'
+#' The `author` and `committer` arguments are optional and if not supplied the current
+#' authenticated user is used. However, if you want to set them explicitly you must specify
+#' a named list with `name` and `email` as the elements (see examples).
+#'
+#' Note: The GitHub API imposes a file size limit of 1MB for this request. For larger files
+#' use the [upload_files()] function.
+#'
+#' @param path (string) The path of the file to delete, within the repository.
+#' @param branch (string) The name of the branch to make the new commit on.
+#' @param message (string) The commit message.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param parent (string, optional) If creating a new branch the the parent commit must
+#'   be specified as either a SHA, branch or tag.
+#' @param author (list, optional) A the name and email address of the user who wrote the
+#'   changes in the commit.
+#' @param committer (list, optional) A the name and email address of the user who created
+#'   the commit.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `delete_file()`returns a list of the commit properties.
+#'
+#' **Commit Properties:**
+#'
+#' - **sha**: The commit SHA.
+#' - **message**: The commit message.
+#' - **author_name**: The author's name.
+#' - **author_email**: The author's email address.
+#' - **committer_name**: The committer's name.
+#' - **committer_email**: The committer's email address.
+#' - **tree_sha**: The SHA of the file tree.
+#' - **parent_sha**: The commit SHA of the parent(s).
+#' - **date**: The date the commit was made.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Delete a file on the master branch
+#'   delete_file(
+#'     path    = "file-to-delete.md",
+#'     branch  = "master",
+#'     message = "Deleted a file with delete_file()",
+#'     repo    = "ChadGoymer/githapi")
+#'
+#'   # Delete a file on a new branch
+#'   create_file(
+#'     path    = "file-to-delete.md",
+#'     branch  = "new-branch",
+#'     message = "Deleted a file with delete_file()",
+#'     repo    = "ChadGoymer/githapi",
+#'     parent  = "master")
+#'
+#'   # Delete a file on the master branch specifying an author and committer
+#'   delete_file(
+#'     path      = "file-to-delete.md",
+#'     branch    = "master",
+#'     message   = "Deleted a file with delete_file()",
+#'     repo      = "ChadGoymer/githapi",
+#'     author    = list(name = "Bob",  email = "bob@acme.com"),
+#'     committer = list(name = "Jane", email = "jane@acme.com"))
+#'
+#' }
+#'
 #' @export
 #'
 delete_file <- function(
@@ -560,6 +691,7 @@ delete_file <- function(
   branch,
   message,
   repo,
+  parent,
   author,
   committer,
   ...)
@@ -571,16 +703,19 @@ delete_file <- function(
 
   payload <- list(branch = branch, message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(parent) && !identical(parent, branch)) {
+    assert(is_ref(parent), "'parent' must be a valid git reference - see help(is_ref):\n  ", parent)
+    create_branch(name = branch, ref = parent, repo = repo, ...)
+  }
+
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -589,7 +724,7 @@ delete_file <- function(
 
   info("Checking if a file with path '", path, "' already exists in repository '", repo, "'", level = 3)
   url   <- gh_url("repos", repo, "contents", path)
-  files <- dirname(url) %>% gh_request("GET", ...)
+  files <- str_c(dirname(url), "?ref=", branch) %>% gh_request("GET", ...)
 
   assert(
     basename(path) %in% map_chr(files, "name"),
@@ -624,7 +759,7 @@ delete_file <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param recursive (boolean, optional) Whether to list files in subfolders as well.
 #'   Default: `TRUE`.
-#' @param ... Parameters passed to [gh_request()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_files()` returns a tibble of file properties. `view_file()` returns a list
 #'   of properties for a single file. `browse_files()` and `browse_file()` opens the default
@@ -639,6 +774,7 @@ delete_file <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View files on the master branch in a repository
 #'   .view_files("master", "ChadGoymer/githapi")
 #'
@@ -656,6 +792,7 @@ delete_file <- function(
 #'     path = "README.md",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -670,8 +807,7 @@ delete_file <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_scalar_logical(recursive), "'recursive' must be a boolean:\n  ", recursive)
 
-  if (!recursive)
-  {
+  if (!recursive) {
     recursive <- NULL
   }
 
@@ -858,6 +994,7 @@ browse_file <- function(
 #'     branch  = "master",
 #'     message = "Updated an existing file with write_github_csv()",
 #'     repo    = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -893,7 +1030,8 @@ write_github_file <- function(
     message   = message,
     repo      = repo,
     author    = author,
-    committer = committer)
+    committer = committer,
+    ...)
 }
 
 
@@ -933,7 +1071,8 @@ write_github_lines <- function(
     message   = message,
     repo      = repo,
     author    = author,
-    committer = committer)
+    committer = committer,
+    ...)
 }
 
 
@@ -973,7 +1112,8 @@ write_github_csv <- function(
     message   = message,
     repo      = repo,
     author    = author,
-    committer = committer)
+    committer = committer,
+    ...)
 }
 
 
@@ -1014,6 +1154,7 @@ write_github_csv <- function(
 #'     path = "inst/test-data/test.csv",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -1036,7 +1177,8 @@ read_github_file <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Reading file '", basename(path), "'")
   file_contents <- readr::read_file(file_path, ...)
@@ -1075,7 +1217,8 @@ read_github_lines <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Reading file '", basename(path), "'")
   file_contents <- readr::read_lines(file_path, ...)
@@ -1114,7 +1257,8 @@ read_github_csv <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Reading file '", basename(path), "'")
   file_contents <- readr::read_csv(file_path, ...)
@@ -1150,6 +1294,7 @@ read_github_csv <- function(
 #'     path = "inst/test-data/test-script.R",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -1172,7 +1317,8 @@ github_source <- function(
     from_path = path,
     to_path   = file.path(temp_path, basename(path)),
     ref       = ref,
-    repo      = repo)
+    repo      = repo,
+    ...)
 
   info("Sourcing file '", basename(path), "'")
   result <- source(file_path, ...)

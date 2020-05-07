@@ -59,12 +59,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update the name of a column in a repository project
   update_column(
     column  = "Test column",
     name    = "Updated test column",
     project = "Test project",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Move a column to the first position in a user's project
   move_column(
@@ -77,6 +78,7 @@ For more details see the GitHub API documentation:
     name  = "Test column",
     after = "Test column 2",
     org   = "HairyCoos")
+
 }
 
 }

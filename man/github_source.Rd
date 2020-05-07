@@ -28,6 +28,7 @@ This function sources an R script from a commit in a repository using \code{\lin
     path = "inst/test-data/test-script.R",
     ref  = "master",
     repo = "ChadGoymer/githapi")
+
 }
 
 }

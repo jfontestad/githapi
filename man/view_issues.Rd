@@ -46,7 +46,7 @@ browse_issue(issue, repo, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{issue}{(string or character) The number or title of the issue.}
 }
@@ -95,17 +95,19 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View open issues in a repository
-  view_issues("ChadGoymer/test-githapi")
+  view_issues("ChadGoymer/githapi")
 
   # View closed issues in a repository
-  view_issues("ChadGoymer/test-githapi", state = "closed")
+  view_issues("ChadGoymer/githapi", state = "closed")
 
   # View a single issue
-  view_issue("test issue", "ChadGoymer/test-githapi")
+  view_issue("test issue", "ChadGoymer/githapi")
 
   # Open a issue's page in a browser
-  browse_issue("test issue", "ChadGoymer/test-githapi")
+  browse_issue("test issue", "ChadGoymer/githapi")
+
 }
 
 }

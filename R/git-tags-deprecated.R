@@ -40,22 +40,20 @@ view_tags <- function(
   api   = getOption("github.api"),
   ...)
 {
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
-      repo <- tags
-      tags <- NULL
-    }
-
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
-      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
+    repo <- tags
+    tags <- NULL
   }
+
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
+    error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (missing(tags) || is_null(tags) || all(is_na(tags))) {
     info("Getting up to ", n_max, " tags from repository '", repo, "'")
@@ -134,20 +132,18 @@ create_tags <- function(
 {
   .Deprecated("create_tag", package = "githapi")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (identical(length(tags), length(shas))) ||
-      error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (identical(length(tags), length(shas))) ||
+    error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   tags_list <- try_pmap(list(tags, shas), function(tag, sha) {
     info("Posting tag '", tag, "' to repository '", repo, "'")
@@ -212,20 +208,18 @@ update_tags <- function(
 {
   .Deprecated("update_tag", package = "githapi")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (identical(length(tags), length(shas))) ||
-      error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (identical(length(tags), length(shas))) ||
+    error("'tags' and 'shas' must have the same length:\n  'tags': ", length(tags), "\n  'shas':     ", length(shas))
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   tags_list <- try_pmap(list(tags, shas), function(tag, sha) {
     info("Updating tag '", tag, "' in repository '", repo, "'")
@@ -280,16 +274,14 @@ delete_tags <- function(
 {
   .Deprecated("delete_tag", package = "githapi")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   tags_list <- try_map(tags, function(tag) {
     info("Deleting tag '", tag, "' from repository '", repo, "'")
@@ -334,16 +326,14 @@ tags_exist <- function(
 {
   .Deprecated(msg = "This function will be removed in a future version")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(tags, simplify = TRUE, function(tag) {
     info("Checking tag '", tag, "' exists in repository '", repo, "'")

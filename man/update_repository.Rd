@@ -102,6 +102,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update a repository
   update_repository(
     repo           = "ChadGoymer/user-repository",
@@ -127,6 +128,7 @@ For more details see the GitHub API documentation:
 
   # Archive a repository
   update_repository("HairyCoos/org-repository", archived = TRUE)
+
 }
 
 }

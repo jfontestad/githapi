@@ -41,6 +41,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_issue(
 #'     title     = "user issue",
 #'     repo      = "ChadGoymer/test-issues",
@@ -54,6 +55,7 @@
 #'     repo      = "HairyCoos/test-issues",
 #'     body      = "This is an issue to test create_issue()",
 #'     assignees = "ChadGoymer")
+#'
 #' }
 #'
 #' @export
@@ -89,7 +91,7 @@ create_issue <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
@@ -106,17 +108,11 @@ create_issue <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
-    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "creator") %>%
     modify_list(repository = repo)
 
   info("Done", level = 7)
-  structure(
-    issue_gh,
-    class   = class(issue_lst),
-    url     = attr(issue_lst, "url"),
-    request = attr(issue_lst, "request"),
-    status  = attr(issue_lst, "status"),
-    header  = attr(issue_lst, "header"))
+  issue_gh
 }
 
 
@@ -167,10 +163,11 @@ create_issue <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update the properties of a issue
 #'   update_issue(
 #'     issue   = "test issue",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     title       = "updated test issue",
 #'     description = "This is an updated test issue",
 #'     due_on      = "2020-12-01")
@@ -178,8 +175,9 @@ create_issue <- function(
 #'   # Close a issue
 #'   update_issue(
 #'     issue = "updated test issue",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     state     = "closed")
+#'
 #' }
 #'
 #' @export
@@ -225,7 +223,7 @@ update_issue <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(
@@ -241,7 +239,7 @@ update_issue <- function(
     payload$state <- state
   }
 
-  issue <- view_issue(issue, repo = repo)
+  issue <- view_issue(issue, repo = repo, ...)
 
   info("Updating issue '", issue$title, "' in repository '", repo, "'")
   issue_lst <- gh_url("repos", repo, "issues", issue$number) %>%
@@ -253,17 +251,11 @@ update_issue <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
-    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "creator") %>%
     modify_list(repository = repo)
 
   info("Done", level = 7)
-  structure(
-    issue_gh,
-    class   = class(issue_lst),
-    url     = attr(issue_lst, "url"),
-    request = attr(issue_lst, "request"),
-    status  = attr(issue_lst, "status"),
-    header  = attr(issue_lst, "header"))
+  issue_gh
 }
 
 
@@ -301,7 +293,7 @@ update_issue <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_issues()` returns a tibble of issue properties. `view_issue()` returns a
 #'   list of properties for a single issue. `browse_issue()` opens the default browser on
@@ -326,17 +318,19 @@ update_issue <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View open issues in a repository
-#'   view_issues("ChadGoymer/test-githapi")
+#'   view_issues("ChadGoymer/githapi")
 #'
 #'   # View closed issues in a repository
-#'   view_issues("ChadGoymer/test-githapi", state = "closed")
+#'   view_issues("ChadGoymer/githapi", state = "closed")
 #'
 #'   # View a single issue
-#'   view_issue("test issue", "ChadGoymer/test-githapi")
+#'   view_issue("test issue", "ChadGoymer/githapi")
 #'
 #'   # Open a issue's page in a browser
-#'   browse_issue("test issue", "ChadGoymer/test-githapi")
+#'   browse_issue("test issue", "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -386,7 +380,7 @@ view_issues <- function(
 
     if (!missing(milestone)) {
       if (is_scalar_character(milestone)) {
-        milestone <- view_milestone(milestone = milestone, repo = repo) %>% pluck("number")
+        milestone <- view_milestone(milestone = milestone, repo = repo, ...) %>% pluck("number")
       }
       assert(is_scalar_integerish(milestone), "'milestone' must be a string or an integer:\n  ", milestone)
     }
@@ -433,7 +427,7 @@ view_issues <- function(
   issues_gh <- bind_properties(issues_lst, properties$issue) %>%
     add_column(labels       = map(issues_lst, ~ map_chr(.$labels, "name")), .before = "milestone") %>%
     add_column(assignees    = map(issues_lst, ~ map_chr(.$assignees, "login")), .before = "labels") %>%
-    add_column(pull_request = map_lgl(issues_lst, ~ !is_null(.$pull_request)), .before = "html_url")
+    add_column(pull_request = map_lgl(issues_lst, ~ !is_null(.$pull_request)), .before = "creator")
 
   info("Done", level = 7)
   issues_gh
@@ -452,20 +446,17 @@ view_issue <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_integerish(issue))
-  {
+  if (is_scalar_integerish(issue)) {
     info("Viewing issue '", issue, "' for repository '", repo, "'")
     issue_lst <- gh_url("repos", repo, "issues", issue) %>%
       gh_request("GET", ...)
   }
-  else if (is_scalar_character(issue))
-  {
+  else if (is_scalar_character(issue)) {
     info("Viewing issue '", issue, "' for repository '", repo, "'")
     issue_lst <- gh_url("repos", repo, "issues", state = "all") %>%
       gh_find(property  = "title", value = issue, ...)
   }
-  else
-  {
+  else {
     error("'issue' must be either an integer or a string:\n  ", issue)
   }
 
@@ -475,17 +466,11 @@ view_issue <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
       .before   = "milestone") %>%
-    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "html_url") %>%
+    modify_list(pull_request = !is_null(issue_lst$pull_request), .before = "creator") %>%
     modify_list(repository = repo)
 
   info("Done", level = 7)
-  structure(
-    issue_gh,
-    class   = class(issue_lst),
-    url     = attr(issue_lst, "url"),
-    request = attr(issue_lst, "request"),
-    status  = attr(issue_lst, "status"),
-    header  = attr(issue_lst, "header"))
+  issue_gh
 }
 
 
@@ -499,7 +484,7 @@ browse_issue <- function(
   repo,
   ...)
 {
-  issue <- view_issue(issue = issue, repo = repo)
+  issue <- view_issue(issue = issue, repo = repo, ...)
 
   info("Browsing issue '", issue$title, "' in repository '", repo, "'")
   httr::BROWSE(issue$html_url)

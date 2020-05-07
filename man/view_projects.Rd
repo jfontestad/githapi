@@ -26,7 +26,7 @@ either "open", "closed", or "all". Default: \code{"open"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{project}{(integer or string) The number or name of the project.}
 }
@@ -72,6 +72,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View a repository's projects
   view_projects("ChadGoymer/githapi")
 
@@ -113,6 +114,7 @@ For more details see the GitHub API documentation:
 
   # Browse a specific team project
   browse_project("Prioritisation", team = "HeadCoos", org = "HairyCoos")
+
 }
 
 }

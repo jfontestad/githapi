@@ -96,18 +96,20 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update a pull request's properties
   update_pull_request(
     pull_request = "test pull request",
-    repo         = "ChadGoymer/test-githapi",
+    repo         = "ChadGoymer/githapi",
     title        = "test updated pull request",
     body         = "This is an updated pull request to test create_pull_request()")
 
   # Close a pull request
   update_pull_request(
     pull_request = "test updated pull request",
-    repo         = "ChadGoymer/test-githapi",
+    repo         = "ChadGoymer/githapi",
     state        = "closed")
+
 }
 
 }

@@ -33,7 +33,7 @@ be either \code{"due_on"} or \code{"completeness"}. Default: \code{"due_on"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{milestone}{(string or character) The number or title of the milestone.}
 }
@@ -75,21 +75,23 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View open milestones in a repository
-  view_milestones("ChadGoymer/test-githapi")
+  view_milestones("ChadGoymer/githapi")
 
   # View closed milestones in a repository
-  view_milestones("ChadGoymer/test-githapi", state = "closed")
+  view_milestones("ChadGoymer/githapi", state = "closed")
 
   # View a single milestone
   view_milestone(
     milestone = "test milestone",
-    repo      = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/githapi")
 
   # Open a milestone's page in a browser
   browse_milestone(
     milestone = "test milestone",
-    repo      = "ChadGoymer/test-githapi")
+    repo      = "ChadGoymer/githapi")
+
 }
 
 }

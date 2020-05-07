@@ -7,7 +7,7 @@ now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
 setup(suppressMessages({
 
-  test_repo <- create_repository(
+  create_repository(
     name        = str_c("test-comments-", now),
     description = "This is a repository to test comments",
     auto_init   = TRUE)
@@ -17,17 +17,13 @@ setup(suppressMessages({
     repo  = str_c("ChadGoymer/test-comments-", now),
     body  = "This is an issue to test comments")
 
-  create_branch(
-    name = str_c("test-comments-", now),
-    ref  = "master",
-    repo = str_c("ChadGoymer/test-comments-", now))
-
   create_file(
     content = "A file to test comments",
     path    = "test-comments.txt",
     branch  = str_c("test-comments-", now),
     message = "A file to test comments",
-    repo    = str_c("ChadGoymer/test-comments-", now))
+    repo    = str_c("ChadGoymer/test-comments-", now),
+    parent  = "master")
 
   create_pull_request(
     title = str_c("pull to test comments ", now),

@@ -32,7 +32,7 @@ browse_commit(ref, repo, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
 \code{.view_commits()} returns a tibble of commit properties. \code{view_commit()} returns
@@ -70,33 +70,35 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View the history of commits for the master branch
-  .view_commits("master", "ChadGoymer/test-githapi")
+  .view_commits("master", "ChadGoymer/githapi")
 
   # View commits where the README.md file has been changed
   .view_commits(
     ref  = "master",
-    repo = "ChadGoymer/test-githapi",
+    repo = "ChadGoymer/githapi",
     path = "README.md")
 
   # View commits created by an author
   .view_commits(
     ref    = "master",
-    repo   = "ChadGoymer/test-githapi",
+    repo   = "ChadGoymer/githapi",
     author = "ChadGoymer")
 
   # View commits within a time window
   .view_commits(
     ref   = "master",
-    repo  = "ChadGoymer/test-githapi",
+    repo  = "ChadGoymer/githapi",
     since = "2020-01-01 00:00:00",
     until = "2020-04-01 00:00:00")
 
   # View the properties of the last commit on the master branch
-  view_commit("master", "ChadGoymer/test-githapi")
+  view_commit("master", "ChadGoymer/githapi")
 
   # View the properties of the commit with tag "0.8.7"
-  view_commit("0.8.7", "ChadGoymer/test-githapi")
+  view_commit("0.8.7", "ChadGoymer/githapi")
+
 }
 
 }

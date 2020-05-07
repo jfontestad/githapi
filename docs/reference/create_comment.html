@@ -72,7 +72,7 @@ pull request number) and a review comment is created for pull requests and commi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -220,14 +220,14 @@ commit the <code>body</code>, <code>pull_request</code> number or <code>commit</
   <span class='fu'>create_comment</span>(
     <span class='kw'>body</span>  <span class='kw'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
     <span class='kw'>issue</span> <span class='kw'>=</span> <span class='st'>"test issue"</span>,
-    <span class='kw'>repo</span>  <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+    <span class='kw'>repo</span>  <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Create a comment on a pull request</span>
   <span class='fu'>create_comment</span>(
     <span class='kw'>body</span>         <span class='kw'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
     <span class='kw'>pull_request</span> <span class='kw'>=</span> <span class='st'>"test pull request"</span>,
     <span class='kw'>commit</span>       <span class='kw'>=</span> <span class='st'>"test-branch"</span>,
-    <span class='kw'>repo</span>         <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>repo</span>         <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>path</span>         <span class='kw'>=</span> <span class='st'>"test-comments.txt"</span>,
     <span class='kw'>position</span>     <span class='kw'>=</span> <span class='fl'>1</span>)
 
@@ -235,7 +235,7 @@ commit the <code>body</code>, <code>pull_request</code> number or <code>commit</
   <span class='fu'>create_comment</span>(
     <span class='kw'>body</span>     <span class='kw'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
     <span class='kw'>commit</span>   <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span>     <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>repo</span>     <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>path</span>     <span class='kw'>=</span> <span class='st'>"README.md"</span>,
     <span class='kw'>position</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 

@@ -46,27 +46,25 @@ view_history <- function(
 {
   .Deprecated("view_commits", package = "githapi")
 
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
-      repo <- ref
-      ref <- NULL
-    }
-    if (missing(ref) || is_null(ref)) {
-      ref <- NULL
-    }
-
-    (is_null(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NULL or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
-      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+    repo <- ref
+    ref <- NULL
   }
+  if (missing(ref) || is_null(ref)) {
+    ref <- NULL
+  }
+
+  (is_null(ref) || is_scalar_character(ref)) ||
+    error("'ref' must be NULL or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
+    error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   info("Getting up to ", n_max, " commits from repository '", repo, "'")
   commits_list <- try_catch({
@@ -129,16 +127,14 @@ view_shas <- function(
 {
   .Deprecated("view_sha", package = "githapi")
 
-  {
-    (is_character(refs)) ||
-      error("'refs' must be a character vector:\n  '", paste(refs, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(refs)) ||
+    error("'refs' must be a character vector:\n  '", paste(refs, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   shas <- try_map(refs, simplify = TRUE, function(ref) {
     info("Getting SHA for ref '", ref, "' from repository '", repo, "'")
@@ -185,16 +181,14 @@ shas_exist <- function(
 {
   .Deprecated(msg = "this function will be removed in a future version")
 
-  {
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking commit SHA '", sha, "' exists in repository '", repo, "'")
@@ -259,18 +253,16 @@ compare_commits <- function(
 {
   .Deprecated(msg = "The returned columns will be changing in a future version - see ?.compare_commits")
 
-  {
-    (is_scalar_character(base)) ||
-      error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
-    (is_scalar_character(head)) ||
-      error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_scalar_character(base)) ||
+    error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
+  (is_scalar_character(head)) ||
+    error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- try_catch({
@@ -344,18 +336,16 @@ compare_files <- function(
 {
   .Deprecated(msg = "The returned columns will be changing in a future version - see ?.compare_files")
 
-  {
-    (is_scalar_character(base)) ||
-      error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
-    (is_scalar_character(head)) ||
-      error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_scalar_character(base)) ||
+    error("'base' must be a string:\n  '", paste(base, collapse = "'\n  '"), "'")
+  (is_scalar_character(head)) ||
+    error("'head' must be a string:\n  '", paste(head, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   info("Getting comparison of '", head, "' with '", base, "' from repository '", repo, "'")
   comparison_list <- try_catch({

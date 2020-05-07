@@ -84,6 +84,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Create a team in an organization
   create_team("TestTeam", "HairyCoos")
 
@@ -95,6 +96,7 @@ For more details see the GitHub API documentation:
 
   # Create a team and specify a parent team
   create_team("TestTeam4", "HairyCoos", parent_team = "TestTeam3")
+
 }
 
 }

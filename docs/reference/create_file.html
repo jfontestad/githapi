@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create, update or delete a file in a new commit — create_file • githapi</title>
+<title>Create a file in a new commit — create_file • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,11 @@
 
 
 
-<meta property="og:title" content="Create, update or delete a file in a new commit — create_file" />
-<meta property="og:description" content="These functions create, update or delete a file in a repository in GitHub by creating a
-new commit on the specified branch. If the file already exists create_file() throws an
-error and if the file does not exist delete_file() throws as error." />
+<meta property="og:title" content="Create a file in a new commit — create_file" />
+<meta property="og:description" content="This function adds a file in a repository in GitHub by creating a new commit on the
+specified branch. If the branch does not already exist a parent commit must be specified
+and a new branch is created from it. If the file already exists create_file() throws an
+error." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +72,7 @@ error and if the file does not exist delete_file() throws as error." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -110,22 +111,29 @@ error and if the file does not exist delete_file() throws as error." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create, update or delete a file in a new commit</h1>
+    <h1>Create a file in a new commit</h1>
     <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/files.R'><code>R/files.R</code></a></small>
     <div class="hidden name"><code>create_file.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These functions create, update or delete a file in a repository in GitHub by creating a
-new commit on the specified branch. If the file already exists <code>create_file()</code> throws an
-error and if the file does not exist <code>delete_file()</code> throws as error.</p>
+    <p>This function adds a file in a repository in GitHub by creating a new commit on the
+specified branch. If the branch does not already exist a <code>parent</code> commit must be specified
+and a new branch is created from it. If the file already exists <code>create_file()</code> throws an
+error.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_file</span>(<span class='no'>content</span>, <span class='no'>path</span>, <span class='no'>branch</span>, <span class='no'>message</span>, <span class='no'>repo</span>, <span class='no'>author</span>, <span class='no'>committer</span>, <span class='no'>...</span>)
-
-<span class='fu'>update_file</span>(<span class='no'>content</span>, <span class='no'>path</span>, <span class='no'>branch</span>, <span class='no'>message</span>, <span class='no'>repo</span>, <span class='no'>author</span>, <span class='no'>committer</span>, <span class='no'>...</span>)
-
-<span class='fu'>delete_file</span>(<span class='no'>path</span>, <span class='no'>branch</span>, <span class='no'>message</span>, <span class='no'>repo</span>, <span class='no'>author</span>, <span class='no'>committer</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>create_file</span>(
+  <span class='no'>content</span>,
+  <span class='no'>path</span>,
+  <span class='no'>branch</span>,
+  <span class='no'>message</span>,
+  <span class='no'>repo</span>,
+  <span class='no'>parent</span>,
+  <span class='no'>author</span>,
+  <span class='no'>committer</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,6 +159,11 @@ error and if the file does not exist <code>delete_file()</code> throws as error.
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
+      <th>parent</th>
+      <td><p>(string, optional) If creating a new branch the the parent commit must
+be specified as either a SHA, branch or tag.</p></td>
+    </tr>
+    <tr>
       <th>author</th>
       <td><p>(list, optional) A the name and email address of the user who wrote the
 changes in the commit.</p></td>
@@ -168,8 +181,7 @@ the commit.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>create_file()</code>, <code>update_file()</code> and <code>delete_file()</code> return a list of the commit
-properties.</p>
+    <p><code>create_file()</code>returns a list of the commit properties.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
@@ -195,15 +207,24 @@ use the <code><a href='upload_files.html'>upload_files()</a></code> function.</p
 
   <span class='co'># Create a new file on the master branch</span>
   <span class='fu'>create_file</span>(
-    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_files()`"</span>,
+    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
     <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
     <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Created a new file with create_file()"</span>,
     <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
+  <span class='co'># Create a new file on a new branch</span>
+  <span class='fu'>create_file</span>(
+    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"new-branch"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Created a new file with create_file()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>parent</span>  <span class='kw'>=</span> <span class='st'>"master"</span>)
+
   <span class='co'># Create a new file on the master branch specifying an author and committer</span>
   <span class='fu'>create_file</span>(
-    <span class='kw'>content</span>   <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_files()`"</span>,
+    <span class='kw'>content</span>   <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
     <span class='kw'>path</span>      <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
     <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
     <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Created a new file with create_file()"</span>,
@@ -211,20 +232,6 @@ use the <code><a href='upload_files.html'>upload_files()</a></code> function.</p
     <span class='kw'>author</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Bob"</span>,  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"bob@acme.com"</span>),
     <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Jane"</span>, <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"jane@acme.com"</span>))
 
-  <span class='co'># Update an existing file on the master branch</span>
-  <span class='fu'>update_file</span>(
-    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is an updated file\\n\\n Updated by `update_files()`"</span>,
-    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
-    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Updated an existing file with update_file()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
-
-  <span class='co'># Delete an existing file on the master branch</span>
-  <span class='fu'>delete_file</span>(
-    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
-    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Deleted an existing file with delete_file()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

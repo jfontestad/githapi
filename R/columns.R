@@ -29,11 +29,12 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Create a column in a repository project
 #'   create_column(
 #'     name    = "Test column",
 #'     project = "Test project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Create a column in a user's project
 #'   create_column(
@@ -46,6 +47,7 @@
 #'     name    = "Test column",
 #'     project = "Test project",
 #'     org     = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -122,12 +124,13 @@ create_column <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update the name of a column in a repository project
 #'   update_column(
 #'     column  = "Test column",
 #'     name    = "Updated test column",
 #'     project = "Test project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Move a column to the first position in a user's project
 #'   move_column(
@@ -140,6 +143,7 @@ create_column <- function(
 #'     name  = "Test column",
 #'     after = "Test column 2",
 #'     org   = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -160,7 +164,8 @@ update_column <- function(
     project = project,
     repo    = repo,
     user    = user,
-    org     = org)
+    org     = org,
+    ...)
 
   info("Updating column '", column$name, "' in project '", project, "'")
   column_lst <- gh_url("projects/columns", column$id) %>%
@@ -193,27 +198,25 @@ move_column <- function(
   org,
   ...)
 {
-  if (!missing(position))
-  {
+  if (!missing(position)) {
     assert(
       is_scalar_character(position) && position %in% values$column$position,
       "'position' must be one of '", str_c(values$column$position, collapse = "', '"), "':\n  ", position)
 
     payload <- list(position = position)
   }
-  else if (!missing(after))
-  {
+  else if (!missing(after)) {
     after_column <- view_column(
       column  = after,
       project = project,
       repo    = repo,
       user    = user,
-      org     = org)
+      org     = org,
+      ...)
 
     payload <- list(position = str_c("after:", after_column$id))
   }
-  else
-  {
+  else {
     error("Either 'position' or 'after' must be supplied")
   }
 
@@ -222,7 +225,8 @@ move_column <- function(
     project = project,
     repo    = repo,
     user    = user,
-    org     = org)
+    org     = org,
+    ...)
 
   info("Moving column '", column$name, "' in project '", project, "'")
   response <- gh_url("projects/columns", column$id, "moves") %>%
@@ -232,17 +236,14 @@ move_column <- function(
       accept  = "application/vnd.github.inertia-preview+json",
       ...)
 
-  info("Transforming results", level = 4)
-  column_gh <- structure(
+  info("Done", level = 7)
+  structure(
     column,
     class   = class(column),
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
     header  = attr(response, "header"))
-
-  info("Done", level = 7)
-  column_gh
 }
 
 
@@ -267,7 +268,7 @@ move_column <- function(
 #' @param user (string, optional) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_columns()` returns a tibble of column properties. `view_column()`
 #'   returns a list of properties for a single column.
@@ -281,10 +282,11 @@ move_column <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View columns in a repository project
 #'   view_columns(
 #'     project = "Test columns",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View columns in a user's project
 #'   view_columns(
@@ -300,7 +302,7 @@ move_column <- function(
 #'   view_column(
 #'     column  = "Test column",
 #'     project = "Test columns",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View a column in a user's project
 #'   view_column(
@@ -316,6 +318,7 @@ move_column <- function(
 #'
 #'   # View column by ID
 #'   view_column(123456)
+#'
 #' }
 #'
 #' @export
@@ -363,8 +366,7 @@ view_column <- function(
   org,
   ...)
 {
-  if (is_scalar_integerish(column))
-  {
+  if (is_scalar_integerish(column)) {
     info("Viewing column '", column, "''")
     column_lst <- gh_url("projects/columns", column) %>%
       gh_request(
@@ -372,8 +374,7 @@ view_column <- function(
         accept = "application/vnd.github.inertia-preview+json",
         ...)
   }
-  else if (is_scalar_character(column))
-  {
+  else if (is_scalar_character(column)) {
     project <- view_project(
       project = project,
       repo    = repo,
@@ -389,8 +390,7 @@ view_column <- function(
         accept   = "application/vnd.github.inertia-preview+json",
         ...)
   }
-  else
-  {
+  else {
     error("'column' must be either an integer or a string:\n  ", column)
   }
 
@@ -426,11 +426,12 @@ view_column <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a column in a repository project
 #'   delete_column(
 #'     column  = "Test column",
 #'     project = "Test project",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Delete a column in a user's project
 #'   delete_column(
@@ -443,6 +444,7 @@ view_column <- function(
 #'     column  = "Test column",
 #'     project = "Test project",
 #'     org     = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -460,7 +462,8 @@ delete_column <- function(
     project = project,
     repo    = repo,
     user    = user,
-    org     = org)
+    org     = org,
+    ...)
 
   info("Deleting column '", column$name, "' in project '", project, "'")
   response <- gh_url("projects/columns", column$id) %>%

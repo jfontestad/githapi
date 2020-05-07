@@ -72,7 +72,7 @@ uploaded it will be removed in the new commit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -217,19 +217,20 @@ to set the branch to the new commit no matter what then set the <code>force</cod
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># Add a commit to the master branch</span>
   <span class='fu'>.upload_commit</span>(
     <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
     <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test .upload_commit()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># override the author and committer</span>
   <span class='fu'>.upload_commit</span>(
     <span class='kw'>path</span>      <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
     <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
     <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Commit to test .upload_commit()"</span>,
-    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>author</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Bob"</span>,   <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"bob@acme.com"</span>),
     <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Jane"</span>,  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"jane@acme.com"</span>))
 
@@ -238,7 +239,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"test-commits-1"</span>,
     <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test .upload_commit()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>parents</span> <span class='kw'>=</span> <span class='st'>"master"</span>)
 
   <span class='co'># Create an orphan commit</span>
@@ -246,14 +247,14 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"test-commits-2"</span>,
     <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test .upload_commit()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Force branch to point at the new commit</span>
   <span class='fu'>.upload_commit</span>(
     <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
     <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test .upload_commit()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>parents</span> <span class='kw'>=</span> <span class='st'>"test-commits-1"</span>,
     <span class='kw'>force</span>   <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
@@ -262,7 +263,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
     <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test .upload_commit()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>parents</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"master"</span>, <span class='st'>"test-commits-1"</span>))
 
   <span class='co'># Create a commit merging two branches into a new branch</span>
@@ -270,8 +271,9 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"test-commits-3"</span>,
     <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test .upload_commit()"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>parents</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"master"</span>, <span class='st'>"test-commits-2"</span>))
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

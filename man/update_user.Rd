@@ -54,6 +54,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update your name
   update_user(name = "Bob Smith")
 
@@ -62,6 +63,7 @@ For more details see the GitHub API documentation:
 
   # Update your hireable status
   update_user(hireable = TRUE)
+
 }
 
 }

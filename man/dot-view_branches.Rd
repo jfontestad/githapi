@@ -14,7 +14,7 @@ view_branch(branch, repo, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{branch}{(string) The name of the branch.}
 }
@@ -43,11 +43,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View all branches in a repository
-  .view_branches("ChadGoymer/test-githapi")
+  .view_branches("ChadGoymer/githapi")
 
   # View a single branch
-  view_label("new-branch", "ChadGoymer/test-githapi")
+  view_label("new-branch", "ChadGoymer/githapi")
+
 }
 
 }

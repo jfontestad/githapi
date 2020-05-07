@@ -1,4 +1,19 @@
-# githapi 0.9.26
+# githapi 0.9.28
+
+- Removed `try()` from `setup()` and `teardown()` in all tests
+- Ensured no tests depend on the "test-githapi" repo or old functions
+- Set attributes in the `modify_list()` utility function
+- Ensured consistent use of `structure()` throughout
+- Ensured consistent positioning of curly braces
+- Ensured all uses of githapi functions within functions pass through`...`
+- Ensured order of properties are consistent
+- Allowed `create_file()`, `update_file()` and `delete_file()` to create a new branch
+- Ensured examples have correct spacing
+- Replaced "test-githapi" with "githapi in all documentation
+- Updated documentation so all `...` are passed to `gh_request()`, except for `view_*s()` functions where it is `gh_page()`
+- Corrected spelling errors
+
+# githapi 0.9.27
 
 - Added `create_comment()`
 - Added `update_comment()`

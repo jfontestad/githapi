@@ -37,11 +37,12 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Delete a column in a repository project
   delete_column(
     column  = "Test column",
     project = "Test project",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Delete a column in a user's project
   delete_column(
@@ -54,6 +55,7 @@ For more details see the GitHub API documentation:
     column  = "Test column",
     project = "Test project",
     org     = "HairyCoos")
+
 }
 
 }

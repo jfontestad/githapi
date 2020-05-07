@@ -66,6 +66,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update a note in a card
   update_card(card = 123456, note = "This is an updated note")
 
@@ -84,7 +85,8 @@ For more details see the GitHub API documentation:
     position = "top",
     column   = "Test column 2",
     project  = "Test project",
-    repo     = "ChadGoymer/test-githapi")
+    repo     = "ChadGoymer/githapi")
+
 }
 
 }

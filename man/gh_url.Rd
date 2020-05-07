@@ -32,6 +32,7 @@ queries.
 
   # URL for a file tree with the recursive option
   gh_url(c("repos", "ChadGoymer/githapi", "git/trees", "234752384"), list(recursive = 1))
+
 }
 
 }

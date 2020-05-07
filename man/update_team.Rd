@@ -67,6 +67,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update a team
   update_team(
     team        = "TestTeam",
@@ -74,6 +75,7 @@ For more details see the GitHub API documentation:
     privacy     = "closed",
     parent_team = "TestTeam3",
     org         = "HairyCoos")
+
 }
 
 }

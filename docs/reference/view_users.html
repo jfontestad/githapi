@@ -71,7 +71,7 @@ browse_user() opens the web page for the user in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -149,7 +149,7 @@ for each user. <code>view_user()</code> returns a list of all properties for a s
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -191,6 +191,7 @@ returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># View users collaborating on a repository</span>
   <span class='fu'>view_users</span>(<span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
@@ -208,6 +209,7 @@ returned.</p>
 
   <span class='co'># Browse a user's GitHub page</span>
   <span class='fu'>browse_user</span>(<span class='st'>"ChadGoymer"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -29,8 +29,9 @@ specified.
   # Download the head of the master branch to the home directory
   .download_commit(
     ref  = "master",
-    repo = "ChadGoymer/test-githapi",
+    repo = "ChadGoymer/githapi",
     path = "~")
+
 }
 
 }

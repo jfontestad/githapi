@@ -20,7 +20,7 @@ view_column(column, project, repo, user, org, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{column}{(integer or string) The number or name of the column.}
 }
@@ -53,10 +53,11 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View columns in a repository project
   view_columns(
     project = "Test columns",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View columns in a user's project
   view_columns(
@@ -72,7 +73,7 @@ For more details see the GitHub API documentation:
   view_column(
     column  = "Test column",
     project = "Test columns",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View a column in a user's project
   view_column(
@@ -88,6 +89,7 @@ For more details see the GitHub API documentation:
 
   # View column by ID
   view_column(123456)
+
 }
 
 }

@@ -36,11 +36,13 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_milestone(
 #'     title       = "test milestone",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     description = "This is a test milestone",
 #'     due_on      = "2030-01-01 00:00:00")
+#'
 #' }
 #'
 #' @export
@@ -124,10 +126,11 @@ create_milestone <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update the properties of a milestone
 #'   update_milestone(
 #'     milestone   = "test milestone",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     title       = "updated test milestone",
 #'     description = "This is an updated test milestone",
 #'     due_on      = "2020-12-01")
@@ -135,8 +138,9 @@ create_milestone <- function(
 #'   # Close a milestone
 #'   update_milestone(
 #'     milestone = "updated test milestone",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     state     = "closed")
+#'
 #' }
 #'
 #' @export
@@ -179,7 +183,7 @@ update_milestone <- function(
     payload$state <- state
   }
 
-  milestone <- view_milestone(milestone, repo = repo)
+  milestone <- view_milestone(milestone, repo = repo, ...)
 
   info("Updating milestone '", milestone$title, "' in repository '", repo, "'")
   milestone_lst <- gh_url("repos", repo, "milestones", milestone$number) %>%
@@ -217,7 +221,7 @@ update_milestone <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"asc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_milestones()` returns a tibble of milestone properties. `view_milestone()`
 #'   returns a list of properties for a single milestone. `browse_milestone()` opens the
@@ -240,21 +244,23 @@ update_milestone <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View open milestones in a repository
-#'   view_milestones("ChadGoymer/test-githapi")
+#'   view_milestones("ChadGoymer/githapi")
 #'
 #'   # View closed milestones in a repository
-#'   view_milestones("ChadGoymer/test-githapi", state = "closed")
+#'   view_milestones("ChadGoymer/githapi", state = "closed")
 #'
 #'   # View a single milestone
 #'   view_milestone(
 #'     milestone = "test milestone",
-#'     repo      = "ChadGoymer/test-githapi")
+#'     repo      = "ChadGoymer/githapi")
 #'
 #'   # Open a milestone's page in a browser
 #'   browse_milestone(
 #'     milestone = "test milestone",
-#'     repo      = "ChadGoymer/test-githapi")
+#'     repo      = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -303,20 +309,17 @@ view_milestone <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_integerish(milestone))
-  {
+  if (is_scalar_integerish(milestone)) {
     info("Viewing milestone '", milestone, "' for repository '", repo, "'")
     milestone_lst <- gh_url("repos", repo, "milestones", milestone) %>%
       gh_request("GET", ...)
   }
-  else if (is_scalar_character(milestone))
-  {
+  else if (is_scalar_character(milestone)) {
     info("Viewing milestone '", milestone, "' for repository '", repo, "'")
     milestone_lst <- gh_url("repos", repo, "milestones") %>%
       gh_find(property  = "title", value = milestone, ...)
   }
-  else
-  {
+  else {
     error("'milestone' must be either an integer or a string:\n  ", milestone)
   }
 
@@ -338,7 +341,7 @@ browse_milestone <- function(
   repo,
   ...)
 {
-  milestone <- view_milestone(milestone = milestone, repo = repo)
+  milestone <- view_milestone(milestone = milestone, repo = repo, ...)
 
   info("Browsing milestone '", milestone$title, "' in repository '", repo, "'")
   httr::BROWSE(milestone$html_url)
@@ -372,10 +375,12 @@ browse_milestone <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a milestone
 #'   delete_milestone(
 #'     milestone = "test milestone",
-#'     repo      = "ChadGoymer/test-githapi")
+#'     repo      = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -385,7 +390,7 @@ delete_milestone <- function(
   repo,
   ...)
 {
-  milestone <- view_milestone(milestone = milestone, repo = repo)
+  milestone <- view_milestone(milestone = milestone, repo = repo, ...)
 
   info("Deleting milestone '", milestone$title, "' in repository '", repo, "'")
   response <- gh_url("repos", repo, "milestones", milestone$number) %>% gh_request("DELETE", ...)

@@ -51,19 +51,20 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Add a commit to the master branch
 #'   .upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # override the author and committer
 #'   .upload_commit(
 #'     path      = "C:/files-to-upload",
 #'     branch    = "master",
 #'     message   = "Commit to test .upload_commit()",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",   email = "bob@acme.com"),
 #'     committer = list(name = "Jane",  email = "jane@acme.com"))
 #'
@@ -72,7 +73,7 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-1",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = "master")
 #'
 #'   # Create an orphan commit
@@ -80,14 +81,14 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-2",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Force branch to point at the new commit
 #'   .upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = "test-commits-1",
 #'     force   = TRUE)
 #'
@@ -96,7 +97,7 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "master",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = c("master", "test-commits-1"))
 #'
 #'   # Create a commit merging two branches into a new branch
@@ -104,8 +105,9 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-3",
 #'     message = "Commit to test .upload_commit()",
-#'     repo    = "ChadGoymer/test-githapi",
+#'     repo    = "ChadGoymer/githapi",
 #'     parents = c("master", "test-commits-2"))
+#'
 #' }
 #'
 #' @export
@@ -131,16 +133,14 @@
 
   payload <- list(message = message)
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(
       is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
       "'author' must be a list containing 'name' and 'email':\n ", author)
     payload$author <- author
   }
 
-  if (!missing(committer))
-  {
+  if (!missing(committer)) {
     assert(
       is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
       "'committer' must be a list containing 'name' and 'email':\n ", committer)
@@ -148,41 +148,36 @@
   }
 
   info("Uploading files in '", path, "' to repository '", repo, "'")
-  payload$tree <- .upload_tree(path = path, repo = repo, ignore = ignore)$tree_sha
+  payload$tree <- .upload_tree(path = path, repo = repo, ignore = ignore, ...)$tree_sha
 
-  branch_sha <- try_catch(view_sha(ref = branch, repo = repo), on_error = function(e) NULL)
+  branch_sha <- try_catch(view_sha(ref = branch, repo = repo, ...), on_error = function(e) NULL)
 
-  if (missing(parents))
-  {
-    if (is_null(branch_sha))
-    {
+  if (missing(parents)) {
+    if (is_null(branch_sha)) {
       parents <- NULL
     }
-    else
-    {
+    else {
       parents <- as.list(branch_sha)
     }
   }
-  else
-  {
+  else {
     assert(is_character(parents), "'parents' must be a character vector:\n  ", parents)
-    parents <- map(parents, function(p) if (!is_sha(p)) view_sha(ref = p, repo = repo) else p)
+    parents <- map(parents, function(p) if (!is_sha(p)) view_sha(ref = p, repo = repo, ...) else p)
   }
   payload$parents <- parents
 
   info("Creating commit in repo '", repo, "'")
-  commit_lst <- gh_url("repos", repo, "git/commits") %>% gh_request("POST", payload = payload, ...)
+  commit_lst <- gh_url("repos", repo, "git/commits") %>%
+    gh_request("POST", payload = payload, ...)
 
-  if (is_null(branch_sha))
-  {
-    create_branch(name = branch, ref = commit_lst$sha, repo = repo)
+  if (is_null(branch_sha)) {
+    create_branch(name = branch, ref = commit_lst$sha, repo = repo, ...)
   }
-  else
-  {
-    update_branch(branch = branch, ref = commit_lst$sha, repo = repo, force = force)
+  else {
+    update_branch(branch = branch, ref = commit_lst$sha, repo = repo, force = force, ...)
   }
 
-  view_commit(commit_lst$sha, repo = repo)
+  view_commit(commit_lst$sha, repo = repo, ...)
 }
 
 
@@ -207,8 +202,9 @@
 #'   # Download the head of the master branch to the home directory
 #'   .download_commit(
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi",
+#'     repo = "ChadGoymer/githapi",
 #'     path = "~")
+#'
 #' }
 #'
 #' @export
@@ -276,7 +272,7 @@
 #' @param until (string, optional) A date & time to filter by. Must be in the format:
 #'   `YYYY-MM-DD HH:MM:SS`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_request()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_commits()` returns a tibble of commit properties. `view_commit()` returns
 #'   a list of properties for a single commit. `browse_commits()` and `browse_commit` opens
@@ -299,33 +295,35 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View the history of commits for the master branch
-#'   .view_commits("master", "ChadGoymer/test-githapi")
+#'   .view_commits("master", "ChadGoymer/githapi")
 #'
 #'   # View commits where the README.md file has been changed
 #'   .view_commits(
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi",
+#'     repo = "ChadGoymer/githapi",
 #'     path = "README.md")
 #'
 #'   # View commits created by an author
 #'   .view_commits(
 #'     ref    = "master",
-#'     repo   = "ChadGoymer/test-githapi",
+#'     repo   = "ChadGoymer/githapi",
 #'     author = "ChadGoymer")
 #'
 #'   # View commits within a time window
 #'   .view_commits(
 #'     ref   = "master",
-#'     repo  = "ChadGoymer/test-githapi",
+#'     repo  = "ChadGoymer/githapi",
 #'     since = "2020-01-01 00:00:00",
 #'     until = "2020-04-01 00:00:00")
 #'
 #'   # View the properties of the last commit on the master branch
-#'   view_commit("master", "ChadGoymer/test-githapi")
+#'   view_commit("master", "ChadGoymer/githapi")
 #'
 #'   # View the properties of the commit with tag "0.8.7"
-#'   view_commit("0.8.7", "ChadGoymer/test-githapi")
+#'   view_commit("0.8.7", "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -343,47 +341,39 @@
   assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (!missing(path))
-  {
+  if (!missing(path)) {
     assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
     path <- str_c(path, collapse = ",")
   }
-  else
-  {
+  else {
     path <- NULL
   }
 
-  if (!missing(author))
-  {
+  if (!missing(author)) {
     assert(is_scalar_character(author), "'author' must be a string:\n  ", author)
     author <- str_c(author, collapse = ",")
   }
-  else
-  {
+  else {
     author <- NULL
   }
 
-  if (!missing(since))
-  {
+  if (!missing(since)) {
     assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
     since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
     assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
   }
-  else
-  {
+  else {
     since <- NULL
   }
 
-  if (!missing(until))
-  {
+  if (!missing(until)) {
     assert(is_scalar_character(until), "'until' must be a string:\n  ", until)
     until <- as.POSIXct(until, format = "%Y-%m-%d %H:%M:%S") %>%
       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
     assert(!is.na(until), "'until' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", until)
   }
-  else
-  {
+  else {
     until <- NULL
   }
 
@@ -399,7 +389,7 @@
 
   info("Transforming results", level = 4)
   commits_gh <- bind_properties(commits_lst, properties$commit) %>%
-    add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "date")
+    add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "html_url")
 
   info("Done", level = 7)
   commits_gh
@@ -425,16 +415,10 @@ view_commit <- function(
 
   info("Transforming results", level = 4)
   commit_gh <- select_properties(commit_lst, properties$commit) %>%
-    modify_list(parents = map_chr(commit_lst$parents, "sha"), .before = "date")
+    modify_list(parents = map_chr(commit_lst$parents, "sha"), .before = "html_url")
 
   info("Done", level = 7)
-  structure(
-    commit_gh,
-    class   = class(commit_lst),
-    url     = attr(commit_lst, "url"),
-    request = attr(commit_lst, "request"),
-    status  = attr(commit_lst, "status"),
-    header  = attr(commit_lst, "header"))
+  commit_gh
 }
 
 
@@ -513,8 +497,10 @@ browse_commit <- function(
 #'
 #' @examples
 #' \dontrun{
-#'   view_sha("a-tag", repo = "ChadGoymer/test-githapi")
-#'   view_sha("a-branch", repo = "ChadGoymer/test-githapi")
+#'
+#'   view_sha("a-tag", repo = "ChadGoymer/githapi")
+#'   view_sha("a-branch", repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -592,7 +578,7 @@ view_sha <- function(
 
   info("Transforming results", level = 4)
   comparison_gh <- bind_properties(comparison_lst$commits, properties$commit) %>%
-    add_column(parents = map(comparison_lst$commits, ~ map_chr(.$parents, "sha")), .before = "date")
+    add_column(parents = map(comparison_lst$commits, ~ map_chr(.$parents, "sha")), .before = "html_url")
 
   info("Done", level = 7)
   structure(

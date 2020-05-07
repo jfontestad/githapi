@@ -29,8 +29,10 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Delete a card
   delete_card(123456)
+
 }
 
 }

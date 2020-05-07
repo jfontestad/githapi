@@ -35,16 +35,14 @@ view_blobs <- function(
 {
   .Deprecated("view_files", package = "githapi")
 
-  {
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   blobs_list <- try_map(shas, function(sha) {
     info("Getting blob '", sha, "' from repository '", repo, "'")
@@ -104,18 +102,16 @@ create_blobs <- function(
 {
   .Deprecated("create_file", package = "githapi")
 
-  {
-    (is_character(contents)) ||
-      error("'contents' must be a character vector:\n  '", paste(contents, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_character(encoding) && (identical(length(encoding), 1L)) || identical(length(encoding), length(contents))) ||
-      error("'encoding' must be either a string or a character vector the same length as 'contents':\n  '", paste(encoding, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(contents)) ||
+    error("'contents' must be a character vector:\n  '", paste(contents, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_character(encoding) && (identical(length(encoding), 1L)) || identical(length(encoding), length(contents))) ||
+    error("'encoding' must be either a string or a character vector the same length as 'contents':\n  '", paste(encoding, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   params <- tibble(
     content  = contents,
@@ -172,16 +168,14 @@ upload_blobs <- function(
 {
   .Deprecated("upload_files", package = "githapi")
 
-  {
-    (all(gh_map(paths, simplify = TRUE, function(p) is_file(p) && is_readable(p)))) ||
-      error("'paths' must be a character vector of readable file paths:\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (all(gh_map(paths, simplify = TRUE, function(p) is_file(p) && is_readable(p)))) ||
+    error("'paths' must be a character vector of readable file paths:\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   blobs_list <- try_map(paths, function(path) {
     info("Uploading file '", basename(path), "' to repository '", repo, "'")
@@ -239,27 +233,25 @@ read_files <- function(
 {
   .Deprecated("read_github_file", package = "githapi")
 
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
-      repo <- ref
-      ref <- NULL
-    }
-    if (missing(ref) || is_null(ref)) {
-      ref <- NULL
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_null(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+    repo <- ref
+    ref <- NULL
   }
+  if (missing(ref) || is_null(ref)) {
+    ref <- NULL
+  }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_null(ref) || is_scalar_character(ref)) ||
+    error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (!is_sha(ref)) {
     ref <- suppressWarnings(view_history(ref = ref, repo = repo, n_max = 1)[["sha"]])
@@ -324,29 +316,27 @@ download_files <- function(
 {
   .Deprecated("download_file", package = "githapi")
 
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
-      repo <- ref
-      ref <- NA
-    }
-    if (missing(ref) || is_null(ref)) {
-      ref <- NA
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_scalar_character(location)) ||
-      error("'location' must be a string:\n  ", paste(location, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+    repo <- ref
+    ref <- NA
   }
+  if (missing(ref) || is_null(ref)) {
+    ref <- NA
+  }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector:\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_scalar_character(location)) ||
+    error("'location' must be a string:\n  ", paste(location, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_na(ref) || is_scalar_character(ref)) ||
+    error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (!is_sha(ref)) {
     ref <- suppressWarnings(view_history(ref = ref, repo = repo, n_max = 1)[["sha"]])
@@ -405,16 +395,14 @@ blobs_exist <- function(
 {
   .Deprecated(msg = "This function will be removed in a future version")
 
-  {
-    (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
-      error("'shas' must be a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(shas) && all(gh_map(shas, is_sha, simplify = TRUE))) ||
+    error("'shas' must be a vector of 40 character strings:\n  '", paste(shas, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(shas, simplify = TRUE, function(sha) {
     info("Checking blob '", sha, "' exists in repository '", repo, "'")
@@ -467,27 +455,25 @@ source_files <- function(
 {
   .Deprecated("github_source", package = "githapi")
 
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
-      repo <- ref
-      ref <- NA
-    }
-    if (missing(ref) || is_null(ref)) {
-      ref <- NA
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_na(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'ref' argument: ", ref, level = 2)
+    repo <- ref
+    ref <- NA
   }
+  if (missing(ref) || is_null(ref)) {
+    ref <- NA
+  }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_na(ref) || is_scalar_character(ref)) ||
+    error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   temp_path <- tempfile("githapi")
   on.exit(unlink(temp_path, recursive = TRUE))

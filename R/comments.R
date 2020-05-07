@@ -57,14 +57,14 @@
 #'   create_comment(
 #'     body  = "This is a comment created by create_comment()",
 #'     issue = "test issue",
-#'     repo  = "ChadGoymer/test-githapi")
+#'     repo  = "ChadGoymer/githapi")
 #'
 #'   # Create a comment on a pull request
 #'   create_comment(
 #'     body         = "This is a comment created by create_comment()",
 #'     pull_request = "test pull request",
 #'     commit       = "test-branch",
-#'     repo         = "ChadGoymer/test-githapi",
+#'     repo         = "ChadGoymer/githapi",
 #'     path         = "test-comments.txt",
 #'     position     = 1)
 #'
@@ -72,7 +72,7 @@
 #'   create_comment(
 #'     body     = "This is a comment created by create_comment()",
 #'     commit   = "master",
-#'     repo     = "ChadGoymer/test-githapi",
+#'     repo     = "ChadGoymer/githapi",
 #'     path     = "README.md",
 #'     position = 1)
 #'
@@ -213,21 +213,21 @@ create_comment <- function(
 #'     comment = 622980929,
 #'     body    = "This comment has been updated by update_comment()",
 #'     type    = "issue",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Update an pull request comment
 #'   update_comment(
 #'     comment = 418979473,
 #'     body    = "This comment has been updated by update_comment()",
 #'     type    = "pull_request",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Update a commit comment
 #'   update_comment(
 #'     comment = 38899533,
 #'     body    = "This comment has been updated by update_comment()",
 #'     type    = "commit",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -313,7 +313,7 @@ update_comment <- function(
 #' @param type (string, optional) Whether the comment is for a `"gist"`, `"issue"`,
 #'   `"pull_request"` or `"commit"`. Default: `"gist"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_request()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_comments()` returns a tibble of comment properties. `view_comment()`
 #'   returns a list of properties for a single comment. `browse_comment()` opens the
@@ -343,17 +343,17 @@ update_comment <- function(
 #'   # View comments on an issue
 #'   view_comments(
 #'     issue = "test issue",
-#'     repo  = "ChadGoymer/test-githapi")
+#'     repo  = "ChadGoymer/githapi")
 #'
 #'   # View comments on a pull request
 #'   view_comments(
 #'     pull_request = "test pull request",
-#'     repo         = "ChadGoymer/test-githapi")
+#'     repo         = "ChadGoymer/githapi")
 #'
 #'   # View comments on a commit
 #'   view_comments(
 #'     commit = "master",
-#'     repo   = "ChadGoymer/test-githapi")
+#'     repo   = "ChadGoymer/githapi")
 #'
 #'   # View a single gist comment
 #'   view_comment(gist_comment_id, gist = "8e5be270de9a88168372293a813543f9")
@@ -362,37 +362,37 @@ update_comment <- function(
 #'   view_comment(
 #'     comment = 622980929,
 #'     type    = "issue",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View a single pull request comment
 #'   view_comment(
 #'     comment = 418979473,
 #'     type    = "pull_request",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View a single commit comment
 #'   view_comment(
 #'     comment = 38899533,
 #'     type    = "commit",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Browse an issue comment
 #'   browse_comment(
 #'     comment = 622980929,
 #'     type    = "issue",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Browse a pull request comment
 #'   browse_comment(
 #'     comment = 418979473,
 #'     type    = "pull_request",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Browse a commit comment
 #'   browse_comment(
 #'     comment = 38899533,
 #'     type    = "commit",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #' }
 #'
@@ -590,19 +590,19 @@ browse_comment <- function(
 #'   delete_comment(
 #'     comment = 622980929,
 #'     type    = "issue",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Delete a pull request comment
 #'   delete_comment(
 #'     comment = 418979473,
 #'     type    = "pull_request",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # Delete a commit comment
 #'   delete_comment(
 #'     comment = 38899533,
 #'     type    = "commit",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #' }
 #'

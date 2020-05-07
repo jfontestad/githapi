@@ -18,7 +18,7 @@ used.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{org}{(string) The login of the organization.}
 }
@@ -83,6 +83,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View organizations a user is a member of
   view_organizations(user = "ChadGoymer")
 
@@ -97,6 +98,7 @@ For more details see the GitHub API documentation:
 
   # Browse a organization's GitHub page
   browse_organization("HairyCoos")
+
 }
 
 }

@@ -67,8 +67,7 @@ create_gist <- function(
   payload <- list(public = public)
   payload$files <- map(files, ~ list(content = .))
 
-  if (!missing(description))
-  {
+  if (!missing(description)) {
     assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
     payload$description <- description
   }
@@ -81,13 +80,7 @@ create_gist <- function(
     modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
 
   info("Done", level = 7)
-  structure(
-    gist_gh,
-    class   = class(gist_lst),
-    url     = attr(gist_lst, "url"),
-    request = attr(gist_lst, "request"),
-    status  = attr(gist_lst, "status"),
-    header  = attr(gist_lst, "header"))
+  gist_gh
 }
 
 
@@ -154,8 +147,7 @@ update_gist <- function(
 
   payload <- NULL
 
-  if (!missing(files))
-  {
+  if (!missing(files)) {
     assert(is_list(files) & has_names(files), "'files' must be a named list:\n  ", files)
     assert(
       all(map_lgl(files, ~ is_character(.) && all(names(.) %in% c("", "content", "filename")))),
@@ -165,8 +157,7 @@ update_gist <- function(
     })
   }
 
-  if (!missing(description))
-  {
+  if (!missing(description)) {
     assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
     payload$description <- description
   }
@@ -179,13 +170,7 @@ update_gist <- function(
     modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
 
   info("Done", level = 7)
-  structure(
-    gist_gh,
-    class   = class(gist_lst),
-    url     = attr(gist_lst, "url"),
-    request = attr(gist_lst, "request"),
-    status  = attr(gist_lst, "status"),
-    header  = attr(gist_lst, "header"))
+  gist_gh
 }
 
 
@@ -211,7 +196,7 @@ update_gist <- function(
 #' @param since (string, optional) A date & time to filter by. Must be in the format:
 #'   `YYYY-MM-DD HH:MM:SS`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_request()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_gists()` returns a tibble of gist properties. `view_gist()`
 #'   returns a list of properties for a single gist. `browse_gist` opens the
@@ -315,13 +300,7 @@ view_gist <- function(
     modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
 
   info("Done", level = 7)
-  structure(
-    gist_gh,
-    class   = class(gist_lst),
-    url     = attr(gist_lst, "url"),
-    request = attr(gist_lst, "request"),
-    status  = attr(gist_lst, "status"),
-    header  = attr(gist_lst, "header"))
+  gist_gh
 }
 
 

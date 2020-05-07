@@ -5,20 +5,24 @@ context("projects")
 
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
-setup(suppressMessages(try(silent = TRUE, {
+setup(suppressMessages({
 
-  test_team <- create_team(
+  create_repository(
+    name        = str_c("test-repo-", now),
+    description = "This is a repository to test repositories")
+
+  create_team(
     name        = str_c("Test projects ", now),
     description = "This was created to test team projects",
     org         = "HairyCoos")
 
-})))
+}))
 
-teardown(suppressMessages(try(silent = TRUE, {
+teardown(suppressMessages({
 
   delete_team(str_c("Test projects ", now), org = "HairyCoos")
 
-})))
+}))
 
 
 # TEST: create_project ------------------------------------------------------------------------
@@ -28,7 +32,7 @@ test_that("create_projects creates a project and returns its properties", {
   repo_project <- create_project(
     name = str_c("Repo project ", now),
     body = "This is a repo project",
-    repo = "ChadGoymer/test-githapi")
+    repo = str_c("ChadGoymer/test-repo-", now))
 
   expect_is(repo_project, "list")
   expect_identical(attr(repo_project, "status"), 201L)
@@ -40,9 +44,9 @@ test_that("create_projects creates a project and returns its properties", {
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_identical(repo_project$name, str_c("Repo project ", now))
 
@@ -60,9 +64,9 @@ test_that("create_projects creates a project and returns its properties", {
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_identical(user_project$name, str_c("User project ", now))
 
@@ -83,9 +87,9 @@ test_that("create_projects creates a project and returns its properties", {
       private        = "logical",
       org_permission = "character",
       creator        = "character",
+      html_url       = "character",
       created_at     = "POSIXct",
-      updated_at     = "POSIXct",
-      html_url       = "character"))
+      updated_at     = "POSIXct"))
 
   expect_identical(org_project$name, str_c("Organization project ", now))
 
@@ -120,7 +124,7 @@ test_that("update_project updates a project and returns a list of the new proper
     project = str_c("Repo project ", now),
     name    = str_c("Updated repo project ", now),
     body    = "This is an updated repo project",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-repo-", now))
 
   expect_is(repo_project, "list")
   expect_identical(attr(repo_project, "status"), 200L)
@@ -132,9 +136,9 @@ test_that("update_project updates a project and returns a list of the new proper
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_identical(repo_project$name, str_c("Updated repo project ", now))
 
@@ -153,9 +157,9 @@ test_that("update_project updates a project and returns a list of the new proper
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_identical(user_project$state, "closed")
 
@@ -177,9 +181,9 @@ test_that("update_project updates a project and returns a list of the new proper
       private        = "logical",
       org_permission = "character",
       creator        = "character",
+      html_url       = "character",
       created_at     = "POSIXct",
-      updated_at     = "POSIXct",
-      html_url       = "character"))
+      updated_at     = "POSIXct"))
 
   expect_identical(org_project$org_permission, "read")
   expect_identical(org_project$private, FALSE)
@@ -202,9 +206,9 @@ test_that("update_project updates a project and returns a list of the new proper
       org_permission  = "character",
       team_permission = "character",
       creator         = "character",
+      html_url        = "character",
       created_at      = "POSIXct",
-      updated_at      = "POSIXct",
-      html_url        = "character"))
+      updated_at      = "POSIXct"))
 
   expect_identical(team_project$team_permission, "write")
 
@@ -227,9 +231,9 @@ test_that("update_project updates a project and returns a list of the new proper
       org_permission  = "character",
       team_permission = "character",
       creator         = "character",
+      html_url        = "character",
       created_at      = "POSIXct",
-      updated_at      = "POSIXct",
-      html_url        = "character"))
+      updated_at      = "POSIXct"))
 
   expect_identical(upd_team_project$team_permission, "read")
 
@@ -240,7 +244,7 @@ test_that("update_project updates a project and returns a list of the new proper
 
 test_that("view_projects returns a tibble summarising the projects", {
 
-  repo_projects <- view_projects("ChadGoymer/test-githapi")
+  repo_projects <- view_projects(str_c("ChadGoymer/test-repo-", now))
 
   expect_is(repo_projects, "tbl")
   expect_identical(attr(repo_projects, "status"), 200L)
@@ -252,9 +256,9 @@ test_that("view_projects returns a tibble summarising the projects", {
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_true(str_c("Updated repo project ", now) %in% repo_projects$name)
 
@@ -270,9 +274,9 @@ test_that("view_projects returns a tibble summarising the projects", {
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_true(str_c("User project ", now) %in% user_projects$name)
 
@@ -290,9 +294,9 @@ test_that("view_projects returns a tibble summarising the projects", {
       private        = "logical",
       org_permission = "character",
       creator        = "character",
+      html_url       = "character",
       created_at     = "POSIXct",
-      updated_at     = "POSIXct",
-      html_url       = "character"))
+      updated_at     = "POSIXct"))
 
   expect_true(str_c("Organization project ", now) %in% org_projects$name)
 
@@ -311,9 +315,9 @@ test_that("view_projects returns a tibble summarising the projects", {
       org_permission  = "character",
       team_permission = "character",
       creator         = "character",
+      html_url        = "character",
       created_at      = "POSIXct",
-      updated_at      = "POSIXct",
-      html_url        = "character"))
+      updated_at      = "POSIXct"))
 
   expect_true(str_c("Organization project ", now) %in% team_projects$name)
 
@@ -334,7 +338,7 @@ test_that("view_project returns a list of project properties", {
 
   repo_project <- view_project(
     project = str_c("Updated repo project ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-repo-", now))
 
   expect_is(repo_project, "list")
   expect_identical(attr(repo_project, "status"), 200L)
@@ -346,9 +350,9 @@ test_that("view_project returns a list of project properties", {
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_identical(repo_project$name, str_c("Updated repo project ", now))
 
@@ -364,9 +368,9 @@ test_that("view_project returns a list of project properties", {
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_identical(user_project$state, "closed")
 
@@ -384,9 +388,9 @@ test_that("view_project returns a list of project properties", {
       private        = "logical",
       org_permission = "character",
       creator        = "character",
+      html_url       = "character",
       created_at     = "POSIXct",
-      updated_at     = "POSIXct",
-      html_url       = "character"))
+      updated_at     = "POSIXct"))
 
   expect_identical(org_project$org_permission, "read")
   expect_identical(org_project$private, FALSE)
@@ -409,9 +413,9 @@ test_that("view_project returns a list of project properties", {
       org_permission  = "character",
       team_permission = "character",
       creator         = "character",
+      html_url        = "character",
       created_at      = "POSIXct",
-      updated_at      = "POSIXct",
-      html_url        = "character"))
+      updated_at      = "POSIXct"))
 
   expect_identical(team_project$team_permission, "read")
 
@@ -419,9 +423,9 @@ test_that("view_project returns a list of project properties", {
 
 test_that("view_project can accept a project number", {
 
-  projects <- view_projects("ChadGoymer/test-githapi")
+  projects <- view_projects(str_c("ChadGoymer/test-repo-", now))
 
-  first_project <- view_project(projects$number[[1]], "ChadGoymer/test-githapi")
+  first_project <- view_project(projects$number[[1]], str_c("ChadGoymer/test-repo-", now))
 
   expect_is(first_project, "list")
   expect_identical(attr(first_project, "status"), 200L)
@@ -433,9 +437,9 @@ test_that("view_project can accept a project number", {
       body       = "character",
       state      = "character",
       creator    = "character",
+      html_url   = "character",
       created_at = "POSIXct",
-      updated_at = "POSIXct",
-      html_url   = "character"))
+      updated_at = "POSIXct"))
 
   expect_identical(first_project$number, projects$number[[1]])
 
@@ -444,7 +448,7 @@ test_that("view_project can accept a project number", {
 test_that("view_project throws an error if invalid arguments are supplied", {
 
   expect_error(
-    view_project(TRUE, "ChadGoymer/test-githapi"),
+    view_project(TRUE, str_c("ChadGoymer/test-repo-", now)),
     "'project' must be either an integer or a string")
 
   expect_error(
@@ -462,11 +466,13 @@ test_that("browse_project opens the project in the browser", {
 
   repo_project <- browse_project(
     project = str_c("Updated repo project ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-repo-", now))
 
   expect_is(repo_project, "character")
   expect_identical(attr(repo_project, "status"), 200L)
-  expect_identical(dirname(repo_project), "https://github.com/ChadGoymer/test-githapi/projects")
+  expect_identical(
+    dirname(repo_project),
+    str_c("https://github.com/ChadGoymer/test-repo-", now, "/projects"))
 
   user_project <- browse_project(str_c("User project ", now), user = "ChadGoymer")
 
@@ -498,7 +504,7 @@ test_that("delete_project deletes the projects and returns TRUE", {
 
   repo_project <- delete_project(
     project = str_c("Updated repo project ", now),
-    repo    = "ChadGoymer/test-githapi")
+    repo    = str_c("ChadGoymer/test-repo-", now))
 
   expect_is(repo_project, "logical")
   expect_identical(attr(repo_project, "status"), 204L)

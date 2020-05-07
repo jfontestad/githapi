@@ -6,10 +6,12 @@ context("gists")
 now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
 teardown(suppressMessages({
+
   created_gists <- view_gists(since = as.character(Sys.time() - 60*10)) %>%
     filter(map_lgl(.data$files, ~ any(str_detect(., now))))
 
   walk(created_gists$id, delete_gist)
+
 }))
 
 

@@ -7,7 +7,7 @@ now <- format(Sys.time(), "%Y%m%d-%H%M%S")
 
 setup(suppressMessages({
 
-  test_repo <- create_repository(
+  create_repository(
     name        = str_c("test-commits-", now),
     description = "This is a repository to test commits",
     auto_init   = TRUE)
@@ -54,12 +54,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(flat_commit$message, "Commit to test .upload_commit()")
@@ -99,12 +100,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(recursive_commit$message, "Commit to test .upload_commit()")
@@ -127,12 +129,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(author_commit$message, "Commit to test .upload_commit()")
@@ -157,12 +160,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(orphan_commit$message, "Commit to test .upload_commit()")
@@ -185,12 +189,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(valid_parent_commit$message, "Commit to test .upload_commit()")
@@ -224,12 +229,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(force_parent_commit$message, "Commit to test .upload_commit()")
@@ -252,12 +258,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(new_branch_commit$message, "Commit to test .upload_commit()")
@@ -280,12 +287,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(merge_master_commit$message, "Commit to test .upload_commit()")
@@ -308,12 +316,13 @@ test_that(".upload_commit uploads files in a directory and creates a commit", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(merge_branch_commit$message, "Commit to test .upload_commit()")
@@ -362,12 +371,13 @@ test_that(".view_commits returns a tibble of commit properties", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "list",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(last(master_commits$message), "Initial commit")
@@ -386,12 +396,13 @@ test_that(".view_commits returns a tibble of commit properties", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "list",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(last(readme_commits$message), "Initial commit")
@@ -410,12 +421,13 @@ test_that(".view_commits returns a tibble of commit properties", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "list",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(last(author_commits$message), "Initial commit")
@@ -435,12 +447,13 @@ test_that(".view_commits returns a tibble of commit properties", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "list",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(last(time_commits$message), "Initial commit")
@@ -463,12 +476,13 @@ test_that("view_commit returns a list of commit properties", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "character",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(master_commit$author_login, "ChadGoymer")
@@ -555,12 +569,13 @@ test_that(".compare_commits returns all the commits made between to commits", {
       author_login    = "character",
       author_name     = "character",
       author_email    = "character",
+      author_date     = "POSIXct",
       committer_login = "character",
       committer_name  = "character",
       committer_email = "character",
+      committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "list",
-      date            = "POSIXct",
       html_url        = "character"))
 
   expect_identical(commits$sha, master_commits$sha[2:1])

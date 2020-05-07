@@ -22,8 +22,10 @@ SHA, branch or tag. If it is a branch then the head commit is used.
 }
 \examples{
 \dontrun{
-  view_sha("a-tag", repo = "ChadGoymer/test-githapi")
-  view_sha("a-branch", repo = "ChadGoymer/test-githapi")
+
+  view_sha("a-tag", repo = "ChadGoymer/githapi")
+  view_sha("a-branch", repo = "ChadGoymer/githapi")
+
 }
 
 }

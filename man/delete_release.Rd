@@ -28,7 +28,9 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   delete_release("1.0.0", repo = "ChadGoymer/githapi")
+
 }
 
 }

@@ -25,7 +25,7 @@ browse_comment(comment, repo, type, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{comment}{(integer) The id of the comment.}
 
@@ -81,17 +81,17 @@ For more details see the GitHub API documentation:
   # View comments on an issue
   view_comments(
     issue = "test issue",
-    repo  = "ChadGoymer/test-githapi")
+    repo  = "ChadGoymer/githapi")
 
   # View comments on a pull request
   view_comments(
     pull_request = "test pull request",
-    repo         = "ChadGoymer/test-githapi")
+    repo         = "ChadGoymer/githapi")
 
   # View comments on a commit
   view_comments(
     commit = "master",
-    repo   = "ChadGoymer/test-githapi")
+    repo   = "ChadGoymer/githapi")
 
   # View a single gist comment
   view_comment(gist_comment_id, gist = "8e5be270de9a88168372293a813543f9")
@@ -100,37 +100,37 @@ For more details see the GitHub API documentation:
   view_comment(
     comment = 622980929,
     type    = "issue",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View a single pull request comment
   view_comment(
     comment = 418979473,
     type    = "pull_request",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View a single commit comment
   view_comment(
     comment = 38899533,
     type    = "commit",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Browse an issue comment
   browse_comment(
     comment = 622980929,
     type    = "issue",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Browse a pull request comment
   browse_comment(
     comment = 418979473,
     type    = "pull_request",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Browse a commit comment
   browse_comment(
     comment = 38899533,
     type    = "commit",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
 }
 

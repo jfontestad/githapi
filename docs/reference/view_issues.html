@@ -72,7 +72,7 @@ default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -185,7 +185,7 @@ default browser.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>issue</th>
@@ -231,17 +231,19 @@ the order the results are returned can be controlled with <code>sort</code> and 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># View open issues in a repository</span>
-  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View closed issues in a repository</span>
-  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/test-githapi"</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"closed"</span>)
+  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/githapi"</span>, <span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"closed"</span>)
 
   <span class='co'># View a single issue</span>
-  <span class='fu'>view_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>view_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Open a issue's page in a browser</span>
-  <span class='fu'>browse_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>browse_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

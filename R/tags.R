@@ -24,10 +24,12 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_tag(
 #'     name = "new-tag",
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi")
+#'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -41,9 +43,8 @@ create_tag <- function(
   assert(is_ref(name), "'name' must be a valid git reference - see help(is_ref):\n  ", name)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (!is_sha(ref))
-  {
-    ref <- view_sha(ref = ref, repo = repo)
+  if (!is_sha(ref)) {
+    ref <- view_sha(ref = ref, repo = repo, ...)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -58,13 +59,7 @@ create_tag <- function(
     modify_list(name = basename(tag_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    tag_gh,
-    class   = class(tag_lst),
-    url     = attr(tag_lst, "url"),
-    request = attr(tag_lst, "request"),
-    status  = attr(tag_lst, "status"),
-    header  = attr(tag_lst, "header"))
+  tag_gh
 }
 
 
@@ -96,10 +91,12 @@ create_tag <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   update_tag(
 #'     tag  = "new-tag",
 #'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d",
-#'     repo = "ChadGoymer/test-githapi")
+#'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -115,9 +112,8 @@ update_tag <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_scalar_logical(force), "'force' must be boolean:\n  ", force)
 
-  if (!is_sha(ref))
-  {
-    ref <- view_sha(ref = ref, repo = repo)
+  if (!is_sha(ref)) {
+    ref <- view_sha(ref = ref, repo = repo, ...)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -130,13 +126,7 @@ update_tag <- function(
     modify_list(name = basename(tag_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    tag_gh,
-    class   = class(tag_lst),
-    url     = attr(tag_lst, "url"),
-    request = attr(tag_lst, "request"),
-    status  = attr(tag_lst, "status"),
-    header  = attr(tag_lst, "header"))
+  tag_gh
 }
 
 
@@ -154,7 +144,7 @@ update_tag <- function(
 #' @param tag (string) The name of the tag.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
 #'   properties for a single tag.
@@ -167,11 +157,13 @@ update_tag <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all tags in a repository
-#'   .view_tags("ChadGoymer/test-githapi")
+#'   .view_tags("ChadGoymer/githapi")
 #'
 #'   # View a single tag
-#'   view_tag("new-tag", "ChadGoymer/test-githapi")
+#'   view_tag("new-tag", "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -218,13 +210,7 @@ view_tag <- function(
     modify_list(name = basename(tag_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    tag_gh,
-    class   = class(tag_lst),
-    url     = attr(tag_lst, "url"),
-    request = attr(tag_lst, "request"),
-    status  = attr(tag_lst, "status"),
-    header  = attr(tag_lst, "header"))
+  tag_gh
 }
 
 
@@ -246,7 +232,9 @@ view_tag <- function(
 #'
 #' @examples
 #' \dontrun{
-#'   delete_tag("new-tag", repo = "ChadGoymer/test-githapi")
+#'
+#'   delete_tag("new-tag", repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export

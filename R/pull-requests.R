@@ -62,16 +62,17 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_pull_request(
 #'     title = "test pull request",
-#'     repo  = "ChadGoymer/test-githapi",
+#'     repo  = "ChadGoymer/githapi",
 #'     head  = "test-pulls",
 #'     base  = "master",
 #'     body  = "This is a pull request to test create_pull_request()")
 #'
 #'   create_pull_request(
 #'     title     = "test assigned pull request",
-#'     repo      = "ChadGoymer/test-githapi",
+#'     repo      = "ChadGoymer/githapi",
 #'     head      = "test-pulls-2",
 #'     base      = "master",
 #'     body      = "This is a pull request to test create_pull_request()",
@@ -79,6 +80,7 @@
 #'     reviewers = c("BobSmith", "JaneJones"),
 #'     labels    = "enhancement",
 #'     milestone = "Release-1.0")
+#'
 #' }
 #'
 #' @export
@@ -125,7 +127,7 @@ create_pull_request <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
@@ -157,13 +159,7 @@ create_pull_request <- function(
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
   info("Done", level = 7)
-  structure(
-    pull_gh,
-    class   = class(pull_lst),
-    url     = attr(pull_lst, "url"),
-    request = attr(pull_lst, "request"),
-    status  = attr(pull_lst, "status"),
-    header  = attr(pull_lst, "header"))
+  pull_gh
 }
 
 
@@ -232,18 +228,20 @@ create_pull_request <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update a pull request's properties
 #'   update_pull_request(
 #'     pull_request = "test pull request",
-#'     repo         = "ChadGoymer/test-githapi",
+#'     repo         = "ChadGoymer/githapi",
 #'     title        = "test updated pull request",
 #'     body         = "This is an updated pull request to test create_pull_request()")
 #'
 #'   # Close a pull request
 #'   update_pull_request(
 #'     pull_request = "test updated pull request",
-#'     repo         = "ChadGoymer/test-githapi",
+#'     repo         = "ChadGoymer/githapi",
 #'     state        = "closed")
+#'
 #' }
 #'
 #' @export
@@ -287,20 +285,17 @@ update_pull_request <- function(
     payload$base <- base
   }
 
-  if (is_scalar_integerish(pull_request))
-  {
+  if (is_scalar_integerish(pull_request)) {
     info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
       gh_request("GET", ...)
   }
-  else if (is_scalar_character(pull_request))
-  {
+  else if (is_scalar_character(pull_request)) {
     info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
       gh_find(property  = "title", value = pull_request, ...)
   }
-  else
-  {
+  else {
     error("'pull_request' must be either an integer or a string:\n  ", pull_request)
   }
 
@@ -324,7 +319,7 @@ update_pull_request <- function(
 
   if (!missing(milestone)) {
     if (is_scalar_character(milestone)) {
-      milestone <- view_milestone(milestone, repo = repo)$number
+      milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
 
     assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
@@ -356,13 +351,7 @@ update_pull_request <- function(
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
   info("Done", level = 7)
-  structure(
-    pull_gh,
-    class   = class(pull_lst),
-    url     = attr(pull_lst, "url"),
-    request = attr(pull_lst, "request"),
-    status  = attr(pull_lst, "status"),
-    header  = attr(pull_lst, "header"))
+  pull_gh
 }
 
 
@@ -396,7 +385,7 @@ update_pull_request <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_pull_requests()` returns a tibble of pull request properties.
 #'   `view_pull_request()` returns a list of properties for a single pull request.
@@ -464,23 +453,25 @@ update_pull_request <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all open pull requests
-#'   view_pull_requests("ChadGoymer/test-githapi")
+#'   view_pull_requests("ChadGoymer/githapi")
 #'
 #'   # View all closed pull requests
-#'   view_pull_requests("ChadGoymer/test-githapi", state = "closed")
+#'   view_pull_requests("ChadGoymer/githapi", state = "closed")
 #'
 #'   # View all pull requests for the "master" branch
-#'   view_pull_requests("ChadGoymer/test-githapi", base = "master")
+#'   view_pull_requests("ChadGoymer/githapi", base = "master")
 #'
 #'   # View pull requests, sorted by the most recently updated
-#'   view_pull_requests("ChadGoymer/test-githapi", sort = "updated", direction = "desc")
+#'   view_pull_requests("ChadGoymer/githapi", sort = "updated", direction = "desc")
 #'
 #'   # View single pull request
-#'   view_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#'   view_pull_request("test pull request", repo = "ChadGoymer/githapi")
 #'
 #'   # Open a pull request's page in a browser
-#'   browse_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#'   browse_pull_request("test pull request", repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -558,20 +549,17 @@ view_pull_request <- function(
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (is_scalar_integerish(pull_request))
-  {
+  if (is_scalar_integerish(pull_request)) {
     info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
       gh_request("GET", ...)
   }
-  else if (is_scalar_character(pull_request))
-  {
+  else if (is_scalar_character(pull_request)) {
     info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
       gh_find(property  = "title", value = pull_request, ...)
   }
-  else
-  {
+  else {
     error("'pull_request' must be either an integer or a string:\n  ", pull_request)
   }
 
@@ -602,13 +590,7 @@ view_pull_request <- function(
       reviews    = reviews)
 
   info("Done", level = 7)
-  structure(
-    pull_gh,
-    class   = class(pull_lst),
-    url     = attr(pull_lst, "url"),
-    request = attr(pull_lst, "request"),
-    status  = attr(pull_lst, "status"),
-    header  = attr(pull_lst, "header"))
+  pull_gh
 }
 
 
@@ -622,7 +604,7 @@ browse_pull_request <- function(
   repo,
   ...)
 {
-  pull_request <- view_pull_request(pull_request = pull_request, repo = repo)
+  pull_request <- view_pull_request(pull_request = pull_request, repo = repo, ...)
 
   info("Browsing pull request '", pull_request$title, "' in repository '", repo, "'")
   httr::BROWSE(pull_request$html_url)

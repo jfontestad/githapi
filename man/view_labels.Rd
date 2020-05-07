@@ -16,7 +16,7 @@ view_label(label, repo, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{label}{(string) The name of the label.}
 }
@@ -46,11 +46,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View all labels in a repository
-  view_labels("ChadGoymer/test-githapi")
+  view_labels("ChadGoymer/githapi")
 
   # View a single label
-  view_label("new-label", "ChadGoymer/test-githapi")
+  view_label("new-label", "ChadGoymer/githapi")
+
 }
 
 }

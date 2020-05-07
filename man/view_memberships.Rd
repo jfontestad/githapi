@@ -16,7 +16,7 @@ the authenticated user.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{user}{(string) The login of the user.}
 
@@ -56,6 +56,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View membership of all organizations the authenticated user is a member of
   view_memberships()
 
@@ -67,6 +68,7 @@ For more details see the GitHub API documentation:
 
   # View the membership of a user in a team
   view_membership(user = "ChadGoymer", org = "HairyCoos", team = "HeadCoos")
+
 }
 
 }

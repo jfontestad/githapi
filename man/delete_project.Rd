@@ -40,10 +40,11 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Delete a project for a repository
   delete_project(
     project = "Repo project",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # Delete a project for a user
   delete_project(
@@ -60,6 +61,7 @@ For more details see the GitHub API documentation:
   delete_project(
     project = "User project",
     org     = "HairyCoos")
+
 }
 
 }

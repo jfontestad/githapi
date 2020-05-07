@@ -70,7 +70,7 @@ tag in the repository. view_tag() returns a list of all properties for a single 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@ tag in the repository. <code>view_tag()</code> returns a list of all properties 
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>tag</th>
@@ -164,11 +164,13 @@ properties for a single tag.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># View all tags in a repository</span>
-  <span class='fu'>.view_tags</span>(<span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>.view_tags</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single tag</span>
-  <span class='fu'>view_tag</span>(<span class='st'>"new-tag"</span>, <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>view_tag</span>(<span class='st'>"new-tag"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

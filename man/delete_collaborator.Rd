@@ -39,8 +39,9 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Remove a collaborator from a repository
-  delete_collaborator("ChadGoymer", repo = "ChadGoymer/test-githapi")
+  delete_collaborator("ChadGoymer", repo = "ChadGoymer/githapi")
 
   # Remove a collaborator from a project
   delete_collaborator(
@@ -50,6 +51,7 @@ For more details see the GitHub API documentation:
 
   # Remove a collaborator from an organization
   delete_collaborator("ChadGoymer", org = "HairyCoos")
+
 }
 
 }

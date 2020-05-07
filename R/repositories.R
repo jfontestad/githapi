@@ -67,6 +67,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_repository(
 #'     name        = "user-repository",
 #'     description = "This is a user repository",
@@ -77,6 +78,7 @@
 #'     org         = "HairyCoos",
 #'     description = "This is a organization repository",
 #'     homepage    = "https://org-repository.com")
+#'
 #' }
 #'
 #' @export
@@ -144,18 +146,12 @@ create_repository <- function(
 
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    append(
-      list(permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))]),
-      after = which(names(.) == "default_branch"))
+    modify_list(
+      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
+      .after = "default_branch")
 
   info("Done", level = 7)
-  structure(
-    repo_gh,
-    class   = class(repo_lst),
-    url     = attr(repo_lst, "url"),
-    request = attr(repo_lst, "request"),
-    status  = attr(repo_lst, "status"),
-    header  = attr(repo_lst, "header"))
+  repo_gh
 }
 
 
@@ -222,6 +218,7 @@ create_repository <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update a repository
 #'   update_repository(
 #'     repo           = "ChadGoymer/user-repository",
@@ -247,6 +244,7 @@ create_repository <- function(
 #'
 #'   # Archive a repository
 #'   update_repository("HairyCoos/org-repository", archived = TRUE)
+#'
 #' }
 #'
 #' @export
@@ -342,18 +340,12 @@ update_repository <- function(
 
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    append(
-      list(permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))]),
-      after = which(names(.) == "default_branch"))
+    modify_list(
+      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
+      .after = "default_branch")
 
   info("Done", level = 7)
-  structure(
-    repo_gh,
-    class   = class(repo_lst),
-    url     = attr(repo_lst, "url"),
-    request = attr(repo_lst, "request"),
-    status  = attr(repo_lst, "status"),
-    header  = attr(repo_lst, "header"))
+  repo_gh
 }
 
 
@@ -383,7 +375,7 @@ update_repository <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_repositories()` returns a tibble of repository properties.
 #'   `view_repository()` returns a list of properties for a single repository.
@@ -422,6 +414,7 @@ update_repository <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View a user's repositories
 #'   view_repositories(user = "ChadGoymer")
 #'
@@ -442,6 +435,7 @@ update_repository <- function(
 #'
 #'   # Browse a specific organization repository
 #'   browse_repository("Test repo", org = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -461,20 +455,17 @@ view_repositories <- function(
     is_scalar_character(direction) && direction %in% values$repository$direction,
     "'direction' must be either '", str_c(values$repository$direction, collapse = "', '"), "':\n  ", direction)
 
-  if (!missing(user))
-  {
+  if (!missing(user)) {
     assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
     info("Viewing repositories for user '", user, "'")
     url <- gh_url("users", user, "repos", type = "all", sort = sort, direction = direction)
   }
-  else if (!missing(org))
-  {
+  else if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     info("Viewing repositories for organization '", org, "'")
     url <- gh_url("orgs", org, "repos", type = "all", sort = sort, direction = direction)
   }
-  else
-  {
+  else {
     info("Viewing repositories for authenticated user")
     url <- gh_url("user/repos", type = "all", sort = sort, direction = direction)
   }
@@ -510,18 +501,12 @@ view_repository <- function(
 
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    append(
-      list(permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))]),
-      after = which(names(.) == "default_branch"))
+    modify_list(
+      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
+      .after = "default_branch")
 
   info("Done", level = 7)
-  structure(
-    repo_gh,
-    class   = class(repo_lst),
-    url     = attr(repo_lst, "url"),
-    request = attr(repo_lst, "request"),
-    status  = attr(repo_lst, "status"),
-    header  = attr(repo_lst, "header"))
+  repo_gh
 }
 
 
@@ -568,11 +553,13 @@ browse_repository <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a user's repository
 #'   delete_repository("ChadGoymer/user-repository")
 #'
-#'   # Delete a organization's repository
+#'   # Delete an organization's repository
 #'   delete_repository("HairyCoos/org-repository")
+#'
 #' }
 #'
 #' @export

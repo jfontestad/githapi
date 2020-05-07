@@ -2,15 +2,19 @@
 % Please edit documentation in R/files.R
 \name{create_file}
 \alias{create_file}
-\alias{update_file}
-\alias{delete_file}
-\title{Create, update or delete a file in a new commit}
+\title{Create a file in a new commit}
 \usage{
-create_file(content, path, branch, message, repo, author, committer, ...)
-
-update_file(content, path, branch, message, repo, author, committer, ...)
-
-delete_file(path, branch, message, repo, author, committer, ...)
+create_file(
+  content,
+  path,
+  branch,
+  message,
+  repo,
+  parent,
+  author,
+  committer,
+  ...
+)
 }
 \arguments{
 \item{content}{(string) The content of the file specified as a single string.}
@@ -23,6 +27,9 @@ delete_file(path, branch, message, repo, author, committer, ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
+\item{parent}{(string, optional) If creating a new branch the the parent commit must
+be specified as either a SHA, branch or tag.}
+
 \item{author}{(list, optional) A the name and email address of the user who wrote the
 changes in the commit.}
 
@@ -32,8 +39,7 @@ the commit.}
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{create_file()}, \code{update_file()} and \code{delete_file()} return a list of the commit
-properties.
+\code{create_file()}returns a list of the commit properties.
 
 \strong{Commit Properties:}
 \itemize{
@@ -49,9 +55,10 @@ properties.
 }
 }
 \description{
-These functions create, update or delete a file in a repository in GitHub by creating a
-new commit on the specified branch. If the file already exists \code{\link[=create_file]{create_file()}} throws an
-error and if the file does not exist \code{\link[=delete_file]{delete_file()}} throws as error.
+This function adds a file in a repository in GitHub by creating a new commit on the
+specified branch. If the branch does not already exist a \code{parent} commit must be specified
+and a new branch is created from it. If the file already exists \code{create_file()} throws an
+error.
 }
 \details{
 The \code{author} and \code{committer} arguments are optional and if not supplied the current
@@ -66,15 +73,24 @@ use the \code{\link[=upload_files]{upload_files()}} function.
 
   # Create a new file on the master branch
   create_file(
-    content = "# This is a new file\\\\n\\\\n Created by `create_files()`",
+    content = "# This is a new file\\\\n\\\\n Created by `create_file()`",
     path    = "new-file.md",
     branch  = "master",
     message = "Created a new file with create_file()",
     repo    = "ChadGoymer/githapi")
 
+  # Create a new file on a new branch
+  create_file(
+    content = "# This is a new file\\\\n\\\\n Created by `create_file()`",
+    path    = "new-file.md",
+    branch  = "new-branch",
+    message = "Created a new file with create_file()",
+    repo    = "ChadGoymer/githapi",
+    parent  = "master")
+
   # Create a new file on the master branch specifying an author and committer
   create_file(
-    content   = "# This is a new file\\\\n\\\\n Created by `create_files()`",
+    content   = "# This is a new file\\\\n\\\\n Created by `create_file()`",
     path      = "new-file.md",
     branch    = "master",
     message   = "Created a new file with create_file()",
@@ -82,20 +98,6 @@ use the \code{\link[=upload_files]{upload_files()}} function.
     author    = list(name = "Bob",  email = "bob@acme.com"),
     committer = list(name = "Jane", email = "jane@acme.com"))
 
-  # Update an existing file on the master branch
-  update_file(
-    content = "# This is an updated file\\\\n\\\\n Updated by `update_files()`",
-    path    = "new-file.md",
-    branch  = "master",
-    message = "Updated an existing file with update_file()",
-    repo    = "ChadGoymer/githapi")
-
-  # Delete an existing file on the master branch
-  delete_file(
-    path    = "new-file.md",
-    branch  = "master",
-    message = "Deleted an existing file with delete_file()",
-    repo    = "ChadGoymer/githapi")
 }
 
 }

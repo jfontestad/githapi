@@ -22,7 +22,7 @@ view_card(card, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{card}{(integer) The ID of the card.}
 }
@@ -42,7 +42,7 @@ returns a list of properties for a single card.
 }
 }
 \description{
-\code{view_cards()} summarises cards in a table with the properties as columnss and a row
+\code{view_cards()} summarises cards in a table with the properties as columns and a row
 for each card in a column of a project. \code{view_card()} returns a list of all properties
 for a single card.
 }
@@ -58,11 +58,12 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View cards in a repository project
   cards <- view_cards(
     column  = "Test cards",
     project = "Test cards",
-    repo    = "ChadGoymer/test-githapi")
+    repo    = "ChadGoymer/githapi")
 
   # View cards in a user's project
   cards <- view_cards(
@@ -78,6 +79,7 @@ For more details see the GitHub API documentation:
 
   # View a single card
   view_card(card = 123456)
+
 }
 
 }

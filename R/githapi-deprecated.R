@@ -240,14 +240,12 @@ gh_download_binary <- function(
   path,
   token = getOption("github.token"))
 {
-  {
-    (is_url(url)) ||
-      error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
-    (is_writeable(dirname(path))) ||
-      error("'path' must be a file path within a writeable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-  }
+  (is_url(url)) ||
+    error("'url' must be a valid URL:\n  '", paste(url, collapse = "'\n  '"), "'")
+  (is_writeable(dirname(path))) ||
+    error("'path' must be a file path within a writeable directory:\n  '", paste(path, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
 
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 

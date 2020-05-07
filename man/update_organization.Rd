@@ -110,6 +110,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update some of your organization properties
   update_organization(
     org                             = "HairyCoos",
@@ -117,6 +118,7 @@ For more details see the GitHub API documentation:
     location                        = "The Highlands",
     default_repository_permission   = "write",
     members_can_create_repositories = FALSE)
+
 }
 
 }

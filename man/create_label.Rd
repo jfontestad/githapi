@@ -41,11 +41,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   create_label(
     name        = "new-label",
-    repo        = "ChadGoymer/test-githapi",
+    repo        = "ChadGoymer/githapi",
     color       = "blue",
     description = "This is a detailed label")
+
 }
 
 }

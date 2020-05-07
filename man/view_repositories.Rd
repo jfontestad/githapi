@@ -32,7 +32,7 @@ be either \code{"created"}, \code{"updated"}, \code{"pushed"} or \code{"full_nam
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 }
@@ -93,6 +93,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View a user's repositories
   view_repositories(user = "ChadGoymer")
 
@@ -113,6 +114,7 @@ For more details see the GitHub API documentation:
 
   # Browse a specific organization repository
   browse_repository("Test repo", org = "HairyCoos")
+
 }
 
 }

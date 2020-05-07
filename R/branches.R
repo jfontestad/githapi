@@ -24,10 +24,12 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_branch(
 #'     name = "new-branch",
 #'     ref  = "master",
-#'     repo = "ChadGoymer/test-githapi")
+#'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -41,9 +43,8 @@ create_branch <- function(
   assert(is_ref(name), "'name' must be a valid git reference - see help(is_ref):\n  ", name)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  if (!is_sha(ref))
-  {
-    ref <- view_sha(ref = ref, repo = repo)
+  if (!is_sha(ref)) {
+    ref <- view_sha(ref = ref, repo = repo, ...)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -58,13 +59,7 @@ create_branch <- function(
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    branch_gh,
-    class   = class(branch_lst),
-    url     = attr(branch_lst, "url"),
-    request = attr(branch_lst, "request"),
-    status  = attr(branch_lst, "status"),
-    header  = attr(branch_lst, "header"))
+  branch_gh
 }
 
 
@@ -96,10 +91,12 @@ create_branch <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   update_branch(
 #'     name = "new-branch",
-#'     repo = "ChadGoymer/test-githapi",
+#'     repo = "ChadGoymer/githapi",
 #'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d")
+#'
 #' }
 #'
 #' @export
@@ -115,9 +112,8 @@ update_branch <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
   assert(is_scalar_logical(force), "'force' must be boolean:\n  ", force)
 
-  if (!is_sha(ref))
-  {
-    ref <- view_sha(ref = ref, repo = repo)
+  if (!is_sha(ref)) {
+    ref <- view_sha(ref = ref, repo = repo, ...)
   }
   assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
 
@@ -130,13 +126,7 @@ update_branch <- function(
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    branch_gh,
-    class   = class(branch_lst),
-    url     = attr(branch_lst, "url"),
-    request = attr(branch_lst, "request"),
-    status  = attr(branch_lst, "status"),
-    header  = attr(branch_lst, "header"))
+  branch_gh
 }
 
 
@@ -155,7 +145,7 @@ update_branch <- function(
 #' @param branch (string) The name of the branch.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_branches()` returns a tibble of branch properties. `view_branch()`
 #'   returns a list of properties for a single branch.
@@ -168,11 +158,13 @@ update_branch <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all branches in a repository
-#'   .view_branches("ChadGoymer/test-githapi")
+#'   .view_branches("ChadGoymer/githapi")
 #'
 #'   # View a single branch
-#'   view_label("new-branch", "ChadGoymer/test-githapi")
+#'   view_label("new-branch", "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -219,13 +211,7 @@ view_branch <- function(
     modify_list(name = basename(branch_lst$ref), .before = "ref")
 
   info("Done", level = 7)
-  structure(
-    branch_gh,
-    class   = class(branch_lst),
-    url     = attr(branch_lst, "url"),
-    request = attr(branch_lst, "request"),
-    status  = attr(branch_lst, "status"),
-    header  = attr(branch_lst, "header"))
+  branch_gh
 }
 
 
@@ -247,7 +233,9 @@ view_branch <- function(
 #'
 #' @examples
 #' \dontrun{
-#'   delete_branch("new-branch", repo = "ChadGoymer/test-githapi")
+#'
+#'   delete_branch("new-branch", repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export

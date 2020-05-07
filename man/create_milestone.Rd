@@ -52,11 +52,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   create_milestone(
     title       = "test milestone",
-    repo        = "ChadGoymer/test-githapi",
+    repo        = "ChadGoymer/githapi",
     description = "This is a test milestone",
     due_on      = "2030-01-01 00:00:00")
+
 }
 
 }

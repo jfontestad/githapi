@@ -46,25 +46,23 @@ view_files <- function(
   api   = getOption("github.api"),
   ...)
 {
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'paths' argument: ", paths, level = 2)
-      repo <- paths
-      paths <- NULL
-    }
-    if (missing(ref) || is_null(ref)) {
-      ref <- NULL
-    }
-
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_null(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'paths' argument: ", paths, level = 2)
+    repo <- paths
+    paths <- NULL
   }
+  if (missing(ref) || is_null(ref)) {
+    ref <- NULL
+  }
+
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_null(ref) || is_scalar_character(ref)) ||
+    error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (missing(paths) || is_null(paths)) {
     info("Getting files from repository '", repo, "'")
@@ -179,41 +177,39 @@ create_files <- function(
 {
   .Deprecated("create_file", package = "githapi")
 
-  {
-    if (missing(branches) || is_null(branches)) {
-      branches <- NA
-    }
-    if (missing(parents) || is_null(parents)) {
-      parents <- NA
-    }
-    if (missing(committer) || is_null(committer)) {
-      committer <- NA
-    }
-    if (missing(author) || is_null(author)) {
-      author <- NA
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_character(contents) && identical(length(contents), length(paths))) ||
-      error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
-    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
-      error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
-      error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (all(is_na(parents)) || is_character(parents)) ||
-      error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
-    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
-      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
-      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(branches) || is_null(branches)) {
+    branches <- NA
   }
+  if (missing(parents) || is_null(parents)) {
+    parents <- NA
+  }
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_character(contents) && identical(length(contents), length(paths))) ||
+    error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
+  (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
+    error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
+  ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
+    error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
+  (all(is_na(parents)) || is_character(parents)) ||
+    error("'parents' must be NA or a character vector:\n  '", paste(parents, collapse = "'\n  '"), "'")
+  (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+  (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   params <- tibble(
     path    = paths,
@@ -344,36 +340,34 @@ update_files <- function(
 {
   .Deprecated("update_file", package = "githapi")
 
-  {
-    if (missing(branches) || is_null(branches)) {
-      branches <- NA
-    }
-    if (missing(committer) || is_null(committer)) {
-      committer <- NA
-    }
-    if (missing(author) || is_null(author)) {
-      author <- NA
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_character(contents) && identical(length(contents), length(paths))) ||
-      error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
-    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
-      error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
-      error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
-      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
-      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(branches) || is_null(branches)) {
+    branches <- NA
   }
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_character(contents) && identical(length(contents), length(paths))) ||
+    error("'contents' must be a character vector of the same length as 'paths':\n  'contents':  ", length(contents), "\n  'paths':    ", length(paths))
+  (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
+    error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
+  ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
+    error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
+  (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+  (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   params <- tibble(
     path    = paths,
@@ -488,34 +482,32 @@ delete_files <- function(
 {
   .Deprecated("delete_file", package = "githapi")
 
-  {
-    if (missing(branches) || is_null(branches)) {
-      branches <- NA
-    }
-    if (missing(committer) || is_null(committer)) {
-      committer <- NA
-    }
-    if (missing(author) || is_null(author)) {
-      author <- NA
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
-      error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
-    ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
-      error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
-    (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
-      error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
-    (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
-      error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(branches) || is_null(branches)) {
+    branches <- NA
   }
+  if (missing(committer) || is_null(committer)) {
+    committer <- NA
+  }
+  if (missing(author) || is_null(author)) {
+    author <- NA
+  }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_character(messages) && (is_scalar_atomic(messages) || identical(length(messages), length(paths)))) ||
+    error("'messages' must be a character vector of the same length as 'paths':\n  'messages':  ", length(messages), "\n  'paths':    ", length(paths))
+  ((all(is_na(branches)) || is_character(branches)) && (is_scalar_atomic(branches) || identical(length(branches), length(paths)))) ||
+    error("'branches' must be NA, a string or a character vector of the same length as paths:\n  'branches':  ", length(branches), "\n  'paths':    ", length(paths))
+  (all(is_na(committer)) || (is_list(committer) && identical(names(committer), c("name", "email")) && is_scalar_character(committer$name) && is_scalar_character(committer$email))) ||
+    error("'committer' must be NA or a list containing 'name' and 'email':\n '", paste(committer, collapse = "'\n  '"), "'")
+  (all(is_na(author)) || (is_list(author) && identical(names(author), c("name", "email")) && is_scalar_character(author$name) && is_scalar_character(author$email))) ||
+    error("'author' must be NA or a list containing 'name' and 'email':\n '", paste(author, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   params <- tibble(
     path    = paths,
@@ -594,22 +586,20 @@ files_exist <- function(
 {
   .Deprecated(msg = "This function will be removed in a future version")
 
-  {
-    if (missing(ref) || is_null(ref)) {
-      ref <- NULL
-    }
-
-    (is_character(paths)) ||
-      error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_null(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(ref) || is_null(ref)) {
+    ref <- NULL
   }
+
+  (is_character(paths)) ||
+    error("'paths' must be a character vector\n  '", paste(paths, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_null(ref) || is_scalar_character(ref)) ||
+    error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(paths, simplify = TRUE, function(path) {
     info("Checking file '", path, "' exists in repository '", repo, "'")
@@ -659,30 +649,28 @@ download_commit <- function(
   api   = getOption("github.api"),
   ...)
 {
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'path' argument: ", path, level = 2)
-      repo <- path
-      path <- NULL
-    }
-    if (missing(path) || is_null(path) || all(is_na(path))) {
-      path <- getwd()
-    }
-    if (missing(ref) || is_null(ref)) {
-      ref <- NULL
-    }
-
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_scalar_character(path)) ||
-      error("'path' must be a string:\n  '", paste(path, collapse = "'\n  '"), "'")
-    (is_null(ref) || is_scalar_character(ref)) ||
-      error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'path' argument: ", path, level = 2)
+    repo <- path
+    path <- NULL
   }
+  if (missing(path) || is_null(path) || all(is_na(path))) {
+    path <- getwd()
+  }
+  if (missing(ref) || is_null(ref)) {
+    ref <- NULL
+  }
+
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_scalar_character(path)) ||
+    error("'path' must be a string:\n  '", paste(path, collapse = "'\n  '"), "'")
+  (is_null(ref) || is_scalar_character(ref)) ||
+    error("'ref' must be NA or a string:\n  '", paste(ref, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (!file.exists(path)) dir.create(path, recursive = TRUE)
 

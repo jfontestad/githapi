@@ -67,13 +67,14 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Create an issue card in a repository project
   create_card(
     content_id   = 1,
     content_type = "Issue",
     column       = "Test column",
     project      = "Test project",
-    repo         = "ChadGoymer/test-githapi")
+    repo         = "ChadGoymer/githapi")
 
   # Create a pull request card in a user's project
   create_card(
@@ -89,6 +90,7 @@ For more details see the GitHub API documentation:
     column  = "Test column",
     project = "Test project",
     org     = "HairyCoos")
+
 }
 
 }

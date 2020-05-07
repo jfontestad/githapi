@@ -32,6 +32,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Invite a new user into an organization
 #'   update_membership("ChadGoymer2", "HairyCoos")
 #'
@@ -43,6 +44,7 @@
 #'
 #'   # Update a user's role in a team
 #'   update_membership("ChadGoymer2", "HairyCoos", "HeadCoos", role = "maintainer")
+#'
 #' }
 #'
 #' @export
@@ -59,10 +61,8 @@ update_membership <- function(
 
   payload <- NULL
 
-  if (missing(team))
-  {
-    if (!missing(role))
-    {
+  if (missing(team)) {
+    if (!missing(role)) {
       assert(
         is_scalar_character(role) && role %in% values$membership$org_role,
         "organization 'role' must be either '", str_c(values$membership$org_role, collapse = "', '"), "':\n  ", role)
@@ -76,18 +76,15 @@ update_membership <- function(
     info("Transforming results", level = 4)
     membership_gh <- select_properties(membership_lst, properties$memberships)
   }
-  else
-  {
-    if (!missing(role))
-    {
+  else {
+    if (!missing(role)) {
       assert(
         is_scalar_character(role) && role %in% values$membership$team_role,
         "organization 'role' must be either '", str_c(values$membership$team_role, collapse = "', '"), "':\n  ", role)
       payload <- list(role = role)
     }
 
-    if (is_scalar_character(team))
-    {
+    if (is_scalar_character(team)) {
       team_id <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = team, ...) %>%
         pluck("id")
@@ -100,14 +97,8 @@ update_membership <- function(
 
     info("Transforming results", level = 4)
     membership_gh <- select_properties(membership_lst, properties$memberships) %>%
-      utils::modifyList(list(user = user, organization = org)) %>%
-      append(list(team = team), after = which(names(.) == "organization")) %>%
-      structure(
-        class   = class(membership_lst),
-        url     = attr(membership_lst, "url"),
-        request = attr(membership_lst, "request"),
-        status  = attr(membership_lst, "status"),
-        header  = attr(membership_lst, "header"))
+      modify_list(user = user, organization = org) %>%
+      modify_list(team = team, .after = "organization")
   }
 
   info("Done", level = 7)
@@ -138,7 +129,7 @@ update_membership <- function(
 #' @param org (string) The login of the organization.
 #' @param team (integer or string, optional) The ID or name of the team.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_memberships()` returns a tibble of membership properties. `view_membership()`
 #'   returns a list of membership properties for a single organization or team.
@@ -154,6 +145,7 @@ update_membership <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View membership of all organizations the authenticated user is a member of
 #'   view_memberships()
 #'
@@ -165,6 +157,7 @@ update_membership <- function(
 #'
 #'   # View the membership of a user in a team
 #'   view_membership(user = "ChadGoymer", org = "HairyCoos", team = "HeadCoos")
+#'
 #' }
 #'
 #' @export
@@ -174,14 +167,12 @@ view_memberships <- function(
   n_max = 1000,
   ...)
 {
-  if (!missing(state))
-  {
+  if (!missing(state)) {
     assert(
       is_scalar_character(state) || state %in% values$membership$state,
       "'state' must be one of '", str_c(values$membership$state, collapse = "', '"), "':\n  ", state)
   }
-  else
-  {
+  else {
     state <- NULL
   }
 
@@ -210,18 +201,15 @@ view_membership <- function(
   assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
   assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
-  if (missing(team))
-  {
+  if (missing(team)) {
     info("Viewing membership for '", user, "' in organization '", org, "'")
     membership_lst <- gh_url("orgs", org, "memberships", user) %>% gh_request("GET", ...)
 
     info("Transforming results", level = 4)
     membership_gh <- select_properties(membership_lst, properties$memberships)
   }
-  else
-  {
-    if (is_scalar_character(team))
-    {
+  else {
+    if (is_scalar_character(team)) {
       team_id <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = team, ...) %>%
         pluck("id")
@@ -233,14 +221,8 @@ view_membership <- function(
 
     info("Transforming results", level = 4)
     membership_gh <- select_properties(membership_lst, properties$memberships) %>%
-      utils::modifyList(list(user = user, organization = org)) %>%
-      append(list(team = team), after = which(names(.) == "organization")) %>%
-      structure(
-        class   = class(membership_lst),
-        url     = attr(membership_lst, "url"),
-        request = attr(membership_lst, "request"),
-        status  = attr(membership_lst, "status"),
-        header  = attr(membership_lst, "header"))
+      modify_list(user = user, organization = org) %>%
+      modify_list(team = team, .after = "organization")
   }
 
   info("Done", level = 7)
@@ -272,11 +254,13 @@ view_membership <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Remove a user from an organization
 #'   delete_membership("ChadGoymer", "HairyCoos")
 #'
 #'   # Remove a user from a team
 #'   delete_membership("ChadGoymer", "HairyCoos", "HeadCoos")
+#'
 #' }
 #'
 #' @export
@@ -290,15 +274,12 @@ delete_membership <- function(
   assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
   assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
-  if (missing(team))
-  {
+  if (missing(team)) {
     info("Deleting membership for '", user, "' in organization '", org, "'")
     response <- gh_url("orgs", org, "memberships", user) %>% gh_request("DELETE", ...)
   }
-  else
-  {
-    if (is_scalar_character(team))
-    {
+  else {
+    if (is_scalar_character(team)) {
       team_id <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = team, ...) %>%
         pluck("id")

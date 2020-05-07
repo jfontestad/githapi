@@ -51,22 +51,20 @@ view_releases <- function(
   api   = getOption("github.api"),
   ...)
 {
-  {
-    if (missing(repo)) {
-      info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
-      repo <- tags
-      tags <- NULL
-    }
-
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
-      error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
+  if (missing(repo)) {
+    info("'repo' is missing, so using 'tags' argument: ", tags, level = 2)
+    repo <- tags
+    tags <- NULL
   }
+
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_scalar_integerish(n_max) && isTRUE(n_max > 0)) ||
+    error("'n_max' must be a positive integer:\n  '", paste(n_max, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   if (missing(tags) || is_null(tags) || all(is_na(tags))) {
     info("Getting up to ", n_max, " releases from repository '", repo, "'")
@@ -177,26 +175,24 @@ create_releases <- function(
 {
   .Deprecated("create_release", package = "githapi")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_character(commits) && identical(length(commits), length(tags))) ||
-      error("'commits' must be a character vector of the same length as 'tags':\n  'commits':  ", length(commits), "\n  'tags':    ", length(tags))
-    (is_character(names) && identical(length(names), length(tags))) ||
-      error("'names' must be a character vector of the same length as 'tags':\n  'names':  ", length(names), "\n  'tags':  ", length(tags))
-    (is_character(bodies) && identical(length(bodies), length(tags))) ||
-      error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
-      error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
-    (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
-      error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_character(commits) && identical(length(commits), length(tags))) ||
+    error("'commits' must be a character vector of the same length as 'tags':\n  'commits':  ", length(commits), "\n  'tags':    ", length(tags))
+  (is_character(names) && identical(length(names), length(tags))) ||
+    error("'names' must be a character vector of the same length as 'tags':\n  'names':  ", length(names), "\n  'tags':  ", length(tags))
+  (is_character(bodies) && identical(length(bodies), length(tags))) ||
+    error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
+    error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
+  (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
+    error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   params <- tibble(
     tag        = tags,
@@ -299,24 +295,22 @@ update_releases <- function(
 {
   .Deprecated("update_release", package = "githapi")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_character(names) && identical(length(names), length(tags))) ||
-      error("'names' must be a character vector of the same length as 'tags':\n  'names':  ", length(names), "\n  'tags':  ", length(tags))
-    (is_character(bodies) && identical(length(bodies), length(tags))) ||
-      error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
-      error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
-    (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
-      error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_character(names) && identical(length(names), length(tags))) ||
+    error("'names' must be a character vector of the same length as 'tags':\n  'names':  ", length(names), "\n  'tags':  ", length(tags))
+  (is_character(bodies) && identical(length(bodies), length(tags))) ||
+    error("'bodies' must be a character vector of the same length as 'tags':\n  'bodies':  ", length(bodies), "\n  'tags':   ", length(tags))
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_logical(draft) && (is_scalar_atomic(draft) || identical(length(draft), length(tags)))) ||
+    error("'draft' must be a string or a character vector of the same length as 'tags':\n  'draft':  ", length(draft), "\n  'tags':  ", length(tags))
+  (is_logical(prerelease) && (is_scalar_atomic(prerelease) || identical(length(prerelease), length(tags)))) ||
+    error("'prerelease' must be a string or a character vector of the same length as 'tags':\n  'prerelease':  ", length(prerelease), "\n  'tags':       ", length(tags))
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   params <- tibble(
     tag        = tags,
@@ -397,16 +391,14 @@ delete_releases <- function(
 {
   .Deprecated("delete_release", package = "githapi")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   releases_list <- try_map(tags, function(tag) {
     info("Deleting release '", tag, "' from repository '", repo, "'")
@@ -460,16 +452,14 @@ releases_exist <- function(
 {
   .Deprecated(msg = "This function will be removed in a future version")
 
-  {
-    (is_character(tags)) ||
-      error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
-    (is_repo(repo)) ||
-      error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
-    (is_sha(token)) ||
-      error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
-    (is_url(api)) ||
-      error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
-  }
+  (is_character(tags)) ||
+    error("'tags' must be a character vector:\n  '", paste(tags, collapse = "'\n  '"), "'")
+  (is_repo(repo)) ||
+    error("'repo' must be a string in the format 'owner/repo':\n  '", paste(repo, collapse = "'\n  '"), "'")
+  (is_sha(token)) ||
+    error("'token' must be a 40 character string:\n  '", paste(token, collapse = "'\n  '"), "'")
+  (is_url(api)) ||
+    error("'api' must be a valid URL:\n  '", paste(api, collapse = "'\n  '"), "'")
 
   gh_map(tags, simplify = TRUE, function(tag) {
     info("Checking release '", tag, "' exists in repository '", repo, "'")

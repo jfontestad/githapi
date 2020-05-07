@@ -86,14 +86,14 @@ For more details see the GitHub API documentation:
   create_comment(
     body  = "This is a comment created by create_comment()",
     issue = "test issue",
-    repo  = "ChadGoymer/test-githapi")
+    repo  = "ChadGoymer/githapi")
 
   # Create a comment on a pull request
   create_comment(
     body         = "This is a comment created by create_comment()",
     pull_request = "test pull request",
     commit       = "test-branch",
-    repo         = "ChadGoymer/test-githapi",
+    repo         = "ChadGoymer/githapi",
     path         = "test-comments.txt",
     position     = 1)
 
@@ -101,7 +101,7 @@ For more details see the GitHub API documentation:
   create_comment(
     body     = "This is a comment created by create_comment()",
     commit   = "master",
-    repo     = "ChadGoymer/test-githapi",
+    repo     = "ChadGoymer/githapi",
     path     = "README.md",
     position = 1)
 

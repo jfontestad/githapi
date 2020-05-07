@@ -27,17 +27,16 @@ test_that("create_team creates a team and returns its properties", {
       privacy       = "character",
       permission    = "character",
       parent        = "character",
-      html_url      = "character",
       organization  = "character",
       members_count = "integer",
       repos_count   = "integer",
+      html_url      = "character",
       created_at    = "POSIXct",
       updated_at    = "POSIXct"))
 
   expect_identical(first_team$name, str_c("Test team ", now))
   expect_identical(first_team$organization, "HairyCoos")
   expect_identical(first_team$description, "This is a test team")
-  expect_identical(first_team$repos_count, 1L)
 
   maintainers_team <- create_team(
     name        = str_c("Test team 2 ", now),
@@ -55,10 +54,10 @@ test_that("create_team creates a team and returns its properties", {
       privacy       = "character",
       permission    = "character",
       parent        = "character",
-      html_url      = "character",
       organization  = "character",
       members_count = "integer",
       repos_count   = "integer",
+      html_url      = "character",
       created_at    = "POSIXct",
       updated_at    = "POSIXct"))
 
@@ -82,10 +81,10 @@ test_that("create_team creates a team and returns its properties", {
       privacy       = "character",
       permission    = "character",
       parent        = "character",
-      html_url      = "character",
       organization  = "character",
       members_count = "integer",
       repos_count   = "integer",
+      html_url      = "character",
       created_at    = "POSIXct",
       updated_at    = "POSIXct"))
 
@@ -109,10 +108,10 @@ test_that("create_team creates a team and returns its properties", {
       privacy       = "character",
       permission    = "character",
       parent        = "character",
-      html_url      = "character",
       organization  = "character",
       members_count = "integer",
       repos_count   = "integer",
+      html_url      = "character",
       created_at    = "POSIXct",
       updated_at    = "POSIXct"))
 
@@ -148,10 +147,10 @@ test_that("update_team changes the team's properties", {
       privacy       = "character",
       permission    = "character",
       parent        = "character",
-      html_url      = "character",
       organization  = "character",
       members_count = "integer",
       repos_count   = "integer",
+      html_url      = "character",
       created_at    = "POSIXct",
       updated_at    = "POSIXct"))
 
@@ -238,10 +237,10 @@ test_that("view_team returns a list of team properties", {
       privacy       = "character",
       permission    = "character",
       parent        = "character",
-      html_url      = "character",
       organization  = "character",
       members_count = "integer",
       repos_count   = "integer",
+      html_url      = "character",
       created_at    = "POSIXct",
       updated_at    = "POSIXct"))
 
@@ -260,10 +259,10 @@ test_that("view_team returns a list of team properties", {
       privacy       = "character",
       permission    = "character",
       parent        = "character",
-      html_url      = "character",
       organization  = "character",
       members_count = "integer",
       repos_count   = "integer",
+      html_url      = "character",
       created_at    = "POSIXct",
       updated_at    = "POSIXct"))
 

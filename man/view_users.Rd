@@ -22,7 +22,7 @@ browse_user(user, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{user}{(string) The login of the user.}
 }
@@ -66,6 +66,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View users collaborating on a repository
   view_users(repo = "ChadGoymer/githapi")
 
@@ -83,6 +84,7 @@ For more details see the GitHub API documentation:
 
   # Browse a user's GitHub page
   browse_user("ChadGoymer")
+
 }
 
 }

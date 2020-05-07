@@ -38,13 +38,14 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Create an issue card in a repository project
 #'   create_card(
 #'     content_id   = 1,
 #'     content_type = "Issue",
 #'     column       = "Test column",
 #'     project      = "Test project",
-#'     repo         = "ChadGoymer/test-githapi")
+#'     repo         = "ChadGoymer/githapi")
 #'
 #'   # Create a pull request card in a user's project
 #'   create_card(
@@ -60,6 +61,7 @@
 #'     column  = "Test column",
 #'     project = "Test project",
 #'     org     = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -75,8 +77,7 @@ create_card <- function(
   org,
   ...)
 {
-  if (!missing(content_id))
-  {
+  if (!missing(content_id)) {
     assert(is_scalar_integerish(content_id), "'content_id' must be an integer:\n  ", content_id)
     assert(
       is_scalar_character(content_type) && content_type %in% values$card$content_type,
@@ -90,16 +91,14 @@ create_card <- function(
     info("Creating card for ", str_to_lower(content_type), " '", content_id, "'")
     payload <- list(content_id = issue$id, content_type = content_type)
   }
-  else if (!missing(note))
-  {
+  else if (!missing(note)) {
     assert(is_scalar_character(note), "'note' must be an integer:\n  ", note)
 
     info("Creating card with specified note")
     payload    <- list(note = note)
     content_id <- NA
   }
-  else
-  {
+  else {
     error("Either 'content_id' or 'note' must be supplied")
   }
 
@@ -120,17 +119,17 @@ create_card <- function(
 
   info("Transforming results", level = 4)
   card_gh <- select_properties(card_lst, properties$card) %>%
-    append(list(content_id   = as.integer(content_id)), after = 1) %>%
-    discard(names(.) == "content_url") %>%
-    structure(
-      class   = class(card_lst),
-      url     = attr(card_lst, "url"),
-      request = attr(card_lst, "request"),
-      status  = attr(card_lst, "status"),
-      header  = attr(card_lst, "header"))
+    modify_list(content_id   = as.integer(content_id), .after = "id") %>%
+    discard(names(.) == "content_url")
 
   info("Done", level = 7)
-  card_gh
+  structure(
+    card_gh,
+    class   = class(card_lst),
+    url     = attr(card_lst, "url"),
+    request = attr(card_lst, "request"),
+    status  = attr(card_lst, "status"),
+    header  = attr(card_lst, "header"))
 }
 
 
@@ -178,6 +177,7 @@ create_card <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update a note in a card
 #'   update_card(card = 123456, note = "This is an updated note")
 #'
@@ -196,7 +196,8 @@ create_card <- function(
 #'     position = "top",
 #'     column   = "Test column 2",
 #'     project  = "Test project",
-#'     repo     = "ChadGoymer/test-githapi")
+#'     repo     = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -209,14 +210,12 @@ update_card <- function(
 {
   payload <- list()
 
-  if (!missing(note))
-  {
+  if (!missing(note)) {
     assert(is_scalar_character(note), "'note' must be a string:\n  ", note)
     payload$note <- note
   }
 
-  if (!missing(archived))
-  {
+  if (!missing(archived)) {
     assert(is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
     payload$archived <- archived
   }
@@ -231,17 +230,17 @@ update_card <- function(
 
   info("Transforming results", level = 4)
   card_gh <- select_properties(card_lst, properties$card) %>%
-    append(list(content_id   = as.integer(basename(.$content_url))), after = 1) %>%
-    discard(names(.) == "content_url") %>%
-    structure(
-      class   = class(card_lst),
-      url     = attr(card_lst, "url"),
-      request = attr(card_lst, "request"),
-      status  = attr(card_lst, "status"),
-      header  = attr(card_lst, "header"))
+    modify_list(content_id   = as.integer(basename(.$content_url)), .after = "id") %>%
+    discard(names(.) == "content_url")
 
   info("Done", level = 7)
-  card_gh
+  structure(
+    card_gh,
+    class   = class(card_lst),
+    url     = attr(card_lst, "url"),
+    request = attr(card_lst, "request"),
+    status  = attr(card_lst, "status"),
+    header  = attr(card_lst, "header"))
 }
 
 
@@ -263,33 +262,30 @@ move_card <- function(
 {
   payload <- list()
 
-  if (!missing(position))
-  {
+  if (!missing(position)) {
     assert(
       is_scalar_character(position) && position %in% values$card$position,
       "'position' must be one of '", str_c(values$card$position, collapse = "', '"), "':\n  ", position)
 
     payload <- list(position = position)
   }
-  else if (!missing(after))
-  {
+  else if (!missing(after)) {
     assert(is_scalar_integerish(after), "'after' must be an integer:\n  ", after)
 
     payload <- list(position = str_c("after:", after))
   }
-  else
-  {
+  else {
     error("Either 'position' or 'after' must be supplied")
   }
 
-  if (!missing(column))
-  {
+  if (!missing(column)) {
     column <- view_column(
       column  = column,
       project = project,
       repo    = repo,
       user    = user,
-      org     = org)
+      org     = org,
+      ...)
 
     payload <- c(payload, column_id = column$id)
   }
@@ -302,19 +298,16 @@ move_card <- function(
       accept  = "application/vnd.github.inertia-preview+json",
       ...)
 
-  card <- view_card(card)
+  card <- view_card(card, ...)
 
-  info("Transforming results", level = 4)
-  card_gh <- structure(
+  info("Done", level = 7)
+  structure(
     card,
     class   = class(card),
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
     header  = attr(response, "header"))
-
-  info("Done", level = 7)
-  card_gh
 }
 
 
@@ -322,7 +315,7 @@ move_card <- function(
 #
 #' View cards within a GitHub project
 #'
-#' `view_cards()` summarises cards in a table with the properties as columnss and a row
+#' `view_cards()` summarises cards in a table with the properties as columns and a row
 #' for each card in a column of a project. `view_card()` returns a list of all properties
 #' for a single card.
 #'
@@ -340,7 +333,7 @@ move_card <- function(
 #' @param user (string, optional) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_cards()` returns a tibble of card properties. `view_card()`
 #'   returns a list of properties for a single card.
@@ -357,11 +350,12 @@ move_card <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View cards in a repository project
 #'   cards <- view_cards(
 #'     column  = "Test cards",
 #'     project = "Test cards",
-#'     repo    = "ChadGoymer/test-githapi")
+#'     repo    = "ChadGoymer/githapi")
 #'
 #'   # View cards in a user's project
 #'   cards <- view_cards(
@@ -377,6 +371,7 @@ move_card <- function(
 #'
 #'   # View a single card
 #'   view_card(card = 123456)
+#'
 #' }
 #'
 #' @export
@@ -408,16 +403,16 @@ view_cards <- function(
   info("Transforming results", level = 4)
   cards_gh <- bind_properties(cards_lst, properties$card) %>%
     mutate(content_id = as.integer(basename(.data$content_url))) %>%
-    select("id", "content_id", everything(), -"content_url") %>%
-    structure(
-      class   = c("github", class(.)),
-      url     = attr(cards_lst, "url"),
-      request = attr(cards_lst, "request"),
-      status  = attr(cards_lst, "status"),
-      header  = attr(cards_lst, "header"))
+    select("id", "content_id", everything(), -"content_url")
 
   info("Done", level = 7)
-  cards_gh
+  structure(
+    cards_gh,
+    class   = c("github", class(cards_gh)),
+    url     = attr(cards_lst, "url"),
+    request = attr(cards_lst, "request"),
+    status  = attr(cards_lst, "status"),
+    header  = attr(cards_lst, "header"))
 }
 
 
@@ -441,17 +436,17 @@ view_card <- function(
 
   info("Transforming results", level = 4)
   card_gh <- select_properties(card_lst, properties$card) %>%
-    append(list(content_id   = as.integer(basename(.$content_url))), after = 1) %>%
-    discard(names(.) == "content_url") %>%
-    structure(
-      class   = class(card_lst),
-      url     = attr(card_lst, "url"),
-      request = attr(card_lst, "request"),
-      status  = attr(card_lst, "status"),
-      header  = attr(card_lst, "header"))
+    modify_list(content_id = as.integer(basename(.$content_url)), .after = "id") %>%
+    discard(names(.) == "content_url")
 
   info("Done", level = 7)
-  card_gh
+  structure(
+    card_gh,
+    class   = class(card_lst),
+    url     = attr(card_lst, "url"),
+    request = attr(card_lst, "request"),
+    status  = attr(card_lst, "status"),
+    header  = attr(card_lst, "header"))
 }
 
 
@@ -475,8 +470,10 @@ view_card <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a card
 #'   delete_card(123456)
+#'
 #' }
 #'
 #' @export

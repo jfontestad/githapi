@@ -26,11 +26,13 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_label(
 #'     name        = "new-label",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     color       = "blue",
 #'     description = "This is a detailed label")
+#'
 #' }
 #'
 #' @export
@@ -98,12 +100,14 @@ create_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   update_label(
 #'     label       = "new-label",
-#'     repo        = "ChadGoymer/test-githapi",
+#'     repo        = "ChadGoymer/githapi",
 #'     name        = "updated-label",
 #'     color       = "green",
 #'     description = "This is an updated label")
+#'
 #' }
 #'
 #' @export
@@ -168,7 +172,7 @@ update_label <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param issue (string or character, optional) The number or title of the issue.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_labels()` returns a tibble of label properties. `view_label()`
 #'   returns a list of properties for a single label.
@@ -181,11 +185,13 @@ update_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all labels in a repository
-#'   view_labels("ChadGoymer/test-githapi")
+#'   view_labels("ChadGoymer/githapi")
 #'
 #'   # View a single label
-#'   view_label("new-label", "ChadGoymer/test-githapi")
+#'   view_label("new-label", "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -203,7 +209,7 @@ view_labels <- function(
     url <- gh_url("repos", repo, "labels")
   }
   else {
-    issue <- view_issue(issue, repo = repo)
+    issue <- view_issue(issue, repo = repo, ...)
     info("Viewing labels for issue '", issue$title, "' in repository '", repo, "'")
     url <- gh_url("repos", repo, "issues", issue$number, "labels")
   }
@@ -261,7 +267,9 @@ view_label <- function(
 #'
 #' @examples
 #' \dontrun{
-#'   delete_label("new-label", repo = "ChadGoymer/test-githapi")
+#'
+#'   delete_label("new-label", repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -316,15 +324,17 @@ delete_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   add_labels(
 #'     labels = c("feature", "new-label"),
 #'     issue  = "Test issue",
-#'     repo   = "ChadGoymer/test-githapi")
+#'     repo   = "ChadGoymer/githapi")
 #'
 #'   remove_labels(
 #'     labels = c("feature", "new-label"),
 #'     issue  = "Test issue",
-#'     repo   = "ChadGoymer/test-githapi")
+#'     repo   = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -338,7 +348,7 @@ add_labels <- function(
   assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  issue <- view_issue(issue, repo = repo)
+  issue <- view_issue(issue, repo = repo, ...)
 
   info("Adding labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
   labels_lst <- gh_url("repos", repo, "issues", issue$number, "labels") %>%
@@ -366,7 +376,7 @@ remove_labels <- function(
   assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  issue <- view_issue(issue, repo = repo)
+  issue <- view_issue(issue, repo = repo, ...)
 
   info("Deleting labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
   labels_lst <- try_map(labels, function(label) {

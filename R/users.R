@@ -36,6 +36,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update your name
 #'   update_user(name = "Bob Smith")
 #'
@@ -44,6 +45,7 @@
 #'
 #'   # Update your hireable status
 #'   update_user(hireable = TRUE)
+#'
 #' }
 #'
 #' @export
@@ -60,44 +62,37 @@ update_user <- function(
 {
   payload <- list()
 
-  if (!missing(name))
-  {
+  if (!missing(name)) {
     assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
     payload$name <- name
   }
 
-  if (!missing(email))
-  {
+  if (!missing(email)) {
     assert(is_scalar_character(email), "'email' must be a string:\n  ", email)
     payload$email <- email
   }
 
-  if (!missing(blog))
-  {
+  if (!missing(blog)) {
     assert(is_scalar_character(blog), "'blog' must be a string:\n  ", blog)
     payload$blog <- blog
   }
 
-  if (!missing(company))
-  {
+  if (!missing(company)) {
     assert(is_scalar_character(company), "'company' must be a string:\n  ", company)
     payload$company <- company
   }
 
-  if (!missing(location))
-  {
+  if (!missing(location)) {
     assert(is_scalar_character(location), "'location' must be a string:\n  ", location)
     payload$location <- location
   }
 
-  if (!missing(hireable))
-  {
+  if (!missing(hireable)) {
     assert(is_scalar_logical(hireable), "'hireable' must be a boolean:\n  ", hireable)
     payload$hireable <- hireable
   }
 
-  if (!missing(bio))
-  {
+  if (!missing(bio)) {
     assert(is_scalar_character(bio), "'bio' must be a string:\n  ", bio)
     payload$bio <- bio
   }
@@ -137,7 +132,7 @@ update_user <- function(
 #' @param role (string, optional) Filter the result by role. Can specify either `"admin"`,
 #'   `"member"` or `"all"`. Default: `"all"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_users()` returns a tibble of user properties. `view_user()`
 #'   returns a list of properties for a single user.  `browse_user()` opens the default
@@ -159,6 +154,7 @@ update_user <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View users collaborating on a repository
 #'   view_users(repo = "ChadGoymer/githapi")
 #'
@@ -176,6 +172,7 @@ update_user <- function(
 #'
 #'   # Browse a user's GitHub page
 #'   browse_user("ChadGoymer")
+#'
 #' }
 #'
 #' @export
@@ -187,15 +184,13 @@ view_users <- function(
   n_max = 1000,
   ...)
 {
-  if (!missing(org))
-  {
+  if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
     assert(
       is_scalar_character(role) && role %in% values$user$role,
       "'role' must be one of '", str_c(values$card$role, collapse = "', '"), "':\n  ", role)
 
-    if (!missing(team))
-    {
+    if (!missing(team)) {
       assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
 
       team <- gh_url("orgs", org, "teams") %>% gh_find(property = "name", value = team, ...)
@@ -203,14 +198,12 @@ view_users <- function(
       info("Viewing users in team '", team$name, "'")
       url <- gh_url("teams", team$id, "members", role = role)
     }
-    else
-    {
+    else {
       info("Viewing users in organization '", org, "'")
       url <- gh_url("orgs", org, "members", role = role)
     }
   }
-  else
-  {
+  else {
     info("Viewing all users")
     url <- gh_url("users")
   }
@@ -234,13 +227,11 @@ view_user <- function(
   user,
   ...)
 {
-  if (missing(user))
-  {
+  if (missing(user)) {
     info("Viewing authenticated user")
     url <- gh_url("user")
   }
-  else
-  {
+  else {
     assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
     info("Viewing user '", user, "'")
     url <- gh_url("users", user)
