@@ -32,6 +32,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Invite a new user into an organization
 #'   update_membership("ChadGoymer2", "HairyCoos")
 #'
@@ -43,6 +44,7 @@
 #'
 #'   # Update a user's role in a team
 #'   update_membership("ChadGoymer2", "HairyCoos", "HeadCoos", role = "maintainer")
+#'
 #' }
 #'
 #' @export
@@ -143,6 +145,7 @@ update_membership <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View membership of all organizations the authenticated user is a member of
 #'   view_memberships()
 #'
@@ -154,6 +157,7 @@ update_membership <- function(
 #'
 #'   # View the membership of a user in a team
 #'   view_membership(user = "ChadGoymer", org = "HairyCoos", team = "HeadCoos")
+#'
 #' }
 #'
 #' @export
@@ -250,11 +254,13 @@ view_membership <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Remove a user from an organization
 #'   delete_membership("ChadGoymer", "HairyCoos")
 #'
 #'   # Remove a user from a team
 #'   delete_membership("ChadGoymer", "HairyCoos", "HeadCoos")
+#'
 #' }
 #'
 #' @export

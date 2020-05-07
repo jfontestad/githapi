@@ -135,6 +135,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View all open pull requests
   view_pull_requests("ChadGoymer/test-githapi")
 
@@ -152,6 +153,7 @@ For more details see the GitHub API documentation:
 
   # Open a pull request's page in a browser
   browse_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+
 }
 
 }

@@ -42,12 +42,14 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   update_label(
     label       = "new-label",
     repo        = "ChadGoymer/test-githapi",
     name        = "updated-label",
     color       = "green",
     description = "This is an updated label")
+
 }
 
 }

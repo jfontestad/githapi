@@ -53,6 +53,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Create a team in an organization
 #'   create_team("TestTeam", "HairyCoos")
 #'
@@ -64,6 +65,7 @@
 #'
 #'   # Create a team and specify a parent team
 #'   create_team("TestTeam4", "HairyCoos", parent_team = "TestTeam3")
+#'
 #' }
 #'
 #' @export
@@ -174,6 +176,7 @@ create_team <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update a team
 #'   update_team(
 #'     team        = "TestTeam",
@@ -181,6 +184,7 @@ create_team <- function(
 #'     privacy     = "closed",
 #'     parent_team = "TestTeam3",
 #'     org         = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -291,6 +295,7 @@ update_team <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View teams in an organization
 #'   view_teams("HairyCoos")
 #'
@@ -299,6 +304,7 @@ update_team <- function(
 #'
 #'   # Browse a team's GitHub page
 #'   browse_team("HeadCoos", "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -424,8 +430,10 @@ browse_team <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a team
 #'   delete_team("HeadCoos", "HairyCoos")
+#'
 #' }
 #'
 #' @export

@@ -67,6 +67,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_repository(
 #'     name        = "user-repository",
 #'     description = "This is a user repository",
@@ -77,6 +78,7 @@
 #'     org         = "HairyCoos",
 #'     description = "This is a organization repository",
 #'     homepage    = "https://org-repository.com")
+#'
 #' }
 #'
 #' @export
@@ -216,6 +218,7 @@ create_repository <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update a repository
 #'   update_repository(
 #'     repo           = "ChadGoymer/user-repository",
@@ -241,6 +244,7 @@ create_repository <- function(
 #'
 #'   # Archive a repository
 #'   update_repository("HairyCoos/org-repository", archived = TRUE)
+#'
 #' }
 #'
 #' @export
@@ -410,6 +414,7 @@ update_repository <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View a user's repositories
 #'   view_repositories(user = "ChadGoymer")
 #'
@@ -430,6 +435,7 @@ update_repository <- function(
 #'
 #'   # Browse a specific organization repository
 #'   browse_repository("Test repo", org = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -547,11 +553,13 @@ browse_repository <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a user's repository
 #'   delete_repository("ChadGoymer/user-repository")
 #'
 #'   # Delete an organization's repository
 #'   delete_repository("HairyCoos/org-repository")
+#'
 #' }
 #'
 #' @export

@@ -38,10 +38,12 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   create_branch(
     name = "new-branch",
     ref  = "master",
     repo = "ChadGoymer/test-githapi")
+
 }
 
 }

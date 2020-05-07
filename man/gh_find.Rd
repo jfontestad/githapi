@@ -63,6 +63,7 @@ specifying the title.
     url      = "https://api.github.com/repos/ChadGoymer/githapi/issues",
     property = "title",
     value    = "Test issue")
+
 }
 
 }

@@ -82,6 +82,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update the name of a project for a repository
   update_project(
     project = "Repo project",
@@ -114,6 +115,7 @@ For more details see the GitHub API documentation:
     permission = "write",
     team       = "HeadCoos",
     org        = "HairyCoos")
+
 }
 
 }

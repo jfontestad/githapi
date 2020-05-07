@@ -96,6 +96,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update a pull request's properties
   update_pull_request(
     pull_request = "test pull request",
@@ -108,6 +109,7 @@ For more details see the GitHub API documentation:
     pull_request = "test updated pull request",
     repo         = "ChadGoymer/test-githapi",
     state        = "closed")
+
 }
 
 }

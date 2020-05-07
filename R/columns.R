@@ -29,6 +29,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Create a column in a repository project
 #'   create_column(
 #'     name    = "Test column",
@@ -46,6 +47,7 @@
 #'     name    = "Test column",
 #'     project = "Test project",
 #'     org     = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -122,6 +124,7 @@ create_column <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update the name of a column in a repository project
 #'   update_column(
 #'     column  = "Test column",
@@ -140,6 +143,7 @@ create_column <- function(
 #'     name  = "Test column",
 #'     after = "Test column 2",
 #'     org   = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -278,6 +282,7 @@ move_column <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View columns in a repository project
 #'   view_columns(
 #'     project = "Test columns",
@@ -313,6 +318,7 @@ move_column <- function(
 #'
 #'   # View column by ID
 #'   view_column(123456)
+#'
 #' }
 #'
 #' @export
@@ -420,6 +426,7 @@ view_column <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a column in a repository project
 #'   delete_column(
 #'     column  = "Test column",
@@ -437,6 +444,7 @@ view_column <- function(
 #'     column  = "Test column",
 #'     project = "Test project",
 #'     org     = "HairyCoos")
+#'
 #' }
 #'
 #' @export

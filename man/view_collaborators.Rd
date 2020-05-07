@@ -59,6 +59,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View collaborators on a repository
   view_collaborators(repo = "ChadGoymer/test-githapi")
 
@@ -76,6 +77,7 @@ For more details see the GitHub API documentation:
     user    = "ChadGoymer",
     project = "Test project",
     org     = "HairyCoos")
+
 }
 
 }

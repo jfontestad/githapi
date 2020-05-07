@@ -53,6 +53,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View columns in a repository project
   view_columns(
     project = "Test columns",
@@ -88,6 +89,7 @@ For more details see the GitHub API documentation:
 
   # View column by ID
   view_column(123456)
+
 }
 
 }

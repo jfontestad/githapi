@@ -91,6 +91,7 @@ Finally, an authorisation token can be supplied if it is required.
   gh_request(
     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
     type = "DELETE")
+
 }
 
 }

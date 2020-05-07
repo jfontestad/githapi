@@ -75,6 +75,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View open milestones in a repository
   view_milestones("ChadGoymer/test-githapi")
 
@@ -90,6 +91,7 @@ For more details see the GitHub API documentation:
   browse_milestone(
     milestone = "test milestone",
     repo      = "ChadGoymer/test-githapi")
+
 }
 
 }

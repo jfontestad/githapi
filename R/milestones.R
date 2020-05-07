@@ -36,11 +36,13 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_milestone(
 #'     title       = "test milestone",
 #'     repo        = "ChadGoymer/test-githapi",
 #'     description = "This is a test milestone",
 #'     due_on      = "2030-01-01 00:00:00")
+#'
 #' }
 #'
 #' @export
@@ -124,6 +126,7 @@ create_milestone <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update the properties of a milestone
 #'   update_milestone(
 #'     milestone   = "test milestone",
@@ -137,6 +140,7 @@ create_milestone <- function(
 #'     milestone = "updated test milestone",
 #'     repo      = "ChadGoymer/test-githapi",
 #'     state     = "closed")
+#'
 #' }
 #'
 #' @export
@@ -240,6 +244,7 @@ update_milestone <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View open milestones in a repository
 #'   view_milestones("ChadGoymer/test-githapi")
 #'
@@ -255,6 +260,7 @@ update_milestone <- function(
 #'   browse_milestone(
 #'     milestone = "test milestone",
 #'     repo      = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -369,10 +375,12 @@ browse_milestone <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a milestone
 #'   delete_milestone(
 #'     milestone = "test milestone",
 #'     repo      = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export

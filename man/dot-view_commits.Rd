@@ -70,6 +70,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View the history of commits for the master branch
   .view_commits("master", "ChadGoymer/test-githapi")
 
@@ -97,6 +98,7 @@ For more details see the GitHub API documentation:
 
   # View the properties of the commit with tag "0.8.7"
   view_commit("0.8.7", "ChadGoymer/test-githapi")
+
 }
 
 }

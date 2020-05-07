@@ -51,6 +51,7 @@ using \code{\link[readr:read_csv]{readr::read_csv()}}, and returns the result as
     path = "inst/test-data/test.csv",
     ref  = "master",
     repo = "ChadGoymer/githapi")
+
 }
 
 }

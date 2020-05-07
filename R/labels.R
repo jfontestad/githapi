@@ -26,11 +26,13 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_label(
 #'     name        = "new-label",
 #'     repo        = "ChadGoymer/test-githapi",
 #'     color       = "blue",
 #'     description = "This is a detailed label")
+#'
 #' }
 #'
 #' @export
@@ -98,12 +100,14 @@ create_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   update_label(
 #'     label       = "new-label",
 #'     repo        = "ChadGoymer/test-githapi",
 #'     name        = "updated-label",
 #'     color       = "green",
 #'     description = "This is an updated label")
+#'
 #' }
 #'
 #' @export
@@ -181,11 +185,13 @@ update_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all labels in a repository
 #'   view_labels("ChadGoymer/test-githapi")
 #'
 #'   # View a single label
 #'   view_label("new-label", "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -261,7 +267,9 @@ view_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   delete_label("new-label", repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -316,6 +324,7 @@ delete_label <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   add_labels(
 #'     labels = c("feature", "new-label"),
 #'     issue  = "Test issue",
@@ -325,6 +334,7 @@ delete_label <- function(
 #'     labels = c("feature", "new-label"),
 #'     issue  = "Test issue",
 #'     repo   = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export

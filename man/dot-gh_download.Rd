@@ -52,6 +52,7 @@ This function downloads a file from GitHub in as a binary object.
   .gh_download(
     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/zipball/master",
     path = "~/githapi-master.zip")
+
 }
 
 }

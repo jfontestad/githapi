@@ -60,6 +60,7 @@ Each page uses \code{\link[=gh_request]{gh_request()}} to retrieve the contents.
   gh_page(
     url   = "https://api.github.com/users",
     n_max = 150)
+
 }
 
 }

@@ -68,6 +68,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View teams in an organization
   view_teams("HairyCoos")
 
@@ -76,6 +77,7 @@ For more details see the GitHub API documentation:
 
   # Browse a team's GitHub page
   browse_team("HeadCoos", "HairyCoos")
+
 }
 
 }

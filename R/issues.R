@@ -41,6 +41,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_issue(
 #'     title     = "user issue",
 #'     repo      = "ChadGoymer/test-issues",
@@ -54,6 +55,7 @@
 #'     repo      = "HairyCoos/test-issues",
 #'     body      = "This is an issue to test create_issue()",
 #'     assignees = "ChadGoymer")
+#'
 #' }
 #'
 #' @export
@@ -161,6 +163,7 @@ create_issue <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update the properties of a issue
 #'   update_issue(
 #'     issue   = "test issue",
@@ -174,6 +177,7 @@ create_issue <- function(
 #'     issue = "updated test issue",
 #'     repo      = "ChadGoymer/test-githapi",
 #'     state     = "closed")
+#'
 #' }
 #'
 #' @export
@@ -314,6 +318,7 @@ update_issue <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View open issues in a repository
 #'   view_issues("ChadGoymer/test-githapi")
 #'
@@ -325,6 +330,7 @@ update_issue <- function(
 #'
 #'   # Open a issue's page in a browser
 #'   browse_issue("test issue", "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export

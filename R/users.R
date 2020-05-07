@@ -36,6 +36,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update your name
 #'   update_user(name = "Bob Smith")
 #'
@@ -44,6 +45,7 @@
 #'
 #'   # Update your hireable status
 #'   update_user(hireable = TRUE)
+#'
 #' }
 #'
 #' @export
@@ -152,6 +154,7 @@ update_user <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View users collaborating on a repository
 #'   view_users(repo = "ChadGoymer/githapi")
 #'
@@ -169,6 +172,7 @@ update_user <- function(
 #'
 #'   # Browse a user's GitHub page
 #'   browse_user("ChadGoymer")
+#'
 #' }
 #'
 #' @export

@@ -53,3 +53,11 @@ For non-interactive processes a personal access token can be specified, either a
 option (\code{"github.token"}) or as an environment variable (either \code{GITHUB_TOKEN} or
 \code{GITHUB_PAT}).
 }
+\examples{
+\dontrun{
+
+  token <- gh_token()
+
+}
+
+}

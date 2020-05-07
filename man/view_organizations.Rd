@@ -83,6 +83,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View organizations a user is a member of
   view_organizations(user = "ChadGoymer")
 
@@ -97,6 +98,7 @@ For more details see the GitHub API documentation:
 
   # Browse a organization's GitHub page
   browse_organization("HairyCoos")
+
 }
 
 }

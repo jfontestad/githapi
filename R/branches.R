@@ -24,10 +24,12 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_branch(
 #'     name = "new-branch",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -89,10 +91,12 @@ create_branch <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   update_branch(
 #'     name = "new-branch",
 #'     repo = "ChadGoymer/test-githapi",
 #'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d")
+#'
 #' }
 #'
 #' @export
@@ -154,11 +158,13 @@ update_branch <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all branches in a repository
 #'   .view_branches("ChadGoymer/test-githapi")
 #'
 #'   # View a single branch
 #'   view_label("new-branch", "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -227,7 +233,9 @@ view_branch <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   delete_branch("new-branch", repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export

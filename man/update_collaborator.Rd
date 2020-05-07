@@ -40,6 +40,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Invite a user to collaborate on a repository
   update_collaborator("ChadGoymer2", repo = "ChadGoymer/test-githapi")
 
@@ -61,6 +62,7 @@ For more details see the GitHub API documentation:
     project    = "TestProject",
     org        = "HairyCoos",
     permission = "read")
+
 }
 
 }

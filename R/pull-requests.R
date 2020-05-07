@@ -62,6 +62,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_pull_request(
 #'     title = "test pull request",
 #'     repo  = "ChadGoymer/test-githapi",
@@ -79,6 +80,7 @@
 #'     reviewers = c("BobSmith", "JaneJones"),
 #'     labels    = "enhancement",
 #'     milestone = "Release-1.0")
+#'
 #' }
 #'
 #' @export
@@ -226,6 +228,7 @@ create_pull_request <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update a pull request's properties
 #'   update_pull_request(
 #'     pull_request = "test pull request",
@@ -238,6 +241,7 @@ create_pull_request <- function(
 #'     pull_request = "test updated pull request",
 #'     repo         = "ChadGoymer/test-githapi",
 #'     state        = "closed")
+#'
 #' }
 #'
 #' @export
@@ -449,6 +453,7 @@ update_pull_request <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all open pull requests
 #'   view_pull_requests("ChadGoymer/test-githapi")
 #'
@@ -466,6 +471,7 @@ update_pull_request <- function(
 #'
 #'   # Open a pull request's page in a browser
 #'   browse_pull_request("test pull request", repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export

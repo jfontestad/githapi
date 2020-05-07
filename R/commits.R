@@ -51,6 +51,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Add a commit to the master branch
 #'   .upload_commit(
 #'     path    = "C:/files-to-upload",
@@ -106,6 +107,7 @@
 #'     message = "Commit to test .upload_commit()",
 #'     repo    = "ChadGoymer/test-githapi",
 #'     parents = c("master", "test-commits-2"))
+#'
 #' }
 #'
 #' @export
@@ -202,6 +204,7 @@
 #'     ref  = "master",
 #'     repo = "ChadGoymer/test-githapi",
 #'     path = "~")
+#'
 #' }
 #'
 #' @export
@@ -292,6 +295,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View the history of commits for the master branch
 #'   .view_commits("master", "ChadGoymer/test-githapi")
 #'
@@ -319,6 +323,7 @@
 #'
 #'   # View the properties of the commit with tag "0.8.7"
 #'   view_commit("0.8.7", "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -492,8 +497,10 @@ browse_commit <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   view_sha("a-tag", repo = "ChadGoymer/test-githapi")
 #'   view_sha("a-branch", repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export

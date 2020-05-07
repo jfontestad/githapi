@@ -194,6 +194,7 @@
 #'     message   = "Commit to test upload_files()",
 #'     repo      = "ChadGoymer/githapi",
 #'     parent    = "master")
+#'
 #' }
 #'
 #' @export
@@ -314,6 +315,7 @@ upload_files <- function(
 #'     to_path   = "~/README.md",
 #'     ref       = "master",
 #'     repo      = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -772,6 +774,7 @@ delete_file <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View files on the master branch in a repository
 #'   .view_files("master", "ChadGoymer/githapi")
 #'
@@ -789,6 +792,7 @@ delete_file <- function(
 #'     path = "README.md",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -990,6 +994,7 @@ browse_file <- function(
 #'     branch  = "master",
 #'     message = "Updated an existing file with write_github_csv()",
 #'     repo    = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -1149,6 +1154,7 @@ write_github_csv <- function(
 #'     path = "inst/test-data/test.csv",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export
@@ -1288,6 +1294,7 @@ read_github_csv <- function(
 #'     path = "inst/test-data/test-script.R",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export

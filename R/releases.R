@@ -387,7 +387,9 @@ browse_release <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   delete_release("1.0.0", repo = "ChadGoymer/githapi")
+#'
 #' }
 #'
 #' @export

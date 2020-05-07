@@ -106,6 +106,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   create_repository(
     name        = "user-repository",
     description = "This is a user repository",
@@ -116,6 +117,7 @@ For more details see the GitHub API documentation:
     org         = "HairyCoos",
     description = "This is a organization repository",
     homepage    = "https://org-repository.com")
+
 }
 
 }

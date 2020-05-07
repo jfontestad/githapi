@@ -93,6 +93,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View a user's repositories
   view_repositories(user = "ChadGoymer")
 
@@ -113,6 +114,7 @@ For more details see the GitHub API documentation:
 
   # Browse a specific organization repository
   browse_repository("Test repo", org = "HairyCoos")
+
 }
 
 }

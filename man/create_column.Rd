@@ -45,6 +45,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Create a column in a repository project
   create_column(
     name    = "Test column",
@@ -62,6 +63,7 @@ For more details see the GitHub API documentation:
     name    = "Test column",
     project = "Test project",
     org     = "HairyCoos")
+
 }
 
 }

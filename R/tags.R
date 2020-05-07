@@ -24,10 +24,12 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   create_tag(
 #'     name = "new-tag",
 #'     ref  = "master",
 #'     repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -89,10 +91,12 @@ create_tag <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   update_tag(
 #'     tag  = "new-tag",
 #'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d",
 #'     repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -153,11 +157,13 @@ update_tag <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View all tags in a repository
 #'   .view_tags("ChadGoymer/test-githapi")
 #'
 #'   # View a single tag
 #'   view_tag("new-tag", "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -226,7 +232,9 @@ view_tag <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   delete_tag("new-tag", repo = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export

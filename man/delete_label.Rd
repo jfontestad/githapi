@@ -28,7 +28,9 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   delete_label("new-label", repo = "ChadGoymer/test-githapi")
+
 }
 
 }

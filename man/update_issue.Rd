@@ -74,6 +74,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update the properties of a issue
   update_issue(
     issue   = "test issue",
@@ -87,6 +88,7 @@ For more details see the GitHub API documentation:
     issue = "updated test issue",
     repo      = "ChadGoymer/test-githapi",
     state     = "closed")
+
 }
 
 }

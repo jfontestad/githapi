@@ -59,6 +59,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update the name of a column in a repository project
   update_column(
     column  = "Test column",
@@ -77,6 +78,7 @@ For more details see the GitHub API documentation:
     name  = "Test column",
     after = "Test column 2",
     org   = "HairyCoos")
+
 }
 
 }

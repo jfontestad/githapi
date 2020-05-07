@@ -95,6 +95,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View open issues in a repository
   view_issues("ChadGoymer/test-githapi")
 
@@ -106,6 +107,7 @@ For more details see the GitHub API documentation:
 
   # Open a issue's page in a browser
   browse_issue("test issue", "ChadGoymer/test-githapi")
+
 }
 
 }

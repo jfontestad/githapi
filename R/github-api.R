@@ -33,6 +33,13 @@
 #' @return A token which is either a string, for a personal access token, or a [httr::Token]
 #'   object for an OAuth token.
 #'
+#' @examples
+#' \dontrun{
+#'
+#'   token <- gh_token()
+#'
+#' }
+#'
 #' @export
 #'
 gh_token <- function(
@@ -120,6 +127,7 @@ gh_token <- function(
 #'
 #'   # URL for a file tree with the recursive option
 #'   gh_url(c("repos", "ChadGoymer/githapi", "git/trees", "234752384"), list(recursive = 1))
+#'
 #' }
 #'
 #' @export
@@ -222,6 +230,7 @@ gh_url <- function(
 #'   gh_request(
 #'     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag",
 #'     type = "DELETE")
+#'
 #' }
 #'
 #' @export
@@ -356,6 +365,7 @@ gh_request <- function(
 #'   gh_page(
 #'     url   = "https://api.github.com/users",
 #'     n_max = 150)
+#'
 #' }
 #'
 #' @export
@@ -463,6 +473,7 @@ gh_page <- function(
 #'     url      = "https://api.github.com/repos/ChadGoymer/githapi/issues",
 #'     property = "title",
 #'     value    = "Test issue")
+#'
 #' }
 #'
 #' @export
@@ -562,6 +573,7 @@ gh_find <- function(
 #'   .gh_download(
 #'     url  = "https://api.github.com/repos/ChadGoymer/test-githapi/zipball/master",
 #'     path = "~/githapi-master.zip")
+#'
 #' }
 #'
 #' @export

@@ -53,6 +53,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Update the properties of a milestone
   update_milestone(
     milestone   = "test milestone",
@@ -66,6 +67,7 @@ For more details see the GitHub API documentation:
     milestone = "updated test milestone",
     repo      = "ChadGoymer/test-githapi",
     state     = "closed")
+
 }
 
 }

@@ -39,6 +39,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Create a project for a repository
 #'   create_project(
 #'     name = "Repo project",
@@ -55,6 +56,7 @@
 #'     name = "Organization project",
 #'     body = "This is an organization's project",
 #'     org  = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -158,6 +160,7 @@ create_project <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update the name of a project for a repository
 #'   update_project(
 #'     project = "Repo project",
@@ -190,6 +193,7 @@ create_project <- function(
 #'     permission = "write",
 #'     team       = "HeadCoos",
 #'     org        = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -360,6 +364,7 @@ update_project <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View a repository's projects
 #'   view_projects("ChadGoymer/githapi")
 #'
@@ -401,6 +406,7 @@ update_project <- function(
 #'
 #'   # Browse a specific team project
 #'   browse_project("Prioritisation", team = "HeadCoos", org = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -626,6 +632,7 @@ browse_project <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a project for a repository
 #'   delete_project(
 #'     project = "Repo project",
@@ -646,6 +653,7 @@ browse_project <- function(
 #'   delete_project(
 #'     project = "User project",
 #'     org     = "HairyCoos")
+#'
 #' }
 #'
 #' @export

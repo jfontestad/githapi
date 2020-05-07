@@ -56,6 +56,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View membership of all organizations the authenticated user is a member of
   view_memberships()
 
@@ -67,6 +68,7 @@ For more details see the GitHub API documentation:
 
   # View the membership of a user in a team
   view_membership(user = "ChadGoymer", org = "HairyCoos", team = "HeadCoos")
+
 }
 
 }

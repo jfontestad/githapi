@@ -35,11 +35,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Remove a user from an organization
   delete_membership("ChadGoymer", "HairyCoos")
 
   # Remove a user from a team
   delete_membership("ChadGoymer", "HairyCoos", "HeadCoos")
+
 }
 
 }

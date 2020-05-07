@@ -42,11 +42,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View all tags in a repository
   .view_tags("ChadGoymer/test-githapi")
 
   # View a single tag
   view_tag("new-tag", "ChadGoymer/test-githapi")
+
 }
 
 }

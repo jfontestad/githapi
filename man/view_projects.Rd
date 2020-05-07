@@ -72,6 +72,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View a repository's projects
   view_projects("ChadGoymer/githapi")
 
@@ -113,6 +114,7 @@ For more details see the GitHub API documentation:
 
   # Browse a specific team project
   browse_project("Prioritisation", team = "HeadCoos", org = "HairyCoos")
+
 }
 
 }

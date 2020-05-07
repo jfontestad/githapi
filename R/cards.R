@@ -38,6 +38,7 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Create an issue card in a repository project
 #'   create_card(
 #'     content_id   = 1,
@@ -60,6 +61,7 @@
 #'     column  = "Test column",
 #'     project = "Test project",
 #'     org     = "HairyCoos")
+#'
 #' }
 #'
 #' @export
@@ -175,6 +177,7 @@ create_card <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Update a note in a card
 #'   update_card(card = 123456, note = "This is an updated note")
 #'
@@ -194,6 +197,7 @@ create_card <- function(
 #'     column   = "Test column 2",
 #'     project  = "Test project",
 #'     repo     = "ChadGoymer/test-githapi")
+#'
 #' }
 #'
 #' @export
@@ -346,6 +350,7 @@ move_card <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # View cards in a repository project
 #'   cards <- view_cards(
 #'     column  = "Test cards",
@@ -366,6 +371,7 @@ move_card <- function(
 #'
 #'   # View a single card
 #'   view_card(card = 123456)
+#'
 #' }
 #'
 #' @export
@@ -464,8 +470,10 @@ view_card <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
 #'   # Delete a card
 #'   delete_card(123456)
+#'
 #' }
 #'
 #' @export

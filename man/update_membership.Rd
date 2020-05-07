@@ -47,6 +47,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Invite a new user into an organization
   update_membership("ChadGoymer2", "HairyCoos")
 
@@ -58,6 +59,7 @@ For more details see the GitHub API documentation:
 
   # Update a user's role in a team
   update_membership("ChadGoymer2", "HairyCoos", "HeadCoos", role = "maintainer")
+
 }
 
 }

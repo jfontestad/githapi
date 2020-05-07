@@ -43,11 +43,13 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View all branches in a repository
   .view_branches("ChadGoymer/test-githapi")
 
   # View a single branch
   view_label("new-branch", "ChadGoymer/test-githapi")
+
 }
 
 }

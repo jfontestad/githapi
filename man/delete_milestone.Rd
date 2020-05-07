@@ -28,10 +28,12 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Delete a milestone
   delete_milestone(
     milestone = "test milestone",
     repo      = "ChadGoymer/test-githapi")
+
 }
 
 }

@@ -66,6 +66,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View users collaborating on a repository
   view_users(repo = "ChadGoymer/githapi")
 
@@ -83,6 +84,7 @@ For more details see the GitHub API documentation:
 
   # Browse a user's GitHub page
   browse_user("ChadGoymer")
+
 }
 
 }

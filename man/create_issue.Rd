@@ -58,6 +58,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   create_issue(
     title     = "user issue",
     repo      = "ChadGoymer/test-issues",
@@ -71,6 +72,7 @@ For more details see the GitHub API documentation:
     repo      = "HairyCoos/test-issues",
     body      = "This is an issue to test create_issue()",
     assignees = "ChadGoymer")
+
 }
 
 }

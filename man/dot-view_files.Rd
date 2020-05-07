@@ -57,6 +57,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View files on the master branch in a repository
   .view_files("master", "ChadGoymer/githapi")
 
@@ -74,6 +75,7 @@ For more details see the GitHub API documentation:
     path = "README.md",
     ref  = "master",
     repo = "ChadGoymer/githapi")
+
 }
 
 }

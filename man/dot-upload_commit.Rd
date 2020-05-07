@@ -81,6 +81,7 @@ to set the branch to the new commit no matter what then set the \code{force} arg
 }
 \examples{
 \dontrun{
+
   # Add a commit to the master branch
   .upload_commit(
     path    = "C:/files-to-upload",
@@ -136,6 +137,7 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     message = "Commit to test .upload_commit()",
     repo    = "ChadGoymer/test-githapi",
     parents = c("master", "test-commits-2"))
+
 }
 
 }

@@ -41,10 +41,12 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   update_branch(
     name = "new-branch",
     repo = "ChadGoymer/test-githapi",
     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d")
+
 }
 
 }

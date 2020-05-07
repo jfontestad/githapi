@@ -93,6 +93,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   create_pull_request(
     title = "test pull request",
     repo  = "ChadGoymer/test-githapi",
@@ -110,6 +111,7 @@ For more details see the GitHub API documentation:
     reviewers = c("BobSmith", "JaneJones"),
     labels    = "enhancement",
     milestone = "Release-1.0")
+
 }
 
 }

@@ -38,10 +38,12 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   create_tag(
     name = "new-tag",
     ref  = "master",
     repo = "ChadGoymer/test-githapi")
+
 }
 
 }

@@ -58,6 +58,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # View cards in a repository project
   cards <- view_cards(
     column  = "Test cards",
@@ -78,6 +79,7 @@ For more details see the GitHub API documentation:
 
   # View a single card
   view_card(card = 123456)
+
 }
 
 }

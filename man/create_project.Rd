@@ -54,6 +54,7 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Create a project for a repository
   create_project(
     name = "Repo project",
@@ -70,6 +71,7 @@ For more details see the GitHub API documentation:
     name = "Organization project",
     body = "This is an organization's project",
     org  = "HairyCoos")
+
 }
 
 }

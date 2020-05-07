@@ -28,8 +28,10 @@ For more details see the GitHub API documentation:
 }
 \examples{
 \dontrun{
+
   # Delete a team
   delete_team("HeadCoos", "HairyCoos")
+
 }
 
 }

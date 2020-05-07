@@ -35,6 +35,7 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
     to_path   = "~/README.md",
     ref       = "master",
     repo      = "ChadGoymer/githapi")
+
 }
 
 }
