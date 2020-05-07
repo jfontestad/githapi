@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update a release in a repository — update_release • githapi</title>
+<title>Delete a file in a new commit — delete_file • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,11 @@
 
 
 
-<meta property="og:title" content="Update a release in a repository — update_release" />
-<meta property="og:description" content="This function updates a release in the specified repository. It can be used to update
-properties, such as name or whether it is draft, or it can be used to point the release
-at a new commit by providing a Git reference, which can be either a SHA or branch." />
+<meta property="og:title" content="Delete a file in a new commit — delete_file" />
+<meta property="og:description" content="This function deletes a file in a repository in GitHub by creating a new commit on the
+specified branch. If the branch does not already exist a parent commit must be specified
+and a new branch is created from it. If the file does not exist delete_file() throws as
+error." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,65 +111,53 @@ at a new commit by providing a Git reference, which can be either a SHA or branc
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update a release in a repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/releases.R'><code>R/releases.R</code></a></small>
-    <div class="hidden name"><code>update_release.Rd</code></div>
+    <h1>Delete a file in a new commit</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/files.R'><code>R/files.R</code></a></small>
+    <div class="hidden name"><code>delete_file.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function updates a release in the specified repository. It can be used to update
-properties, such as <code>name</code> or whether it is <code>draft</code>, or it can be used to point the release
-at a new commit by providing a Git reference, which can be either a SHA or branch.</p>
+    <p>This function deletes a file in a repository in GitHub by creating a new commit on the
+specified branch. If the branch does not already exist a <code>parent</code> commit must be specified
+and a new branch is created from it. If the file does not exist <code>delete_file()</code> throws as
+error.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_release</span>(
-  <span class='no'>release</span>,
-  <span class='no'>repo</span>,
-  <span class='no'>tag</span>,
-  <span class='no'>name</span>,
-  <span class='no'>body</span>,
-  <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"master"</span>,
-  <span class='kw'>draft</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prerelease</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>delete_file</span>(<span class='no'>path</span>, <span class='no'>branch</span>, <span class='no'>message</span>, <span class='no'>repo</span>, <span class='no'>parent</span>, <span class='no'>author</span>, <span class='no'>committer</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>release</th>
-      <td><p>(string) The id or current tag of the release.</p></td>
+      <th>path</th>
+      <td><p>(string) The path of the file to delete, within the repository.</p></td>
+    </tr>
+    <tr>
+      <th>branch</th>
+      <td><p>(string) The name of the branch to make the new commit on.</p></td>
+    </tr>
+    <tr>
+      <th>message</th>
+      <td><p>(string) The commit message.</p></td>
     </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>tag</th>
-      <td><p>(string, optional) The name of the new tag.</p></td>
+      <th>parent</th>
+      <td><p>(string, optional) If creating a new branch the the parent commit must
+be specified as either a SHA, branch or tag.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>(string, optional) The name of the release.</p></td>
+      <th>author</th>
+      <td><p>(list, optional) A the name and email address of the user who wrote the
+changes in the commit.</p></td>
     </tr>
     <tr>
-      <th>body</th>
-      <td><p>(string, optional) The description of the release.</p></td>
-    </tr>
-    <tr>
-      <th>ref</th>
-      <td><p>(string, optional) Either a SHA or branch used to identify the commit. Ignored
-if the <code>tag</code> exists this <code>ref</code> is ignored. Default: "master".</p></td>
-    </tr>
-    <tr>
-      <th>draft</th>
-      <td><p>(boolean, optional) Whether the release is a draft. Default: <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>prerelease</th>
-      <td><p>(boolean, optional) Whether the release is a pre-release.
-Default: <code>FALSE</code>.</p></td>
+      <th>committer</th>
+      <td><p>(list, optional) A the name and email address of the user who created
+the commit.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -178,47 +167,53 @@ Default: <code>FALSE</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_release()</code> returns a list of the release properties.</p>
-<p><strong>Release Properties:</strong></p><ul>
-<li><p><strong>id</strong>: The id of the release.</p></li>
-<li><p><strong>tag</strong>: The tags associated with the release.</p></li>
-<li><p><strong>name</strong>: The name of the release.</p></li>
-<li><p><strong>body</strong>: The description of the release.</p></li>
-<li><p><strong>commit</strong>: The commit associated with the release.</p></li>
-<li><p><strong>draft</strong>: Whether the release is draft.</p></li>
-<li><p><strong>prerelease</strong>:  Whether it is a pre-release.</p></li>
-<li><p><strong>author_login</strong>: The author's account login.</p></li>
-<li><p><strong>assets</strong>: The name of the assets associated with the release.</p></li>
-<li><p><strong>html_url</strong>: The address of the release's web page.</p></li>
-<li><p><strong>created_at</strong>: The time and date the release was created.</p></li>
-<li><p><strong>published_at</strong>: The time and date the release was published.</p></li>
+    <p><code>delete_file()</code>returns a list of the commit properties.</p>
+<p><strong>Commit Properties:</strong></p><ul>
+<li><p><strong>sha</strong>: The commit SHA.</p></li>
+<li><p><strong>message</strong>: The commit message.</p></li>
+<li><p><strong>author_name</strong>: The author's name.</p></li>
+<li><p><strong>author_email</strong>: The author's email address.</p></li>
+<li><p><strong>committer_name</strong>: The committer's name.</p></li>
+<li><p><strong>committer_email</strong>: The committer's email address.</p></li>
+<li><p><strong>tree_sha</strong>: The SHA of the file tree.</p></li>
+<li><p><strong>parent_sha</strong>: The commit SHA of the parent(s).</p></li>
+<li><p><strong>date</strong>: The date the commit was made.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/repos/releases/#edit-a-release'>https://developer.github.com/v3/repos/releases/#edit-a-release</a></p></li>
-</ul>
-
+    <p>The <code>author</code> and <code>committer</code> arguments are optional and if not supplied the current
+authenticated user is used. However, if you want to set them explicitly you must specify
+a named list with <code>name</code> and <code>email</code> as the elements (see examples).</p>
+<p>Note: The GitHub API imposes a file size limit of 1MB for this request. For larger files
+use the <code><a href='upload_files.html'>upload_files()</a></code> function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='fu'>update_release</span>(
-    <span class='kw'>release</span> <span class='kw'>=</span> <span class='st'>"1.0.0"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>tag</span>     <span class='kw'>=</span> <span class='st'>"1.0.1"</span>,
-    <span class='kw'>name</span>    <span class='kw'>=</span> <span class='st'>"Updated production release"</span>,
-    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This release has been updated by update_release()"</span>)
+  <span class='co'># Delete a file on the master branch</span>
+  <span class='fu'>delete_file</span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"file-to-delete.md"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Deleted a file with delete_file()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
-  <span class='fu'>update_release</span>(
-    <span class='kw'>release</span>    <span class='kw'>=</span> <span class='fl'>1234567</span>,
-    <span class='kw'>tag</span>        <span class='kw'>=</span> <span class='st'>"1.0.1"</span>,
-    <span class='kw'>repo</span>       <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>name</span>       <span class='kw'>=</span> <span class='st'>"Promoted draft release"</span>,
-    <span class='kw'>body</span>       <span class='kw'>=</span> <span class='st'>"This release has been updated by update_release()"</span>,
-    <span class='kw'>draft</span>      <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>prerelease</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='co'># Delete a file on a new branch</span>
+  <span class='fu'><a href='create_file.html'>create_file</a></span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"file-to-delete.md"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"new-branch"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Deleted a file with delete_file()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>parent</span>  <span class='kw'>=</span> <span class='st'>"master"</span>)
+
+  <span class='co'># Delete a file on the master branch specifying an author and committer</span>
+  <span class='fu'>delete_file</span>(
+    <span class='kw'>path</span>      <span class='kw'>=</span> <span class='st'>"file-to-delete.md"</span>,
+    <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Deleted a file with delete_file()"</span>,
+    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>author</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Bob"</span>,  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"bob@acme.com"</span>),
+    <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Jane"</span>, <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"jane@acme.com"</span>))
 
 }</div></pre>
   </div>

@@ -36,7 +36,7 @@
 
 
 <meta property="og:title" content="View cards within a GitHub project — view_cards" />
-<meta property="og:description" content="view_cards() summarises cards in a table with the properties as columnss and a row
+<meta property="og:description" content="view_cards() summarises cards in a table with the properties as columns and a row
 for each card in a column of a project. view_card() returns a list of all properties
 for a single card." />
 <meta name="twitter:card" content="summary" />
@@ -71,7 +71,7 @@ for a single card." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@ for a single card." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_cards()</code> summarises cards in a table with the properties as columnss and a row
+    <p><code>view_cards()</code> summarises cards in a table with the properties as columns and a row
 for each card in a column of a project. <code>view_card()</code> returns a list of all properties
 for a single card.</p>
     </div>
@@ -154,7 +154,7 @@ for a single card.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>card</th>
@@ -188,11 +188,12 @@ or organization, by supplying them as an input.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># View cards in a repository project</span>
   <span class='no'>cards</span> <span class='kw'>&lt;-</span> <span class='fu'>view_cards</span>(
     <span class='kw'>column</span>  <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
     <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test cards"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View cards in a user's project</span>
   <span class='no'>cards</span> <span class='kw'>&lt;-</span> <span class='fu'>view_cards</span>(
@@ -208,6 +209,7 @@ or organization, by supplying them as an input.</p>
 
   <span class='co'># View a single card</span>
   <span class='fu'>view_card</span>(<span class='kw'>card</span> <span class='kw'>=</span> <span class='fl'>123456</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

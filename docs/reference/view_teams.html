@@ -71,7 +71,7 @@ opens the web page for the team in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@ the child teams will be returned.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>team</th>
@@ -190,6 +190,7 @@ or, if neither are supplied, the teams the authenticated user is a member of.</p
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># View teams in an organization</span>
   <span class='fu'>view_teams</span>(<span class='st'>"HairyCoos"</span>)
 
@@ -198,6 +199,7 @@ or, if neither are supplied, the teams the authenticated user is a member of.</p
 
   <span class='co'># Browse a team's GitHub page</span>
   <span class='fu'>browse_team</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -70,7 +70,7 @@ the specified URL." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -199,7 +199,7 @@ the URL, the HTTP status code and a message from the API, if there is one.</p>
 
   <span class='co'># Create a tag</span>
   <span class='fu'>gh_request</span>(
-    <span class='kw'>url</span>     <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/test-githapi/git/refs"</span>,
+    <span class='kw'>url</span>     <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/refs"</span>,
     <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"POST"</span>,
     <span class='kw'>payload</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
       <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"test-tag"</span>,
@@ -207,19 +207,20 @@ the URL, the HTTP status code and a message from the API, if there is one.</p>
 
   <span class='co'># View a tag</span>
   <span class='fu'>gh_request</span>(
-    <span class='kw'>url</span>  <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag"</span>,
+    <span class='kw'>url</span>  <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
     <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"GET"</span>)
 
   <span class='co'># Update a tag</span>
   <span class='fu'>gh_request</span>(
-    <span class='kw'>url</span>     <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag"</span>,
+    <span class='kw'>url</span>     <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
     <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"PATCH"</span>,
     <span class='kw'>payload</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sha</span> <span class='kw'>=</span> <span class='st'>"a4b6545671455234757313a42738e44c10b0ef37"</span>))
 
   <span class='co'># Delete a tag</span>
   <span class='fu'>gh_request</span>(
-    <span class='kw'>url</span>  <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/test-githapi/git/test-tag"</span>,
+    <span class='kw'>url</span>  <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
     <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"DELETE"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

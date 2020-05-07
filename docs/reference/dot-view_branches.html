@@ -71,7 +71,7 @@ single branch." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@ single branch.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>branch</th>
@@ -166,11 +166,13 @@ returns a list of properties for a single branch.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># View all branches in a repository</span>
-  <span class='fu'>.view_branches</span>(<span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>.view_branches</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single branch</span>
-  <span class='fu'><a href='view_labels.html'>view_label</a></span>(<span class='st'>"new-branch"</span>, <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'><a href='view_labels.html'>view_label</a></span>(<span class='st'>"new-branch"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

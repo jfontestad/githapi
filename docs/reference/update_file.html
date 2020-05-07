@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a file in a new commit — create_file • githapi</title>
+<title>Update a file in a new commit — update_file • githapi</title>
 
 
 <!-- jquery -->
@@ -35,11 +35,10 @@
 
 
 
-<meta property="og:title" content="Create a file in a new commit — create_file" />
-<meta property="og:description" content="This function adds a file in a repository in GitHub by creating a new commit on the
+<meta property="og:title" content="Update a file in a new commit — update_file" />
+<meta property="og:description" content="This function updates a file in a repository in GitHub by creating a new commit on the
 specified branch. If the branch does not already exist a parent commit must be specified
-and a new branch is created from it. If the file already exists create_file() throws an
-error." />
+and a new branch is created from it." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -111,19 +110,18 @@ error." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a file in a new commit</h1>
+    <h1>Update a file in a new commit</h1>
     <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/files.R'><code>R/files.R</code></a></small>
-    <div class="hidden name"><code>create_file.Rd</code></div>
+    <div class="hidden name"><code>update_file.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function adds a file in a repository in GitHub by creating a new commit on the
+    <p>This function updates a file in a repository in GitHub by creating a new commit on the
 specified branch. If the branch does not already exist a <code>parent</code> commit must be specified
-and a new branch is created from it. If the file already exists <code>create_file()</code> throws an
-error.</p>
+and a new branch is created from it.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_file</span>(
+    <pre class="usage"><span class='fu'>update_file</span>(
   <span class='no'>content</span>,
   <span class='no'>path</span>,
   <span class='no'>branch</span>,
@@ -144,7 +142,7 @@ error.</p>
     </tr>
     <tr>
       <th>path</th>
-      <td><p>(string) The path to create the file at, within the repository.</p></td>
+      <td><p>(string) The path of the file to update, within the repository.</p></td>
     </tr>
     <tr>
       <th>branch</th>
@@ -181,7 +179,7 @@ the commit.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>create_file()</code>returns a list of the commit properties.</p>
+    <p><code>update_file()</code>returns a list of the commit properties.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
@@ -205,29 +203,29 @@ use the <code><a href='upload_files.html'>upload_files()</a></code> function.</p
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='co'># Create a new file on the master branch</span>
-  <span class='fu'>create_file</span>(
-    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
-    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
+  <span class='co'># Update a file on the master branch</span>
+  <span class='fu'>update_file</span>(
+    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a file\\n\\n Updated by `update_file()`"</span>,
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"updated-file.md"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Created a new file with create_file()"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Updated a file with update_file()"</span>,
     <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
-  <span class='co'># Create a new file on a new branch</span>
-  <span class='fu'>create_file</span>(
-    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
-    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
+  <span class='co'># Update a file on a new branch</span>
+  <span class='fu'>update_file</span>(
+    <span class='kw'>content</span> <span class='kw'>=</span> <span class='st'>"# This is a file\\n\\n Updated by `update_file()`"</span>,
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"updated-file.md"</span>,
     <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"new-branch"</span>,
-    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Created a new file with create_file()"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Updated a file with update_file()"</span>,
     <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>parent</span>  <span class='kw'>=</span> <span class='st'>"master"</span>)
 
   <span class='co'># Create a new file on the master branch specifying an author and committer</span>
-  <span class='fu'>create_file</span>(
-    <span class='kw'>content</span>   <span class='kw'>=</span> <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
-    <span class='kw'>path</span>      <span class='kw'>=</span> <span class='st'>"new-file.md"</span>,
+  <span class='fu'>update_file</span>(
+    <span class='kw'>content</span>   <span class='kw'>=</span> <span class='st'>"# This is a file\\n\\n Updated by `update_file()`"</span>,
+    <span class='kw'>path</span>      <span class='kw'>=</span> <span class='st'>"updated-file.md"</span>,
     <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Created a new file with create_file()"</span>,
+    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Updated a file with update_file()"</span>,
     <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
     <span class='kw'>author</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Bob"</span>,  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"bob@acme.com"</span>),
     <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Jane"</span>, <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"jane@acme.com"</span>))

@@ -72,7 +72,7 @@ permission." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
       </span>
     </div>
 
@@ -153,7 +153,7 @@ permission.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -188,8 +188,9 @@ a member.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
   <span class='co'># View collaborators on a repository</span>
-  <span class='fu'>view_collaborators</span>(<span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>view_collaborators</span>(<span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View collaborators on a project</span>
   <span class='fu'>view_collaborators</span>(<span class='kw'>project</span> <span class='kw'>=</span> <span class='no'>test_project</span>$<span class='no'>name</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
@@ -198,13 +199,14 @@ a member.</p>
   <span class='fu'>view_collaborators</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View collaborator on a repository</span>
-  <span class='fu'>view_collaborator</span>(<span class='st'>"ChadGoymer"</span>, <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/test-githapi"</span>)
+  <span class='fu'>view_collaborator</span>(<span class='st'>"ChadGoymer"</span>, <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View collaborator on a project</span>
   <span class='fu'>view_collaborator</span>(
     <span class='kw'>user</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>,
     <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"Test project"</span>,
     <span class='kw'>org</span>     <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
