@@ -268,7 +268,7 @@ update_team <- function(
 #' @param parent_team (integer or string, optional) The ID or name of a team. If supplied, all
 #'   the child teams will be returned.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_teams()` returns a tibble of team properties. `view_team()` returns a list
 #'   of properties for a single team. `browse_team()` opens the default browser on the

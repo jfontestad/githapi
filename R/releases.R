@@ -241,7 +241,7 @@ update_release <- function(
 #' @param release (string) The id or tag of the release.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_releases()` returns a tibble of release properties. `view_release()`
 #'   returns a list of properties for a single release. `browse_release` opens the

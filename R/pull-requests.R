@@ -385,7 +385,7 @@ update_pull_request <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_pull_requests()` returns a tibble of pull request properties.
 #'   `view_pull_request()` returns a list of properties for a single pull request.

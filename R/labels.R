@@ -172,7 +172,7 @@ update_label <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param issue (string or character, optional) The number or title of the issue.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_labels()` returns a tibble of label properties. `view_label()`
 #'   returns a list of properties for a single label.

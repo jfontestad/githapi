@@ -32,7 +32,7 @@ browse_commit(ref, repo, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
 \code{.view_commits()} returns a tibble of commit properties. \code{view_commit()} returns

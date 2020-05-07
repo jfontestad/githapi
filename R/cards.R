@@ -333,7 +333,7 @@ move_card <- function(
 #' @param user (string, optional) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_cards()` returns a tibble of card properties. `view_card()`
 #'   returns a list of properties for a single card.

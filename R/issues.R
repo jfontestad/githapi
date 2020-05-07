@@ -293,7 +293,7 @@ update_issue <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_issues()` returns a tibble of issue properties. `view_issue()` returns a
 #'   list of properties for a single issue. `browse_issue()` opens the default browser on

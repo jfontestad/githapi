@@ -268,7 +268,7 @@ move_column <- function(
 #' @param user (string, optional) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_columns()` returns a tibble of column properties. `view_column()`
 #'   returns a list of properties for a single column.

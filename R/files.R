@@ -759,7 +759,7 @@ delete_file <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param recursive (boolean, optional) Whether to list files in subfolders as well.
 #'   Default: `TRUE`.
-#' @param ... Parameters passed to [gh_request()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_files()` returns a tibble of file properties. `view_file()` returns a list
 #'   of properties for a single file. `browse_files()` and `browse_file()` opens the default

@@ -375,7 +375,7 @@ update_repository <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_repositories()` returns a tibble of repository properties.
 #'   `view_repository()` returns a list of properties for a single repository.

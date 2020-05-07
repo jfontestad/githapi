@@ -221,7 +221,7 @@ update_milestone <- function(
 #' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
 #'   `"desc"`. Default: `"asc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_milestones()` returns a tibble of milestone properties. `view_milestone()`
 #'   returns a list of properties for a single milestone. `browse_milestone()` opens the

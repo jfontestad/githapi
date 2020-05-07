@@ -185,7 +185,7 @@ update_organization <- function(
 #' @param user (string, optional) The login of the user. If `NULL` the authenticated user is
 #'   used.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_organizations()` returns a tibble of organization properties.
 #'   `view_organization()` returns a list of properties for a single organization.

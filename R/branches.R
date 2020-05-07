@@ -145,7 +145,7 @@ update_branch <- function(
 #' @param branch (string) The name of the branch.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_branches()` returns a tibble of branch properties. `view_branch()`
 #'   returns a list of properties for a single branch.

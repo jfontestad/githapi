@@ -132,7 +132,7 @@ update_user <- function(
 #' @param role (string, optional) Filter the result by role. Can specify either `"admin"`,
 #'   `"member"` or `"all"`. Default: `"all"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_users()` returns a tibble of user properties. `view_user()`
 #'   returns a list of properties for a single user.  `browse_user()` opens the default

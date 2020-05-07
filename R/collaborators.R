@@ -136,7 +136,7 @@ update_collaborator <- function(
 #' @param affiliation (string, optional) Filter by the affiliation of the user. This is either
 #'   `"outside"`, `"direct"` or `"all"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_collaborators()` returns a tibble of collaborator properties.
 #'   `view_collaborator()` returns a list of properties for a single collaborator.

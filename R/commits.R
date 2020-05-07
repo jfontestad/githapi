@@ -272,7 +272,7 @@
 #' @param until (string, optional) A date & time to filter by. Must be in the format:
 #'   `YYYY-MM-DD HH:MM:SS`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_request()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_commits()` returns a tibble of commit properties. `view_commit()` returns
 #'   a list of properties for a single commit. `browse_commits()` and `browse_commit` opens

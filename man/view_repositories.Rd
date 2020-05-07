@@ -32,7 +32,7 @@ be either \code{"created"}, \code{"updated"}, \code{"pushed"} or \code{"full_nam
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 }

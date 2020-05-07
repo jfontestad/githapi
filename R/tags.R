@@ -144,7 +144,7 @@ update_tag <- function(
 #' @param tag (string) The name of the tag.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `.view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
 #'   properties for a single tag.

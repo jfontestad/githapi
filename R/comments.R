@@ -313,7 +313,7 @@ update_comment <- function(
 #' @param type (string, optional) Whether the comment is for a `"gist"`, `"issue"`,
 #'   `"pull_request"` or `"commit"`. Default: `"gist"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_request()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_comments()` returns a tibble of comment properties. `view_comment()`
 #'   returns a list of properties for a single comment. `browse_comment()` opens the

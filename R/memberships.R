@@ -129,7 +129,7 @@ update_membership <- function(
 #' @param org (string) The login of the organization.
 #' @param team (integer or string, optional) The ID or name of the team.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_memberships()` returns a tibble of membership properties. `view_membership()`
 #'   returns a list of membership properties for a single organization or team.

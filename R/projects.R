@@ -340,7 +340,7 @@ update_project <- function(
 #' @param state (string, optional) Indicates the state of the projects to return. Can be
 #'   either "open", "closed", or "all". Default: `"open"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
-#' @param ... Parameters passed to [gh_page()].
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_projects()` returns a tibble of project properties. `view_project()`
 #'   returns a list of properties for a single project. `browse_project()` opens the default

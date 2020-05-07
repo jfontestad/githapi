@@ -22,7 +22,7 @@ view_card(card, ...)
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
-\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}}.}
+\item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{card}{(integer) The ID of the card.}
 }
