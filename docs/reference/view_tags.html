@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View information about a tags — view_tags • githapi</title>
+<title>View tags within a repository — view_tags • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="View information about a tags — view_tags" />
-<meta property="og:description" content="This function returns details about the tags for the specified repository in GitHub. If no
-tags are supplied then details about all the tags are returned. If tags are supplied then only
-information about those ones is returned." />
+<meta property="og:title" content="View tags within a repository — view_tags" />
+<meta property="og:description" content="view_tags() summarises tags in a table with the properties as columns and a row for each
+tag in the repository. view_tag() returns a list of all properties for a single tag." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +70,7 @@ information about those ones is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -110,76 +109,69 @@ information about those ones is returned." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View information about a tags</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-tags-deprecated.R'><code>R/git-tags-deprecated.R</code></a></small>
+    <h1>View tags within a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/tags.R'><code>R/tags.R</code></a></small>
     <div class="hidden name"><code>view_tags.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function returns details about the tags for the specified repository in GitHub. If no
-tags are supplied then details about all the tags are returned. If tags are supplied then only
-information about those ones is returned.</p>
+    <p><code>view_tags()</code> summarises tags in a table with the properties as columns and a row for each
+tag in the repository. <code>view_tag()</code> returns a list of all properties for a single tag.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_tags</span>(
-  <span class='no'>tags</span>,
-  <span class='no'>repo</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>view_tags</span>(<span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+
+<span class='fu'>view_tag</span>(<span class='no'>tag</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>tags</th>
-      <td><p>(character, optional) The tag names. If missing or <code>NULL</code> all the tags are
-requested.</p></td>
-    </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
-R option <code>"github.token"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
+      <td><p>(integer, optional) Maximum number to return. Default: <code>1000</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>tag</th>
+      <td><p>(string) The name of the tag.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the tags, with the following columns
-(see <a href='https://developer.github.com/v3/git/refs/'>GitHub's documentation</a> for more details):</p><ul>
+    <p><code>view_tags()</code> returns a tibble of tag properties. <code>view_tag()</code> returns a list of
+properties for a single tag.</p>
+<p><strong>Tag Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the tag.</p></li>
-<li><p><strong>ref</strong>: The full git reference for the tag.</p></li>
-<li><p><strong>url</strong>: The URL to get the tag details from GitHub.</p></li>
-<li><p><strong>object_sha</strong>: The SHA of the object tagged.</p></li>
-<li><p><strong>object_type</strong>: The type of the object tagged.</p></li>
-<li><p><strong>object_url</strong>: The URL to get the object details from GitHub</p></li>
+<li><p><strong>ref</strong>: The full Git reference of the tag.</p></li>
+<li><p><strong>sha</strong>: The commit SHA the tag is pointing at.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/git/refs/#get-a-reference'>https://developer.github.com/v3/git/refs/#get-a-reference</a></p>
-<p><a href='https://developer.github.com/v3/git/refs/#get-all-references'>https://developer.github.com/v3/git/refs/#get-all-references</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/git/refs/#list-matching-references'>https://developer.github.com/v3/git/refs/#list-matching-references</a></p></li>
+<li><p><a href='https://developer.github.com/v3/git/refs/#get-a-single-reference'>https://developer.github.com/v3/git/refs/#get-a-single-reference</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+  <span class='co'># View all tags in a repository</span>
+  <span class='fu'>view_tags</span>(<span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='co'># View a single tag</span>
+  <span class='fu'>view_tag</span>(<span class='st'>"new-tag"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -187,6 +179,7 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

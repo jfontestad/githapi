@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test files",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
 }))
 
 teardown(suppressMessages({
@@ -21,9 +23,9 @@ teardown(suppressMessages({
 }))
 
 
-# TEST: .upload_blob --------------------------------------------------------------------------
+# TEST: upload_blob ---------------------------------------------------------------------------
 
-test_that(".upload_blob uploads a file to github", {
+test_that("upload_blob uploads a file to github", {
 
   temp_path <- file.path(tempdir(), "test-upload-blob")
   if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
@@ -33,7 +35,7 @@ test_that(".upload_blob uploads a file to github", {
   map_chr(1:10, ~sample(LETTERS, 10, replace = TRUE) %>% str_c(collapse = "")) %>%
     writeLines(file.path(temp_path, "file-blob.txt"))
 
-  blob <- .upload_blob(
+  blob <- upload_blob(
     path = file.path(temp_path, "file-blob.txt"),
     repo = str_c("ChadGoymer/test-files-", now))
 
@@ -49,9 +51,9 @@ test_that(".upload_blob uploads a file to github", {
 })
 
 
-# TEST: .upload_tree --------------------------------------------------------------------------
+# TEST: upload_tree ---------------------------------------------------------------------------
 
-test_that(".upload_tree uploads a directory structure to github", {
+test_that("upload_tree uploads a directory structure to github", {
 
   temp_path <- file.path(tempdir(), "test-upload-tree")
   if (dir.exists(temp_path)) unlink(temp_path, recursive = TRUE)
@@ -67,7 +69,7 @@ test_that(".upload_tree uploads a directory structure to github", {
   })
 
 
-  flat_tree <- .upload_tree(
+  flat_tree <- upload_tree(
     path = flat_path,
     repo = str_c("ChadGoymer/test-files-", now))
 
@@ -97,7 +99,7 @@ test_that(".upload_tree uploads a directory structure to github", {
   })
 
 
-  recursive_tree <- .upload_tree(
+  recursive_tree <- upload_tree(
     path = recursive_path,
     repo = str_c("ChadGoymer/test-files-", now))
 
@@ -111,7 +113,7 @@ test_that(".upload_tree uploads a directory structure to github", {
   expect_true(is_sha(recursive_tree$tree_sha))
 
 
-  base_tree <- .upload_tree(
+  base_tree <- upload_tree(
     path = flat_path,
     repo = str_c("ChadGoymer/test-files-", now),
     base_commit = "master")
@@ -135,11 +137,11 @@ test_that(".upload_tree uploads a directory structure to github", {
   })
 
   blob_shas <- list.files(placeholder_path, full.names = TRUE) %>%
-    map_chr(~ .upload_blob(path = ., repo = str_c("ChadGoymer/test-files-", now))$sha)
+    map_chr(~ upload_blob(path = ., repo = str_c("ChadGoymer/test-files-", now))$sha)
 
   walk2(blob_shas, list.files(placeholder_path, full.names = TRUE), writeLines)
 
-  placeholder_tree <- .upload_tree(
+  placeholder_tree <- upload_tree(
     path        = placeholder_path,
     repo        = str_c("ChadGoymer/test-files-", now),
     placeholder = TRUE)
@@ -154,7 +156,7 @@ test_that(".upload_tree uploads a directory structure to github", {
   expect_true(is_sha(placeholder_tree$tree_sha))
 
 
-  ignore_tree <- .upload_tree(
+  ignore_tree <- upload_tree(
     path   = flat_path,
     repo   = str_c("ChadGoymer/test-files-", now),
     ignore = "file1.txt")
@@ -666,11 +668,11 @@ test_that("update_file creates a new commit with the file updated", {
 })
 
 
-# TEST: .view_files ----------------------------------------------------------------------------
+# TEST: view_files ----------------------------------------------------------------------------
 
-test_that(".view_files returns a tibble of file properties", {
+test_that("view_files returns a tibble of file properties", {
 
-  master_files <- .view_files("master", str_c("ChadGoymer/test-files-", now))
+  master_files <- view_files("master", str_c("ChadGoymer/test-files-", now))
 
   expect_is(master_files, "tbl")
   expect_identical(attr(master_files, "status"), 200L)
@@ -683,7 +685,7 @@ test_that(".view_files returns a tibble of file properties", {
 
   expect_true("README.md" %in% master_files$path)
 
-  non_recursive_files <- .view_files(
+  non_recursive_files <- view_files(
     ref       = "master",
     repo      = str_c("ChadGoymer/test-files-", now),
     recursive = FALSE)
@@ -1017,13 +1019,16 @@ test_that("github_source sources a file in GitHub", {
 })
 
 
-# TEST: .compare_files ------------------------------------------------------------------------
+# TEST: compare_files -------------------------------------------------------------------------
 
-test_that(".compare_files returns all the file changes made between to commits", {
+test_that("compare_files returns all the file changes made between to commits", {
 
-  master_commits <- .view_commits("master", repo = str_c("ChadGoymer/test-files-", now))
+  master_commits <- view_commits(
+    ref   = "master",
+    repo  = str_c("ChadGoymer/test-files-", now),
+    n_max = 10)
 
-  file_changes <- .compare_files(
+  file_changes <- compare_files(
     base = master_commits$sha[[3]],
     head = "master",
     repo = str_c("ChadGoymer/test-files-", now))

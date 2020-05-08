@@ -142,7 +142,7 @@ test_that("update_milestone changes a milestone and returns a list of the proper
 
 test_that("view_milestones returns a tibble of milestone properties", {
 
-  milestones <- view_milestones(str_c("ChadGoymer/test-milestones-", now))
+  milestones <- view_milestones(str_c("ChadGoymer/test-milestones-", now), n_max = 10)
 
   expect_is(milestones, "tbl")
   expect_identical(attr(milestones, "status"), 200L)
@@ -165,7 +165,8 @@ test_that("view_milestones returns a tibble of milestone properties", {
 
   closed_milestones <- view_milestones(
     repo  = str_c("ChadGoymer/test-milestones-", now),
-    state = "closed")
+    state = "closed",
+    n_max = 10)
 
   expect_is(closed_milestones, "tbl")
   expect_identical(attr(closed_milestones, "status"), 200L)

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View information about branches — view_branches • githapi</title>
+<title>View branches within a repository — view_branches • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="View information about branches — view_branches" />
-<meta property="og:description" content="This function returns details about the branches for the specified repository in GitHub.
-If no branches are supplied then details about all the branches are returned. If branches
-are supplied then only information about those ones is returned." />
+<meta property="og:title" content="View branches within a repository — view_branches" />
+<meta property="og:description" content="view_branches() summarises branches in a table with the properties as columns and a row
+for each branch in the repository. view_branch() returns a list of all properties for a
+single branch." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +71,7 @@ are supplied then only information about those ones is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -110,76 +110,70 @@ are supplied then only information about those ones is returned." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View information about branches</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-branches-deprecated.R'><code>R/git-branches-deprecated.R</code></a></small>
+    <h1>View branches within a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/branches.R'><code>R/branches.R</code></a></small>
     <div class="hidden name"><code>view_branches.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function returns details about the branches for the specified repository in GitHub.
-If no branches are supplied then details about all the branches are returned. If branches
-are supplied then only information about those ones is returned.</p>
+    <p><code>view_branches()</code> summarises branches in a table with the properties as columns and a row
+for each branch in the repository. <code>view_branch()</code> returns a list of all properties for a
+single branch.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_branches</span>(
-  <span class='no'>branches</span>,
-  <span class='no'>repo</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>view_branches</span>(<span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+
+<span class='fu'>view_branch</span>(<span class='no'>branch</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>branches</th>
-      <td><p>(character, optional) The branch names. If missing or <code>NULL</code> all the</p></td>
-    </tr>
-    <tr>
       <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.
-branches are requested.</p></td>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: 1000.</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
-R option <code>"github.token"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
+      <td><p>(integer, optional) Maximum number to return. Default: <code>1000</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>branch</th>
+      <td><p>(string) The name of the branch.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the branches, with the following columns
-(see <a href='https://developer.github.com/v3/git/refs/'>GitHub's documentation</a> for more details):</p><ul>
+    <p><code>view_branches()</code> returns a tibble of branch properties. <code>view_branch()</code>
+returns a list of properties for a single branch.</p>
+<p><strong>Branch Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the branch.</p></li>
-<li><p><strong>ref</strong>: The full git reference for the branch.</p></li>
-<li><p><strong>url</strong>: The URL to get the branch details from GitHub.</p></li>
-<li><p><strong>object_sha</strong>: The SHA of the object at the HEAD of the branch.</p></li>
-<li><p><strong>object_type</strong>: The type of the object at the HEAD of the branch.</p></li>
-<li><p><strong>object_url</strong>: The URL to get the object details from GitHub.</p></li>
+<li><p><strong>ref</strong>: The full Git reference of the branch.</p></li>
+<li><p><strong>sha</strong>: The commit SHA the branch is pointing at.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/git/refs/#get-a-reference'>https://developer.github.com/v3/git/refs/#get-a-reference</a></p>
-<p><a href='https://developer.github.com/v3/git/refs/#get-all-references'>https://developer.github.com/v3/git/refs/#get-all-references</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/git/refs/#list-matching-references'>https://developer.github.com/v3/git/refs/#list-matching-references</a></p></li>
+<li><p><a href='https://developer.github.com/v3/git/refs/#get-a-single-reference'>https://developer.github.com/v3/git/refs/#get-a-single-reference</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+  <span class='co'># View all branches in a repository</span>
+  <span class='fu'>view_branches</span>(<span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='co'># View a single branch</span>
+  <span class='fu'><a href='view_labels.html'>view_label</a></span>(<span class='st'>"new-branch"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -187,6 +181,7 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

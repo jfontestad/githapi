@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download the entire tree from a commit — gh_download • githapi</title>
+<title>Download a file from GitHub — gh_download • githapi</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Download the entire tree from a commit — gh_download" />
-<meta property="og:description" content="NOTE: This function has been deprecated, please use download_commit() instead." />
+<meta property="og:title" content="Download a file from GitHub — gh_download" />
+<meta property="og:description" content="This function downloads a file from GitHub in as a binary object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -108,21 +108,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download the entire tree from a commit</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-deprecated.R'><code>R/repositories-deprecated.R</code></a></small>
+    <h1>Download a file from GitHub</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/github-api.R'><code>R/github-api.R</code></a></small>
     <div class="hidden name"><code>gh_download.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>NOTE: This function has been deprecated, please use <code><a href='download_commit.html'>download_commit()</a></code> instead.</p>
+    <p>This function downloads a file from GitHub in as a binary object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>gh_download</span>(
-  <span class='no'>ref</span>,
-  <span class='no'>repo</span>,
+  <span class='no'>url</span>,
   <span class='no'>path</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
+  <span class='kw'>headers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>accept</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
+  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
   <span class='no'>...</span>
 )</pre>
 
@@ -130,44 +131,65 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ref</th>
-      <td><p>(string) A git reference: either a SHA-1, tag or branch. If a branch is specified
-the head commit is used.</p></td>
-    </tr>
-    <tr>
-      <th>repo</th>
-      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <th>url</th>
+      <td><p>(string) The address of the API endpoint.</p></td>
     </tr>
     <tr>
       <th>path</th>
-      <td><p>(string) The path to save to.</p></td>
+      <td><p>(string) The path to download the file to.</p></td>
+    </tr>
+    <tr>
+      <th>headers</th>
+      <td><p>(character, optional) Headers to add to the request. Default: <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>accept</th>
+      <td><p>(string, optional) The mime format to accept when making the call.
+Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> or <code>GITHUB_PAT</code>.</p></td>
+      <td><p>(string or Token, optional) An authorisation token to include with the
+request. If <code>NULL</code> the OAuth process is triggered. Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or <code>https://api.github.com</code>.</p></td>
+      <th>proxy</th>
+      <td><p>(character, optional) The proxy server to use to connect to the github API.
+If <code>NULL</code> then no proxy is used. Can be set in the option <code>github.proxy</code> or the
+environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_download_binary.html'>gh_download_binary()</a></code>.</p></td>
+      <td><p>Ignored.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Full tree of files in specified location.</p>
+    <p>A <code>github</code> string object containing the path, with the attributes:</p><ul>
+<li><p><strong>url</strong>: The URLs the request was sent to</p></li>
+<li><p><strong>request</strong>: The type of HTTP request made</p></li>
+<li><p><strong>status</strong>: The HTTP status code returned</p></li>
+<li><p><strong>header</strong>: The HTTP header returned</p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+  <span class='co'># Find an issue by title</span>
+  <span class='fu'>gh_download</span>(
+    <span class='kw'>url</span>  <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/zipball/master"</span>,
+    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"~/githapi-master.zip"</span>)
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

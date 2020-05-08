@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View information about Git commits. — view_commits • githapi</title>
+<title>View commits within a repository — view_commits • githapi</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,11 @@
 
 
 
-<meta property="og:title" content="View information about Git commits. — view_commits" />
-<meta property="og:description" content="This function returns details about the commits for the specified repository in GitHub." />
+<meta property="og:title" content="View commits within a repository — view_commits" />
+<meta property="og:description" content="view_commits() summarises commits in a table with the properties as columns and a row for
+each commit in the history of the given reference. view_commit() returns a list of all
+properties for a single commit. browse_commits() and browse_commit() opens the web page
+for the commit history and commit details respectively in the default browser." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -69,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -108,74 +111,125 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View information about Git commits.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-commits-deprecated.R'><code>R/git-commits-deprecated.R</code></a></small>
+    <h1>View commits within a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/commits.R'><code>R/commits.R</code></a></small>
     <div class="hidden name"><code>view_commits.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function returns details about the commits for the specified repository in GitHub.</p>
+    <p><code>view_commits()</code> summarises commits in a table with the properties as columns and a row for
+each commit in the history of the given reference. <code>view_commit()</code> returns a list of all
+properties for a single commit. <code>browse_commits()</code> and <code>browse_commit()</code> opens the web page
+for the commit history and commit details respectively in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_commits</span>(
-  <span class='no'>shas</span>,
-  <span class='no'>repo</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>view_commits</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>path</span>, <span class='no'>author</span>, <span class='no'>since</span>, <span class='no'>until</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+
+<span class='fu'>view_commit</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+
+<span class='fu'>browse_commits</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+
+<span class='fu'>browse_commit</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>shas</th>
-      <td><p>(character) The SHAs of the commits.</p></td>
+      <th>ref</th>
+      <td><p>(string) Either a SHA, branch or tag used to identify the commit.</p></td>
     </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
-R option <code>"github.token"</code>.</p></td>
+      <th>path</th>
+      <td><p>(string, optional) Only commits containing this file path will be returned.</p></td>
     </tr>
     <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
+      <th>author</th>
+      <td><p>(string, optional) Author login to filter commits by.</p></td>
+    </tr>
+    <tr>
+      <th>since</th>
+      <td><p>(string, optional) A date &amp; time to filter by. Must be in the format:
+<code>YYYY-MM-DD HH:MM:SS</code>.</p></td>
+    </tr>
+    <tr>
+      <th>until</th>
+      <td><p>(string, optional) A date &amp; time to filter by. Must be in the format:
+<code>YYYY-MM-DD HH:MM:SS</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n_max</th>
+      <td><p>(integer, optional) Maximum number to return. Default: <code>1000</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the commits, with the following columns
-(see <a href='https://developer.github.com/v3/repos/commits/'>GitHub's documentation</a>
-for more details):</p><ul>
-<li><p><strong>sha</strong>: The SHA of the commit.</p></li>
-<li><p><strong>message</strong>: The commit message recorded in GitHub.</p></li>
-<li><p><strong>author_name</strong>: The author of the commit.</p></li>
+    <p><code>view_commits()</code> returns a tibble of commit properties. <code>view_commit()</code> returns
+a list of properties for a single commit. <code>browse_commits()</code> and <code>browse_commit</code> opens
+the default browser on the commit's history or details page and returns the URL.</p>
+<p><strong>Commit Properties:</strong></p><ul>
+<li><p><strong>sha</strong>: The commit SHA.</p></li>
+<li><p><strong>message</strong>: The commit message.</p></li>
+<li><p><strong>author_login</strong>: The author's account login.</p></li>
+<li><p><strong>author_name</strong>: The author's name.</p></li>
 <li><p><strong>author_email</strong>: The author's email address.</p></li>
-<li><p><strong>committer_name</strong>: The committer of the commit.</p></li>
+<li><p><strong>committer_login</strong>: The committer's account login.</p></li>
+<li><p><strong>committer_name</strong>: The committer's name.</p></li>
 <li><p><strong>committer_email</strong>: The committer's email address.</p></li>
-<li><p><strong>date</strong>: The date and time of the commit.</p></li>
-<li><p><strong>url</strong>: The URL to get the commit details from GitHub.</p></li>
-<li><p><strong>tree_sha</strong>: The SHA of the git tree.</p></li>
-<li><p><strong>tree_url</strong>: The URL to get the tree details from GitHub.</p></li>
-<li><p><strong>parent_sha</strong>: The SHA(s) of the parent commit(s).</p></li>
-<li><p><strong>parent_url</strong>: The URL(s) to get the parent's details from GitHub.</p></li>
+<li><p><strong>tree_sha</strong>: The SHA of the commit's file tree.</p></li>
+<li><p><strong>parents</strong>: The SHAs of the parent commits.</p></li>
+<li><p><strong>date</strong>: The time and date the commit was made.</p></li>
+<li><p><strong>html_url</strong>: The address of the commit's web page.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/git/commits/#get-a-commit'>https://developer.github.com/v3/git/commits/#get-a-commit</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository'>https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository</a></p></li>
+<li><p><a href='https://developer.github.com/v3/repos/commits/#get-a-single-commit'>https://developer.github.com/v3/repos/commits/#get-a-single-commit</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+  <span class='co'># View the history of commits for the master branch</span>
+  <span class='fu'>view_commits</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='co'># View commits where the README.md file has been changed</span>
+  <span class='fu'>view_commits</span>(
+    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"README.md"</span>)
+
+  <span class='co'># View commits created by an author</span>
+  <span class='fu'>view_commits</span>(
+    <span class='kw'>ref</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>repo</span>   <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>author</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+
+  <span class='co'># View commits within a time window</span>
+  <span class='fu'>view_commits</span>(
+    <span class='kw'>ref</span>   <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>repo</span>  <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>since</span> <span class='kw'>=</span> <span class='st'>"2020-01-01 00:00:00"</span>,
+    <span class='kw'>until</span> <span class='kw'>=</span> <span class='st'>"2020-04-01 00:00:00"</span>)
+
+  <span class='co'># View the properties of the last commit on the master branch</span>
+  <span class='fu'>view_commit</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='co'># View the properties of the commit with tag "0.8.7"</span>
+  <span class='fu'>view_commit</span>(<span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -183,6 +237,7 @@ for more details):</p><ul>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

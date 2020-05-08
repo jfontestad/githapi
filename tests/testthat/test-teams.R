@@ -166,7 +166,7 @@ test_that("update_team changes the team's properties", {
 
 test_that("view_teams returns a tibble summarising the teams", {
 
-  org_teams <- view_teams("HairyCoos")
+  org_teams <- view_teams("HairyCoos", n_max = 10)
 
   expect_is(org_teams, "tbl")
   expect_identical(attr(org_teams, "status"), 200L)
@@ -183,7 +183,7 @@ test_that("view_teams returns a tibble summarising the teams", {
 
   expect_true(str_c("First test team ", now) %in% org_teams$name)
 
-  team_teams <- view_teams("HairyCoos", parent_team = str_c("Test team 3 ", now))
+  team_teams <- view_teams("HairyCoos", parent_team = str_c("Test team 3 ", now), n_max = 10)
 
   expect_is(team_teams, "tbl")
   expect_identical(attr(team_teams, "status"), 200L)
@@ -200,7 +200,7 @@ test_that("view_teams returns a tibble summarising the teams", {
 
   expect_true(str_c("First test team ", now) %in% team_teams$name)
 
-  user_teams <- view_teams()
+  user_teams <- view_teams(n_max = 10)
 
   expect_is(user_teams, "tbl")
   expect_identical(attr(user_teams, "status"), 200L)

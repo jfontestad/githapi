@@ -84,7 +84,7 @@ test_that("update_organization changes the organization's properties", {
 
 test_that("view_organizations returns a tibble summarising the organizations", {
 
-  user_organizations <- view_organizations(user = "ChadGoymer")
+  user_organizations <- view_organizations(user = "ChadGoymer", n_max = 10)
 
   expect_is(user_organizations, "tbl")
   expect_identical(attr(user_organizations, "status"), 200L)
@@ -96,7 +96,7 @@ test_that("view_organizations returns a tibble summarising the organizations", {
 
   expect_true("HairyCoos" %in% user_organizations$login)
 
-  auth_organizations <- view_organizations(user = NULL)
+  auth_organizations <- view_organizations(user = NULL, n_max = 10)
 
   expect_is(auth_organizations, "tbl")
   expect_identical(attr(auth_organizations, "status"), 200L)

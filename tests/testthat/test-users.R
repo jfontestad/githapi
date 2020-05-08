@@ -55,7 +55,7 @@ test_that("update_user changes the user's properties", {
 
 test_that("view_users returns a tibble summarising the users", {
 
-  org_users <- view_users(org = "HairyCoos")
+  org_users <- view_users(org = "HairyCoos", n_max = 10)
 
   expect_is(org_users, "tbl")
   expect_identical(attr(org_users, "status"), 200L)
@@ -68,7 +68,7 @@ test_that("view_users returns a tibble summarising the users", {
 
   expect_true("ChadGoymer" %in% org_users$login)
 
-  team_users <- view_users(org = "HairyCoos", team = "HeadCoos")
+  team_users <- view_users(org = "HairyCoos", team = "HeadCoos", n_max = 10)
 
   expect_is(team_users, "tbl")
   expect_identical(attr(team_users, "status"), 200L)
@@ -92,7 +92,7 @@ test_that("view_users returns a tibble summarising the users", {
       site_admin = "logical",
       html_url   = "character"))
 
-  admin_users <- view_users(org = "HairyCoos", role = "admin")
+  admin_users <- view_users(org = "HairyCoos", role = "admin", n_max = 10)
 
   expect_is(admin_users, "tbl")
   expect_identical(attr(admin_users, "status"), 200L)

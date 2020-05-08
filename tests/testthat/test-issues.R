@@ -222,7 +222,7 @@ test_that("update_issue changes a milestone and returns a list of the properties
 
 test_that("view_issues returns a tibble of issue properties", {
 
-  open_repo_issues <- view_issues(str_c("ChadGoymer/test-issues-", now))
+  open_repo_issues <- view_issues(str_c("ChadGoymer/test-issues-", now), n_max = 10)
 
   expect_is(open_repo_issues, "tbl")
   expect_identical(attr(open_repo_issues, "status"), 200L)
@@ -249,7 +249,8 @@ test_that("view_issues returns a tibble of issue properties", {
     repo      = str_c("ChadGoymer/test-issues-", now),
     since     = "2020-01-01 00:00:00",
     labels    = str_c("test-issues-", now),
-    milestone = str_c("test-issues-", now))
+    milestone = str_c("test-issues-", now),
+    n_max     = 10)
 
   expect_is(filtered_repo_issues, "tbl")
   expect_identical(attr(filtered_repo_issues, "status"), 200L)
@@ -272,7 +273,7 @@ test_that("view_issues returns a tibble of issue properties", {
 
   expect_true(str_c("test updated issue ", now) %in% filtered_repo_issues$title)
 
-  org_issues <- view_issues(org = "HairyCoos", state = "closed")
+  org_issues <- view_issues(org = "HairyCoos", state = "closed", n_max = 10)
 
   expect_is(org_issues, "tbl")
   expect_identical(attr(org_issues, "status"), 200L)
@@ -295,7 +296,7 @@ test_that("view_issues returns a tibble of issue properties", {
 
   expect_true(str_c("test organization issue ", now) %in% org_issues$title)
 
-  user_issues <- view_issues()
+  user_issues <- view_issues(n_max = 10)
 
   expect_is(user_issues, "tbl")
   expect_identical(attr(user_issues, "status"), 200L)

@@ -1,4 +1,4 @@
-# FUNCTION: .upload_blob ----------------------------------------------------------------------
+# FUNCTION: upload_blob -----------------------------------------------------------------------
 #
 # Read a file and upload it to GitHub
 #
@@ -6,9 +6,9 @@
 # @param repo (string) The repository specified in the format: `owner/repo`.
 # @param ... Parameters passed to [gh_request()].
 #
-# @return `.upload_blob()` returns a list of the blob's properties.
+# @return `upload_blob()` returns a list of the blob's properties.
 #
-.upload_blob <- function(
+upload_blob <- function(
   path,
   repo,
   ...)
@@ -24,7 +24,7 @@
 }
 
 
-# FUNCTION: .upload_tree ----------------------------------------------------------------------
+# FUNCTION: upload_tree -----------------------------------------------------------------------
 #
 # Upload a directory of files as a tree
 #
@@ -39,9 +39,9 @@
 #   `".git"`, `".Rproj.user"`, `".Rhistory"`, `".RData"` and `".Ruserdata"`.
 # @param ... Parameters passed to [gh_request()].
 #
-# @return `.upload_tree()` returns a list containing the tree SHA and the base commit SHA.
+# @return `upload_tree()` returns a list containing the tree SHA and the base commit SHA.
 #
-.upload_tree <- function(
+upload_tree <- function(
   path,
   repo,
   base_commit = NULL,
@@ -62,7 +62,7 @@
     rownames_to_column("path") %>%
     mutate(sha = map2_chr(.data$path, .data$isdir, function(path, isdir) {
       if (isdir) {
-        .upload_tree(
+        upload_tree(
           path = path,
           repo = repo,
           placeholder = placeholder,
@@ -74,7 +74,7 @@
           readr::read_lines(file = path)
         }
         else {
-          .upload_blob(path = path, repo = repo, ...)$sha
+          upload_blob(path = path, repo = repo, ...)$sha
         }
       }
     })) %>%
@@ -245,7 +245,7 @@ upload_files <- function(
   assert(is_scalar_character(parent), "'parent' must be a string:\n  ", parent)
 
   info("Uploading files to repository '", repo, "'")
-  blob_shas <- map_chr(from_path, ~ .upload_blob(path = ., repo = repo, ...)$sha)
+  blob_shas <- map_chr(from_path, ~ upload_blob(path = ., repo = repo, ...)$sha)
 
   temp_path <- tempfile("tree-")
   dir.create(temp_path)
@@ -257,7 +257,7 @@ upload_files <- function(
   })
 
   info("Uploading tree to repository '", repo, "'", level = 3)
-  result <- .upload_tree(
+  result <- upload_tree(
     path        = temp_path,
     repo        = repo,
     base_commit = parent,
@@ -341,7 +341,7 @@ download_file <- function(
 
   info("Downloading file '", basename(from_path), "' in repository '", repo, "'")
   path_gh <- gh_url("repos", repo, "git/blobs", file$sha) %>%
-    .gh_download(to_path, accept = "application/vnd.github.v3.raw", ...)
+    gh_download(to_path, accept = "application/vnd.github.v3.raw", ...)
 
   info("Done", level = 3)
   path_gh
@@ -739,11 +739,11 @@ delete_file <- function(
 }
 
 
-#  FUNCTION: .view_files -----------------------------------------------------------------------
+#  FUNCTION: view_files -----------------------------------------------------------------------
 #
 #' View files within a repository
 #'
-#' `.view_files()` summarises files in a table with the properties as columns and a row for
+#' `view_files()` summarises files in a table with the properties as columns and a row for
 #' each file in the repository. `view_file()` returns a list of all properties for a single
 #' file. `browse_files()` and `browse_file()` open the web page for the commit tree and
 #' blob respectively in the default browser.
@@ -761,7 +761,7 @@ delete_file <- function(
 #'   Default: `TRUE`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `.view_files()` returns a tibble of file properties. `view_file()` returns a list
+#' @return `view_files()` returns a tibble of file properties. `view_file()` returns a list
 #'   of properties for a single file. `browse_files()` and `browse_file()` opens the default
 #'   browser on the tree or blob page and returns the URL.
 #'
@@ -776,7 +776,7 @@ delete_file <- function(
 #' \dontrun{
 #'
 #'   # View files on the master branch in a repository
-#'   .view_files("master", "ChadGoymer/githapi")
+#'   view_files("master", "ChadGoymer/githapi")
 #'
 #'   # View properties of a single file in a repository
 #'   view_file(
@@ -797,7 +797,7 @@ delete_file <- function(
 #'
 #' @export
 #'
-.view_files <- function(
+view_files <- function(
   ref,
   repo,
   recursive = TRUE,
@@ -838,7 +838,7 @@ delete_file <- function(
 
 #  FUNCTION: view_file ------------------------------------------------------------------------
 #
-#' @rdname dot-view_files
+#' @rdname view_files
 #' @export
 #'
 view_file <- function(
@@ -875,7 +875,7 @@ view_file <- function(
 
 #  FUNCTION: browse_files ---------------------------------------------------------------------
 #
-#' @rdname dot-view_files
+#' @rdname view_files
 #' @export
 #'
 browse_files <- function(
@@ -907,7 +907,7 @@ browse_files <- function(
 
 #  FUNCTION: browse_file ----------------------------------------------------------------------
 #
-#' @rdname dot-view_files
+#' @rdname view_files
 #' @export
 #'
 browse_file <- function(
@@ -1334,11 +1334,11 @@ github_source <- function(
 }
 
 
-#  FUNCTION: .compare_files --------------------------------------------------------------------
+#  FUNCTION: compare_files --------------------------------------------------------------------
 #
 #' View file changes made between two commits
 #'
-#' `.compare_files()` summarises the file changes made between two commits in a table with the
+#' `compare_files()` summarises the file changes made between two commits in a table with the
 #' properties as columns and a row for each file. The `base` commit must be in the history
 #' of the `head` commit.
 #'
@@ -1350,7 +1350,7 @@ github_source <- function(
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `.compare_files()` returns a tibble of file properties.
+#' @return `compare_files()` returns a tibble of file properties.
 #'
 #' **File Properties:**
 #'
@@ -1367,13 +1367,13 @@ github_source <- function(
 #' \dontrun{
 #'
 #'   # View the files changes made between the current master branch and a release
-#'   .compare_files("master", "0.8.7", "ChadGoymer/githapi")
+#'   compare_files("master", "0.8.7", "ChadGoymer/githapi")
 #'
 #' }
 #'
 #' @export
 #'
-.compare_files <- function(
+compare_files <- function(
   base,
   head,
   repo,

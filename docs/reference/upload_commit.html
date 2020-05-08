@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Upload a directory of files and create a commit on a branch — upload_commit • githapi</title>
+<title>Upload a directory of files and create a commit — upload_commit • githapi</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,11 @@
 
 
 
-<meta property="og:title" content="Upload a directory of files and create a commit on a branch — upload_commit" />
-<meta property="og:description" content="This function uploads all the files in the specified directory path (using upload_tree()).
-It the creates a new commit (using create_commit()) and sets it as the head of the
-specified branch (using create_branches())." />
+<meta property="og:title" content="Upload a directory of files and create a commit — upload_commit" />
+<meta property="og:description" content="This function uploads all the files in the directory (except those in the ignore
+argument) and creates a new commit on the specified branch. Note: the new commit is
+created with exactly the files uploaded, so if a file in the parent commit has not been
+uploaded it will be removed in the new commit." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +72,7 @@ specified branch (using create_branches())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -110,30 +111,29 @@ specified branch (using create_branches())." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Upload a directory of files and create a commit on a branch</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/git-commits-deprecated.R'><code>R/git-commits-deprecated.R</code></a></small>
+    <h1>Upload a directory of files and create a commit</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/commits.R'><code>R/commits.R</code></a></small>
     <div class="hidden name"><code>upload_commit.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function uploads all the files in the specified directory path (using <code><a href='upload_tree.html'>upload_tree()</a></code>).
-It the creates a new commit (using <code><a href='create_commit.html'>create_commit()</a></code>) and sets it as the head of the
-specified branch (using <code><a href='create_branches.html'>create_branches()</a></code>).</p>
+    <p>This function uploads all the files in the directory (except those in the <code>ignore</code>
+argument) and creates a new commit on the specified branch. Note: the new commit is
+created with exactly the files uploaded, so if a file in the parent commit has not been
+uploaded it will be removed in the new commit.</p>
     </div>
 
     <pre class="usage"><span class='fu'>upload_commit</span>(
+  <span class='no'>path</span>,
   <span class='no'>branch</span>,
   <span class='no'>message</span>,
-  <span class='no'>path</span>,
-  <span class='no'>parents</span>,
-  <span class='no'>committer</span>,
-  <span class='no'>author</span>,
   <span class='no'>repo</span>,
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>author</span>,
+  <span class='no'>committer</span>,
+  <span class='no'>parents</span>,
   <span class='kw'>ignore</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"\\.git"</span>, <span class='st'>"\\.Rproj\\.user"</span>, <span class='st'>"\\.Rhistory"</span>, <span class='st'>"\\.RData"</span>,
     <span class='st'>"\\.Ruserdata"</span>),
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
+  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -141,61 +141,46 @@ specified branch (using <code><a href='create_branches.html'>create_branches()</
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>path</th>
+      <td><p>(string) The path to the directory to upload. It must be readable.</p></td>
+    </tr>
+    <tr>
       <th>branch</th>
-      <td><p>(string) The name of the branch to set the commit as head.</p></td>
+      <td><p>(string) The name of the branch to make the new commit on.</p></td>
     </tr>
     <tr>
       <th>message</th>
-      <td><p>(string) The commit message</p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>(string) The path to the directory, which is to be uploaded as a tree.</p></td>
-    </tr>
-    <tr>
-      <th>parents</th>
-      <td><p>(character, optional) The SHAs of the commits that were the parents of this
-commit. If not specified the commit will be written as a root commit. For a single parent,
-one SHA should be provided; for a merge commit, a character vector of more than one should be
-provided.</p></td>
-    </tr>
-    <tr>
-      <th>committer</th>
-      <td><p>(list, optional) The name and email address of the committer. This needs
-to be specified as a named list, e.g. <code><a href='https://rdrr.io/r/base/list.html'>list(name = "Bob Smith", email = "bob.smith@acme.com")</a></code>.
-If not specified then the authenticated user is used.</p></td>
-    </tr>
-    <tr>
-      <th>author</th>
-      <td><p>(list, optional) The name and email address of the author. This needs to be
-specified as a named list, e.g. <code><a href='https://rdrr.io/r/base/list.html'>list(name = "Bob Smith", email = "bob.smith@acme.com")</a></code>.
-If not specified then the authenticated user is used.</p></td>
+      <td><p>(string) The commit message.</p></td>
     </tr>
     <tr>
       <th>repo</th>
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>replace</th>
-      <td><p>(logical, optional) Whether the commit should replace the previous one or
-just update the files within the directory (see description). Default: <code>TRUE</code>.</p></td>
+      <th>author</th>
+      <td><p>(list, optional) A the name and email address of the user who wrote the
+changes in the commit.</p></td>
+    </tr>
+    <tr>
+      <th>committer</th>
+      <td><p>(list, optional) A the name and email address of the user who created
+the commit.</p></td>
+    </tr>
+    <tr>
+      <th>parents</th>
+      <td><p>(character, optional) References for the commits to use as parents, can
+be either a SHA, branch or tag. If it is a branch then the head commit is used. See
+the details section for more information.</p></td>
     </tr>
     <tr>
       <th>ignore</th>
-      <td><p>(character) A character vector of regular expressions. If any of these are
-detected in a file name they are not uploaded. Default: <code>"\\.git"</code>, <code>"\\.Rproj\\.user"</code>,
-<code>"\\.Rhistory"</code>, <code>"\\.RData"</code> &amp; <code>"\\.Ruserdata"</code></p></td>
+      <td><p>(character, optional) The files to ignore in the directory. Default: <code>".git"</code>,
+<code>".Rproj.user"</code>, <code>".Rhistory"</code>, <code>".RData"</code> and <code>".Ruserdata"</code>.</p></td>
     </tr>
     <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
-R option <code>"github.token"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
+      <th>force</th>
+      <td><p>(boolean, optional) Whether to force the update if it is not a simple
+fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -205,36 +190,91 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the commit, with the following columns
-(see <a href='https://developer.github.com/v3/repos/commits/'>GitHub's documentation</a>
-for more details):</p><ul>
-<li><p><strong>sha</strong>: The SHA of the commit.</p></li>
-<li><p><strong>message</strong>: The commit message recorded in GitHub.</p></li>
-<li><p><strong>author_name</strong>: The author of the commit.</p></li>
+    <p><code>upload_commit()</code> returns a list of the commit properties.</p>
+<p><strong>Commit Properties:</strong></p><ul>
+<li><p><strong>sha</strong>: The commit SHA.</p></li>
+<li><p><strong>message</strong>: The commit message.</p></li>
+<li><p><strong>author_name</strong>: The author's name.</p></li>
 <li><p><strong>author_email</strong>: The author's email address.</p></li>
-<li><p><strong>committer_name</strong>: The committer of the commit.</p></li>
+<li><p><strong>committer_name</strong>: The committer's name.</p></li>
 <li><p><strong>committer_email</strong>: The committer's email address.</p></li>
-<li><p><strong>date</strong>: The date and time of the commit.</p></li>
-<li><p><strong>url</strong>: The URL to get the commit details from GitHub.</p></li>
-<li><p><strong>tree_sha</strong>: The SHA of the git tree.</p></li>
-<li><p><strong>tree_url</strong>: The URL to get the tree details from GitHub.</p></li>
-<li><p><strong>parent_sha</strong>: The SHA(s) of the parent commit(s).</p></li>
-<li><p><strong>parent_url</strong>: The URL(s) to get the parent's details from GitHub.</p></li>
+<li><p><strong>tree_sha</strong>: The SHA of the file tree.</p></li>
+<li><p><strong>parent_sha</strong>: The commit SHA of the parent(s).</p></li>
+<li><p><strong>date</strong>: The date the commit was made.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The default behaviour is to treat the directory as containing the entire set of files and
-completely <code>replace</code> the previous commit with this one. This means that if a previously
-existing file is not in the directory it will be deleted in the commit. Alternatively, if
-you just want to update a few files, you can specify <code>replace = FALSE</code>, in which case
-the files in the directory will replace the ones in the previous commit, and all other
-files will remain unchanged. This is useful if you have a lot of files in the commit.</p>
-<p><a href='https://developer.github.com/v3/git/blobs/#create-a-blob'>https://developer.github.com/v3/git/blobs/#create-a-blob</a></p>
-<p><a href='https://developer.github.com/v3/git/trees/#create-a-tree'>https://developer.github.com/v3/git/trees/#create-a-tree</a></p>
-<p><a href='https://developer.github.com/v3/git/commits/#create-a-commit'>https://developer.github.com/v3/git/commits/#create-a-commit</a></p>
-<p><a href='https://developer.github.com/v3/git/refs/#create-a-reference'>https://developer.github.com/v3/git/refs/#create-a-reference</a></p>
+    <p>The <code>author</code> and <code>committer</code> arguments are optional and if not supplied the current
+authenticated user is used. However, if you want to set them explicitly you must specify
+a named list with <code>name</code> and <code>email</code> as the elements (see examples).</p>
+<p>A commit may have none, one or two parents. If none are specified and the branch already
+exists, the head of the branch will be used as a parent. If the branch does not exist,
+an orphan commit is created without a parent. If one parent is specified the commit is
+added and the branch set to the new commit, if it is a simple fast-forward. If you want
+to set the branch to the new commit no matter what then set the <code>force</code> argument to
+<code>TRUE</code>. If two parents are specified then a merge commit is created.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+  <span class='co'># Add a commit to the master branch</span>
+  <span class='fu'>upload_commit</span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='co'># override the author and committer</span>
+  <span class='fu'>upload_commit</span>(
+    <span class='kw'>path</span>      <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    <span class='kw'>branch</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span>   <span class='kw'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    <span class='kw'>repo</span>      <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>author</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Bob"</span>,   <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"bob@acme.com"</span>),
+    <span class='kw'>committer</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Jane"</span>,  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"jane@acme.com"</span>))
+
+  <span class='co'># Create a commit on a new branch</span>
+  <span class='fu'>upload_commit</span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"test-commits-1"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>parents</span> <span class='kw'>=</span> <span class='st'>"master"</span>)
+
+  <span class='co'># Create an orphan commit</span>
+  <span class='fu'>upload_commit</span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"test-commits-2"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+
+  <span class='co'># Force branch to point at the new commit</span>
+  <span class='fu'>upload_commit</span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>parents</span> <span class='kw'>=</span> <span class='st'>"test-commits-1"</span>,
+    <span class='kw'>force</span>   <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+  <span class='co'># Create a commit merging a branch into the master branch</span>
+  <span class='fu'>upload_commit</span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>parents</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"master"</span>, <span class='st'>"test-commits-1"</span>))
+
+  <span class='co'># Create a commit merging two branches into a new branch</span>
+  <span class='fu'>upload_commit</span>(
+    <span class='kw'>path</span>    <span class='kw'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    <span class='kw'>branch</span>  <span class='kw'>=</span> <span class='st'>"test-commits-3"</span>,
+    <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    <span class='kw'>parents</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"master"</span>, <span class='st'>"test-commits-2"</span>))
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -242,6 +282,7 @@ files will remain unchanged. This is useful if you have a lot of files in the co
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

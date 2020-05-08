@@ -146,7 +146,10 @@ test_that("move_column throws an error in invalid arguments are supplied", {
 
 test_that("view_columns returns a tibble summarising the columns", {
 
-  columns <- view_columns(str_c("Test columns ", now), str_c("ChadGoymer/test-columns-", now))
+  columns <- view_columns(
+    project = str_c("Test columns ", now),
+    repo    = str_c("ChadGoymer/test-columns-", now),
+    n_max   = 10)
 
   expect_is(columns, "tbl")
   expect_identical(attr(columns, "status"), 200L)

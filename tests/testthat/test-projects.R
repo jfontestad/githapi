@@ -244,7 +244,7 @@ test_that("update_project updates a project and returns a list of the new proper
 
 test_that("view_projects returns a tibble summarising the projects", {
 
-  repo_projects <- view_projects(str_c("ChadGoymer/test-repo-", now))
+  repo_projects <- view_projects(str_c("ChadGoymer/test-repo-", now), n_max = 10)
 
   expect_is(repo_projects, "tbl")
   expect_identical(attr(repo_projects, "status"), 200L)
@@ -262,7 +262,7 @@ test_that("view_projects returns a tibble summarising the projects", {
 
   expect_true(str_c("Updated repo project ", now) %in% repo_projects$name)
 
-  user_projects <- view_projects(user = "ChadGoymer", state = "closed")
+  user_projects <- view_projects(user = "ChadGoymer", state = "closed", n_max = 10)
 
   expect_is(user_projects, "tbl")
   expect_identical(attr(user_projects, "status"), 200L)
@@ -280,7 +280,7 @@ test_that("view_projects returns a tibble summarising the projects", {
 
   expect_true(str_c("User project ", now) %in% user_projects$name)
 
-  org_projects <- view_projects(org = "HairyCoos")
+  org_projects <- view_projects(org = "HairyCoos", n_max = 10)
 
   expect_is(org_projects, "tbl")
   expect_identical(attr(org_projects, "status"), 200L)
@@ -300,7 +300,10 @@ test_that("view_projects returns a tibble summarising the projects", {
 
   expect_true(str_c("Organization project ", now) %in% org_projects$name)
 
-  team_projects <- view_projects(team = str_c("Test projects ", now), org = "HairyCoos")
+  team_projects <- view_projects(
+    team  = str_c("Test projects ", now),
+    org   = "HairyCoos",
+    n_max = 10)
 
   expect_is(team_projects, "tbl")
   expect_identical(attr(team_projects, "status"), 200L)

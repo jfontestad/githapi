@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compare the files of two commits — compare_files • githapi</title>
+<title>View file changes made between two commits — compare_files • githapi</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,10 @@
 
 
 
-<meta property="og:title" content="Compare the files of two commits — compare_files" />
-<meta property="og:description" content="This function returns information on all the files that have been changed between two
-commits. The commits can be specified by any git reference, i.e. branch, tag or SHA." />
+<meta property="og:title" content="View file changes made between two commits — compare_files" />
+<meta property="og:description" content="compare_files() summarises the file changes made between two commits in a table with the
+properties as columns and a row for each file. The base commit must be in the history
+of the head commit." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +71,7 @@ commits. The commits can be specified by any git reference, i.e. branch, tag or 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -109,50 +110,33 @@ commits. The commits can be specified by any git reference, i.e. branch, tag or 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compare the files of two commits</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-commits-deprecated.R'><code>R/repositories-commits-deprecated.R</code></a></small>
+    <h1>View file changes made between two commits</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/files.R'><code>R/files.R</code></a></small>
     <div class="hidden name"><code>compare_files.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function returns information on all the files that have been changed between two
-commits. The commits can be specified by any git reference, i.e. branch, tag or SHA.</p>
+    <p><code>compare_files()</code> summarises the file changes made between two commits in a table with the
+properties as columns and a row for each file. The <code>base</code> commit must be in the history
+of the <code>head</code> commit.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>compare_files</span>(
-  <span class='no'>base</span>,
-  <span class='no'>head</span>,
-  <span class='no'>repo</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>compare_files</span>(<span class='no'>base</span>, <span class='no'>head</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>base</th>
-      <td><p>(string) The reference of the base commit.</p></td>
+      <td><p>(string) Either a SHA, branch or tag used to identify the base commit.</p></td>
     </tr>
     <tr>
       <th>head</th>
-      <td><p>(string) The reference of the commit to compare.</p></td>
+      <td><p>(string) Either a SHA, branch or tag used to identify the head commit.</p></td>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string) The repository specified as "owner/repo".</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
-R option <code>"github.token"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -162,24 +146,32 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the commits, with the following columns
-(see <a href='https://developer.github.com/v3/repos/commits/'>GitHub's documentation</a>
-for more details):</p><ul>
-<li><p><strong>filename</strong>: The name of the file.</p></li>
+    <p><code>compare_files()</code> returns a tibble of file properties.</p>
+<p><strong>File Properties:</strong></p><ul>
+<li><p><strong>path</strong>: The path to the file within the repository.</p></li>
 <li><p><strong>sha</strong>: The SHA of the file blob.</p></li>
-<li><p><strong>status</strong>: Whether the file was "added", "deleted" or "changed".</p></li>
-<li><p><strong>additions</strong>: The number of lines added.</p></li>
-<li><p><strong>deletions</strong>: The number of lines deleted.</p></li>
-<li><p><strong>changes</strong>: The number of lines changed.</p></li>
-<li><p><strong>raw_url</strong>: The URL to the raw file.</p></li>
-<li><p><strong>contents_url</strong>: The URL to retrieve the contents</p></li>
-<li><p><strong>patch</strong>: The patch to apply to change the file.</p></li>
+<li><p><strong>status</strong>: Whether the file was "added", "modified" or "deleted".</p></li>
+<li><p><strong>additions</strong>: The number of lines added in the file.</p></li>
+<li><p><strong>deletions</strong>: The number of lines deleted in the file.</p></li>
+<li><p><strong>changes</strong>: The number of lines changed in the file.</p></li>
+<li><p><strong>patch</strong>: The git patch for the file.</p></li>
+<li><p><strong>html_url</strong>: The URL of the blob's web page in GitHub.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/repos/commits/#compare-two-commits'>https://developer.github.com/v3/repos/commits/#compare-two-commits</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/repos/commits/#compare-two-commits'>https://developer.github.com/v3/repos/commits/#compare-two-commits</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+  <span class='co'># View the files changes made between the current master branch and a release</span>
+  <span class='fu'>compare_files</span>(<span class='st'>"master"</span>, <span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -187,6 +179,7 @@ for more details):</p><ul>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -77,7 +77,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>GitHub is a wildly popular host for version controlled code, but also data. This package provides a user-friendly way to access content within GitHub through v3 of its <a href="https://developer.github.com/v3/">API</a>. The functions are also consistent with the <a href="http://www.tidyverse.org/">tidyverse</a> approach and return tibbles where possible.</p>
+<p>GitHub is a popular host for version controlled code, but also data. This package provides a user-friendly way to access content within GitHub through v3 of its <a href="https://developer.github.com/v3/">API</a>. The functions are also consistent with the <a href="http://www.tidyverse.org/">tidyverse</a> approach and return tibbles where possible.</p>
 <p>Detailed documentation can be found at: <a href="http://www.goymer.me.uk/githapi" class="uri">http://www.goymer.me.uk/githapi</a></p>
 </div>
 <div id="installation" class="section level2">
@@ -90,126 +90,180 @@
 <div id="authorisation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#authorisation" class="anchor"></a>Authorisation</h2>
-<p>In order to access repositories in GitHub authentication is required, by setting a <a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">Personal Access Token</a>. githapi identifies the personal token in two possible ways:</p>
-<ol>
-<li>On package load - if set as an environment variable named either “GITHUB_TOKEN” or “GITHUB_PAT”</li>
-<li>At any time - if set as an R option called “github.token”</li>
-</ol>
-<p>Setting an R option will override the environment variable.</p>
+<p>In order to access GitHub authentication is required. The first time you use githapi in an R session you will be redirected to the GitHub login page. Enter your details and allow githapi the access required. If you want to avoid authorising each time you can set a token cache using an environment variable. The authentication token is then saved at the desired location. The easiest way to do that is create (or update) a file called <code>.Renviron</code> in you HOME directory and enter the following:</p>
+<pre><code>GITHAPI_CACHE=~/.githapi.oauth</code></pre>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p><code>githapi</code> works best if used as part of the <a href="http://www.tidyverse.org/">tidyverse</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(githapi)</a></code></pre></div>
-<div id="getting-information-about-a-repository" class="section level3">
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(githapi)</a></code></pre></div>
+<div id="viewing-repositories" class="section level3">
 <h3 class="hasAnchor">
-<a href="#getting-information-about-a-repository" class="anchor"></a>Getting information about a repository</h3>
-<p><code>githapi</code> provides many functions for extracting information from a repository. For example, To get information about the branches use <a href="http://www.goymer.me.uk/githapi/reference/view_branches.html"><code><a href="reference/view_branches.html">view_branches()</a></code></a>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/view_branches.html">view_branches</a></span>(<span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co">#&gt; # A tibble: 4 x 6</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt;   name     ref        url                 object_sha      object_type object_url               </span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;               &lt;chr&gt;           &lt;chr&gt;       &lt;chr&gt;                    </span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt; 1 master   refs/head~ https://api.github~ bd1be3ea52d69d~ commit      https://api.github.com/r~</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; 2 test-br~ refs/head~ https://api.github~ 244116707ad9e2~ commit      https://api.github.com/r~</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; 3 test-up~ refs/head~ https://api.github~ 61c19d6edb1b9e~ commit      https://api.github.com/r~</span></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt; 4 unedite~ refs/head~ https://api.github~ 37d97bf9e93418~ commit      https://api.github.com/r~</span></a></code></pre></div>
-<p>Similarly, to get the history of commits for a particular branch use <a href="http://www.goymer.me.uk/githapi/reference/view_history.html"><code><a href="reference/view_history.html">view_history()</a></code></a>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="reference/view_history.html">view_history</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">#&gt; # A tibble: 1,000 x 12</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt;    sha   message author_name author_email committer_name committer_email date               </span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;           &lt;dttm&gt;             </span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt;  1 bd1b~ Testin~ Jane Jones  jane.jones@~ Bob Smith      bob.smith@acme~ 2019-02-18 07:46:08</span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt;  2 d12b~ Testin~ Jane Jones  jane.jones@~ Bob Smith      bob.smith@acme~ 2019-02-18 07:46:07</span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt;  3 9d4c~ Testin~ Bob Smith   bob.smith@a~ Jane Jones     jane.jones@acm~ 2019-02-18 07:46:06</span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt;  4 3cb8~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:59</span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt;  5 06f3~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:58</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt;  6 aaec~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:58</span></a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt;  7 523c~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:57</span></a>
-<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt;  8 3a95~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:56</span></a>
-<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt;  9 a032~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:53</span></a>
-<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; 10 9b77~ Testin~ Chad Goymer chad.goymer~ Chad Goymer    chad.goymer@gm~ 2019-02-18 07:45:52</span></a>
-<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; # ... with 990 more rows, and 5 more variables: url &lt;chr&gt;, tree_sha &lt;chr&gt;, tree_url &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt; #   parent_sha &lt;list&gt;, parent_url &lt;list&gt;</span></a></code></pre></div>
+<a href="#viewing-repositories" class="anchor"></a>Viewing repositories</h3>
+<p><code>githapi</code> provides many functions for extracting information about repositories. For example, To first get a summary of the repositories you can use <a href="http://www.goymer.me.uk/githapi/reference/view_repositories.html"><code><a href="reference/view_repositories.html">view_repositories()</a></code></a>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="reference/view_repositories.html">view_repositories</a></span>(<span class="st">"ChadGoymer"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt; # GET https://api.github.com/users/ChadGoymer/repos?type=all&amp;sort=created&amp;direction=desc&amp;per_page=100</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; # A tibble: 10 x 26</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt;        id name  full_name description owner homepage language  size default_branch permission</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;     </span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt;  1 2.62e8 user~ ChadGoym~ This is a ~ Chad~ https:/~ NA           0 master         admin     </span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt;  2 2.24e8 .git~ ChadGoym~ Issue and ~ Chad~ NA       NA           1 master         admin     </span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt;  3 1.68e8 msgr  ChadGoym~ An R packa~ Chad~ NA       R          218 master         admin     </span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt;  4 1.14e8 r-be~ ChadGoym~ A set of g~ Chad~ NA       CSS      41205 master         admin     </span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt;  5 9.69e7 git-~ ChadGoym~ Simple gui~ Chad~ NA       NA           2 master         admin     </span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt;  6 9.34e7 gith~ ChadGoym~ User-frien~ Chad~ http://~ R         6124 master         admin     </span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;  7 8.08e7 r-tr~ ChadGoym~ Training m~ Chad~ NA       R         1229 master         admin     </span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt;  8 4.24e7 r-py~ ChadGoym~ NA          Chad~ NA       HTML      1172 master         admin     </span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt;  9 4.24e7 shin~ ChadGoym~ NA          Chad~ NA       HTML     13408 master         admin     </span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; 10 3.93e7 chad~ ChadGoym~ My persona~ Chad~ NA       HTML       156 master         admin     </span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; # ... with 16 more variables: private &lt;lgl&gt;, has_issues &lt;lgl&gt;, has_projects &lt;lgl&gt;, has_wiki &lt;lgl&gt;,</span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; #   has_pages &lt;lgl&gt;, has_downloads &lt;lgl&gt;, allow_squash_merge &lt;lgl&gt;, allow_merge_commit &lt;lgl&gt;,</span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; #   allow_rebase_merge &lt;lgl&gt;, fork &lt;lgl&gt;, archived &lt;lgl&gt;, disabled &lt;lgl&gt;, html_url &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; #   pushed_at &lt;dttm&gt;, created_at &lt;dttm&gt;, updated_at &lt;dttm&gt;</span></a></code></pre></div>
+<p>For a particular repository you can view a summary of the branches using <a href="http://www.goymer.me.uk/githapi/reference/view_branches.html"><code><a href="reference/view_branches.html">view_branches()</a></code></a>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="reference/view_branches.html">view_branches</a></span>(<span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co">#&gt; # GET https://api.github.com/repos/ChadGoymer/githapi/git/refs/heads?per_page=100</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt;   name                        ref                                  sha                              </span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;   &lt;chr&gt;                       &lt;chr&gt;                                &lt;chr&gt;                            </span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; 1 master                      refs/heads/master                    c5a5261c7bf21d3c402c7ddaf4f4454c~</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; 2 0-test-branch               refs/heads/0-test-branch             e93edf23e95b59d08853e2515ce9296c~</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt; 3 177-remove-deprecated-func~ refs/heads/177-remove-deprecated-fu~ 9d0aaad0c6837388058971c92b8e6b2c~</span></a></code></pre></div>
+<p>Similarly, to get the history of commits for a particular branch use <a href="http://www.goymer.me.uk/githapi/reference/view_commits.html"><code><a href="reference/view_commits.html">view_commits()</a></code></a>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="reference/view_commits.html">view_commits</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">#&gt; # GET https://api.github.com/repos/ChadGoymer/githapi/commits?sha=master&amp;per_page=100</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="co">#&gt; # GET https://api.github.com/repositories/93376315/commits?sha=master&amp;per_page=100&amp;page=2</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt; # GET ...</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt; # A tibble: 749 x 13</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt;    sha   message author_login author_name author_email author_date         committer_login</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;        &lt;dttm&gt;              &lt;chr&gt;          </span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt;  1 c5a5~ "Merge~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-07 16:06:58 web-flow       </span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt;  2 f875~ "Regen~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-07 15:30:18 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt;  3 3df7~ "Updat~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-07 15:27:41 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt;  4 ab29~ "Corre~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-07 15:22:20 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt;  5 f973~ "Updat~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-07 15:12:08 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt;  6 c6f0~ "Repla~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-07 15:00:09 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="co">#&gt;  7 c008~ "Added~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-07 14:51:34 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="co">#&gt;  8 7fc1~ "Allow~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-06 18:11:37 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="co">#&gt;  9 eb93~ "Ensur~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-05 19:14:47 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="co">#&gt; 10 560b~ "Ensur~ ChadGoymer   Chad Goymer chad.goymer~ 2020-05-05 14:02:19 ChadGoymer     </span></a>
+<a class="sourceLine" id="cb9-17" title="17"><span class="co">#&gt; # ... with 739 more rows, and 6 more variables: committer_name &lt;chr&gt;, committer_email &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb9-18" title="18"><span class="co">#&gt; #   committer_date &lt;dttm&gt;, tree_sha &lt;chr&gt;, parents &lt;list&gt;, html_url &lt;chr&gt;</span></a></code></pre></div>
 <p>Note that, by default, when viewing many items, only the last 1000 are returned. If you wish to view more you can set the <code>n_max</code> parameter. To get information about the files in a particular commit use <a href="http://www.goymer.me.uk/githapi/reference/view_files.html"><code><a href="reference/view_files.html">view_files()</a></code></a>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="reference/view_files.html">view_files</a></span>(<span class="dt">ref =</span> <span class="st">"master"</span>, <span class="dt">repo =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">#&gt; # A tibble: 4 x 9</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt;   name   path   sha       size type  url          html_url     git_url        download_url     </span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt;            </span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; 1 READM~ READM~ 75b08f1~    65 file  https://api~ https://git~ https://api.g~ https://raw.gith~</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; 2 test-~ test-~ bbac77b~     0 dir   https://api~ https://git~ https://api.g~ NA               </span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; 3 test-~ test-~ f933c54~    22 file  https://api~ https://git~ https://api.g~ https://raw.gith~</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; 4 test-~ test-~ 68f9ad1~    63 file  https://api~ https://git~ https://api.g~ https://raw.gith~</span></a></code></pre></div>
-<p>Note that we have used a branch name here rather than a commit. That is because most functions in <code>githapi</code> allow git references to identify commits. A git reference is either a branch, in which case the head commit on the branch is used, a tag or a SHA-1 of the commit.</p>
-<p>Information about tags and releases can also be viewed by using <a href="http://www.goymer.me.uk/githapi/reference/view_files.html"><code><a href="reference/view_tags.html">view_tags()</a></code></a> and <a href="http://www.goymer.me.uk/githapi/reference/view_releases.html"><code><a href="reference/view_releases.html">view_releases()</a></code></a>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="reference/view_tags.html">view_tags</a></span>(<span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co">#&gt; # A tibble: 1 x 6</span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt;   name  ref      url                  object_sha       object_type object_url                  </span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                &lt;chr&gt;            &lt;chr&gt;       &lt;chr&gt;                       </span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt; 1 0.0.0 refs/ta~ https://api.github.~ cbd94cf24a4c627~ commit      https://api.github.com/repo~</span></a></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="reference/view_releases.html">view_releases</a></span>(<span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co">#&gt; # A tibble: 1 x 13</span></a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt;       id tag_name name  body  author_login draft prerelease target_commitish</span></a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;lgl&gt; &lt;lgl&gt;      &lt;chr&gt;           </span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="co">#&gt; 1 1.37e7 0.0.0    Init~ This~ ChadGoymer   FALSE FALSE      cbd94cf24a4c627~</span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="co">#&gt; # ... with 5 more variables: created_at &lt;dttm&gt;, published_at &lt;dttm&gt;, assets &lt;list&gt;,</span></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="co">#&gt; #   zipball_url &lt;chr&gt;, url &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="reference/view_files.html">view_files</a></span>(<span class="dt">ref =</span> <span class="st">"master"</span>, <span class="dt">repo =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co">#&gt; # GET https://api.github.com/repos/ChadGoymer/githapi/git/trees/16a48fab8de89c6483b21430a48fecf9cd364d43?recursive=TRUE</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt; # A tibble: 583 x 4</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">#&gt;    path                  sha                    size html_url                                       </span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt;  * &lt;chr&gt;                 &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;                                          </span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="co">#&gt;  1 .Rbuildignore         9a84e8afdeb40bb57685~   253 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt;  2 .covrignore           ec05f6ab9650fb158824~    12 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt;  3 .github/ISSUE_TEMPLA~ f5c658bb37d5dbbc045b~   451 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">#&gt;  4 .github/ISSUE_TEMPLA~ ec1f4be1460643e6b548~   479 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt;  5 .github/pull_request~ 7f6c4324235f6d424d10~   140 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt;  6 .gitignore            74b7fa994fa52cf7ecb5~   118 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt;  7 .travis.yml           d7548ded184873394110~   273 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt;  8 DESCRIPTION           9c2d45083c95864d3d6f~   726 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">#&gt;  9 LICENSE               070a2ae0e71d920f58bd~    41 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co">#&gt; 10 LICENSE.md            6c2be93c834c1b8585c4~  1070 https://github.com/ChadGoymer/githapi/blob/c5a~</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="co">#&gt; # ... with 573 more rows</span></a></code></pre></div>
+<p>Note that we have used a branch name here rather than a commit. That is because most functions in <code>githapi</code> allow git references to identify commits. A git reference is either a branch, in which case the head commit on the branch is used, a tag or the SHA-1 of the commit.</p>
+<p>Information about tags and releases can also be viewed by using <a href="http://www.goymer.me.uk/githapi/reference/view_tags.html"><code><a href="reference/view_tags.html">view_tags()</a></code></a> and <a href="http://www.goymer.me.uk/githapi/reference/view_releases.html"><code><a href="reference/view_releases.html">view_releases()</a></code></a>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="reference/view_tags.html">view_tags</a></span>(<span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">#&gt; # A tibble: 21 x 3</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="co">#&gt;    name     ref                sha                                     </span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;              &lt;chr&gt;                                   </span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt;  1 test-tag refs/tags/test-tag 30426b4f967d8c253b1bb5a67c5838dc306aab50</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="co">#&gt;  2 v0.0.0   refs/tags/v0.0.0   ad7e70df7c81ab7c0edbb26725ae7cf4b2ce8964</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt;  3 v0.1.0   refs/tags/v0.1.0   7ca61bb71f877f462c0b6132759d7c5e507c921f</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt;  4 v0.2.0   refs/tags/v0.2.0   7ee36b18186f0c09389af0eb0e4a6843c2ac853c</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt;  5 v0.3.0   refs/tags/v0.3.0   d378328243626794ca725946c4e0662622aeb933</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="co">#&gt;  6 v0.4.0   refs/tags/v0.4.0   7a22d6dd5520f5238677483689b5f255944b6764</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt;  7 v0.5.0   refs/tags/v0.5.0   dcf71d189010f4ad7ef9630200cf432c61ffa04b</span></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="co">#&gt;  8 v0.5.1   refs/tags/v0.5.1   e45eb21203e2f77da8d8b81df2a1b109fae01159</span></a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="co">#&gt;  9 v0.5.2   refs/tags/v0.5.2   099944f501b2c2fba940f807b1028dbc5349f29c</span></a>
+<a class="sourceLine" id="cb13-13" title="13"><span class="co">#&gt; 10 v0.6.0   refs/tags/v0.6.0   702c033f59081cd12b364d64763d22e12701c62f</span></a>
+<a class="sourceLine" id="cb13-14" title="14"><span class="co">#&gt; # ... with 11 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw"><a href="reference/view_releases.html">view_releases</a></span>(<span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">#&gt; # GET https://api.github.com/repos/ChadGoymer/githapi/releases?per_page=100</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt; # A tibble: 20 x 12</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">#&gt;        id tag   name  body  commit draft prerelease author_login assets html_url created_at         </span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">#&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;lgl&gt; &lt;lgl&gt;      &lt;chr&gt;        &lt;list&gt; &lt;chr&gt;    &lt;dttm&gt;             </span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt;  1 1.67e7 0.8.7 Fixe~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-04-10 13:12:31</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">#&gt;  2 1.64e7 0.8.6 Fixe~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-03-27 15:30:50</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">#&gt;  3 1.59e7 0.8.5 Usin~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-03-05 18:47:00</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">#&gt;  4 1.56e7 0.8.2 Depr~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-02-18 18:17:18</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">#&gt;  5 1.55e7 0.7.3 Add ~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-12-06 07:33:25</span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">#&gt;  6 1.55e7 0.7.2 Crea~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-11-06 14:26:49</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="co">#&gt;  7 1.37e7 0.7.1 The ~ "# R~ 31142~ FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-10-31 06:57:38</span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="co">#&gt;  8 1.37e7 0.7.0 Star~ "# R~ 59ef5~ FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-10-26 18:02:49</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="co">#&gt;  9 1.35e7 test~ Test~ "Thi~ 9bb32~ TRUE  TRUE       ChadGoymer   &lt;chr ~ https:/~ 2018-10-18 07:53:42</span></a>
+<a class="sourceLine" id="cb15-14" title="14"><span class="co">#&gt; 10 1.26e7 0.6.3 Fixe~ "Res~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-29 09:03:28</span></a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="co">#&gt; 11 1.26e7 0.6.2 Hook~ "Add~ 47c25~ FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-28 19:39:10</span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="co">#&gt; 12 1.26e7 0.6.1 Buil~ "Con~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-24 08:55:38</span></a>
+<a class="sourceLine" id="cb15-17" title="17"><span class="co">#&gt; 13 1.17e7 v0.6~ Simp~ "Thi~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-06-26 21:09:34</span></a>
+<a class="sourceLine" id="cb15-18" title="18"><span class="co">#&gt; 14 8.40e6 v0.5~ Rele~ "Fix~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-11-06 10:09:04</span></a>
+<a class="sourceLine" id="cb15-19" title="19"><span class="co">#&gt; 15 8.17e6 v0.5~ Fixe~ " - ~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-10-18 17:51:29</span></a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="co">#&gt; 16 8.14e6 v0.5~ Rele~ " - ~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-10-17 08:41:53</span></a>
+<a class="sourceLine" id="cb15-21" title="21"><span class="co">#&gt; 17 7.72e6 v0.4~ Rele~ "add~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-09-12 08:21:08</span></a>
+<a class="sourceLine" id="cb15-22" title="22"><span class="co">#&gt; 18 7.66e6 v0.3~ Rele~ "add~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-08-14 18:13:10</span></a>
+<a class="sourceLine" id="cb15-23" title="23"><span class="co">#&gt; 19 7.25e6 v0.2~ Git ~ "Add~ master FALSE TRUE       ChadGoymer   &lt;chr ~ https:/~ 2017-08-01 18:45:16</span></a>
+<a class="sourceLine" id="cb15-24" title="24"><span class="co">#&gt; 20 7.21e6 v0.1~ sele~ ""    master FALSE TRUE       ChadGoymer   &lt;chr ~ https:/~ 2017-07-28 18:04:10</span></a>
+<a class="sourceLine" id="cb15-25" title="25"><span class="co">#&gt; # ... with 1 more variable: published_at &lt;dttm&gt;</span></a></code></pre></div>
 </div>
 <div id="downloading-files-from-a-repository" class="section level3">
 <h3 class="hasAnchor">
 <a href="#downloading-files-from-a-repository" class="anchor"></a>Downloading files from a repository</h3>
-<p>In addition to getting information about the contents of a repository, <code>githapi</code> can also download files and commits. To download individual files use <a href="http://www.goymer.me.uk/githapi/reference/download_files.html"><code><a href="reference/download_files.html">download_files()</a></code></a></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">temp_path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"githapi"</span>)</a>
-<a class="sourceLine" id="cb13-2" title="2"></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="kw"><a href="reference/download_files.html">download_files</a></span>(</a>
-<a class="sourceLine" id="cb13-4" title="4">  <span class="dt">paths    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"README.md"</span>, <span class="st">"test-file.txt"</span>),</a>
-<a class="sourceLine" id="cb13-5" title="5">  <span class="dt">location =</span> temp_path,</a>
-<a class="sourceLine" id="cb13-6" title="6">  <span class="dt">repo     =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
+<p>In addition to getting information about the contents of a repository, <code>githapi</code> can also download files and commits. To download individual files use <a href="http://www.goymer.me.uk/githapi/reference/download_file.html"><code><a href="reference/download_file.html">download_file()</a></code></a></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="reference/download_file.html">download_file</a></span>(</a>
+<a class="sourceLine" id="cb16-2" title="2">  <span class="dt">from_path =</span> <span class="st">"README.md"</span>,</a>
+<a class="sourceLine" id="cb16-3" title="3">  <span class="dt">to_path   =</span> <span class="st">"~/githapi/README.md"</span>,</a>
+<a class="sourceLine" id="cb16-4" title="4">  <span class="dt">ref       =</span> <span class="st">"master"</span>,</a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="dt">repo      =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
 <p>To download an entire commit use <a href="http://www.goymer.me.uk/githapi/reference/download_commit.html"><code><a href="reference/download_commit.html">download_commit()</a></code></a></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw"><a href="reference/download_commit.html">download_commit</a></span>(</a>
-<a class="sourceLine" id="cb14-2" title="2">  <span class="dt">ref  =</span> <span class="st">"master"</span>,</a>
-<a class="sourceLine" id="cb14-3" title="3">  <span class="dt">path =</span> temp_path,</a>
-<a class="sourceLine" id="cb14-4" title="4">  <span class="dt">repo =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<p>You can also read text files from a commit directly using <a href="http://www.goymer.me.uk/githapi/reference/read_files.html"><code><a href="reference/read_files.html">read_files()</a></code></a></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">files &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_files.html">read_files</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"README.md"</span>, <span class="st">"test-file.txt"</span>), <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<p>and source R scripts directly from GitHub using <a href="http://www.goymer.me.uk/githapi/reference/source_files.html"><code><a href="reference/source_files.html">source_files()</a></code></a></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="reference/source_files.html">source_files</a></span>(<span class="st">"test-source.R"</span>, <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw"><a href="reference/download_commit.html">download_commit</a></span>(</a>
+<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">path =</span> <span class="st">"~/githapi"</span>,</a>
+<a class="sourceLine" id="cb17-3" title="3">  <span class="dt">ref  =</span> <span class="st">"master"</span>,</a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="dt">repo =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<p>You can also read text files from a commit directly using <a href="http://www.goymer.me.uk/githapi/reference/read_github_file.html"><code><a href="reference/read_github_file.html">read_github_file()</a></code></a></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw"><a href="reference/read_github_file.html">read_github_file</a></span>(<span class="st">"README.md"</span>, <span class="dt">ref =</span> <span class="st">"master"</span>, <span class="dt">repo =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<p>and source R scripts directly from GitHub using <a href="http://www.goymer.me.uk/githapi/reference/github_source.html"><code><a href="reference/github_source.html">github_source()</a></code></a></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="reference/github_source.html">github_source</a></span>(<span class="st">"inst/test-data/test-source.R"</span>, <span class="dt">ref =</span> <span class="st">"master"</span>, <span class="dt">repo =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
 </div>
 <div id="updating-a-repository" class="section level3">
 <h3 class="hasAnchor">
 <a href="#updating-a-repository" class="anchor"></a>Updating a repository</h3>
-<p><code>githapi</code> also provides a set of functions for updating repositories, for adding branches, tags as well as new commits.</p>
-<p>To create or update a file, or small number of text files, in a repository use <a href="http://www.goymer.me.uk/githapi/reference/create_files.html"><code><a href="reference/create_files.html">create_files()</a></code></a> or <a href="http://www.goymer.me.uk/githapi/reference/update_files.html"><code><a href="reference/update_files.html">update_files()</a></code></a></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw"><a href="reference/create_files.html">create_files</a></span>(</a>
-<a class="sourceLine" id="cb17-2" title="2">  <span class="dt">paths    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaaa.txt"</span>, <span class="st">"bbbb.txt"</span>),</a>
-<a class="sourceLine" id="cb17-3" title="3">  <span class="dt">contents =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Created to test:</span><span class="ch">\n\n</span><span class="st">  `create_files()`"</span>, <span class="st">"Created to test:</span><span class="ch">\n\n</span><span class="st">  `create_files()`"</span>),</a>
-<a class="sourceLine" id="cb17-4" title="4">  <span class="dt">messages =</span> <span class="st">"Testing create_files()"</span>,</a>
-<a class="sourceLine" id="cb17-5" title="5">  <span class="dt">repo     =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw"><a href="reference/update_files.html">update_files</a></span>(</a>
-<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">paths    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaaa.txt"</span>, <span class="st">"bbbb.txt"</span>),</a>
-<a class="sourceLine" id="cb18-3" title="3">  <span class="dt">contents =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Updated to test:</span><span class="ch">\n\n</span><span class="st">  `update_files()`"</span>, <span class="st">"Updated to test:</span><span class="ch">\n\n</span><span class="st">  `update_files()`"</span>),</a>
-<a class="sourceLine" id="cb18-4" title="4">  <span class="dt">messages =</span> <span class="st">"Testing update_files()"</span>,</a>
-<a class="sourceLine" id="cb18-5" title="5">  <span class="dt">repo     =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<p>These functions create a new commit per file and specify the contents as strings. To upload many files, and/or binary files, use <a href="http://www.goymer.me.uk/githapi/reference/upload_commit.html"><code><a href="reference/upload_commit.html">upload_commit()</a></code></a></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="reference/upload_commit.html">upload_commit</a></span>(</a>
-<a class="sourceLine" id="cb19-2" title="2">  <span class="dt">branch  =</span> <span class="st">"master"</span>,</a>
-<a class="sourceLine" id="cb19-3" title="3">  <span class="dt">message =</span> <span class="st">"Commit made with upload_commit"</span>,</a>
-<a class="sourceLine" id="cb19-4" title="4">  <span class="dt">path    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"test-data/upload-tree"</span>, <span class="dt">package =</span> <span class="st">"githapi"</span>),</a>
-<a class="sourceLine" id="cb19-5" title="5">  <span class="dt">parents =</span> <span class="st">"master"</span>,</a>
-<a class="sourceLine" id="cb19-6" title="6">  <span class="dt">repo    =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<p>This function, by default, makes a new commit containing the contents of the specified directory. If you wish to only specify the files to change then set the <code>replace</code> parameter to <code>FALSE</code> (see documentation for details).</p>
-<p>Finally, tags and releases can be created using <a href="http://www.goymer.me.uk/githapi/reference/create_tags.html"><code><a href="reference/create_tags.html">create_tags()</a></code></a> and <a href="http://www.goymer.me.uk/githapi/reference/create_releases.html"><code><a href="reference/create_releases.html">create_releases()</a></code></a> respectively.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="reference/create_tags.html">create_tags</a></span>(</a>
-<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">tags =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaa"</span>, <span class="st">"bbb"</span>),</a>
-<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">shas =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"cbd94cf24a4c62761b3ae59ca3c69f868591cf7d"</span>, <span class="st">"310c21d3f1601a46e014e68e94814b23406bf574"</span>),</a>
-<a class="sourceLine" id="cb20-4" title="4">  <span class="dt">repo =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw"><a href="reference/create_releases.html">create_releases</a></span>(</a>
-<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">tags    =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"aaa"</span>, <span class="st">"bbb"</span>),</a>
-<a class="sourceLine" id="cb21-3" title="3">  <span class="dt">commits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"310c21d3f1601a46e014e68e94814b23406bf574"</span>, <span class="st">"32d3c5c4f6aba7ae9679480407e1b9f94ad04843"</span>),</a>
-<a class="sourceLine" id="cb21-4" title="4">  <span class="dt">names   =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AAA"</span>, <span class="st">"BBB"</span>),</a>
-<a class="sourceLine" id="cb21-5" title="5">  <span class="dt">bodies  =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Created for testing: aaa"</span>, <span class="st">"Created for testing: bbb"</span>),</a>
-<a class="sourceLine" id="cb21-6" title="6">  <span class="dt">repo    =</span> <span class="st">"ChadGoymer/test-githapi"</span>)</a></code></pre></div>
+<p><code>githapi</code> also provides a set of functions for updating repositories, for adding branches, tags as well as new commits. To create or update a file use <a href="http://www.goymer.me.uk/githapi/reference/create_file.html"><code><a href="reference/create_file.html">create_file()</a></code></a> or <a href="http://www.goymer.me.uk/githapi/reference/update_file.html"><code><a href="reference/update_file.html">update_file()</a></code></a></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="reference/create_file.html">create_file</a></span>(</a>
+<a class="sourceLine" id="cb20-2" title="2">  <span class="dt">content =</span> <span class="st">"# This is a new file</span><span class="ch">\\</span><span class="st">n</span><span class="ch">\\</span><span class="st">n Created by `create_file()`"</span>,</a>
+<a class="sourceLine" id="cb20-3" title="3">  <span class="dt">path    =</span> <span class="st">"new-file.md"</span>,</a>
+<a class="sourceLine" id="cb20-4" title="4">  <span class="dt">branch  =</span> <span class="st">"master"</span>,</a>
+<a class="sourceLine" id="cb20-5" title="5">  <span class="dt">message =</span> <span class="st">"Created a new file with create_file()"</span>,</a>
+<a class="sourceLine" id="cb20-6" title="6">  <span class="dt">repo    =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw"><a href="reference/update_file.html">update_file</a></span>(</a>
+<a class="sourceLine" id="cb21-2" title="2">  <span class="dt">content =</span> <span class="st">"# This is a file</span><span class="ch">\\</span><span class="st">n</span><span class="ch">\\</span><span class="st">n Updated by `update_file()`"</span>,</a>
+<a class="sourceLine" id="cb21-3" title="3">  <span class="dt">path    =</span> <span class="st">"new-file.md"</span>,</a>
+<a class="sourceLine" id="cb21-4" title="4">  <span class="dt">branch  =</span> <span class="st">"master"</span>,</a>
+<a class="sourceLine" id="cb21-5" title="5">  <span class="dt">message =</span> <span class="st">"Updated a file with update_file()"</span>,</a>
+<a class="sourceLine" id="cb21-6" title="6">  <span class="dt">repo    =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<p>These functions create a new commit and specify the contents as strings. To upload many files, and/or binary files, use <a href="http://www.goymer.me.uk/githapi/reference/upload_commit.html"><code><a href="reference/upload_commit.html">upload_commit()</a></code></a></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw"><a href="reference/upload_commit.html">upload_commit</a></span>(</a>
+<a class="sourceLine" id="cb22-2" title="2">    <span class="dt">path    =</span> <span class="st">"C:/files-to-upload"</span>,</a>
+<a class="sourceLine" id="cb22-3" title="3">    <span class="dt">branch  =</span> <span class="st">"master"</span>,</a>
+<a class="sourceLine" id="cb22-4" title="4">    <span class="dt">message =</span> <span class="st">"Commit to test upload_commit()"</span>,</a>
+<a class="sourceLine" id="cb22-5" title="5">    <span class="dt">repo    =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<p>This function, by default, makes a new commit containing the contents of the specified directory (see documentation for details).</p>
+<p>Finally, tags and releases can be created using <a href="http://www.goymer.me.uk/githapi/reference/create_tag.html"><code><a href="reference/create_tag.html">create_tag()</a></code></a> and <a href="http://www.goymer.me.uk/githapi/reference/create_release.html"><code><a href="reference/create_release.html">create_release()</a></code></a> respectively.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw"><a href="reference/create_tag.html">create_tag</a></span>(</a>
+<a class="sourceLine" id="cb23-2" title="2">  <span class="dt">name =</span> <span class="st">"new-tag"</span>,</a>
+<a class="sourceLine" id="cb23-3" title="3">  <span class="dt">ref  =</span> <span class="st">"master"</span>,</a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">repo =</span> <span class="st">"ChadGoymer/githapi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw"><a href="reference/create_release.html">create_release</a></span>(</a>
+<a class="sourceLine" id="cb24-2" title="2">  <span class="dt">tag  =</span> <span class="st">"1.0.0"</span>,</a>
+<a class="sourceLine" id="cb24-3" title="3">  <span class="dt">repo =</span> <span class="st">"ChadGoymer/githapi"</span>,</a>
+<a class="sourceLine" id="cb24-4" title="4">  <span class="dt">name =</span> <span class="st">"Initial production release"</span>,</a>
+<a class="sourceLine" id="cb24-5" title="5">  <span class="dt">body =</span> <span class="st">"This is a release created by create_release()"</span>)</a></code></pre></div>
 </div>
 </div>
 </div>

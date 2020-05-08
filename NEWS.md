@@ -1,3 +1,9 @@
+# githapi 0.10.0
+
+- Removed deprecated functions
+- Removed msgr settings from on-load
+- Updated README.md
+
 # githapi 0.9.28
 
 - Removed `try()` from `setup()` and `teardown()` in all tests

@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test tags",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   create_file(
     content = "This is a commit to test tags",
     path    = str_c("test-tags-", now, ".txt"),
@@ -101,11 +103,11 @@ test_that("update_tag updates a tag and returns a list of the properties", {
 })
 
 
-# TEST: .view_tags -----------------------------------------------------------------------------
+# TEST: view_tags -----------------------------------------------------------------------------
 
-test_that(".view_tags returns a tibble of tag properties", {
+test_that("view_tags returns a tibble of tag properties", {
 
-  all_tags <- .view_tags(str_c("ChadGoymer/test-tags-", now))
+  all_tags <- view_tags(str_c("ChadGoymer/test-tags-", now), n_max = 10)
 
   expect_is(all_tags, "tbl")
   expect_identical(attr(all_tags, "status"), 200L)

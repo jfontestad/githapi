@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test pull requests",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   create_file(
     content = "This is a commit to test pull requests",
     path    = str_c("test-pulls-", now, ".txt"),
@@ -262,8 +264,9 @@ test_that("update_pull_request throws an error if invalid arguments are supplied
 test_that("view_pull_requests returns a tibble of issue properties", {
 
   open_pull_requests <- view_pull_requests(
-    repo = str_c("ChadGoymer/test-pulls-", now),
-    base = "master")
+    repo  = str_c("ChadGoymer/test-pulls-", now),
+    base  = "master",
+    n_max = 10)
 
   expect_is(open_pull_requests, "tbl")
   expect_identical(attr(open_pull_requests, "status"), 200L)
@@ -301,7 +304,8 @@ test_that("view_pull_requests returns a tibble of issue properties", {
   closed_pull_requests <- view_pull_requests(
     repo  = str_c("ChadGoymer/test-pulls-", now),
     head  = str_c("test-pulls-1-", now),
-    state = "closed")
+    state = "closed",
+    n_max = 10)
 
   expect_is(closed_pull_requests, "tbl")
   expect_identical(attr(closed_pull_requests, "status"), 200L)

@@ -81,7 +81,7 @@ test_that("update_membership returns a list of membership properties", {
 
 test_that("view_memberships returns a tibble summarising the user's memberships", {
 
-  memberships <- view_memberships()
+  memberships <- view_memberships(n_max = 10)
 
   expect_is(memberships, "tbl")
   expect_identical(attr(memberships, "status"), 200L)
@@ -99,7 +99,7 @@ test_that("view_memberships returns a tibble summarising the user's memberships"
   expect_identical(hairy_coos$state, "active")
   expect_identical(hairy_coos$role, "admin")
 
-  active_memberships <- view_memberships(state = "active")
+  active_memberships <- view_memberships(state = "active", n_max = 10)
 
   expect_is(active_memberships, "tbl")
   expect_identical(attr(active_memberships, "status"), 200L)
@@ -117,7 +117,7 @@ test_that("view_memberships returns a tibble summarising the user's memberships"
   expect_identical(active_hairy_coos$state, "active")
   expect_identical(active_hairy_coos$role, "admin")
 
-  pending_memberships <- view_memberships(state = "pending")
+  pending_memberships <- view_memberships(state = "pending", n_max = 10)
 
   expect_is(pending_memberships, "tbl")
   expect_identical(attr(pending_memberships, "status"), 200L)

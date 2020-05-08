@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compare two commits — compare_commits • githapi</title>
+<title>View commits made between two commits — compare_commits • githapi</title>
 
 
 <!-- jquery -->
@@ -35,11 +35,10 @@
 
 
 
-<meta property="og:title" content="Compare two commits — compare_commits" />
-<meta property="og:description" content="This function returns information about all the commits made between the two specified
-commits. The commits can be specified by any git reference, i.e. branch, tag or SHA. Note:
-This function will only return a maximum of 250 commits. If more are required, use
-view_commits()." />
+<meta property="og:title" content="View commits made between two commits — compare_commits" />
+<meta property="og:description" content="compare_commits() summarises the commits made between two commits in a table with the
+properties as columns and a row for each commit. The base commit must be in the history
+of the head commit." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -72,7 +71,7 @@ view_commits()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -111,52 +110,33 @@ view_commits()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compare two commits</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories-commits-deprecated.R'><code>R/repositories-commits-deprecated.R</code></a></small>
+    <h1>View commits made between two commits</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/commits.R'><code>R/commits.R</code></a></small>
     <div class="hidden name"><code>compare_commits.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function returns information about all the commits made between the two specified
-commits. The commits can be specified by any git reference, i.e. branch, tag or SHA. Note:
-This function will only return a maximum of 250 commits. If more are required, use
-<code><a href='view_commits.html'>view_commits()</a></code>.</p>
+    <p><code>compare_commits()</code> summarises the commits made between two commits in a table with the
+properties as columns and a row for each commit. The <code>base</code> commit must be in the history
+of the <code>head</code> commit.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>compare_commits</span>(
-  <span class='no'>base</span>,
-  <span class='no'>head</span>,
-  <span class='no'>repo</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>api</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.api"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>compare_commits</span>(<span class='no'>base</span>, <span class='no'>head</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>base</th>
-      <td><p>(string) The reference of the base commit.</p></td>
+      <td><p>(string) Either a SHA, branch or tag used to identify the base commit.</p></td>
     </tr>
     <tr>
       <th>head</th>
-      <td><p>(string) The reference of the commit to compare.</p></td>
+      <td><p>(string) Either a SHA, branch or tag used to identify the head commit.</p></td>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string) The repository specified as "owner/repo".</p></td>
-    </tr>
-    <tr>
-      <th>token</th>
-      <td><p>(string, optional) The personal access token for GitHub authorisation. Default:
-value stored in the environment variable <code>GITHUB_TOKEN</code> (or <code>GITHUB_PAT</code>) or in the
-R option <code>"github.token"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>api</th>
-      <td><p>(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable <code>GITHUB_API</code> or in the R option <code>"github.api"</code>.</p></td>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -166,27 +146,36 @@ environment variable <code>GITHUB_API</code> or in the R option <code>"github.ap
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble describing the commits, with the following columns
-(see <a href='https://developer.github.com/v3/repos/commits/'>GitHub's documentation</a>
-for more details):</p><ul>
-<li><p><strong>sha</strong>: The SHA of the commit.</p></li>
-<li><p><strong>message</strong>: The commit message recorded in GitHub.</p></li>
-<li><p><strong>author_name</strong>: The author of the commit.</p></li>
+    <p><code>compare_commits()</code> returns a tibble of commit properties.</p>
+<p><strong>Commit Properties:</strong></p><ul>
+<li><p><strong>sha</strong>: The commit SHA.</p></li>
+<li><p><strong>message</strong>: The commit message.</p></li>
+<li><p><strong>author_login</strong>: The author's account login.</p></li>
+<li><p><strong>author_name</strong>: The author's name.</p></li>
 <li><p><strong>author_email</strong>: The author's email address.</p></li>
-<li><p><strong>committer_name</strong>: The committer of the commit.</p></li>
+<li><p><strong>committer_login</strong>: The committer's account login.</p></li>
+<li><p><strong>committer_name</strong>: The committer's name.</p></li>
 <li><p><strong>committer_email</strong>: The committer's email address.</p></li>
-<li><p><strong>date</strong>: The date and time of the commit.</p></li>
-<li><p><strong>url</strong>: The URL to get the commit details from GitHub.</p></li>
-<li><p><strong>tree_sha</strong>: The SHA of the git tree.</p></li>
-<li><p><strong>tree_url</strong>: The URL to get the tree details from GitHub.</p></li>
-<li><p><strong>parent_sha</strong>: The SHA(s) of the parent commit(s).</p></li>
-<li><p><strong>parent_url</strong>: The URL(s) to get the parent's details from GitHub.</p></li>
+<li><p><strong>tree_sha</strong>: The SHA of the commit's file tree.</p></li>
+<li><p><strong>parents</strong>: The SHAs of the parent commits.</p></li>
+<li><p><strong>date</strong>: The time and date the commit was made.</p></li>
+<li><p><strong>html_url</strong>: The address of the commit's web page.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><a href='https://developer.github.com/v3/repos/commits/#compare-two-commits'>https://developer.github.com/v3/repos/commits/#compare-two-commits</a></p>
+    <p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/repos/commits/#compare-two-commits'>https://developer.github.com/v3/repos/commits/#compare-two-commits</a></p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
+  <span class='co'># View the changes made between the current master branch and a release</span>
+  <span class='fu'>compare_commits</span>(<span class='st'>"master"</span>, <span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -194,6 +183,7 @@ for more details):</p><ul>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

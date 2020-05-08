@@ -12,6 +12,8 @@ setup(suppressMessages({
     description = "This is a repository to test cards",
     auto_init   = TRUE)
 
+  Sys.sleep(1)
+
   create_project(
     name = str_c("Test cards ", now),
     body = "A project to test card functions",
@@ -289,7 +291,8 @@ test_that("view_cards returns a tibble summarising the cards", {
   cards <- view_cards(
     column  = str_c("Test cards ", now),
     project = str_c("Test cards ", now),
-    repo    = str_c("ChadGoymer/test-cards-", now))
+    repo    = str_c("ChadGoymer/test-cards-", now),
+    n_max   = 10)
 
   expect_is(cards, "tbl")
   expect_identical(attr(cards, "status"), 200L)
