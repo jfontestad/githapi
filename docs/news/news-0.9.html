@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -53,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -67,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.1</span>
       </span>
     </div>
 
@@ -106,12 +110,12 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small>0.9</small></h1>
+      <h1 data-toc-skip>Changelog <small>0.9</small></h1>
       
     </div>
 
     <div id="githapi-090" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.0">
 <a href="#githapi-090" class="anchor"></a>githapi 0.9.0</h1>
 <ul>
 <li>Imported rlang, stringr, purrr and tibble</li>
@@ -120,7 +124,7 @@
 </ul>
 </div>
     <div id="githapi-091" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.1">
 <a href="#githapi-091" class="anchor"></a>githapi 0.9.1</h1>
 <ul>
 <li>Updated <code><a href="../reference/gh_url.html">gh_url()</a></code> to append path to API rather than replace it</li>
@@ -128,7 +132,7 @@
 </ul>
 </div>
     <div id="githapi-092" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.2">
 <a href="#githapi-092" class="anchor"></a>githapi 0.9.2</h1>
 <ul>
 <li>Ensure all tests pass and leave the test repository unchanged</li>
@@ -136,7 +140,7 @@
 </ul>
 </div>
     <div id="githapi-093" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.3">
 <a href="#githapi-093" class="anchor"></a>githapi 0.9.3</h1>
 <ul>
 <li>Use proxy in <code><a href="../reference/gh_token.html">gh_token()</a></code>
@@ -152,7 +156,7 @@
 </ul>
 </div>
     <div id="githapi-094" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.4">
 <a href="#githapi-094" class="anchor"></a>githapi 0.9.4</h1>
 <ul>
 <li>Added <code><a href="../reference/create_project.html">create_project()</a></code>
@@ -173,7 +177,7 @@
 </ul>
 </div>
     <div id="githapi-095" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.5">
 <a href="#githapi-095" class="anchor"></a>githapi 0.9.5</h1>
 <ul>
 <li>Added <code><a href="../reference/create_column.html">create_column()</a></code>
@@ -195,7 +199,7 @@
 </ul>
 </div>
     <div id="githapi-096" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.6">
 <a href="#githapi-096" class="anchor"></a>githapi 0.9.6</h1>
 <ul>
 <li>Added <code><a href="../reference/create_card.html">create_card()</a></code>
@@ -218,7 +222,7 @@
 </ul>
 </div>
     <div id="githapi-097" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.7">
 <a href="#githapi-097" class="anchor"></a>githapi 0.9.7</h1>
 <ul>
 <li>Added <code><a href="../reference/view_users.html">view_users()</a></code>
@@ -237,7 +241,7 @@
 </ul>
 </div>
     <div id="githapi-098" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.8">
 <a href="#githapi-098" class="anchor"></a>githapi 0.9.8</h1>
 <p>Added the following functions:</p>
 <ul>
@@ -258,7 +262,7 @@
 </ul>
 </div>
     <div id="githapi-099" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.9">
 <a href="#githapi-099" class="anchor"></a>githapi 0.9.9</h1>
 <p>Added the following functions:</p>
 <ul>
@@ -291,7 +295,7 @@
 </ul>
 </div>
     <div id="githapi-0910" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.10">
 <a href="#githapi-0910" class="anchor"></a>githapi 0.9.10</h1>
 <p>Updated the following functions:</p>
 <ul>
@@ -310,7 +314,7 @@
 </ul>
 </div>
     <div id="githapi-0911" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.11">
 <a href="#githapi-0911" class="anchor"></a>githapi 0.9.11</h1>
 <ul>
 <li>Added <code><a href="../reference/update_membership.html">update_membership()</a></code>
@@ -324,7 +328,7 @@
 </ul>
 </div>
     <div id="githapi-0912" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.12">
 <a href="#githapi-0912" class="anchor"></a>githapi 0.9.12</h1>
 <ul>
 <li>Added <code><a href="../reference/update_collaborator.html">update_collaborator()</a></code>
@@ -338,7 +342,7 @@
 </ul>
 </div>
     <div id="githapi-0913" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.13">
 <a href="#githapi-0913" class="anchor"></a>githapi 0.9.13</h1>
 <ul>
 <li>Added <code><a href="../reference/create_repository.html">create_repository()</a></code>
@@ -358,7 +362,7 @@
 </ul>
 </div>
     <div id="githapi-0914" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.14">
 <a href="#githapi-0914" class="anchor"></a>githapi 0.9.14</h1>
 <ul>
 <li>Added <code><a href="../reference/create_milestone.html">create_milestone()</a></code>
@@ -376,7 +380,7 @@
 </ul>
 </div>
     <div id="githapi-0915" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.15">
 <a href="#githapi-0915" class="anchor"></a>githapi 0.9.15</h1>
 <ul>
 <li>Added <code><a href="../reference/create_label.html">create_label()</a></code>
@@ -393,7 +397,7 @@
 </ul>
 </div>
     <div id="githapi-0916" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.16">
 <a href="#githapi-0916" class="anchor"></a>githapi 0.9.16</h1>
 <ul>
 <li>Added <code><a href="../reference/create_issue.html">create_issue()</a></code>
@@ -412,7 +416,7 @@
 </ul>
 </div>
     <div id="githapi-0917" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.17">
 <a href="#githapi-0917" class="anchor"></a>githapi 0.9.17</h1>
 <ul>
 <li>Added <code><a href="../reference/create_pull_request.html">create_pull_request()</a></code>
@@ -428,7 +432,7 @@
 </ul>
 </div>
     <div id="githapi-0918" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.18">
 <a href="#githapi-0918" class="anchor"></a>githapi 0.9.18</h1>
 <ul>
 <li>Added <code><a href="../reference/add_labels.html">add_labels()</a></code>
@@ -439,7 +443,7 @@
 </ul>
 </div>
     <div id="githapi-0919" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.19">
 <a href="#githapi-0919" class="anchor"></a>githapi 0.9.19</h1>
 <ul>
 <li>Added <code><a href="../reference/create_branch.html">create_branch()</a></code>
@@ -456,7 +460,7 @@
 </ul>
 </div>
     <div id="githapi-0920" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.20">
 <a href="#githapi-0920" class="anchor"></a>githapi 0.9.20</h1>
 <ul>
 <li>Added <code><a href="../reference/create_tag.html">create_tag()</a></code>
@@ -472,7 +476,7 @@
 </ul>
 </div>
     <div id="githapi-0921" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.21">
 <a href="#githapi-0921" class="anchor"></a>githapi 0.9.21</h1>
 <ul>
 <li>Added <code><a href="../reference/upload_commit.html">upload_commit()</a></code> commented out</li>
@@ -491,7 +495,7 @@
 </ul>
 </div>
     <div id="githapi-0922" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.22">
 <a href="#githapi-0922" class="anchor"></a>githapi 0.9.22</h1>
 <ul>
 <li>Renamed <code><a href="../reference/view_branches.html">view_branches()</a></code> to <code>.view_branches()</code>
@@ -527,7 +531,7 @@
 </ul>
 </div>
     <div id="githapi-0923" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.23">
 <a href="#githapi-0923" class="anchor"></a>githapi 0.9.23</h1>
 <ul>
 <li>Added <code><a href="../reference/write_github_file.html">write_github_file()</a></code>
@@ -549,7 +553,7 @@
 </ul>
 </div>
     <div id="githapi-0924" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.24">
 <a href="#githapi-0924" class="anchor"></a>githapi 0.9.24</h1>
 <ul>
 <li>Added <code>.compare_commits()</code>
@@ -559,7 +563,7 @@
 </ul>
 </div>
     <div id="githapi-0925" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.25">
 <a href="#githapi-0925" class="anchor"></a>githapi 0.9.25</h1>
 <ul>
 <li>Added <code><a href="../reference/create_release.html">create_release()</a></code>
@@ -576,7 +580,7 @@
 </ul>
 </div>
     <div id="githapi-0926" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.26">
 <a href="#githapi-0926" class="anchor"></a>githapi 0.9.26</h1>
 <ul>
 <li>Added <code><a href="../reference/create_gist.html">create_gist()</a></code>
@@ -598,7 +602,7 @@
 </ul>
 </div>
     <div id="githapi-0927" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.27">
 <a href="#githapi-0927" class="anchor"></a>githapi 0.9.27</h1>
 <ul>
 <li>Added <code><a href="../reference/create_comment.html">create_comment()</a></code>
@@ -616,7 +620,7 @@
 </ul>
 </div>
     <div id="githapi-0928" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.9.28">
 <a href="#githapi-0928" class="anchor"></a>githapi 0.9.28</h1>
 <ul>
 <li>Removed <code><a href="https://rdrr.io/r/base/try.html">try()</a></code> from <code>setup()</code> and <code>teardown()</code> in all tests</li>
@@ -637,41 +641,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#githapi-090">0.9.0</a></li>
-        <li><a href="#githapi-091">0.9.1</a></li>
-        <li><a href="#githapi-092">0.9.2</a></li>
-        <li><a href="#githapi-093">0.9.3</a></li>
-        <li><a href="#githapi-094">0.9.4</a></li>
-        <li><a href="#githapi-095">0.9.5</a></li>
-        <li><a href="#githapi-096">0.9.6</a></li>
-        <li><a href="#githapi-097">0.9.7</a></li>
-        <li><a href="#githapi-098">0.9.8</a></li>
-        <li><a href="#githapi-099">0.9.9</a></li>
-        <li><a href="#githapi-0910">0.9.10</a></li>
-        <li><a href="#githapi-0911">0.9.11</a></li>
-        <li><a href="#githapi-0912">0.9.12</a></li>
-        <li><a href="#githapi-0913">0.9.13</a></li>
-        <li><a href="#githapi-0914">0.9.14</a></li>
-        <li><a href="#githapi-0915">0.9.15</a></li>
-        <li><a href="#githapi-0916">0.9.16</a></li>
-        <li><a href="#githapi-0917">0.9.17</a></li>
-        <li><a href="#githapi-0918">0.9.18</a></li>
-        <li><a href="#githapi-0919">0.9.19</a></li>
-        <li><a href="#githapi-0920">0.9.20</a></li>
-        <li><a href="#githapi-0921">0.9.21</a></li>
-        <li><a href="#githapi-0922">0.9.22</a></li>
-        <li><a href="#githapi-0923">0.9.23</a></li>
-        <li><a href="#githapi-0924">0.9.24</a></li>
-        <li><a href="#githapi-0925">0.9.25</a></li>
-        <li><a href="#githapi-0926">0.9.26</a></li>
-        <li><a href="#githapi-0927">0.9.27</a></li>
-        <li><a href="#githapi-0928">0.9.28</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -683,7 +656,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
