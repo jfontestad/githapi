@@ -410,7 +410,7 @@ gh_page <- function(
     response_attr$header <- c(response_attr$header, attr(page, "header"))
 
     links <- attributes(page)[["header"]][["Link"]]
-    if (is_null(links) || !str_detect(links, "next")) {
+    if (length(response_list) < p || is_null(links) || !str_detect(links, "next")) {
       info("> Returned ", length(response_list), level = 4)
       break
     }

@@ -8,6 +8,7 @@ library(msgr)
 options(msgr.level = 10)
 devtools::load_all()
 
+devtools::install_deps(upgrade = "never")
 
 devtools::check(args = "--no-tests")
 devtools::test()
