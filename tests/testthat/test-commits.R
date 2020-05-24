@@ -349,7 +349,6 @@ test_that("download_commit downloads a commit to the specified path", {
 
   expect_is(path, "character")
   expect_identical(attr(path, "status"), 200L)
-  expect_identical(as.character(path), temp_path)
 
   files <- list.files(temp_path)
 
