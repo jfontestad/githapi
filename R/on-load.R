@@ -7,6 +7,7 @@
     GITHUB_PROXY         = "",
     GITHUB_TOKEN         = "",
     GITHUB_PAT           = "",
+    GITHAPI_TOKEN        = "",
     GITHAPI_KEY          = "07f9a4157365992e4db8",
     GITHAPI_SECRET       = "4d705eb68ac93e524ba71872a8b8f2bae802d870",
     GITHAPI_REDIRECT_URI = "http://localhost:1410",
@@ -27,11 +28,15 @@
   }
 
   # Set github token
-  if (identical(githapi_env$GITHUB_TOKEN, "") && identical(githapi_env$GITHUB_PAT, "")) {
+  tokens <- c(
+    githapi_env$GITHAPI_TOKEN,
+    githapi_env$GITHUB_TOKEN,
+    githapi_env$GITHUB_PAT)
+
+  if (all(tokens == "")) {
     githapi_env$GITHUB_TOKEN <- NULL
   }
   else {
-    tokens <- c(githapi_env$GITHUB_TOKEN, githapi_env$GITHUB_PAT)
     githapi_env$GITHUB_TOKEN <- tokens[tokens != ""][[1]]
   }
 
