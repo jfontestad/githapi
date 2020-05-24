@@ -1,3 +1,7 @@
+# githapi 0.10.2
+
+- Replaced Travis and Appveyor with GitHub Actions
+
 # githapi 0.10.1
 
 - Fixed bug where `gh_page()` sometimes calls github one too many times
