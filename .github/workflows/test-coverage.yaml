@@ -44,5 +44,5 @@ jobs:
       - name: Test coverage
         env:
           GITHAPI_TOKEN: ${{ secrets.GITHAPI_TOKEN }}
-        run: covr::codecov()
+        run: covr::codecov(function_exclusions = c("gh_token", "browse_"))
         shell: Rscript {0}
