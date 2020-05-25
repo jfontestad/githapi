@@ -7,7 +7,6 @@ Imports:
     utils,
     methods,
     grDevices,
-    curl,
     jsonlite,
     httr,
     rlang,
