@@ -62,17 +62,23 @@ test_that("gh_token returns a valid GitHub OAuth token", {
 
   skip_if_not(interactive(), "OAuth authentication must be run manually")
 
+  test_cache <- tempfile("githapi-oauth-")
+
   existing_msgr_level    <- getOption("msgr.level")
   existing_githapi_cache <- getOption("githapi.cache")
-  options(msgr.level = 10, githapi.cache = "~/.githapi.oauth")
-  on.exit(options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache))
+  options(msgr.level = 10, githapi.cache = test_cache)
+
+  on.exit({
+    options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache)
+    unlink(test_cache)
+  })
 
   expect_error(
-    gh_token(token = NULL, secret = "suhfdieudhisauhf"),
+    gh_token(token = NULL, secret = "suhfdieudhisauhf", refresh = TRUE),
     "incorrect client credentials")
 
   expect_message(
-    new_token <- gh_token(token = NULL),
+    new_token <- gh_token(token = NULL, refresh = TRUE),
     "Retrieving new token")
 
   expect_is(new_token, "Token")
