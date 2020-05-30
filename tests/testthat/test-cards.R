@@ -3,44 +3,44 @@ context("cards")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-cards-", now),
+    name        = str_c("test-cards-", suffix),
     description = "This is a repository to test cards",
     auto_init   = TRUE)
 
   Sys.sleep(1)
 
   create_project(
-    name = str_c("Test cards ", now),
+    name = str_c("Test cards ", suffix),
     body = "A project to test card functions",
-    repo = str_c("ChadGoymer/test-cards-", now))
+    repo = str_c("ChadGoymer/test-cards-", suffix))
 
   create_column(
-    name    = str_c("Test cards ", now),
-    project = str_c("Test cards ", now),
-    repo    = str_c("ChadGoymer/test-cards-", now))
+    name    = str_c("Test cards ", suffix),
+    project = str_c("Test cards ", suffix),
+    repo    = str_c("ChadGoymer/test-cards-", suffix))
 
   create_issue(
     title = "This is an issue to test cards",
-    repo  = str_c("ChadGoymer/test-cards-", now),
+    repo  = str_c("ChadGoymer/test-cards-", suffix),
     body  = "This is an issue to test cards")
 
   create_file(
     content = "This is a commit to test cards",
-    path    = str_c("test-cards-", now, ".txt"),
-    branch  = str_c("test-cards-", now),
+    path    = str_c("test-cards-", suffix, ".txt"),
+    branch  = str_c("test-cards-", suffix),
     message = "Commit to test cards",
-    repo    = str_c("ChadGoymer/test-cards-", now),
+    repo    = str_c("ChadGoymer/test-cards-", suffix),
     parent  = "master")
 
   create_pull_request(
     title = "This is a pull request to test cards",
-    repo  = str_c("ChadGoymer/test-cards-", now),
-    head  = str_c("test-cards-", now),
+    repo  = str_c("ChadGoymer/test-cards-", suffix),
+    head  = str_c("test-cards-", suffix),
     base  = "master",
     body  = "This is a pull request to test cards")
 
@@ -48,7 +48,7 @@ setup(suppressMessages({
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-cards-", now))
+  delete_repository(str_c("ChadGoymer/test-cards-", suffix))
 
 }))
 
@@ -60,9 +60,9 @@ test_that("create_cards creates a card and returns its properties", {
   issue_card <- create_card(
     content_id   = 1,
     content_type = "Issue",
-    column       = str_c("Test cards ", now),
-    project      = str_c("Test cards ", now),
-    repo         = str_c("ChadGoymer/test-cards-", now))
+    column       = str_c("Test cards ", suffix),
+    project      = str_c("Test cards ", suffix),
+    repo         = str_c("ChadGoymer/test-cards-", suffix))
 
   expect_is(issue_card, "list")
   expect_identical(attr(issue_card, "status"), 201L)
@@ -81,9 +81,9 @@ test_that("create_cards creates a card and returns its properties", {
   pull_card <- create_card(
     content_id   = 2,
     content_type = "PullRequest",
-    column       = str_c("Test cards ", now),
-    project      = str_c("Test cards ", now),
-    repo         = str_c("ChadGoymer/test-cards-", now))
+    column       = str_c("Test cards ", suffix),
+    project      = str_c("Test cards ", suffix),
+    repo         = str_c("ChadGoymer/test-cards-", suffix))
 
   expect_is(pull_card, "list")
   expect_identical(attr(pull_card, "status"), 201L)
@@ -101,9 +101,9 @@ test_that("create_cards creates a card and returns its properties", {
 
   note_card <- create_card(
     note    = "Note Title\nThis is a note",
-    column  = str_c("Test cards ", now),
-    project = str_c("Test cards ", now),
-    repo    = str_c("ChadGoymer/test-cards-", now))
+    column  = str_c("Test cards ", suffix),
+    project = str_c("Test cards ", suffix),
+    repo    = str_c("ChadGoymer/test-cards-", suffix))
 
   expect_is(note_card, "list")
   expect_identical(attr(note_card, "status"), 201L)
@@ -125,9 +125,9 @@ test_that("create_card throws an error in invalid arguments are supplied", {
 
   expect_error(
     create_card(
-      column  = str_c("Test cards ", now),
-      project = str_c("Test cards ", now),
-      repo    = str_c("ChadGoymer/test-cards-", now)),
+      column  = str_c("Test cards ", suffix),
+      project = str_c("Test cards ", suffix),
+      repo    = str_c("ChadGoymer/test-cards-", suffix)),
     "Either 'content_id' or 'note' must be supplied")
 
 })
@@ -137,9 +137,9 @@ test_that("create_card throws an error in invalid arguments are supplied", {
 
 suppressMessages({
   cards <- view_cards(
-    column  = str_c("Test cards ", now),
-    project = str_c("Test cards ", now),
-    repo    = str_c("ChadGoymer/test-cards-", now))
+    column  = str_c("Test cards ", suffix),
+    project = str_c("Test cards ", suffix),
+    repo    = str_c("ChadGoymer/test-cards-", suffix))
 })
 
 issue_card_id <- filter(cards, .data$content_id == 1) %>% pull(id)
@@ -250,16 +250,16 @@ test_that("move_card changes the position of a card", {
 test_that("move_card changes the column a card is in", {
 
   column2 <- create_column(
-    name    = str_c("Test cards 2 ", now),
-    project = str_c("Test cards ", now),
-    repo    = str_c("ChadGoymer/test-cards-", now))
+    name    = str_c("Test cards 2 ", suffix),
+    project = str_c("Test cards ", suffix),
+    repo    = str_c("ChadGoymer/test-cards-", suffix))
 
   column_card <- move_card(
     card     = issue_card_id,
     position = "top",
-    column   = str_c("Test cards 2 ", now),
-    project  = str_c("Test cards ", now),
-    repo     = str_c("ChadGoymer/test-cards-", now))
+    column   = str_c("Test cards 2 ", suffix),
+    project  = str_c("Test cards ", suffix),
+    repo     = str_c("ChadGoymer/test-cards-", suffix))
 
   expect_is(column_card, "list")
   expect_identical(attr(column_card, "status"), 201L)
@@ -278,7 +278,7 @@ test_that("move_card changes the column a card is in", {
 test_that("move_card throws an error in invalid arguments are supplied", {
 
   expect_error(
-    move_card(issue_card_id, repo = str_c("ChadGoymer/test-cards-", now)),
+    move_card(issue_card_id, repo = str_c("ChadGoymer/test-cards-", suffix)),
     "Either 'position' or 'after' must be supplied")
 
 })
@@ -289,9 +289,9 @@ test_that("move_card throws an error in invalid arguments are supplied", {
 test_that("view_cards returns a tibble summarising the cards", {
 
   cards <- view_cards(
-    column  = str_c("Test cards ", now),
-    project = str_c("Test cards ", now),
-    repo    = str_c("ChadGoymer/test-cards-", now),
+    column  = str_c("Test cards ", suffix),
+    project = str_c("Test cards ", suffix),
+    repo    = str_c("ChadGoymer/test-cards-", suffix),
     n_max   = 10)
 
   expect_is(cards, "tbl")

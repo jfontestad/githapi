@@ -3,12 +3,12 @@ context("gists")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 teardown(suppressMessages({
 
   created_gists <- view_gists(since = as.character(Sys.time() - 60*10), n_max = 10) %>%
-    filter(map_lgl(.data$files, ~ any(str_detect(., now))))
+    filter(map_lgl(.data$files, ~ any(str_detect(., suffix))))
 
   walk(created_gists$id, delete_gist)
 
@@ -20,7 +20,7 @@ teardown(suppressMessages({
 test_that("create_gist creates a gist and returns its properties", {
 
   basic_files <- list("print(\"Hello World!\")") %>%
-    set_names(str_c("helloworld-", now, ".R"))
+    set_names(str_c("helloworld-", suffix, ".R"))
   basic_gist <- create_gist(files = basic_files)
 
   expect_is(basic_gist, "list")
@@ -47,14 +47,14 @@ test_that("create_gist creates a gist and returns its properties", {
   expect_identical(basic_gist$description, NA_character_)
   expect_identical(basic_gist$owner, "ChadGoymer")
   expect_false(basic_gist$public)
-  expect_identical(basic_gist$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(basic_gist$files$filename, str_c("helloworld-", suffix, ".R"))
   expect_identical(basic_gist$files$content, "print(\"Hello World!\")")
 
 
   multiple_files <- list(
     "print(\"Hello World!\")",
     "helloworld <- function() \"Hello World!\"") %>%
-    set_names(str_c(c("helloworld-", "helloworld-fn-"), now, ".R"))
+    set_names(str_c(c("helloworld-", "helloworld-fn-"), suffix, ".R"))
 
   multiple_gist <- create_gist(
     files       = multiple_files,
@@ -84,10 +84,12 @@ test_that("create_gist creates a gist and returns its properties", {
   expect_identical(multiple_gist$description, "A gist with multiple files")
   expect_identical(multiple_gist$owner, "ChadGoymer")
   expect_false(multiple_gist$public)
-  expect_identical(multiple_gist$files$filename[[1]], str_c("helloworld-", now, ".R"))
-  expect_identical(multiple_gist$files$filename[[2]], str_c("helloworld-fn-", now, ".R"))
-  expect_identical(multiple_gist$files$content[[1]], "print(\"Hello World!\")")
-  expect_identical(multiple_gist$files$content[[2]], "helloworld <- function() \"Hello World!\"")
+  expect_identical(
+    sort(multiple_gist$files$filename),
+    sort(str_c(c("helloworld-", "helloworld-fn-"), suffix, ".R")))
+  expect_identical(
+    sort(multiple_gist$files$content),
+    c("helloworld <- function() \"Hello World!\"", "print(\"Hello World!\")"))
 
 
   public_gist <- create_gist(
@@ -119,7 +121,7 @@ test_that("create_gist creates a gist and returns its properties", {
   expect_identical(public_gist$description, "A public gist")
   expect_identical(public_gist$owner, "ChadGoymer")
   expect_true(public_gist$public)
-  expect_identical(public_gist$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(public_gist$files$filename, str_c("helloworld-", suffix, ".R"))
   expect_identical(public_gist$files$content, "print(\"Hello World!\")")
 
 })
@@ -129,7 +131,7 @@ test_that("create_gist creates a gist and returns its properties", {
 
 suppressMessages({
   created_gists <- view_gists(since = as.character(Sys.time() - 60*10, n_max = 10)) %>%
-    filter(map_lgl(.data$files, ~ any(str_detect(., now))))
+    filter(map_lgl(.data$files, ~ any(str_detect(., suffix))))
 })
 
 test_that("update_gist updates a gist and returns its properties", {
@@ -162,12 +164,12 @@ test_that("update_gist updates a gist and returns its properties", {
   expect_identical(updated_desc$description, "An updated description")
   expect_identical(updated_desc$owner, "ChadGoymer")
   expect_true(updated_desc$public)
-  expect_identical(updated_desc$files$filename, str_c("helloworld-", now, ".R"))
+  expect_identical(updated_desc$files$filename, str_c("helloworld-", suffix, ".R"))
   expect_identical(updated_desc$files$content, "print(\"Hello World!\")")
 
 
   updated_files <- list(c("cat(\"Hello World!\")", filename = "hello-world.R")) %>%
-    set_names(str_c("helloworld-", now, ".R"))
+    set_names(str_c("helloworld-", suffix, ".R"))
 
   updated_files <- update_gist(
     gist  = created_gists$id[[1]],
@@ -323,7 +325,7 @@ test_that("download_gist downloads a gist and returns its path", {
   expect_is(gist_path, "character")
   expect_identical(attr(gist_path, "status"), 200L)
   expect_identical(as.character(gist_path), normalizePath(temp_path, winslash = "/"))
-  expect_true(file.exists(file.path(gist_path, str_c("helloworld-", now, ".R"))))
+  expect_true(file.exists(file.path(gist_path, str_c("helloworld-", suffix, ".R"))))
 
 })
 

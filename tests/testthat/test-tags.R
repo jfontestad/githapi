@@ -3,12 +3,12 @@ context("tags")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-tags-", now),
+    name        = str_c("test-tags-", suffix),
     description = "This is a repository to test tags",
     auto_init   = TRUE)
 
@@ -16,17 +16,17 @@ setup(suppressMessages({
 
   create_file(
     content = "This is a commit to test tags",
-    path    = str_c("test-tags-", now, ".txt"),
-    branch  = str_c("test-tags-1-", now),
+    path    = str_c("test-tags-", suffix, ".txt"),
+    branch  = str_c("test-tags-1-", suffix),
     message = "Commit to test tags",
-    repo    = str_c("ChadGoymer/test-tags-", now),
+    repo    = str_c("ChadGoymer/test-tags-", suffix),
     parent  = "master")
 
 }))
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-tags-", now))
+  delete_repository(str_c("ChadGoymer/test-tags-", suffix))
 
 }))
 
@@ -36,13 +36,13 @@ teardown(suppressMessages({
 test_that("create_tag creates a tag and returns a list of the properties", {
 
   branch_sha <- view_sha(
-    ref  = str_c("test-tags-1-", now),
-    repo = str_c("ChadGoymer/test-tags-", now))
+    ref  = str_c("test-tags-1-", suffix),
+    repo = str_c("ChadGoymer/test-tags-", suffix))
 
   branch_tag <- create_tag(
-    name = str_c("test-tags-1-", now),
+    name = str_c("test-tags-1-", suffix),
     ref  = branch_sha,
-    repo = str_c("ChadGoymer/test-tags-", now))
+    repo = str_c("ChadGoymer/test-tags-", suffix))
 
   expect_is(branch_tag, "list")
   expect_identical(attr(branch_tag, "status"), 201L)
@@ -52,16 +52,17 @@ test_that("create_tag creates a tag and returns a list of the properties", {
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(branch_tag$name, str_c("test-tags-1-", now))
+  expect_identical(branch_tag$name, str_c("test-tags-1-", suffix))
   expect_identical(branch_tag$sha, as.character(branch_sha))
 
-  master_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", now), "commits/heads/master") %>%
+
+  master_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", suffix), "commits/heads/master") %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
   master_tag <- create_tag(
-    name = str_c("test-tags-2-", now),
+    name = str_c("test-tags-2-", suffix),
     ref  = "master",
-    repo = str_c("ChadGoymer/test-tags-", now))
+    repo = str_c("ChadGoymer/test-tags-", suffix))
 
   expect_is(master_tag, "list")
   expect_identical(attr(master_tag, "status"), 201L)
@@ -71,7 +72,7 @@ test_that("create_tag creates a tag and returns a list of the properties", {
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(master_tag$name, str_c("test-tags-2-", now))
+  expect_identical(master_tag$name, str_c("test-tags-2-", suffix))
   expect_identical(master_tag$sha, as.character(master_sha))
 
 })
@@ -81,13 +82,13 @@ test_that("create_tag creates a tag and returns a list of the properties", {
 
 test_that("update_tag updates a tag and returns a list of the properties", {
 
-  update_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", now), "commits/heads", str_c("test-tags-1-", now)) %>%
+  update_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", suffix), "commits/heads", str_c("test-tags-1-", suffix)) %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
   updated_tag <- update_tag(
-    tag  = str_c("test-tags-2-", now),
-    ref  = str_c("test-tags-1-", now),
-    repo = str_c("ChadGoymer/test-tags-", now))
+    tag  = str_c("test-tags-2-", suffix),
+    ref  = str_c("test-tags-1-", suffix),
+    repo = str_c("ChadGoymer/test-tags-", suffix))
 
   expect_is(updated_tag, "list")
   expect_identical(attr(updated_tag, "status"), 200L)
@@ -97,7 +98,7 @@ test_that("update_tag updates a tag and returns a list of the properties", {
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(updated_tag$name, str_c("test-tags-2-", now))
+  expect_identical(updated_tag$name, str_c("test-tags-2-", suffix))
   expect_identical(updated_tag$sha, as.character(update_sha))
 
 })
@@ -107,7 +108,7 @@ test_that("update_tag updates a tag and returns a list of the properties", {
 
 test_that("view_tags returns a tibble of tag properties", {
 
-  all_tags <- view_tags(str_c("ChadGoymer/test-tags-", now), n_max = 10)
+  all_tags <- view_tags(str_c("ChadGoymer/test-tags-", suffix), n_max = 10)
 
   expect_is(all_tags, "tbl")
   expect_identical(attr(all_tags, "status"), 200L)
@@ -117,7 +118,7 @@ test_that("view_tags returns a tibble of tag properties", {
       ref  = "character",
       sha  = "character"))
 
-  expect_true(all(str_c("test-tags-", 1:2, "-", now) %in% all_tags$name))
+  expect_true(all(str_c("test-tags-", 1:2, "-", suffix) %in% all_tags$name))
 
 })
 
@@ -127,8 +128,8 @@ test_that("view_tags returns a tibble of tag properties", {
 test_that("view_tag returns a list of tag properties", {
 
   tag <- view_tag(
-    tag  = str_c("test-tags-1-", now),
-    repo = str_c("ChadGoymer/test-tags-", now))
+    tag  = str_c("test-tags-1-", suffix),
+    repo = str_c("ChadGoymer/test-tags-", suffix))
 
   expect_is(tag, "list")
   expect_identical(attr(tag, "status"), 200L)
@@ -138,7 +139,7 @@ test_that("view_tag returns a list of tag properties", {
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(tag$name, str_c("test-tags-1-", now))
+  expect_identical(tag$name, str_c("test-tags-1-", suffix))
 
 })
 
@@ -148,8 +149,8 @@ test_that("view_tag returns a list of tag properties", {
 test_that("delete_tag deletes a tag", {
 
   deleted_tag <- delete_tag(
-    tag  = str_c("test-tags-1-", now),
-    repo = str_c("ChadGoymer/test-tags-", now))
+    tag  = str_c("test-tags-1-", suffix),
+    repo = str_c("ChadGoymer/test-tags-", suffix))
 
   expect_is(deleted_tag, "logical")
   expect_identical(attr(deleted_tag, "status"), 204L)

@@ -3,26 +3,24 @@ context("columns")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-columns-", now),
-    description = "This is a repository to test cards")
+    name        = str_c("test-columns-", suffix),
+    description = "This is a repository to test columns")
 
   create_project(
-    name = str_c("Test columns ", now),
+    name = str_c("Test columns ", suffix),
     body = "A project to test columns functions",
-    repo = str_c("ChadGoymer/test-columns-", now))
+    repo = str_c("ChadGoymer/test-columns-", suffix))
 
 }))
 
 teardown(suppressMessages({
 
-  delete_project(
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+  delete_repository(str_c("ChadGoymer/test-columns-", suffix))
 
 }))
 
@@ -32,9 +30,9 @@ teardown(suppressMessages({
 test_that("create_columns creates a column and returns its properties", {
 
   column <- create_column(
-    name    = str_c("Test column ", now),
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+    name    = str_c("Test column ", suffix),
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(column, "list")
   expect_identical(attr(column, "status"), 201L)
@@ -45,7 +43,7 @@ test_that("create_columns creates a column and returns its properties", {
       created_at = "POSIXct",
       updated_at = "POSIXct"))
 
-  expect_identical(column$name, str_c("Test column ", now))
+  expect_identical(column$name, str_c("Test column ", suffix))
 
 })
 
@@ -55,10 +53,10 @@ test_that("create_columns creates a column and returns its properties", {
 test_that("update_column updates a column and returns a list of the new properties", {
 
   column <- update_column(
-    column  = str_c("Test column ", now),
-    name    = str_c("Updated test column ", now),
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+    column  = str_c("Test column ", suffix),
+    name    = str_c("Updated test column ", suffix),
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(column, "list")
   expect_identical(attr(column, "status"), 200L)
@@ -69,7 +67,7 @@ test_that("update_column updates a column and returns a list of the new properti
       created_at = "POSIXct",
       updated_at = "POSIXct"))
 
-  expect_identical(column$name, str_c("Updated test column ", now))
+  expect_identical(column$name, str_c("Updated test column ", suffix))
 
 })
 
@@ -79,15 +77,15 @@ test_that("update_column updates a column and returns a list of the new properti
 test_that("move_column changes the position of a column", {
 
   column2 <- create_column(
-    name    = str_c("Test column 2 ", now),
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+    name    = str_c("Test column 2 ", suffix),
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix))
 
   first_column <- move_column(
-    column   = str_c("Test column 2 ", now),
+    column   = str_c("Test column 2 ", suffix),
     position = "first",
-    project  = str_c("Test columns ", now),
-    repo     = str_c("ChadGoymer/test-columns-", now))
+    project  = str_c("Test columns ", suffix),
+    repo     = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(first_column, "list")
   expect_identical(attr(first_column, "status"), 201L)
@@ -99,10 +97,10 @@ test_that("move_column changes the position of a column", {
       updated_at = "POSIXct"))
 
   last_column <- move_column(
-    column   = str_c("Test column 2 ", now),
+    column   = str_c("Test column 2 ", suffix),
     position = "last",
-    project  = str_c("Test columns ", now),
-    repo     = str_c("ChadGoymer/test-columns-", now))
+    project  = str_c("Test columns ", suffix),
+    repo     = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(last_column, "list")
   expect_identical(attr(last_column, "status"), 201L)
@@ -114,10 +112,10 @@ test_that("move_column changes the position of a column", {
       updated_at = "POSIXct"))
 
   after_column <- move_column(
-    column  = str_c("Updated test column ", now),
-    after   = str_c("Test column 2 ", now),
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+    column  = str_c("Updated test column ", suffix),
+    after   = str_c("Test column 2 ", suffix),
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(after_column, "list")
   expect_identical(attr(after_column, "status"), 201L)
@@ -134,9 +132,9 @@ test_that("move_column throws an error in invalid arguments are supplied", {
 
   expect_error(
     move_column(
-      column  = str_c("Test column 2 ", now),
-      project = str_c("Test columns ", now),
-      repo    = str_c("ChadGoymer/test-columns-", now)),
+      column  = str_c("Test column 2 ", suffix),
+      project = str_c("Test columns ", suffix),
+      repo    = str_c("ChadGoymer/test-columns-", suffix)),
     "Either 'position' or 'after' must be supplied")
 
 })
@@ -147,8 +145,8 @@ test_that("move_column throws an error in invalid arguments are supplied", {
 test_that("view_columns returns a tibble summarising the columns", {
 
   columns <- view_columns(
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now),
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix),
     n_max   = 10)
 
   expect_is(columns, "tbl")
@@ -160,7 +158,7 @@ test_that("view_columns returns a tibble summarising the columns", {
       created_at = "POSIXct",
       updated_at = "POSIXct"))
 
-  expect_true(str_c("Updated test column ", now) %in% columns$name)
+  expect_true(str_c("Updated test column ", suffix) %in% columns$name)
 
 })
 
@@ -170,9 +168,9 @@ test_that("view_columns returns a tibble summarising the columns", {
 test_that("view_column returns a list of column properties", {
 
   column <- view_column(
-    column  = str_c("Updated test column ", now),
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+    column  = str_c("Updated test column ", suffix),
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(column, "list")
   expect_identical(attr(column, "status"), 200L)
@@ -183,7 +181,7 @@ test_that("view_column returns a list of column properties", {
       created_at = "POSIXct",
       updated_at = "POSIXct"))
 
-  expect_identical(column$name, str_c("Updated test column ", now))
+  expect_identical(column$name, str_c("Updated test column ", suffix))
 
   column_by_id <- view_column(column = column$id)
 
@@ -202,12 +200,12 @@ test_that("view_column returns a list of column properties", {
 
 test_that("view_column can accept a column number", {
 
-  columns <- view_columns(str_c("Test columns ", now), str_c("ChadGoymer/test-columns-", now))
+  columns <- view_columns(str_c("Test columns ", suffix), str_c("ChadGoymer/test-columns-", suffix))
 
   first_column <- view_column(
     columns$id[[1]],
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(first_column, "list")
   expect_identical(attr(first_column, "status"), 200L)
@@ -225,7 +223,7 @@ test_that("view_column can accept a column number", {
 test_that("view_column throws an error if invalid arguments are supplied", {
 
   expect_error(
-    view_column(TRUE, str_c("Test columns ", now), str_c("ChadGoymer/test-columns-", now)),
+    view_column(TRUE, str_c("Test columns ", suffix), str_c("ChadGoymer/test-columns-", suffix)),
     "'column' must be either an integer or a string")
 
 })
@@ -236,9 +234,9 @@ test_that("view_column throws an error if invalid arguments are supplied", {
 test_that("delete_column deletes the columns and returns TRUE", {
 
   column <- delete_column(
-    column  = str_c("Updated test column ", now),
-    project = str_c("Test columns ", now),
-    repo    = str_c("ChadGoymer/test-columns-", now))
+    column  = str_c("Updated test column ", suffix),
+    project = str_c("Test columns ", suffix),
+    repo    = str_c("ChadGoymer/test-columns-", suffix))
 
   expect_is(column, "logical")
   expect_identical(attr(column, "status"), 204L)
