@@ -3,13 +3,13 @@ context("github api")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-github-api-", now),
-    description = "This is a repository to test files",
+    name        = str_c("test-github-api-", suffix),
+    description = "This is a repository to test github api",
     auto_init   = TRUE)
 
   Sys.sleep(1)
@@ -17,13 +17,13 @@ setup(suppressMessages({
   create_branch(
     name = "test-api",
     ref  = "master",
-    repo = str_c("ChadGoymer/test-github-api-", now))
+    repo = str_c("ChadGoymer/test-github-api-", suffix))
 
 }))
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-github-api-", now))
+  delete_repository(str_c("ChadGoymer/test-github-api-", suffix))
 
 }))
 
@@ -62,17 +62,23 @@ test_that("gh_token returns a valid GitHub OAuth token", {
 
   skip_if_not(interactive(), "OAuth authentication must be run manually")
 
+  test_cache <- tempfile("githapi-oauth-")
+
   existing_msgr_level    <- getOption("msgr.level")
   existing_githapi_cache <- getOption("githapi.cache")
-  options(msgr.level = 10, githapi.cache = "~/.githapi.oauth")
-  on.exit(options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache))
+  options(msgr.level = 10, githapi.cache = test_cache)
+
+  on.exit({
+    options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache)
+    unlink(test_cache)
+  })
 
   expect_error(
-    gh_token(token = NULL, secret = "suhfdieudhisauhf"),
+    gh_token(token = NULL, secret = "suhfdieudhisauhf", refresh = TRUE),
     "incorrect client credentials")
 
   expect_message(
-    new_token <- gh_token(token = NULL),
+    new_token <- gh_token(token = NULL, refresh = TRUE),
     "Retrieving new token")
 
   expect_is(new_token, "Token")
@@ -135,17 +141,17 @@ test_that("gh_url returns a valid URL for the GitHub API", {
 
 test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified repository", {
 
-  master_sha <- str_c("repos/ChadGoymer/test-github-api-", now, "/commits/heads/master") %>%
+  master_sha <- str_c("repos/ChadGoymer/test-github-api-", suffix, "/commits/heads/master") %>%
     gh_url() %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
-  test_sha <- str_c("repos/ChadGoymer/test-github-api-", now, "/commits/heads/test-api") %>%
+  test_sha <- str_c("repos/ChadGoymer/test-github-api-", suffix, "/commits/heads/test-api") %>%
     gh_url() %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
   test_tag <- str_c("refs/tags/test-gh-request-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"))
 
   created_tag <- gh_request(
-    url     = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/refs"),
+    url     = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs"),
     type    = "POST",
     payload = list(ref = test_tag, sha = master_sha))
 
@@ -155,13 +161,13 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
 
   expect_identical(
     attr(created_tag, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/refs"))
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs"))
   expect_identical(attr(created_tag, "request"), "POST")
   expect_identical(attr(created_tag, "status"), 201L)
   expect_true(length(attr(created_tag, "header")) > 1)
 
   viewed_tag <- gh_request(
-    url  = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/", test_tag),
+    url  = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/", test_tag),
     type = "GET")
 
   expect_is(viewed_tag, "list")
@@ -170,13 +176,13 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
 
   expect_identical(
     attr(viewed_tag, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/", test_tag))
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/", test_tag))
   expect_identical(attr(viewed_tag, "request"), "GET")
   expect_identical(attr(viewed_tag, "status"), 200L)
   expect_true(length(attr(viewed_tag, "header")) > 1)
 
   updated_tag <- gh_request(
-    url     = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/", test_tag),
+    url     = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/", test_tag),
     type    = "PATCH",
     payload = list(sha = test_sha))
 
@@ -186,26 +192,26 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
 
   expect_identical(
     attr(updated_tag, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/", test_tag))
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/", test_tag))
   expect_identical(attr(updated_tag, "request"), "PATCH")
   expect_identical(attr(updated_tag, "status"), 200L)
   expect_true(length(attr(updated_tag, "header")) > 1)
 
   deleted_tag <- gh_request(
-    url  = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/", test_tag),
+    url  = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/", test_tag),
     type = "DELETE")
 
   expect_is(deleted_tag, "list")
 
   expect_identical(
     attr(deleted_tag, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/", test_tag))
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/", test_tag))
   expect_identical(attr(deleted_tag, "request"), "DELETE")
   expect_identical(attr(deleted_tag, "status"), 204L)
   expect_true(length(attr(deleted_tag, "header")) > 1)
 
   expect_error(gh_request(
-    url  = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/", test_tag),
+    url  = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/", test_tag),
     type = "GET"))
 
 })
@@ -219,7 +225,7 @@ test_that("gh_request can make a request using an OAuth token", {
   options(msgr.level = 10, githapi.cache = "~/.githapi.oauth")
   on.exit(options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache))
 
-  master <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/refs/heads/master") %>%
+  master <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master") %>%
     gh_request("GET", token = NULL)
 
   expect_is(master, "list")
@@ -227,7 +233,7 @@ test_that("gh_request can make a request using an OAuth token", {
 
   expect_identical(
     attr(master, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/refs/heads/master"))
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master"))
   expect_identical(attr(master, "request"), "GET")
   expect_identical(attr(master, "status"), 200L)
   expect_true(length(attr(master, "header")) > 1)
@@ -269,7 +275,7 @@ test_that("gh_page returns a list of specified length", {
 
 test_that("gh_page still works when the endpoint returns a singular response rather than a collection", {
 
-  master <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/refs/heads/master") %>%
+  master <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master") %>%
     gh_page()
 
   expect_is(master, "list")
@@ -277,7 +283,7 @@ test_that("gh_page still works when the endpoint returns a singular response rat
 
   expect_identical(
     attr(master, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/refs/heads/master?per_page=100"))
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master?per_page=100"))
   expect_identical(attr(master, "request"), "GET")
   expect_identical(attr(master, "status"), 200L)
   expect_true(length(attr(master, "header")) > 1)
@@ -325,7 +331,7 @@ test_that("gh_find throws an error if it cannot find the specified property valu
 
   expect_error(
     gh_find(
-      url      = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/git/refs/heads"),
+      url      = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads"),
       property = "ref",
       value    = "refs/heads/bob"),
     "Could not find an entity with 'ref' equal to 'refs/heads/bob'")
@@ -342,7 +348,7 @@ test_that("gh_download downloads a file to the specified location and returns th
   dir.create(temp_path)
   on.exit(unlink(temp_path))
 
-  file_path <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/contents/README.md") %>%
+  file_path <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/contents/README.md") %>%
     gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw")
 
   expect_is(file_path, "character")
@@ -353,7 +359,7 @@ test_that("gh_download downloads a file to the specified location and returns th
   expect_true(file.exists(file_path))
 
   expect_error(
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/contents/Bob.txt") %>%
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/contents/Bob.txt") %>%
       gh_download(path = file.path(temp_path, "Bob.txt")),
     "Not Found")
 
@@ -373,7 +379,7 @@ test_that("gh_download can make a request using an OAuth token", {
   dir.create(temp_path)
   on.exit(unlink(temp_path))
 
-  file_path <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", now, "/contents/README.md") %>%
+  file_path <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/contents/README.md") %>%
     gh_download(file.path(temp_path, "README.md"), accept = "application/vnd.github.v3.raw", token = NULL)
 
   expect_is(file_path, "character")

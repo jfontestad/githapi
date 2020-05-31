@@ -3,35 +3,35 @@ context("issues")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-issues-", now),
+    name        = str_c("test-issues-", suffix),
     description = "This is a repository to test issues")
 
   create_repository(
-    name        = str_c("test-issues-", now),
+    name        = str_c("test-issues-", suffix),
     org         = "HairyCoos",
     description = "This is a repository to test issues")
 
   create_milestone(
-    title       = str_c("test-issues-", now),
-    repo        = str_c("ChadGoymer/test-issues-", now),
+    title       = str_c("test-issues-", suffix),
+    repo        = str_c("ChadGoymer/test-issues-", suffix),
     description = "This is a milestone to test issues")
 
   create_label(
-    name        = str_c("test-issues-", now),
-    repo        = str_c("ChadGoymer/test-issues-", now),
+    name        = str_c("test-issues-", suffix),
+    repo        = str_c("ChadGoymer/test-issues-", suffix),
     description = "This is a label to test issues")
 
 }))
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-issues-", now))
-  delete_repository(str_c("HairyCoos/test-issues-", now))
+  delete_repository(str_c("ChadGoymer/test-issues-", suffix))
+  delete_repository(str_c("HairyCoos/test-issues-", suffix))
 
 }))
 
@@ -41,12 +41,12 @@ teardown(suppressMessages({
 test_that("create_issue creates an issue and returns a list of the properties", {
 
   user_issue <- create_issue(
-    title     = str_c("test user issue ", now),
-    repo      = str_c("ChadGoymer/test-issues-", now),
+    title     = str_c("test user issue ", suffix),
+    repo      = str_c("ChadGoymer/test-issues-", suffix),
     body      = "This is an issue to test create_issue()",
     assignees = "ChadGoymer",
-    labels    = str_c("test-issues-", now),
-    milestone = str_c("test-issues-", now))
+    labels    = str_c("test-issues-", suffix),
+    milestone = str_c("test-issues-", suffix))
 
   expect_is(user_issue, "list")
   expect_identical(attr(user_issue, "status"), 201L)
@@ -67,19 +67,19 @@ test_that("create_issue creates an issue and returns a list of the properties", 
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(user_issue$title, str_c("test user issue ", now))
+  expect_identical(user_issue$title, str_c("test user issue ", suffix))
   expect_identical(user_issue$body, "This is an issue to test create_issue()")
   expect_identical(user_issue$assignees, "ChadGoymer")
-  expect_identical(user_issue$labels, str_c("test-issues-", now))
-  expect_identical(user_issue$milestone, str_c("test-issues-", now))
+  expect_identical(user_issue$labels, str_c("test-issues-", suffix))
+  expect_identical(user_issue$milestone, str_c("test-issues-", suffix))
   expect_identical(user_issue$state, "open")
-  expect_identical(user_issue$repository, str_c("ChadGoymer/test-issues-", now))
+  expect_identical(user_issue$repository, str_c("ChadGoymer/test-issues-", suffix))
   expect_false(user_issue$pull_request)
   expect_identical(user_issue$creator, "ChadGoymer")
 
   org_issue <- create_issue(
-    title     = str_c("test organization issue ", now),
-    repo      = str_c("HairyCoos/test-issues-", now),
+    title     = str_c("test organization issue ", suffix),
+    repo      = str_c("HairyCoos/test-issues-", suffix),
     body      = "This is an issue to test create_issue()",
     assignees = "ChadGoymer")
 
@@ -102,11 +102,11 @@ test_that("create_issue creates an issue and returns a list of the properties", 
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(org_issue$title, str_c("test organization issue ", now))
+  expect_identical(org_issue$title, str_c("test organization issue ", suffix))
   expect_identical(org_issue$body, "This is an issue to test create_issue()")
   expect_identical(org_issue$assignees, "ChadGoymer")
   expect_identical(org_issue$state, "open")
-  expect_identical(org_issue$repository, str_c("HairyCoos/test-issues-", now))
+  expect_identical(org_issue$repository, str_c("HairyCoos/test-issues-", suffix))
   expect_false(org_issue$pull_request)
   expect_identical(org_issue$creator, "ChadGoymer")
 
@@ -118,9 +118,9 @@ test_that("create_issue creates an issue and returns a list of the properties", 
 test_that("update_issue changes a milestone and returns a list of the properties", {
 
   updated_issue <- update_issue(
-    issue     = str_c("test user issue ", now),
-    repo      = str_c("ChadGoymer/test-issues-", now),
-    title     = str_c("test updated issue ", now),
+    issue     = str_c("test user issue ", suffix),
+    repo      = str_c("ChadGoymer/test-issues-", suffix),
+    title     = str_c("test updated issue ", suffix),
     body      = "This is an issue to test update_issue()",
     assignees = NULL,
     labels    = NULL,
@@ -145,21 +145,21 @@ test_that("update_issue changes a milestone and returns a list of the properties
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(updated_issue$title, str_c("test updated issue ", now))
+  expect_identical(updated_issue$title, str_c("test updated issue ", suffix))
   expect_identical(updated_issue$body, "This is an issue to test update_issue()")
   expect_identical(updated_issue$assignees, character())
   expect_identical(updated_issue$labels, character())
   expect_identical(updated_issue$milestone, NA_character_)
   expect_identical(updated_issue$state, "open")
-  expect_identical(updated_issue$repository, str_c("ChadGoymer/test-issues-", now))
+  expect_identical(updated_issue$repository, str_c("ChadGoymer/test-issues-", suffix))
   expect_false(updated_issue$pull_request)
   expect_identical(updated_issue$creator, "ChadGoymer")
 
   assigned_issue <- update_issue(
-    issue     = str_c("test updated issue ", now),
-    repo      = str_c("ChadGoymer/test-issues-", now),
-    labels    = str_c("test-issues-", now),
-    milestone = str_c("test-issues-", now))
+    issue     = str_c("test updated issue ", suffix),
+    repo      = str_c("ChadGoymer/test-issues-", suffix),
+    labels    = str_c("test-issues-", suffix),
+    milestone = str_c("test-issues-", suffix))
 
   expect_is(assigned_issue, "list")
   expect_identical(attr(assigned_issue, "status"), 200L)
@@ -180,12 +180,12 @@ test_that("update_issue changes a milestone and returns a list of the properties
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(assigned_issue$labels, str_c("test-issues-", now))
-  expect_identical(assigned_issue$milestone, str_c("test-issues-", now))
+  expect_identical(assigned_issue$labels, str_c("test-issues-", suffix))
+  expect_identical(assigned_issue$milestone, str_c("test-issues-", suffix))
 
   closed_issue <- update_issue(
-    issue = str_c("test organization issue ", now),
-    repo  = str_c("HairyCoos/test-issues-", now),
+    issue = str_c("test organization issue ", suffix),
+    repo  = str_c("HairyCoos/test-issues-", suffix),
     state = "closed")
 
   expect_is(closed_issue, "list")
@@ -207,11 +207,11 @@ test_that("update_issue changes a milestone and returns a list of the properties
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(closed_issue$title, str_c("test organization issue ", now))
+  expect_identical(closed_issue$title, str_c("test organization issue ", suffix))
   expect_identical(closed_issue$body, "This is an issue to test create_issue()")
   expect_identical(closed_issue$assignees, "ChadGoymer")
   expect_identical(closed_issue$state, "closed")
-  expect_identical(closed_issue$repository, str_c("HairyCoos/test-issues-", now))
+  expect_identical(closed_issue$repository, str_c("HairyCoos/test-issues-", suffix))
   expect_false(closed_issue$pull_request)
   expect_identical(closed_issue$creator, "ChadGoymer")
 
@@ -222,7 +222,7 @@ test_that("update_issue changes a milestone and returns a list of the properties
 
 test_that("view_issues returns a tibble of issue properties", {
 
-  open_repo_issues <- view_issues(str_c("ChadGoymer/test-issues-", now), n_max = 10)
+  open_repo_issues <- view_issues(str_c("ChadGoymer/test-issues-", suffix), n_max = 10)
 
   expect_is(open_repo_issues, "tbl")
   expect_identical(attr(open_repo_issues, "status"), 200L)
@@ -243,13 +243,13 @@ test_that("view_issues returns a tibble of issue properties", {
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_true(str_c("test updated issue ", now) %in% open_repo_issues$title)
+  expect_true(str_c("test updated issue ", suffix) %in% open_repo_issues$title)
 
   filtered_repo_issues <- view_issues(
-    repo      = str_c("ChadGoymer/test-issues-", now),
+    repo      = str_c("ChadGoymer/test-issues-", suffix),
     since     = "2020-01-01 00:00:00",
-    labels    = str_c("test-issues-", now),
-    milestone = str_c("test-issues-", now),
+    labels    = str_c("test-issues-", suffix),
+    milestone = str_c("test-issues-", suffix),
     n_max     = 10)
 
   expect_is(filtered_repo_issues, "tbl")
@@ -271,7 +271,7 @@ test_that("view_issues returns a tibble of issue properties", {
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_true(str_c("test updated issue ", now) %in% filtered_repo_issues$title)
+  expect_true(str_c("test updated issue ", suffix) %in% filtered_repo_issues$title)
 
   org_issues <- view_issues(org = "HairyCoos", state = "closed", n_max = 10)
 
@@ -294,7 +294,7 @@ test_that("view_issues returns a tibble of issue properties", {
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_true(str_c("test organization issue ", now) %in% org_issues$title)
+  expect_true(str_c("test organization issue ", suffix) %in% org_issues$title)
 
   user_issues <- view_issues(n_max = 10)
 
@@ -324,7 +324,7 @@ test_that("view_issues returns a tibble of issue properties", {
 test_that("view_issues throws an error if invalid arguments are supplied", {
 
   expect_error(
-    view_issues(str_c("ChadGoymer/test-issues-", now), since = "Bob"),
+    view_issues(str_c("ChadGoymer/test-issues-", suffix), since = "Bob"),
     "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss'")
 
 })
@@ -334,7 +334,7 @@ test_that("view_issues throws an error if invalid arguments are supplied", {
 
 test_that("view_issue returns a list of issue properties", {
 
-  user_issue_number <- view_issue(1, str_c("ChadGoymer/test-issues-", now))
+  user_issue_number <- view_issue(1, str_c("ChadGoymer/test-issues-", suffix))
 
   expect_is(user_issue_number, "list")
   expect_identical(attr(user_issue_number, "status"), 200L)
@@ -355,9 +355,9 @@ test_that("view_issue returns a list of issue properties", {
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(user_issue_number$title, str_c("test updated issue ", now))
+  expect_identical(user_issue_number$title, str_c("test updated issue ", suffix))
 
-  user_issue_title <- view_issue(str_c("test updated issue ", now), str_c("ChadGoymer/test-issues-", now))
+  user_issue_title <- view_issue(str_c("test updated issue ", suffix), str_c("ChadGoymer/test-issues-", suffix))
 
   expect_is(user_issue_title, "list")
   expect_identical(attr(user_issue_title, "status"), 200L)
@@ -378,9 +378,9 @@ test_that("view_issue returns a list of issue properties", {
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(user_issue_title$title, str_c("test updated issue ", now))
+  expect_identical(user_issue_title$title, str_c("test updated issue ", suffix))
 
-  org_issue_number <- view_issue(1, str_c("HairyCoos/test-issues-", now))
+  org_issue_number <- view_issue(1, str_c("HairyCoos/test-issues-", suffix))
 
   expect_is(org_issue_number, "list")
   expect_identical(attr(org_issue_number, "status"), 200L)
@@ -401,11 +401,11 @@ test_that("view_issue returns a list of issue properties", {
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(org_issue_number$title, str_c("test organization issue ", now))
+  expect_identical(org_issue_number$title, str_c("test organization issue ", suffix))
 
   org_issue_title <- view_issue(
-    issue = str_c("test organization issue ", now),
-    repo  = str_c("HairyCoos/test-issues-", now))
+    issue = str_c("test organization issue ", suffix),
+    repo  = str_c("HairyCoos/test-issues-", suffix))
 
   expect_is(org_issue_title, "list")
   expect_identical(attr(org_issue_title, "status"), 200L)
@@ -426,14 +426,14 @@ test_that("view_issue returns a list of issue properties", {
       updated_at   = "POSIXct",
       closed_at    = "POSIXct"))
 
-  expect_identical(org_issue_title$title, str_c("test organization issue ", now))
+  expect_identical(org_issue_title$title, str_c("test organization issue ", suffix))
 
 })
 
 test_that("view_issue throws an error if invalid arguments are supplied", {
 
   expect_error(
-    view_issue(TRUE, repo = str_c("ChadGoymer/test-issues-", now)),
+    view_issue(TRUE, repo = str_c("ChadGoymer/test-issues-", suffix)),
     "'issue' must be either an integer or a string")
 
 })
@@ -445,12 +445,12 @@ test_that("browse_issue opens the issue's page in the browser", {
 
   skip_if(!interactive(), "browse_issue must be tested manually")
 
-  issue_url <- browse_issue(1, repo = str_c("ChadGoymer/test-issues-", now))
+  issue_url <- browse_issue(1, repo = str_c("ChadGoymer/test-issues-", suffix))
 
   expect_is(issue_url, "character")
   expect_identical(attr(issue_url, "status"), 200L)
   expect_identical(
     as.character(issue_url),
-    str_c("https://github.com/ChadGoymer/test-issues-", now, "/issues/1"))
+    str_c("https://github.com/ChadGoymer/test-issues-", suffix, "/issues/1"))
 
 })

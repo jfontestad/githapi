@@ -29,6 +29,8 @@
 #' @param cache (boolean or string, optional) The location to store a cached token. If `TRUE`
 #'   the cache uses the httr default; if `FALSE` it does not cache. Can be set in the
 #'   `"githapi.cache"` option or the `GITHAPI_CACHE` environment variable. Default: `FALSE`.
+#' @param refresh (boolean, optional) Whether to force the refresh of the cached token.
+#'   Default: FALSE.
 #'
 #' @return A token which is either a string, for a personal access token, or a [httr::Token]
 #'   object for an OAuth token.
@@ -43,19 +45,21 @@
 #' @export
 #'
 gh_token <- function(
-  token  = getOption("github.token"),
-  oauth  = getOption("github.oauth"),
-  proxy  = getOption("github.proxy"),
-  key    = getOption("githapi.key"),
-  secret = getOption("githapi.secret"),
-  cache  = getOption("githapi.cache"))
+  token   = getOption("github.token"),
+  oauth   = getOption("github.oauth"),
+  proxy   = getOption("github.proxy"),
+  key     = getOption("githapi.key"),
+  secret  = getOption("githapi.secret"),
+  cache   = getOption("githapi.cache"),
+  refresh = FALSE)
 {
   if (!is_null(token)) {
     assert(is_sha(token) || "Token" %in% class(token), "'token' must be a SHA or a Token object:\n  ", token)
     info("> Using supplied token", level = 6)
     return(token)
   }
-  if (!is_null(.cache$token)) {
+
+  if (!refresh && !is_null(.cache$token)) {
     info("> Retrieving cached token", level = 6)
     return(.cache$token)
   }

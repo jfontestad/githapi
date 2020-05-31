@@ -3,12 +3,12 @@ context("branches")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-branches-", now),
+    name        = str_c("test-branches-", suffix),
     description = "This is a repository to test branches",
     auto_init   = TRUE)
 
@@ -16,17 +16,17 @@ setup(suppressMessages({
 
   create_file(
     content = "This is a commit to test branches",
-    path    = str_c("test-branches-", now, ".txt"),
-    branch  = str_c("test-branches-1-", now),
+    path    = str_c("test-branches-", suffix, ".txt"),
+    branch  = str_c("test-branches-1-", suffix),
     message = "Commit to test branches",
-    repo    = str_c("ChadGoymer/test-branches-", now),
+    repo    = str_c("ChadGoymer/test-branches-", suffix),
     parent  = "master")
 
 }))
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-branches-", now))
+  delete_repository(str_c("ChadGoymer/test-branches-", suffix))
 
 }))
 
@@ -35,13 +35,13 @@ teardown(suppressMessages({
 
 test_that("create_branch creates a branch and returns a list of the properties", {
 
-  master_sha <- gh_url("repos", str_c("ChadGoymer/test-branches-", now), "commits/heads/master") %>%
+  master_sha <- gh_url("repos", str_c("ChadGoymer/test-branches-", suffix), "commits/heads/master") %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
   new_branch <- create_branch(
-    name = str_c("test-branches-2-", now),
+    name = str_c("test-branches-2-", suffix),
     ref  = "master",
-    repo = str_c("ChadGoymer/test-branches-", now))
+    repo = str_c("ChadGoymer/test-branches-", suffix))
 
   expect_is(new_branch, "list")
   expect_identical(attr(new_branch, "status"), 201L)
@@ -51,7 +51,7 @@ test_that("create_branch creates a branch and returns a list of the properties",
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(new_branch$name, str_c("test-branches-2-", now))
+  expect_identical(new_branch$name, str_c("test-branches-2-", suffix))
   expect_identical(new_branch$sha, as.character(master_sha))
 
 })
@@ -61,13 +61,13 @@ test_that("create_branch creates a branch and returns a list of the properties",
 
 test_that("update_branch updates a branch and returns a list of the properties", {
 
-  update_sha <- gh_url("repos", str_c("ChadGoymer/test-branches-", now), "commits/heads", str_c("test-branches-1-", now)) %>%
+  update_sha <- gh_url("repos", str_c("ChadGoymer/test-branches-", suffix), "commits/heads", str_c("test-branches-1-", suffix)) %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
   updated_branch <- update_branch(
-    branch = str_c("test-branches-2-", now),
-    ref    = str_c("test-branches-1-", now),
-    repo   = str_c("ChadGoymer/test-branches-", now))
+    branch = str_c("test-branches-2-", suffix),
+    ref    = str_c("test-branches-1-", suffix),
+    repo   = str_c("ChadGoymer/test-branches-", suffix))
 
   expect_is(updated_branch, "list")
   expect_identical(attr(updated_branch, "status"), 200L)
@@ -77,7 +77,7 @@ test_that("update_branch updates a branch and returns a list of the properties",
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(updated_branch$name, str_c("test-branches-2-", now))
+  expect_identical(updated_branch$name, str_c("test-branches-2-", suffix))
   expect_identical(updated_branch$sha, as.character(update_sha))
 
 })
@@ -87,7 +87,7 @@ test_that("update_branch updates a branch and returns a list of the properties",
 
 test_that("view_branches returns a tibble of branch properties", {
 
-  all_branches <- view_branches(str_c("ChadGoymer/test-branches-", now), n_max = 10)
+  all_branches <- view_branches(str_c("ChadGoymer/test-branches-", suffix), n_max = 10)
 
   expect_is(all_branches, "tbl")
   expect_identical(attr(all_branches, "status"), 200L)
@@ -97,7 +97,7 @@ test_that("view_branches returns a tibble of branch properties", {
       ref  = "character",
       sha  = "character"))
 
-  expect_true(all(str_c("test-branches-", 1:2, "-", now) %in% all_branches$name))
+  expect_true(all(str_c("test-branches-", 1:2, "-", suffix) %in% all_branches$name))
 
 })
 
@@ -107,8 +107,8 @@ test_that("view_branches returns a tibble of branch properties", {
 test_that("view_branch returns a list of branch properties", {
 
   branch <- view_branch(
-    branch = str_c("test-branches-1-", now),
-    repo   = str_c("ChadGoymer/test-branches-", now))
+    branch = str_c("test-branches-1-", suffix),
+    repo   = str_c("ChadGoymer/test-branches-", suffix))
 
   expect_is(branch, "list")
   expect_identical(attr(branch, "status"), 200L)
@@ -118,7 +118,7 @@ test_that("view_branch returns a list of branch properties", {
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(branch$name, str_c("test-branches-1-", now))
+  expect_identical(branch$name, str_c("test-branches-1-", suffix))
 
 })
 
@@ -128,8 +128,8 @@ test_that("view_branch returns a list of branch properties", {
 test_that("delete_branch deletes a branch", {
 
   deleted_branch <- delete_branch(
-    branch = str_c("test-branches-1-", now),
-    repo   = str_c("ChadGoymer/test-branches-", now))
+    branch = str_c("test-branches-1-", suffix),
+    repo   = str_c("ChadGoymer/test-branches-", suffix))
 
   expect_is(deleted_branch, "logical")
   expect_identical(attr(deleted_branch, "status"), 204L)

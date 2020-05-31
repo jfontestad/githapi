@@ -3,12 +3,12 @@ context("pull requests")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-pulls-", now),
+    name        = str_c("test-pulls-", suffix),
     description = "This is a repository to test pull requests",
     auto_init   = TRUE)
 
@@ -16,35 +16,35 @@ setup(suppressMessages({
 
   create_file(
     content = "This is a commit to test pull requests",
-    path    = str_c("test-pulls-", now, ".txt"),
-    branch  = str_c("test-pulls-1-", now),
+    path    = str_c("test-pulls-", suffix, ".txt"),
+    branch  = str_c("test-pulls-1-", suffix),
     message = "Commit to test pull requests",
-    repo    = str_c("ChadGoymer/test-pulls-", now),
+    repo    = str_c("ChadGoymer/test-pulls-", suffix),
     parent  = "master")
 
   create_file(
     content = "This is a repository to test pull requests",
-    path    = str_c("test-pulls-", now, ".txt"),
-    branch  = str_c("test-pulls-2-", now),
+    path    = str_c("test-pulls-", suffix, ".txt"),
+    branch  = str_c("test-pulls-2-", suffix),
     message = "Commit to test pull requests",
-    repo    = str_c("ChadGoymer/test-pulls-", now),
+    repo    = str_c("ChadGoymer/test-pulls-", suffix),
     parent  = "master")
 
   create_milestone(
-    title       = str_c("test-pulls-", now),
-    repo        = str_c("ChadGoymer/test-pulls-", now),
+    title       = str_c("test-pulls-", suffix),
+    repo        = str_c("ChadGoymer/test-pulls-", suffix),
     description = "This is a milestone to test pull requests")
 
   create_label(
-    name        = str_c("test-pulls-", now),
-    repo        = str_c("ChadGoymer/test-pulls-", now),
+    name        = str_c("test-pulls-", suffix),
+    repo        = str_c("ChadGoymer/test-pulls-", suffix),
     description = "This is a label to test pull requests")
 
 }))
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-pulls-", now))
+  delete_repository(str_c("ChadGoymer/test-pulls-", suffix))
 
 }))
 
@@ -54,9 +54,9 @@ teardown(suppressMessages({
 test_that("create_pull_request creates a pull request and returns its properties", {
 
   pull_request <- create_pull_request(
-    title = str_c("test pull request ", now),
-    repo  = str_c("ChadGoymer/test-pulls-", now),
-    head  = str_c("test-pulls-1-", now),
+    title = str_c("test pull request ", suffix),
+    repo  = str_c("ChadGoymer/test-pulls-", suffix),
+    head  = str_c("test-pulls-1-", suffix),
     base  = "master",
     body  = "This is a pull request to test create_pull_request()")
 
@@ -91,22 +91,22 @@ test_that("create_pull_request creates a pull request and returns its properties
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
-  expect_identical(pull_request$title, str_c("test pull request ", now))
-  expect_identical(pull_request$repository, str_c("ChadGoymer/test-pulls-", now))
-  expect_identical(pull_request$head_ref, str_c("test-pulls-1-", now))
+  expect_identical(pull_request$title, str_c("test pull request ", suffix))
+  expect_identical(pull_request$repository, str_c("ChadGoymer/test-pulls-", suffix))
+  expect_identical(pull_request$head_ref, str_c("test-pulls-1-", suffix))
   expect_identical(pull_request$base_ref, "master")
   expect_identical(pull_request$body, "This is a pull request to test create_pull_request()")
   expect_identical(pull_request$state, "open")
 
   assigned_pull_request <- create_pull_request(
-    title     = str_c("test assigned pull request ", now),
-    repo      = str_c("ChadGoymer/test-pulls-", now),
-    head      = str_c("test-pulls-2-", now),
+    title     = str_c("test assigned pull request ", suffix),
+    repo      = str_c("ChadGoymer/test-pulls-", suffix),
+    head      = str_c("test-pulls-2-", suffix),
     base      = "master",
     body      = "This is a pull request to test create_pull_request()",
     assignees = "ChadGoymer",
-    labels    = str_c("test-pulls-", now),
-    milestone = str_c("test-pulls-", now))
+    labels    = str_c("test-pulls-", suffix),
+    milestone = str_c("test-pulls-", suffix))
 
   expect_is(assigned_pull_request, "list")
   expect_identical(attr(assigned_pull_request, "status"), 201L)
@@ -139,15 +139,15 @@ test_that("create_pull_request creates a pull request and returns its properties
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
-  expect_identical(assigned_pull_request$title, str_c("test assigned pull request ", now))
-  expect_identical(assigned_pull_request$repository, str_c("ChadGoymer/test-pulls-", now))
-  expect_identical(assigned_pull_request$head_ref, str_c("test-pulls-2-", now))
+  expect_identical(assigned_pull_request$title, str_c("test assigned pull request ", suffix))
+  expect_identical(assigned_pull_request$repository, str_c("ChadGoymer/test-pulls-", suffix))
+  expect_identical(assigned_pull_request$head_ref, str_c("test-pulls-2-", suffix))
   expect_identical(assigned_pull_request$base_ref, "master")
   expect_identical(assigned_pull_request$body, "This is a pull request to test create_pull_request()")
   expect_identical(assigned_pull_request$state, "open")
   expect_identical(assigned_pull_request$assignees, "ChadGoymer")
-  expect_identical(assigned_pull_request$labels, str_c("test-pulls-", now))
-  expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", now))
+  expect_identical(assigned_pull_request$labels, str_c("test-pulls-", suffix))
+  expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", suffix))
 
 })
 
@@ -157,9 +157,9 @@ test_that("create_pull_request creates a pull request and returns its properties
 test_that("update_pull_request updates a pull request and returns its properties", {
 
   pull_request <- update_pull_request(
-    pull_request = str_c("test pull request ", now),
-    repo         = str_c("ChadGoymer/test-pulls-", now),
-    title        = str_c("test updated pull request ", now),
+    pull_request = str_c("test pull request ", suffix),
+    repo         = str_c("ChadGoymer/test-pulls-", suffix),
+    title        = str_c("test updated pull request ", suffix),
     body         = "This is an updated pull request to test create_pull_request()",
     state        = "closed",
     base         = "master")
@@ -195,17 +195,17 @@ test_that("update_pull_request updates a pull request and returns its properties
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
-  expect_identical(pull_request$title, str_c("test updated pull request ", now))
-  expect_identical(pull_request$repository, str_c("ChadGoymer/test-pulls-", now))
+  expect_identical(pull_request$title, str_c("test updated pull request ", suffix))
+  expect_identical(pull_request$repository, str_c("ChadGoymer/test-pulls-", suffix))
   expect_identical(pull_request$body, "This is an updated pull request to test create_pull_request()")
   expect_identical(pull_request$state, "closed")
 
   assigned_pull_request <- update_pull_request(
     pull_request = 2,
-    repo         = str_c("ChadGoymer/test-pulls-", now),
+    repo         = str_c("ChadGoymer/test-pulls-", suffix),
     assignees = "ChadGoymer",
-    labels    = str_c("test-pulls-", now),
-    milestone = str_c("test-pulls-", now))
+    labels    = str_c("test-pulls-", suffix),
+    milestone = str_c("test-pulls-", suffix))
 
   expect_is(assigned_pull_request, "list")
   expect_identical(attr(assigned_pull_request, "status"), 200L)
@@ -238,22 +238,22 @@ test_that("update_pull_request updates a pull request and returns its properties
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
-  expect_identical(assigned_pull_request$title, str_c("test assigned pull request ", now))
-  expect_identical(assigned_pull_request$repository, str_c("ChadGoymer/test-pulls-", now))
-  expect_identical(assigned_pull_request$head_ref, str_c("test-pulls-2-", now))
+  expect_identical(assigned_pull_request$title, str_c("test assigned pull request ", suffix))
+  expect_identical(assigned_pull_request$repository, str_c("ChadGoymer/test-pulls-", suffix))
+  expect_identical(assigned_pull_request$head_ref, str_c("test-pulls-2-", suffix))
   expect_identical(assigned_pull_request$base_ref, "master")
   expect_identical(assigned_pull_request$body, "This is a pull request to test create_pull_request()")
   expect_identical(assigned_pull_request$state, "open")
   expect_identical(assigned_pull_request$assignees, "ChadGoymer")
-  expect_identical(assigned_pull_request$labels, str_c("test-pulls-", now))
-  expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", now))
+  expect_identical(assigned_pull_request$labels, str_c("test-pulls-", suffix))
+  expect_identical(assigned_pull_request$milestone, str_c("test-pulls-", suffix))
 
 })
 
 test_that("update_pull_request throws an error if invalid arguments are supplied", {
 
   expect_error(
-    update_pull_request(TRUE, repo = str_c("ChadGoymer/test-pulls-", now)),
+    update_pull_request(TRUE, repo = str_c("ChadGoymer/test-pulls-", suffix)),
     "'pull_request' must be either an integer or a string")
 
 })
@@ -264,7 +264,7 @@ test_that("update_pull_request throws an error if invalid arguments are supplied
 test_that("view_pull_requests returns a tibble of issue properties", {
 
   open_pull_requests <- view_pull_requests(
-    repo  = str_c("ChadGoymer/test-pulls-", now),
+    repo  = str_c("ChadGoymer/test-pulls-", suffix),
     base  = "master",
     n_max = 10)
 
@@ -299,11 +299,11 @@ test_that("view_pull_requests returns a tibble of issue properties", {
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
-  expect_true(str_c("test assigned pull request ", now) %in% open_pull_requests$title)
+  expect_true(str_c("test assigned pull request ", suffix) %in% open_pull_requests$title)
 
   closed_pull_requests <- view_pull_requests(
-    repo  = str_c("ChadGoymer/test-pulls-", now),
-    head  = str_c("test-pulls-1-", now),
+    repo  = str_c("ChadGoymer/test-pulls-", suffix),
+    head  = str_c("test-pulls-1-", suffix),
     state = "closed",
     n_max = 10)
 
@@ -338,7 +338,7 @@ test_that("view_pull_requests returns a tibble of issue properties", {
       merged_at  = "POSIXct",
       closed_at  = "POSIXct"))
 
-  expect_true(str_c("test updated pull request ", now) %in% closed_pull_requests$title)
+  expect_true(str_c("test updated pull request ", suffix) %in% closed_pull_requests$title)
 
 })
 
@@ -348,8 +348,8 @@ test_that("view_pull_requests returns a tibble of issue properties", {
 test_that("view_pull_request returns a list of pull request properties", {
 
   pull_request <- view_pull_request(
-    pull_request = str_c("test assigned pull request ", now),
-    repo         = str_c("ChadGoymer/test-pulls-", now))
+    pull_request = str_c("test assigned pull request ", suffix),
+    repo         = str_c("ChadGoymer/test-pulls-", suffix))
 
   expect_is(pull_request, "list")
   expect_identical(attr(pull_request, "status"), 200L)
@@ -385,8 +385,8 @@ test_that("view_pull_request returns a list of pull request properties", {
       files      = "github",
       reviews    = "github"))
 
-  expect_identical(pull_request$title, str_c("test assigned pull request ", now))
-  expect_identical(pull_request$repository, str_c("ChadGoymer/test-pulls-", now))
+  expect_identical(pull_request$title, str_c("test assigned pull request ", suffix))
+  expect_identical(pull_request$repository, str_c("ChadGoymer/test-pulls-", suffix))
   expect_identical(pull_request$body, "This is a pull request to test create_pull_request()")
   expect_identical(pull_request$state, "open")
 
@@ -417,7 +417,7 @@ test_that("view_pull_request returns a list of pull request properties", {
       patch     = "character",
       html_url  = "character"))
 
-  expect_identical(pull_request$files$filename, str_c("test-pulls-", now, ".txt"))
+  expect_identical(pull_request$files$filename, str_c("test-pulls-", suffix, ".txt"))
   expect_identical(pull_request$files$status, "added")
   expect_identical(pull_request$files$additions, 1L)
   expect_identical(pull_request$files$deletions, 0L)
@@ -436,7 +436,7 @@ test_that("view_pull_request returns a list of pull request properties", {
 test_that("view_pull_request throws an error if invalid arguments are supplied", {
 
   expect_error(
-    view_pull_request(TRUE, repo = str_c("ChadGoymer/test-pulls-", now)),
+    view_pull_request(TRUE, repo = str_c("ChadGoymer/test-pulls-", suffix)),
     "'pull_request' must be either an integer or a string")
 
 })
@@ -448,12 +448,12 @@ test_that("browse_pull_request opens the pull request's page in the browser", {
 
   skip_if(!interactive(), "browse_pull_request must be tested manually")
 
-  pull_url <- browse_pull_request(1, repo = str_c("ChadGoymer/test-pulls-", now))
+  pull_url <- browse_pull_request(1, repo = str_c("ChadGoymer/test-pulls-", suffix))
 
   expect_is(pull_url, "character")
   expect_identical(attr(pull_url, "status"), 200L)
   expect_identical(
     as.character(pull_url),
-    str_c("https://github.com/ChadGoymer/test-pulls-", now, "/pull/1"))
+    str_c("https://github.com/ChadGoymer/test-pulls-", suffix, "/pull/1"))
 
 })

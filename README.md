@@ -1,7 +1,9 @@
 githapi
 =======
 
-[![Build Status](https://travis-ci.org/ChadGoymer/githapi.svg?branch=master)](https://travis-ci.org/ChadGoymer/githapi) [![Build status](https://ci.appveyor.com/api/projects/status/github/ChadGoymer/githapi?branch=master&svg=true)](https://ci.appveyor.com/project/ChadGoymer/githapi) [![Coverage status](https://codecov.io/gh/ChadGoymer/githapi/branch/master/graph/badge.svg)](https://codecov.io/github/ChadGoymer/githapi?branch=master)
+<!-- badges: start -->
+[![R build status](https://github.com/ChadGoymer/githapi/workflows/R-CMD-check/badge.svg)](https://github.com/ChadGoymer/githapi/actions) [![Coverage status](https://codecov.io/gh/ChadGoymer/githapi/branch/master/graph/badge.svg)](https://codecov.io/github/ChadGoymer/githapi?branch=master)
+<!-- badges: end -->
 
 User-friendly access to the GitHub API for R, consistent with the tidyverse.
 

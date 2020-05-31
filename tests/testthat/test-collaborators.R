@@ -3,16 +3,16 @@ context("collaborators")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-collaborators-", now),
+    name        = str_c("test-collaborators-", suffix),
     description = "This is a repository to test collaborators")
 
   create_project(
-    name = str_c("Test collaborators ", now),
+    name = str_c("Test collaborators ", suffix),
     body = "A project to test collaborator functions",
     org  = "HairyCoos")
 
@@ -20,10 +20,10 @@ setup(suppressMessages({
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-collaborators-", now))
+  delete_repository(str_c("ChadGoymer/test-collaborators-", suffix))
 
   delete_project(
-    project = str_c("Test collaborators ", now),
+    project = str_c("Test collaborators ", suffix),
     org     = "HairyCoos")
 
 }))
@@ -35,7 +35,7 @@ test_that("update_collaborator adds a collaborator to a repository or project", 
 
   repo_result <- update_collaborator(
     user = "ChadGoymer2",
-    repo = str_c("ChadGoymer/test-collaborators-", now))
+    repo = str_c("ChadGoymer/test-collaborators-", suffix))
 
   expect_is(repo_result, "logical")
   expect_identical(attr(repo_result, "status"), 201L)
@@ -43,7 +43,7 @@ test_that("update_collaborator adds a collaborator to a repository or project", 
 
   updated_repo_result <- update_collaborator(
     user       = "ChadGoymer2",
-    repo       = str_c("ChadGoymer/test-collaborators-", now),
+    repo       = str_c("ChadGoymer/test-collaborators-", suffix),
     permission = "admin")
 
   expect_is(updated_repo_result, "logical")
@@ -52,7 +52,7 @@ test_that("update_collaborator adds a collaborator to a repository or project", 
 
   project_result <- update_collaborator(
     user    = "ChadGoymer2",
-    project = str_c("Test collaborators ", now),
+    project = str_c("Test collaborators ", suffix),
     org     = "HairyCoos")
 
   expect_is(project_result, "logical")
@@ -61,7 +61,7 @@ test_that("update_collaborator adds a collaborator to a repository or project", 
 
   updated_project_result <- update_collaborator(
     user       = "ChadGoymer2",
-    project    = str_c("Test collaborators ", now),
+    project    = str_c("Test collaborators ", suffix),
     org        = "HairyCoos",
     permission = "admin")
 
@@ -85,7 +85,7 @@ test_that("update_collaborator throws an error in invalid arguments are supplied
 test_that("view_collaborators returns a tibble summarising the collaborators", {
 
   repo_collaborators <- view_collaborators(
-    repo  = str_c("ChadGoymer/test-collaborators-", now),
+    repo  = str_c("ChadGoymer/test-collaborators-", suffix),
     n_max = 10)
 
   expect_is(repo_collaborators, "tbl")
@@ -100,7 +100,7 @@ test_that("view_collaborators returns a tibble summarising the collaborators", {
   expect_true("ChadGoymer" %in% repo_collaborators$login)
 
   project_collaborators <- view_collaborators(
-    project = str_c("Test collaborators ", now),
+    project = str_c("Test collaborators ", suffix),
     org     = "HairyCoos",
     n_max   = 10)
 
@@ -152,7 +152,7 @@ test_that("view_collaborators throws an error in invalid arguments are supplied"
 
 test_that("view_collaborator returns a list of a collaborator's properties", {
 
-  repo_collaborator <- view_collaborator("ChadGoymer2", repo = str_c("ChadGoymer/test-collaborators-", now))
+  repo_collaborator <- view_collaborator("ChadGoymer2", repo = str_c("ChadGoymer/test-collaborators-", suffix))
 
   expect_is(repo_collaborator, "list")
   expect_identical(attr(repo_collaborator, "status"), 200L)
@@ -169,7 +169,7 @@ test_that("view_collaborator returns a list of a collaborator's properties", {
 
   project_collaborator <- view_collaborator(
     user    = "ChadGoymer2",
-    project = str_c("Test collaborators ", now),
+    project = str_c("Test collaborators ", suffix),
     org     = "HairyCoos")
 
   expect_is(project_collaborator, "list")
@@ -202,7 +202,7 @@ test_that("delete_collaborator removes a collaborator from a repo, project or or
 
   repo_collaborator <- delete_collaborator(
     user = "ChadGoymer2",
-    repo = str_c("ChadGoymer/test-collaborators-", now))
+    repo = str_c("ChadGoymer/test-collaborators-", suffix))
 
   expect_is(repo_collaborator, "logical")
   expect_identical(attr(repo_collaborator, "status"), 204L)
@@ -210,7 +210,7 @@ test_that("delete_collaborator removes a collaborator from a repo, project or or
 
   project_collaborator <- delete_collaborator(
     user    = "ChadGoymer2",
-    project = str_c("Test collaborators ", now),
+    project = str_c("Test collaborators ", suffix),
     org     = "HairyCoos")
 
   expect_is(project_collaborator, "logical")

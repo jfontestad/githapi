@@ -3,12 +3,12 @@ context("releases")
 
 # SETUP ---------------------------------------------------------------------------------------
 
-now <- format(Sys.time(), "%Y%m%d-%H%M%S")
+suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
 setup(suppressMessages({
 
   create_repository(
-    name        = str_c("test-releases-", now),
+    name        = str_c("test-releases-", suffix),
     description = "This is a repository to test releases",
     auto_init   = TRUE)
 
@@ -16,17 +16,17 @@ setup(suppressMessages({
 
   create_file(
     content = "This is a commit to test releases",
-    path    = str_c("test-releases-", now, ".txt"),
-    branch  = str_c("test-releases-", now),
+    path    = str_c("test-releases-", suffix, ".txt"),
+    branch  = str_c("test-releases-", suffix),
     message = "Commit to test releases",
-    repo    = str_c("ChadGoymer/test-releases-", now),
+    repo    = str_c("ChadGoymer/test-releases-", suffix),
     parent  = "master")
 
 }))
 
 teardown(suppressMessages({
 
-  delete_repository(str_c("ChadGoymer/test-releases-", now))
+  delete_repository(str_c("ChadGoymer/test-releases-", suffix))
 
 }))
 
@@ -36,9 +36,9 @@ teardown(suppressMessages({
 test_that("create_release creates a release and returns a list of the properties", {
 
   master_release <- create_release(
-    tag  = str_c("master-release-", now),
-    repo = str_c("ChadGoymer/test-releases-", now),
-    name = str_c("Master release ", now),
+    tag  = str_c("master-release-", suffix),
+    repo = str_c("ChadGoymer/test-releases-", suffix),
+    name = str_c("Master release ", suffix),
     body = "This is a release created by create_release()")
 
   expect_is(master_release, "list")
@@ -58,8 +58,8 @@ test_that("create_release creates a release and returns a list of the properties
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(master_release$tag, str_c("master-release-", now))
-  expect_identical(master_release$name, str_c("Master release ", now))
+  expect_identical(master_release$tag, str_c("master-release-", suffix))
+  expect_identical(master_release$name, str_c("Master release ", suffix))
   expect_identical(master_release$body, "This is a release created by create_release()")
   expect_identical(master_release$commit, "master")
   expect_false(master_release$draft)
@@ -68,11 +68,11 @@ test_that("create_release creates a release and returns a list of the properties
 
 
   branch_release <- create_release(
-    tag  = str_c("branch-release-", now),
-    repo = str_c("ChadGoymer/test-releases-", now),
-    name = str_c("Branch release ", now),
+    tag  = str_c("branch-release-", suffix),
+    repo = str_c("ChadGoymer/test-releases-", suffix),
+    name = str_c("Branch release ", suffix),
     body = "This is a release created by create_release()",
-    ref  = str_c("test-releases-", now))
+    ref  = str_c("test-releases-", suffix))
 
   expect_is(branch_release, "list")
   expect_identical(attr(branch_release, "status"), 201L)
@@ -91,19 +91,19 @@ test_that("create_release creates a release and returns a list of the properties
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(branch_release$tag, str_c("branch-release-", now))
-  expect_identical(branch_release$name, str_c("Branch release ", now))
+  expect_identical(branch_release$tag, str_c("branch-release-", suffix))
+  expect_identical(branch_release$name, str_c("Branch release ", suffix))
   expect_identical(branch_release$body, "This is a release created by create_release()")
-  expect_identical(branch_release$commit, str_c("test-releases-", now))
+  expect_identical(branch_release$commit, str_c("test-releases-", suffix))
   expect_false(branch_release$draft)
   expect_false(branch_release$prerelease)
   expect_identical(branch_release$author_login, "ChadGoymer")
 
 
   draft_release <- create_release(
-    tag        = str_c("draft-release-", now),
-    repo       = str_c("ChadGoymer/test-releases-", now),
-    name       = str_c("Draft release ", now),
+    tag        = str_c("draft-release-", suffix),
+    repo       = str_c("ChadGoymer/test-releases-", suffix),
+    name       = str_c("Draft release ", suffix),
     body       = "This is a release created by create_release()",
     draft      = TRUE,
     prerelease = TRUE)
@@ -125,8 +125,8 @@ test_that("create_release creates a release and returns a list of the properties
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(draft_release$tag, str_c("draft-release-", now))
-  expect_identical(draft_release$name, str_c("Draft release ", now))
+  expect_identical(draft_release$tag, str_c("draft-release-", suffix))
+  expect_identical(draft_release$name, str_c("Draft release ", suffix))
   expect_identical(draft_release$body, "This is a release created by create_release()")
   expect_identical(draft_release$commit, "master")
   expect_true(draft_release$draft)
@@ -139,18 +139,18 @@ test_that("create_release creates a release and returns a list of the properties
 # TEST: update_release ----------------------------------------------------------------------------
 
 draft_release_id <- suppressMessages({
-  view_releases(str_c("ChadGoymer/test-releases-", now)) %>%
-    filter(.data$name == str_c("Draft release ", now)) %>%
+  view_releases(str_c("ChadGoymer/test-releases-", suffix)) %>%
+    filter(.data$name == str_c("Draft release ", suffix)) %>%
     pull(id)
 })
 
 test_that("update_release updates a release and returns a list of the properties", {
 
   master_release <- update_release(
-    release = str_c("master-release-", now),
-    repo    = str_c("ChadGoymer/test-releases-", now),
-    tag     = str_c("updated-master-release-", now),
-    name    = str_c("Updated master release ", now),
+    release = str_c("master-release-", suffix),
+    repo    = str_c("ChadGoymer/test-releases-", suffix),
+    tag     = str_c("updated-master-release-", suffix),
+    name    = str_c("Updated master release ", suffix),
     body    = "This release has been updated by update_release()")
 
   expect_is(master_release, "list")
@@ -170,8 +170,8 @@ test_that("update_release updates a release and returns a list of the properties
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(master_release$tag, str_c("updated-master-release-", now))
-  expect_identical(master_release$name, str_c("Updated master release ", now))
+  expect_identical(master_release$tag, str_c("updated-master-release-", suffix))
+  expect_identical(master_release$name, str_c("Updated master release ", suffix))
   expect_identical(master_release$body, "This release has been updated by update_release()")
   expect_identical(master_release$commit, "master")
   expect_false(master_release$draft)
@@ -180,12 +180,12 @@ test_that("update_release updates a release and returns a list of the properties
 
 
   branch_release <- update_release(
-    release = str_c("branch-release-", now),
-    repo    = str_c("ChadGoymer/test-releases-", now),
-    tag     = str_c("updated-branch-release-", now),
-    name    = str_c("Updated branch release ", now),
+    release = str_c("branch-release-", suffix),
+    repo    = str_c("ChadGoymer/test-releases-", suffix),
+    tag     = str_c("updated-branch-release-", suffix),
+    name    = str_c("Updated branch release ", suffix),
     body    = "This release has been updated by update_release()",
-    ref     = str_c("test-releases-", now))
+    ref     = str_c("test-releases-", suffix))
 
   expect_is(branch_release, "list")
   expect_identical(attr(branch_release, "status"), 200L)
@@ -204,10 +204,10 @@ test_that("update_release updates a release and returns a list of the properties
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(branch_release$tag, str_c("updated-branch-release-", now))
-  expect_identical(branch_release$name, str_c("Updated branch release ", now))
+  expect_identical(branch_release$tag, str_c("updated-branch-release-", suffix))
+  expect_identical(branch_release$name, str_c("Updated branch release ", suffix))
   expect_identical(branch_release$body, "This release has been updated by update_release()")
-  expect_identical(branch_release$commit, str_c("test-releases-", now))
+  expect_identical(branch_release$commit, str_c("test-releases-", suffix))
   expect_false(branch_release$draft)
   expect_false(branch_release$prerelease)
   expect_identical(branch_release$author_login, "ChadGoymer")
@@ -215,9 +215,9 @@ test_that("update_release updates a release and returns a list of the properties
 
   draft_release <- update_release(
     release    = draft_release_id,
-    tag        = str_c("updated-draft-release-", now),
-    repo       = str_c("ChadGoymer/test-releases-", now),
-    name       = str_c("Updated draft release ", now),
+    tag        = str_c("updated-draft-release-", suffix),
+    repo       = str_c("ChadGoymer/test-releases-", suffix),
+    name       = str_c("Updated draft release ", suffix),
     body       = "This release has been updated by update_release()",
     draft      = FALSE,
     prerelease = FALSE)
@@ -239,8 +239,8 @@ test_that("update_release updates a release and returns a list of the properties
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(draft_release$tag, str_c("updated-draft-release-", now))
-  expect_identical(draft_release$name, str_c("Updated draft release ", now))
+  expect_identical(draft_release$tag, str_c("updated-draft-release-", suffix))
+  expect_identical(draft_release$name, str_c("Updated draft release ", suffix))
   expect_identical(draft_release$body, "This release has been updated by update_release()")
   expect_identical(draft_release$commit, "master")
   expect_false(draft_release$draft)
@@ -254,7 +254,7 @@ test_that("update_release updates a release and returns a list of the properties
 
 test_that("view_releases returns a tibble of release properties", {
 
-  all_releases <- view_releases(str_c("ChadGoymer/test-releases-", now), n_max = 10)
+  all_releases <- view_releases(str_c("ChadGoymer/test-releases-", suffix), n_max = 10)
 
   expect_is(all_releases, "tbl")
   expect_identical(attr(all_releases, "status"), 200L)
@@ -273,9 +273,9 @@ test_that("view_releases returns a tibble of release properties", {
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_true(str_c("updated-master-release-", now) %in% all_releases$tag)
-  expect_true(str_c("updated-branch-release-", now) %in% all_releases$tag)
-  expect_true(str_c("updated-draft-release-", now) %in% all_releases$tag)
+  expect_true(str_c("updated-master-release-", suffix) %in% all_releases$tag)
+  expect_true(str_c("updated-branch-release-", suffix) %in% all_releases$tag)
+  expect_true(str_c("updated-draft-release-", suffix) %in% all_releases$tag)
 
 })
 
@@ -285,8 +285,8 @@ test_that("view_releases returns a tibble of release properties", {
 test_that("view_release returns a list of release properties", {
 
   master_release <- view_release(
-    release = str_c("updated-master-release-", now),
-    repo    = str_c("ChadGoymer/test-releases-", now))
+    release = str_c("updated-master-release-", suffix),
+    repo    = str_c("ChadGoymer/test-releases-", suffix))
 
   expect_is(master_release, "list")
   expect_identical(attr(master_release, "status"), 200L)
@@ -305,8 +305,8 @@ test_that("view_release returns a list of release properties", {
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(master_release$tag, str_c("updated-master-release-", now))
-  expect_identical(master_release$name, str_c("Updated master release ", now))
+  expect_identical(master_release$tag, str_c("updated-master-release-", suffix))
+  expect_identical(master_release$name, str_c("Updated master release ", suffix))
   expect_identical(master_release$body, "This release has been updated by update_release()")
   expect_identical(master_release$commit, "master")
   expect_false(master_release$draft)
@@ -316,7 +316,7 @@ test_that("view_release returns a list of release properties", {
 
   draft_release <- view_release(
     release = draft_release_id,
-    repo    = str_c("ChadGoymer/test-releases-", now))
+    repo    = str_c("ChadGoymer/test-releases-", suffix))
 
   expect_is(draft_release, "list")
   expect_identical(attr(draft_release, "status"), 200L)
@@ -335,8 +335,8 @@ test_that("view_release returns a list of release properties", {
       created_at   = "POSIXct",
       published_at = "POSIXct"))
 
-  expect_identical(draft_release$tag, str_c("updated-draft-release-", now))
-  expect_identical(draft_release$name, str_c("Updated draft release ", now))
+  expect_identical(draft_release$tag, str_c("updated-draft-release-", suffix))
+  expect_identical(draft_release$name, str_c("Updated draft release ", suffix))
   expect_identical(draft_release$body, "This release has been updated by update_release()")
   expect_identical(draft_release$commit, "master")
   expect_false(draft_release$draft)
@@ -350,7 +350,7 @@ test_that("view_release throws as error if invalid arguments are supplied", {
   expect_error(
     view_release(
       release = list(1),
-      repo    = str_c("ChadGoymer/test-releases-", now)),
+      repo    = str_c("ChadGoymer/test-releases-", suffix)),
     "'release' must be either an integer or a valid git reference")
 
 })
@@ -363,25 +363,25 @@ test_that("browse_release opens the release's page in the browser", {
   skip_if(!interactive(), "browse_release must be tested manually")
 
   master_release <- browse_release(
-    release = str_c("updated-master-release-", now),
-    repo    = str_c("ChadGoymer/test-releases-", now))
+    release = str_c("updated-master-release-", suffix),
+    repo    = str_c("ChadGoymer/test-releases-", suffix))
 
   expect_is(master_release, "character")
   expect_identical(attr(master_release, "status"), 200L)
   expect_identical(
     dirname(master_release),
-    str_c("https://github.com/ChadGoymer/test-releases-", now, "/releases/tag"))
+    str_c("https://github.com/ChadGoymer/test-releases-", suffix, "/releases/tag"))
 
 
   draft_release <- browse_release(
     release = draft_release_id,
-    repo    = str_c("ChadGoymer/test-releases-", now))
+    repo    = str_c("ChadGoymer/test-releases-", suffix))
 
   expect_is(draft_release, "character")
   expect_identical(attr(draft_release, "status"), 200L)
   expect_identical(
     dirname(draft_release),
-    str_c("https://github.com/ChadGoymer/test-releases-", now, "/releases/tag"))
+    str_c("https://github.com/ChadGoymer/test-releases-", suffix, "/releases/tag"))
 
 })
 
@@ -390,7 +390,7 @@ test_that("browse_release throws as error if invalid arguments are supplied", {
   expect_error(
     browse_release(
       release = list(1),
-      repo    = str_c("ChadGoymer/test-releases-", now)),
+      repo    = str_c("ChadGoymer/test-releases-", suffix)),
     "'release' must be either an integer or a valid git reference")
 
 })
@@ -401,8 +401,8 @@ test_that("browse_release throws as error if invalid arguments are supplied", {
 test_that("delete_release deletes a release", {
 
   deleted_release <- delete_release(
-    release = str_c("updated-master-release-", now),
-    repo    = str_c("ChadGoymer/test-releases-", now))
+    release = str_c("updated-master-release-", suffix),
+    repo    = str_c("ChadGoymer/test-releases-", suffix))
 
   expect_is(deleted_release, "logical")
   expect_identical(attr(deleted_release, "status"), 204L)

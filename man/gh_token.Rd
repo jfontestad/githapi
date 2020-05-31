@@ -10,7 +10,8 @@ gh_token(
   proxy = getOption("github.proxy"),
   key = getOption("githapi.key"),
   secret = getOption("githapi.secret"),
-  cache = getOption("githapi.cache")
+  cache = getOption("githapi.cache"),
+  refresh = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ The secret for the githapi application in github.com}
 \item{cache}{(boolean or string, optional) The location to store a cached token. If \code{TRUE}
 the cache uses the httr default; if \code{FALSE} it does not cache. Can be set in the
 \code{"githapi.cache"} option or the \code{GITHAPI_CACHE} environment variable. Default: \code{FALSE}.}
+
+\item{refresh}{(boolean, optional) Whether to force the refresh of the cached token.
+Default: FALSE.}
 }
 \value{
 A token which is either a string, for a personal access token, or a \link[httr:Token]{httr::Token}
