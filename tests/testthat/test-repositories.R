@@ -526,6 +526,29 @@ test_that("browse_repository opens the repository's page in the browser", {
 })
 
 
+# TEST: remove_team_repository ----------------------------------------------------------------
+
+test_that("remove_team_repository removes a teams acces to a repository", {
+
+  removed_repo <- remove_team_repository(
+    repo       = str_c("HairyCoos/updated-org-repository-", suffix),
+    team       = str_c("test-repositories-", suffix),
+    org        = "HairyCoos")
+
+  expect_is(removed_repo, "logical")
+  expect_identical(attr(removed_repo, "status"), 204L)
+  expect_identical(as.logical(removed_repo), TRUE)
+
+  team_repos <- view_repositories(
+    team  = str_c("test-repositories-", suffix),
+    org   = "HairyCoos",
+    n_max = 10)
+
+  expect_identical(nrow(team_repos), 0L)
+
+})
+
+
 # TEST: delete_repository ---------------------------------------------------------------------
 
 test_that("delete_repository removes a repository and returns TRUE", {

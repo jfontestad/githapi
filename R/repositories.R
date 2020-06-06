@@ -441,6 +441,41 @@ update_team_repository <- function(
 }
 
 
+#  FUNCTION: remove_team_repository -----------------------------------------------------------
+#
+#' @rdname update_team_repository
+#' @export
+#'
+remove_team_repository <- function(
+  repo,
+  team,
+  org,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+  team_slug <- gh_url("orgs", org, "teams") %>%
+    gh_find(property = "name", value = team, ...) %>%
+    pluck("slug")
+
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+  info("Updating permissions for team '", team, "' on repository '", repo, "'")
+  response <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+    gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
+
+
 #  FUNCTION: view_repositories ----------------------------------------------------------------
 #
 #' View repositories for a user or organization
