@@ -496,6 +496,7 @@ remove_team_repository <- function(
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
+#' @param team (string, optional) The team name.
 #' @param org (string, optional) The name of the organization.
 #' @param sort (string, optional) The property to order the returned repositories by. Can
 #'   be either `"created"`, `"updated"`, `"pushed"` or `"full_name"`. Default: `"created"`.
@@ -569,6 +570,7 @@ remove_team_repository <- function(
 #'
 view_repositories <- function(
   user,
+  team,
   org,
   sort      = "created",
   direction = "desc",
@@ -589,8 +591,20 @@ view_repositories <- function(
   }
   else if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
-    info("Viewing repositories for organization '", org, "'")
-    url <- gh_url("orgs", org, "repos", type = "all", sort = sort, direction = direction)
+
+    if (missing(team)) {
+      info("Viewing repositories for organization '", org, "'")
+      url <- gh_url("orgs", org, "repos", type = "all", sort = sort, direction = direction)
+    }
+    else {
+      assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+      team_slug <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("slug")
+
+      info("Viewing repositories for team '", team, "' in organization '", org, "'")
+      url <- gh_url("orgs", org, "teams", team_slug, "repos", type = "all", sort = sort, direction = direction)
+    }
   }
   else {
     info("Viewing repositories for authenticated user")

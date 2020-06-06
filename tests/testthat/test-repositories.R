@@ -429,6 +429,51 @@ test_that("view_repositories returns a tibble summarising the repositories", {
       updated_at         = "POSIXct"))
 
   expect_true(str_c("updated-org-repository-", suffix) %in% org_repos$name)
+  expect_identical(
+    org_repos %>% filter(name == str_c("updated-org-repository-", suffix)) %>% pull("permission"),
+    "admin")
+
+
+  team_repos <- view_repositories(
+    team  = str_c("test-repositories-", suffix),
+    org   = "HairyCoos",
+    n_max = 10)
+
+  expect_is(team_repos, "tbl")
+  expect_identical(attr(team_repos, "status"), 200L)
+  expect_identical(
+    map_chr(team_repos, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      html_url           = "character",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
+
+  expect_true(str_c("updated-org-repository-", suffix) %in% team_repos$name)
+  expect_identical(
+    team_repos %>% filter(name == str_c("updated-org-repository-", suffix)) %>% pull("permission"),
+    "maintain")
 
 
   auth_repos <- view_repositories(n_max = 10)

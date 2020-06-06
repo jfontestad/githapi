@@ -8,6 +8,7 @@
 \usage{
 view_repositories(
   user,
+  team,
   org,
   sort = "created",
   direction = "desc",
@@ -15,12 +16,14 @@ view_repositories(
   ...
 )
 
-view_repository(repo, ...)
+view_repository(repo, team, org, ...)
 
 browse_repository(repo, ...)
 }
 \arguments{
 \item{user}{(string, optional) The login of the user.}
+
+\item{team}{(string, optional) The team name.}
 
 \item{org}{(string, optional) The name of the organization.}
 
