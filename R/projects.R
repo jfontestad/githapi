@@ -466,9 +466,10 @@ view_projects <- function(
   projects_gh <- bind_properties(projects_lst, properties$project)
 
   if (!missing(team)) {
+    proj_order <- values$project$permission
     team_permission <- map_chr(projects_lst, function(p) {
-      values$project$permission[max(which(as.logical(p$permissions[values$project$permission])))]
-      })
+      last(proj_order[proj_order %in% names(p$permissions[as.logical(p$permissions)])])
+    })
     projects_gh <- add_column(projects_gh, team_permission = team_permission, .after = "state")
   }
 
@@ -551,10 +552,11 @@ view_project <- function(
   project_gh <- select_properties(project_lst, properties$project)
 
   if (!missing(team)) {
+    proj_order <- values$project$permission
+    permission <- last(proj_order[proj_order %in% names(project_lst$permissions[as.logical(project_lst$permissions)])])
+
     project_gh <- project_gh %>%
-      modify_list(
-        team_permission = names(project_lst$permissions)[max(which(as.logical(project_lst$permissions)))],
-        .after = "state")
+      modify_list(team_permission = permission, .after = "state")
   }
 
   if (!missing(org)) {
