@@ -634,12 +634,28 @@ view_repositories <- function(
 #'
 view_repository <- function(
   repo,
+  team,
+  org,
   ...)
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  info("Viewing repository '", repo, "'")
-  repo_lst <- gh_url("repos", repo) %>% gh_request("GET", ...)
+  if (missing(team)) {
+    info("Viewing repository '", repo, "'")
+    repo_lst <- gh_url("repos", repo) %>% gh_request("GET", ...)
+  }
+  else {
+    assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+    team_slug <- gh_url("orgs", org, "teams") %>%
+      gh_find(property = "name", value = team, ...) %>%
+      pluck("slug")
+
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+    info("Viewing repository '", repo, "' for team '", team, "'")
+    repo_lst <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+      gh_request("GET", accept = "application/vnd.github.v3.repository+json", ...)
+  }
 
   perm_order <- values$repository$team_permission
   permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
