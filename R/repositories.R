@@ -144,11 +144,12 @@ create_repository <- function(
 
   repo_lst <- gh_request("POST", url = url, payload = payload, ...)
 
+  perm_order <- values$repository$team_permission
+  permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
+
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    modify_list(
-      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
-      .after = "default_branch")
+    modify_list(permission = permission, .after = "default_branch")
 
   info("Done", level = 7)
   repo_gh
@@ -338,11 +339,12 @@ update_repository <- function(
   info("Updating repository '", repo, "'")
   repo_lst <- gh_url("repos", repo) %>% gh_request("PATCH", payload = payload, ...)
 
+  perm_order <- values$repository$team_permission
+  permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
+
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    modify_list(
-      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
-      .after = "default_branch")
+    modify_list(permission = permission, .after = "default_branch")
 
   info("Done", level = 7)
   repo_gh
@@ -475,8 +477,9 @@ view_repositories <- function(
   info("Transforming results", level = 4)
   repositories_gh <- bind_properties(repositories_lst, properties$repository)
 
+  perm_order <- values$repository$team_permission
   permission <- map_chr(repositories_lst, function(r) {
-    values$repository$permission[max(which(as.logical(r$permissions[values$repository$permission])))]
+    last(perm_order[perm_order %in% names(r$permissions[as.logical(r$permissions)])])
   })
   repositories_gh <- add_column(repositories_gh, permission = permission, .after = "default_branch")
 
@@ -499,11 +502,12 @@ view_repository <- function(
   info("Viewing repository '", repo, "'")
   repo_lst <- gh_url("repos", repo) %>% gh_request("GET", ...)
 
+  perm_order <- values$repository$team_permission
+  permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
+
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    modify_list(
-      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
-      .after = "default_branch")
+    modify_list(permission = permission, .after = "default_branch")
 
   info("Done", level = 7)
   repo_gh
