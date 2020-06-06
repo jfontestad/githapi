@@ -351,6 +351,96 @@ update_repository <- function(
 }
 
 
+#  FUNCTION: update_team_repository -----------------------------------------------------------
+#
+#' Update a team's permissions on a repository
+#'
+#' `update_team_repository()` allows you to add or update a team's permission on a repository.
+#' `remove_team_repository()` removes the team's access to a repository.
+#'
+#' The team's permission can be set to:
+#' - `"pull"`: Team members can pull from this repository.
+#' - `"push"`: Team members can pull from and push to this repository.
+#' - `"admin"`: Team members can pull from, push to and administer this repository.
+#' - `"maintain"`: Team members can manage the repository without access to sensitive or
+#'   destructive actions. Recommended for project managers. Only applies to repositories owned
+#'   by organizations.
+#' - `"triage"`: Team members can proactively manage issues and pull requests without write
+#'   access. Recommended for contributors who triage a repository. Only applies to
+#'   repositories owned by organizations.
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param team (string) The team name.
+#' @param org (string) The name of the organization.
+#' @param permission (string, optional) The permission to set for the team. Either: `"pull"`,
+#'   `"push"`, `"admin"`, `"maintain"` or `"triage"`. Default: `"pull"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_team_repository()` and `remove_team_repository()` returns a TRUE if
+#'   successful.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Add read access for the specified team
+#'   update_team_repository(
+#'     repo = "HairyCoos/test-repository",
+#'     team = "test-team",
+#'     org  = "HairyCoos")
+#'
+#'   # Update team's permission to "maintain"
+#'   update_team_repository(
+#'     repo       = "HairyCoos/test-repository",
+#'     team       = "test-team",
+#'     org        = "HairyCoos",
+#'     permission = "maintain")
+#'
+#'   # Remove team's access
+#'   remove_team_repository(
+#'     repo = "HairyCoos/test-repository",
+#'     team = "test-team",
+#'     org  = "HairyCoos")
+#'
+#' }
+#'
+#' @export
+#'
+update_team_repository <- function(
+  repo,
+  team,
+  org,
+  permission = "pull",
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+  team_slug <- gh_url("orgs", org, "teams") %>%
+    gh_find(property = "name", value = team, ...) %>%
+    pluck("slug")
+
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+  assert(
+    is_scalar_character(permission) && permission %in% values$repository$team_permission,
+    "'permission' for repositories must be either '", str_c(values$repository$team_permission, collapse = "', '"), "':\n  ", permission)
+  payload <- list(permission = permission)
+
+  info("Updating permissions for team '", team, "' on repository '", repo, "'")
+  response <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+    gh_request("PUT", payload = payload, ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
+
+
 #  FUNCTION: view_repositories ----------------------------------------------------------------
 #
 #' View repositories for a user or organization

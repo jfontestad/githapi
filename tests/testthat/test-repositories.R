@@ -5,7 +5,20 @@ context("repositories")
 
 suffix <- sample(letters, 10, replace = TRUE) %>% str_c(collapse = "")
 
+setup(suppressMessages({
+
+  create_team(
+    name        = str_c("test-repositories-", suffix),
+    org         = "HairyCoos",
+    description = "This is a team to test repositories")
+
+}))
+
 teardown(suppressMessages({
+
+  try(silent = TRUE, {
+    delete_team(str_c("test-repositories-", suffix), org = "HairyCoos")
+  })
 
   try(silent = TRUE, {
     delete_repository(str_c("ChadGoymer/user-repository-", suffix))
@@ -222,7 +235,7 @@ test_that("update_repository changes a repository's properties and returns them 
   expect_true(org_repo$allow_rebase_merge)
 
 
-  archived_repo <- update_repository(str_c("HairyCoos/updated-org-repository-", suffix), archived = TRUE)
+  archived_repo <- update_repository(str_c("ChadGoymer/updated-user-repository-", suffix), archived = TRUE)
 
   expect_is(archived_repo, "list")
   expect_identical(attr(archived_repo, "status"), 200L)
@@ -256,6 +269,47 @@ test_that("update_repository changes a repository's properties and returns them 
       updated_at         = "POSIXct"))
 
   expect_true(archived_repo$archived)
+
+})
+
+
+# TEST: update_team_repository ----------------------------------------------------------------
+
+test_that("update_team_repository adds and updates a teams permission to a repository", {
+
+  added_repo <- update_team_repository(
+    repo       = str_c("HairyCoos/updated-org-repository-", suffix),
+    team       = str_c("test-repositories-", suffix),
+    org        = "HairyCoos",
+    permission = "pull")
+
+  expect_is(added_repo, "logical")
+  expect_identical(attr(added_repo, "status"), 204L)
+  expect_identical(as.logical(added_repo), TRUE)
+
+  read_repo <- view_repository(
+    repo = str_c("HairyCoos/updated-org-repository-", suffix),
+    team = str_c("test-repositories-", suffix),
+    org  = "HairyCoos")
+
+  expect_identical(read_repo$permission, "pull")
+
+  updated_repo <- update_team_repository(
+    repo       = str_c("HairyCoos/updated-org-repository-", suffix),
+    team       = str_c("test-repositories-", suffix),
+    org        = "HairyCoos",
+    permission = "maintain")
+
+  expect_is(updated_repo, "logical")
+  expect_identical(attr(updated_repo, "status"), 204L)
+  expect_identical(as.logical(updated_repo), TRUE)
+
+  maintain_repo <- view_repository(
+    repo = str_c("HairyCoos/updated-org-repository-", suffix),
+    team = str_c("test-repositories-", suffix),
+    org  = "HairyCoos")
+
+  expect_identical(maintain_repo$permission, "maintain")
 
 })
 
