@@ -42,6 +42,12 @@ by organizations.
 access. Recommended for contributors who triage a repository. Only applies to
 repositories owned by organizations.
 }
+
+For more details see the GitHub API documentation:
+\itemize{
+\item \url{https://developer.github.com/v3/teams/#add-or-update-team-repository}
+\item \url{https://developer.github.com/v3/teams/#remove-team-repository}
+}
 }
 \examples{
 \dontrun{

@@ -369,6 +369,10 @@ update_repository <- function(
 #'   access. Recommended for contributors who triage a repository. Only applies to
 #'   repositories owned by organizations.
 #'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/teams/#add-or-update-team-repository>
+#' - <https://developer.github.com/v3/teams/#remove-team-repository>
+#'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param team (string) The team name.
 #' @param org (string) The name of the organization.
@@ -478,21 +482,24 @@ remove_team_repository <- function(
 
 #  FUNCTION: view_repositories ----------------------------------------------------------------
 #
-#' View repositories for a user or organization
+#' View repositories for a user, team or organization
 #'
-#' `view_repositories()` summarises the repositories for a user or organization in a table
-#' with the properties as columns and a row for each repository. `view_repository()` returns
-#' a list of a single repository's properties. `browse_repository()` opens the web page for
-#' the repository in the default browser.
+#' `view_repositories()` summarises the repositories for a user, team or organization in a
+#' table with the properties as columns and a row for each repository. `view_repository()`
+#' returns a list of a single repository's properties. `browse_repository()` opens the web
+#' page for the repository in the default browser.
 #'
-#' You can summarise all the repositories associated with either a user or organization, by
-#' supplying them as an input. If neither a user or organization is specified a summary of
+#' You can summarise all the repositories associated with either a user, team or organization,
+#' by supplying them as an input. If neither a user or organization is specified a summary of
 #' the authenticated user's repositories is returned.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/repos/#list-user-repositories>
 #' - <https://developer.github.com/v3/repos/#list-organization-repositories>
+#' - <https://developer.github.com/v3/teams/#list-team-repos>
 #' - <https://developer.github.com/v3/repos/#list-your-repositories>
+#' - <https://developer.github.com/v3/repos/#get-a-repository>
+#' - <https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
@@ -522,7 +529,7 @@ remove_team_repository <- function(
 #' - **language**: The dominant programming language in the repository.
 #' - **size**: The overall size of the repository in bytes.
 #' - **default_branch**: The name of the default branch.
-#' - **permission**: The permission the authenticated user has.
+#' - **permission**: The permission the authenticated user or team has.
 #' - **private**: Whether the repository is private.
 #' - **has_issues**: Whether the repository has issues.
 #' - **has_projects**: Whether the repository has projects.
@@ -549,6 +556,9 @@ remove_team_repository <- function(
 #'   # View an organization's repositories
 #'   view_repositories(org = "HairyCoos")
 #'
+#'   # View a team's repositories
+#'   view_repositories(team = "Test Team", org = "HairyCoos")
+#'
 #'   # Reorder a user's repositories
 #'   view_repositories(user = "ChadGoymer", sort = "full_name", direction = "asc")
 #'
@@ -557,6 +567,9 @@ remove_team_repository <- function(
 #'
 #'   # View a specific organization repository
 #'   view_repository("Test repo", org = "HairyCoos")
+#'
+#'   # View a specific team repository
+#'   view_repository("Test repo", team = "Test Team", org = "HairyCoos")
 #'
 #'   # Browse a specific user repository
 #'   browse_repository("Test repo", user = "ChadGoymer")
