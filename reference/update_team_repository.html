@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get a token for accessing GitHub — gh_token • githapi</title>
+<title>Update a team's permissions on a repository — update_team_repository • githapi</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,9 @@
 
 
 
-<meta property="og:title" content="Get a token for accessing GitHub — gh_token" />
-<meta property="og:description" content="This function initiates the OAuth authentication code grant flow with GitHub. The user
-will be redirected to GitHub's login page to enter a user name and password. Once complete
-the user can close the window and this function returns a token which can be used for all
-calls to the githapi API." />
+<meta property="og:title" content="Update a team's permissions on a repository — update_team_repository" />
+<meta property="og:description" content="update_team_repository() allows you to add or update a team's permission on a repository.
+remove_team_repository() removes the team's access to a repository." />
 
 
 
@@ -114,88 +112,91 @@ calls to the githapi API." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get a token for accessing GitHub</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/github-api.R'><code>R/github-api.R</code></a></small>
-    <div class="hidden name"><code>gh_token.Rd</code></div>
+    <h1>Update a team's permissions on a repository</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories.R'><code>R/repositories.R</code></a></small>
+    <div class="hidden name"><code>update_team_repository.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function initiates the OAuth authentication code grant flow with GitHub. The user
-will be redirected to GitHub's login page to enter a user name and password. Once complete
-the user can close the window and this function returns a token which can be used for all
-calls to the githapi API.</p>
+    <p><code>update_team_repository()</code> allows you to add or update a team's permission on a repository.
+<code>remove_team_repository()</code> removes the team's access to a repository.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_token</span>(
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  <span class='kw'>oauth</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.oauth"</span>),
-  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
-  <span class='kw'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"githapi.key"</span>),
-  <span class='kw'>secret</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"githapi.secret"</span>),
-  <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"githapi.cache"</span>),
-  <span class='kw'>refresh</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_team_repository</span>(<span class='no'>repo</span>, <span class='no'>team</span>, <span class='no'>org</span>, <span class='kw'>permission</span> <span class='kw'>=</span> <span class='st'>"pull"</span>, <span class='no'>...</span>)
+
+<span class='fu'>remove_team_repository</span>(<span class='no'>repo</span>, <span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>token</th>
-      <td><p>(string, optional) A personal access token. If <code>NULL</code> then the OAuth process
-is triggered. Can be set in the <code>github.token</code> option or the <code>GITHUB_TOKEN</code> environment
-variable. Default: <code>NULL</code>.</p></td>
+      <th>repo</th>
+      <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>oauth</th>
-      <td><p>(string, optional) The base URL for for the OAuth endpoint. Can be set in the
-<code>github.oauth</code> option or the <code>GITHUB_OAUTH</code> environment variable. Default:
-<code>"https://github.com/login/oauth"</code>.</p></td>
+      <th>team</th>
+      <td><p>(string) The team name.</p></td>
     </tr>
     <tr>
-      <th>proxy</th>
-      <td><p>(character, optional) The proxy server to use to connect to the github API.
-If <code>NULL</code> then no proxy is used. Can be set in the option <code>github.proxy</code> or the
-environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
+      <th>org</th>
+      <td><p>(string) The name of the organization.</p></td>
     </tr>
     <tr>
-      <th>key</th>
-      <td><p>(string, optional) The application ID for accessing GitHub. Can be set in the
-<code>githapi.key</code> option or the <code>GITHAPI_KEY</code> environment variable. Default: The key for the
-githapi application in github.com.</p></td>
+      <th>permission</th>
+      <td><p>(string, optional) The permission to set for the team. Either: <code>"pull"</code>,
+<code>"push"</code>, <code>"admin"</code>, <code>"maintain"</code> or <code>"triage"</code>. Default: <code>"pull"</code>.</p></td>
     </tr>
     <tr>
-      <th>secret</th>
-      <td><p>(string, optional) The secret for the application to access GitHub. Can be
-set in the <code>githapi.secret</code> option or the <code>GITHAPI_SECRET</code> environment variable. Default:
-The secret for the githapi application in github.com</p></td>
-    </tr>
-    <tr>
-      <th>cache</th>
-      <td><p>(boolean or string, optional) The location to store a cached token. If <code>TRUE</code>
-the cache uses the httr default; if <code>FALSE</code> it does not cache. Can be set in the
-<code>"githapi.cache"</code> option or the <code>GITHAPI_CACHE</code> environment variable. Default: <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>refresh</th>
-      <td><p>(boolean, optional) Whether to force the refresh of the cached token.
-Default: FALSE.</p></td>
+      <th>...</th>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A token which is either a string, for a personal access token, or a <a href='https://httr.r-lib.org/reference/Token-class.html'>httr::Token</a>
-object for an OAuth token.</p>
+    <p><code>update_team_repository()</code> and <code>remove_team_repository()</code> returns a TRUE if
+successful.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For non-interactive processes a personal access token can be specified, either as an R
-option (<code>"github.token"</code>) or as an environment variable (either <code>GITHUB_TOKEN</code> or
-<code>GITHUB_PAT</code>).</p>
+    <p>The team's permission can be set to:</p><ul>
+<li><p><code>"pull"</code>: Team members can pull from this repository.</p></li>
+<li><p><code>"push"</code>: Team members can pull from and push to this repository.</p></li>
+<li><p><code>"admin"</code>: Team members can pull from, push to and administer this repository.</p></li>
+<li><p><code>"maintain"</code>: Team members can manage the repository without access to sensitive or
+destructive actions. Recommended for project managers. Only applies to repositories owned
+by organizations.</p></li>
+<li><p><code>"triage"</code>: Team members can proactively manage issues and pull requests without write
+access. Recommended for contributors who triage a repository. Only applies to
+repositories owned by organizations.</p></li>
+</ul>
+
+<p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://developer.github.com/v3/teams/#add-or-update-team-repository'>https://developer.github.com/v3/teams/#add-or-update-team-repository</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#remove-team-repository'>https://developer.github.com/v3/teams/#remove-team-repository</a></p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='no'>token</span> <span class='kw'>&lt;-</span> <span class='fu'>gh_token</span>()
+  <span class='co'># Add read access for the specified team</span>
+  <span class='fu'>update_team_repository</span>(
+    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"HairyCoos/test-repository"</span>,
+    <span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"test-team"</span>,
+    <span class='kw'>org</span>  <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># Update team's permission to "maintain"</span>
+  <span class='fu'>update_team_repository</span>(
+    <span class='kw'>repo</span>       <span class='kw'>=</span> <span class='st'>"HairyCoos/test-repository"</span>,
+    <span class='kw'>team</span>       <span class='kw'>=</span> <span class='st'>"test-team"</span>,
+    <span class='kw'>org</span>        <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>,
+    <span class='kw'>permission</span> <span class='kw'>=</span> <span class='st'>"maintain"</span>)
+
+  <span class='co'># Remove team's access</span>
+  <span class='fu'>remove_team_repository</span>(
+    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"HairyCoos/test-repository"</span>,
+    <span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"test-team"</span>,
+    <span class='kw'>org</span>  <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 
 }</div></pre>
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View repositories for a user or organization — view_repositories • githapi</title>
+<title>View repositories for a user, team or organization — view_repositories • githapi</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,11 @@
 
 
 
-<meta property="og:title" content="View repositories for a user or organization — view_repositories" />
-<meta property="og:description" content="view_repositories() summarises the repositories for a user or organization in a table
-with the properties as columns and a row for each repository. view_repository() returns
-a list of a single repository's properties. browse_repository() opens the web page for
-the repository in the default browser." />
+<meta property="og:title" content="View repositories for a user, team or organization — view_repositories" />
+<meta property="og:description" content="view_repositories() summarises the repositories for a user, team or organization in a
+table with the properties as columns and a row for each repository. view_repository()
+returns a list of a single repository's properties. browse_repository() opens the web
+page for the repository in the default browser." />
 
 
 
@@ -75,7 +75,7 @@ the repository in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
       </span>
     </div>
 
@@ -114,20 +114,21 @@ the repository in the default browser." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View repositories for a user or organization</h1>
+    <h1>View repositories for a user, team or organization</h1>
     <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/repositories.R'><code>R/repositories.R</code></a></small>
     <div class="hidden name"><code>view_repositories.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>view_repositories()</code> summarises the repositories for a user or organization in a table
-with the properties as columns and a row for each repository. <code>view_repository()</code> returns
-a list of a single repository's properties. <code>browse_repository()</code> opens the web page for
-the repository in the default browser.</p>
+    <p><code>view_repositories()</code> summarises the repositories for a user, team or organization in a
+table with the properties as columns and a row for each repository. <code>view_repository()</code>
+returns a list of a single repository's properties. <code>browse_repository()</code> opens the web
+page for the repository in the default browser.</p>
     </div>
 
     <pre class="usage"><span class='fu'>view_repositories</span>(
   <span class='no'>user</span>,
+  <span class='no'>team</span>,
   <span class='no'>org</span>,
   <span class='kw'>sort</span> <span class='kw'>=</span> <span class='st'>"created"</span>,
   <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"desc"</span>,
@@ -135,7 +136,7 @@ the repository in the default browser.</p>
   <span class='no'>...</span>
 )
 
-<span class='fu'>view_repository</span>(<span class='no'>repo</span>, <span class='no'>...</span>)
+<span class='fu'>view_repository</span>(<span class='no'>repo</span>, <span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)
 
 <span class='fu'>browse_repository</span>(<span class='no'>repo</span>, <span class='no'>...</span>)</pre>
 
@@ -145,6 +146,10 @@ the repository in the default browser.</p>
     <tr>
       <th>user</th>
       <td><p>(string, optional) The login of the user.</p></td>
+    </tr>
+    <tr>
+      <th>team</th>
+      <td><p>(string, optional) The team name.</p></td>
     </tr>
     <tr>
       <th>org</th>
@@ -191,7 +196,7 @@ the URL.</p>
 <li><p><strong>language</strong>: The dominant programming language in the repository.</p></li>
 <li><p><strong>size</strong>: The overall size of the repository in bytes.</p></li>
 <li><p><strong>default_branch</strong>: The name of the default branch.</p></li>
-<li><p><strong>permission</strong>: The permission the authenticated user has.</p></li>
+<li><p><strong>permission</strong>: The permission the authenticated user or team has.</p></li>
 <li><p><strong>private</strong>: Whether the repository is private.</p></li>
 <li><p><strong>has_issues</strong>: Whether the repository has issues.</p></li>
 <li><p><strong>has_projects</strong>: Whether the repository has projects.</p></li>
@@ -212,13 +217,16 @@ commit.</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the repositories associated with either a user or organization, by
-supplying them as an input. If neither a user or organization is specified a summary of
+    <p>You can summarise all the repositories associated with either a user, team or organization,
+by supplying them as an input. If neither a user or organization is specified a summary of
 the authenticated user's repositories is returned.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/repos/#list-user-repositories'>https://developer.github.com/v3/repos/#list-user-repositories</a></p></li>
 <li><p><a href='https://developer.github.com/v3/repos/#list-organization-repositories'>https://developer.github.com/v3/repos/#list-organization-repositories</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#list-team-repos'>https://developer.github.com/v3/teams/#list-team-repos</a></p></li>
 <li><p><a href='https://developer.github.com/v3/repos/#list-your-repositories'>https://developer.github.com/v3/repos/#list-your-repositories</a></p></li>
+<li><p><a href='https://developer.github.com/v3/repos/#get-a-repository'>https://developer.github.com/v3/repos/#get-a-repository</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository'>https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository</a></p></li>
 </ul>
 
 
@@ -231,6 +239,9 @@ the authenticated user's repositories is returned.</p>
   <span class='co'># View an organization's repositories</span>
   <span class='fu'>view_repositories</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 
+  <span class='co'># View a team's repositories</span>
+  <span class='fu'>view_repositories</span>(<span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"Test Team"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
   <span class='co'># Reorder a user's repositories</span>
   <span class='fu'>view_repositories</span>(<span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>, <span class='kw'>sort</span> <span class='kw'>=</span> <span class='st'>"full_name"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"asc"</span>)
 
@@ -239,6 +250,9 @@ the authenticated user's repositories is returned.</p>
 
   <span class='co'># View a specific organization repository</span>
   <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+
+  <span class='co'># View a specific team repository</span>
+  <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"Test Team"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Browse a specific user repository</span>
   <span class='fu'>browse_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
