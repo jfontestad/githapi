@@ -1,3 +1,7 @@
+# githapi 0.10.4
+
+- Set R version to 'release' for pkgdown workflow
+
 # githapi 0.10.3
 
 - Added `update_team_repository()`
