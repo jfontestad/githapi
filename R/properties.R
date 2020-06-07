@@ -355,7 +355,8 @@ values <- list(
   repository = list(
     sort                          = c("created", "updated", "pushed", "full_name"),
     direction                     = c("asc", "desc"),
-    permission                    = c("pull", "push", "admin")),
+    permission                    = c("pull", "push", "admin"),
+    team_permission               = c("pull", "triage", "push", "maintain", "admin")),
 
   milestone = list(
     state                         = c("open", "closed", "all"),

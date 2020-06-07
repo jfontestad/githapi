@@ -4,10 +4,11 @@
 \alias{view_repositories}
 \alias{view_repository}
 \alias{browse_repository}
-\title{View repositories for a user or organization}
+\title{View repositories for a user, team or organization}
 \usage{
 view_repositories(
   user,
+  team,
   org,
   sort = "created",
   direction = "desc",
@@ -15,12 +16,14 @@ view_repositories(
   ...
 )
 
-view_repository(repo, ...)
+view_repository(repo, team, org, ...)
 
 browse_repository(repo, ...)
 }
 \arguments{
 \item{user}{(string, optional) The login of the user.}
+
+\item{team}{(string, optional) The team name.}
 
 \item{org}{(string, optional) The name of the organization.}
 
@@ -54,7 +57,7 @@ the URL.
 \item \strong{language}: The dominant programming language in the repository.
 \item \strong{size}: The overall size of the repository in bytes.
 \item \strong{default_branch}: The name of the default branch.
-\item \strong{permission}: The permission the authenticated user has.
+\item \strong{permission}: The permission the authenticated user or team has.
 \item \strong{private}: Whether the repository is private.
 \item \strong{has_issues}: Whether the repository has issues.
 \item \strong{has_projects}: Whether the repository has projects.
@@ -74,21 +77,24 @@ commit.
 }
 }
 \description{
-\code{view_repositories()} summarises the repositories for a user or organization in a table
-with the properties as columns and a row for each repository. \code{view_repository()} returns
-a list of a single repository's properties. \code{browse_repository()} opens the web page for
-the repository in the default browser.
+\code{view_repositories()} summarises the repositories for a user, team or organization in a
+table with the properties as columns and a row for each repository. \code{view_repository()}
+returns a list of a single repository's properties. \code{browse_repository()} opens the web
+page for the repository in the default browser.
 }
 \details{
-You can summarise all the repositories associated with either a user or organization, by
-supplying them as an input. If neither a user or organization is specified a summary of
+You can summarise all the repositories associated with either a user, team or organization,
+by supplying them as an input. If neither a user or organization is specified a summary of
 the authenticated user's repositories is returned.
 
 For more details see the GitHub API documentation:
 \itemize{
 \item \url{https://developer.github.com/v3/repos/#list-user-repositories}
 \item \url{https://developer.github.com/v3/repos/#list-organization-repositories}
+\item \url{https://developer.github.com/v3/teams/#list-team-repos}
 \item \url{https://developer.github.com/v3/repos/#list-your-repositories}
+\item \url{https://developer.github.com/v3/repos/#get-a-repository}
+\item \url{https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository}
 }
 }
 \examples{
@@ -100,6 +106,9 @@ For more details see the GitHub API documentation:
   # View an organization's repositories
   view_repositories(org = "HairyCoos")
 
+  # View a team's repositories
+  view_repositories(team = "Test Team", org = "HairyCoos")
+
   # Reorder a user's repositories
   view_repositories(user = "ChadGoymer", sort = "full_name", direction = "asc")
 
@@ -108,6 +117,9 @@ For more details see the GitHub API documentation:
 
   # View a specific organization repository
   view_repository("Test repo", org = "HairyCoos")
+
+  # View a specific team repository
+  view_repository("Test repo", team = "Test Team", org = "HairyCoos")
 
   # Browse a specific user repository
   browse_repository("Test repo", user = "ChadGoymer")

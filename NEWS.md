@@ -1,3 +1,10 @@
+# githapi 0.10.3
+
+- Added `update_team_repository()`
+- Added `remove_team_repository()`
+- Updated `view_repositories()` to include `team`
+- Updated `view_repository()` to include `team`
+
 # githapi 0.10.2
 
 - Replaced Travis and Appveyor with GitHub Actions

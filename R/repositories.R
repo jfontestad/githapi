@@ -144,11 +144,12 @@ create_repository <- function(
 
   repo_lst <- gh_request("POST", url = url, payload = payload, ...)
 
+  perm_order <- values$repository$team_permission
+  permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
+
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    modify_list(
-      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
-      .after = "default_branch")
+    modify_list(permission = permission, .after = "default_branch")
 
   info("Done", level = 7)
   repo_gh
@@ -338,37 +339,171 @@ update_repository <- function(
   info("Updating repository '", repo, "'")
   repo_lst <- gh_url("repos", repo) %>% gh_request("PATCH", payload = payload, ...)
 
+  perm_order <- values$repository$team_permission
+  permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
+
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    modify_list(
-      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
-      .after = "default_branch")
+    modify_list(permission = permission, .after = "default_branch")
 
   info("Done", level = 7)
   repo_gh
 }
 
 
+#  FUNCTION: update_team_repository -----------------------------------------------------------
+#
+#' Update a team's permissions on a repository
+#'
+#' `update_team_repository()` allows you to add or update a team's permission on a repository.
+#' `remove_team_repository()` removes the team's access to a repository.
+#'
+#' The team's permission can be set to:
+#' - `"pull"`: Team members can pull from this repository.
+#' - `"push"`: Team members can pull from and push to this repository.
+#' - `"admin"`: Team members can pull from, push to and administer this repository.
+#' - `"maintain"`: Team members can manage the repository without access to sensitive or
+#'   destructive actions. Recommended for project managers. Only applies to repositories owned
+#'   by organizations.
+#' - `"triage"`: Team members can proactively manage issues and pull requests without write
+#'   access. Recommended for contributors who triage a repository. Only applies to
+#'   repositories owned by organizations.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://developer.github.com/v3/teams/#add-or-update-team-repository>
+#' - <https://developer.github.com/v3/teams/#remove-team-repository>
+#'
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param team (string) The team name.
+#' @param org (string) The name of the organization.
+#' @param permission (string, optional) The permission to set for the team. Either: `"pull"`,
+#'   `"push"`, `"admin"`, `"maintain"` or `"triage"`. Default: `"pull"`.
+#' @param ... Parameters passed to [gh_request()].
+#'
+#' @return `update_team_repository()` and `remove_team_repository()` returns a TRUE if
+#'   successful.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # Add read access for the specified team
+#'   update_team_repository(
+#'     repo = "HairyCoos/test-repository",
+#'     team = "test-team",
+#'     org  = "HairyCoos")
+#'
+#'   # Update team's permission to "maintain"
+#'   update_team_repository(
+#'     repo       = "HairyCoos/test-repository",
+#'     team       = "test-team",
+#'     org        = "HairyCoos",
+#'     permission = "maintain")
+#'
+#'   # Remove team's access
+#'   remove_team_repository(
+#'     repo = "HairyCoos/test-repository",
+#'     team = "test-team",
+#'     org  = "HairyCoos")
+#'
+#' }
+#'
+#' @export
+#'
+update_team_repository <- function(
+  repo,
+  team,
+  org,
+  permission = "pull",
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+  team_slug <- gh_url("orgs", org, "teams") %>%
+    gh_find(property = "name", value = team, ...) %>%
+    pluck("slug")
+
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+  assert(
+    is_scalar_character(permission) && permission %in% values$repository$team_permission,
+    "'permission' for repositories must be either '", str_c(values$repository$team_permission, collapse = "', '"), "':\n  ", permission)
+  payload <- list(permission = permission)
+
+  info("Updating permissions for team '", team, "' on repository '", repo, "'")
+  response <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+    gh_request("PUT", payload = payload, ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
+
+
+#  FUNCTION: remove_team_repository -----------------------------------------------------------
+#
+#' @rdname update_team_repository
+#' @export
+#'
+remove_team_repository <- function(
+  repo,
+  team,
+  org,
+  ...)
+{
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+  team_slug <- gh_url("orgs", org, "teams") %>%
+    gh_find(property = "name", value = team, ...) %>%
+    pluck("slug")
+
+  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+  info("Updating permissions for team '", team, "' on repository '", repo, "'")
+  response <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+    gh_request("DELETE", ...)
+
+  info("Done", level = 7)
+  structure(
+    TRUE,
+    class   = c("github", "logical"),
+    url     = attr(response, "url"),
+    request = attr(response, "request"),
+    status  = attr(response, "status"),
+    header  = attr(response, "header"))
+}
+
+
 #  FUNCTION: view_repositories ----------------------------------------------------------------
 #
-#' View repositories for a user or organization
+#' View repositories for a user, team or organization
 #'
-#' `view_repositories()` summarises the repositories for a user or organization in a table
-#' with the properties as columns and a row for each repository. `view_repository()` returns
-#' a list of a single repository's properties. `browse_repository()` opens the web page for
-#' the repository in the default browser.
+#' `view_repositories()` summarises the repositories for a user, team or organization in a
+#' table with the properties as columns and a row for each repository. `view_repository()`
+#' returns a list of a single repository's properties. `browse_repository()` opens the web
+#' page for the repository in the default browser.
 #'
-#' You can summarise all the repositories associated with either a user or organization, by
-#' supplying them as an input. If neither a user or organization is specified a summary of
+#' You can summarise all the repositories associated with either a user, team or organization,
+#' by supplying them as an input. If neither a user or organization is specified a summary of
 #' the authenticated user's repositories is returned.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/repos/#list-user-repositories>
 #' - <https://developer.github.com/v3/repos/#list-organization-repositories>
+#' - <https://developer.github.com/v3/teams/#list-team-repos>
 #' - <https://developer.github.com/v3/repos/#list-your-repositories>
+#' - <https://developer.github.com/v3/repos/#get-a-repository>
+#' - <https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param user (string, optional) The login of the user.
+#' @param team (string, optional) The team name.
 #' @param org (string, optional) The name of the organization.
 #' @param sort (string, optional) The property to order the returned repositories by. Can
 #'   be either `"created"`, `"updated"`, `"pushed"` or `"full_name"`. Default: `"created"`.
@@ -394,7 +529,7 @@ update_repository <- function(
 #' - **language**: The dominant programming language in the repository.
 #' - **size**: The overall size of the repository in bytes.
 #' - **default_branch**: The name of the default branch.
-#' - **permission**: The permission the authenticated user has.
+#' - **permission**: The permission the authenticated user or team has.
 #' - **private**: Whether the repository is private.
 #' - **has_issues**: Whether the repository has issues.
 #' - **has_projects**: Whether the repository has projects.
@@ -421,6 +556,9 @@ update_repository <- function(
 #'   # View an organization's repositories
 #'   view_repositories(org = "HairyCoos")
 #'
+#'   # View a team's repositories
+#'   view_repositories(team = "Test Team", org = "HairyCoos")
+#'
 #'   # Reorder a user's repositories
 #'   view_repositories(user = "ChadGoymer", sort = "full_name", direction = "asc")
 #'
@@ -429,6 +567,9 @@ update_repository <- function(
 #'
 #'   # View a specific organization repository
 #'   view_repository("Test repo", org = "HairyCoos")
+#'
+#'   # View a specific team repository
+#'   view_repository("Test repo", team = "Test Team", org = "HairyCoos")
 #'
 #'   # Browse a specific user repository
 #'   browse_repository("Test repo", user = "ChadGoymer")
@@ -442,6 +583,7 @@ update_repository <- function(
 #'
 view_repositories <- function(
   user,
+  team,
   org,
   sort      = "created",
   direction = "desc",
@@ -462,8 +604,20 @@ view_repositories <- function(
   }
   else if (!missing(org)) {
     assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
-    info("Viewing repositories for organization '", org, "'")
-    url <- gh_url("orgs", org, "repos", type = "all", sort = sort, direction = direction)
+
+    if (missing(team)) {
+      info("Viewing repositories for organization '", org, "'")
+      url <- gh_url("orgs", org, "repos", type = "all", sort = sort, direction = direction)
+    }
+    else {
+      assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+      team_slug <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...) %>%
+        pluck("slug")
+
+      info("Viewing repositories for team '", team, "' in organization '", org, "'")
+      url <- gh_url("orgs", org, "teams", team_slug, "repos", type = "all", sort = sort, direction = direction)
+    }
   }
   else {
     info("Viewing repositories for authenticated user")
@@ -475,8 +629,9 @@ view_repositories <- function(
   info("Transforming results", level = 4)
   repositories_gh <- bind_properties(repositories_lst, properties$repository)
 
+  perm_order <- values$repository$team_permission
   permission <- map_chr(repositories_lst, function(r) {
-    values$repository$permission[max(which(as.logical(r$permissions[values$repository$permission])))]
+    last(perm_order[perm_order %in% names(r$permissions[as.logical(r$permissions)])])
   })
   repositories_gh <- add_column(repositories_gh, permission = permission, .after = "default_branch")
 
@@ -492,18 +647,35 @@ view_repositories <- function(
 #'
 view_repository <- function(
   repo,
+  team,
+  org,
   ...)
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  info("Viewing repository '", repo, "'")
-  repo_lst <- gh_url("repos", repo) %>% gh_request("GET", ...)
+  if (missing(team)) {
+    info("Viewing repository '", repo, "'")
+    repo_lst <- gh_url("repos", repo) %>% gh_request("GET", ...)
+  }
+  else {
+    assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+    team_slug <- gh_url("orgs", org, "teams") %>%
+      gh_find(property = "name", value = team, ...) %>%
+      pluck("slug")
+
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+
+    info("Viewing repository '", repo, "' for team '", team, "'")
+    repo_lst <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+      gh_request("GET", accept = "application/vnd.github.v3.repository+json", ...)
+  }
+
+  perm_order <- values$repository$team_permission
+  permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
 
   info("Transforming results", level = 4)
   repo_gh <- select_properties(repo_lst, properties$repository) %>%
-    modify_list(
-      permission = values$repository$permission[max(which(as.logical(repo_lst$permissions[values$repository$permission])))],
-      .after = "default_branch")
+    modify_list(permission = permission, .after = "default_branch")
 
   info("Done", level = 7)
   repo_gh
