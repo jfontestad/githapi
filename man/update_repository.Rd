@@ -19,6 +19,8 @@ update_repository(
   allow_rebase_merge,
   delete_branch_on_merge,
   archived,
+  team,
+  permission = "pull",
   ...
 )
 }
@@ -52,6 +54,10 @@ merge commit.}
 branches when pull requests are merged.}
 
 \item{archived}{(boolean, optional) Whether to archive the repository.}
+
+\item{team}{(string) The team name.}
+
+\item{permission}{(string, optional) The permission to set for the team. Either: \verb{"pull"``, }"push"\verb{, }"admin"\verb{, }"maintain"\code{or}"triage"\verb{. Default: }"pull"`.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -91,13 +97,28 @@ commit.
 }
 \description{
 This function updates a repository for the specified user or organization in GitHub. It can
-be used to change whether the project is private or has issues, projects or a wiki and can
-redefine the allowed behaviour when merging pull requests.
+be used to change whether the project is private or has issues, projects or a wiki, it can
+redefine the allowed behaviour when merging pull requests or add or update team
+permissions.
 }
 \details{
+The team's permission can be set to:
+\itemize{
+\item \code{"pull"}: Team members can pull from this repository.
+\item \code{"push"}: Team members can pull from and push to this repository.
+\item \code{"admin"}: Team members can pull from, push to and administer this repository.
+\item \code{"maintain"}: Team members can manage the repository without access to sensitive or
+destructive actions. Recommended for project managers. Only applies to repositories
+owned by organizations.
+\item \code{"triage"}: Team members can proactively manage issues and pull requests without write
+access. Recommended for contributors who triage a repository. Only applies to
+repositories owned by organizations.
+}
+
 For more details see the GitHub API documentation:
 \itemize{
 \item \url{https://developer.github.com/v3/repos/#edit}
+\item \url{https://developer.github.com/v3/teams/#add-or-update-team-repository-permissions}
 }
 }
 \examples{
@@ -128,6 +149,17 @@ For more details see the GitHub API documentation:
 
   # Archive a repository
   update_repository("HairyCoos/org-repository", archived = TRUE)
+
+  # Add read access for the specified team
+  update_repository(
+    repo = "HairyCoos/test-repository",
+    team = "test-team")
+
+  # Update team's permission to "maintain"
+  update_repository(
+    repo       = "HairyCoos/test-repository",
+    team       = "test-team",
+    permission = "maintain")
 
 }
 
