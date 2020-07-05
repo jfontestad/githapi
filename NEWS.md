@@ -1,3 +1,9 @@
+# githapi 0.10.5
+
+- Use `update_repository()` to set team permissions
+- Removed `update_team_repository()`
+- Removed `remove_team_repository()`
+
 # githapi 0.10.4
 
 - Set R version to 'release' for pkgdown workflow
