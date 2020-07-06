@@ -161,11 +161,24 @@ create_repository <- function(
 #' Update a user or organization repository
 #'
 #' This function updates a repository for the specified user or organization in GitHub. It can
-#' be used to change whether the project is private or has issues, projects or a wiki and can
-#' redefine the allowed behaviour when merging pull requests.
+#' be used to change whether the project is private or has issues, projects or a wiki, it can
+#' redefine the allowed behaviour when merging pull requests or add or update team
+#' permissions.
+#'
+#' The team's permission can be set to:
+#' - `"pull"`: Team members can pull from this repository.
+#' - `"push"`: Team members can pull from and push to this repository.
+#' - `"admin"`: Team members can pull from, push to and administer this repository.
+#' - `"maintain"`: Team members can manage the repository without access to sensitive or
+#'   destructive actions. Recommended for project managers. Only applies to repositories
+#'   owned by organizations.
+#' - `"triage"`: Team members can proactively manage issues and pull requests without write
+#'   access. Recommended for contributors who triage a repository. Only applies to
+#'   repositories owned by organizations.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/repos/#edit>
+#' - <https://developer.github.com/v3/teams/#add-or-update-team-repository-permissions>
 #'
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param name (string, optional) The name of the repository.
@@ -183,6 +196,9 @@ create_repository <- function(
 #' @param delete_branch_on_merge (boolean, optional) Whether to allow automatically deleting
 #'   branches when pull requests are merged.
 #' @param archived (boolean, optional) Whether to archive the repository.
+#' @param team (string) The team name.
+#' @param permission (string, optional) The permission to set for the team. Either: `"pull"``,
+#'   `"push"`, `"admin"`, `"maintain"` or `"triage"`. Default: `"pull"`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `update_repository()` returns a list of the repository properties.
@@ -246,6 +262,17 @@ create_repository <- function(
 #'   # Archive a repository
 #'   update_repository("HairyCoos/org-repository", archived = TRUE)
 #'
+#'   # Add read access for the specified team
+#'   update_repository(
+#'     repo = "HairyCoos/test-repository",
+#'     team = "test-team")
+#'
+#'   # Update team's permission to "maintain"
+#'   update_repository(
+#'     repo       = "HairyCoos/test-repository",
+#'     team       = "test-team",
+#'     permission = "maintain")
+#'
 #' }
 #'
 #' @export
@@ -265,79 +292,105 @@ update_repository <- function(
   allow_rebase_merge,
   delete_branch_on_merge,
   archived,
+  team,
+  permission = "pull",
   ...)
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   payload <- list()
 
-  if (!missing(name)) {
-    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
-    payload$name <- name
-  }
+  if (!missing(team)) {
+    assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+    org <- dirname(repo)
 
-  if (!missing(description)) {
-    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
-    payload$description <- description
-  }
+    team_slug <- gh_url("orgs", org, "teams") %>%
+      gh_find(property = "name", value = team, ...) %>%
+      pluck("slug")
 
-  if (!missing(homepage)) {
-    assert(is_scalar_character(homepage), "'description' must be a string:\n  ", homepage)
-    payload$homepage <- homepage
-  }
+    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
 
-  if (!missing(private)) {
-    assert(is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
-    payload$private <- private
-  }
+    assert(
+      is_scalar_character(permission) && permission %in% values$repository$team_permission,
+      "'permission' for repositories must be either '", str_c(values$repository$team_permission, collapse = "', '"), "':\n  ", permission)
+    payload$permission <- permission
 
-  if (!missing(has_issues)) {
-    assert(is_scalar_logical(has_issues), "'has_issues' must be a boolean:\n  ", has_issues)
-    payload$has_issues <- has_issues
-  }
+    info("Updating permissions for team '", team, "' on repository '", repo, "'")
+    gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+      gh_request("PUT", payload = payload, ...)
 
-  if (!missing(has_projects)) {
-    assert(is_scalar_logical(has_projects), "'has_projects' must be a boolean:\n  ", has_projects)
-    payload$has_projects <- has_projects
+    repo_lst <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
+      gh_request("GET", accept = "application/vnd.github.v3.repository+json", ...)
   }
+  else {
+    if (!missing(name)) {
+      assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+      payload$name <- name
+    }
 
-  if (!missing(has_wiki)) {
-    assert(is_scalar_logical(has_wiki), "'has_wiki' must be a boolean:\n  ", has_wiki)
-    payload$has_wiki <- has_wiki
+    if (!missing(description)) {
+      assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+      payload$description <- description
+    }
+
+    if (!missing(homepage)) {
+      assert(is_scalar_character(homepage), "'description' must be a string:\n  ", homepage)
+      payload$homepage <- homepage
+    }
+
+    if (!missing(private)) {
+      assert(is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
+      payload$private <- private
+    }
+
+    if (!missing(has_issues)) {
+      assert(is_scalar_logical(has_issues), "'has_issues' must be a boolean:\n  ", has_issues)
+      payload$has_issues <- has_issues
+    }
+
+    if (!missing(has_projects)) {
+      assert(is_scalar_logical(has_projects), "'has_projects' must be a boolean:\n  ", has_projects)
+      payload$has_projects <- has_projects
+    }
+
+    if (!missing(has_wiki)) {
+      assert(is_scalar_logical(has_wiki), "'has_wiki' must be a boolean:\n  ", has_wiki)
+      payload$has_wiki <- has_wiki
+    }
+
+    if (!missing(default_branch)) {
+      assert(is_scalar_character(default_branch), "'default_branch' must be a string:\n  ", default_branch)
+      payload$default_branch <- default_branch
+    }
+
+    if (!missing(allow_squash_merge)) {
+      assert(is_scalar_logical(allow_squash_merge), "'allow_squash_merge' must be a boolean:\n  ", allow_squash_merge)
+      payload$allow_squash_merge <- allow_squash_merge
+    }
+
+    if (!missing(allow_merge_commit)) {
+      assert(is_scalar_logical(allow_merge_commit), "'allow_merge_commit' must be a boolean:\n  ", allow_merge_commit)
+      payload$allow_merge_commit <- allow_merge_commit
+    }
+
+    if (!missing(allow_rebase_merge)) {
+      assert(is_scalar_logical(allow_rebase_merge), "'allow_rebase_merge' must be a boolean:\n  ", allow_rebase_merge)
+      payload$allow_rebase_merge <- allow_rebase_merge
+    }
+
+    if (!missing(delete_branch_on_merge)) {
+      assert(is_scalar_logical(delete_branch_on_merge), "'delete_branch_on_merge' must be a boolean:\n  ", delete_branch_on_merge)
+      payload$delete_branch_on_merge <- delete_branch_on_merge
+    }
+
+    if (!missing(archived)) {
+      assert(is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
+      payload$archived <- archived
+    }
+
+    info("Updating repository '", repo, "'")
+    repo_lst <- gh_url("repos", repo) %>% gh_request("PATCH", payload = payload, ...)
   }
-
-  if (!missing(default_branch)) {
-    assert(is_scalar_character(default_branch), "'default_branch' must be a string:\n  ", default_branch)
-    payload$default_branch <- default_branch
-  }
-
-  if (!missing(allow_squash_merge)) {
-    assert(is_scalar_logical(allow_squash_merge), "'allow_squash_merge' must be a boolean:\n  ", allow_squash_merge)
-    payload$allow_squash_merge <- allow_squash_merge
-  }
-
-  if (!missing(allow_merge_commit)) {
-    assert(is_scalar_logical(allow_merge_commit), "'allow_merge_commit' must be a boolean:\n  ", allow_merge_commit)
-    payload$allow_merge_commit <- allow_merge_commit
-  }
-
-  if (!missing(allow_rebase_merge)) {
-    assert(is_scalar_logical(allow_rebase_merge), "'allow_rebase_merge' must be a boolean:\n  ", allow_rebase_merge)
-    payload$allow_rebase_merge <- allow_rebase_merge
-  }
-
-  if (!missing(delete_branch_on_merge)) {
-    assert(is_scalar_logical(delete_branch_on_merge), "'delete_branch_on_merge' must be a boolean:\n  ", delete_branch_on_merge)
-    payload$delete_branch_on_merge <- delete_branch_on_merge
-  }
-
-  if (!missing(archived)) {
-    assert(is_scalar_logical(archived), "'archived' must be a boolean:\n  ", archived)
-    payload$archived <- archived
-  }
-
-  info("Updating repository '", repo, "'")
-  repo_lst <- gh_url("repos", repo) %>% gh_request("PATCH", payload = payload, ...)
 
   perm_order <- values$repository$team_permission
   permission <- last(perm_order[perm_order %in% names(repo_lst$permissions[as.logical(repo_lst$permissions)])])
@@ -348,135 +401,6 @@ update_repository <- function(
 
   info("Done", level = 7)
   repo_gh
-}
-
-
-#  FUNCTION: update_team_repository -----------------------------------------------------------
-#
-#' Update a team's permissions on a repository
-#'
-#' `update_team_repository()` allows you to add or update a team's permission on a repository.
-#' `remove_team_repository()` removes the team's access to a repository.
-#'
-#' The team's permission can be set to:
-#' - `"pull"`: Team members can pull from this repository.
-#' - `"push"`: Team members can pull from and push to this repository.
-#' - `"admin"`: Team members can pull from, push to and administer this repository.
-#' - `"maintain"`: Team members can manage the repository without access to sensitive or
-#'   destructive actions. Recommended for project managers. Only applies to repositories owned
-#'   by organizations.
-#' - `"triage"`: Team members can proactively manage issues and pull requests without write
-#'   access. Recommended for contributors who triage a repository. Only applies to
-#'   repositories owned by organizations.
-#'
-#' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/teams/#add-or-update-team-repository>
-#' - <https://developer.github.com/v3/teams/#remove-team-repository>
-#'
-#' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param team (string) The team name.
-#' @param org (string) The name of the organization.
-#' @param permission (string, optional) The permission to set for the team. Either: `"pull"`,
-#'   `"push"`, `"admin"`, `"maintain"` or `"triage"`. Default: `"pull"`.
-#' @param ... Parameters passed to [gh_request()].
-#'
-#' @return `update_team_repository()` and `remove_team_repository()` returns a TRUE if
-#'   successful.
-#'
-#' @examples
-#' \dontrun{
-#'
-#'   # Add read access for the specified team
-#'   update_team_repository(
-#'     repo = "HairyCoos/test-repository",
-#'     team = "test-team",
-#'     org  = "HairyCoos")
-#'
-#'   # Update team's permission to "maintain"
-#'   update_team_repository(
-#'     repo       = "HairyCoos/test-repository",
-#'     team       = "test-team",
-#'     org        = "HairyCoos",
-#'     permission = "maintain")
-#'
-#'   # Remove team's access
-#'   remove_team_repository(
-#'     repo = "HairyCoos/test-repository",
-#'     team = "test-team",
-#'     org  = "HairyCoos")
-#'
-#' }
-#'
-#' @export
-#'
-update_team_repository <- function(
-  repo,
-  team,
-  org,
-  permission = "pull",
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-
-  assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
-  team_slug <- gh_url("orgs", org, "teams") %>%
-    gh_find(property = "name", value = team, ...) %>%
-    pluck("slug")
-
-  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
-
-  assert(
-    is_scalar_character(permission) && permission %in% values$repository$team_permission,
-    "'permission' for repositories must be either '", str_c(values$repository$team_permission, collapse = "', '"), "':\n  ", permission)
-  payload <- list(permission = permission)
-
-  info("Updating permissions for team '", team, "' on repository '", repo, "'")
-  response <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
-    gh_request("PUT", payload = payload, ...)
-
-  info("Done", level = 7)
-  structure(
-    TRUE,
-    class   = c("github", "logical"),
-    url     = attr(response, "url"),
-    request = attr(response, "request"),
-    status  = attr(response, "status"),
-    header  = attr(response, "header"))
-}
-
-
-#  FUNCTION: remove_team_repository -----------------------------------------------------------
-#
-#' @rdname update_team_repository
-#' @export
-#'
-remove_team_repository <- function(
-  repo,
-  team,
-  org,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-
-  assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
-  team_slug <- gh_url("orgs", org, "teams") %>%
-    gh_find(property = "name", value = team, ...) %>%
-    pluck("slug")
-
-  assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
-
-  info("Updating permissions for team '", team, "' on repository '", repo, "'")
-  response <- gh_url("orgs", org, "teams", team_slug, "repos", repo) %>%
-    gh_request("DELETE", ...)
-
-  info("Done", level = 7)
-  structure(
-    TRUE,
-    class   = c("github", "logical"),
-    url     = attr(response, "url"),
-    request = attr(response, "request"),
-    status  = attr(response, "status"),
-    header  = attr(response, "header"))
 }
 
 

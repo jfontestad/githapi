@@ -270,22 +270,42 @@ test_that("update_repository changes a repository's properties and returns them 
 
   expect_true(archived_repo$archived)
 
-})
 
-
-# TEST: update_team_repository ----------------------------------------------------------------
-
-test_that("update_team_repository adds and updates a teams permission to a repository", {
-
-  added_repo <- update_team_repository(
+  added_team_repo <- update_repository(
     repo       = str_c("HairyCoos/updated-org-repository-", suffix),
     team       = str_c("test-repositories-", suffix),
-    org        = "HairyCoos",
     permission = "pull")
 
-  expect_is(added_repo, "logical")
-  expect_identical(attr(added_repo, "status"), 204L)
-  expect_identical(as.logical(added_repo), TRUE)
+  expect_is(added_team_repo, "list")
+  expect_identical(attr(added_team_repo, "status"), 200L)
+  expect_identical(
+    map_chr(added_team_repo, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      html_url           = "character",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
 
   read_repo <- view_repository(
     repo = str_c("HairyCoos/updated-org-repository-", suffix),
@@ -294,15 +314,42 @@ test_that("update_team_repository adds and updates a teams permission to a repos
 
   expect_identical(read_repo$permission, "pull")
 
-  updated_repo <- update_team_repository(
+
+  updated_team_repo <- update_repository(
     repo       = str_c("HairyCoos/updated-org-repository-", suffix),
     team       = str_c("test-repositories-", suffix),
-    org        = "HairyCoos",
     permission = "maintain")
 
-  expect_is(updated_repo, "logical")
-  expect_identical(attr(updated_repo, "status"), 204L)
-  expect_identical(as.logical(updated_repo), TRUE)
+  expect_is(updated_team_repo, "list")
+  expect_identical(attr(updated_team_repo, "status"), 200L)
+  expect_identical(
+    map_chr(updated_team_repo, ~ class(.)[[1]]),
+    c(id                 = "integer",
+      name               = "character",
+      full_name          = "character",
+      description        = "character",
+      owner              = "character",
+      homepage           = "character",
+      language           = "character",
+      size               = "numeric",
+      default_branch     = "character",
+      permission         = "character",
+      private            = "logical",
+      has_issues         = "logical",
+      has_projects       = "logical",
+      has_wiki           = "logical",
+      has_pages          = "logical",
+      has_downloads      = "logical",
+      allow_squash_merge = "logical",
+      allow_merge_commit = "logical",
+      allow_rebase_merge = "logical",
+      fork               = "logical",
+      archived           = "logical",
+      disabled           = "logical",
+      html_url           = "character",
+      pushed_at          = "POSIXct",
+      created_at         = "POSIXct",
+      updated_at         = "POSIXct"))
 
   maintain_repo <- view_repository(
     repo = str_c("HairyCoos/updated-org-repository-", suffix),
@@ -567,29 +614,6 @@ test_that("browse_repository opens the repository's page in the browser", {
   expect_is(repo, "character")
   expect_identical(attr(repo, "status"), 200L)
   expect_identical(as.character(repo), str_c("https://github.com/ChadGoymer/updated-user-repository-", suffix))
-
-})
-
-
-# TEST: remove_team_repository ----------------------------------------------------------------
-
-test_that("remove_team_repository removes a teams acces to a repository", {
-
-  removed_repo <- remove_team_repository(
-    repo       = str_c("HairyCoos/updated-org-repository-", suffix),
-    team       = str_c("test-repositories-", suffix),
-    org        = "HairyCoos")
-
-  expect_is(removed_repo, "logical")
-  expect_identical(attr(removed_repo, "status"), 204L)
-  expect_identical(as.logical(removed_repo), TRUE)
-
-  team_repos <- view_repositories(
-    team  = str_c("test-repositories-", suffix),
-    org   = "HairyCoos",
-    n_max = 10)
-
-  expect_identical(nrow(team_repos), 0L)
 
 })
 
