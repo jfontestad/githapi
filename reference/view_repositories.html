@@ -75,7 +75,7 @@ page for the repository in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -120,25 +120,25 @@ page for the repository in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_repositories()</code> summarises the repositories for a user, team or organization in a
-table with the properties as columns and a row for each repository. <code>view_repository()</code>
-returns a list of a single repository's properties. <code>browse_repository()</code> opens the web
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repositories()</a></code> summarises the repositories for a user, team or organization in a
+table with the properties as columns and a row for each repository. <code><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repository()</a></code>
+returns a list of a single repository's properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>browse_repository()</a></code> opens the web
 page for the repository in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_repositories</span>(
-  <span class='no'>user</span>,
-  <span class='no'>team</span>,
-  <span class='no'>org</span>,
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='st'>"created"</span>,
-  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"desc"</span>,
-  <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='no'>...</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repositories</a></span>(
+  <span class='kw'>user</span>,
+  <span class='kw'>team</span>,
+  <span class='kw'>org</span>,
+  sort = <span class='st'>"created"</span>,
+  direction = <span class='st'>"desc"</span>,
+  n_max = <span class='fl'>1000</span>,
+  <span class='kw'>...</span>
 )
 
-<span class='fu'>view_repository</span>(<span class='no'>repo</span>, <span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repository</a></span>(<span class='kw'>repo</span>, <span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_repository</span>(<span class='no'>repo</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>browse_repository</a></span>(<span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,7 +171,7 @@ be either <code>"created"</code>, <code>"updated"</code>, <code>"pushed"</code> 
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -181,9 +181,9 @@ be either <code>"created"</code>, <code>"updated"</code>, <code>"pushed"</code> 
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_repositories()</code> returns a tibble of repository properties.
-<code>view_repository()</code> returns a list of properties for a single repository.
-<code>browse_repository()</code> opens the default browser on the repository's page and returns
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repositories()</a></code> returns a tibble of repository properties.
+<code><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repository()</a></code> returns a list of properties for a single repository.
+<code><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>browse_repository()</a></code> opens the default browser on the repository's page and returns
 the URL.</p>
 <p><strong>Repository Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the repository.</p></li>
@@ -231,36 +231,37 @@ the authenticated user's repositories is returned.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View a user's repositories</span>
-  <span class='fu'>view_repositories</span>(<span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repositories</a></span>(user = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View an organization's repositories</span>
-  <span class='fu'>view_repositories</span>(<span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repositories</a></span>(org = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View a team's repositories</span>
-  <span class='fu'>view_repositories</span>(<span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"Test Team"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repositories</a></span>(team = <span class='st'>"Test Team"</span>, org = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Reorder a user's repositories</span>
-  <span class='fu'>view_repositories</span>(<span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>, <span class='kw'>sort</span> <span class='kw'>=</span> <span class='st'>"full_name"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"asc"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repositories</a></span>(user = <span class='st'>"ChadGoymer"</span>, sort = <span class='st'>"full_name"</span>, direction = <span class='st'>"asc"</span>)
 
   <span class='co'># View a specific user repository</span>
-  <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repository</a></span>(<span class='st'>"Test repo"</span>, user = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View a specific organization repository</span>
-  <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repository</a></span>(<span class='st'>"Test repo"</span>, org = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View a specific team repository</span>
-  <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"Test Team"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>view_repository</a></span>(<span class='st'>"Test repo"</span>, team = <span class='st'>"Test Team"</span>, org = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Browse a specific user repository</span>
-  <span class='fu'>browse_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>browse_repository</a></span>(<span class='st'>"Test repo"</span>, user = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># Browse a specific organization repository</span>
-  <span class='fu'>browse_repository</span>(<span class='st'>"Test repo"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_repositories.html'>browse_repository</a></span>(<span class='st'>"Test repo"</span>, org = <span class='st'>"HairyCoos"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

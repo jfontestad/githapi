@@ -73,7 +73,7 @@ repository in GitHub. It can also be used to set the colour and description." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ repository in GitHub. It can also be used to set the colour and description." />
 repository in GitHub. It can also be used to set the colour and description.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_label</span>(<span class='no'>name</span>, <span class='no'>repo</span>, <span class='no'>description</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>random_color</span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_label.html'>create_label</a></span>(<span class='kw'>name</span>, <span class='kw'>repo</span>, <span class='kw'>description</span>, color = <span class='fu'>random_color</span>(), <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,13 +147,13 @@ supplied a color is chosen at random.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>create_label()</code> returns a list of the label's properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/create_label.html'>create_label()</a></code> returns a list of the label's properties.</p>
 <p><strong>Label Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the label.</p></li>
 <li><p><strong>color</strong>: The color of the label in hexidecimal code.</p></li>
@@ -168,15 +168,16 @@ supplied a color is chosen at random.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='fu'>create_label</span>(
-    <span class='kw'>name</span>        <span class='kw'>=</span> <span class='st'>"new-label"</span>,
-    <span class='kw'>repo</span>        <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>color</span>       <span class='kw'>=</span> <span class='st'>"blue"</span>,
-    <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"This is a detailed label"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_label.html'>create_label</a></span>(
+    name        = <span class='st'>"new-label"</span>,
+    repo        = <span class='st'>"ChadGoymer/githapi"</span>,
+    color       = <span class='st'>"blue"</span>,
+    description = <span class='st'>"This is a detailed label"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

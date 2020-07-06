@@ -74,7 +74,7 @@ returns a list of all membership properties for a user in a single organization 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -119,14 +119,14 @@ returns a list of all membership properties for a user in a single organization 
     </div>
 
     <div class="ref-description">
-    <p><code>view_memberships()</code> summarises the authenticate user's membership in organizations in
-a table with the properties as columns and a row for each organization. <code>view_membership()</code>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_memberships()</a></code> summarises the authenticate user's membership in organizations in
+a table with the properties as columns and a row for each organization. <code><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_membership()</a></code>
 returns a list of all membership properties for a user in a single organization or team.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_memberships</span>(<span class='no'>state</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_memberships</a></span>(<span class='kw'>state</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'>view_membership</span>(<span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>team</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_membership</a></span>(<span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>team</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,7 +143,7 @@ the authenticated user.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -161,7 +161,7 @@ the authenticated user.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_memberships()</code> returns a tibble of membership properties. <code>view_membership()</code>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_memberships()</a></code> returns a tibble of membership properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_membership()</a></code>
 returns a list of membership properties for a single organization or team.</p>
 <p><strong>Membership Properties:</strong></p><ul>
 <li><p><strong>user</strong>: The user login.</p></li>
@@ -184,21 +184,22 @@ authenticate user is also a member.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View membership of all organizations the authenticated user is a member of</span>
-  <span class='fu'>view_memberships</span>()
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_memberships</a></span>()
 
   <span class='co'># View only active memberships for the authenticated user</span>
-  <span class='fu'>view_memberships</span>(<span class='kw'>state</span> <span class='kw'>=</span> <span class='st'>"active"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_memberships</a></span>(state = <span class='st'>"active"</span>)
 
   <span class='co'># View the membership of a user in an organization</span>
-  <span class='fu'>view_membership</span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_membership</a></span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View the membership of a user in a team</span>
-  <span class='fu'>view_membership</span>(<span class='kw'>user</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>, <span class='kw'>org</span> <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>, <span class='kw'>team</span> <span class='kw'>=</span> <span class='st'>"HeadCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_memberships.html'>view_membership</a></span>(user = <span class='st'>"ChadGoymer"</span>, org = <span class='st'>"HairyCoos"</span>, team = <span class='st'>"HeadCoos"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

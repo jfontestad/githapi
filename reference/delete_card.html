@@ -73,7 +73,7 @@ recoverable. Instead, you may way to archive the card with update_card()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -119,10 +119,10 @@ recoverable. Instead, you may way to archive the card with update_card()." />
 
     <div class="ref-description">
     <p>This function deletes a card in a GitHub project. Care should be taken as it will not be
-recoverable. Instead, you may way to archive the card with <code><a href='update_card.html'>update_card()</a></code>.</p>
+recoverable. Instead, you may way to archive the card with <code><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>update_card()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_card</span>(<span class='no'>card</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_card.html'>delete_card</a></span>(<span class='kw'>card</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,13 +133,13 @@ recoverable. Instead, you may way to archive the card with <code><a href='update
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>delete_card()</code> returns a TRUE if successfully deleted.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/delete_card.html'>delete_card()</a></code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>You can delete a card associated with either a repository, user or organization, by
@@ -150,12 +150,13 @@ supplying them as an input, as long as you have appropriate permissions.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Delete a card</span>
-  <span class='fu'>delete_card</span>(<span class='fl'>123456</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_card.html'>delete_card</a></span>(<span class='fl'>123456</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

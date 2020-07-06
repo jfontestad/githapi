@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     <p>This function downloads the files in the specified gist to the path provided.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>download_gist</span>(<span class='no'>gist</span>, <span class='no'>path</span>, <span class='no'>files</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/download_gist.html'>download_gist</a></span>(<span class='kw'>gist</span>, <span class='kw'>path</span>, <span class='kw'>files</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,27 +140,28 @@ in the gist will be downloaded.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>download_gist()</code> returns the path where the file is downloaded to.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/download_gist.html'>download_gist()</a></code> returns the path where the file is downloaded to.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Download all the files in a gist</span>
-  <span class='fu'>download_gist</span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>, <span class='st'>"./gist"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/download_gist.html'>download_gist</a></span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>, <span class='st'>"./gist"</span>)
 
   <span class='co'># Download a single file in a gist</span>
-  <span class='fu'>download_gist</span>(
-    <span class='kw'>gist</span>  <span class='kw'>=</span> <span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>,
-    <span class='kw'>path</span>  <span class='kw'>=</span> <span class='st'>"./gist"</span>,
-    <span class='kw'>files</span> <span class='kw'>=</span> <span class='st'>"helloworld.R"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/download_gist.html'>download_gist</a></span>(
+    gist  = <span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>,
+    path  = <span class='st'>"./gist"</span>,
+    files = <span class='st'>"helloworld.R"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -73,7 +73,7 @@ role within the organization or team." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ role within the organization or team." />
 role within the organization or team.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_membership</span>(<span class='no'>user</span>, <span class='no'>org</span>, <span class='no'>team</span>, <span class='no'>role</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_membership.html'>update_membership</a></span>(<span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>team</span>, <span class='kw'>role</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +146,7 @@ either <code>"member"</code> or <code>"admin"</code>, for a team it is either <c
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -173,21 +173,22 @@ for teams it is either <code>"member"</code> or <code>"maintainer"</code>.</p></
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Invite a new user into an organization</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_membership.html'>update_membership</a></span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Update a user's role in an organization</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='kw'>role</span> <span class='kw'>=</span> <span class='st'>"admin"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_membership.html'>update_membership</a></span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, role = <span class='st'>"admin"</span>)
 
   <span class='co'># Invite a new user into a team</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_membership.html'>update_membership</a></span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>)
 
   <span class='co'># Update a user's role in a team</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>, <span class='kw'>role</span> <span class='kw'>=</span> <span class='st'>"maintainer"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_membership.html'>update_membership</a></span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>, role = <span class='st'>"maintainer"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

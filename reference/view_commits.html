@@ -75,7 +75,7 @@ for the commit history and commit details respectively in the default browser." 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -120,19 +120,19 @@ for the commit history and commit details respectively in the default browser." 
     </div>
 
     <div class="ref-description">
-    <p><code>view_commits()</code> summarises commits in a table with the properties as columns and a row for
-each commit in the history of the given reference. <code>view_commit()</code> returns a list of all
-properties for a single commit. <code>browse_commits()</code> and <code>browse_commit()</code> opens the web page
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commits()</a></code> summarises commits in a table with the properties as columns and a row for
+each commit in the history of the given reference. <code><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commit()</a></code> returns a list of all
+properties for a single commit. <code><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>browse_commits()</a></code> and <code><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>browse_commit()</a></code> opens the web page
 for the commit history and commit details respectively in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_commits</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>path</span>, <span class='no'>author</span>, <span class='no'>since</span>, <span class='no'>until</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commits</a></span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>path</span>, <span class='kw'>author</span>, <span class='kw'>since</span>, <span class='kw'>until</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'>view_commit</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commit</a></span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_commits</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>browse_commits</a></span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_commit</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>browse_commit</a></span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,14 +169,14 @@ for the commit history and commit details respectively in the default browser.</
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_commits()</code> returns a tibble of commit properties. <code>view_commit()</code> returns
-a list of properties for a single commit. <code>browse_commits()</code> and <code>browse_commit</code> opens
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commits()</a></code> returns a tibble of commit properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commit()</a></code> returns
+a list of properties for a single commit. <code><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>browse_commits()</a></code> and <code>browse_commit</code> opens
 the default browser on the commit's history or details page and returns the URL.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
@@ -202,37 +202,38 @@ the default browser on the commit's history or details page and returns the URL.
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View the history of commits for the master branch</span>
-  <span class='fu'>view_commits</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commits</a></span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View commits where the README.md file has been changed</span>
-  <span class='fu'>view_commits</span>(
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"README.md"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commits</a></span>(
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>,
+    path = <span class='st'>"README.md"</span>)
 
   <span class='co'># View commits created by an author</span>
-  <span class='fu'>view_commits</span>(
-    <span class='kw'>ref</span>    <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span>   <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>author</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commits</a></span>(
+    ref    = <span class='st'>"master"</span>,
+    repo   = <span class='st'>"ChadGoymer/githapi"</span>,
+    author = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View commits within a time window</span>
-  <span class='fu'>view_commits</span>(
-    <span class='kw'>ref</span>   <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span>  <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>since</span> <span class='kw'>=</span> <span class='st'>"2020-01-01 00:00:00"</span>,
-    <span class='kw'>until</span> <span class='kw'>=</span> <span class='st'>"2020-04-01 00:00:00"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commits</a></span>(
+    ref   = <span class='st'>"master"</span>,
+    repo  = <span class='st'>"ChadGoymer/githapi"</span>,
+    since = <span class='st'>"2020-01-01 00:00:00"</span>,
+    until = <span class='st'>"2020-04-01 00:00:00"</span>)
 
   <span class='co'># View the properties of the last commit on the master branch</span>
-  <span class='fu'>view_commit</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commit</a></span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View the properties of the commit with tag "0.8.7"</span>
-  <span class='fu'>view_commit</span>(<span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_commits.html'>view_commit</a></span>(<span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

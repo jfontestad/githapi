@@ -41,8 +41,9 @@
 
 <meta property="og:title" content="Update a user or organization repository — update_repository" />
 <meta property="og:description" content="This function updates a repository for the specified user or organization in GitHub. It can
-be used to change whether the project is private or has issues, projects or a wiki and can
-redefine the allowed behaviour when merging pull requests." />
+be used to change whether the project is private or has issues, projects or a wiki, it can
+redefine the allowed behaviour when merging pull requests or add or update team
+permissions." />
 
 
 
@@ -74,7 +75,7 @@ redefine the allowed behaviour when merging pull requests." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -120,26 +121,29 @@ redefine the allowed behaviour when merging pull requests." />
 
     <div class="ref-description">
     <p>This function updates a repository for the specified user or organization in GitHub. It can
-be used to change whether the project is private or has issues, projects or a wiki and can
-redefine the allowed behaviour when merging pull requests.</p>
+be used to change whether the project is private or has issues, projects or a wiki, it can
+redefine the allowed behaviour when merging pull requests or add or update team
+permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_repository</span>(
-  <span class='no'>repo</span>,
-  <span class='no'>name</span>,
-  <span class='no'>description</span>,
-  <span class='no'>homepage</span>,
-  <span class='no'>private</span>,
-  <span class='no'>has_issues</span>,
-  <span class='no'>has_projects</span>,
-  <span class='no'>has_wiki</span>,
-  <span class='no'>default_branch</span>,
-  <span class='no'>allow_squash_merge</span>,
-  <span class='no'>allow_merge_commit</span>,
-  <span class='no'>allow_rebase_merge</span>,
-  <span class='no'>delete_branch_on_merge</span>,
-  <span class='no'>archived</span>,
-  <span class='no'>...</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+  <span class='kw'>repo</span>,
+  <span class='kw'>name</span>,
+  <span class='kw'>description</span>,
+  <span class='kw'>homepage</span>,
+  <span class='kw'>private</span>,
+  <span class='kw'>has_issues</span>,
+  <span class='kw'>has_projects</span>,
+  <span class='kw'>has_wiki</span>,
+  <span class='kw'>default_branch</span>,
+  <span class='kw'>allow_squash_merge</span>,
+  <span class='kw'>allow_merge_commit</span>,
+  <span class='kw'>allow_rebase_merge</span>,
+  <span class='kw'>delete_branch_on_merge</span>,
+  <span class='kw'>archived</span>,
+  <span class='kw'>team</span>,
+  permission = <span class='st'>"pull"</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -204,14 +208,22 @@ branches when pull requests are merged.</p></td>
       <td><p>(boolean, optional) Whether to archive the repository.</p></td>
     </tr>
     <tr>
+      <th>team</th>
+      <td><p>(string) The team name.</p></td>
+    </tr>
+    <tr>
+      <th>permission</th>
+      <td><p>(string, optional) The permission to set for the team. Either: <code>"pull"``, </code>"push"<code>, </code>"admin"<code>, </code>"maintain"<code>or</code>"triage"<code>. Default: </code>"pull"`.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_repository()</code> returns a list of the repository properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository()</a></code> returns a list of the repository properties.</p>
 <p><strong>Repository Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the repository.</p></li>
 <li><p><strong>name</strong>: The name of the repository.</p></li>
@@ -244,41 +256,66 @@ commit.</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For more details see the GitHub API documentation:</p><ul>
+    <p>The team's permission can be set to:</p><ul>
+<li><p><code>"pull"</code>: Team members can pull from this repository.</p></li>
+<li><p><code>"push"</code>: Team members can pull from and push to this repository.</p></li>
+<li><p><code>"admin"</code>: Team members can pull from, push to and administer this repository.</p></li>
+<li><p><code>"maintain"</code>: Team members can manage the repository without access to sensitive or
+destructive actions. Recommended for project managers. Only applies to repositories
+owned by organizations.</p></li>
+<li><p><code>"triage"</code>: Team members can proactively manage issues and pull requests without write
+access. Recommended for contributors who triage a repository. Only applies to
+repositories owned by organizations.</p></li>
+</ul>
+
+<p>For more details see the GitHub API documentation:</p><ul>
 <li><p><a href='https://developer.github.com/v3/repos/#edit'>https://developer.github.com/v3/repos/#edit</a></p></li>
+<li><p><a href='https://developer.github.com/v3/teams/#add-or-update-team-repository-permissions'>https://developer.github.com/v3/teams/#add-or-update-team-repository-permissions</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update a repository</span>
-  <span class='fu'>update_repository</span>(
-    <span class='kw'>repo</span>           <span class='kw'>=</span> <span class='st'>"ChadGoymer/user-repository"</span>,
-    <span class='kw'>name</span>           <span class='kw'>=</span> <span class='st'>"updated-user-repository"</span>,
-    <span class='kw'>description</span>    <span class='kw'>=</span> <span class='st'>"This is an updated user repository"</span>,
-    <span class='kw'>homepage</span>       <span class='kw'>=</span> <span class='st'>"https://updated-user-repository.com"</span>,
-    <span class='kw'>has_issues</span>     <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>has_projects</span>   <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>has_wiki</span>       <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>default_branch</span> <span class='kw'>=</span> <span class='st'>"master"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+    repo           = <span class='st'>"ChadGoymer/user-repository"</span>,
+    name           = <span class='st'>"updated-user-repository"</span>,
+    description    = <span class='st'>"This is an updated user repository"</span>,
+    homepage       = <span class='st'>"https://updated-user-repository.com"</span>,
+    has_issues     = <span class='fl'>FALSE</span>,
+    has_projects   = <span class='fl'>FALSE</span>,
+    has_wiki       = <span class='fl'>FALSE</span>,
+    default_branch = <span class='st'>"master"</span>)
 
   <span class='co'># Update an organization's repository</span>
-  <span class='fu'>update_repository</span>(
-    <span class='kw'>repo</span>                   <span class='kw'>=</span> <span class='st'>"HairyCoos/org-repository"</span>,
-    <span class='kw'>name</span>                   <span class='kw'>=</span> <span class='st'>"updated-org-repository"</span>,
-    <span class='kw'>description</span>            <span class='kw'>=</span> <span class='st'>"This is an updated organization repository"</span>,
-    <span class='kw'>homepage</span>               <span class='kw'>=</span> <span class='st'>"https://updated-org-repository.com"</span>,
-    <span class='kw'>private</span>                <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>allow_squash_merge</span>     <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>allow_merge_commit</span>     <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>allow_rebase_merge</span>     <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>delete_branch_on_merge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+    repo                   = <span class='st'>"HairyCoos/org-repository"</span>,
+    name                   = <span class='st'>"updated-org-repository"</span>,
+    description            = <span class='st'>"This is an updated organization repository"</span>,
+    homepage               = <span class='st'>"https://updated-org-repository.com"</span>,
+    private                = <span class='fl'>FALSE</span>,
+    allow_squash_merge     = <span class='fl'>FALSE</span>,
+    allow_merge_commit     = <span class='fl'>FALSE</span>,
+    allow_rebase_merge     = <span class='fl'>TRUE</span>,
+    delete_branch_on_merge = <span class='fl'>TRUE</span>)
 
   <span class='co'># Archive a repository</span>
-  <span class='fu'>update_repository</span>(<span class='st'>"HairyCoos/org-repository"</span>, <span class='kw'>archived</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(<span class='st'>"HairyCoos/org-repository"</span>, archived = <span class='fl'>TRUE</span>)
 
-}</div></pre>
+  <span class='co'># Add read access for the specified team</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+    repo = <span class='st'>"HairyCoos/test-repository"</span>,
+    team = <span class='st'>"test-team"</span>)
+
+  <span class='co'># Update team's permission to "maintain"</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+    repo       = <span class='st'>"HairyCoos/test-repository"</span>,
+    team       = <span class='st'>"test-team"</span>,
+    permission = <span class='st'>"maintain"</span>)
+
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

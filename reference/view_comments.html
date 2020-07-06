@@ -75,7 +75,7 @@ page for the comment in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -120,17 +120,17 @@ page for the comment in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_comments()</code> summarises comments in a table with the properties as columns and a row
-for each comment registered for the gist, issue, pull request or commit. <code>view_comment()</code>
-returns a list of all properties for a single comment. <code>browse_comment()</code> opens the web
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comments()</a></code> summarises comments in a table with the properties as columns and a row
+for each comment registered for the gist, issue, pull request or commit. <code><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comment()</a></code>
+returns a list of all properties for a single comment. <code><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>browse_comment()</a></code> opens the web
 page for the comment in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_comments</span>(<span class='no'>gist</span>, <span class='no'>issue</span>, <span class='no'>pull_request</span>, <span class='no'>commit</span>, <span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comments</a></span>(<span class='kw'>gist</span>, <span class='kw'>issue</span>, <span class='kw'>pull_request</span>, <span class='kw'>commit</span>, <span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'>view_comment</span>(<span class='no'>comment</span>, <span class='no'>gist</span>, <span class='no'>repo</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"gist"</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comment</a></span>(<span class='kw'>comment</span>, <span class='kw'>gist</span>, <span class='kw'>repo</span>, type = <span class='st'>"gist"</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_comment</span>(<span class='no'>comment</span>, <span class='no'>repo</span>, <span class='no'>type</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>browse_comment</a></span>(<span class='kw'>comment</span>, <span class='kw'>repo</span>, <span class='kw'>type</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,7 +161,7 @@ page for the comment in the default browser.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>comment</th>
@@ -176,8 +176,8 @@ page for the comment in the default browser.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_comments()</code> returns a tibble of comment properties. <code>view_comment()</code>
-returns a list of properties for a single comment. <code>browse_comment()</code> opens the
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comments()</a></code> returns a tibble of comment properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comment()</a></code>
+returns a list of properties for a single comment. <code><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>browse_comment()</a></code> opens the
 default browser on the comment page and returns the URL.</p>
 <p><strong>Comment Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id of the comment.</p></li>
@@ -209,66 +209,67 @@ request or commit comments).</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View comments on a gist</span>
-  <span class='fu'>view_comments</span>(<span class='kw'>gist</span> <span class='kw'>=</span> <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comments</a></span>(gist = <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
 
   <span class='co'># View comments on an issue</span>
-  <span class='fu'>view_comments</span>(
-    <span class='kw'>issue</span> <span class='kw'>=</span> <span class='st'>"test issue"</span>,
-    <span class='kw'>repo</span>  <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comments</a></span>(
+    issue = <span class='st'>"test issue"</span>,
+    repo  = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View comments on a pull request</span>
-  <span class='fu'>view_comments</span>(
-    <span class='kw'>pull_request</span> <span class='kw'>=</span> <span class='st'>"test pull request"</span>,
-    <span class='kw'>repo</span>         <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comments</a></span>(
+    pull_request = <span class='st'>"test pull request"</span>,
+    repo         = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View comments on a commit</span>
-  <span class='fu'>view_comments</span>(
-    <span class='kw'>commit</span> <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span>   <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comments</a></span>(
+    commit = <span class='st'>"master"</span>,
+    repo   = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single gist comment</span>
-  <span class='fu'>view_comment</span>(<span class='no'>gist_comment_id</span>, <span class='kw'>gist</span> <span class='kw'>=</span> <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comment</a></span>(<span class='kw'>gist_comment_id</span>, gist = <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
 
   <span class='co'># View a single issue comment</span>
-  <span class='fu'>view_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>622980929</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"issue"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comment</a></span>(
+    comment = <span class='fl'>622980929</span>,
+    type    = <span class='st'>"issue"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single pull request comment</span>
-  <span class='fu'>view_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>418979473</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"pull_request"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comment</a></span>(
+    comment = <span class='fl'>418979473</span>,
+    type    = <span class='st'>"pull_request"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single commit comment</span>
-  <span class='fu'>view_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>38899533</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"commit"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>view_comment</a></span>(
+    comment = <span class='fl'>38899533</span>,
+    type    = <span class='st'>"commit"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Browse an issue comment</span>
-  <span class='fu'>browse_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>622980929</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"issue"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>browse_comment</a></span>(
+    comment = <span class='fl'>622980929</span>,
+    type    = <span class='st'>"issue"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Browse a pull request comment</span>
-  <span class='fu'>browse_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>418979473</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"pull_request"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>browse_comment</a></span>(
+    comment = <span class='fl'>418979473</span>,
+    type    = <span class='st'>"pull_request"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Browse a commit comment</span>
-  <span class='fu'>browse_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>38899533</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"commit"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_comments.html'>browse_comment</a></span>(
+    comment = <span class='fl'>38899533</span>,
+    type    = <span class='st'>"commit"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

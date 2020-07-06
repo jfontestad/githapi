@@ -74,7 +74,7 @@ browse_gist() opens the web page for the gist in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -119,16 +119,16 @@ browse_gist() opens the web page for the gist in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_gists()</code> summarises a user's gists in a table with the properties as columns and a
-row for each gist. <code>view_gist()</code> returns a list of all properties for a single gist.
-<code>browse_gist()</code> opens the web page for the gist in the default browser.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gists()</a></code> summarises a user's gists in a table with the properties as columns and a
+row for each gist. <code><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gist()</a></code> returns a list of all properties for a single gist.
+<code><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>browse_gist()</a></code> opens the web page for the gist in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_gists</span>(<span class='no'>user</span>, <span class='no'>since</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gists</a></span>(<span class='kw'>user</span>, <span class='kw'>since</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'>view_gist</span>(<span class='no'>gist</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gist</a></span>(<span class='kw'>gist</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_gist</span>(<span class='no'>gist</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>browse_gist</a></span>(<span class='kw'>gist</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,7 +149,7 @@ user is used.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>gist</th>
@@ -159,13 +159,13 @@ user is used.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_gists()</code> returns a tibble of gist properties. <code>view_gist()</code>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gists()</a></code> returns a tibble of gist properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gist()</a></code>
 returns a list of properties for a single gist. <code>browse_gist</code> opens the
 default browser on the gist page and returns the URL.</p>
 <p><strong>Gist Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id for the gist</p></li>
 <li><p><strong>description</strong>: The description of the gist</p></li>
-<li><p><strong>files</strong>: For <code>view_gists()</code> just the filenames are returned, for <code>view_gist()</code> a
+<li><p><strong>files</strong>: For <code><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gists()</a></code> just the filenames are returned, for <code><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gist()</a></code> a
 tibble of file properties is returned:</p><ul>
 <li><p><strong>filename</strong>: The name of the file</p></li>
 <li><p><strong>type</strong>: The type of file</p></li>
@@ -192,21 +192,22 @@ returned.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View the authenticated user's gists</span>
-  <span class='fu'>view_gists</span>()
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gists</a></span>()
 
   <span class='co'># View a specific user's gists</span>
-  <span class='fu'>view_gists</span>(<span class='st'>"ChadGoymer"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gists</a></span>(<span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View a specific gist</span>
-  <span class='fu'>view_gist</span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>view_gist</a></span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
 
   <span class='co'># Browse a gist</span>
-  <span class='fu'>browse_gist</span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_gists.html'>browse_gist</a></span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

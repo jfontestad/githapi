@@ -73,7 +73,7 @@ tag in the repository. view_tag() returns a list of all properties for a single 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -118,13 +118,13 @@ tag in the repository. view_tag() returns a list of all properties for a single 
     </div>
 
     <div class="ref-description">
-    <p><code>view_tags()</code> summarises tags in a table with the properties as columns and a row for each
-tag in the repository. <code>view_tag()</code> returns a list of all properties for a single tag.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tags()</a></code> summarises tags in a table with the properties as columns and a row for each
+tag in the repository. <code><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tag()</a></code> returns a list of all properties for a single tag.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_tags</span>(<span class='no'>repo</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tags</a></span>(<span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'>view_tag</span>(<span class='no'>tag</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tag</a></span>(<span class='kw'>tag</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,7 +139,7 @@ tag in the repository. <code>view_tag()</code> returns a list of all properties 
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>tag</th>
@@ -149,7 +149,7 @@ tag in the repository. <code>view_tag()</code> returns a list of all properties 
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_tags()</code> returns a tibble of tag properties. <code>view_tag()</code> returns a list of
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tags()</a></code> returns a tibble of tag properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tag()</a></code> returns a list of
 properties for a single tag.</p>
 <p><strong>Tag Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the tag.</p></li>
@@ -166,15 +166,16 @@ properties for a single tag.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View all tags in a repository</span>
-  <span class='fu'>view_tags</span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tags</a></span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single tag</span>
-  <span class='fu'>view_tag</span>(<span class='st'>"new-tag"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_tags.html'>view_tag</a></span>(<span class='st'>"new-tag"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

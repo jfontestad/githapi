@@ -74,7 +74,7 @@ opens the web page for the team in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -119,16 +119,16 @@ opens the web page for the team in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_teams()</code> summarises teams in a table with the properties as columns and a row for
-each team. <code>view_team()</code> returns a list of all properties for a single team. <code>browse_team()</code>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_teams()</a></code> summarises teams in a table with the properties as columns and a row for
+each team. <code><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_team()</a></code> returns a list of all properties for a single team. <code><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>browse_team()</a></code>
 opens the web page for the team in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_teams</span>(<span class='no'>org</span>, <span class='no'>parent_team</span>, <span class='kw'>n_max</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_teams</a></span>(<span class='kw'>org</span>, <span class='kw'>parent_team</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'>view_team</span>(<span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_team</a></span>(<span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_team</span>(<span class='no'>team</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>browse_team</a></span>(<span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,7 +148,7 @@ the child teams will be returned.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>team</th>
@@ -158,8 +158,8 @@ the child teams will be returned.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_teams()</code> returns a tibble of team properties. <code>view_team()</code> returns a list
-of properties for a single team. <code>browse_team()</code> opens the default browser on the
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_teams()</a></code> returns a tibble of team properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_team()</a></code> returns a list
+of properties for a single team. <code><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>browse_team()</a></code> opens the default browser on the
 team's page and returns the URL.</p>
 <p><strong>Team Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the team.</p></li>
@@ -172,7 +172,7 @@ team's page and returns the URL.</p>
 <li><p><strong>html_url</strong>: The URL of the team page in GitHub</p></li>
 </ul>
 
-<p>The following are only returned using <code>view_team()</code>:</p><ul>
+<p>The following are only returned using <code><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_team()</a></code>:</p><ul>
 <li><p><strong>organization</strong>: The organization the team is associated with.</p></li>
 <li><p><strong>members_count</strong>: The number of members.</p></li>
 <li><p><strong>repos_count</strong>: The number of repositories the team has access to.</p></li>
@@ -192,18 +192,19 @@ or, if neither are supplied, the teams the authenticated user is a member of.</p
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View teams in an organization</span>
-  <span class='fu'>view_teams</span>(<span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_teams</a></span>(<span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View a single team</span>
-  <span class='fu'>view_team</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>view_team</a></span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Browse a team's GitHub page</span>
-  <span class='fu'>browse_team</span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_teams.html'>browse_team</a></span>(<span class='st'>"HeadCoos"</span>, <span class='st'>"HairyCoos"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

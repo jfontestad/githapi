@@ -75,7 +75,7 @@ pull request number) and a review comment is created for pull requests and commi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -126,16 +126,16 @@ is also an issue a standard comment is also created if the <code>issue</code> ar
 pull request number) and a review comment is created for pull requests and commits.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_comment</span>(
-  <span class='no'>body</span>,
-  <span class='no'>gist</span>,
-  <span class='no'>issue</span>,
-  <span class='no'>pull_request</span>,
-  <span class='no'>commit</span>,
-  <span class='no'>repo</span>,
-  <span class='no'>path</span>,
-  <span class='no'>position</span>,
-  <span class='no'>...</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_comment.html'>create_comment</a></span>(
+  <span class='kw'>body</span>,
+  <span class='kw'>gist</span>,
+  <span class='kw'>issue</span>,
+  <span class='kw'>pull_request</span>,
+  <span class='kw'>commit</span>,
+  <span class='kw'>repo</span>,
+  <span class='kw'>path</span>,
+  <span class='kw'>position</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -175,13 +175,13 @@ pull request number) and a review comment is created for pull requests and commi
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>create_comment()</code> returns a list of the comment's properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/create_comment.html'>create_comment()</a></code> returns a list of the comment's properties.</p>
 <p><strong>Comment Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id of the comment.</p></li>
 <li><p><strong>body</strong>: The content of the comment.</p></li>
@@ -212,37 +212,38 @@ commit the <code>body</code>, <code>pull_request</code> number or <code>commit</
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Create a comment on a gist</span>
-  <span class='fu'>create_comment</span>(
-    <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
-    <span class='kw'>gist</span> <span class='kw'>=</span> <span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_comment.html'>create_comment</a></span>(
+    body = <span class='st'>"This is a comment created by create_comment()"</span>,
+    gist = <span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
 
   <span class='co'># Create a comment on an issue</span>
-  <span class='fu'>create_comment</span>(
-    <span class='kw'>body</span>  <span class='kw'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
-    <span class='kw'>issue</span> <span class='kw'>=</span> <span class='st'>"test issue"</span>,
-    <span class='kw'>repo</span>  <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_comment.html'>create_comment</a></span>(
+    body  = <span class='st'>"This is a comment created by create_comment()"</span>,
+    issue = <span class='st'>"test issue"</span>,
+    repo  = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Create a comment on a pull request</span>
-  <span class='fu'>create_comment</span>(
-    <span class='kw'>body</span>         <span class='kw'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
-    <span class='kw'>pull_request</span> <span class='kw'>=</span> <span class='st'>"test pull request"</span>,
-    <span class='kw'>commit</span>       <span class='kw'>=</span> <span class='st'>"test-branch"</span>,
-    <span class='kw'>repo</span>         <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>path</span>         <span class='kw'>=</span> <span class='st'>"test-comments.txt"</span>,
-    <span class='kw'>position</span>     <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_comment.html'>create_comment</a></span>(
+    body         = <span class='st'>"This is a comment created by create_comment()"</span>,
+    pull_request = <span class='st'>"test pull request"</span>,
+    commit       = <span class='st'>"test-branch"</span>,
+    repo         = <span class='st'>"ChadGoymer/githapi"</span>,
+    path         = <span class='st'>"test-comments.txt"</span>,
+    position     = <span class='fl'>1</span>)
 
   <span class='co'># Create a comment on a commit</span>
-  <span class='fu'>create_comment</span>(
-    <span class='kw'>body</span>     <span class='kw'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
-    <span class='kw'>commit</span>   <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span>     <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>path</span>     <span class='kw'>=</span> <span class='st'>"README.md"</span>,
-    <span class='kw'>position</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_comment.html'>create_comment</a></span>(
+    body     = <span class='st'>"This is a comment created by create_comment()"</span>,
+    commit   = <span class='st'>"master"</span>,
+    repo     = <span class='st'>"ChadGoymer/githapi"</span>,
+    path     = <span class='st'>"README.md"</span>,
+    position = <span class='fl'>1</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

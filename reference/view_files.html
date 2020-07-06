@@ -75,7 +75,7 @@ blob respectively in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -120,19 +120,19 @@ blob respectively in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_files()</code> summarises files in a table with the properties as columns and a row for
-each file in the repository. <code>view_file()</code> returns a list of all properties for a single
-file. <code>browse_files()</code> and <code>browse_file()</code> open the web page for the commit tree and
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_files()</a></code> summarises files in a table with the properties as columns and a row for
+each file in the repository. <code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_file()</a></code> returns a list of all properties for a single
+file. <code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_files()</a></code> and <code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_file()</a></code> open the web page for the commit tree and
 blob respectively in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_files</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_files</a></span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, recursive = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)
 
-<span class='fu'>view_file</span>(<span class='no'>path</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_file</a></span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_files</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_files</a></span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'>browse_file</span>(<span class='no'>path</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_file</a></span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,7 +152,7 @@ Default: <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>path</th>
@@ -162,8 +162,8 @@ Default: <code>TRUE</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_files()</code> returns a tibble of file properties. <code>view_file()</code> returns a list
-of properties for a single file. <code>browse_files()</code> and <code>browse_file()</code> opens the default
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_files()</a></code> returns a tibble of file properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_file()</a></code> returns a list
+of properties for a single file. <code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_files()</a></code> and <code><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_file()</a></code> opens the default
 browser on the tree or blob page and returns the URL.</p>
 <p><strong>File Properties:</strong></p><ul>
 <li><p><strong>path</strong>: The path to the file within the repository.</p></li>
@@ -182,27 +182,28 @@ order they are returned using <code>sort</code> and <code>direction</code>.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View files on the master branch in a repository</span>
-  <span class='fu'>view_files</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_files</a></span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View properties of a single file in a repository</span>
-  <span class='fu'>view_file</span>(
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"README.md"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>view_file</a></span>(
+    path = <span class='st'>"README.md"</span>,
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Open the commit's tree page in the default browser</span>
-  <span class='fu'>browse_files</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_files</a></span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Open the file's blob page in the default browser</span>
-  <span class='fu'>browse_file</span>(
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"README.md"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_files.html'>browse_file</a></span>(
+    path = <span class='st'>"README.md"</span>,
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

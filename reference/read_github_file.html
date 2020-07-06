@@ -76,7 +76,7 @@ using readr::read_csv(), and returns the result as a tibble." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -121,18 +121,18 @@ using readr::read_csv(), and returns the result as a tibble." />
     </div>
 
     <div class="ref-description">
-    <p>These functions read a file from a commit in a repository. <code>read_github_file()</code> reads a
+    <p>These functions read a file from a commit in a repository. <code><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_file()</a></code> reads a
 text file, using <code><a href='https://readr.tidyverse.org/reference/read_file.html'>readr::read_file()</a></code>, and returns the result as a string.
-<code>read_github_lines()</code> reads a text file, using <code><a href='https://readr.tidyverse.org/reference/read_lines.html'>readr::read_lines()</a></code>, and returns the
-result as a character vector, one element per line. <code>read_github_csv()</code> reads a CSV file,
+<code><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_lines()</a></code> reads a text file, using <code><a href='https://readr.tidyverse.org/reference/read_lines.html'>readr::read_lines()</a></code>, and returns the
+result as a character vector, one element per line. <code><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_csv()</a></code> reads a CSV file,
 using <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>readr::read_csv()</a></code>, and returns the result as a tibble.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_github_file</span>(<span class='no'>path</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_file</a></span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'>read_github_lines</span>(<span class='no'>path</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_lines</a></span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'>read_github_csv</span>(<span class='no'>path</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_csv</a></span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,29 +158,30 @@ using <code><a href='https://readr.tidyverse.org/reference/read_delim.html'>read
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>read_github_file()</code> returns a string containing the file contents,
-<code>read_github_lines()</code> returns a character vector, and <code>read_github_csv()</code> returns a
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_file()</a></code> returns a string containing the file contents,
+<code><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_lines()</a></code> returns a character vector, and <code><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_csv()</a></code> returns a
 tibble.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='fu'>read_github_file</span>(
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"README.md"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_file</a></span>(
+    path = <span class='st'>"README.md"</span>,
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
-  <span class='fu'>read_github_lines</span>(
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"README.md"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_lines</a></span>(
+    path = <span class='st'>"README.md"</span>,
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
-  <span class='fu'>read_github_csv</span>(
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"inst/test-data/test.csv"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/read_github_file.html'>read_github_csv</a></span>(
+    path = <span class='st'>"inst/test-data/test.csv"</span>,
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

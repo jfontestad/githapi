@@ -73,7 +73,7 @@ specified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ specified." />
 specified.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>download_commit</span>(<span class='no'>ref</span>, <span class='no'>repo</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/download_commit.html'>download_commit</a></span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, path = <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,24 +142,25 @@ Default: working directory.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>download_commit()</code> returns the path where the commit is downloaded to.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/download_commit.html'>download_commit()</a></code> returns the path where the commit is downloaded to.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Download the head of the master branch to the home directory</span>
-  <span class='fu'>download_commit</span>(
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"~"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/download_commit.html'>download_commit</a></span>(
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>,
+    path = <span class='st'>"~"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

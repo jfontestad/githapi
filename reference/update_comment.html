@@ -74,7 +74,7 @@ specified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ to replace the content of the comment. The <code>repo</code> argument is not req
 specified.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_comment</span>(<span class='no'>comment</span>, <span class='no'>body</span>, <span class='no'>gist</span>, <span class='no'>repo</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"gist"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(<span class='kw'>comment</span>, <span class='kw'>body</span>, <span class='kw'>gist</span>, <span class='kw'>repo</span>, type = <span class='st'>"gist"</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,13 +152,13 @@ specified.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_comment()</code> returns a list of the comment properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment()</a></code> returns a list of the comment properties.</p>
 <p><strong>Comment Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id of the comment.</p></li>
 <li><p><strong>body</strong>: The content of the comment.</p></li>
@@ -185,36 +185,37 @@ request or commit comments).</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update a gist comment</span>
-  <span class='fu'>update_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>3281939</span>,
-    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
-    <span class='kw'>gist</span>    <span class='kw'>=</span> <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+    comment = <span class='fl'>3281939</span>,
+    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
+    gist    = <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
 
   <span class='co'># Update an issue comment</span>
-  <span class='fu'>update_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>622980929</span>,
-    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"issue"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+    comment = <span class='fl'>622980929</span>,
+    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
+    type    = <span class='st'>"issue"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Update an pull request comment</span>
-  <span class='fu'>update_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>418979473</span>,
-    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"pull_request"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+    comment = <span class='fl'>418979473</span>,
+    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
+    type    = <span class='st'>"pull_request"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Update a commit comment</span>
-  <span class='fu'>update_comment</span>(
-    <span class='kw'>comment</span> <span class='kw'>=</span> <span class='fl'>38899533</span>,
-    <span class='kw'>body</span>    <span class='kw'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
-    <span class='kw'>type</span>    <span class='kw'>=</span> <span class='st'>"commit"</span>,
-    <span class='kw'>repo</span>    <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+    comment = <span class='fl'>38899533</span>,
+    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
+    type    = <span class='st'>"commit"</span>,
+    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

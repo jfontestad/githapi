@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     <p>This function sources an R script from a commit in a repository using <code><a href='https://rdrr.io/r/base/source.html'>source()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>github_source</span>(<span class='no'>path</span>, <span class='no'>ref</span>, <span class='no'>repo</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/github_source.html'>github_source</a></span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,14 +148,15 @@
     <p>The result of the sourced script.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='fu'>github_source</span>(
-    <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"inst/test-data/test-script.R"</span>,
-    <span class='kw'>ref</span>  <span class='kw'>=</span> <span class='st'>"master"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/github_source.html'>github_source</a></span>(
+    path = <span class='st'>"inst/test-data/test-script.R"</span>,
+    ref  = <span class='st'>"master"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

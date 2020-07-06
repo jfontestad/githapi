@@ -74,7 +74,7 @@ team." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -124,15 +124,15 @@ be used to specify the maintainers, the repositories to add the team to and a pa
 team.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_team</span>(
-  <span class='no'>name</span>,
-  <span class='no'>org</span>,
-  <span class='no'>description</span>,
-  <span class='no'>maintainers</span>,
-  <span class='no'>repo_names</span>,
-  <span class='no'>privacy</span>,
-  <span class='no'>parent_team</span>,
-  <span class='no'>...</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_team.html'>create_team</a></span>(
+  <span class='kw'>name</span>,
+  <span class='kw'>org</span>,
+  <span class='kw'>description</span>,
+  <span class='kw'>maintainers</span>,
+  <span class='kw'>repo_names</span>,
+  <span class='kw'>privacy</span>,
+  <span class='kw'>parent_team</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -184,13 +184,13 @@ parent team.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>create_team()</code> returns a list of the team's properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/create_team.html'>create_team()</a></code> returns a list of the team's properties.</p>
 <p><strong>Team Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the team.</p></li>
 <li><p><strong>name</strong>: The name of the team.</p></li>
@@ -215,21 +215,22 @@ parent team.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Create a team in an organization</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_team.html'>create_team</a></span>(<span class='st'>"TestTeam"</span>, <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Create a team and specify maintainers</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam2"</span>, <span class='st'>"HairyCoos"</span>, <span class='kw'>maintainers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"chris-walker1"</span>))
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_team.html'>create_team</a></span>(<span class='st'>"TestTeam2"</span>, <span class='st'>"HairyCoos"</span>, maintainers = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"chris-walker1"</span>))
 
   <span class='co'># Create a team and set the privacy</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam3"</span>, <span class='st'>"HairyCoos"</span>, <span class='kw'>privacy</span> <span class='kw'>=</span> <span class='st'>"closed"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_team.html'>create_team</a></span>(<span class='st'>"TestTeam3"</span>, <span class='st'>"HairyCoos"</span>, privacy = <span class='st'>"closed"</span>)
 
   <span class='co'># Create a team and specify a parent team</span>
-  <span class='fu'>create_team</span>(<span class='st'>"TestTeam4"</span>, <span class='st'>"HairyCoos"</span>, <span class='kw'>parent_team</span> <span class='kw'>=</span> <span class='st'>"TestTeam3"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_team.html'>create_team</a></span>(<span class='st'>"TestTeam4"</span>, <span class='st'>"HairyCoos"</span>, parent_team = <span class='st'>"TestTeam3"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

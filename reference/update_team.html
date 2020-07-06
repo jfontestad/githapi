@@ -73,7 +73,7 @@ the appropriate permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ the appropriate permissions." />
 the appropriate permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_team</span>(<span class='no'>team</span>, <span class='no'>name</span>, <span class='no'>description</span>, <span class='no'>privacy</span>, <span class='no'>parent_team</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_team.html'>update_team</a></span>(<span class='kw'>team</span>, <span class='kw'>name</span>, <span class='kw'>description</span>, <span class='kw'>privacy</span>, <span class='kw'>parent_team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,13 +164,13 @@ if your are specifying <code>team</code> and/or <code>parent_team</code> set by 
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_team()</code> returns a list of the team's properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_team.html'>update_team()</a></code> returns a list of the team's properties.</p>
 <p><strong>Team Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the team.</p></li>
 <li><p><strong>name</strong>: The name of the team.</p></li>
@@ -195,17 +195,18 @@ if your are specifying <code>team</code> and/or <code>parent_team</code> set by 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update a team</span>
-  <span class='fu'>update_team</span>(
-    <span class='kw'>team</span>        <span class='kw'>=</span> <span class='st'>"TestTeam"</span>,
-    <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"This is a test team"</span>,
-    <span class='kw'>privacy</span>     <span class='kw'>=</span> <span class='st'>"closed"</span>,
-    <span class='kw'>parent_team</span> <span class='kw'>=</span> <span class='st'>"TestTeam3"</span>,
-    <span class='kw'>org</span>         <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_team.html'>update_team</a></span>(
+    team        = <span class='st'>"TestTeam"</span>,
+    description = <span class='st'>"This is a test team"</span>,
+    privacy     = <span class='st'>"closed"</span>,
+    parent_team = <span class='st'>"TestTeam3"</span>,
+    org         = <span class='st'>"HairyCoos"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

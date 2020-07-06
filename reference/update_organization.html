@@ -73,7 +73,7 @@ organization if you have the appropriate permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -122,19 +122,19 @@ organization if you have the appropriate permissions." />
 organization if you have the appropriate permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_organization</span>(
-  <span class='no'>org</span>,
-  <span class='no'>name</span>,
-  <span class='no'>description</span>,
-  <span class='no'>email</span>,
-  <span class='no'>location</span>,
-  <span class='no'>company</span>,
-  <span class='no'>billing_email</span>,
-  <span class='no'>has_organization_projects</span>,
-  <span class='no'>has_repository_projects</span>,
-  <span class='no'>default_repository_permission</span>,
-  <span class='no'>members_can_create_repositories</span>,
-  <span class='no'>...</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_organization.html'>update_organization</a></span>(
+  <span class='kw'>org</span>,
+  <span class='kw'>name</span>,
+  <span class='kw'>description</span>,
+  <span class='kw'>email</span>,
+  <span class='kw'>location</span>,
+  <span class='kw'>company</span>,
+  <span class='kw'>billing_email</span>,
+  <span class='kw'>has_organization_projects</span>,
+  <span class='kw'>has_repository_projects</span>,
+  <span class='kw'>default_repository_permission</span>,
+  <span class='kw'>members_can_create_repositories</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -204,13 +204,13 @@ organization members to create repositories. Can be one of:</p><ul>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_organization()</code> returns a list of the organization's properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_organization.html'>update_organization()</a></code> returns a list of the organization's properties.</p>
 <p><strong>Organization Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the organization.</p></li>
 <li><p><strong>login</strong>: The login name of the organization.</p></li>
@@ -249,17 +249,18 @@ organization members to create repositories. Can be one of:</p><ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update some of your organization properties</span>
-  <span class='fu'>update_organization</span>(
-    <span class='kw'>org</span>                             <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>,
-    <span class='kw'>description</span>                     <span class='kw'>=</span> <span class='st'>"We are the Hairy Coos!"</span>,
-    <span class='kw'>location</span>                        <span class='kw'>=</span> <span class='st'>"The Highlands"</span>,
-    <span class='kw'>default_repository_permission</span>   <span class='kw'>=</span> <span class='st'>"write"</span>,
-    <span class='kw'>members_can_create_repositories</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_organization.html'>update_organization</a></span>(
+    org                             = <span class='st'>"HairyCoos"</span>,
+    description                     = <span class='st'>"We are the Hairy Coos!"</span>,
+    location                        = <span class='st'>"The Highlands"</span>,
+    default_repository_permission   = <span class='st'>"write"</span>,
+    members_can_create_repositories = <span class='fl'>FALSE</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

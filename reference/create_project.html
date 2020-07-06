@@ -73,7 +73,7 @@ to add columns and cards separately." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ to add columns and cards separately." />
 to add columns and cards separately.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_project</span>(<span class='no'>name</span>, <span class='no'>body</span>, <span class='no'>repo</span>, <span class='no'>org</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_project.html'>create_project</a></span>(<span class='kw'>name</span>, <span class='kw'>body</span>, <span class='kw'>repo</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,13 +145,13 @@ to add columns and cards separately.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>create_project()</code> returns a list of the project properties.</p>
+    <p><code><a href='https://rdrr.io/pkg/githapi/man/create_project.html'>create_project()</a></code> returns a list of the project properties.</p>
 <p><strong>Project Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the project.</p></li>
 <li><p><strong>number</strong>: The number of the project for the repository, user or organization.</p></li>
@@ -180,26 +180,27 @@ or organization is specified the project is created for the authenticated user.<
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Create a project for a repository</span>
-  <span class='fu'>create_project</span>(
-    <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Repo project"</span>,
-    <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is a repository's project"</span>,
-    <span class='kw'>repo</span> <span class='kw'>=</span> <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_project.html'>create_project</a></span>(
+    name = <span class='st'>"Repo project"</span>,
+    body = <span class='st'>"This is a repository's project"</span>,
+    repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Create a project for the current user</span>
-  <span class='fu'>create_project</span>(
-    <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"User project"</span>,
-    <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is a user's project"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_project.html'>create_project</a></span>(
+    name = <span class='st'>"User project"</span>,
+    body = <span class='st'>"This is a user's project"</span>)
 
   <span class='co'># Create a project for an organization</span>
-  <span class='fu'>create_project</span>(
-    <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Organization project"</span>,
-    <span class='kw'>body</span> <span class='kw'>=</span> <span class='st'>"This is an organization's project"</span>,
-    <span class='kw'>org</span>  <span class='kw'>=</span> <span class='st'>"HairyCoos"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_project.html'>create_project</a></span>(
+    name = <span class='st'>"Organization project"</span>,
+    body = <span class='st'>"This is an organization's project"</span>,
+    org  = <span class='st'>"HairyCoos"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

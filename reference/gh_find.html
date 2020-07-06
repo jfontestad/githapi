@@ -74,7 +74,7 @@ specifying the title." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.5</span>
       </span>
     </div>
 
@@ -124,16 +124,16 @@ value. It returns the first match found. For example, you can search for an issu
 specifying the title.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_find</span>(
-  <span class='no'>url</span>,
-  <span class='no'>property</span>,
-  <span class='no'>value</span>,
-  <span class='kw'>max_pages</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>headers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>accept</span> <span class='kw'>=</span> <span class='st'>"application/vnd.github.v3+json"</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  <span class='kw'>proxy</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
-  <span class='no'>...</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/gh_find.html'>gh_find</a></span>(
+  <span class='kw'>url</span>,
+  <span class='kw'>property</span>,
+  <span class='kw'>value</span>,
+  max_pages = <span class='fl'>100</span>,
+  headers = <span class='kw'>NULL</span>,
+  accept = <span class='st'>"application/vnd.github.v3+json"</span>,
+  token = <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/gh_token.html'>gh_token</a></span>(),
+  proxy = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -178,7 +178,7 @@ environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p><
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -194,15 +194,16 @@ attributes:</p><ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Find an issue by title</span>
-  <span class='fu'>gh_find</span>(
-    <span class='kw'>url</span>      <span class='kw'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/issues"</span>,
-    <span class='kw'>property</span> <span class='kw'>=</span> <span class='st'>"title"</span>,
-    <span class='kw'>value</span>    <span class='kw'>=</span> <span class='st'>"Test issue"</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/gh_find.html'>gh_find</a></span>(
+    url      = <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/issues"</span>,
+    property = <span class='st'>"title"</span>,
+    value    = <span class='st'>"Test issue"</span>)
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
