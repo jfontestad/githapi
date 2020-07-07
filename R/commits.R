@@ -221,7 +221,7 @@ download_commit <- function(
 
   if (!file.exists(path)) dir.create(path, recursive = TRUE)
 
-  archive_path <- str_replace(repo, "/", "-") %>% str_c("-", ref, ".zip") %>% file.path(path, .)
+  archive_path <- tempfile("", tmpdir = path, fileext = ".zip")
   on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
 
   info("Downloading commit '", ref, "' from repository '", repo, "'")
