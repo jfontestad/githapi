@@ -1,3 +1,7 @@
+# githapi 0.10.6
+
+- Shortened temporary path in `download_commit()`
+
 # githapi 0.10.5
 
 - Use `update_repository()` to set team permissions
