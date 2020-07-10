@@ -222,23 +222,32 @@ download_commit <- function(
   if (!file.exists(path)) dir.create(path, recursive = TRUE)
 
   archive_path <- tempfile("", tmpdir = path, fileext = ".zip")
-  on.exit(unlink(archive_path, recursive = TRUE), add = TRUE)
+  on.exit(unlink(archive_path, recursive = TRUE))
 
   info("Downloading commit '", ref, "' from repository '", repo, "'")
   path_gh <- gh_url("repos", repo, "zipball", ref) %>%
     gh_download(archive_path, ...)
 
   info("Unpacking commit into '", path, "'", level = 3)
+  archive_paths <- utils::unzip(archive_path, list = TRUE)
+  extract_path  <- archive_paths$Name[[1]]
+  archive_paths <- archive_paths %>%
+    mutate(
+      from = file.path(path, .data$Name),
+      to   = file.path(path, str_remove(.data$Name, extract_path)))
+
   utils::unzip(archive_path, exdir = path)
+  on.exit(unlink(file.path(path, extract_path), recursive = TRUE), add = TRUE)
 
-  archive_folder <- list.dirs(path, recursive = FALSE, full.names = TRUE)
-  on.exit(unlink(archive_folder, recursive = TRUE), add = TRUE)
+  filter(archive_paths, .data$Length == 0) %>%
+    pull("to") %>%
+    tail(-1) %>%
+    walk(dir.create)
 
-  subfolders <- list.dirs(archive_folder, recursive = TRUE, full.names = FALSE)
-  walk(file.path(path, subfolders[subfolders != ""]), dir.create)
+  results <- filter(archive_paths, .data$Length > 0) %>%
+    pmap_lgl(function(from, to, ...) file.rename(from, to))
 
-  files <- list.files(archive_folder, recursive = TRUE)
-  file.rename(file.path(archive_folder, files), file.path(path, files))
+  assert(all(results), "Not all files were extract successfully")
 
   info("Done", level = 3)
   structure(
