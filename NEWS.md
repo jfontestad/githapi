@@ -1,3 +1,7 @@
+# githapi 0.10.7
+
+- Fixed bug in `download_commit()` that deleted all other files and folders in the target path
+
 # githapi 0.10.6
 
 - Shortened temporary path in `download_commit()`
