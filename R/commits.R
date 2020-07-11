@@ -241,7 +241,7 @@ download_commit <- function(
 
   filter(archive_paths, .data$Length == 0) %>%
     pull("to") %>%
-    tail(-1) %>%
+    utils::tail(-1) %>%
     walk(dir.create)
 
   results <- filter(archive_paths, .data$Length > 0) %>%

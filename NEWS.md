@@ -1,3 +1,7 @@
+# githapi 0.10.8
+
+- Split R-CMD-check into separate file for each OS
+
 # githapi 0.10.7
 
 - Fixed bug in `download_commit()` that deleted all other files and folders in the target path
