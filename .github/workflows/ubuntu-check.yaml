@@ -6,10 +6,10 @@ on:
     branches:
       - master
 
-name: Ubuntu-check
+name: Ubuntu
 
 jobs:
-  Ubuntu-check:
+  Ubuntu:
     name: Ubuntu-16.04-latest (release)
     runs-on: ubuntu-16.04
 
