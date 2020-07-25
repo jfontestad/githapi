@@ -309,6 +309,16 @@ properties <- list(
     user                            = c("user", "login",                   as = "character"),
     html_url                        = c("html_url",                        as = "character"),
     created_at                      = c("created_at",                      as = "datetime"),
+    updated_at                      = c("updated_at",                      as = "datetime")),
+
+  status = list(
+    id                              = c("id",                              as = "character"),
+    state                           = c("state",                           as = "character"),
+    description                     = c("description",                     as = "character"),
+    target_url                      = c("target_url",                      as = "character"),
+    context                         = c("context",                         as = "character"),
+    creator                         = c("creator", "login",                as = "character"),
+    created_at                      = c("created_at",                      as = "datetime"),
     updated_at                      = c("updated_at",                      as = "datetime"))
 
 )
@@ -374,6 +384,9 @@ values <- list(
     direction                     = c("asc", "desc")),
 
   comment = list(
-    type                          = c("issue", "pull_request", "commit"))
+    type                          = c("issue", "pull_request", "commit")),
+
+  status = list(
+    state                         = c("error", "failure", "pending", "success"))
 
 )
