@@ -36,8 +36,8 @@ reference:
     - '`write_github_file`'
     - '`read_github_file`'
     - '`github_source`'
-- title: Branches, Tags and Releases
-  desc: Functions for creating, updating, viewing and deleting branches, tags and releases.
+- title: Branches, Tags, Releases and statuses
+  desc: Functions for creating, updating, viewing and deleting branches, tags, releases and statuses.
   contents:
     - '`create_branch`'
     - '`update_branch`'
@@ -51,6 +51,8 @@ reference:
     - '`update_release`'
     - '`view_releases`'
     - '`delete_release`'
+    - '`create_status`'
+    - '`view_statuses`'
 - title: Issues, Pull Requests, Labels and Milestones
   desc: Functions for creating, updating, viewing and deleting issues and pull requests.
   contents:

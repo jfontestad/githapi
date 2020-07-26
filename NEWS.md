@@ -1,3 +1,9 @@
+# githapi 0.10.9
+
+- Added `create_status()`
+- Added `view_statuses()`
+- Added `view_status()`
+
 # githapi 0.10.8
 
 - Split R-CMD-check into separate file for each OS
