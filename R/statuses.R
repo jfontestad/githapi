@@ -102,3 +102,68 @@ create_status <- function(
   status_gh
 
 }
+
+
+#  FUNCTION: view_statuses --------------------------------------------------------------------
+#
+#' View statuses of a commit within a repository
+#'
+#' `view_statuses()` summarises statuses in a table with the properties as columns and a row
+#' for each status for the specified commit in the repository. `view_status()` returns the
+#' combined state of all statuses for the commit.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://docs.github.com/en/rest/reference/repos#list-commit-statuses-for-a-reference>
+#' - <https://docs.github.com/en/rest/reference/repos#get-the-combined-status-for-a-specific-reference>
+#'
+#' @param ref (string) Either a SHA, branch or tag used to identify the commit.
+#' @param repo (string) The repository specified in the format: `owner/repo`.
+#' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
+#' @param ... Parameters passed to [gh_page()] or [gh_request()].
+#'
+#' @return `view_statuses()` returns a tibble of status properties. `view_status()` returns a
+#'   string for combined status.
+#'
+#' **Status Properties:**
+#'
+#' - **id**: The id of the release.
+#' - **state**: The state of the status.
+#' - **description**: The description of the status.
+#' - **target_url**: The URL linked to the status.
+#' - **context**: The context of the status.
+#' - **creator**: The creator of the status.
+#' - **created_at**: When it was created.
+#' - **updated_at**: When it was last updated.
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   # View all statuses for a commit in a repository
+#'   view_statuses("master, "ChadGoymer/githapi")
+#'
+#'   # View the combined status
+#'   view_status("master, "ChadGoymer/githapi")
+#'
+#' }
+#'
+#' @export
+#'
+view_statuses <- function(
+  ref,
+  repo,
+  n_max = 1000,
+  ...)
+{
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing statuses for repository '", repo, "'")
+  statuses_lst <- gh_url("repos", repo, "commits", ref, "statuses") %>%
+    gh_page(n_max = n_max, ...)
+
+  info("Transforming results", level = 4)
+  statuses_gh <- bind_properties(statuses_lst, properties$status)
+
+  info("Done", level = 7)
+  statuses_gh
+}

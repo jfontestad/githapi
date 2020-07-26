@@ -23,7 +23,7 @@ teardown(suppressMessages({
 }))
 
 
-# TEST: create_status -----------------------------------------------------------------------------
+# TEST: create_status -------------------------------------------------------------------------
 
 test_that("create_status creates a status and returns a list of the properties", {
 
@@ -81,5 +81,35 @@ test_that("create_status creates a status and returns a list of the properties",
   expect_identical(success_status$target_url, "https://www.goymer.me.uk/githapi")
   expect_identical(success_status$context, "test/githapi")
   expect_identical(success_status$creator, "ChadGoymer")
+
+})
+
+
+# TEST: view_statuses -------------------------------------------------------------------------
+
+test_that("view_statuses returns a tibble of status properties", {
+
+  statuses <- view_statuses(
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-statuses-", suffix))
+
+  expect_is(statuses, "tbl")
+  expect_identical(attr(statuses, "status"), 200L)
+  expect_identical(
+    map_chr(statuses, ~ class(.)[[1]]),
+    c(id          = "character",
+      state       = "character",
+      description = "character",
+      target_url  = "character",
+      context     = "character",
+      creator     = "character",
+      created_at  = "POSIXct",
+      updated_at  = "POSIXct"))
+
+  expect_identical(statuses$state, c("success", "pending"))
+  expect_identical(statuses$description, c("This is a success status", "This is a pending status"))
+  expect_identical(statuses$target_url, rep("https://www.goymer.me.uk/githapi", 2))
+  expect_identical(statuses$context, rep("test/githapi", 2))
+  expect_identical(statuses$creator, rep("ChadGoymer", 2))
 
 })
