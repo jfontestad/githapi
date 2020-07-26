@@ -167,3 +167,31 @@ view_statuses <- function(
   info("Done", level = 7)
   statuses_gh
 }
+
+
+#  FUNCTION: view_status ----------------------------------------------------------------------
+#
+#' @rdname view_statuses
+#' @export
+#'
+view_status <- function(
+  ref,
+  repo,
+  ...)
+{
+  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+
+  info("Viewing statuses for repository '", repo, "'")
+  status <- gh_url("repos", repo, "commits", ref, "status") %>%
+    gh_request("GET", ...)
+
+  info("Done", level = 7)
+  structure(
+    status$state,
+    class   = c("github", "character"),
+    url     = attr(status, "url"),
+    request = attr(status, "request"),
+    status  = attr(status, "status"),
+    header  = attr(status, "header"))
+}

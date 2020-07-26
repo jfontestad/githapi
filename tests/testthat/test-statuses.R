@@ -113,3 +113,18 @@ test_that("view_statuses returns a tibble of status properties", {
   expect_identical(statuses$creator, rep("ChadGoymer", 2))
 
 })
+
+
+# TEST: view_status ---------------------------------------------------------------------------
+
+test_that("view_status returns the combined status", {
+
+  status <- view_status(
+    ref  = "master",
+    repo = str_c("ChadGoymer/test-statuses-", suffix))
+
+  expect_is(status, "character")
+  expect_identical(attr(status, "status"), 200L)
+  expect_identical(as.character(status), "success")
+
+})
