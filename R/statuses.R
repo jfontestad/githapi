@@ -139,10 +139,10 @@ create_status <- function(
 #' \dontrun{
 #'
 #'   # View all statuses for a commit in a repository
-#'   view_statuses("master, "ChadGoymer/githapi")
+#'   view_statuses("master", "ChadGoymer/githapi")
 #'
 #'   # View the combined status
-#'   view_status("master, "ChadGoymer/githapi")
+#'   view_status("master", "ChadGoymer/githapi")
 #'
 #' }
 #'
