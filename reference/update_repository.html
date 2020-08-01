@@ -75,7 +75,7 @@ permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ redefine the allowed behaviour when merging pull requests or add or update team
 permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+    <pre class="usage"><span class='fu'>update_repository</span>(
   <span class='kw'>repo</span>,
   <span class='kw'>name</span>,
   <span class='kw'>description</span>,
@@ -217,13 +217,13 @@ branches when pull requests are merged.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository()</a></code> returns a list of the repository properties.</p>
+    <p><code>update_repository()</code> returns a list of the repository properties.</p>
 <p><strong>Repository Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the repository.</p></li>
 <li><p><strong>name</strong>: The name of the repository.</p></li>
@@ -278,7 +278,7 @@ repositories owned by organizations.</p></li>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+  <span class='fu'>update_repository</span>(
     repo           = <span class='st'>"ChadGoymer/user-repository"</span>,
     name           = <span class='st'>"updated-user-repository"</span>,
     description    = <span class='st'>"This is an updated user repository"</span>,
@@ -289,7 +289,7 @@ repositories owned by organizations.</p></li>
     default_branch = <span class='st'>"master"</span>)
 
   <span class='co'># Update an organization's repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+  <span class='fu'>update_repository</span>(
     repo                   = <span class='st'>"HairyCoos/org-repository"</span>,
     name                   = <span class='st'>"updated-org-repository"</span>,
     description            = <span class='st'>"This is an updated organization repository"</span>,
@@ -301,15 +301,15 @@ repositories owned by organizations.</p></li>
     delete_branch_on_merge = <span class='fl'>TRUE</span>)
 
   <span class='co'># Archive a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(<span class='st'>"HairyCoos/org-repository"</span>, archived = <span class='fl'>TRUE</span>)
+  <span class='fu'>update_repository</span>(<span class='st'>"HairyCoos/org-repository"</span>, archived = <span class='fl'>TRUE</span>)
 
   <span class='co'># Add read access for the specified team</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+  <span class='fu'>update_repository</span>(
     repo = <span class='st'>"HairyCoos/test-repository"</span>,
     team = <span class='st'>"test-team"</span>)
 
   <span class='co'># Update team's permission to "maintain"</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_repository.html'>update_repository</a></span>(
+  <span class='fu'>update_repository</span>(
     repo       = <span class='st'>"HairyCoos/test-repository"</span>,
     team       = <span class='st'>"test-team"</span>,
     permission = <span class='st'>"maintain"</span>)

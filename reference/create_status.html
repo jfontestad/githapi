@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View commits within a repository — view_commits • githapi</title>
+<title>Create a status for a commit — create_status • githapi</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,11 @@
 
 
 
-<meta property="og:title" content="View commits within a repository — view_commits" />
-<meta property="og:description" content="view_commits() summarises commits in a table with the properties as columns and a row for
-each commit in the history of the given reference. view_commit() returns a list of all
-properties for a single commit. browse_commits() and browse_commit() opens the web page
-for the commit history and commit details respectively in the default browser." />
+<meta property="og:title" content="Create a status for a commit — create_status" />
+<meta property="og:description" content="This function creates a new status for a commit in the specified repository in GitHub.
+The status can also have a description and a target URL, allowing a user to link to more
+information. The context allows you to differentiate the status from others. The status
+can then be updated, from pending to success say, by using the same context." />
 
 
 
@@ -114,29 +114,36 @@ for the commit history and commit details respectively in the default browser." 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View commits within a repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/commits.R'><code>R/commits.R</code></a></small>
-    <div class="hidden name"><code>view_commits.Rd</code></div>
+    <h1>Create a status for a commit</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ChadGoymer/githapi/blob/master/R/statuses.R'><code>R/statuses.R</code></a></small>
+    <div class="hidden name"><code>create_status.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>view_commits()</code> summarises commits in a table with the properties as columns and a row for
-each commit in the history of the given reference. <code>view_commit()</code> returns a list of all
-properties for a single commit. <code>browse_commits()</code> and <code>browse_commit()</code> opens the web page
-for the commit history and commit details respectively in the default browser.</p>
+    <p>This function creates a new status for a commit in the specified repository in GitHub.
+The status can also have a <code>description</code> and a target URL, allowing a user to link to more
+information. The <code>context</code> allows you to differentiate the status from others. The status
+can then be updated, from <code>pending</code> to <code>success</code> say, by using the same <code>context</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_commits</span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>path</span>, <span class='kw'>author</span>, <span class='kw'>since</span>, <span class='kw'>until</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
-
-<span class='fu'>view_commit</span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
-
-<span class='fu'>browse_commits</span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
-
-<span class='fu'>browse_commit</span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>create_status</span>(
+  <span class='kw'>state</span>,
+  <span class='kw'>ref</span>,
+  <span class='kw'>repo</span>,
+  <span class='kw'>description</span>,
+  <span class='kw'>target_url</span>,
+  context = <span class='st'>"default"</span>,
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>state</th>
+      <td><p>(string) The state of the status. Can be one of <code>"error"</code>, <code>"failure"</code>,
+<code>"pending"</code>, or <code>"success"</code>.</p></td>
+    </tr>
     <tr>
       <th>ref</th>
       <td><p>(string) Either a SHA, branch or tag used to identify the commit.</p></td>
@@ -146,91 +153,66 @@ for the commit history and commit details respectively in the default browser.</
       <td><p>(string) The repository specified in the format: <code>owner/repo</code>.</p></td>
     </tr>
     <tr>
-      <th>path</th>
-      <td><p>(string, optional) Only commits containing this file path will be returned.</p></td>
+      <th>description</th>
+      <td><p>(string, optional) A short description of the status.</p></td>
     </tr>
     <tr>
-      <th>author</th>
-      <td><p>(string, optional) Author login to filter commits by.</p></td>
+      <th>target_url</th>
+      <td><p>(string, optional) The target URL to associate with this status. This URL
+will be linked from the GitHub UI to allow users to easily see the source of the status.</p></td>
     </tr>
     <tr>
-      <th>since</th>
-      <td><p>(string, optional) A date &amp; time to filter by. Must be in the format:
-<code>YYYY-MM-DD HH:MM:SS</code>.</p></td>
-    </tr>
-    <tr>
-      <th>until</th>
-      <td><p>(string, optional) A date &amp; time to filter by. Must be in the format:
-<code>YYYY-MM-DD HH:MM:SS</code>.</p></td>
-    </tr>
-    <tr>
-      <th>n_max</th>
-      <td><p>(integer, optional) Maximum number to return. Default: <code>1000</code>.</p></td>
+      <th>context</th>
+      <td><p>(string, optional) A string label to differentiate this status from the
+status of other systems. Default: <code>"default"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_commits()</code> returns a tibble of commit properties. <code>view_commit()</code> returns
-a list of properties for a single commit. <code>browse_commits()</code> and <code>browse_commit</code> opens
-the default browser on the commit's history or details page and returns the URL.</p>
-<p><strong>Commit Properties:</strong></p><ul>
-<li><p><strong>sha</strong>: The commit SHA.</p></li>
-<li><p><strong>message</strong>: The commit message.</p></li>
-<li><p><strong>author_login</strong>: The author's account login.</p></li>
-<li><p><strong>author_name</strong>: The author's name.</p></li>
-<li><p><strong>author_email</strong>: The author's email address.</p></li>
-<li><p><strong>committer_login</strong>: The committer's account login.</p></li>
-<li><p><strong>committer_name</strong>: The committer's name.</p></li>
-<li><p><strong>committer_email</strong>: The committer's email address.</p></li>
-<li><p><strong>tree_sha</strong>: The SHA of the commit's file tree.</p></li>
-<li><p><strong>parents</strong>: The SHAs of the parent commits.</p></li>
-<li><p><strong>date</strong>: The time and date the commit was made.</p></li>
-<li><p><strong>html_url</strong>: The address of the commit's web page.</p></li>
+    <p><code>create_status()</code> returns a list of the status's properties.</p>
+<p><strong>Status Properties:</strong></p><ul>
+<li><p><strong>id</strong>: The id of the release.</p></li>
+<li><p><strong>state</strong>: The state of the status.</p></li>
+<li><p><strong>description</strong>: The description of the status.</p></li>
+<li><p><strong>target_url</strong>: The URL linked to the status.</p></li>
+<li><p><strong>context</strong>: The context of the status.</p></li>
+<li><p><strong>creator</strong>: The creator of the status.</p></li>
+<li><p><strong>created_at</strong>: When it was created.</p></li>
+<li><p><strong>updated_at</strong>: When it was last updated.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository'>https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/commits/#get-a-single-commit'>https://developer.github.com/v3/repos/commits/#get-a-single-commit</a></p></li>
+<li><p><a href='https://docs.github.com/en/rest/reference/repos#create-a-commit-status'>https://docs.github.com/en/rest/reference/repos#create-a-commit-status</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='co'># View the history of commits for the master branch</span>
-  <span class='fu'>view_commits</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='co'># Create a status on the master branch</span>
+  <span class='fu'>create_status</span>(
+    state       = <span class='st'>"pending"</span>,
+    ref         = <span class='st'>"master"</span>,
+    repo        = <span class='st'>"ChadGoymer/test-githapi"</span>,
+    description = <span class='st'>"This is a pending status"</span>,
+    target_url  = <span class='st'>"https://www.goymer.me.uk/githapi"</span>,
+    context     = <span class='st'>"test/githapi"</span>)
 
-  <span class='co'># View commits where the README.md file has been changed</span>
-  <span class='fu'>view_commits</span>(
-    ref  = <span class='st'>"master"</span>,
-    repo = <span class='st'>"ChadGoymer/githapi"</span>,
-    path = <span class='st'>"README.md"</span>)
-
-  <span class='co'># View commits created by an author</span>
-  <span class='fu'>view_commits</span>(
-    ref    = <span class='st'>"master"</span>,
-    repo   = <span class='st'>"ChadGoymer/githapi"</span>,
-    author = <span class='st'>"ChadGoymer"</span>)
-
-  <span class='co'># View commits within a time window</span>
-  <span class='fu'>view_commits</span>(
-    ref   = <span class='st'>"master"</span>,
-    repo  = <span class='st'>"ChadGoymer/githapi"</span>,
-    since = <span class='st'>"2020-01-01 00:00:00"</span>,
-    until = <span class='st'>"2020-04-01 00:00:00"</span>)
-
-  <span class='co'># View the properties of the last commit on the master branch</span>
-  <span class='fu'>view_commit</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
-
-  <span class='co'># View the properties of the commit with tag "0.8.7"</span>
-  <span class='fu'>view_commit</span>(<span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='co'># Update the status on the master branch</span>
+  <span class='fu'>create_status</span>(
+    state       = <span class='st'>"success"</span>,
+    ref         = <span class='st'>"master"</span>,
+    repo        = <span class='st'>"ChadGoymer/test-githapi"</span>,
+    description = <span class='st'>"This is a success status"</span>,
+    target_url  = <span class='st'>"https://www.goymer.me.uk/githapi"</span>,
+    context     = <span class='st'>"test/githapi"</span>)
 
 }
 </div></pre>

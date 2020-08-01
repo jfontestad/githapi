@@ -73,7 +73,7 @@ organization if you have the appropriate permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ organization if you have the appropriate permissions." />
 organization if you have the appropriate permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_organization.html'>update_organization</a></span>(
+    <pre class="usage"><span class='fu'>update_organization</span>(
   <span class='kw'>org</span>,
   <span class='kw'>name</span>,
   <span class='kw'>description</span>,
@@ -204,13 +204,13 @@ organization members to create repositories. Can be one of:</p><ul>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_organization.html'>update_organization()</a></code> returns a list of the organization's properties.</p>
+    <p><code>update_organization()</code> returns a list of the organization's properties.</p>
 <p><strong>Organization Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the organization.</p></li>
 <li><p><strong>login</strong>: The login name of the organization.</p></li>
@@ -252,7 +252,7 @@ organization members to create repositories. Can be one of:</p><ul>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update some of your organization properties</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_organization.html'>update_organization</a></span>(
+  <span class='fu'>update_organization</span>(
     org                             = <span class='st'>"HairyCoos"</span>,
     description                     = <span class='st'>"We are the Hairy Coos!"</span>,
     location                        = <span class='st'>"The Highlands"</span>,

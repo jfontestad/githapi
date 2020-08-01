@@ -74,7 +74,7 @@ for a single card." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -119,14 +119,14 @@ for a single card." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_cards()</a></code> summarises cards in a table with the properties as columns and a row
-for each card in a column of a project. <code><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_card()</a></code> returns a list of all properties
+    <p><code>view_cards()</code> summarises cards in a table with the properties as columns and a row
+for each card in a column of a project. <code>view_card()</code> returns a list of all properties
 for a single card.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_cards</a></span>(<span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_cards</span>(<span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_card</a></span>(<span class='kw'>card</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>view_card</span>(<span class='kw'>card</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,7 +157,7 @@ for a single card.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>card</th>
@@ -167,7 +167,7 @@ for a single card.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_cards()</a></code> returns a tibble of card properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_card()</a></code>
+    <p><code>view_cards()</code> returns a tibble of card properties. <code>view_card()</code>
 returns a list of properties for a single card.</p>
 <p><strong>Card Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the card.</p></li>
@@ -193,25 +193,25 @@ or organization, by supplying them as an input.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View cards in a repository project</span>
-  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_cards</a></span>(
+  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span>(
     column  = <span class='st'>"Test cards"</span>,
     project = <span class='st'>"Test cards"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View cards in a user's project</span>
-  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_cards</a></span>(
+  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span>(
     column  = <span class='st'>"Test cards"</span>,
     project = <span class='st'>"Test cards"</span>,
     user    = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View cards in an organization's project</span>
-  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_cards</a></span>(
+  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span>(
     column  = <span class='st'>"Test cards"</span>,
     project = <span class='st'>"Test cards"</span>,
     org     = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View a single card</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_cards.html'>view_card</a></span>(card = <span class='fl'>123456</span>)
+  <span class='fu'>view_card</span>(card = <span class='fl'>123456</span>)
 
 }
 </div></pre>

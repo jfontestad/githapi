@@ -74,7 +74,7 @@ issue. view_label() returns a list of all properties for a single label." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -119,14 +119,14 @@ issue. view_label() returns a list of all properties for a single label." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_labels()</a></code> summarises labels in a table with the properties as columns and a row for
+    <p><code>view_labels()</code> summarises labels in a table with the properties as columns and a row for
 each label in the repository. It can also be used to view the labels assigned to a single
-issue. <code><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_label()</a></code> returns a list of all properties for a single label.</p>
+issue. <code>view_label()</code> returns a list of all properties for a single label.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_labels</a></span>(<span class='kw'>repo</span>, <span class='kw'>issue</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_labels</span>(<span class='kw'>repo</span>, <span class='kw'>issue</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_label</a></span>(<span class='kw'>label</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>view_label</span>(<span class='kw'>label</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,7 +145,7 @@ issue. <code><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_lab
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>label</th>
@@ -155,7 +155,7 @@ issue. <code><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_lab
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_labels()</a></code> returns a tibble of label properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_label()</a></code>
+    <p><code>view_labels()</code> returns a tibble of label properties. <code>view_label()</code>
 returns a list of properties for a single label.</p>
 <p><strong>Label Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the label.</p></li>
@@ -176,10 +176,10 @@ returns a list of properties for a single label.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View all labels in a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_labels</a></span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_labels</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single label</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_labels.html'>view_label</a></span>(<span class='st'>"new-label"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_label</span>(<span class='st'>"new-label"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
 }
 </div></pre>

@@ -75,7 +75,7 @@ browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -120,17 +120,17 @@ browser." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_releases()</a></code> summarises releases in a table with the properties as columns and a row
-for each release in the repository. <code><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_release()</a></code> returns a list of all properties for
-a single release. <code><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>browse_release()</a></code> opens the web page for the release in the default
+    <p><code>view_releases()</code> summarises releases in a table with the properties as columns and a row
+for each release in the repository. <code>view_release()</code> returns a list of all properties for
+a single release. <code>browse_release()</code> opens the web page for the release in the default
 browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_releases</a></span>(<span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_releases</span>(<span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_release</a></span>(<span class='kw'>release</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
+<span class='fu'>view_release</span>(<span class='kw'>release</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>browse_release</a></span>(<span class='kw'>release</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_release</span>(<span class='kw'>release</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,7 +145,7 @@ browser.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>release</th>
@@ -155,7 +155,7 @@ browser.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_releases()</a></code> returns a tibble of release properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_release()</a></code>
+    <p><code>view_releases()</code> returns a tibble of release properties. <code>view_release()</code>
 returns a list of properties for a single release. <code>browse_release</code> opens the
 default browser on the release page and returns the URL.</p>
 <p><strong>Release Properties:</strong></p><ul>
@@ -186,13 +186,13 @@ default browser on the release page and returns the URL.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View all releases in a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_releases</a></span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_releases</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View a single release</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>view_release</a></span>(<span class='st'>"1.0.1"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_release</span>(<span class='st'>"1.0.1"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Browse the release web page</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_releases.html'>browse_release</a></span>(<span class='st'>"1.0.1"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>browse_release</span>(<span class='st'>"1.0.1"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
 }
 </div></pre>

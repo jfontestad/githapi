@@ -73,7 +73,7 @@ or update their permission within the repository or project." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ or update their permission within the repository or project." />
 or update their permission within the repository or project.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_collaborator.html'>update_collaborator</a></span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>permission</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_collaborator</span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>permission</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,13 +151,13 @@ this is either <code>"pull"</code>, <code>"push"</code> or <code>"admin"</code>,
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_collaborator.html'>update_collaborator()</a></code> returns <code>TRUE</code> if successful.</p>
+    <p><code>update_collaborator()</code> returns <code>TRUE</code> if successful.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Note: you can only invite or update a user if the authenticate user is an "admin" of the
@@ -172,22 +172,22 @@ repository or project.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Invite a user to collaborate on a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_collaborator.html'>update_collaborator</a></span>(<span class='st'>"ChadGoymer2"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>update_collaborator</span>(<span class='st'>"ChadGoymer2"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Invite a user to collaborate on a project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_collaborator.html'>update_collaborator</a></span>(
+  <span class='fu'>update_collaborator</span>(
     user    = <span class='st'>"ChadGoymer2"</span>,
     project = <span class='st'>"TestProject"</span>,
     org     = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Update a user's permissions on a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_collaborator.html'>update_collaborator</a></span>(
+  <span class='fu'>update_collaborator</span>(
     user       = <span class='st'>"ChadGoymer2"</span>,
     repo       = <span class='st'>"ChadGoymer/githapi"</span>,
     permission = <span class='st'>"admin"</span>)
 
   <span class='co'># Update a user's permissions on a project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_collaborator.html'>update_collaborator</a></span>(
+  <span class='fu'>update_collaborator</span>(
     user       = <span class='st'>"ChadGoymer2"</span>,
     project    = <span class='st'>"TestProject"</span>,
     org        = <span class='st'>"HairyCoos"</span>,

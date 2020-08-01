@@ -73,7 +73,7 @@ change name, color or description." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ change name, color or description." />
 change name, color or description.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_label.html'>update_label</a></span>(<span class='kw'>label</span>, <span class='kw'>repo</span>, <span class='kw'>name</span>, <span class='kw'>color</span>, <span class='kw'>description</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_label</span>(<span class='kw'>label</span>, <span class='kw'>repo</span>, <span class='kw'>name</span>, <span class='kw'>color</span>, <span class='kw'>description</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,13 +150,13 @@ hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_label.html'>update_label()</a></code> returns a list of the label properties.</p>
+    <p><code>update_label()</code> returns a list of the label properties.</p>
 <p><strong>Label Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the label.</p></li>
 <li><p><strong>color</strong>: The color of the label in hexidecimal code.</p></li>
@@ -173,7 +173,7 @@ hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_label.html'>update_label</a></span>(
+  <span class='fu'>update_label</span>(
     label       = <span class='st'>"new-label"</span>,
     repo        = <span class='st'>"ChadGoymer/githapi"</span>,
     name        = <span class='st'>"updated-label"</span>,

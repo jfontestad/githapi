@@ -73,7 +73,7 @@ recoverable. If you just want to close the project use update_project()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -119,10 +119,10 @@ recoverable. If you just want to close the project use update_project()." />
 
     <div class="ref-description">
     <p>This function deletes a project in GitHub. Care should be taken as it will not be
-recoverable. If you just want to close the project use <code><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project()</a></code>.</p>
+recoverable. If you just want to close the project use <code><a href='update_project.html'>update_project()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_project.html'>delete_project</a></span>(<span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_project</span>(<span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,13 +149,13 @@ recoverable. If you just want to close the project use <code><a href='https://rd
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/delete_project.html'>delete_project()</a></code> returns a TRUE if successfully deleted.</p>
+    <p><code>delete_project()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>You can delete a project associated with either a repository, user, team or organization,
@@ -172,23 +172,23 @@ have to delete the organization's project.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Delete a project for a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_project.html'>delete_project</a></span>(
+  <span class='fu'>delete_project</span>(
     project = <span class='st'>"Repo project"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Delete a project for a user</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_project.html'>delete_project</a></span>(
+  <span class='fu'>delete_project</span>(
     project = <span class='st'>"User project"</span>,
     user    = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># Remove a team's access to the organization's project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_project.html'>delete_project</a></span>(
+  <span class='fu'>delete_project</span>(
     project = <span class='st'>"User project"</span>,
     team    = <span class='st'>"HeadCoos"</span>,
     org     = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Delete a project for an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_project.html'>delete_project</a></span>(
+  <span class='fu'>delete_project</span>(
     project = <span class='st'>"User project"</span>,
     org     = <span class='st'>"HairyCoos"</span>)
 

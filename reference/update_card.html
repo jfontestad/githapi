@@ -73,7 +73,7 @@ move_card() can be used to reorder the cards or move them to other columns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -118,13 +118,13 @@ move_card() can be used to reorder the cards or move them to other columns." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>update_card()</a></code> can be used to change a card's note in a project in GitHub or archive it.
-<code><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>move_card()</a></code> can be used to reorder the cards or move them to other columns.</p>
+    <p><code>update_card()</code> can be used to change a card's note in a project in GitHub or archive it.
+<code>move_card()</code> can be used to reorder the cards or move them to other columns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>update_card</a></span>(<span class='kw'>card</span>, <span class='kw'>note</span>, <span class='kw'>archived</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>update_card</span>(<span class='kw'>card</span>, <span class='kw'>note</span>, <span class='kw'>archived</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>move_card</a></span>(<span class='kw'>card</span>, <span class='kw'>position</span>, <span class='kw'>after</span>, <span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>move_card</span>(<span class='kw'>card</span>, <span class='kw'>position</span>, <span class='kw'>after</span>, <span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,7 +143,7 @@ move_card() can be used to reorder the cards or move them to other columns." />
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>position</th>
@@ -178,7 +178,7 @@ if moving the column.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>update_card()</a></code> returns a list of the card properties.</p>
+    <p><code>update_card()</code> returns a list of the card properties.</p>
 <p><strong>Card Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the card.</p></li>
 <li><p><strong>content_id</strong>: The ID of the issue or pull request.</p></li>
@@ -205,19 +205,19 @@ by specifying another card to place it after, or by specifying a column to move 
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update a note in a card</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>update_card</a></span>(card = <span class='fl'>123456</span>, note = <span class='st'>"This is an updated note"</span>)
+  <span class='fu'>update_card</span>(card = <span class='fl'>123456</span>, note = <span class='st'>"This is an updated note"</span>)
 
   <span class='co'># Archive a card</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>update_card</a></span>(card = <span class='fl'>654321</span>, archived = <span class='fl'>TRUE</span>)
+  <span class='fu'>update_card</span>(card = <span class='fl'>654321</span>, archived = <span class='fl'>TRUE</span>)
 
   <span class='co'># Move a card to the top of a column</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>move_card</a></span>(card = <span class='fl'>123456</span>, position = <span class='st'>"top"</span>)
+  <span class='fu'>move_card</span>(card = <span class='fl'>123456</span>, position = <span class='st'>"top"</span>)
 
   <span class='co'># Move a card after another card</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>move_card</a></span>(card  = <span class='fl'>123456</span>, after = <span class='fl'>654321</span>)
+  <span class='fu'>move_card</span>(card  = <span class='fl'>123456</span>, after = <span class='fl'>654321</span>)
 
   <span class='co'># Move card to another column</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_card.html'>move_card</a></span>(
+  <span class='fu'>move_card</span>(
     card     = <span class='fl'>123456</span>,
     position = <span class='st'>"top"</span>,
     column   = <span class='st'>"Test column 2"</span>,

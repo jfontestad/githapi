@@ -74,7 +74,7 @@ of the head commit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -119,12 +119,12 @@ of the head commit." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/compare_commits.html'>compare_commits()</a></code> summarises the commits made between two commits in a table with the
+    <p><code>compare_commits()</code> summarises the commits made between two commits in a table with the
 properties as columns and a row for each commit. The <code>base</code> commit must be in the history
 of the <code>head</code> commit.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/compare_commits.html'>compare_commits</a></span>(<span class='kw'>base</span>, <span class='kw'>head</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>compare_commits</span>(<span class='kw'>base</span>, <span class='kw'>head</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,13 +143,13 @@ of the <code>head</code> commit.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/compare_commits.html'>compare_commits()</a></code> returns a tibble of commit properties.</p>
+    <p><code>compare_commits()</code> returns a tibble of commit properties.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
@@ -176,7 +176,7 @@ of the <code>head</code> commit.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View the changes made between the current master branch and a release</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/compare_commits.html'>compare_commits</a></span>(<span class='st'>"master"</span>, <span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>compare_commits</span>(<span class='st'>"master"</span>, <span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
 }
 </div></pre>

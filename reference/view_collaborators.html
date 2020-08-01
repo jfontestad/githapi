@@ -75,7 +75,7 @@ permission." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -120,15 +120,15 @@ permission." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborators()</a></code> summarises the collaborators in a repository, project or
+    <p><code>view_collaborators()</code> summarises the collaborators in a repository, project or
 organization in a table with the properties as columns and a row for each collaborator.
-<code><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborator()</a></code> returns a list of all collaborator's properties including their
+<code>view_collaborator()</code> returns a list of all collaborator's properties including their
 permission.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborators</a></span>(<span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, affiliation = <span class='st'>"all"</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_collaborators</span>(<span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, affiliation = <span class='st'>"all"</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborator</a></span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>view_collaborator</span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,7 +156,7 @@ permission.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -166,14 +166,14 @@ permission.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborators()</a></code> returns a tibble of collaborator properties.
-<code><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborator()</a></code> returns a list of properties for a single collaborator.</p>
+    <p><code>view_collaborators()</code> returns a tibble of collaborator properties.
+<code>view_collaborator()</code> returns a list of properties for a single collaborator.</p>
 <p><strong>Collaborator Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the collaborator.</p></li>
 <li><p><strong>login</strong>: The login name of the collaborator.</p></li>
 <li><p><strong>site_admin</strong>: Whether the collaborator is an administrator.</p></li>
 <li><p><strong>html_url</strong>: The GitHub page for the collaborator.</p></li>
-<li><p><strong>permission</strong>: The permission the collaborator has (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborator()</a></code>).</p></li>
+<li><p><strong>permission</strong>: The permission the collaborator has (only available in <code>view_collaborator()</code>).</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -193,19 +193,19 @@ a member.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View collaborators on a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborators</a></span>(repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_collaborators</span>(repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View collaborators on a project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborators</a></span>(project = <span class='kw'>test_project</span><span class='op'>$</span><span class='kw'>name</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_collaborators</span>(project = <span class='kw'>test_project</span><span class='op'>$</span><span class='kw'>name</span>, org = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View collaborators in an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborators</a></span>(org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_collaborators</span>(org = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View collaborator on a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborator</a></span>(<span class='st'>"ChadGoymer"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_collaborator</span>(<span class='st'>"ChadGoymer"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View collaborator on a project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_collaborators.html'>view_collaborator</a></span>(
+  <span class='fu'>view_collaborator</span>(
     user    = <span class='st'>"ChadGoymer"</span>,
     project = <span class='st'>"Test project"</span>,
     org     = <span class='st'>"HairyCoos"</span>)

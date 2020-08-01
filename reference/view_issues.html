@@ -75,7 +75,7 @@ default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -120,13 +120,13 @@ default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issues()</a></code> summarises issues in a table with the properties as columns and a row for
-each issue in the repository or organization. <code><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issue()</a></code> returns a list of all
-properties for a single issue. <code><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>browse_issue()</a></code> opens the web page for the issue in the
+    <p><code>view_issues()</code> summarises issues in a table with the properties as columns and a row for
+each issue in the repository or organization. <code>view_issue()</code> returns a list of all
+properties for a single issue. <code>browse_issue()</code> opens the web page for the issue in the
 default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issues</a></span>(
+    <pre class="usage"><span class='fu'>view_issues</span>(
   <span class='kw'>repo</span>,
   <span class='kw'>org</span>,
   <span class='kw'>labels</span>,
@@ -139,9 +139,9 @@ default browser.</p>
   <span class='kw'>...</span>
 )
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issue</a></span>(<span class='kw'>issue</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
+<span class='fu'>view_issue</span>(<span class='kw'>issue</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>browse_issue</a></span>(<span class='kw'>issue</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_issue</span>(<span class='kw'>issue</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,7 +188,7 @@ default browser.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>issue</th>
@@ -198,8 +198,8 @@ default browser.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issues()</a></code> returns a tibble of issue properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issue()</a></code> returns a
-list of properties for a single issue. <code><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>browse_issue()</a></code> opens the default browser on
+    <p><code>view_issues()</code> returns a tibble of issue properties. <code>view_issue()</code> returns a
+list of properties for a single issue. <code>browse_issue()</code> opens the default browser on
 the issue's page and returns the URL.</p>
 <p><strong>Issue Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the issue.</p></li>
@@ -236,16 +236,16 @@ the order the results are returned can be controlled with <code>sort</code> and 
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View open issues in a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issues</a></span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View closed issues in a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issues</a></span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
+  <span class='fu'>view_issues</span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
 
   <span class='co'># View a single issue</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>view_issue</a></span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Open a issue's page in a browser</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_issues.html'>browse_issue</a></span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>browse_issue</span>(<span class='st'>"test issue"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
 }
 </div></pre>

@@ -73,7 +73,7 @@ on the specified branch." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ on the specified branch." />
 on the specified branch.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload_files</a></span>(
+    <pre class="usage"><span class='fu'>upload_files</span>(
   <span class='kw'>from_path</span>,
   <span class='kw'>to_path</span>,
   <span class='kw'>branch</span>,
@@ -181,13 +181,13 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload_files()</a></code> returns a list of the commit properties.</p>
+    <p><code>upload_files()</code> returns a list of the commit properties.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
@@ -217,7 +217,7 @@ branch does not exist then an orphan commit is created.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Upload files to the master branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload_files</a></span>(
+  <span class='fu'>upload_files</span>(
     from_path = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>),
     to_path   = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"file1.txt"</span>, <span class='st'>"file2.txt"</span>),
     branch    = <span class='st'>"master"</span>,
@@ -225,7 +225,7 @@ branch does not exist then an orphan commit is created.</p>
     repo      = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Upload files into directories within the master branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload_files</a></span>(
+  <span class='fu'>upload_files</span>(
     from_path = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>, <span class='st'>"c:/test/file3.txt"</span>),
     to_path   = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dir-1/file-1.txt"</span>, <span class='st'>"dir-1/dir-1-1/file-2.txt"</span>, <span class='st'>"dir-2/file-3.txt"</span>),
     branch    = <span class='st'>"master"</span>,
@@ -233,7 +233,7 @@ branch does not exist then an orphan commit is created.</p>
     repo      = <span class='fu'>str_c</span>(<span class='st'>"ChadGoymer/test-files-"</span>, <span class='kw'>now</span>))
 
   <span class='co'># Upload files to the master branch specifying an author and committer</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload_files</a></span>(
+  <span class='fu'>upload_files</span>(
     from_path = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>),
     to_path   = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"file1.txt"</span>, <span class='st'>"file2.txt"</span>),
     branch    = <span class='st'>"master"</span>,
@@ -243,7 +243,7 @@ branch does not exist then an orphan commit is created.</p>
     committer = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name = <span class='st'>"Jane"</span>, email = <span class='st'>"jane@acme.com"</span>))
 
   <span class='co'># Create a new branch from the master branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload_files</a></span>(
+  <span class='fu'>upload_files</span>(
     from_path = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c:/test/file1.txt"</span>, <span class='st'>"c:/test/file2.txt"</span>),
     to_path   = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"file1.txt"</span>, <span class='st'>"file2.txt"</span>),
     branch    = <span class='st'>"new-branch"</span>,

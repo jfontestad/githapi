@@ -75,7 +75,7 @@ milestone in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -120,13 +120,13 @@ milestone in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestones()</a></code> summarises milestones in a table with the properties as columns and a
-row for each milestone in the repository. <code><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestone()</a></code> returns a list of all
-properties for a single milestone. <code><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>browse_milestone()</a></code> opens the web page for the
+    <p><code>view_milestones()</code> summarises milestones in a table with the properties as columns and a
+row for each milestone in the repository. <code>view_milestone()</code> returns a list of all
+properties for a single milestone. <code>browse_milestone()</code> opens the web page for the
 milestone in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestones</a></span>(
+    <pre class="usage"><span class='fu'>view_milestones</span>(
   <span class='kw'>repo</span>,
   state = <span class='st'>"open"</span>,
   sort = <span class='st'>"due_on"</span>,
@@ -135,9 +135,9 @@ milestone in the default browser.</p>
   <span class='kw'>...</span>
 )
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestone</a></span>(<span class='kw'>milestone</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
+<span class='fu'>view_milestone</span>(<span class='kw'>milestone</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>browse_milestone</a></span>(<span class='kw'>milestone</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_milestone</span>(<span class='kw'>milestone</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,7 +167,7 @@ be either <code>"due_on"</code> or <code>"completeness"</code>. Default: <code>"
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>milestone</th>
@@ -177,8 +177,8 @@ be either <code>"due_on"</code> or <code>"completeness"</code>. Default: <code>"
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestones()</a></code> returns a tibble of milestone properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestone()</a></code>
-returns a list of properties for a single milestone. <code><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>browse_milestone()</a></code> opens the
+    <p><code>view_milestones()</code> returns a tibble of milestone properties. <code>view_milestone()</code>
+returns a list of properties for a single milestone. <code>browse_milestone()</code> opens the
 default browser on the milestone's page and returns the URL.</p>
 <p><strong>Milestone Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the milestone within the repository.</p></li>
@@ -208,18 +208,18 @@ order they are returned using <code>sort</code> and <code>direction</code>.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View open milestones in a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestones</a></span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_milestones</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View closed milestones in a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestones</a></span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
+  <span class='fu'>view_milestones</span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
 
   <span class='co'># View a single milestone</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>view_milestone</a></span>(
+  <span class='fu'>view_milestone</span>(
     milestone = <span class='st'>"test milestone"</span>,
     repo      = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Open a milestone's page in a browser</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_milestones.html'>browse_milestone</a></span>(
+  <span class='fu'>browse_milestone</span>(
     milestone = <span class='st'>"test milestone"</span>,
     repo      = <span class='st'>"ChadGoymer/githapi"</span>)
 

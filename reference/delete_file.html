@@ -75,7 +75,7 @@ error." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,11 +122,11 @@ error." />
     <div class="ref-description">
     <p>This function deletes a file in a repository in GitHub by creating a new commit on the
 specified branch. If the branch does not already exist a <code>parent</code> commit must be specified
-and a new branch is created from it. If the file does not exist <code><a href='https://rdrr.io/pkg/githapi/man/delete_file.html'>delete_file()</a></code> throws as
+and a new branch is created from it. If the file does not exist <code>delete_file()</code> throws as
 error.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_file.html'>delete_file</a></span>(<span class='kw'>path</span>, <span class='kw'>branch</span>, <span class='kw'>message</span>, <span class='kw'>repo</span>, <span class='kw'>parent</span>, <span class='kw'>author</span>, <span class='kw'>committer</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_file</span>(<span class='kw'>path</span>, <span class='kw'>branch</span>, <span class='kw'>message</span>, <span class='kw'>repo</span>, <span class='kw'>parent</span>, <span class='kw'>author</span>, <span class='kw'>committer</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,13 +164,13 @@ the commit.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/delete_file.html'>delete_file()</a></code>returns a list of the commit properties.</p>
+    <p><code>delete_file()</code>returns a list of the commit properties.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
@@ -189,20 +189,20 @@ the commit.</p></td>
 authenticated user is used. However, if you want to set them explicitly you must specify
 a named list with <code>name</code> and <code>email</code> as the elements (see examples).</p>
 <p>Note: The GitHub API imposes a file size limit of 1MB for this request. For larger files
-use the <code><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload_files()</a></code> function.</p>
+use the <code><a href='upload_files.html'>upload_files()</a></code> function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Delete a file on the master branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_file.html'>delete_file</a></span>(
+  <span class='fu'>delete_file</span>(
     path    = <span class='st'>"file-to-delete.md"</span>,
     branch  = <span class='st'>"master"</span>,
     message = <span class='st'>"Deleted a file with delete_file()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Delete a file on a new branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_file.html'>create_file</a></span>(
+  <span class='fu'><a href='create_file.html'>create_file</a></span>(
     path    = <span class='st'>"file-to-delete.md"</span>,
     branch  = <span class='st'>"new-branch"</span>,
     message = <span class='st'>"Deleted a file with delete_file()"</span>,
@@ -210,7 +210,7 @@ use the <code><a href='https://rdrr.io/pkg/githapi/man/upload_files.html'>upload
     parent  = <span class='st'>"master"</span>)
 
   <span class='co'># Delete a file on the master branch specifying an author and committer</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_file.html'>delete_file</a></span>(
+  <span class='fu'>delete_file</span>(
     path      = <span class='st'>"file-to-delete.md"</span>,
     branch    = <span class='st'>"master"</span>,
     message   = <span class='st'>"Deleted a file with delete_file()"</span>,

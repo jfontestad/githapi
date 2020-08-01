@@ -73,7 +73,7 @@ move_column() can be used to reorder the columns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -118,13 +118,13 @@ move_column() can be used to reorder the columns." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>update_column()</a></code> can be used to change the column name in a project in GitHub.
-<code><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>move_column()</a></code> can be used to reorder the columns.</p>
+    <p><code>update_column()</code> can be used to change the column name in a project in GitHub.
+<code>move_column()</code> can be used to reorder the columns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>update_column</a></span>(<span class='kw'>column</span>, <span class='kw'>name</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>update_column</span>(<span class='kw'>column</span>, <span class='kw'>name</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>move_column</a></span>(<span class='kw'>column</span>, <span class='kw'>position</span>, <span class='kw'>after</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>move_column</span>(<span class='kw'>column</span>, <span class='kw'>position</span>, <span class='kw'>after</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,7 +155,7 @@ move_column() can be used to reorder the columns." />
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>position</th>
@@ -170,7 +170,7 @@ one after.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>update_column()</a></code> returns a list of the column properties.</p>
+    <p><code>update_column()</code> returns a list of the column properties.</p>
 <p><strong>Column Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the column.</p></li>
 <li><p><strong>name</strong>: The name given to the column.</p></li>
@@ -194,20 +194,20 @@ by specifying another column to place it after.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update the name of a column in a repository project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>update_column</a></span>(
+  <span class='fu'>update_column</span>(
     column  = <span class='st'>"Test column"</span>,
     name    = <span class='st'>"Updated test column"</span>,
     project = <span class='st'>"Test project"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Move a column to the first position in a user's project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>move_column</a></span>(
+  <span class='fu'>move_column</span>(
     name     = <span class='st'>"Test column"</span>,
     position = <span class='st'>"first"</span>,
     user     = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># Move a column after another on in an organization's project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_column.html'>move_column</a></span>(
+  <span class='fu'>move_column</span>(
     name  = <span class='st'>"Test column"</span>,
     after = <span class='st'>"Test column 2"</span>,
     org   = <span class='st'>"HairyCoos"</span>)

@@ -74,7 +74,7 @@ also removes them from any teams within the organization." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ does not remove them from the organization, whereas removing them from an organi
 also removes them from any teams within the organization.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_membership.html'>delete_membership</a></span>(<span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>team</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_membership</span>(<span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>team</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,13 +143,13 @@ also removes them from any teams within the organization.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/delete_membership.html'>delete_membership()</a></code> returns a TRUE if successfully deleted.</p>
+    <p><code>delete_membership()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Note: you can only remove a user if the authenticate user is an organization "owner" or a
@@ -164,10 +164,10 @@ team "maintainer".</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Remove a user from an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_membership.html'>delete_membership</a></span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>delete_membership</span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Remove a user from a team</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_membership.html'>delete_membership</a></span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>)
+  <span class='fu'>delete_membership</span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>)
 
 }
 </div></pre>

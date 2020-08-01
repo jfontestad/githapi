@@ -75,7 +75,7 @@ the pull request in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -120,13 +120,13 @@ the pull request in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_requests()</a></code> summarises pull requests in a table with the properties as columns
-and a row for each pull request in the repository. <code><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_request()</a></code> returns a list of
-all properties for a single pull request. <code><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>browse_pull_request()</a></code> opens the web page for
+    <p><code>view_pull_requests()</code> summarises pull requests in a table with the properties as columns
+and a row for each pull request in the repository. <code>view_pull_request()</code> returns a list of
+all properties for a single pull request. <code>browse_pull_request()</code> opens the web page for
 the pull request in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_requests</a></span>(
+    <pre class="usage"><span class='fu'>view_pull_requests</span>(
   <span class='kw'>repo</span>,
   <span class='kw'>head</span>,
   <span class='kw'>base</span>,
@@ -137,9 +137,9 @@ the pull request in the default browser.</p>
   <span class='kw'>...</span>
 )
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_request</a></span>(<span class='kw'>pull_request</span>, <span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+<span class='fu'>view_pull_request</span>(<span class='kw'>pull_request</span>, <span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>browse_pull_request</a></span>(<span class='kw'>pull_request</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_pull_request</span>(<span class='kw'>pull_request</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,7 +179,7 @@ be either <code>"created"</code>, <code>"updated"</code>, <code>"popularity"</co
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>pull_request</th>
@@ -189,9 +189,9 @@ be either <code>"created"</code>, <code>"updated"</code>, <code>"popularity"</co
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_requests()</a></code> returns a tibble of pull request properties.
-<code><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_request()</a></code> returns a list of properties for a single pull request.
-<code><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>browse_pull_request()</a></code> opens the default browser on the pull request's page and returns
+    <p><code>view_pull_requests()</code> returns a tibble of pull request properties.
+<code>view_pull_request()</code> returns a list of properties for a single pull request.
+<code>browse_pull_request()</code> opens the default browser on the pull request's page and returns
 the URL.</p>
 <p><strong>Pull Request Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the pull request.</p></li>
@@ -222,7 +222,7 @@ the URL.</p>
 <li><p><strong>closed_at</strong>: When the pull request was closed.</p></li>
 </ul>
 
-<p>Additionally, the <code><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_request()</a></code> function also returns:</p><ul>
+<p>Additionally, the <code>view_pull_request()</code> function also returns:</p><ul>
 <li><p><strong>commits</strong>: Information about the commits made on the branch.</p><ul>
 <li><p><strong>message</strong>: The message specified for the commit.</p></li>
 <li><p><strong>author_name</strong>: The author's name.</p></li>
@@ -268,22 +268,22 @@ also order the results with <code>sort</code> and <code>direction</code>.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View all open pull requests</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_requests</a></span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View all closed pull requests</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_requests</a></span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
+  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
 
   <span class='co'># View all pull requests for the "master" branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_requests</a></span>(<span class='st'>"ChadGoymer/githapi"</span>, base = <span class='st'>"master"</span>)
+  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>, base = <span class='st'>"master"</span>)
 
   <span class='co'># View pull requests, sorted by the most recently updated</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_requests</a></span>(<span class='st'>"ChadGoymer/githapi"</span>, sort = <span class='st'>"updated"</span>, direction = <span class='st'>"desc"</span>)
+  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>, sort = <span class='st'>"updated"</span>, direction = <span class='st'>"desc"</span>)
 
   <span class='co'># View single pull request</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>view_pull_request</a></span>(<span class='st'>"test pull request"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_pull_request</span>(<span class='st'>"test pull request"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Open a pull request's page in a browser</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_pull_requests.html'>browse_pull_request</a></span>(<span class='st'>"test pull request"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>browse_pull_request</span>(<span class='st'>"test pull request"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
 }
 </div></pre>

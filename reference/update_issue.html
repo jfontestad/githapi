@@ -74,7 +74,7 @@ or to close the issue." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ change the title, body, or assignees, it can also be used to replace labels and 
 or to close the issue.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_issue.html'>update_issue</a></span>(
+    <pre class="usage"><span class='fu'>update_issue</span>(
   <span class='kw'>issue</span>,
   <span class='kw'>repo</span>,
   <span class='kw'>title</span>,
@@ -178,13 +178,13 @@ new issues. Setting to <code>NULL</code> clears the current milestone.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_issue.html'>update_issue()</a></code> returns a list of the issue's properties.</p>
+    <p><code>update_issue()</code> returns a list of the issue's properties.</p>
 <p><strong>Issue Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the issue.</p></li>
 <li><p><strong>title</strong>: The title of the issue.</p></li>
@@ -213,7 +213,7 @@ new issues. Setting to <code>NULL</code> clears the current milestone.</p></td>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update the properties of a issue</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_issue.html'>update_issue</a></span>(
+  <span class='fu'>update_issue</span>(
     issue   = <span class='st'>"test issue"</span>,
     repo        = <span class='st'>"ChadGoymer/githapi"</span>,
     title       = <span class='st'>"updated test issue"</span>,
@@ -221,7 +221,7 @@ new issues. Setting to <code>NULL</code> clears the current milestone.</p></td>
     due_on      = <span class='st'>"2020-12-01"</span>)
 
   <span class='co'># Close a issue</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_issue.html'>update_issue</a></span>(
+  <span class='fu'>update_issue</span>(
     issue = <span class='st'>"updated test issue"</span>,
     repo      = <span class='st'>"ChadGoymer/githapi"</span>,
     state     = <span class='st'>"closed"</span>)

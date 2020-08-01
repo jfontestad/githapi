@@ -75,7 +75,7 @@ uploaded it will be removed in the new commit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ created with exactly the files uploaded, so if a file in the parent commit has n
 uploaded it will be removed in the new commit.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+    <pre class="usage"><span class='fu'>upload_commit</span>(
   <span class='kw'>path</span>,
   <span class='kw'>branch</span>,
   <span class='kw'>message</span>,
@@ -187,13 +187,13 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit()</a></code> returns a list of the commit properties.</p>
+    <p><code>upload_commit()</code> returns a list of the commit properties.</p>
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
@@ -222,14 +222,14 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Add a commit to the master branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+  <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
     branch  = <span class='st'>"master"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># override the author and committer</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+  <span class='fu'>upload_commit</span>(
     path      = <span class='st'>"C:/files-to-upload"</span>,
     branch    = <span class='st'>"master"</span>,
     message   = <span class='st'>"Commit to test upload_commit()"</span>,
@@ -238,7 +238,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     committer = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name = <span class='st'>"Jane"</span>,  email = <span class='st'>"jane@acme.com"</span>))
 
   <span class='co'># Create a commit on a new branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+  <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
     branch  = <span class='st'>"test-commits-1"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
@@ -246,14 +246,14 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     parents = <span class='st'>"master"</span>)
 
   <span class='co'># Create an orphan commit</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+  <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
     branch  = <span class='st'>"test-commits-2"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Force branch to point at the new commit</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+  <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
     branch  = <span class='st'>"master"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
@@ -262,7 +262,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     force   = <span class='fl'>TRUE</span>)
 
   <span class='co'># Create a commit merging a branch into the master branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+  <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
     branch  = <span class='st'>"master"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
@@ -270,7 +270,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     parents = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"master"</span>, <span class='st'>"test-commits-1"</span>))
 
   <span class='co'># Create a commit merging two branches into a new branch</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/upload_commit.html'>upload_commit</a></span>(
+  <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
     branch  = <span class='st'>"test-commits-3"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,

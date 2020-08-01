@@ -75,7 +75,7 @@ the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -120,17 +120,17 @@ the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organizations()</a></code> summarises organizations in a table with the properties as columns
-and a row for each organization. <code><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organization()</a></code> returns a list of all properties for
-a single organization. <code><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>browse_organization()</a></code> opens the web page for the organization in
+    <p><code>view_organizations()</code> summarises organizations in a table with the properties as columns
+and a row for each organization. <code>view_organization()</code> returns a list of all properties for
+a single organization. <code>browse_organization()</code> opens the web page for the organization in
 the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organizations</a></span>(<span class='kw'>user</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_organizations</span>(<span class='kw'>user</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organization</a></span>(<span class='kw'>org</span>, <span class='kw'>...</span>)
+<span class='fu'>view_organization</span>(<span class='kw'>org</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>browse_organization</a></span>(<span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_organization</span>(<span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +146,7 @@ used.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>org</th>
@@ -156,9 +156,9 @@ used.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organizations()</a></code> returns a tibble of organization properties.
-<code><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organization()</a></code> returns a list of properties for a single organization.
-<code><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>browse_organization()</a></code> opens the default browser on the organization's page and returns
+    <p><code>view_organizations()</code> returns a tibble of organization properties.
+<code>view_organization()</code> returns a list of properties for a single organization.
+<code>browse_organization()</code> opens the default browser on the organization's page and returns
 the URL.</p>
 <p><strong>Organization Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the organization.</p></li>
@@ -166,7 +166,7 @@ the URL.</p>
 <li><p><strong>description</strong>: The description of the organization.</p></li>
 </ul>
 
-<p>The following are only returned using <code><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organization()</a></code>:</p><ul>
+<p>The following are only returned using <code>view_organization()</code>:</p><ul>
 <li><p><strong>name</strong>: The name of the organization.</p></li>
 <li><p><strong>company</strong>: The name of the associated company.</p></li>
 <li><p><strong>blog</strong>: The address for a blog.</p></li>
@@ -209,19 +209,19 @@ or the authenticated user if it is set to <code>NULL</code>. If a user is not su
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View organizations a user is a member of</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organizations</a></span>(user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_organizations</span>(user = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View organizations the authenticated user is a member of</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organizations</a></span>(user = <span class='kw'>NULL</span>)
+  <span class='fu'>view_organizations</span>(user = <span class='kw'>NULL</span>)
 
   <span class='co'># View all organizations</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organizations</a></span>()
+  <span class='fu'>view_organizations</span>()
 
   <span class='co'># View a single organization in more detail.</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>view_organization</a></span>(<span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_organization</span>(<span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Browse a organization's GitHub page</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_organizations.html'>browse_organization</a></span>(<span class='st'>"HairyCoos"</span>)
+  <span class='fu'>browse_organization</span>(<span class='st'>"HairyCoos"</span>)
 
 }
 </div></pre>

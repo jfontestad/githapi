@@ -73,7 +73,7 @@ recoverable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ recoverable." />
 recoverable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_column.html'>delete_column</a></span>(<span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_column</span>(<span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,13 +149,13 @@ recoverable.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/delete_column.html'>delete_column()</a></code> returns a TRUE if successfully deleted.</p>
+    <p><code>delete_column()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>You can delete a column associated with either a repository, user or organization, by
@@ -169,19 +169,19 @@ supplying them as an input, as long as you have appropriate permissions.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Delete a column in a repository project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_column.html'>delete_column</a></span>(
+  <span class='fu'>delete_column</span>(
     column  = <span class='st'>"Test column"</span>,
     project = <span class='st'>"Test project"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Delete a column in a user's project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_column.html'>delete_column</a></span>(
+  <span class='fu'>delete_column</span>(
     column  = <span class='st'>"Test column"</span>,
     project = <span class='st'>"Test project"</span>,
     user    = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># Delete a column in an organization's project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_column.html'>delete_column</a></span>(
+  <span class='fu'>delete_column</span>(
     column  = <span class='st'>"Test column"</span>,
     project = <span class='st'>"Test project"</span>,
     org     = <span class='st'>"HairyCoos"</span>)

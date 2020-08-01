@@ -74,7 +74,7 @@ browse_user() opens the web page for the user in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -119,16 +119,16 @@ browse_user() opens the web page for the user in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_users()</a></code> summarises users in a table with the properties as columns and a row
-for each user. <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code> returns a list of all properties for a single user.
-<code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>browse_user()</a></code> opens the web page for the user in the default browser.</p>
+    <p><code>view_users()</code> summarises users in a table with the properties as columns and a row
+for each user. <code>view_user()</code> returns a list of all properties for a single user.
+<code>browse_user()</code> opens the web page for the user in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_users</a></span>(<span class='kw'>org</span>, <span class='kw'>team</span>, role = <span class='st'>"all"</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_users</span>(<span class='kw'>org</span>, <span class='kw'>team</span>, role = <span class='st'>"all"</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user</a></span>(<span class='kw'>user</span>, <span class='kw'>...</span>)
+<span class='fu'>view_user</span>(<span class='kw'>user</span>, <span class='kw'>...</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>browse_user</a></span>(<span class='kw'>user</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_user</span>(<span class='kw'>user</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,7 +152,7 @@ for each user. <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>v
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_page.html'>gh_page()</a></code> or <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_page.html'>gh_page()</a></code> or <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -162,19 +162,19 @@ for each user. <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>v
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_users()</a></code> returns a tibble of user properties. <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>
-returns a list of properties for a single user.  <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>browse_user()</a></code> opens the default
+    <p><code>view_users()</code> returns a tibble of user properties. <code>view_user()</code>
+returns a list of properties for a single user.  <code>browse_user()</code> opens the default
 browser on the user's page and returns the URL.</p>
 <p><strong>user Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the user.</p></li>
 <li><p><strong>login</strong>: The login name of the user.</p></li>
-<li><p><strong>name</strong>: The name of the user (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>).</p></li>
-<li><p><strong>email</strong>: The public email address of the user (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>).</p></li>
-<li><p><strong>blog</strong>: The blog address of the user (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>).</p></li>
-<li><p><strong>company</strong>: The company the user works for (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>).</p></li>
-<li><p><strong>location</strong>: The location of the user (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>).</p></li>
-<li><p><strong>hireable</strong>: Whether the user currently hireable (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>).</p></li>
-<li><p><strong>bio</strong>: The biography of the user (only available in <code><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user()</a></code>).</p></li>
+<li><p><strong>name</strong>: The name of the user (only available in <code>view_user()</code>).</p></li>
+<li><p><strong>email</strong>: The public email address of the user (only available in <code>view_user()</code>).</p></li>
+<li><p><strong>blog</strong>: The blog address of the user (only available in <code>view_user()</code>).</p></li>
+<li><p><strong>company</strong>: The company the user works for (only available in <code>view_user()</code>).</p></li>
+<li><p><strong>location</strong>: The location of the user (only available in <code>view_user()</code>).</p></li>
+<li><p><strong>hireable</strong>: Whether the user currently hireable (only available in <code>view_user()</code>).</p></li>
+<li><p><strong>bio</strong>: The biography of the user (only available in <code>view_user()</code>).</p></li>
 <li><p><strong>site_admin</strong>: Whether the user is an administrator.</p></li>
 <li><p><strong>html_url</strong>: The GitHub page for the user.</p></li>
 </ul>
@@ -196,22 +196,22 @@ returned.</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># View users collaborating on a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_users</a></span>(repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_users</span>(repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View users in an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_users</a></span>(org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_users</span>(org = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># View users in a team within an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_users</a></span>(org = <span class='st'>"HairyCoos"</span>, team = <span class='st'>"HeadCoos"</span>)
+  <span class='fu'>view_users</span>(org = <span class='st'>"HairyCoos"</span>, team = <span class='st'>"HeadCoos"</span>)
 
   <span class='co'># View the admins of an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_users</a></span>(org = <span class='st'>"HairyCoos"</span>, role = <span class='st'>"admin"</span>)
+  <span class='fu'>view_users</span>(org = <span class='st'>"HairyCoos"</span>, role = <span class='st'>"admin"</span>)
 
   <span class='co'># View a single user</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>view_user</a></span>(<span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_user</span>(<span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># Browse a user's GitHub page</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/view_users.html'>browse_user</a></span>(<span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>browse_user</span>(<span class='st'>"ChadGoymer"</span>)
 
 }
 </div></pre>

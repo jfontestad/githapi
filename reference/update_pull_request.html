@@ -74,7 +74,7 @@ assign the pull request to a user, request reviewers and replace labels or a mil
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ to change the title or body, or used to close the pull request. It can also be u
 assign the pull request to a user, request reviewers and replace labels or a milestone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_pull_request.html'>update_pull_request</a></span>(
+    <pre class="usage"><span class='fu'>update_pull_request</span>(
   <span class='kw'>pull_request</span>,
   <span class='kw'>repo</span>,
   <span class='kw'>title</span>,
@@ -190,13 +190,13 @@ This should be an existing branch on the current repository.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_pull_request.html'>update_pull_request()</a></code> returns a list of the pull request's properties.</p>
+    <p><code>update_pull_request()</code> returns a list of the pull request's properties.</p>
 <p><strong>Pull Request Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the pull request.</p></li>
 <li><p><strong>title</strong>: The title of the pull request.</p></li>
@@ -239,14 +239,14 @@ This should be an existing branch on the current repository.</p></td>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update a pull request's properties</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_pull_request.html'>update_pull_request</a></span>(
+  <span class='fu'>update_pull_request</span>(
     pull_request = <span class='st'>"test pull request"</span>,
     repo         = <span class='st'>"ChadGoymer/githapi"</span>,
     title        = <span class='st'>"test updated pull request"</span>,
     body         = <span class='st'>"This is an updated pull request to test create_pull_request()"</span>)
 
   <span class='co'># Close a pull request</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_pull_request.html'>update_pull_request</a></span>(
+  <span class='fu'>update_pull_request</span>(
     pull_request = <span class='st'>"test updated pull request"</span>,
     repo         = <span class='st'>"ChadGoymer/githapi"</span>,
     state        = <span class='st'>"closed"</span>)

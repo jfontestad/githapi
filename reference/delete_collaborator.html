@@ -75,7 +75,7 @@ within the organization." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ removing them from an organization also removes them from any repositories and p
 within the organization.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_collaborator.html'>delete_collaborator</a></span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_collaborator</span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,13 +149,13 @@ within the organization.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/delete_collaborator.html'>delete_collaborator()</a></code> returns a TRUE if successfully deleted.</p>
+    <p><code>delete_collaborator()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Note: you can only remove a user if the authenticate user is an organization "owner" or a
@@ -171,16 +171,16 @@ team "maintainer".</p>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Remove a collaborator from a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_collaborator.html'>delete_collaborator</a></span>(<span class='st'>"ChadGoymer"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>delete_collaborator</span>(<span class='st'>"ChadGoymer"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Remove a collaborator from a project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_collaborator.html'>delete_collaborator</a></span>(
+  <span class='fu'>delete_collaborator</span>(
     user    = <span class='st'>"ChadGoymer"</span>,
     project = <span class='st'>"Test project"</span>,
     org     = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Remove a collaborator from an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/delete_collaborator.html'>delete_collaborator</a></span>(<span class='st'>"ChadGoymer"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>delete_collaborator</span>(<span class='st'>"ChadGoymer"</span>, org = <span class='st'>"HairyCoos"</span>)
 
 }
 </div></pre>

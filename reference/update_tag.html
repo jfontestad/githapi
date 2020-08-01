@@ -74,7 +74,7 @@ tag. For a branch, the head commit is used." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ be pointed at a commit by providing a Git reference, which can be either a SHA, 
 tag. For a branch, the head commit is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_tag.html'>update_tag</a></span>(<span class='kw'>tag</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, force = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_tag</span>(<span class='kw'>tag</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, force = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,13 +148,13 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_tag.html'>update_tag()</a></code> returns a list of the tag properties.</p>
+    <p><code>update_tag()</code> returns a list of the tag properties.</p>
 <p><strong>Tag Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the tag.</p></li>
 <li><p><strong>ref</strong>: The full Git reference of the tag.</p></li>
@@ -171,7 +171,7 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_tag.html'>update_tag</a></span>(
+  <span class='fu'>update_tag</span>(
     tag  = <span class='st'>"new-tag"</span>,
     ref  = <span class='st'>"6b7b5a090d47fd3ef495620513a3f80da2487b1d"</span>,
     repo = <span class='st'>"ChadGoymer/githapi"</span>)

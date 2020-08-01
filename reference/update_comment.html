@@ -74,7 +74,7 @@ specified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ to replace the content of the comment. The <code>repo</code> argument is not req
 specified.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(<span class='kw'>comment</span>, <span class='kw'>body</span>, <span class='kw'>gist</span>, <span class='kw'>repo</span>, type = <span class='st'>"gist"</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_comment</span>(<span class='kw'>comment</span>, <span class='kw'>body</span>, <span class='kw'>gist</span>, <span class='kw'>repo</span>, type = <span class='st'>"gist"</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,13 +152,13 @@ specified.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment()</a></code> returns a list of the comment properties.</p>
+    <p><code>update_comment()</code> returns a list of the comment properties.</p>
 <p><strong>Comment Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id of the comment.</p></li>
 <li><p><strong>body</strong>: The content of the comment.</p></li>
@@ -188,27 +188,27 @@ request or commit comments).</p></li>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update a gist comment</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+  <span class='fu'>update_comment</span>(
     comment = <span class='fl'>3281939</span>,
     body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
     gist    = <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
 
   <span class='co'># Update an issue comment</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+  <span class='fu'>update_comment</span>(
     comment = <span class='fl'>622980929</span>,
     body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
     type    = <span class='st'>"issue"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Update an pull request comment</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+  <span class='fu'>update_comment</span>(
     comment = <span class='fl'>418979473</span>,
     body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
     type    = <span class='st'>"pull_request"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Update a commit comment</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_comment.html'>update_comment</a></span>(
+  <span class='fu'>update_comment</span>(
     comment = <span class='fl'>38899533</span>,
     body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
     type    = <span class='st'>"commit"</span>,

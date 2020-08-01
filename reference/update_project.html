@@ -73,7 +73,7 @@ can also be used to close the project, change permissions or add a team." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ can also be used to close the project, change permissions or add a team." />
 can also be used to close the project, change permissions or add a team.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project</a></span>(
+    <pre class="usage"><span class='fu'>update_project</span>(
   <span class='kw'>project</span>,
   <span class='kw'>name</span>,
   <span class='kw'>body</span>,
@@ -184,13 +184,13 @@ team and organization projects only.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project()</a></code> returns a list of the project properties.</p>
+    <p><code>update_project()</code> returns a list of the project properties.</p>
 <p><strong>Project Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the project.</p></li>
 <li><p><strong>number</strong>: The number of the project for the repository, user or organization.</p></li>
@@ -223,33 +223,33 @@ the team's permissions can be changed with the <code>permission</code> argument.
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
   <span class='co'># Update the name of a project for a repository</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project</a></span>(
+  <span class='fu'>update_project</span>(
     project = <span class='st'>"Repo project"</span>,
     name    = <span class='st'>"Updated repo project"</span>,
     body    = <span class='st'>"This is an updated repository's project"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># Update the state of a project for a user</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project</a></span>(
+  <span class='fu'>update_project</span>(
     name  = <span class='st'>"User project"</span>,
     state = <span class='st'>"closed"</span>,
     user  = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># Update the permissions of a project for an organization</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project</a></span>(
+  <span class='fu'>update_project</span>(
     name       = <span class='st'>"Org project"</span>,
     permission = <span class='st'>"read"</span>,
     private    = <span class='fl'>TRUE</span>,
     org        = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Add a team to the project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project</a></span>(
+  <span class='fu'>update_project</span>(
     project = <span class='st'>"Org project"</span>,
     team    = <span class='st'>"HeadCoos"</span>,
     org     = <span class='st'>"HairyCoos"</span>)
 
   <span class='co'># Update the team's permissions on the project</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/update_project.html'>update_project</a></span>(
+  <span class='fu'>update_project</span>(
     project    = <span class='st'>"Org project"</span>,
     permission = <span class='st'>"write"</span>,
     team       = <span class='st'>"HeadCoos"</span>,

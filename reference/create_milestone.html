@@ -73,7 +73,7 @@ used to set a due date." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.9</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ used to set a due date." />
 used to set a due date.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_milestone.html'>create_milestone</a></span>(<span class='kw'>title</span>, <span class='kw'>repo</span>, <span class='kw'>description</span>, <span class='kw'>due_on</span>, state = <span class='st'>"open"</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>create_milestone</span>(<span class='kw'>title</span>, <span class='kw'>repo</span>, <span class='kw'>description</span>, <span class='kw'>due_on</span>, state = <span class='st'>"open"</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,13 +151,13 @@ Default: <code>"open"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Parameters passed to <code><a href='https://rdrr.io/pkg/githapi/man/gh_request.html'>gh_request()</a></code>.</p></td>
+      <td><p>Parameters passed to <code><a href='gh_request.html'>gh_request()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/githapi/man/create_milestone.html'>create_milestone()</a></code> returns a list of the milestone's properties.</p>
+    <p><code>create_milestone()</code> returns a list of the milestone's properties.</p>
 <p><strong>Milestone Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the milestone within the repository.</p></li>
 <li><p><strong>title</strong>: The title of the milestone.</p></li>
@@ -183,7 +183,7 @@ Default: <code>"open"</code>.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='fu'><a href='https://rdrr.io/pkg/githapi/man/create_milestone.html'>create_milestone</a></span>(
+  <span class='fu'>create_milestone</span>(
     title       = <span class='st'>"test milestone"</span>,
     repo        = <span class='st'>"ChadGoymer/githapi"</span>,
     description = <span class='st'>"This is a test milestone"</span>,
