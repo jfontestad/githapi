@@ -1,3 +1,8 @@
+# githapi 0.10.12
+
+- Fixed bug label functions so they work with spaces in names
+- Updated `gh_url()` so it encodes URLs
+
 # githapi 0.10.11
 
 - Removed all references to "master" in functions and documentation
