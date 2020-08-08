@@ -142,28 +142,51 @@ gh_url <- function(
 {
   assert(is_url(api), "'api' must be a valid URL:\n  ", api)
 
-  url  <- httr::parse_url(api)
-
   dots <- list(...) %>% compact() %>% unlist()
 
-  if (is_null(names(dots))) {
-    path <- str_c(dots, collapse = "/")
+  path <- dots
+  if (!is_null(names(path))) {
+    path <- path[names(path) == ""]
   }
-  else {
-    path <- str_c(dots[names(dots) == ""], collapse = "/")
-  }
-
-  if (!identical(length(path), 0L)) {
-    url$path <- file.path(url$path, path)
-  }
-
-  query <- as.list(dots[names(dots) != ""])
-
-  if (!identical(length(query), 0L)) {
-    url$query <- query
+  if (!is.null(path)) {
+    path <- str_c(path, collapse = "/") %>%
+      str_split("/") %>%
+      first() %>%
+      map(curl::curl_escape) %>%
+      str_c(collapse = "/")
   }
 
-  httr::build_url(url)
+  query <- dots[names(dots) != ""]
+  if (!is.null(query)) {
+    query <- as.list(query)
+  }
+
+  httr::modify_url(url = api, path = path, query = query)
+  #
+  #
+  #
+  # url  <- httr::parse_url(api)
+  #
+  # dots <- list(...) %>% compact() %>% unlist()
+  #
+  # if (is_null(names(dots))) {
+  #   path <- str_c(dots, collapse = "/")
+  # }
+  # else {
+  #   path <- str_c(dots[names(dots) == ""], collapse = "/")
+  # }
+  #
+  # if (!identical(length(path), 0L)) {
+  #   url$path <- file.path(url$path, path)
+  # }
+  #
+  # query <- as.list(dots[names(dots) != ""])
+  #
+  # if (!identical(length(query), 0L)) {
+  #   url$query <- query
+  # }
+  #
+  # httr::build_url(url)
 }
 
 

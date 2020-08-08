@@ -30,7 +30,7 @@ teardown(suppressMessages({
 test_that("create_label creates a label and returns a list of the properties", {
 
   simple_label <- create_label(
-    name  = "simple-label",
+    name  = "simple label",
     repo  = str_c("ChadGoymer/test-labels-", suffix),
     color = "blue")
 
@@ -42,7 +42,7 @@ test_that("create_label creates a label and returns a list of the properties", {
       color       = "character",
       description = "character"))
 
-  expect_identical(simple_label$name, "simple-label")
+  expect_identical(simple_label$name, "simple label")
   expect_identical(simple_label$color, "0000FF")
 
   detailed_label <- create_label(
@@ -71,9 +71,9 @@ test_that("create_label creates a label and returns a list of the properties", {
 test_that("update_label changes a label and returns a list of the properties", {
 
   updated_label <- update_label(
-    label       = "simple-label",
+    label       = "simple label",
     repo        = str_c("ChadGoymer/test-labels-", suffix),
-    name        = "updated-label",
+    name        = "updated label",
     color       = "pink",
     description = "This is an updated label")
 
@@ -85,7 +85,7 @@ test_that("update_label changes a label and returns a list of the properties", {
       color       = "character",
       description = "character"))
 
-  expect_identical(updated_label$name, "updated-label")
+  expect_identical(updated_label$name, "updated label")
   expect_identical(updated_label$color, "FFC0CB")
   expect_identical(updated_label$description, "This is an updated label")
 
@@ -97,7 +97,7 @@ test_that("update_label changes a label and returns a list of the properties", {
 test_that("add_labels adds labels to an issue and returns the properties", {
 
   added_labels <- add_labels(
-    labels = c("updated-label", "detailed-label"),
+    labels = c("updated label", "detailed-label"),
     issue  = str_c("test labels ", suffix),
     repo   = str_c("ChadGoymer/test-labels-", suffix))
 
@@ -109,7 +109,7 @@ test_that("add_labels adds labels to an issue and returns the properties", {
       color       = "character",
       description = "character"))
 
-  expect_true(all(c("updated-label", "detailed-label") %in% added_labels$name))
+  expect_true(all(c("updated label", "detailed-label") %in% added_labels$name))
 
 })
 
@@ -128,7 +128,7 @@ test_that("view_labels returns a tibble of label properties", {
       color       = "character",
       description = "character"))
 
-  expect_true(all(c("updated-label", "detailed-label") %in% repo_labels$name))
+  expect_true(all(c("updated label", "detailed-label") %in% repo_labels$name))
 
   issue_labels <- view_labels(
     issue = str_c("test labels ", suffix),
@@ -143,7 +143,7 @@ test_that("view_labels returns a tibble of label properties", {
       color       = "character",
       description = "character"))
 
-  expect_true(all(c("updated-label", "detailed-label") %in% issue_labels$name))
+  expect_true(all(c("updated label", "detailed-label") %in% issue_labels$name))
 
 })
 
@@ -172,7 +172,7 @@ test_that("view_label returns a list of repository properties", {
 test_that("add_labels adds labels to an issue and returns the properties", {
 
   removed_labels <- remove_labels(
-    labels = c("updated-label", "detailed-label"),
+    labels = c("updated label", "detailed-label"),
     issue  = str_c("test labels ", suffix),
     repo   = str_c("ChadGoymer/test-labels-", suffix))
 
@@ -193,7 +193,7 @@ test_that("add_labels adds labels to an issue and returns the properties", {
 
 test_that("delete_label removes a label and returns TRUE", {
 
-  updated_label <- delete_label("updated-label", repo = str_c("ChadGoymer/test-labels-", suffix))
+  updated_label <- delete_label("updated label", repo = str_c("ChadGoymer/test-labels-", suffix))
 
   expect_is(updated_label, "logical")
   expect_identical(attr(updated_label, "status"), 204L)
