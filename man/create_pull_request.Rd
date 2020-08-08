@@ -98,14 +98,14 @@ For more details see the GitHub API documentation:
     title = "test pull request",
     repo  = "ChadGoymer/githapi",
     head  = "test-pulls",
-    base  = "master",
+    base  = "main",
     body  = "This is a pull request to test create_pull_request()")
 
   create_pull_request(
     title     = "test assigned pull request",
     repo      = "ChadGoymer/githapi",
     head      = "test-pulls-2",
-    base      = "master",
+    base      = "main",
     body      = "This is a pull request to test create_pull_request()",
     assignees = "ChadGoymer",
     reviewers = c("BobSmith", "JaneJones"),

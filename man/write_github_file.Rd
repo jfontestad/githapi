@@ -71,21 +71,21 @@ branch. \code{write_github_file()} writes the \code{content} to a text file, usi
   write_github_file(
     content = "# This is a new file\\\\n\\\\n Created by `write_github_file()`",
     path    = "new-file.md",
-    branch  = "master",
+    branch  = "main",
     message = "Created a new file with write_github_file()",
     repo    = "ChadGoymer/githapi")
 
   write_github_lines(
     content   = c("# This is a new file", "", "Created by `write_github_lines()`"),
     path      = "new-file.md",
-    branch    = "master",
+    branch    = "main",
     message   = "Created a new file with write_github_lines()",
     repo      = "ChadGoymer/githapi")
 
   write_github_csv(
     content = tibble(letters = LETTERS, numbers = 1:26),
     path    = "new-file.md",
-    branch  = "master",
+    branch  = "main",
     message = "Updated an existing file with write_github_csv()",
     repo    = "ChadGoymer/githapi")
 

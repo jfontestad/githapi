@@ -26,7 +26,7 @@ This function sources an R script from a commit in a repository using \code{\lin
 
   github_source(
     path = "inst/test-data/test-script.R",
-    ref  = "master",
+    ref  = "main",
     repo = "ChadGoymer/githapi")
 
 }

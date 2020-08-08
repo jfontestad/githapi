@@ -44,8 +44,8 @@ For more details see the GitHub API documentation:
 \examples{
 \dontrun{
 
-  # View the files changes made between the current master branch and a release
-  compare_files("master", "0.8.7", "ChadGoymer/githapi")
+  # View the files changes made between the current main branch and a release
+  compare_files("main", "0.8.7", "ChadGoymer/githapi")
 
 }
 

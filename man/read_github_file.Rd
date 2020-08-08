@@ -39,17 +39,17 @@ using \code{\link[readr:read_csv]{readr::read_csv()}}, and returns the result as
 
   read_github_file(
     path = "README.md",
-    ref  = "master",
+    ref  = "main",
     repo = "ChadGoymer/githapi")
 
   read_github_lines(
     path = "README.md",
-    ref  = "master",
+    ref  = "main",
     repo = "ChadGoymer/githapi")
 
   read_github_csv(
     path = "inst/test-data/test.csv",
-    ref  = "master",
+    ref  = "main",
     repo = "ChadGoymer/githapi")
 
 }

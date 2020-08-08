@@ -58,22 +58,22 @@ For more details see the GitHub API documentation:
 \examples{
 \dontrun{
 
-  # View files on the master branch in a repository
-  view_files("master", "ChadGoymer/githapi")
+  # View files on the main branch in a repository
+  view_files("main", "ChadGoymer/githapi")
 
   # View properties of a single file in a repository
   view_file(
     path = "README.md",
-    ref  = "master",
+    ref  = "main",
     repo = "ChadGoymer/githapi")
 
   # Open the commit's tree page in the default browser
-  browse_files("master", "ChadGoymer/githapi")
+  browse_files("main", "ChadGoymer/githapi")
 
   # Open the file's blob page in the default browser
   browse_file(
     path = "README.md",
-    ref  = "master",
+    ref  = "main",
     repo = "ChadGoymer/githapi")
 
 }
