@@ -102,6 +102,8 @@ test_that("gh_token throws an error if an invalid token is specified", {
 
 test_that("gh_url returns a valid URL for the GitHub API", {
 
+  expect_identical(gh_url(), str_c(getOption("github.api"), "/"))
+
   expect_identical(
     gh_url("repos"),
     file.path(getOption("github.api"), "repos"))
@@ -133,6 +135,10 @@ test_that("gh_url returns a valid URL for the GitHub API", {
   expect_identical(
     gh_url(c("repos", "ChadGoymer/githapi", "git/trees", "234752384"), list()),
     file.path(getOption("github.api"), "repos/ChadGoymer/githapi/git/trees/234752384"))
+
+  expect_identical(
+    gh_url("repos", "ChadGoymer/githapi", "labels", "simple label", type = "some type"),
+    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/labels/simple%20label?type=some%20type"))
 
 })
 
