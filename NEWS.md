@@ -1,3 +1,7 @@
+# githapi 0.10.11
+
+- Removed all references to "master" in functions and documentation
+
 # githapi 0.10.10
 
 - Added config file and read on load
