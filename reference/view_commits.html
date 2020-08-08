@@ -75,7 +75,7 @@ for the commit history and commit details respectively in the default browser." 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.11</span>
       </span>
     </div>
 
@@ -204,30 +204,30 @@ the default browser on the commit's history or details page and returns the URL.
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='co'># View the history of commits for the master branch</span>
-  <span class='fu'>view_commits</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='co'># View the history of commits for the main branch</span>
+  <span class='fu'>view_commits</span>(<span class='st'>"main"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View commits where the README.md file has been changed</span>
   <span class='fu'>view_commits</span>(
-    ref  = <span class='st'>"master"</span>,
+    ref  = <span class='st'>"main"</span>,
     repo = <span class='st'>"ChadGoymer/githapi"</span>,
     path = <span class='st'>"README.md"</span>)
 
   <span class='co'># View commits created by an author</span>
   <span class='fu'>view_commits</span>(
-    ref    = <span class='st'>"master"</span>,
+    ref    = <span class='st'>"main"</span>,
     repo   = <span class='st'>"ChadGoymer/githapi"</span>,
     author = <span class='st'>"ChadGoymer"</span>)
 
   <span class='co'># View commits within a time window</span>
   <span class='fu'>view_commits</span>(
-    ref   = <span class='st'>"master"</span>,
+    ref   = <span class='st'>"main"</span>,
     repo  = <span class='st'>"ChadGoymer/githapi"</span>,
     since = <span class='st'>"2020-01-01 00:00:00"</span>,
     until = <span class='st'>"2020-04-01 00:00:00"</span>)
 
-  <span class='co'># View the properties of the last commit on the master branch</span>
-  <span class='fu'>view_commit</span>(<span class='st'>"master"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='co'># View the properties of the last commit on the main branch</span>
+  <span class='fu'>view_commit</span>(<span class='st'>"main"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># View the properties of the commit with tag "0.8.7"</span>
   <span class='fu'>view_commit</span>(<span class='st'>"0.8.7"</span>, <span class='st'>"ChadGoymer/githapi"</span>)

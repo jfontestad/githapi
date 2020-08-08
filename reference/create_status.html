@@ -75,7 +75,7 @@ can then be updated, from pending to success say, by using the same context." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.11</span>
       </span>
     </div>
 
@@ -196,19 +196,19 @@ status of other systems. Default: <code>"default"</code>.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='co'># Create a status on the master branch</span>
+  <span class='co'># Create a status on the main branch</span>
   <span class='fu'>create_status</span>(
     state       = <span class='st'>"pending"</span>,
-    ref         = <span class='st'>"master"</span>,
+    ref         = <span class='st'>"main"</span>,
     repo        = <span class='st'>"ChadGoymer/test-githapi"</span>,
     description = <span class='st'>"This is a pending status"</span>,
     target_url  = <span class='st'>"https://www.goymer.me.uk/githapi"</span>,
     context     = <span class='st'>"test/githapi"</span>)
 
-  <span class='co'># Update the status on the master branch</span>
+  <span class='co'># Update the status on the main branch</span>
   <span class='fu'>create_status</span>(
     state       = <span class='st'>"success"</span>,
-    ref         = <span class='st'>"master"</span>,
+    ref         = <span class='st'>"main"</span>,
     repo        = <span class='st'>"ChadGoymer/test-githapi"</span>,
     description = <span class='st'>"This is a success status"</span>,
     target_url  = <span class='st'>"https://www.goymer.me.uk/githapi"</span>,

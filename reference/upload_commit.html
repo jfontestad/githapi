@@ -75,7 +75,7 @@ uploaded it will be removed in the new commit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.11</span>
       </span>
     </div>
 
@@ -221,17 +221,17 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='co'># Add a commit to the master branch</span>
+  <span class='co'># Add a commit to the main branch</span>
   <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"master"</span>,
+    branch  = <span class='st'>"main"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='co'># override the author and committer</span>
   <span class='fu'>upload_commit</span>(
     path      = <span class='st'>"C:/files-to-upload"</span>,
-    branch    = <span class='st'>"master"</span>,
+    branch    = <span class='st'>"main"</span>,
     message   = <span class='st'>"Commit to test upload_commit()"</span>,
     repo      = <span class='st'>"ChadGoymer/githapi"</span>,
     author    = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name = <span class='st'>"Bob"</span>,   email = <span class='st'>"bob@acme.com"</span>),
@@ -243,7 +243,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     branch  = <span class='st'>"test-commits-1"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parents = <span class='st'>"master"</span>)
+    parents = <span class='st'>"main"</span>)
 
   <span class='co'># Create an orphan commit</span>
   <span class='fu'>upload_commit</span>(
@@ -255,19 +255,19 @@ to set the branch to the new commit no matter what then set the <code>force</cod
   <span class='co'># Force branch to point at the new commit</span>
   <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"master"</span>,
+    branch  = <span class='st'>"main"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>,
     parents = <span class='st'>"test-commits-1"</span>,
     force   = <span class='fl'>TRUE</span>)
 
-  <span class='co'># Create a commit merging a branch into the master branch</span>
+  <span class='co'># Create a commit merging a branch into the main branch</span>
   <span class='fu'>upload_commit</span>(
     path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"master"</span>,
+    branch  = <span class='st'>"main"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parents = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"master"</span>, <span class='st'>"test-commits-1"</span>))
+    parents = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"main"</span>, <span class='st'>"test-commits-1"</span>))
 
   <span class='co'># Create a commit merging two branches into a new branch</span>
   <span class='fu'>upload_commit</span>(
@@ -275,7 +275,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
     branch  = <span class='st'>"test-commits-3"</span>,
     message = <span class='st'>"Commit to test upload_commit()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parents = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"master"</span>, <span class='st'>"test-commits-2"</span>))
+    parents = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"main"</span>, <span class='st'>"test-commits-2"</span>))
 
 }
 </div></pre>

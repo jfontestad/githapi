@@ -75,7 +75,7 @@ error." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.11</span>
       </span>
     </div>
 
@@ -208,11 +208,11 @@ use the <code><a href='upload_files.html'>upload_files()</a></code> function.</p
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
-  <span class='co'># Create a new file on the master branch</span>
+  <span class='co'># Create a new file on the main branch</span>
   <span class='fu'>create_file</span>(
     content = <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
     path    = <span class='st'>"new-file.md"</span>,
-    branch  = <span class='st'>"master"</span>,
+    branch  = <span class='st'>"main"</span>,
     message = <span class='st'>"Created a new file with create_file()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
@@ -223,13 +223,13 @@ use the <code><a href='upload_files.html'>upload_files()</a></code> function.</p
     branch  = <span class='st'>"new-branch"</span>,
     message = <span class='st'>"Created a new file with create_file()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parent  = <span class='st'>"master"</span>)
+    parent  = <span class='st'>"main"</span>)
 
-  <span class='co'># Create a new file on the master branch specifying an author and committer</span>
+  <span class='co'># Create a new file on the main branch specifying an author and committer</span>
   <span class='fu'>create_file</span>(
     content   = <span class='st'>"# This is a new file\\n\\n Created by `create_file()`"</span>,
     path      = <span class='st'>"new-file.md"</span>,
-    branch    = <span class='st'>"master"</span>,
+    branch    = <span class='st'>"main"</span>,
     message   = <span class='st'>"Created a new file with create_file()"</span>,
     repo      = <span class='st'>"ChadGoymer/githapi"</span>,
     author    = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name = <span class='st'>"Bob"</span>,  email = <span class='st'>"bob@acme.com"</span>),

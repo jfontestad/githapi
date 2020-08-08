@@ -76,7 +76,7 @@ readr::write_csv()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.11</span>
       </span>
     </div>
 
@@ -206,21 +206,21 @@ list of the commit properties.</p>
   <span class='fu'>write_github_file</span>(
     content = <span class='st'>"# This is a new file\\n\\n Created by `write_github_file()`"</span>,
     path    = <span class='st'>"new-file.md"</span>,
-    branch  = <span class='st'>"master"</span>,
+    branch  = <span class='st'>"main"</span>,
     message = <span class='st'>"Created a new file with write_github_file()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='fu'>write_github_lines</span>(
     content   = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"# This is a new file"</span>, <span class='st'>""</span>, <span class='st'>"Created by `write_github_lines()`"</span>),
     path      = <span class='st'>"new-file.md"</span>,
-    branch    = <span class='st'>"master"</span>,
+    branch    = <span class='st'>"main"</span>,
     message   = <span class='st'>"Created a new file with write_github_lines()"</span>,
     repo      = <span class='st'>"ChadGoymer/githapi"</span>)
 
   <span class='fu'>write_github_csv</span>(
     content = <span class='fu'>tibble</span>(letters = <span class='kw'>LETTERS</span>, numbers = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>26</span>),
     path    = <span class='st'>"new-file.md"</span>,
-    branch  = <span class='st'>"master"</span>,
+    branch  = <span class='st'>"main"</span>,
     message = <span class='st'>"Updated an existing file with write_github_csv()"</span>,
     repo    = <span class='st'>"ChadGoymer/githapi"</span>)
 
