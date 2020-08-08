@@ -67,14 +67,14 @@
 #'     title = "test pull request",
 #'     repo  = "ChadGoymer/githapi",
 #'     head  = "test-pulls",
-#'     base  = "master",
+#'     base  = "main",
 #'     body  = "This is a pull request to test create_pull_request()")
 #'
 #'   create_pull_request(
 #'     title     = "test assigned pull request",
 #'     repo      = "ChadGoymer/githapi",
 #'     head      = "test-pulls-2",
-#'     base      = "master",
+#'     base      = "main",
 #'     body      = "This is a pull request to test create_pull_request()",
 #'     assignees = "ChadGoymer",
 #'     reviewers = c("BobSmith", "JaneJones"),
@@ -460,8 +460,8 @@ update_pull_request <- function(
 #'   # View all closed pull requests
 #'   view_pull_requests("ChadGoymer/githapi", state = "closed")
 #'
-#'   # View all pull requests for the "master" branch
-#'   view_pull_requests("ChadGoymer/githapi", base = "master")
+#'   # View all pull requests for the "main" branch
+#'   view_pull_requests("ChadGoymer/githapi", base = "main")
 #'
 #'   # View pull requests, sorted by the most recently updated
 #'   view_pull_requests("ChadGoymer/githapi", sort = "updated", direction = "desc")

@@ -27,7 +27,7 @@
 #'
 #'   create_branch(
 #'     name = "new-branch",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #' }

@@ -71,7 +71,7 @@
 #'   # Create a comment on a commit
 #'   create_comment(
 #'     body     = "This is a comment created by create_comment()",
-#'     commit   = "master",
+#'     commit   = "main",
 #'     repo     = "ChadGoymer/githapi",
 #'     path     = "README.md",
 #'     position = 1)
@@ -352,7 +352,7 @@ update_comment <- function(
 #'
 #'   # View comments on a commit
 #'   view_comments(
-#'     commit = "master",
+#'     commit = "main",
 #'     repo   = "ChadGoymer/githapi")
 #'
 #'   # View a single gist comment

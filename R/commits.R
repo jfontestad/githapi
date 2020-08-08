@@ -53,17 +53,17 @@
 #' @examples
 #' \dontrun{
 #'
-#'   # Add a commit to the master branch
+#'   # Add a commit to the main branch
 #'   upload_commit(
 #'     path    = "C:/files-to-upload",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi")
 #'
 #'   # override the author and committer
 #'   upload_commit(
 #'     path      = "C:/files-to-upload",
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Commit to test upload_commit()",
 #'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",   email = "bob@acme.com"),
@@ -75,7 +75,7 @@
 #'     branch  = "test-commits-1",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parents = "master")
+#'     parents = "main")
 #'
 #'   # Create an orphan commit
 #'   upload_commit(
@@ -87,19 +87,19 @@
 #'   # Force branch to point at the new commit
 #'   upload_commit(
 #'     path    = "C:/files-to-upload",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
 #'     parents = "test-commits-1",
 #'     force   = TRUE)
 #'
-#'   # Create a commit merging a branch into the master branch
+#'   # Create a commit merging a branch into the main branch
 #'   upload_commit(
 #'     path    = "C:/files-to-upload",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parents = c("master", "test-commits-1"))
+#'     parents = c("main", "test-commits-1"))
 #'
 #'   # Create a commit merging two branches into a new branch
 #'   upload_commit(
@@ -107,7 +107,7 @@
 #'     branch  = "test-commits-3",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parents = c("master", "test-commits-2"))
+#'     parents = c("main", "test-commits-2"))
 #'
 #' }
 #'
@@ -200,9 +200,9 @@ upload_commit <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # Download the head of the master branch to the home directory
+#'   # Download the head of the main branch to the home directory
 #'   download_commit(
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi",
 #'     path = "~")
 #'
@@ -306,30 +306,30 @@ download_commit <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # View the history of commits for the master branch
-#'   view_commits("master", "ChadGoymer/githapi")
+#'   # View the history of commits for the main branch
+#'   view_commits("main", "ChadGoymer/githapi")
 #'
 #'   # View commits where the README.md file has been changed
 #'   view_commits(
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi",
 #'     path = "README.md")
 #'
 #'   # View commits created by an author
 #'   view_commits(
-#'     ref    = "master",
+#'     ref    = "main",
 #'     repo   = "ChadGoymer/githapi",
 #'     author = "ChadGoymer")
 #'
 #'   # View commits within a time window
 #'   view_commits(
-#'     ref   = "master",
+#'     ref   = "main",
 #'     repo  = "ChadGoymer/githapi",
 #'     since = "2020-01-01 00:00:00",
 #'     until = "2020-04-01 00:00:00")
 #'
-#'   # View the properties of the last commit on the master branch
-#'   view_commit("master", "ChadGoymer/githapi")
+#'   # View the properties of the last commit on the main branch
+#'   view_commit("main", "ChadGoymer/githapi")
 #'
 #'   # View the properties of the commit with tag "0.8.7"
 #'   view_commit("0.8.7", "ChadGoymer/githapi")
@@ -565,8 +565,8 @@ view_sha <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # View the changes made between the current master branch and a release
-#'   compare_commits("master", "0.8.7", "ChadGoymer/githapi")
+#'   # View the changes made between the current main branch and a release
+#'   compare_commits("main", "0.8.7", "ChadGoymer/githapi")
 #'
 #' }
 #'
