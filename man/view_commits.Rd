@@ -71,30 +71,30 @@ For more details see the GitHub API documentation:
 \examples{
 \dontrun{
 
-  # View the history of commits for the master branch
-  view_commits("master", "ChadGoymer/githapi")
+  # View the history of commits for the main branch
+  view_commits("main", "ChadGoymer/githapi")
 
   # View commits where the README.md file has been changed
   view_commits(
-    ref  = "master",
+    ref  = "main",
     repo = "ChadGoymer/githapi",
     path = "README.md")
 
   # View commits created by an author
   view_commits(
-    ref    = "master",
+    ref    = "main",
     repo   = "ChadGoymer/githapi",
     author = "ChadGoymer")
 
   # View commits within a time window
   view_commits(
-    ref   = "master",
+    ref   = "main",
     repo  = "ChadGoymer/githapi",
     since = "2020-01-01 00:00:00",
     until = "2020-04-01 00:00:00")
 
-  # View the properties of the last commit on the master branch
-  view_commit("master", "ChadGoymer/githapi")
+  # View the properties of the last commit on the main branch
+  view_commit("main", "ChadGoymer/githapi")
 
   # View the properties of the commit with tag "0.8.7"
   view_commit("0.8.7", "ChadGoymer/githapi")

@@ -142,8 +142,8 @@ For more details see the GitHub API documentation:
   # View all closed pull requests
   view_pull_requests("ChadGoymer/githapi", state = "closed")
 
-  # View all pull requests for the "master" branch
-  view_pull_requests("ChadGoymer/githapi", base = "master")
+  # View all pull requests for the "main" branch
+  view_pull_requests("ChadGoymer/githapi", base = "main")
 
   # View pull requests, sorted by the most recently updated
   view_pull_requests("ChadGoymer/githapi", sort = "updated", direction = "desc")

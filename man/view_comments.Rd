@@ -90,7 +90,7 @@ For more details see the GitHub API documentation:
 
   # View comments on a commit
   view_comments(
-    commit = "master",
+    commit = "main",
     repo   = "ChadGoymer/githapi")
 
   # View a single gist comment

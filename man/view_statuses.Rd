@@ -50,10 +50,10 @@ For more details see the GitHub API documentation:
 \dontrun{
 
   # View all statuses for a commit in a repository
-  view_statuses("master", "ChadGoymer/githapi")
+  view_statuses("main", "ChadGoymer/githapi")
 
   # View the combined status
-  view_status("master", "ChadGoymer/githapi")
+  view_status("main", "ChadGoymer/githapi")
 
 }
 

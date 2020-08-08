@@ -133,7 +133,7 @@ For more details see the GitHub API documentation:
     has_issues     = FALSE,
     has_projects   = FALSE,
     has_wiki       = FALSE,
-    default_branch = "master")
+    default_branch = "main")
 
   # Update an organization's repository
   update_repository(

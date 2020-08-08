@@ -59,10 +59,10 @@ use the \code{\link[=upload_files]{upload_files()}} function.
 \examples{
 \dontrun{
 
-  # Delete a file on the master branch
+  # Delete a file on the main branch
   delete_file(
     path    = "file-to-delete.md",
-    branch  = "master",
+    branch  = "main",
     message = "Deleted a file with delete_file()",
     repo    = "ChadGoymer/githapi")
 
@@ -72,12 +72,12 @@ use the \code{\link[=upload_files]{upload_files()}} function.
     branch  = "new-branch",
     message = "Deleted a file with delete_file()",
     repo    = "ChadGoymer/githapi",
-    parent  = "master")
+    parent  = "main")
 
-  # Delete a file on the master branch specifying an author and committer
+  # Delete a file on the main branch specifying an author and committer
   delete_file(
     path      = "file-to-delete.md",
-    branch    = "master",
+    branch    = "main",
     message   = "Deleted a file with delete_file()",
     repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",  email = "bob@acme.com"),

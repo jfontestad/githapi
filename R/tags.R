@@ -27,7 +27,7 @@
 #'
 #'   create_tag(
 #'     name = "new-tag",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #' }

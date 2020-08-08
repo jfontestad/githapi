@@ -71,11 +71,11 @@ use the \code{\link[=upload_files]{upload_files()}} function.
 \examples{
 \dontrun{
 
-  # Create a new file on the master branch
+  # Create a new file on the main branch
   create_file(
     content = "# This is a new file\\\\n\\\\n Created by `create_file()`",
     path    = "new-file.md",
-    branch  = "master",
+    branch  = "main",
     message = "Created a new file with create_file()",
     repo    = "ChadGoymer/githapi")
 
@@ -86,13 +86,13 @@ use the \code{\link[=upload_files]{upload_files()}} function.
     branch  = "new-branch",
     message = "Created a new file with create_file()",
     repo    = "ChadGoymer/githapi",
-    parent  = "master")
+    parent  = "main")
 
-  # Create a new file on the master branch specifying an author and committer
+  # Create a new file on the main branch specifying an author and committer
   create_file(
     content   = "# This is a new file\\\\n\\\\n Created by `create_file()`",
     path      = "new-file.md",
-    branch    = "master",
+    branch    = "main",
     message   = "Created a new file with create_file()",
     repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",  email = "bob@acme.com"),

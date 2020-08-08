@@ -14,8 +14,9 @@
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param name (string, optional) The name of the release.
 #' @param body (string, optional) The description of the release.
-#' @param ref (string, optional) Either a SHA or branch used to identify the commit. Ignored
-#'   if the `tag` exists this `ref` is ignored. Default: "master".
+#' @param ref (string, optional) Either a SHA or branch used to identify the commit. If the
+#'   `tag` exists this `ref` is ignored. If not supplied the repositories default branch is
+#'   used.
 #' @param draft (boolean, optional) Whether the release is a draft. Default: `FALSE`.
 #' @param prerelease (boolean, optional) Whether the release is a pre-release.
 #'   Default: `FALSE`.
@@ -41,7 +42,7 @@
 #' @examples
 #' \dontrun{
 #'
-#'   # Create a release on the master branch
+#'   # Create a release on the default branch
 #'   create_release(
 #'     tag  = "1.0.0",
 #'     repo = "ChadGoymer/githapi",
@@ -67,22 +68,20 @@ create_release <- function(
   repo,
   name,
   body,
-  ref        = "master",
+  ref,
   draft      = FALSE,
   prerelease = FALSE,
   ...)
 {
   assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_scalar_logical(draft), "'draft' must be a boolean:\n  ", draft)
   assert(is_scalar_logical(prerelease), "'prerelease' must be a boolean:\n  ", prerelease)
 
   payload <- list(
-    tag_name         = tag,
-    target_commitish = ref,
-    draft            = draft,
-    prerelease       = prerelease)
+    tag_name   = tag,
+    draft      = draft,
+    prerelease = prerelease)
 
   if (!missing(name)) {
     assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
@@ -92,6 +91,11 @@ create_release <- function(
   if (!missing(body)) {
     assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
     payload$body <- body
+  }
+
+  if (!missing(ref)) {
+    assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+    payload$target_commitish <- ref
   }
 
   info("Creating release '", tag, "' in repository '", repo, "'")
@@ -123,8 +127,9 @@ create_release <- function(
 #' @param tag (string, optional) The name of the new tag.
 #' @param name (string, optional) The name of the release.
 #' @param body (string, optional) The description of the release.
-#' @param ref (string, optional) Either a SHA or branch used to identify the commit. Ignored
-#'   if the `tag` exists this `ref` is ignored. Default: "master".
+#' @param ref (string, optional) Either a SHA or branch used to identify the commit. If the
+#'   `tag` exists this `ref` is ignored. If not supplied the repositories default branch is
+#'   used.
 #' @param draft (boolean, optional) Whether the release is a draft. Default: `FALSE`.
 #' @param prerelease (boolean, optional) Whether the release is a pre-release.
 #'   Default: `FALSE`.
@@ -176,20 +181,18 @@ update_release <- function(
   tag,
   name,
   body,
-  ref        = "master",
+  ref,
   draft      = FALSE,
   prerelease = FALSE,
   ...)
 {
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_scalar_logical(draft), "'draft' must be a boolean:\n  ", draft)
   assert(is_scalar_logical(prerelease), "'prerelease' must be a boolean:\n  ", prerelease)
 
   payload <- list(
-    target_commitish = ref,
-    draft            = draft,
-    prerelease       = prerelease)
+    draft      = draft,
+    prerelease = prerelease)
 
   if (!missing(tag)) {
     assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
@@ -204,6 +207,11 @@ update_release <- function(
   if (!missing(body)) {
     assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
     payload$body <- body
+  }
+
+  if (!missing(ref)) {
+    assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+    payload$target_commitish <- ref
   }
 
   if (is_scalar_character(release)) {

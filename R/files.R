@@ -160,40 +160,40 @@ upload_tree <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # Upload files to the master branch
+#'   # Upload files to the main branch
 #'   upload_files(
 #'     from_path = c("c:/test/file1.txt", "c:/test/file2.txt"),
 #'     to_path   = c("file1.txt", "file2.txt"),
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Commit to test upload_files()",
 #'     repo      = "ChadGoymer/githapi")
 #'
-#'   # Upload files into directories within the master branch
+#'   # Upload files into directories within the main branch
 #'   upload_files(
 #'     from_path = c("c:/test/file1.txt", "c:/test/file2.txt", "c:/test/file3.txt"),
 #'     to_path   = c("dir-1/file-1.txt", "dir-1/dir-1-1/file-2.txt", "dir-2/file-3.txt"),
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Commit to test upload_files()",
 #'     repo      = str_c("ChadGoymer/test-files-", now))
 #'
-#'   # Upload files to the master branch specifying an author and committer
+#'   # Upload files to the main branch specifying an author and committer
 #'   upload_files(
 #'     from_path = c("c:/test/file1.txt", "c:/test/file2.txt"),
 #'     to_path   = c("file1.txt", "file2.txt"),
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Commit to test upload_files()",
 #'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",  email = "bob@acme.com"),
 #'     committer = list(name = "Jane", email = "jane@acme.com"))
 #'
-#'   # Create a new branch from the master branch
+#'   # Create a new branch from the main branch
 #'   upload_files(
 #'     from_path = c("c:/test/file1.txt", "c:/test/file2.txt"),
 #'     to_path   = c("file1.txt", "file2.txt"),
 #'     branch    = "new-branch",
 #'     message   = "Commit to test upload_files()",
 #'     repo      = "ChadGoymer/githapi",
-#'     parent    = "master")
+#'     parent    = "main")
 #'
 #' }
 #'
@@ -309,11 +309,11 @@ upload_files <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # Download the README file from the master branch
+#'   # Download the README file from the main branch
 #'   download_file(
 #'     from_path = "README.md",
 #'     to_path   = "~/README.md",
-#'     ref       = "master",
+#'     ref       = "main",
 #'     repo      = "ChadGoymer/githapi")
 #'
 #' }
@@ -394,11 +394,11 @@ download_file <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # Create a new file on the master branch
+#'   # Create a new file on the main branch
 #'   create_file(
 #'     content = "# This is a new file\\n\\n Created by `create_file()`",
 #'     path    = "new-file.md",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Created a new file with create_file()",
 #'     repo    = "ChadGoymer/githapi")
 #'
@@ -409,13 +409,13 @@ download_file <- function(
 #'     branch  = "new-branch",
 #'     message = "Created a new file with create_file()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parent  = "master")
+#'     parent  = "main")
 #'
-#'   # Create a new file on the master branch specifying an author and committer
+#'   # Create a new file on the main branch specifying an author and committer
 #'   create_file(
 #'     content   = "# This is a new file\\n\\n Created by `create_file()`",
 #'     path      = "new-file.md",
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Created a new file with create_file()",
 #'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -526,11 +526,11 @@ create_file <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # Update a file on the master branch
+#'   # Update a file on the main branch
 #'   update_file(
 #'     content = "# This is a file\\n\\n Updated by `update_file()`",
 #'     path    = "updated-file.md",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Updated a file with update_file()",
 #'     repo    = "ChadGoymer/githapi")
 #'
@@ -541,13 +541,13 @@ create_file <- function(
 #'     branch  = "new-branch",
 #'     message = "Updated a file with update_file()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parent  = "master")
+#'     parent  = "main")
 #'
-#'   # Create a new file on the master branch specifying an author and committer
+#'   # Create a new file on the main branch specifying an author and committer
 #'   update_file(
 #'     content   = "# This is a file\\n\\n Updated by `update_file()`",
 #'     path      = "updated-file.md",
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Updated a file with update_file()",
 #'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -658,10 +658,10 @@ update_file <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # Delete a file on the master branch
+#'   # Delete a file on the main branch
 #'   delete_file(
 #'     path    = "file-to-delete.md",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Deleted a file with delete_file()",
 #'     repo    = "ChadGoymer/githapi")
 #'
@@ -671,12 +671,12 @@ update_file <- function(
 #'     branch  = "new-branch",
 #'     message = "Deleted a file with delete_file()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parent  = "master")
+#'     parent  = "main")
 #'
-#'   # Delete a file on the master branch specifying an author and committer
+#'   # Delete a file on the main branch specifying an author and committer
 #'   delete_file(
 #'     path      = "file-to-delete.md",
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Deleted a file with delete_file()",
 #'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -775,22 +775,22 @@ delete_file <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # View files on the master branch in a repository
-#'   view_files("master", "ChadGoymer/githapi")
+#'   # View files on the main branch in a repository
+#'   view_files("main", "ChadGoymer/githapi")
 #'
 #'   # View properties of a single file in a repository
 #'   view_file(
 #'     path = "README.md",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #'   # Open the commit's tree page in the default browser
-#'   browse_files("master", "ChadGoymer/githapi")
+#'   browse_files("main", "ChadGoymer/githapi")
 #'
 #'   # Open the file's blob page in the default browser
 #'   browse_file(
 #'     path = "README.md",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #' }
@@ -977,21 +977,21 @@ browse_file <- function(
 #'   write_github_file(
 #'     content = "# This is a new file\\n\\n Created by `write_github_file()`",
 #'     path    = "new-file.md",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Created a new file with write_github_file()",
 #'     repo    = "ChadGoymer/githapi")
 #'
 #'   write_github_lines(
 #'     content   = c("# This is a new file", "", "Created by `write_github_lines()`"),
 #'     path      = "new-file.md",
-#'     branch    = "master",
+#'     branch    = "main",
 #'     message   = "Created a new file with write_github_lines()",
 #'     repo      = "ChadGoymer/githapi")
 #'
 #'   write_github_csv(
 #'     content = tibble(letters = LETTERS, numbers = 1:26),
 #'     path    = "new-file.md",
-#'     branch  = "master",
+#'     branch  = "main",
 #'     message = "Updated an existing file with write_github_csv()",
 #'     repo    = "ChadGoymer/githapi")
 #'
@@ -1142,17 +1142,17 @@ write_github_csv <- function(
 #'
 #'   read_github_file(
 #'     path = "README.md",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #'   read_github_lines(
 #'     path = "README.md",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #'   read_github_csv(
 #'     path = "inst/test-data/test.csv",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #' }
@@ -1292,7 +1292,7 @@ read_github_csv <- function(
 #'
 #'   github_source(
 #'     path = "inst/test-data/test-script.R",
-#'     ref  = "master",
+#'     ref  = "main",
 #'     repo = "ChadGoymer/githapi")
 #'
 #' }
@@ -1366,8 +1366,8 @@ github_source <- function(
 #' @examples
 #' \dontrun{
 #'
-#'   # View the files changes made between the current master branch and a release
-#'   compare_files("master", "0.8.7", "ChadGoymer/githapi")
+#'   # View the files changes made between the current main branch and a release
+#'   compare_files("main", "0.8.7", "ChadGoymer/githapi")
 #'
 #' }
 #'

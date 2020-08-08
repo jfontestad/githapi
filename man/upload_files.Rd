@@ -81,40 +81,40 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
 \examples{
 \dontrun{
 
-  # Upload files to the master branch
+  # Upload files to the main branch
   upload_files(
     from_path = c("c:/test/file1.txt", "c:/test/file2.txt"),
     to_path   = c("file1.txt", "file2.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = "ChadGoymer/githapi")
 
-  # Upload files into directories within the master branch
+  # Upload files into directories within the main branch
   upload_files(
     from_path = c("c:/test/file1.txt", "c:/test/file2.txt", "c:/test/file3.txt"),
     to_path   = c("dir-1/file-1.txt", "dir-1/dir-1-1/file-2.txt", "dir-2/file-3.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = str_c("ChadGoymer/test-files-", now))
 
-  # Upload files to the master branch specifying an author and committer
+  # Upload files to the main branch specifying an author and committer
   upload_files(
     from_path = c("c:/test/file1.txt", "c:/test/file2.txt"),
     to_path   = c("file1.txt", "file2.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",  email = "bob@acme.com"),
     committer = list(name = "Jane", email = "jane@acme.com"))
 
-  # Create a new branch from the master branch
+  # Create a new branch from the main branch
   upload_files(
     from_path = c("c:/test/file1.txt", "c:/test/file2.txt"),
     to_path   = c("file1.txt", "file2.txt"),
     branch    = "new-branch",
     message   = "Commit to test upload_files()",
     repo      = "ChadGoymer/githapi",
-    parent    = "master")
+    parent    = "main")
 
 }
 

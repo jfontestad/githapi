@@ -126,8 +126,8 @@ gh_token <- function(
 #'   # URL for all repositories
 #'   gh_url("repos")
 #'
-#'   # URL for the master branch
-#'   gh_url("repos", "ChadGoymer/githapi", "git/refs/heads", "master")
+#'   # URL for the main branch
+#'   gh_url("repos", "ChadGoymer/githapi", "git/refs/heads", "main")
 #'
 #'   # URL for a file tree with the recursive option
 #'   gh_url(c("repos", "ChadGoymer/githapi", "git/trees", "234752384"), list(recursive = 1))
@@ -575,8 +575,8 @@ gh_find <- function(
 #'
 #'   # Find an issue by title
 #'   gh_download(
-#'     url  = "https://api.github.com/repos/ChadGoymer/githapi/zipball/master",
-#'     path = "~/githapi-master.zip")
+#'     url  = "https://api.github.com/repos/ChadGoymer/githapi/zipball/main",
+#'     path = "~/githapi-main.zip")
 #'
 #' }
 #'

@@ -9,7 +9,7 @@ create_release(
   repo,
   name,
   body,
-  ref = "master",
+  ref,
   draft = FALSE,
   prerelease = FALSE,
   ...
@@ -24,8 +24,9 @@ create_release(
 
 \item{body}{(string, optional) The description of the release.}
 
-\item{ref}{(string, optional) Either a SHA or branch used to identify the commit. Ignored
-if the \code{tag} exists this \code{ref} is ignored. Default: "master".}
+\item{ref}{(string, optional) Either a SHA or branch used to identify the commit. If the
+\code{tag} exists this \code{ref} is ignored. If not supplied the repositories default branch is
+used.}
 
 \item{draft}{(boolean, optional) Whether the release is a draft. Default: \code{FALSE}.}
 
@@ -68,7 +69,7 @@ For more details see the GitHub API documentation:
 \examples{
 \dontrun{
 
-  # Create a release on the master branch
+  # Create a release on the default branch
   create_release(
     tag  = "1.0.0",
     repo = "ChadGoymer/githapi",

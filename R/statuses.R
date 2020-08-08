@@ -37,19 +37,19 @@
 #' @examples
 #' \dontrun{
 #'
-#'   # Create a status on the master branch
+#'   # Create a status on the main branch
 #'   create_status(
 #'     state       = "pending",
-#'     ref         = "master",
+#'     ref         = "main",
 #'     repo        = "ChadGoymer/test-githapi",
 #'     description = "This is a pending status",
 #'     target_url  = "https://www.goymer.me.uk/githapi",
 #'     context     = "test/githapi")
 #'
-#'   # Update the status on the master branch
+#'   # Update the status on the main branch
 #'   create_status(
 #'     state       = "success",
-#'     ref         = "master",
+#'     ref         = "main",
 #'     repo        = "ChadGoymer/test-githapi",
 #'     description = "This is a success status",
 #'     target_url  = "https://www.goymer.me.uk/githapi",
@@ -139,10 +139,10 @@ create_status <- function(
 #' \dontrun{
 #'
 #'   # View all statuses for a commit in a repository
-#'   view_statuses("master", "ChadGoymer/githapi")
+#'   view_statuses("main", "ChadGoymer/githapi")
 #'
 #'   # View the combined status
-#'   view_status("master", "ChadGoymer/githapi")
+#'   view_status("main", "ChadGoymer/githapi")
 #'
 #' }
 #'

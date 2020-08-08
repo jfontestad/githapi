@@ -29,11 +29,11 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
 \examples{
 \dontrun{
 
-  # Download the README file from the master branch
+  # Download the README file from the main branch
   download_file(
     from_path = "README.md",
     to_path   = "~/README.md",
-    ref       = "master",
+    ref       = "main",
     repo      = "ChadGoymer/githapi")
 
 }

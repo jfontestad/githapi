@@ -82,17 +82,17 @@ to set the branch to the new commit no matter what then set the \code{force} arg
 \examples{
 \dontrun{
 
-  # Add a commit to the master branch
+  # Add a commit to the main branch
   upload_commit(
     path    = "C:/files-to-upload",
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi")
 
   # override the author and committer
   upload_commit(
     path      = "C:/files-to-upload",
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_commit()",
     repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",   email = "bob@acme.com"),
@@ -104,7 +104,7 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     branch  = "test-commits-1",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
-    parents = "master")
+    parents = "main")
 
   # Create an orphan commit
   upload_commit(
@@ -116,19 +116,19 @@ to set the branch to the new commit no matter what then set the \code{force} arg
   # Force branch to point at the new commit
   upload_commit(
     path    = "C:/files-to-upload",
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
     parents = "test-commits-1",
     force   = TRUE)
 
-  # Create a commit merging a branch into the master branch
+  # Create a commit merging a branch into the main branch
   upload_commit(
     path    = "C:/files-to-upload",
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
-    parents = c("master", "test-commits-1"))
+    parents = c("main", "test-commits-1"))
 
   # Create a commit merging two branches into a new branch
   upload_commit(
@@ -136,7 +136,7 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     branch  = "test-commits-3",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
-    parents = c("master", "test-commits-2"))
+    parents = c("main", "test-commits-2"))
 
 }
 
