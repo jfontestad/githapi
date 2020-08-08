@@ -1,3 +1,7 @@
+# githapi 0.10.10
+
+- Added config file and read on load
+
 # githapi 0.10.9
 
 - Added `create_status()`
