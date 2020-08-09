@@ -162,31 +162,6 @@ gh_url <- function(
   }
 
   httr::modify_url(url = api, path = path, query = query)
-  #
-  #
-  #
-  # url  <- httr::parse_url(api)
-  #
-  # dots <- list(...) %>% compact() %>% unlist()
-  #
-  # if (is_null(names(dots))) {
-  #   path <- str_c(dots, collapse = "/")
-  # }
-  # else {
-  #   path <- str_c(dots[names(dots) == ""], collapse = "/")
-  # }
-  #
-  # if (!identical(length(path), 0L)) {
-  #   url$path <- file.path(url$path, path)
-  # }
-  #
-  # query <- as.list(dots[names(dots) != ""])
-  #
-  # if (!identical(length(query), 0L)) {
-  #   url$query <- query
-  # }
-  #
-  # httr::build_url(url)
 }
 
 
