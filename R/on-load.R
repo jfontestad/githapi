@@ -1,13 +1,29 @@
 .onLoad <- function(libname, pkgname)
 {
   # Read configuration file
-  config <- jsonlite::read_json(system.file("config.json", package = "githapi"), simplifyVector = TRUE)
-  config_env <- if (Sys.getenv("ENVIRONMENT") == "") "prod" else Sys.getenv("ENVIRONMENT")
+  if (Sys.getenv("GITHAPI_CONFIG") != "" && file.exists(Sys.getenv("GITHAPI_CONFIG"))) {
+    config_path <- Sys.getenv("GITHAPI_CONFIG")
+  } else {
+    config_path <- system.file("config.json", package = "githapi")
+  }
+  config <- jsonlite::read_json(config_path, simplifyVector = TRUE)
 
-  if (config_env %in% names(config)) {
-    config <- config[[config_env]]
+  if (Sys.getenv("ENVIRONMENT") %in% names(config)) {
+    config <- config[[Sys.getenv("ENVIRONMENT")]]
   } else {
     config <- config[[1]]
+  }
+
+  if ("github" %in% names(config)) {
+    gh_cfg <- config[["github"]]
+  } else {
+    warning("GitHub configuration not set in specified configuration file")
+  }
+
+  if (Sys.getenv("GITHAPI_APP") %in% names(config)) {
+    app_cfg <- config[[Sys.getenv("GITHAPI_APP")]]
+  } else {
+    app_cfg <- config[names(config) != "github"][[1]]
   }
 
   # Set github token
@@ -16,25 +32,21 @@
     Sys.getenv("GITHUB_TOKEN"),
     Sys.getenv("GITHUB_PAT"))
 
-  if (all(tokens == "")) {
-    config$token <- NULL
-  }
-  else {
-    config$token <- tokens[tokens != ""][[1]]
+  if (any(tokens != "")) {
+    gh_cfg$token <- tokens[tokens != ""][[1]]
   }
 
   # Set R options
   options(
     # GitHub API
-    github.api           = config$api,           # The base address of the GitHub API
-    github.oauth         = config$oauth,         # The base address of the GitHub OAuth URL
-    github.proxy         = config$proxy,         # The proxy to use to access GitHub
-    github.token         = config$token,         # The GitHub token
+    github.api       = gh_cfg$api,        # The base address of the GitHub API
+    github.oauth     = gh_cfg$oauth,      # The base address of the GitHub OAuth URL
+    github.token     = gh_cfg$token,      # The GitHub token
+    github.proxy     = gh_cfg$proxy,      # The proxy to use to access GitHub
 
     # githapi application
-    githapi.key          = config$key,           # The application ID for accessing GitHub
-    githapi.secret       = config$secret,        # The secret for the application to access GitHub
-    githapi.redirect_uri = config$redirect_uri,  # The URI to return the GitHub token to
-    githapi.cache        = config$cache          # Location for cached token - FALSE means do not cache
+    githapi.key      = app_cfg$key,       # The application ID for accessing GitHub
+    githapi.secret   = app_cfg$secret,    # The secret for the application to access GitHub
+    githapi.cache    = app_cfg$cache      # Location for cached token - FALSE means do not cache
   )
 }
