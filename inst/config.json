@@ -1,10 +1,13 @@
 {
   "prod": {
-    "api"          : "https://api.github.com",
-    "oauth"        : "https://github.com/login/oauth",
-    "key"          : "07f9a4157365992e4db8",
-    "secret"       : "4d705eb68ac93e524ba71872a8b8f2bae802d870",
-    "redirect_uri" : "http://localhost:1410",
-    "cache"        : "~/.githapi.oauth"
+    "github": {
+      "api"  : "https://api.github.com",
+      "oauth": "https://github.com/login/oauth"
+    },
+    "githapi": {
+      "key"   : "07f9a4157365992e4db8",
+      "secret": "4d705eb68ac93e524ba71872a8b8f2bae802d870",
+      "cache" : "~/.githapi.oauth"
+    }
   }
 }
