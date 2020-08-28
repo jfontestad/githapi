@@ -29,7 +29,7 @@ test_that("create_status creates a status and returns a list of the properties",
 
   pending_status <- create_status(
     state       = "pending",
-    ref         = "master",
+    ref         = "main",
     repo        = str_c("ChadGoymer/test-statuses-", suffix),
     description = "This is a pending status",
     target_url  = "https://www.goymer.me.uk/githapi",
@@ -57,7 +57,7 @@ test_that("create_status creates a status and returns a list of the properties",
 
   success_status <- create_status(
     state       = "success",
-    ref         = "master",
+    ref         = "main",
     repo        = str_c("ChadGoymer/test-statuses-", suffix),
     description = "This is a success status",
     target_url  = "https://www.goymer.me.uk/githapi",
@@ -90,7 +90,7 @@ test_that("create_status creates a status and returns a list of the properties",
 test_that("view_statuses returns a tibble of status properties", {
 
   statuses <- view_statuses(
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-statuses-", suffix))
 
   expect_is(statuses, "tbl")
@@ -120,7 +120,7 @@ test_that("view_statuses returns a tibble of status properties", {
 test_that("view_status returns the combined status", {
 
   status <- view_status(
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-statuses-", suffix))
 
   expect_is(status, "character")

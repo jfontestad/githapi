@@ -154,6 +154,11 @@ gh_url <- function(
       first() %>%
       map(curl::curl_escape) %>%
       str_c(collapse = "/")
+
+    parsed_api <- httr::parse_url(api)
+    if (!is_null(parsed_api$path)) {
+      path <- str_c(parsed_api$path, "/", path)
+    }
   }
 
   query <- dots[names(dots) != ""]

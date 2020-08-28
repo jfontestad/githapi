@@ -16,7 +16,7 @@ setup(suppressMessages({
 
   create_branch(
     name = "test-api",
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-github-api-", suffix))
 
 }))
@@ -109,12 +109,12 @@ test_that("gh_url returns a valid URL for the GitHub API", {
     file.path(getOption("github.api"), "repos"))
 
   expect_identical(
-    gh_url("repos", "ChadGoymer/githapi", "git/refs", "heads/master"),
-    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/git/refs/heads/master"))
+    gh_url("repos", "ChadGoymer/githapi", "git/refs", "heads/main"),
+    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/git/refs/heads/main"))
 
   expect_identical(
-    gh_url(c("repos", "ChadGoymer/githapi", "git/refs", "heads/master")),
-    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/git/refs/heads/master"))
+    gh_url(c("repos", "ChadGoymer/githapi", "git/refs", "heads/main")),
+    file.path(getOption("github.api"), "repos/ChadGoymer/githapi/git/refs/heads/main"))
 
   expect_identical(
     gh_url("repos", "ChadGoymer/githapi", "git/trees", "234752384", recursive = 1),
@@ -147,7 +147,7 @@ test_that("gh_url returns a valid URL for the GitHub API", {
 
 test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified repository", {
 
-  master_sha <- str_c("repos/ChadGoymer/test-github-api-", suffix, "/commits/heads/master") %>%
+  main_sha <- str_c("repos/ChadGoymer/test-github-api-", suffix, "/commits/heads/main") %>%
     gh_url() %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
   test_sha <- str_c("repos/ChadGoymer/test-github-api-", suffix, "/commits/heads/test-api") %>%
@@ -159,11 +159,11 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
   created_tag <- gh_request(
     url     = str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs"),
     type    = "POST",
-    payload = list(ref = test_tag, sha = master_sha))
+    payload = list(ref = test_tag, sha = main_sha))
 
   expect_is(created_tag, "list")
   expect_identical(created_tag$ref, test_tag)
-  expect_identical(created_tag$object$sha, as.character(master_sha))
+  expect_identical(created_tag$object$sha, as.character(main_sha))
 
   expect_identical(
     attr(created_tag, "url"),
@@ -178,7 +178,7 @@ test_that("gh_request can GET, POST, PATCH and DELETE a tag in the specified rep
 
   expect_is(viewed_tag, "list")
   expect_identical(viewed_tag$ref, test_tag)
-  expect_identical(viewed_tag$object$sha, as.character(master_sha))
+  expect_identical(viewed_tag$object$sha, as.character(main_sha))
 
   expect_identical(
     attr(viewed_tag, "url"),
@@ -231,18 +231,18 @@ test_that("gh_request can make a request using an OAuth token", {
   options(msgr.level = 10, githapi.cache = "~/.githapi.oauth")
   on.exit(options(msgr.level = existing_msgr_level, githapi.cache = existing_githapi_cache))
 
-  master <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master") %>%
+  main <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/main") %>%
     gh_request("GET", token = NULL)
 
-  expect_is(master, "list")
-  expect_identical(master$ref, "refs/heads/master")
+  expect_is(main, "list")
+  expect_identical(main$ref, "refs/heads/main")
 
   expect_identical(
-    attr(master, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master"))
-  expect_identical(attr(master, "request"), "GET")
-  expect_identical(attr(master, "status"), 200L)
-  expect_true(length(attr(master, "header")) > 1)
+    attr(main, "url"),
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/main"))
+  expect_identical(attr(main, "request"), "GET")
+  expect_identical(attr(main, "status"), 200L)
+  expect_true(length(attr(main, "header")) > 1)
 
 })
 
@@ -281,18 +281,18 @@ test_that("gh_page returns a list of specified length", {
 
 test_that("gh_page still works when the endpoint returns a singular response rather than a collection", {
 
-  master <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master") %>%
+  main <- str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/main") %>%
     gh_page()
 
-  expect_is(master, "list")
-  expect_identical(master$ref, "refs/heads/master")
+  expect_is(main, "list")
+  expect_identical(main$ref, "refs/heads/main")
 
   expect_identical(
-    attr(master, "url"),
-    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/master?per_page=100"))
-  expect_identical(attr(master, "request"), "GET")
-  expect_identical(attr(master, "status"), 200L)
-  expect_true(length(attr(master, "header")) > 1)
+    attr(main, "url"),
+    str_c("https://api.github.com/repos/ChadGoymer/test-github-api-", suffix, "/git/refs/heads/main?per_page=100"))
+  expect_identical(attr(main, "request"), "GET")
+  expect_identical(attr(main, "status"), 200L)
+  expect_true(length(attr(main, "header")) > 1)
 
 })
 

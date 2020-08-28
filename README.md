@@ -2,7 +2,7 @@ githapi
 =======
 
 <!-- badges: start -->
-[![Windows](https://github.com/ChadGoymer/githapi/workflows/Windows/badge.svg)](https://github.com/ChadGoymer/githapi/actions?query=workflow%3AWindows) [![MacOS](https://github.com/ChadGoymer/githapi/workflows/MacOS/badge.svg)](https://github.com/ChadGoymer/githapi/actions?query=workflow%3AMacOS) [![Ubuntu](https://github.com/ChadGoymer/githapi/workflows/Ubuntu/badge.svg)](https://github.com/ChadGoymer/githapi/actions?query=workflow%3AUbuntu) [![Coverage status](https://codecov.io/gh/ChadGoymer/githapi/branch/master/graph/badge.svg)](https://codecov.io/github/ChadGoymer/githapi?branch=master)
+[![Windows](https://github.com/ChadGoymer/githapi/workflows/Windows/badge.svg)](https://github.com/ChadGoymer/githapi/actions?query=workflow%3AWindows) [![MacOS](https://github.com/ChadGoymer/githapi/workflows/MacOS/badge.svg)](https://github.com/ChadGoymer/githapi/actions?query=workflow%3AMacOS) [![Ubuntu](https://github.com/ChadGoymer/githapi/workflows/Ubuntu/badge.svg)](https://github.com/ChadGoymer/githapi/actions?query=workflow%3AUbuntu) [![Coverage status](https://codecov.io/gh/ChadGoymer/githapi/branch/main/graph/badge.svg)](https://codecov.io/github/ChadGoymer/githapi?branch=main)
 <!-- badges: end -->
 
 User-friendly access to the GitHub API for R, consistent with the tidyverse.
@@ -65,16 +65,16 @@ view_repositories("ChadGoymer")
 #> # A tibble: 10 x 26
 #>        id name  full_name description owner homepage language  size default_branch permission
 #>     <int> <chr> <chr>     <chr>       <chr> <chr>    <chr>    <dbl> <chr>          <chr>     
-#>  1 2.62e8 user~ ChadGoym~ This is a ~ Chad~ https:/~ NA           0 master         admin     
-#>  2 2.24e8 .git~ ChadGoym~ Issue and ~ Chad~ NA       NA           1 master         admin     
-#>  3 1.68e8 msgr  ChadGoym~ An R packa~ Chad~ NA       R          218 master         admin     
-#>  4 1.14e8 r-be~ ChadGoym~ A set of g~ Chad~ NA       CSS      41205 master         admin     
-#>  5 9.69e7 git-~ ChadGoym~ Simple gui~ Chad~ NA       NA           2 master         admin     
-#>  6 9.34e7 gith~ ChadGoym~ User-frien~ Chad~ http://~ R         6124 master         admin     
-#>  7 8.08e7 r-tr~ ChadGoym~ Training m~ Chad~ NA       R         1229 master         admin     
-#>  8 4.24e7 r-py~ ChadGoym~ NA          Chad~ NA       HTML      1172 master         admin     
-#>  9 4.24e7 shin~ ChadGoym~ NA          Chad~ NA       HTML     13408 master         admin     
-#> 10 3.93e7 chad~ ChadGoym~ My persona~ Chad~ NA       HTML       156 master         admin     
+#>  1 2.62e8 user~ ChadGoym~ This is a ~ Chad~ https:/~ NA           0 main           admin     
+#>  2 2.24e8 .git~ ChadGoym~ Issue and ~ Chad~ NA       NA           1 main           admin     
+#>  3 1.68e8 msgr  ChadGoym~ An R packa~ Chad~ NA       R          218 main           admin     
+#>  4 1.14e8 r-be~ ChadGoym~ A set of g~ Chad~ NA       CSS      41205 main           admin     
+#>  5 9.69e7 git-~ ChadGoym~ Simple gui~ Chad~ NA       NA           2 main           admin     
+#>  6 9.34e7 gith~ ChadGoym~ User-frien~ Chad~ http://~ R         6124 main           admin     
+#>  7 8.08e7 r-tr~ ChadGoym~ Training m~ Chad~ NA       R         1229 main           admin     
+#>  8 4.24e7 r-py~ ChadGoym~ NA          Chad~ NA       HTML      1172 main           admin     
+#>  9 4.24e7 shin~ ChadGoym~ NA          Chad~ NA       HTML     13408 main           admin     
+#> 10 3.93e7 chad~ ChadGoym~ My persona~ Chad~ NA       HTML       156 main           admin     
 #> # ... with 16 more variables: private <lgl>, has_issues <lgl>, has_projects <lgl>, has_wiki <lgl>,
 #> #   has_pages <lgl>, has_downloads <lgl>, allow_squash_merge <lgl>, allow_merge_commit <lgl>,
 #> #   allow_rebase_merge <lgl>, fork <lgl>, archived <lgl>, disabled <lgl>, html_url <chr>,
@@ -92,7 +92,7 @@ view_branches("ChadGoymer/githapi")
 #> # A tibble: 3 x 3
 #>   name                        ref                                  sha                              
 #>   <chr>                       <chr>                                <chr>                            
-#> 1 master                      refs/heads/master                    c5a5261c7bf21d3c402c7ddaf4f4454c~
+#> 1 main                        refs/heads/main                      c5a5261c7bf21d3c402c7ddaf4f4454c~
 #> 2 0-test-branch               refs/heads/0-test-branch             e93edf23e95b59d08853e2515ce9296c~
 #> 3 177-remove-deprecated-func~ refs/heads/177-remove-deprecated-fu~ 9d0aaad0c6837388058971c92b8e6b2c~
 ```
@@ -101,11 +101,11 @@ Similarly, to get the history of commits for a particular branch use
 [`view_commits()`](http://www.goymer.me.uk/githapi/reference/view_commits.html):
 
 ```r
-view_commits("master", "ChadGoymer/githapi")
+view_commits("main", "ChadGoymer/githapi")
 ```
 ```r
-#> # GET https://api.github.com/repos/ChadGoymer/githapi/commits?sha=master&per_page=100
-#> # GET https://api.github.com/repositories/93376315/commits?sha=master&per_page=100&page=2
+#> # GET https://api.github.com/repos/ChadGoymer/githapi/commits?sha=main&per_page=100
+#> # GET https://api.github.com/repositories/93376315/commits?sha=main&per_page=100&page=2
 #> # GET ...
 #> # A tibble: 749 x 13
 #>    sha   message author_login author_name author_email author_date         committer_login
@@ -129,7 +129,7 @@ view more you can set the `n_max` parameter. To get information about the files 
 commit use [`view_files()`](http://www.goymer.me.uk/githapi/reference/view_files.html):
 
 ```r
-view_files(ref = "master", repo = "ChadGoymer/githapi")
+view_files(ref = "main", repo = "ChadGoymer/githapi")
 ```
 ```r
 #> # GET https://api.github.com/repos/ChadGoymer/githapi/git/trees/16a48fab8de89c6483b21430a48fecf9cd364d43?recursive=TRUE
@@ -185,26 +185,26 @@ view_releases("ChadGoymer/githapi")
 #> # A tibble: 20 x 12
 #>        id tag   name  body  commit draft prerelease author_login assets html_url created_at         
 #>     <int> <chr> <chr> <chr> <chr>  <lgl> <lgl>      <chr>        <list> <chr>    <dttm>             
-#>  1 1.67e7 0.8.7 Fixe~ "# R~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-04-10 13:12:31
-#>  2 1.64e7 0.8.6 Fixe~ "# R~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-03-27 15:30:50
-#>  3 1.59e7 0.8.5 Usin~ "# R~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-03-05 18:47:00
-#>  4 1.56e7 0.8.2 Depr~ "# R~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-02-18 18:17:18
-#>  5 1.55e7 0.7.3 Add ~ "# R~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-12-06 07:33:25
-#>  6 1.55e7 0.7.2 Crea~ "# R~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-11-06 14:26:49
+#>  1 1.67e7 0.8.7 Fixe~ "# R~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-04-10 13:12:31
+#>  2 1.64e7 0.8.6 Fixe~ "# R~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-03-27 15:30:50
+#>  3 1.59e7 0.8.5 Usin~ "# R~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-03-05 18:47:00
+#>  4 1.56e7 0.8.2 Depr~ "# R~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2019-02-18 18:17:18
+#>  5 1.55e7 0.7.3 Add ~ "# R~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-12-06 07:33:25
+#>  6 1.55e7 0.7.2 Crea~ "# R~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-11-06 14:26:49
 #>  7 1.37e7 0.7.1 The ~ "# R~ 31142~ FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-10-31 06:57:38
 #>  8 1.37e7 0.7.0 Star~ "# R~ 59ef5~ FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-10-26 18:02:49
 #>  9 1.35e7 test~ Test~ "Thi~ 9bb32~ TRUE  TRUE       ChadGoymer   <chr ~ https:/~ 2018-10-18 07:53:42
-#> 10 1.26e7 0.6.3 Fixe~ "Res~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-08-29 09:03:28
+#> 10 1.26e7 0.6.3 Fixe~ "Res~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-08-29 09:03:28
 #> 11 1.26e7 0.6.2 Hook~ "Add~ 47c25~ FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-08-28 19:39:10
-#> 12 1.26e7 0.6.1 Buil~ "Con~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-08-24 08:55:38
-#> 13 1.17e7 v0.6~ Simp~ "Thi~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-06-26 21:09:34
-#> 14 8.40e6 v0.5~ Rele~ "Fix~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-11-06 10:09:04
-#> 15 8.17e6 v0.5~ Fixe~ " - ~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-10-18 17:51:29
-#> 16 8.14e6 v0.5~ Rele~ " - ~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-10-17 08:41:53
-#> 17 7.72e6 v0.4~ Rele~ "add~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-09-12 08:21:08
-#> 18 7.66e6 v0.3~ Rele~ "add~ master FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-08-14 18:13:10
-#> 19 7.25e6 v0.2~ Git ~ "Add~ master FALSE TRUE       ChadGoymer   <chr ~ https:/~ 2017-08-01 18:45:16
-#> 20 7.21e6 v0.1~ sele~ ""    master FALSE TRUE       ChadGoymer   <chr ~ https:/~ 2017-07-28 18:04:10
+#> 12 1.26e7 0.6.1 Buil~ "Con~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-08-24 08:55:38
+#> 13 1.17e7 v0.6~ Simp~ "Thi~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2018-06-26 21:09:34
+#> 14 8.40e6 v0.5~ Rele~ "Fix~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-11-06 10:09:04
+#> 15 8.17e6 v0.5~ Fixe~ " - ~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-10-18 17:51:29
+#> 16 8.14e6 v0.5~ Rele~ " - ~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-10-17 08:41:53
+#> 17 7.72e6 v0.4~ Rele~ "add~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-09-12 08:21:08
+#> 18 7.66e6 v0.3~ Rele~ "add~ main   FALSE FALSE      ChadGoymer   <chr ~ https:/~ 2017-08-14 18:13:10
+#> 19 7.25e6 v0.2~ Git ~ "Add~ main   FALSE TRUE       ChadGoymer   <chr ~ https:/~ 2017-08-01 18:45:16
+#> 20 7.21e6 v0.1~ sele~ ""    main   FALSE TRUE       ChadGoymer   <chr ~ https:/~ 2017-07-28 18:04:10
 #> # ... with 1 more variable: published_at <dttm>
 ```
 
@@ -219,7 +219,7 @@ download files and commits. To download individual files use
 download_file(
   from_path = "README.md",
   to_path   = "~/githapi/README.md",
-  ref       = "master",
+  ref       = "main",
   repo      = "ChadGoymer/githapi")
 ```
 
@@ -229,7 +229,7 @@ To download an entire commit use
 ```r
 download_commit(
   path = "~/githapi",
-  ref  = "master",
+  ref  = "main",
   repo = "ChadGoymer/githapi")
 ```
 
@@ -237,14 +237,14 @@ You can also read text files from a commit directly using
 [`read_github_file()`](http://www.goymer.me.uk/githapi/reference/read_github_file.html)
 
 ```r
-read_github_file("README.md", ref = "master", repo = "ChadGoymer/githapi")
+read_github_file("README.md", ref = "main", repo = "ChadGoymer/githapi")
 ```
 
 and source R scripts directly from GitHub using
 [`github_source()`](http://www.goymer.me.uk/githapi/reference/github_source.html)
 
 ```r
-github_source("inst/test-data/test-source.R", ref = "master", repo = "ChadGoymer/githapi")
+github_source("inst/test-data/test-source.R", ref = "main", repo = "ChadGoymer/githapi")
 ```
 
 
@@ -259,7 +259,7 @@ well as new commits. To create or update a file use
 create_file(
   content = "# This is a new file\\n\\n Created by `create_file()`",
   path    = "new-file.md",
-  branch  = "master",
+  branch  = "main",
   message = "Created a new file with create_file()",
   repo    = "ChadGoymer/githapi")
 ```
@@ -268,7 +268,7 @@ create_file(
 update_file(
   content = "# This is a file\\n\\n Updated by `update_file()`",
   path    = "new-file.md",
-  branch  = "master",
+  branch  = "main",
   message = "Updated a file with update_file()",
   repo    = "ChadGoymer/githapi")
 ```
@@ -280,7 +280,7 @@ and/or binary files, use
 ```r
 upload_commit(
     path    = "C:/files-to-upload",
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi")
 ```
@@ -295,7 +295,7 @@ Finally, tags and releases can be created using
 ```r
 create_tag(
   name = "new-tag",
-  ref  = "master",
+  ref  = "main",
   repo = "ChadGoymer/githapi")
 ```
 

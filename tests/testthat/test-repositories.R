@@ -142,7 +142,7 @@ test_that("update_repository changes a repository's properties and returns them 
     has_issues     = FALSE,
     has_projects   = FALSE,
     has_wiki       = FALSE,
-    default_branch = "master")
+    default_branch = "main")
 
   expect_is(user_repo, "list")
   expect_identical(attr(user_repo, "status"), 200L)
@@ -181,7 +181,7 @@ test_that("update_repository changes a repository's properties and returns them 
   expect_false(user_repo$has_issues)
   expect_false(user_repo$has_projects)
   expect_false(user_repo$has_wiki)
-  expect_identical(user_repo$default_branch, "master")
+  expect_identical(user_repo$default_branch, "main")
 
 
   org_repo <- update_repository(

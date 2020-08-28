@@ -20,7 +20,7 @@ setup(suppressMessages({
     branch  = str_c("test-tags-1-", suffix),
     message = "Commit to test tags",
     repo    = str_c("ChadGoymer/test-tags-", suffix),
-    parent  = "master")
+    parent  = "main")
 
 }))
 
@@ -56,24 +56,24 @@ test_that("create_tag creates a tag and returns a list of the properties", {
   expect_identical(branch_tag$sha, as.character(branch_sha))
 
 
-  master_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", suffix), "commits/heads/master") %>%
+  main_sha <- gh_url("repos", str_c("ChadGoymer/test-tags-", suffix), "commits/heads/main") %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
-  master_tag <- create_tag(
+  main_tag <- create_tag(
     name = str_c("test-tags-2-", suffix),
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-tags-", suffix))
 
-  expect_is(master_tag, "list")
-  expect_identical(attr(master_tag, "status"), 201L)
+  expect_is(main_tag, "list")
+  expect_identical(attr(main_tag, "status"), 201L)
   expect_identical(
-    map_chr(master_tag, ~ class(.)[[1]]),
+    map_chr(main_tag, ~ class(.)[[1]]),
     c(name = "character",
       ref  = "character",
       sha  = "character"))
 
-  expect_identical(master_tag$name, str_c("test-tags-2-", suffix))
-  expect_identical(master_tag$sha, as.character(master_sha))
+  expect_identical(main_tag$name, str_c("test-tags-2-", suffix))
+  expect_identical(main_tag$sha, as.character(main_sha))
 
 })
 
