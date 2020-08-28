@@ -116,7 +116,7 @@ test_that("upload_tree uploads a directory structure to github", {
   base_tree <- upload_tree(
     path = flat_path,
     repo = str_c("ChadGoymer/test-files-", suffix),
-    base_commit = "master")
+    base_commit = "main")
 
   expect_is(base_tree, "list")
   expect_identical(
@@ -194,7 +194,7 @@ test_that("upload_files uploads files and creates a new commit", {
   flat_commit <- upload_files(
     from_path = file.path(flat_path, c("file1.txt", "file2.txt")),
     to_path   = c("file-1.txt", "file-2.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = str_c("ChadGoymer/test-files-", suffix))
 
@@ -241,7 +241,7 @@ test_that("upload_files uploads files and creates a new commit", {
   recursive_commit <- upload_files(
     from_path = recursive_file_paths[c(1,3,5)],
     to_path   = c("dir-1/file-1.txt", "dir-1/dir-1-1/file-2.txt", "dir-2/file-3.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = str_c("ChadGoymer/test-files-", suffix))
 
@@ -269,7 +269,7 @@ test_that("upload_files uploads files and creates a new commit", {
   author_commit <- upload_files(
     from_path = file.path(flat_path, c("file1.txt", "file2.txt")),
     to_path   = c("file-1.txt", "file-2.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = str_c("ChadGoymer/test-files-", suffix),
     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -332,7 +332,7 @@ test_that("upload_files uploads files and creates a new commit", {
   valid_parent_commit <- upload_files(
     from_path = file.path(flat_path, c("file1.txt", "file2.txt")),
     to_path   = c("file-1.txt", "file-2.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = str_c("ChadGoymer/test-files-", suffix),
     parent    = author_commit$sha)
@@ -363,7 +363,7 @@ test_that("upload_files uploads files and creates a new commit", {
     upload_files(
       from_path = file.path(flat_path, c("file1.txt", "file2.txt")),
       to_path   = c("file-1.txt", "file-2.txt"),
-      branch    = "master",
+      branch    = "main",
       message   = "Commit to test upload_files()",
       repo      = str_c("ChadGoymer/test-files-", suffix),
       parent    = flat_commit$sha),
@@ -373,7 +373,7 @@ test_that("upload_files uploads files and creates a new commit", {
   force_parent_commit <- upload_files(
     from_path = file.path(flat_path, c("file1.txt", "file2.txt")),
     to_path   = c("file-1.txt", "file-2.txt"),
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_files()",
     repo      = str_c("ChadGoymer/test-files-", suffix),
     parent    = recursive_commit$sha,
@@ -445,7 +445,7 @@ test_that("download_file downloads a file and returns its path", {
   file_path <- download_file(
     from_path = "README.md",
     to_path   = file.path(temp_path, "README.md"),
-    ref       = "master",
+    ref       = "main",
     repo      = str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(file_path, "character")
@@ -462,17 +462,17 @@ test_that("download_file downloads a file and returns its path", {
 
 test_that("create_file creates a new commit with the file added", {
 
-  master_commit <- create_file(
+  main_commit <- create_file(
     content = "# This is a new file\\n\\nCreated by `create_file()`",
     path    = "new-file-1.md",
-    branch  = "master",
+    branch  = "main",
     message = "Created a new file with create_file()",
     repo    = str_c("ChadGoymer/test-files-", suffix))
 
-  expect_is(master_commit, "list")
-  expect_identical(attr(master_commit, "status"), 200L)
+  expect_is(main_commit, "list")
+  expect_identical(attr(main_commit, "status"), 200L)
   expect_identical(
-    map_chr(master_commit, ~ class(.)[[1]]),
+    map_chr(main_commit, ~ class(.)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_login    = "character",
@@ -487,11 +487,11 @@ test_that("create_file creates a new commit with the file added", {
       parents         = "character",
       html_url        = "character"))
 
-  expect_identical(master_commit$message, "Created a new file with create_file()")
-  expect_identical(master_commit$author_name, "Chad Goymer")
-  expect_identical(master_commit$author_email, "chad.goymer@gmail.com")
-  expect_identical(master_commit$committer_name, "Chad Goymer")
-  expect_identical(master_commit$committer_email, "chad.goymer@gmail.com")
+  expect_identical(main_commit$message, "Created a new file with create_file()")
+  expect_identical(main_commit$author_name, "Chad Goymer")
+  expect_identical(main_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(main_commit$committer_name, "Chad Goymer")
+  expect_identical(main_commit$committer_email, "chad.goymer@gmail.com")
 
 
   branch_commit <- create_file(
@@ -500,7 +500,7 @@ test_that("create_file creates a new commit with the file added", {
     branch  = str_c("create-file-", suffix),
     message = "Created a new file with create_file()",
     repo    = str_c("ChadGoymer/test-files-", suffix),
-    parent  = "master")
+    parent  = "main")
 
   expect_is(branch_commit, "list")
   expect_identical(attr(branch_commit, "status"), 200L)
@@ -530,7 +530,7 @@ test_that("create_file creates a new commit with the file added", {
   author_commit <- create_file(
     content   = "# This is a new file\\n\\nCreated by `create_file()`",
     path      = "new-file-3.md",
-    branch    = "master",
+    branch    = "main",
     message   = "Created a new file with create_file()",
     repo      = str_c("ChadGoymer/test-files-", suffix),
     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -567,17 +567,17 @@ test_that("create_file creates a new commit with the file added", {
 
 test_that("update_file creates a new commit with the file updated", {
 
-  master_commit <- update_file(
+  main_commit <- update_file(
     content = "# This is an updated file\\n\\nUpdated by `update_file()`",
     path    = "new-file-1.md",
-    branch  = "master",
+    branch  = "main",
     message = "Updated a file with update_file()",
     repo    = str_c("ChadGoymer/test-files-", suffix))
 
-  expect_is(master_commit, "list")
-  expect_identical(attr(master_commit, "status"), 200L)
+  expect_is(main_commit, "list")
+  expect_identical(attr(main_commit, "status"), 200L)
   expect_identical(
-    map_chr(master_commit, ~ class(.)[[1]]),
+    map_chr(main_commit, ~ class(.)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_login    = "character",
@@ -592,11 +592,11 @@ test_that("update_file creates a new commit with the file updated", {
       parents         = "character",
       html_url        = "character"))
 
-  expect_identical(master_commit$message, "Updated a file with update_file()")
-  expect_identical(master_commit$author_name, "Chad Goymer")
-  expect_identical(master_commit$author_email, "chad.goymer@gmail.com")
-  expect_identical(master_commit$committer_name, "Chad Goymer")
-  expect_identical(master_commit$committer_email, "chad.goymer@gmail.com")
+  expect_identical(main_commit$message, "Updated a file with update_file()")
+  expect_identical(main_commit$author_name, "Chad Goymer")
+  expect_identical(main_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(main_commit$committer_name, "Chad Goymer")
+  expect_identical(main_commit$committer_email, "chad.goymer@gmail.com")
 
 
   branch_commit <- update_file(
@@ -635,7 +635,7 @@ test_that("update_file creates a new commit with the file updated", {
   author_commit <- update_file(
     content = "# This is an updated file\\n\\nUpdated by `update_file()`",
     path      = "new-file-3.md",
-    branch    = "master",
+    branch    = "main",
     message   = "Updated a file with update_file()",
     repo      = str_c("ChadGoymer/test-files-", suffix),
     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -672,21 +672,21 @@ test_that("update_file creates a new commit with the file updated", {
 
 test_that("view_files returns a tibble of file properties", {
 
-  master_files <- view_files("master", str_c("ChadGoymer/test-files-", suffix))
+  main_files <- view_files("main", str_c("ChadGoymer/test-files-", suffix))
 
-  expect_is(master_files, "tbl")
-  expect_identical(attr(master_files, "status"), 200L)
+  expect_is(main_files, "tbl")
+  expect_identical(attr(main_files, "status"), 200L)
   expect_identical(
-    map_chr(master_files, ~ class(.)[[1]]),
+    map_chr(main_files, ~ class(.)[[1]]),
     c(path     = "character",
       sha      = "character",
       size     = "numeric",
       html_url = "character"))
 
-  expect_true("README.md" %in% master_files$path)
+  expect_true("README.md" %in% main_files$path)
 
   non_recursive_files <- view_files(
-    ref       = "master",
+    ref       = "main",
     repo      = str_c("ChadGoymer/test-files-", suffix),
     recursive = FALSE)
 
@@ -700,7 +700,7 @@ test_that("view_files returns a tibble of file properties", {
       html_url = "character"))
 
   expect_true("README.md" %in% non_recursive_files$path)
-  expect_true(nrow(non_recursive_files) < nrow(master_files))
+  expect_true(nrow(non_recursive_files) < nrow(main_files))
 
 })
 
@@ -709,7 +709,7 @@ test_that("view_files returns a tibble of file properties", {
 
 test_that("view_file returns a list of file properties", {
 
-  readme_file <- view_file("README.md", "master", str_c("ChadGoymer/test-files-", suffix))
+  readme_file <- view_file("README.md", "main", str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(readme_file, "list")
   expect_identical(attr(readme_file, "status"), 200L)
@@ -731,7 +731,7 @@ test_that("browse_files opens the file's history page in the browser", {
 
   skip_if(!interactive(), "browse_files must be tested manually")
 
-  files_url <- browse_files("master", str_c("ChadGoymer/test-files-", suffix))
+  files_url <- browse_files("main", str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(files_url, "character")
   expect_identical(attr(files_url, "status"), 200L)
@@ -748,13 +748,13 @@ test_that("browse_file opens the file's history page in the browser", {
 
   skip_if(!interactive(), "browse_file must be tested manually")
 
-  file_url <- browse_file("README.md", "master", str_c("ChadGoymer/test-files-", suffix))
+  file_url <- browse_file("README.md", "main", str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(file_url, "character")
   expect_identical(attr(file_url, "status"), 200L)
   expect_identical(
     as.character(file_url),
-    str_c("https://github.com/ChadGoymer/test-files-", suffix, "/blob/master/README.md"))
+    str_c("https://github.com/ChadGoymer/test-files-", suffix, "/blob/main/README.md"))
 
 })
 
@@ -763,16 +763,16 @@ test_that("browse_file opens the file's history page in the browser", {
 
 test_that("delete_file creates a new commit with the file deleted", {
 
-  master_commit <- delete_file(
+  main_commit <- delete_file(
     path    = "new-file-1.md",
-    branch  = "master",
+    branch  = "main",
     message = "Deleted a file with delete_file()",
     repo    = str_c("ChadGoymer/test-files-", suffix))
 
-  expect_is(master_commit, "list")
-  expect_identical(attr(master_commit, "status"), 200L)
+  expect_is(main_commit, "list")
+  expect_identical(attr(main_commit, "status"), 200L)
   expect_identical(
-    map_chr(master_commit, ~ class(.)[[1]]),
+    map_chr(main_commit, ~ class(.)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_login    = "character",
@@ -787,11 +787,11 @@ test_that("delete_file creates a new commit with the file deleted", {
       parents         = "character",
       html_url        = "character"))
 
-  expect_identical(master_commit$message, "Deleted a file with delete_file()")
-  expect_identical(master_commit$author_name, "Chad Goymer")
-  expect_identical(master_commit$author_email, "chad.goymer@gmail.com")
-  expect_identical(master_commit$committer_name, "Chad Goymer")
-  expect_identical(master_commit$committer_email, "chad.goymer@gmail.com")
+  expect_identical(main_commit$message, "Deleted a file with delete_file()")
+  expect_identical(main_commit$author_name, "Chad Goymer")
+  expect_identical(main_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(main_commit$committer_name, "Chad Goymer")
+  expect_identical(main_commit$committer_email, "chad.goymer@gmail.com")
 
 
   branch_commit <- delete_file(
@@ -828,7 +828,7 @@ test_that("delete_file creates a new commit with the file deleted", {
 
   author_commit <- delete_file(
     path      = "new-file-3.md",
-    branch    = "master",
+    branch    = "main",
     message   = "Deleted a file with delete_file()",
     repo      = str_c("ChadGoymer/test-files-", suffix),
     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -868,7 +868,7 @@ test_that("write_github_file creates a new commit with a new file and read_githu
   file_commit <- write_github_file(
     content = "# This is a new file\\n\\n Created by `write_github_file()`",
     path    = "new-file.md",
-    branch  = "master",
+    branch  = "main",
     message = "Created a new file with write_github_file()",
     repo    = str_c("ChadGoymer/test-files-", suffix))
 
@@ -894,7 +894,7 @@ test_that("write_github_file creates a new commit with a new file and read_githu
 
   file_contents <- read_github_file(
     path = "new-file.md",
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(file_contents, "character")
@@ -913,7 +913,7 @@ test_that("write_github_lines creates a new commit with a new file and read_gith
   lines_commit <- write_github_lines(
     content = c("# This is a new file", "", "Created by `write_github_lines()`"),
     path    = "new-lines.md",
-    branch  = "master",
+    branch  = "main",
     message = "Created a new file with write_github_lines()",
     repo    = str_c("ChadGoymer/test-files-", suffix))
 
@@ -939,7 +939,7 @@ test_that("write_github_lines creates a new commit with a new file and read_gith
 
   lines_contents <- read_github_lines(
     path = "new-lines.md",
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(lines_contents, "character")
@@ -958,7 +958,7 @@ test_that("write_github_csv creates a new commit with a new file and read_github
   csv_commit <- write_github_csv(
     content = tibble(letters = LETTERS, numbers = 1:26),
     path    = "new-csv.csv",
-    branch  = "master",
+    branch  = "main",
     message = "Created a new file with write_github_csv()",
     repo    = str_c("ChadGoymer/test-files-", suffix))
 
@@ -984,7 +984,7 @@ test_that("write_github_csv creates a new commit with a new file and read_github
 
   csv_contents <- read_github_csv(
     path = "new-csv.csv",
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(csv_contents, "tbl")
@@ -1003,13 +1003,13 @@ test_that("github_source sources a file in GitHub", {
   write_github_file(
     content = "test_source <- function() return(\"Testing github_source\")",
     path    = "test-source.R",
-    branch  = "master",
+    branch  = "main",
     message = "Created a new R script to test github_source()",
     repo    = str_c("ChadGoymer/test-files-", suffix))
 
   result <- github_source(
     path = "test-source.R",
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-files-", suffix))
 
   expect_true(exists("test_source"))
@@ -1023,14 +1023,14 @@ test_that("github_source sources a file in GitHub", {
 
 test_that("compare_files returns all the file changes made between to commits", {
 
-  master_commits <- view_commits(
-    ref   = "master",
+  main_commits <- view_commits(
+    ref   = "main",
     repo  = str_c("ChadGoymer/test-files-", suffix),
     n_max = 10)
 
   file_changes <- compare_files(
-    base = master_commits$sha[[3]],
-    head = "master",
+    base = main_commits$sha[[3]],
+    head = "main",
     repo = str_c("ChadGoymer/test-files-", suffix))
 
   expect_is(file_changes, "tbl")

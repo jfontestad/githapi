@@ -43,7 +43,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
 
   flat_commit <- upload_commit(
     path    = flat_path,
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = str_c("ChadGoymer/test-commits-", suffix))
 
@@ -89,7 +89,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
 
   recursive_commit <- upload_commit(
     path    = recursive_path,
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = str_c("ChadGoymer/test-commits-", suffix))
 
@@ -116,7 +116,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
 
   author_commit <- upload_commit(
     path      = flat_path,
-    branch    = "master",
+    branch    = "main",
     message   = "Commit to test upload_commit()",
     repo      = str_c("ChadGoymer/test-commits-", suffix),
     author    = list(name = "Bob",  email = "bob@acme.com"),
@@ -177,7 +177,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
 
   valid_parent_commit <- upload_commit(
     path    = flat_path,
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = str_c("ChadGoymer/test-commits-", suffix),
     parents = author_commit$sha)
@@ -207,7 +207,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
   expect_error(
     upload_commit(
       path    = flat_path,
-      branch  = "master",
+      branch  = "main",
       message = "Commit to test upload_commit()",
       repo    = str_c("ChadGoymer/test-commits-", suffix),
       parents = flat_commit$sha),
@@ -216,7 +216,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
 
   force_parent_commit <- upload_commit(
     path    = flat_path,
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = str_c("ChadGoymer/test-commits-", suffix),
     parents = flat_commit$sha,
@@ -273,17 +273,17 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
   expect_identical(new_branch_commit$parents, flat_commit$sha)
 
 
-  merge_master_commit <- upload_commit(
+  merge_main_commit <- upload_commit(
     path    = flat_path,
-    branch  = "master",
+    branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = str_c("ChadGoymer/test-commits-", suffix),
-    parents = c("master", new_branch_commit$sha))
+    parents = c("main", new_branch_commit$sha))
 
-  expect_is(merge_master_commit, "list")
-  expect_identical(attr(merge_master_commit, "status"), 200L)
+  expect_is(merge_main_commit, "list")
+  expect_identical(attr(merge_main_commit, "status"), 200L)
   expect_identical(
-    map_chr(merge_master_commit, ~ class(.)[[1]]),
+    map_chr(merge_main_commit, ~ class(.)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_login    = "character",
@@ -298,8 +298,8 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
       parents         = "character",
       html_url        = "character"))
 
-  expect_identical(merge_master_commit$message, "Commit to test upload_commit()")
-  expect_identical(merge_master_commit$parents, c(force_parent_commit$sha, new_branch_commit$sha))
+  expect_identical(merge_main_commit$message, "Commit to test upload_commit()")
+  expect_identical(merge_main_commit$parents, c(force_parent_commit$sha, new_branch_commit$sha))
 
 
   merge_branch_commit <- upload_commit(
@@ -307,7 +307,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
     branch  = str_c("test-commits-3-", suffix),
     message = "Commit to test upload_commit()",
     repo    = str_c("ChadGoymer/test-commits-", suffix),
-    parents = c("master", new_branch_commit$sha))
+    parents = c("main", new_branch_commit$sha))
 
   expect_is(merge_branch_commit, "list")
   expect_identical(attr(merge_branch_commit, "status"), 200L)
@@ -328,7 +328,7 @@ test_that("upload_commit uploads files in a directory and creates a commit", {
       html_url        = "character"))
 
   expect_identical(merge_branch_commit$message, "Commit to test upload_commit()")
-  expect_identical(merge_branch_commit$parents, c(merge_master_commit$sha, new_branch_commit$sha))
+  expect_identical(merge_branch_commit$parents, c(merge_main_commit$sha, new_branch_commit$sha))
 
 })
 
@@ -343,7 +343,7 @@ test_that("download_commit downloads a commit to the specified path", {
   on.exit(unlink(temp_path))
 
   path <- download_commit(
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-commits-", suffix),
     path = temp_path)
 
@@ -361,12 +361,12 @@ test_that("download_commit downloads a commit to the specified path", {
 
 test_that("view_commits returns a tibble of commit properties", {
 
-  master_commits <- view_commits("master", str_c("ChadGoymer/test-commits-", suffix), n_max = 10)
+  main_commits <- view_commits("main", str_c("ChadGoymer/test-commits-", suffix), n_max = 10)
 
-  expect_is(master_commits, "tbl")
-  expect_identical(attr(master_commits, "status"), 200L)
+  expect_is(main_commits, "tbl")
+  expect_identical(attr(main_commits, "status"), 200L)
   expect_identical(
-    map_chr(master_commits, ~ class(.)[[1]]),
+    map_chr(main_commits, ~ class(.)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_login    = "character",
@@ -381,10 +381,10 @@ test_that("view_commits returns a tibble of commit properties", {
       parents         = "list",
       html_url        = "character"))
 
-  expect_identical(last(master_commits$message), "Initial commit")
+  expect_identical(last(main_commits$message), "Initial commit")
 
   readme_commits <- view_commits(
-    ref   = "master",
+    ref   = "main",
     repo  = str_c("ChadGoymer/test-commits-", suffix),
     path  = "README.md",
     n_max = 10)
@@ -410,7 +410,7 @@ test_that("view_commits returns a tibble of commit properties", {
   expect_identical(last(readme_commits$message), "Initial commit")
 
   author_commits <- view_commits(
-    ref    = "master",
+    ref    = "main",
     repo   = str_c("ChadGoymer/test-commits-", suffix),
     author = "ChadGoymer",
     n_max  = 10)
@@ -436,7 +436,7 @@ test_that("view_commits returns a tibble of commit properties", {
   expect_identical(last(author_commits$message), "Initial commit")
 
   time_commits <- view_commits(
-    ref   = "master",
+    ref   = "main",
     repo  = str_c("ChadGoymer/test-commits-", suffix),
     since = format(Sys.time() - 60*60*24, "%Y-%m-%d %H:%M:%S"),
     until = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
@@ -469,12 +469,12 @@ test_that("view_commits returns a tibble of commit properties", {
 
 test_that("view_commit returns a list of commit properties", {
 
-  master_commit <- view_commit("master", str_c("ChadGoymer/test-commits-", suffix))
+  main_commit <- view_commit("main", str_c("ChadGoymer/test-commits-", suffix))
 
-  expect_is(master_commit, "list")
-  expect_identical(attr(master_commit, "status"), 200L)
+  expect_is(main_commit, "list")
+  expect_identical(attr(main_commit, "status"), 200L)
   expect_identical(
-    map_chr(master_commit, ~ class(.)[[1]]),
+    map_chr(main_commit, ~ class(.)[[1]]),
     c(sha             = "character",
       message         = "character",
       author_login    = "character",
@@ -489,7 +489,7 @@ test_that("view_commit returns a list of commit properties", {
       parents         = "character",
       html_url        = "character"))
 
-  expect_identical(master_commit$author_login, "ChadGoymer")
+  expect_identical(main_commit$author_login, "ChadGoymer")
 
 })
 
@@ -500,7 +500,7 @@ test_that("browse_commits opens the commit's history page in the browser", {
 
   skip_if(!interactive(), "browse_commits must be tested manually")
 
-  commits <- browse_commits("master", str_c("ChadGoymer/test-commits-", suffix))
+  commits <- browse_commits("main", str_c("ChadGoymer/test-commits-", suffix))
 
   expect_is(commits, "character")
   expect_identical(attr(commits, "status"), 200L)
@@ -517,7 +517,7 @@ test_that("browse_commit opens the commit's history page in the browser", {
 
   skip_if(!interactive(), "browse_commit must be tested manually")
 
-  commit <- browse_commit("master", str_c("ChadGoymer/test-commits-", suffix))
+  commit <- browse_commit("main", str_c("ChadGoymer/test-commits-", suffix))
 
   expect_is(commit, "character")
   expect_identical(attr(commit, "status"), 200L)
@@ -532,15 +532,15 @@ test_that("browse_commit opens the commit's history page in the browser", {
 
 test_that("view_sha returns the commit SHA given the reference", {
 
-  master_sha <- view_sha("master", repo = str_c("ChadGoymer/test-commits-", suffix))
+  main_sha <- view_sha("main", repo = str_c("ChadGoymer/test-commits-", suffix))
 
-  expect_is(master_sha, "character")
-  expect_identical(attr(master_sha, "status"), 200L)
-  expect_true(is_sha(master_sha))
+  expect_is(main_sha, "character")
+  expect_identical(attr(main_sha, "status"), 200L)
+  expect_true(is_sha(main_sha))
 
   tag <- create_tag(
     name = "test-commits",
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-commits-", suffix))
 
   tag_sha <- view_sha("test-commits", repo = str_c("ChadGoymer/test-commits-", suffix))
@@ -548,7 +548,7 @@ test_that("view_sha returns the commit SHA given the reference", {
   expect_is(tag_sha, "character")
   expect_identical(attr(tag_sha, "status"), 200L)
   expect_true(is_sha(tag_sha))
-  expect_identical(as.character(master_sha), as.character(tag_sha))
+  expect_identical(as.character(main_sha), as.character(tag_sha))
 
 })
 
@@ -557,14 +557,14 @@ test_that("view_sha returns the commit SHA given the reference", {
 
 test_that("compare_commits returns all the commits made between to commits", {
 
-  master_commits <- view_commits(
-    ref   = "master",
+  main_commits <- view_commits(
+    ref   = "main",
     repo  = str_c("ChadGoymer/test-commits-", suffix),
     n_max = 10)
 
   commits <- compare_commits(
-    base = master_commits$sha[[3]],
-    head = "master",
+    base = main_commits$sha[[3]],
+    head = "main",
     repo = str_c("ChadGoymer/test-commits-", suffix))
 
   expect_is(commits, "tbl")
@@ -585,6 +585,6 @@ test_that("compare_commits returns all the commits made between to commits", {
       parents         = "list",
       html_url        = "character"))
 
-  expect_identical(commits$sha, master_commits$sha[2:1])
+  expect_identical(commits$sha, main_commits$sha[2:1])
 
 })

@@ -35,13 +35,13 @@ setup(suppressMessages({
     branch  = str_c("test-cards-", suffix),
     message = "Commit to test cards",
     repo    = str_c("ChadGoymer/test-cards-", suffix),
-    parent  = "master")
+    parent  = "main")
 
   create_pull_request(
     title = "This is a pull request to test cards",
     repo  = str_c("ChadGoymer/test-cards-", suffix),
     head  = str_c("test-cards-", suffix),
-    base  = "master",
+    base  = "main",
     body  = "This is a pull request to test cards")
 
 }))

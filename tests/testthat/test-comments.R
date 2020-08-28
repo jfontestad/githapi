@@ -25,13 +25,13 @@ setup(suppressMessages({
     branch  = str_c("test-comments-", suffix),
     message = "A file to test comments",
     repo    = str_c("ChadGoymer/test-comments-", suffix),
-    parent  = "master")
+    parent  = "main")
 
   create_pull_request(
     title = str_c("pull to test comments ", suffix),
     repo  = str_c("ChadGoymer/test-comments-", suffix),
     head  = str_c("test-comments-", suffix),
-    base  = "master",
+    base  = "main",
     body  = "This is an pull request to test comments")
 
 }))
@@ -43,7 +43,7 @@ suppressMessages({
     create_gist(description = "gist for testing comments") %>%
     pluck("id")
 
-  master_sha <- view_sha("master", repo = str_c("ChadGoymer/test-comments-", suffix))
+  main_sha <- view_sha("main", repo = str_c("ChadGoymer/test-comments-", suffix))
   branch_sha <- view_sha(
     ref  = str_c("test-comments-", suffix),
     repo = str_c("ChadGoymer/test-comments-", suffix))
@@ -133,7 +133,7 @@ test_that("create_comment creates a comment and returns a list of the properties
 
   commit_comment <- create_comment(
     body     = "This is a comment created by create_comment()",
-    commit   = master_sha,
+    commit   = main_sha,
     repo     = str_c("ChadGoymer/test-comments-", suffix),
     path     = "README.md",
     position = 1)
@@ -153,7 +153,7 @@ test_that("create_comment creates a comment and returns a list of the properties
       updated_at = "POSIXct"))
 
   expect_identical(commit_comment$body, "This is a comment created by create_comment()")
-  expect_identical(commit_comment$commit, as.character(master_sha))
+  expect_identical(commit_comment$commit, as.character(main_sha))
   expect_identical(commit_comment$path, "README.md")
   expect_identical(commit_comment$position, 1L)
   expect_identical(commit_comment$user, "ChadGoymer")
@@ -201,7 +201,7 @@ suppressMessages({
     first()
 
   commit_comments <- view_comments(
-    commit = "master",
+    commit = "main",
     repo   = str_c("ChadGoymer/test-comments-", suffix),
     n_max  = 10)
   commit_comment_id <- commit_comments %>%
@@ -302,7 +302,7 @@ test_that("update_comment updates a comment and returns a list of the properties
       updated_at = "POSIXct"))
 
   expect_identical(commit_comment$body, "This comment has been updated by update_comment()")
-  expect_identical(commit_comment$commit, as.character(master_sha))
+  expect_identical(commit_comment$commit, as.character(main_sha))
   expect_identical(commit_comment$path, "README.md")
   expect_identical(commit_comment$position, 1L)
   expect_identical(commit_comment$user, "ChadGoymer")
@@ -475,7 +475,7 @@ test_that("view_comment returns a list of the properties", {
       updated_at = "POSIXct"))
 
   expect_identical(commit_comment$body, "This comment has been updated by update_comment()")
-  expect_identical(commit_comment$commit, as.character(master_sha))
+  expect_identical(commit_comment$commit, as.character(main_sha))
   expect_identical(commit_comment$path, "README.md")
   expect_identical(commit_comment$position, 1L)
   expect_identical(commit_comment$user, "ChadGoymer")

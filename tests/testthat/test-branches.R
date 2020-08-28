@@ -20,7 +20,7 @@ setup(suppressMessages({
     branch  = str_c("test-branches-1-", suffix),
     message = "Commit to test branches",
     repo    = str_c("ChadGoymer/test-branches-", suffix),
-    parent  = "master")
+    parent  = "main")
 
 }))
 
@@ -35,12 +35,12 @@ teardown(suppressMessages({
 
 test_that("create_branch creates a branch and returns a list of the properties", {
 
-  master_sha <- gh_url("repos", str_c("ChadGoymer/test-branches-", suffix), "commits/heads/master") %>%
+  main_sha <- gh_url("repos", str_c("ChadGoymer/test-branches-", suffix), "commits/heads/main") %>%
     gh_request("GET", accept = "application/vnd.github.VERSION.sha")
 
   new_branch <- create_branch(
     name = str_c("test-branches-2-", suffix),
-    ref  = "master",
+    ref  = "main",
     repo = str_c("ChadGoymer/test-branches-", suffix))
 
   expect_is(new_branch, "list")
@@ -52,7 +52,7 @@ test_that("create_branch creates a branch and returns a list of the properties",
       sha  = "character"))
 
   expect_identical(new_branch$name, str_c("test-branches-2-", suffix))
-  expect_identical(new_branch$sha, as.character(master_sha))
+  expect_identical(new_branch$sha, as.character(main_sha))
 
 })
 
