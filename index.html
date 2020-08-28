@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.13</span>
       </span>
     </div>
 
@@ -116,16 +116,16 @@
 <span class="co">#&gt; # A tibble: 10 x 26</span>
 <span class="co">#&gt;        id name  full_name description owner homepage language  size default_branch permission</span>
 <span class="co">#&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;     </span>
-<span class="co">#&gt;  1 2.62e8 user~ ChadGoym~ This is a ~ Chad~ https:/~ NA           0 master         admin     </span>
-<span class="co">#&gt;  2 2.24e8 .git~ ChadGoym~ Issue and ~ Chad~ NA       NA           1 master         admin     </span>
-<span class="co">#&gt;  3 1.68e8 msgr  ChadGoym~ An R packa~ Chad~ NA       R          218 master         admin     </span>
-<span class="co">#&gt;  4 1.14e8 r-be~ ChadGoym~ A set of g~ Chad~ NA       CSS      41205 master         admin     </span>
-<span class="co">#&gt;  5 9.69e7 git-~ ChadGoym~ Simple gui~ Chad~ NA       NA           2 master         admin     </span>
-<span class="co">#&gt;  6 9.34e7 gith~ ChadGoym~ User-frien~ Chad~ http://~ R         6124 master         admin     </span>
-<span class="co">#&gt;  7 8.08e7 r-tr~ ChadGoym~ Training m~ Chad~ NA       R         1229 master         admin     </span>
-<span class="co">#&gt;  8 4.24e7 r-py~ ChadGoym~ NA          Chad~ NA       HTML      1172 master         admin     </span>
-<span class="co">#&gt;  9 4.24e7 shin~ ChadGoym~ NA          Chad~ NA       HTML     13408 master         admin     </span>
-<span class="co">#&gt; 10 3.93e7 chad~ ChadGoym~ My persona~ Chad~ NA       HTML       156 master         admin     </span>
+<span class="co">#&gt;  1 2.62e8 user~ ChadGoym~ This is a ~ Chad~ https:/~ NA           0 main           admin     </span>
+<span class="co">#&gt;  2 2.24e8 .git~ ChadGoym~ Issue and ~ Chad~ NA       NA           1 main           admin     </span>
+<span class="co">#&gt;  3 1.68e8 msgr  ChadGoym~ An R packa~ Chad~ NA       R          218 main           admin     </span>
+<span class="co">#&gt;  4 1.14e8 r-be~ ChadGoym~ A set of g~ Chad~ NA       CSS      41205 main           admin     </span>
+<span class="co">#&gt;  5 9.69e7 git-~ ChadGoym~ Simple gui~ Chad~ NA       NA           2 main           admin     </span>
+<span class="co">#&gt;  6 9.34e7 gith~ ChadGoym~ User-frien~ Chad~ http://~ R         6124 main           admin     </span>
+<span class="co">#&gt;  7 8.08e7 r-tr~ ChadGoym~ Training m~ Chad~ NA       R         1229 main           admin     </span>
+<span class="co">#&gt;  8 4.24e7 r-py~ ChadGoym~ NA          Chad~ NA       HTML      1172 main           admin     </span>
+<span class="co">#&gt;  9 4.24e7 shin~ ChadGoym~ NA          Chad~ NA       HTML     13408 main           admin     </span>
+<span class="co">#&gt; 10 3.93e7 chad~ ChadGoym~ My persona~ Chad~ NA       HTML       156 main           admin     </span>
 <span class="co">#&gt; # ... with 16 more variables: private &lt;lgl&gt;, has_issues &lt;lgl&gt;, has_projects &lt;lgl&gt;, has_wiki &lt;lgl&gt;,</span>
 <span class="co">#&gt; #   has_pages &lt;lgl&gt;, has_downloads &lt;lgl&gt;, allow_squash_merge &lt;lgl&gt;, allow_merge_commit &lt;lgl&gt;,</span>
 <span class="co">#&gt; #   allow_rebase_merge &lt;lgl&gt;, fork &lt;lgl&gt;, archived &lt;lgl&gt;, disabled &lt;lgl&gt;, html_url &lt;chr&gt;,</span>
@@ -140,17 +140,17 @@
 <span class="co">#&gt; # A tibble: 3 x 3</span>
 <span class="co">#&gt;   name                        ref                                  sha                              </span>
 <span class="co">#&gt;   &lt;chr&gt;                       &lt;chr&gt;                                &lt;chr&gt;                            </span>
-<span class="co">#&gt; 1 master                      refs/heads/master                    c5a5261c7bf21d3c402c7ddaf4f4454c~</span>
+<span class="co">#&gt; 1 main                        refs/heads/main                      c5a5261c7bf21d3c402c7ddaf4f4454c~</span>
 <span class="co">#&gt; 2 0-test-branch               refs/heads/0-test-branch             e93edf23e95b59d08853e2515ce9296c~</span>
 <span class="co">#&gt; 3 177-remove-deprecated-func~ refs/heads/177-remove-deprecated-fu~ 9d0aaad0c6837388058971c92b8e6b2c~</span>
 </pre></div>
 <p>Similarly, to get the history of commits for a particular branch use <a href="http://www.goymer.me.uk/githapi/reference/view_commits.html"><code>view_commits()</code></a>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="reference/view_commits.html">view_commits</a></span>(<span class="st">"master"</span>, <span class="st">"ChadGoymer/githapi"</span>)
+<span class="fu"><a href="reference/view_commits.html">view_commits</a></span>(<span class="st">"main"</span>, <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="co">#&gt; # GET https://api.github.com/repos/ChadGoymer/githapi/commits?sha=master&amp;per_page=100</span>
-<span class="co">#&gt; # GET https://api.github.com/repositories/93376315/commits?sha=master&amp;per_page=100&amp;page=2</span>
+<span class="co">#&gt; # GET https://api.github.com/repos/ChadGoymer/githapi/commits?sha=main&amp;per_page=100</span>
+<span class="co">#&gt; # GET https://api.github.com/repositories/93376315/commits?sha=main&amp;per_page=100&amp;page=2</span>
 <span class="co">#&gt; # GET ...</span>
 <span class="co">#&gt; # A tibble: 749 x 13</span>
 <span class="co">#&gt;    sha   message author_login author_name author_email author_date         committer_login</span>
@@ -170,7 +170,7 @@
 </pre></div>
 <p>Note that, by default, when viewing many items, only the last 1000 are returned. If you wish to view more you can set the <code>n_max</code> parameter. To get information about the files in a particular commit use <a href="http://www.goymer.me.uk/githapi/reference/view_files.html"><code>view_files()</code></a>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="reference/view_files.html">view_files</a></span>(ref = <span class="st">"master"</span>, repo = <span class="st">"ChadGoymer/githapi"</span>)
+<span class="fu"><a href="reference/view_files.html">view_files</a></span>(ref = <span class="st">"main"</span>, repo = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="co">#&gt; # GET https://api.github.com/repos/ChadGoymer/githapi/git/trees/16a48fab8de89c6483b21430a48fecf9cd364d43?recursive=TRUE</span>
@@ -218,26 +218,26 @@
 <span class="co">#&gt; # A tibble: 20 x 12</span>
 <span class="co">#&gt;        id tag   name  body  commit draft prerelease author_login assets html_url created_at         </span>
 <span class="co">#&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;lgl&gt; &lt;lgl&gt;      &lt;chr&gt;        &lt;list&gt; &lt;chr&gt;    &lt;dttm&gt;             </span>
-<span class="co">#&gt;  1 1.67e7 0.8.7 Fixe~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-04-10 13:12:31</span>
-<span class="co">#&gt;  2 1.64e7 0.8.6 Fixe~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-03-27 15:30:50</span>
-<span class="co">#&gt;  3 1.59e7 0.8.5 Usin~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-03-05 18:47:00</span>
-<span class="co">#&gt;  4 1.56e7 0.8.2 Depr~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-02-18 18:17:18</span>
-<span class="co">#&gt;  5 1.55e7 0.7.3 Add ~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-12-06 07:33:25</span>
-<span class="co">#&gt;  6 1.55e7 0.7.2 Crea~ "# R~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-11-06 14:26:49</span>
+<span class="co">#&gt;  1 1.67e7 0.8.7 Fixe~ "# R~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-04-10 13:12:31</span>
+<span class="co">#&gt;  2 1.64e7 0.8.6 Fixe~ "# R~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-03-27 15:30:50</span>
+<span class="co">#&gt;  3 1.59e7 0.8.5 Usin~ "# R~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-03-05 18:47:00</span>
+<span class="co">#&gt;  4 1.56e7 0.8.2 Depr~ "# R~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2019-02-18 18:17:18</span>
+<span class="co">#&gt;  5 1.55e7 0.7.3 Add ~ "# R~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-12-06 07:33:25</span>
+<span class="co">#&gt;  6 1.55e7 0.7.2 Crea~ "# R~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-11-06 14:26:49</span>
 <span class="co">#&gt;  7 1.37e7 0.7.1 The ~ "# R~ 31142~ FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-10-31 06:57:38</span>
 <span class="co">#&gt;  8 1.37e7 0.7.0 Star~ "# R~ 59ef5~ FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-10-26 18:02:49</span>
 <span class="co">#&gt;  9 1.35e7 test~ Test~ "Thi~ 9bb32~ TRUE  TRUE       ChadGoymer   &lt;chr ~ https:/~ 2018-10-18 07:53:42</span>
-<span class="co">#&gt; 10 1.26e7 0.6.3 Fixe~ "Res~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-29 09:03:28</span>
+<span class="co">#&gt; 10 1.26e7 0.6.3 Fixe~ "Res~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-29 09:03:28</span>
 <span class="co">#&gt; 11 1.26e7 0.6.2 Hook~ "Add~ 47c25~ FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-28 19:39:10</span>
-<span class="co">#&gt; 12 1.26e7 0.6.1 Buil~ "Con~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-24 08:55:38</span>
-<span class="co">#&gt; 13 1.17e7 v0.6~ Simp~ "Thi~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-06-26 21:09:34</span>
-<span class="co">#&gt; 14 8.40e6 v0.5~ Rele~ "Fix~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-11-06 10:09:04</span>
-<span class="co">#&gt; 15 8.17e6 v0.5~ Fixe~ " - ~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-10-18 17:51:29</span>
-<span class="co">#&gt; 16 8.14e6 v0.5~ Rele~ " - ~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-10-17 08:41:53</span>
-<span class="co">#&gt; 17 7.72e6 v0.4~ Rele~ "add~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-09-12 08:21:08</span>
-<span class="co">#&gt; 18 7.66e6 v0.3~ Rele~ "add~ master FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-08-14 18:13:10</span>
-<span class="co">#&gt; 19 7.25e6 v0.2~ Git ~ "Add~ master FALSE TRUE       ChadGoymer   &lt;chr ~ https:/~ 2017-08-01 18:45:16</span>
-<span class="co">#&gt; 20 7.21e6 v0.1~ sele~ ""    master FALSE TRUE       ChadGoymer   &lt;chr ~ https:/~ 2017-07-28 18:04:10</span>
+<span class="co">#&gt; 12 1.26e7 0.6.1 Buil~ "Con~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-08-24 08:55:38</span>
+<span class="co">#&gt; 13 1.17e7 v0.6~ Simp~ "Thi~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2018-06-26 21:09:34</span>
+<span class="co">#&gt; 14 8.40e6 v0.5~ Rele~ "Fix~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-11-06 10:09:04</span>
+<span class="co">#&gt; 15 8.17e6 v0.5~ Fixe~ " - ~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-10-18 17:51:29</span>
+<span class="co">#&gt; 16 8.14e6 v0.5~ Rele~ " - ~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-10-17 08:41:53</span>
+<span class="co">#&gt; 17 7.72e6 v0.4~ Rele~ "add~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-09-12 08:21:08</span>
+<span class="co">#&gt; 18 7.66e6 v0.3~ Rele~ "add~ main   FALSE FALSE      ChadGoymer   &lt;chr ~ https:/~ 2017-08-14 18:13:10</span>
+<span class="co">#&gt; 19 7.25e6 v0.2~ Git ~ "Add~ main   FALSE TRUE       ChadGoymer   &lt;chr ~ https:/~ 2017-08-01 18:45:16</span>
+<span class="co">#&gt; 20 7.21e6 v0.1~ sele~ ""    main   FALSE TRUE       ChadGoymer   &lt;chr ~ https:/~ 2017-07-28 18:04:10</span>
 <span class="co">#&gt; # ... with 1 more variable: published_at &lt;dttm&gt;</span>
 </pre></div>
 </div>
@@ -249,23 +249,23 @@
 <span class="fu"><a href="reference/download_file.html">download_file</a></span>(
   from_path = <span class="st">"README.md"</span>,
   to_path   = <span class="st">"~/githapi/README.md"</span>,
-  ref       = <span class="st">"master"</span>,
+  ref       = <span class="st">"main"</span>,
   repo      = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
 <p>To download an entire commit use <a href="http://www.goymer.me.uk/githapi/reference/download_commit.html"><code>download_commit()</code></a></p>
 <div class="sourceCode" id="cb17"><pre class="downlit">
 <span class="fu"><a href="reference/download_commit.html">download_commit</a></span>(
   path = <span class="st">"~/githapi"</span>,
-  ref  = <span class="st">"master"</span>,
+  ref  = <span class="st">"main"</span>,
   repo = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
 <p>You can also read text files from a commit directly using <a href="http://www.goymer.me.uk/githapi/reference/read_github_file.html"><code>read_github_file()</code></a></p>
 <div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="reference/read_github_file.html">read_github_file</a></span>(<span class="st">"README.md"</span>, ref = <span class="st">"master"</span>, repo = <span class="st">"ChadGoymer/githapi"</span>)
+<span class="fu"><a href="reference/read_github_file.html">read_github_file</a></span>(<span class="st">"README.md"</span>, ref = <span class="st">"main"</span>, repo = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
 <p>and source R scripts directly from GitHub using <a href="http://www.goymer.me.uk/githapi/reference/github_source.html"><code>github_source()</code></a></p>
 <div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="reference/github_source.html">github_source</a></span>(<span class="st">"inst/test-data/test-source.R"</span>, ref = <span class="st">"master"</span>, repo = <span class="st">"ChadGoymer/githapi"</span>)
+<span class="fu"><a href="reference/github_source.html">github_source</a></span>(<span class="st">"inst/test-data/test-source.R"</span>, ref = <span class="st">"main"</span>, repo = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
 </div>
 <div id="updating-a-repository" class="section level3">
@@ -276,7 +276,7 @@
 <span class="fu"><a href="reference/create_file.html">create_file</a></span>(
   content = <span class="st">"# This is a new file\\n\\n Created by `create_file()`"</span>,
   path    = <span class="st">"new-file.md"</span>,
-  branch  = <span class="st">"master"</span>,
+  branch  = <span class="st">"main"</span>,
   message = <span class="st">"Created a new file with create_file()"</span>,
   repo    = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
@@ -284,7 +284,7 @@
 <span class="fu"><a href="reference/update_file.html">update_file</a></span>(
   content = <span class="st">"# This is a file\\n\\n Updated by `update_file()`"</span>,
   path    = <span class="st">"new-file.md"</span>,
-  branch  = <span class="st">"master"</span>,
+  branch  = <span class="st">"main"</span>,
   message = <span class="st">"Updated a file with update_file()"</span>,
   repo    = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
@@ -292,7 +292,7 @@
 <div class="sourceCode" id="cb22"><pre class="downlit">
 <span class="fu"><a href="reference/upload_commit.html">upload_commit</a></span>(
     path    = <span class="st">"C:/files-to-upload"</span>,
-    branch  = <span class="st">"master"</span>,
+    branch  = <span class="st">"main"</span>,
     message = <span class="st">"Commit to test upload_commit()"</span>,
     repo    = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
@@ -301,7 +301,7 @@
 <div class="sourceCode" id="cb23"><pre class="downlit">
 <span class="fu"><a href="reference/create_tag.html">create_tag</a></span>(
   name = <span class="st">"new-tag"</span>,
-  ref  = <span class="st">"master"</span>,
+  ref  = <span class="st">"main"</span>,
   repo = <span class="st">"ChadGoymer/githapi"</span>)
 </pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit">
@@ -346,7 +346,7 @@
 <li><a href="https://github.com/ChadGoymer/githapi/actions?query=workflow%3AWindows"><img src="https://github.com/ChadGoymer/githapi/workflows/Windows/badge.svg" alt="Windows"></a></li>
 <li><a href="https://github.com/ChadGoymer/githapi/actions?query=workflow%3AMacOS"><img src="https://github.com/ChadGoymer/githapi/workflows/MacOS/badge.svg" alt="MacOS"></a></li>
 <li><a href="https://github.com/ChadGoymer/githapi/actions?query=workflow%3AUbuntu"><img src="https://github.com/ChadGoymer/githapi/workflows/Ubuntu/badge.svg" alt="Ubuntu"></a></li>
-<li><a href="https://codecov.io/github/ChadGoymer/githapi?branch=master"><img src="https://codecov.io/gh/ChadGoymer/githapi/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://codecov.io/github/ChadGoymer/githapi?branch=main"><img src="https://codecov.io/gh/ChadGoymer/githapi/branch/main/graph/badge.svg" alt="Coverage status"></a></li>
 </ul>
 </div>
 </div>
