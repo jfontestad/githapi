@@ -13,8 +13,8 @@ delete_comment(comment, gist, repo, type = "gist", ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{type}{(string, optional) Whether the comment is for a \code{"gist"}, \code{"issue"},
-\code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
+\item{type}{(string, optional) Whether the comment is for a \code{"gist"},
+\code{"issue"}, \code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -22,41 +22,48 @@ delete_comment(comment, gist, repo, type = "gist", ...)
 \code{delete_comment()} returns a TRUE if successfully deleted.
 }
 \description{
-This function deletes a comment from a gist, issue, pull request or commit, as long as you
-have appropriate permissions. Care should be taken as it will not be recoverable.
+This function deletes a comment from a gist, issue, pull request or commit,
+as long as you have appropriate permissions. Care should be taken as it will
+not be recoverable.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/gists/comments/#delete-a-comment}
-\item \url{https://developer.github.com/v3/issues/comments/#delete-a-comment}
-\item \url{https://developer.github.com/v3/pulls/comments/#delete-a-comment}
-\item \url{https://developer.github.com/v3/repos/comments/#delete-a-commit-comment}
+\item \url{https://docs.github.com/en/rest/reference/gists#delete-a-gist-comment}
+\item \url{https://docs.github.com/en/rest/reference/issues#delete-an-issue-comment}
+\item \url{https://docs.github.com/en/rest/reference/pulls#delete-a-review-comment-for-a-pull-request}
+\item \url{https://docs.github.com/en/rest/reference/repos#delete-a-commit-comment}
 }
 }
 \examples{
 \dontrun{
 
   # Delete a gist comment
-  delete_comment(gist_comment_id, gist = "8e5be270de9a88168372293a813543f9")
+  delete_comment(
+    comment = 622980929,
+    gist    = "8e5be270de9a88168372293a813543f9"
+  )
 
   # Delete a issue comment
   delete_comment(
     comment = 622980929,
     type    = "issue",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Delete a pull request comment
   delete_comment(
     comment = 418979473,
     type    = "pull_request",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Delete a commit comment
   delete_comment(
     comment = 38899533,
     type    = "commit",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
 }
 

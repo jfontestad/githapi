@@ -19,7 +19,8 @@ browse_comment(comment, repo, type, ...)
 
 \item{pull_request}{(integer, optional) The pull request number.}
 
-\item{commit}{(string, optional) Either a SHA or branch used to identify the commit.}
+\item{commit}{(string, optional) Either a SHA or branch used to identify the
+commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
@@ -29,24 +30,25 @@ browse_comment(comment, repo, type, ...)
 
 \item{comment}{(integer) The id of the comment.}
 
-\item{type}{(string, optional) Whether the comment is for a \code{"gist"}, \code{"issue"},
-\code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
+\item{type}{(string, optional) Whether the comment is for a \code{"gist"},
+\code{"issue"}, \code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
 }
 \value{
-\code{view_comments()} returns a tibble of comment properties. \code{view_comment()}
-returns a list of properties for a single comment. \code{browse_comment()} opens the
-default browser on the comment page and returns the URL.
+\code{view_comments()} returns a tibble of comment properties.
+\code{view_comment()} returns a list of properties for a single comment.
+\code{browse_comment()} opens the default browser on the comment page and
+returns the URL.
 
 \strong{Comment Properties:}
 \itemize{
 \item \strong{id}: The id of the comment.
 \item \strong{body}: The content of the comment.
-\item \strong{commit}: The commit associated with the comment (only for pull request or commit
-comments).
-\item \strong{path}: The path of the file to add the comment to (only for pull request or commit
-comments).
-\item \strong{position}: The line number in the file to attach the comment to (only for pull
-request or commit comments).
+\item \strong{commit}: The commit associated with the comment (only for pull request
+or commit comments).
+\item \strong{path}: The path of the file to add the comment to (only for pull request
+or commit comments).
+\item \strong{position}: The line number in the file to attach the comment to (only
+for pull request or commit comments).
 \item \strong{user}: The comment author's account login.
 \item \strong{html_url}: The address of the comment's web page.
 \item \strong{created_at}: The time and date the comment was created.
@@ -54,22 +56,23 @@ request or commit comments).
 }
 }
 \description{
-\code{view_comments()} summarises comments in a table with the properties as columns and a row
-for each comment registered for the gist, issue, pull request or commit. \code{view_comment()}
-returns a list of all properties for a single comment. \code{browse_comment()} opens the web
-page for the comment in the default browser.
+\code{view_comments()} summarises comments in a table with the properties as
+columns and a row for each comment registered for the gist, issue, pull
+request or commit. \code{view_comment()} returns a list of all properties for a
+single comment. \code{browse_comment()} opens the web page for the comment in the
+default browser.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist}
-\item \url{https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue}
-\item \url{https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request}
-\item \url{https://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit}
-\item \url{https://developer.github.com/v3/gists/comments/#get-a-single-comment}
-\item \url{https://developer.github.com/v3/issues/comments/#get-a-single-comment}
-\item \url{https://developer.github.com/v3/pulls/comments/#get-a-single-comment}
-\item \url{https://developer.github.com/v3/repos/comments/#get-a-single-commit-comment}
+\item \url{https://docs.github.com/en/rest/reference/gists#list-gist-comments}
+\item \url{https://docs.github.com/en/rest/reference/issues#list-issue-comments}
+\item \url{https://docs.github.com/en/rest/reference/pulls#list-review-comments-on-a-pull-request}
+\item \url{https://docs.github.com/en/rest/reference/repos#list-commit-comments}
+\item \url{https://docs.github.com/en/rest/reference/gists#get-a-gist-comment}
+\item \url{https://docs.github.com/en/rest/reference/issues#get-an-issue-comment}
+\item \url{https://docs.github.com/en/rest/reference/pulls#get-a-review-comment-for-a-pull-request}
+\item \url{https://docs.github.com/en/rest/reference/repos#get-a-commit-comment}
 }
 }
 \examples{
@@ -81,56 +84,68 @@ For more details see the GitHub API documentation:
   # View comments on an issue
   view_comments(
     issue = "test issue",
-    repo  = "ChadGoymer/githapi")
+    repo  = "ChadGoymer/githapi"
+  )
 
   # View comments on a pull request
   view_comments(
     pull_request = "test pull request",
-    repo         = "ChadGoymer/githapi")
+    repo         = "ChadGoymer/githapi"
+  )
 
   # View comments on a commit
   view_comments(
     commit = "main",
-    repo   = "ChadGoymer/githapi")
+    repo   = "ChadGoymer/githapi"
+  )
 
   # View a single gist comment
-  view_comment(gist_comment_id, gist = "8e5be270de9a88168372293a813543f9")
+  view_comment(
+    comment = 622980929,
+    gist    = "8e5be270de9a88168372293a813543f9"
+  )
 
   # View a single issue comment
   view_comment(
     comment = 622980929,
     type    = "issue",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # View a single pull request comment
   view_comment(
     comment = 418979473,
     type    = "pull_request",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # View a single commit comment
   view_comment(
     comment = 38899533,
     type    = "commit",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Browse an issue comment
   browse_comment(
     comment = 622980929,
     type    = "issue",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Browse a pull request comment
   browse_comment(
     comment = 418979473,
     type    = "pull_request",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Browse a commit comment
   browse_comment(
     comment = 38899533,
     type    = "commit",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
 }
 
