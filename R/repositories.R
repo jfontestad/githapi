@@ -61,6 +61,9 @@
 #' - **fork**: Whether the repository is a fork of another.
 #' - **archived**: Whether the repository has been archived.
 #' - **disabled**: Whether the repository has been disabled.
+#' - **watchers_count**: The number of watchers.
+#' - **stargazers_count**: The number of stars.
+#' - **forks_count**: The number of forks.
 #' - **pushed_at**: When the repository was last pushed to.
 #' - **created_at**: When the repository was created.
 #' - **updated_at**: When the repository was last updated.
@@ -229,6 +232,9 @@ create_repository <- function(
 #' - **fork**: Whether the repository is a fork of another.
 #' - **archived**: Whether the repository has been archived.
 #' - **disabled**: Whether the repository has been disabled.
+#' - **watchers_count**: The number of watchers.
+#' - **stargazers_count**: The number of stars.
+#' - **forks_count**: The number of forks.
 #' - **pushed_at**: When the repository was last pushed to.
 #' - **created_at**: When the repository was created.
 #' - **updated_at**: When the repository was last updated.
@@ -467,6 +473,9 @@ update_repository <- function(
 #' - **fork**: Whether the repository is a fork of another.
 #' - **archived**: Whether the repository has been archived.
 #' - **disabled**: Whether the repository has been disabled.
+#' - **watchers_count**: The number of watchers.
+#' - **stargazers_count**: The number of stars.
+#' - **forks_count**: The number of forks.
 #' - **pushed_at**: When the repository was last pushed to.
 #' - **created_at**: When the repository was created.
 #' - **updated_at**: When the repository was last updated.
