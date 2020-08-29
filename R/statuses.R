@@ -43,7 +43,7 @@
 #'     ref         = "main",
 #'     repo        = "ChadGoymer/test-githapi",
 #'     description = "This is a pending status",
-#'     target_url  = "https://www.goymer.me.uk/githapi",
+#'     target_url  = "https://goymer.me/githapi",
 #'     context     = "test/githapi")
 #'
 #'   # Update the status on the main branch
@@ -52,7 +52,7 @@
 #'     ref         = "main",
 #'     repo        = "ChadGoymer/test-githapi",
 #'     description = "This is a success status",
-#'     target_url  = "https://www.goymer.me.uk/githapi",
+#'     target_url  = "https://goymer.me/githapi",
 #'     context     = "test/githapi")
 #'
 #' }

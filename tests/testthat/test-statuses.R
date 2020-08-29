@@ -32,7 +32,7 @@ test_that("create_status creates a status and returns a list of the properties",
     ref         = "main",
     repo        = str_c("ChadGoymer/test-statuses-", suffix),
     description = "This is a pending status",
-    target_url  = "https://www.goymer.me.uk/githapi",
+    target_url  = "https://goymer.me/githapi",
     context     = "test/githapi")
 
   expect_is(pending_status, "list")
@@ -50,7 +50,7 @@ test_that("create_status creates a status and returns a list of the properties",
 
   expect_identical(pending_status$state, "pending")
   expect_identical(pending_status$description, "This is a pending status")
-  expect_identical(pending_status$target_url, "https://www.goymer.me.uk/githapi")
+  expect_identical(pending_status$target_url, "https://goymer.me/githapi")
   expect_identical(pending_status$context, "test/githapi")
   expect_identical(pending_status$creator, "ChadGoymer")
 
@@ -60,7 +60,7 @@ test_that("create_status creates a status and returns a list of the properties",
     ref         = "main",
     repo        = str_c("ChadGoymer/test-statuses-", suffix),
     description = "This is a success status",
-    target_url  = "https://www.goymer.me.uk/githapi",
+    target_url  = "https://goymer.me/githapi",
     context     = "test/githapi")
 
   expect_is(success_status, "list")
@@ -78,7 +78,7 @@ test_that("create_status creates a status and returns a list of the properties",
 
   expect_identical(success_status$state, "success")
   expect_identical(success_status$description, "This is a success status")
-  expect_identical(success_status$target_url, "https://www.goymer.me.uk/githapi")
+  expect_identical(success_status$target_url, "https://goymer.me/githapi")
   expect_identical(success_status$context, "test/githapi")
   expect_identical(success_status$creator, "ChadGoymer")
 
@@ -108,7 +108,7 @@ test_that("view_statuses returns a tibble of status properties", {
 
   expect_identical(statuses$state, c("success", "pending"))
   expect_identical(statuses$description, c("This is a success status", "This is a pending status"))
-  expect_identical(statuses$target_url, rep("https://www.goymer.me.uk/githapi", 2))
+  expect_identical(statuses$target_url, rep("https://goymer.me/githapi", 2))
   expect_identical(statuses$context, rep("test/githapi", 2))
   expect_identical(statuses$creator, rep("ChadGoymer", 2))
 
