@@ -1,3 +1,8 @@
+# githapi 0.10.14
+
+- Added watch, star and fork counts to `view_repositories()` and
+  `view_repository()`
+
 # githapi 0.10.13
 
 - Fixed bug with `gh_url()` for GitHub Enterprise

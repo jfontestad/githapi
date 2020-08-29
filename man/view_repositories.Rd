@@ -71,6 +71,9 @@ commit.
 \item \strong{fork}: Whether the repository is a fork of another.
 \item \strong{archived}: Whether the repository has been archived.
 \item \strong{disabled}: Whether the repository has been disabled.
+\item \strong{watchers_count}: The number of watchers.
+\item \strong{stargazers_count}: The number of stars.
+\item \strong{forks_count}: The number of forks.
 \item \strong{pushed_at}: When the repository was last pushed to.
 \item \strong{created_at}: When the repository was created.
 \item \strong{updated_at}: When the repository was last updated.
