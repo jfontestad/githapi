@@ -1,3 +1,8 @@
+# githapi 0.10.15
+
+- Added ref argument to URL when locating files in `download_file()`, 
+  `create_file()`, `update_file()`, `delete_file()` and `view_file()`
+
 # githapi 0.10.14
 
 - Added watch, star and fork counts to `view_repositories()` and

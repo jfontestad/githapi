@@ -331,9 +331,9 @@ download_file <- function(
   assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
-  info("Viewing file '", basename(from_path), "' in repository '", repo, "'")
-  file <- gh_url("repos", repo, "contents", from_path) %>%
-    dirname() %>%
+  info("Checking file '", basename(from_path), "' exists in repository '", repo, "'")
+  contents_path <- dirname(str_c("contents/", from_path))
+  file <- gh_url("repos", repo, contents_path, ref = ref) %>%
     gh_request("GET", ...) %>%
     pluck(which(map_chr(., "name") == basename(from_path)))
 
@@ -467,15 +467,18 @@ create_file <- function(
   }
 
   info("Checking if a file with path '", path, "' already exists in repository '", repo, "'", level = 3)
-  url   <- gh_url("repos", repo, "contents", path)
-  files <- dirname(url) %>% gh_request("GET", ...)
+  contents_path <- dirname(str_c("contents/", path))
+  files <- gh_url("repos", repo, contents_path, ref = branch) %>%
+    gh_request("GET", ...)
 
   assert(
     !basename(path) %in% map_chr(files, "name"),
     "A file with path '", path, "' already exists. To update it use update_file()")
 
   info("Creating file '", basename(path), "' in repository '", repo, "'")
-  commit <- gh_request("PUT", url = url, payload = payload, ...)$commit
+  commit <- gh_url("repos", repo, "contents", path) %>%
+    gh_request("PUT", payload = payload, ...) %>%
+    pluck("commit")
 
   view_commit(commit$sha, repo = repo, ...)
 }
@@ -599,15 +602,18 @@ update_file <- function(
   }
 
   info("Checking if a file with path '", path, "' already exists in repository '", repo, "'", level = 3)
-  url   <- gh_url("repos", repo, "contents", path)
-  files <- str_c(dirname(url), "?ref=", branch) %>% gh_request("GET", ...)
+  contents_path <- dirname(str_c("contents/", path))
+  files <- gh_url("repos", repo, contents_path, ref = branch) %>%
+    gh_request("GET", ...)
 
   if (basename(path) %in% map_chr(files, "name")) {
     payload$sha <- files[[which(basename(path) == map_chr(files, "name"))]]$sha
   }
 
   info("Updating file '", basename(path), "' in repository '", repo, "'")
-  commit <- gh_request("PUT", url = url, payload = payload, ...)$commit
+  commit <- gh_url("repos", repo, "contents", path) %>%
+    gh_request("PUT", payload = payload, ...) %>%
+    pluck("commit")
 
   view_commit(commit$sha, repo = repo, ...)
 }
@@ -723,8 +729,9 @@ delete_file <- function(
   }
 
   info("Checking if a file with path '", path, "' already exists in repository '", repo, "'", level = 3)
-  url   <- gh_url("repos", repo, "contents", path)
-  files <- str_c(dirname(url), "?ref=", branch) %>% gh_request("GET", ...)
+  contents_path <- dirname(str_c("contents/", path))
+  files <- gh_url("repos", repo, contents_path, ref = branch) %>%
+    gh_request("GET", ...)
 
   assert(
     basename(path) %in% map_chr(files, "name"),
@@ -733,7 +740,9 @@ delete_file <- function(
   payload$sha <- files[[which(basename(path) == map_chr(files, "name"))]]$sha
 
   info("Deleting file '", basename(path), "' in repository '", repo, "'")
-  commit <- gh_request("DELETE", url = url, payload = payload, ...)$commit
+  commit <- gh_url("repos", repo, "contents", path) %>%
+    gh_request("DELETE", payload = payload, ...) %>%
+    pluck("commit")
 
   view_commit(commit$sha, repo = repo, ...)
 }
@@ -852,24 +861,24 @@ view_file <- function(
   assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
 
   info("Viewing file '", basename(path), "' in repository '", repo, "'")
-  files_lst <- gh_url("repos", repo, "contents", path) %>%
-    dirname() %>%
+  contents_path <- dirname(str_c("contents/", path))
+  files <- gh_url("repos", repo, contents_path, ref = ref) %>%
     gh_request("GET", ...)
 
   info("Transforming results", level = 4)
-  file_gh <- files_lst %>%
-    pluck(which(map_chr(files_lst, "name") == basename(path))) %>%
+  file_gh <- files %>%
+    pluck(which(map_chr(files, "name") == basename(path))) %>%
     select_properties(properties$file) %>%
     discard(names(.) == "type")
 
   info("Done", level = 7)
   structure(
     file_gh,
-    class   = class(files_lst),
-    url     = attr(files_lst, "url"),
-    request = attr(files_lst, "request"),
-    status  = attr(files_lst, "status"),
-    header  = attr(files_lst, "header"))
+    class   = class(files),
+    url     = attr(files, "url"),
+    request = attr(files, "request"),
+    status  = attr(files, "status"),
+    header  = attr(files, "header"))
 }
 
 
