@@ -553,25 +553,46 @@ test_that("view_sha returns the commit SHA given the reference", {
 })
 
 
-# TEST: compare_commits -----------------------------------------------------------------------
+# TEST: compare_commits --------------------------------------------------------
 
 test_that("compare_commits returns all the commits made between to commits", {
 
   main_commits <- view_commits(
     ref   = "main",
     repo  = str_c("ChadGoymer/test-commits-", suffix),
-    n_max = 10)
+    n_max = 10
+  )
 
-  commits <- compare_commits(
+  comparison <- compare_commits(
     base = main_commits$sha[[3]],
     head = "main",
-    repo = str_c("ChadGoymer/test-commits-", suffix))
+    repo = str_c("ChadGoymer/test-commits-", suffix)
+  )
 
-  expect_is(commits, "tbl")
-  expect_identical(attr(commits, "status"), 200L)
+  expect_is(comparison, "list")
+  expect_identical(attr(comparison, "status"), 200L)
   expect_identical(
-    map_chr(commits, ~ class(.)[[1]]),
-    c(sha             = "character",
+    map_chr(comparison, ~ class(.)[[1]]),
+    c(
+      status        = "character",
+      ahead_by      = "integer",
+      behind_by     = "integer",
+      total_commits = "integer",
+      html_url      = "character",
+      commits       = "github"
+    )
+  )
+
+  expect_identical(comparison$status, "ahead")
+  expect_identical(comparison$ahead_by, 2L)
+  expect_identical(comparison$behind_by, 0L)
+  expect_identical(comparison$total_commits, 2L)
+
+  expect_is(comparison$commits, "tbl")
+  expect_identical(
+    map_chr(comparison$commits, ~ class(.)[[1]]),
+    c(
+      sha             = "character",
       message         = "character",
       author_login    = "character",
       author_name     = "character",
@@ -583,8 +604,10 @@ test_that("compare_commits returns all the commits made between to commits", {
       committer_date  = "POSIXct",
       tree_sha        = "character",
       parents         = "list",
-      html_url        = "character"))
+      html_url        = "character"
+    )
+  )
 
-  expect_identical(commits$sha, main_commits$sha[2:1])
+  expect_identical(comparison$commits$sha, main_commits$sha[2:1])
 
 })

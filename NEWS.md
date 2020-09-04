@@ -1,3 +1,7 @@
+# githapi 0.10.16
+
+- Expanded `compare_commits()` to return summary statistics
+
 # githapi 0.10.15
 
 - Added ref argument to URL when locating files in `download_file()`, 
