@@ -256,6 +256,13 @@ properties <- list(
     size                            = c("size",                            as = "numeric"),
     html_url                        = c("html_url",                        as = "character")),
 
+  compare_commits = list(
+    status                          = c("status",                          as = "character"),
+    ahead_by                        = c("ahead_by",                        as = "integer"),
+    behind_by                       = c("behind_by",                       as = "integer"),
+    total_commits                   = c("total_commits",                   as = "integer"),
+    html_url                        = c("html_url",                        as = "character")),
+
   compare_files = list(
     path                            = c("filename",                        as = "character"),
     sha                             = c("sha",                             as = "character"),

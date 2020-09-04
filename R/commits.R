@@ -529,23 +529,40 @@ view_sha <- function(
 }
 
 
-#  FUNCTION: compare_commits ------------------------------------------------------------------
+#  FUNCTION: compare_commits ---------------------------------------------------
 #
 #' View commits made between two commits
 #'
-#' `compare_commits()` summarises the commits made between two commits in a table with the
-#' properties as columns and a row for each commit. The `base` commit must be in the history
-#' of the `head` commit.
+#' `compare_commits()` summarises the commits made between two commits. It
+#' returns a list of statistics along with a table of the commits with the
+#' properties as columns and a row for each commit. The `base` commit must be in
+#' the history of the `head` commit.
 #'
 #' For more details see the GitHub API documentation:
 #' - <https://developer.github.com/v3/repos/commits/#compare-two-commits>
 #'
-#' @param head (string) Either a SHA, branch or tag used to identify the head commit.
-#' @param base (string) Either a SHA, branch or tag used to identify the base commit.
+#' @param head (string) Either a SHA, branch or tag used to identify the head
+#'   commit.
+#' @param base (string) Either a SHA, branch or tag used to identify the base
+#'   commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `compare_commits()` returns a tibble of commit properties.
+#' @return `compare_commits()` returns a list of comparison properties.
+#'
+#' **Comparison Properties:**
+#'
+#' - **status**: The status of the comparison, can be `"ahead"` `"behind"` or
+#'   `"diverged"`.
+#' - **ahead_by**: The number of commits the `head` commit is ahead of the
+#'   `base` commit.
+#' - **behind_by**: The number of commits the `head` commit is behind the
+#'   `base` commit.
+#' - **total_commits**: The total number of commits between the `head` commit
+#'   and the `base` commit.
+#' - **html_url**: The address of the commit comparison web page.
+#' - **commits**: A tibble summarising the commits between the `head` commit
+#'   and the `base` commit.
 #'
 #' **Commit Properties:**
 #'
@@ -578,17 +595,39 @@ compare_commits <- function(
   repo,
   ...)
 {
-  assert(is_ref(base), "'base' must be a valid git reference - see help(is_ref):\n  ", base)
-  assert(is_ref(head), "'head' must be a valid git reference - see help(is_ref):\n  ", head)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  assert(
+    is_ref(base),
+    "'base' must be a valid git reference - see help(is_ref):\n  ", base
+  )
+  assert(
+    is_ref(head),
+    "'head' must be a valid git reference - see help(is_ref):\n  ", head
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
-  info("Comparing commit '", head, "' with '", base, "' in repository '", repo, "'")
-  comparison_lst <- gh_url("repos", repo, "compare", str_c(base, "...", head)) %>%
+  info(
+    "Comparing commit '", head, "' with '", base,
+    "' in repository '", repo, "'"
+  )
+  comparison_lst <- gh_url(
+    "repos", repo, "compare", str_c(base, "...", head)
+  ) %>%
     gh_request("GET", ...)
 
   info("Transforming results", level = 4)
-  comparison_gh <- bind_properties(comparison_lst$commits, properties$commit) %>%
-    add_column(parents = map(comparison_lst$commits, ~ map_chr(.$parents, "sha")), .before = "html_url")
+  commits_gh <- bind_properties(comparison_lst$commits, properties$commit) %>%
+    add_column(
+      parents = map(comparison_lst$commits, ~ map_chr(.$parents, "sha")),
+      .before = "html_url")
+
+  comparison_gh <- select_properties(
+    comparison_lst,
+    properties$compare_commits
+  ) %>%
+    modify_list(commits = commits_gh)
 
   info("Done", level = 7)
   structure(
