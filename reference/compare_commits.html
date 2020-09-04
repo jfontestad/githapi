@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="View commits made between two commits — compare_commits" />
-<meta property="og:description" content="compare_commits() summarises the commits made between two commits in a table with the
-properties as columns and a row for each commit. The base commit must be in the history
-of the head commit." />
+<meta property="og:description" content="compare_commits() summarises the commits made between two commits. It
+returns a list of statistics along with a table of the commits with the
+properties as columns and a row for each commit. The base commit must be in
+the history of the head commit." />
 
 
 
@@ -74,7 +75,7 @@ of the head commit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
       </span>
     </div>
 
@@ -119,9 +120,10 @@ of the head commit." />
     </div>
 
     <div class="ref-description">
-    <p><code>compare_commits()</code> summarises the commits made between two commits in a table with the
-properties as columns and a row for each commit. The <code>base</code> commit must be in the history
-of the <code>head</code> commit.</p>
+    <p><code>compare_commits()</code> summarises the commits made between two commits. It
+returns a list of statistics along with a table of the commits with the
+properties as columns and a row for each commit. The <code>base</code> commit must be in
+the history of the <code>head</code> commit.</p>
     </div>
 
     <pre class="usage"><span class='fu'>compare_commits</span>(<span class='kw'>base</span>, <span class='kw'>head</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
@@ -131,11 +133,13 @@ of the <code>head</code> commit.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>base</th>
-      <td><p>(string) Either a SHA, branch or tag used to identify the base commit.</p></td>
+      <td><p>(string) Either a SHA, branch or tag used to identify the base
+commit.</p></td>
     </tr>
     <tr>
       <th>head</th>
-      <td><p>(string) Either a SHA, branch or tag used to identify the head commit.</p></td>
+      <td><p>(string) Either a SHA, branch or tag used to identify the head
+commit.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -149,7 +153,21 @@ of the <code>head</code> commit.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>compare_commits()</code> returns a tibble of commit properties.</p>
+    <p><code>compare_commits()</code> returns a list of comparison properties.</p>
+<p><strong>Comparison Properties:</strong></p><ul>
+<li><p><strong>status</strong>: The status of the comparison, can be <code>"ahead"</code> <code>"behind"</code> or
+<code>"diverged"</code>.</p></li>
+<li><p><strong>ahead_by</strong>: The number of commits the <code>head</code> commit is ahead of the
+<code>base</code> commit.</p></li>
+<li><p><strong>behind_by</strong>: The number of commits the <code>head</code> commit is behind the
+<code>base</code> commit.</p></li>
+<li><p><strong>total_commits</strong>: The total number of commits between the <code>head</code> commit
+and the <code>base</code> commit.</p></li>
+<li><p><strong>html_url</strong>: The address of the commit comparison web page.</p></li>
+<li><p><strong>commits</strong>: A tibble summarising the commits between the <code>head</code> commit
+and the <code>base</code> commit.</p></li>
+</ul>
+
 <p><strong>Commit Properties:</strong></p><ul>
 <li><p><strong>sha</strong>: The commit SHA.</p></li>
 <li><p><strong>message</strong>: The commit message.</p></li>
