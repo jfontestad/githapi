@@ -7,16 +7,33 @@
 compare_commits(base, head, repo, ...)
 }
 \arguments{
-\item{base}{(string) Either a SHA, branch or tag used to identify the base commit.}
+\item{base}{(string) Either a SHA, branch or tag used to identify the base
+commit.}
 
-\item{head}{(string) Either a SHA, branch or tag used to identify the head commit.}
+\item{head}{(string) Either a SHA, branch or tag used to identify the head
+commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{compare_commits()} returns a tibble of commit properties.
+\code{compare_commits()} returns a list of comparison properties.
+
+\strong{Comparison Properties:}
+\itemize{
+\item \strong{status}: The status of the comparison, can be \code{"ahead"} \code{"behind"} or
+\code{"diverged"}.
+\item \strong{ahead_by}: The number of commits the \code{head} commit is ahead of the
+\code{base} commit.
+\item \strong{behind_by}: The number of commits the \code{head} commit is behind the
+\code{base} commit.
+\item \strong{total_commits}: The total number of commits between the \code{head} commit
+and the \code{base} commit.
+\item \strong{html_url}: The address of the commit comparison web page.
+\item \strong{commits}: A tibble summarising the commits between the \code{head} commit
+and the \code{base} commit.
+}
 
 \strong{Commit Properties:}
 \itemize{
@@ -35,9 +52,10 @@ compare_commits(base, head, repo, ...)
 }
 }
 \description{
-\code{compare_commits()} summarises the commits made between two commits in a table with the
-properties as columns and a row for each commit. The \code{base} commit must be in the history
-of the \code{head} commit.
+\code{compare_commits()} summarises the commits made between two commits. It
+returns a list of statistics along with a table of the commits with the
+properties as columns and a row for each commit. The \code{base} commit must be in
+the history of the \code{head} commit.
 }
 \details{
 For more details see the GitHub API documentation:
