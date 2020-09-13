@@ -11,17 +11,24 @@ download_commit(ref, repo, path = getwd(), ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{path}{(string, optional) The path to the directory to upload. It must be readable.
-Default: working directory.}
+\item{path}{(string, optional) The path to the directory to upload. It must
+be readable. Default: working directory.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{download_commit()} returns the path where the commit is downloaded to.
+\code{download_commit()} returns the path where the commit is downloaded
+to.
 }
 \description{
-This function downloads all the files in a commit, plus any folders, into the path
-specified.
+This function downloads all the files in a commit, plus any folders, into the
+path specified.
+}
+\details{
+For more details see the GitHub API documentation:
+\itemize{
+\item \url{https://docs.github.com/en/rest/reference/repos#download-a-repository-archive}
+}
 }
 \examples{
 \dontrun{
@@ -30,7 +37,8 @@ specified.
   download_commit(
     ref  = "main",
     repo = "ChadGoymer/githapi",
-    path = "~")
+    path = "~"
+  )
 
 }
 

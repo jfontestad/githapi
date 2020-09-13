@@ -60,7 +60,7 @@ the history of the \code{head} commit.
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
+\item \url{https://docs.github.com/en/rest/reference/repos#compare-two-commits}
 }
 }
 \examples{

@@ -1,39 +1,47 @@
-
-#  FUNCTION: upload_commit --------------------------------------------------------------------
+#  FUNCTION: upload_commit -----------------------------------------------------
 #
 #' Upload a directory of files and create a commit
 #'
-#' This function uploads all the files in the directory (except those in the `ignore`
-#' argument) and creates a new commit on the specified branch. Note: the new commit is
-#' created with exactly the files uploaded, so if a file in the parent commit has not been
-#' uploaded it will be removed in the new commit.
+#' This function uploads all the files in the directory (except those in the
+#' `ignore` argument) and creates a new commit on the specified branch. Note:
+#' the new commit is created with exactly the files uploaded, so if a file in
+#' the parent commit has not been uploaded it will be removed in the new commit.
 #'
-#' The `author` and `committer` arguments are optional and if not supplied the current
-#' authenticated user is used. However, if you want to set them explicitly you must specify
-#' a named list with `name` and `email` as the elements (see examples).
+#' The `author` and `committer` arguments are optional and if not supplied the
+#' current authenticated user is used. However, if you want to set them
+#' explicitly you must specify a named list with `name` and `email` as the
+#' elements (see examples).
 #'
-#' A commit may have none, one or two parents. If none are specified and the branch already
-#' exists, the head of the branch will be used as a parent. If the branch does not exist,
-#' an orphan commit is created without a parent. If one parent is specified the commit is
-#' added and the branch set to the new commit, if it is a simple fast-forward. If you want
-#' to set the branch to the new commit no matter what then set the `force` argument to
-#' `TRUE`. If two parents are specified then a merge commit is created.
+#' A commit may have none, one or two parents. If none are specified and the
+#' branch already exists, the head of the branch will be used as a parent. If
+#' the branch does not exist, an orphan commit is created without a parent. If
+#' one parent is specified the commit is added and the branch set to the new
+#' commit, if it is a simple fast-forward. If you want to set the branch to the
+#' new commit no matter what then set the `force` argument to `TRUE`. If two
+#' parents are specified then a merge commit is created.
 #'
-#' @param path (string) The path to the directory to upload. It must be readable.
+#' For more details see the GitHub API documentation:
+#' - <https://docs.github.com/en/rest/reference/git#create-a-blob>
+#' - <https://docs.github.com/en/rest/reference/git#create-a-tree>
+#' - <https://docs.github.com/en/rest/reference/git#create-a-commit>
+#'
+#' @param path (string) The path to the directory to upload. It must be
+#'   readable.
 #' @param branch (string) The name of the branch to make the new commit on.
 #' @param message (string) The commit message.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param author (list, optional) A the name and email address of the user who wrote the
-#'   changes in the commit.
-#' @param committer (list, optional) A the name and email address of the user who created
-#'   the commit.
-#' @param parents (character, optional) References for the commits to use as parents, can
-#'   be either a SHA, branch or tag. If it is a branch then the head commit is used. See
-#'   the details section for more information.
-#' @param ignore (character, optional) The files to ignore in the directory. Default: `".git"`,
-#'   `".Rproj.user"`, `".Rhistory"`, `".RData"` and `".Ruserdata"`.
-#' @param force (boolean, optional) Whether to force the update if it is not a simple
-#'   fast-forward. Default: `FALSE`.
+#' @param author (list, optional) A the name and email address of the user who
+#'   wrote the changes in the commit.
+#' @param committer (list, optional) A the name and email address of the user
+#'   who created the commit.
+#' @param parents (character, optional) References for the commits to use as
+#'   parents, can be either a SHA, branch or tag. If it is a branch then the
+#'   head commit is used. See the details section for more information.
+#' @param ignore (character, optional) The files to ignore in the directory.
+#'   Default: `".git"`, `".Rproj.user"`, `".Rhistory"`, `".RData"` and
+#'   `".Ruserdata"`.
+#' @param force (boolean, optional) Whether to force the update if it is not a
+#'   simple fast-forward. Default: `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `upload_commit()` returns a list of the commit properties.
@@ -58,7 +66,8 @@
 #'     path    = "C:/files-to-upload",
 #'     branch  = "main",
 #'     message = "Commit to test upload_commit()",
-#'     repo    = "ChadGoymer/githapi")
+#'     repo    = "ChadGoymer/githapi"
+#'   )
 #'
 #'   # override the author and committer
 #'   upload_commit(
@@ -67,7 +76,8 @@
 #'     message   = "Commit to test upload_commit()",
 #'     repo      = "ChadGoymer/githapi",
 #'     author    = list(name = "Bob",   email = "bob@acme.com"),
-#'     committer = list(name = "Jane",  email = "jane@acme.com"))
+#'     committer = list(name = "Jane",  email = "jane@acme.com")
+#'   )
 #'
 #'   # Create a commit on a new branch
 #'   upload_commit(
@@ -75,14 +85,16 @@
 #'     branch  = "test-commits-1",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parents = "main")
+#'     parents = "main"
+#'   )
 #'
 #'   # Create an orphan commit
 #'   upload_commit(
 #'     path    = "C:/files-to-upload",
 #'     branch  = "test-commits-2",
 #'     message = "Commit to test upload_commit()",
-#'     repo    = "ChadGoymer/githapi")
+#'     repo    = "ChadGoymer/githapi"
+#'   )
 #'
 #'   # Force branch to point at the new commit
 #'   upload_commit(
@@ -91,7 +103,8 @@
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
 #'     parents = "test-commits-1",
-#'     force   = TRUE)
+#'     force   = TRUE
+#'   )
 #'
 #'   # Create a commit merging a branch into the main branch
 #'   upload_commit(
@@ -99,7 +112,8 @@
 #'     branch  = "main",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parents = c("main", "test-commits-1"))
+#'     parents = c("main", "test-commits-1")
+#'   )
 #'
 #'   # Create a commit merging two branches into a new branch
 #'   upload_commit(
@@ -107,7 +121,8 @@
 #'     branch  = "test-commits-3",
 #'     message = "Commit to test upload_commit()",
 #'     repo    = "ChadGoymer/githapi",
-#'     parents = c("main", "test-commits-2"))
+#'     parents = c("main", "test-commits-2")
+#'   )
 #'
 #' }
 #'
@@ -121,37 +136,72 @@ upload_commit <- function(
   author,
   committer,
   parents,
-  ignore = c("\\.git", "\\.Rproj\\.user", "\\.Rhistory", "\\.RData", "\\.Ruserdata"),
+  ignore = c(
+    "\\.git", "\\.Rproj\\.user", "\\.Rhistory", "\\.RData", "\\.Ruserdata"
+  ),
   force  = FALSE,
-  ...)
-{
-  assert(is_dir(path) && is_readable(path), "'path' must be a readable directory path:\n  ", path)
-  assert(is_ref(branch), "'branch' must be a valid git reference - see help(is_ref):\n  ", branch)
-  assert(is_scalar_character(message), "'message' must be a string:\n  ", message)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_character(ignore), "'ignore' must be a character vector:\n  ", ignore)
-  assert(is_scalar_logical(force), "'force' must be a boolean:\n  ", force)
+  ...
+) {
+  assert(
+    is_dir(path) && is_readable(path),
+    "'path' must be a readable directory path:\n  ", path
+  )
+  assert(
+    is_ref(branch),
+    "'branch' must be a valid git reference - see help(is_ref):\n  ", branch
+  )
+  assert(
+    is_scalar_character(message),
+    "'message' must be a string:\n  ", message
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
+  assert(
+    is_character(ignore),
+    "'ignore' must be a character vector:\n  ", ignore
+  )
+  assert(
+    is_scalar_logical(force),
+    "'force' must be a boolean:\n  ", force
+  )
 
   payload <- list(message = message)
 
   if (!missing(author)) {
     assert(
-      is_list(author) && is_scalar_character(author$name) && is_scalar_character(author$email),
-      "'author' must be a list containing 'name' and 'email':\n ", author)
+      is_list(author) &&
+        is_scalar_character(author$name) &&
+        is_scalar_character(author$email),
+      "'author' must be a list containing 'name' and 'email':\n ", author
+    )
     payload$author <- author
   }
 
   if (!missing(committer)) {
     assert(
-      is_list(committer) && is_scalar_character(committer$name) && is_scalar_character(committer$email),
-      "'committer' must be a list containing 'name' and 'email':\n ", committer)
+      is_list(committer) &&
+        is_scalar_character(committer$name) &&
+        is_scalar_character(committer$email),
+      "'committer' must be a list containing 'name' and 'email':\n ", committer
+    )
     payload$committer <- committer
   }
 
   info("Uploading files in '", path, "' to repository '", repo, "'")
-  payload$tree <- upload_tree(path = path, repo = repo, ignore = ignore, ...)$tree_sha
+  payload$tree <- upload_tree(
+    path   = path,
+    repo   = repo,
+    ignore = ignore,
+    ...
+  ) %>%
+    pluck("tree_sha")
 
-  branch_sha <- try_catch(view_sha(ref = branch, repo = repo, ...), on_error = function(e) NULL)
+  branch_sha <- try_catch(
+    view_sha(ref = branch, repo = repo, ...),
+    on_error = function(e) NULL
+  )
 
   if (missing(parents)) {
     if (is_null(branch_sha)) {
@@ -162,8 +212,13 @@ upload_commit <- function(
     }
   }
   else {
-    assert(is_character(parents), "'parents' must be a character vector:\n  ", parents)
-    parents <- map(parents, function(p) if (!is_sha(p)) view_sha(ref = p, repo = repo, ...) else p)
+    assert(
+      is_character(parents),
+      "'parents' must be a character vector:\n  ", parents
+    )
+    parents <- map(parents, function(p) {
+      if (!is_sha(p)) view_sha(ref = p, repo = repo, ...) else p
+    })
   }
   payload$parents <- parents
 
@@ -175,27 +230,41 @@ upload_commit <- function(
     create_branch(name = branch, ref = commit_lst$sha, repo = repo, ...)
   }
   else {
-    update_branch(branch = branch, ref = commit_lst$sha, repo = repo, force = force, ...)
+    update_branch(
+      branch = branch,
+      ref    = commit_lst$sha,
+      repo   = repo,
+      force  = force,
+      ...
+    )
   }
 
   view_commit(commit_lst$sha, repo = repo, ...)
 }
 
 
-#  FUNCTION: download_commit ------------------------------------------------------------------
+#  FUNCTION: download_commit ---------------------------------------------------
 #
 #' Download a commit from GitHub
 #'
-#' This function downloads all the files in a commit, plus any folders, into the path
-#' specified.
+#' This function downloads all the files in a commit, plus any folders, into the
+#' path specified.
+#'
+#' For more details see the GitHub API documentation:
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/rest/reference/"
+#' cat(paste0("- <", docs_url, "repos#download-a-repository-archive", ">"))
+#' ```
 #'
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param path (string, optional) The path to the directory to upload. It must be readable.
-#'   Default: working directory.
+#' @param path (string, optional) The path to the directory to upload. It must
+#'   be readable. Default: working directory.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `download_commit()` returns the path where the commit is downloaded to.
+#' @return `download_commit()` returns the path where the commit is downloaded
+#'   to.
 #'
 #' @examples
 #' \dontrun{
@@ -204,7 +273,8 @@ upload_commit <- function(
 #'   download_commit(
 #'     ref  = "main",
 #'     repo = "ChadGoymer/githapi",
-#'     path = "~")
+#'     path = "~"
+#'   )
 #'
 #' }
 #'
@@ -214,10 +284,16 @@ download_commit <- function(
   ref,
   repo,
   path = getwd(),
-  ...)
-{
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(ref),
+    "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (!file.exists(path)) dir.create(path, recursive = TRUE)
 
@@ -234,7 +310,8 @@ download_commit <- function(
   archive_paths <- archive_paths %>%
     mutate(
       from = file.path(path, .data$Name),
-      to   = file.path(path, str_remove(.data$Name, extract_path)))
+      to   = file.path(path, str_remove(.data$Name, extract_path))
+    )
 
   utils::unzip(archive_path, exdir = path)
   on.exit(unlink(file.path(path, extract_path), recursive = TRUE), add = TRUE)
@@ -256,37 +333,41 @@ download_commit <- function(
     url     = attr(path_gh, "url"),
     request = attr(path_gh, "request"),
     status  = attr(path_gh, "status"),
-    header  = attr(path_gh, "header"))
+    header  = attr(path_gh, "header")
+  )
 }
 
 
-#  FUNCTION: view_commits ---------------------------------------------------------------------
+#  FUNCTION: view_commits ------------------------------------------------------
 #
 #' View commits within a repository
 #'
-#' `view_commits()` summarises commits in a table with the properties as columns and a row for
-#' each commit in the history of the given reference. `view_commit()` returns a list of all
-#' properties for a single commit. `browse_commits()` and `browse_commit()` opens the web page
-#' for the commit history and commit details respectively in the default browser.
+#' `view_commits()` summarises commits in a table with the properties as columns
+#' and a row for each commit in the history of the given reference.
+#' `view_commit()` returns a list of all properties for a single commit.
+#' `browse_commits()` and `browse_commit()` opens the web page for the commit
+#' history and commit details respectively in the default browser.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository>
-#' - <https://developer.github.com/v3/repos/commits/#get-a-single-commit>
+#' - <https://docs.github.com/en/rest/reference/repos#list-commits>
+#' - <https://docs.github.com/en/rest/reference/repos#get-a-commit>
 #'
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param path (string, optional) Only commits containing this file path will be returned.
+#' @param path (string, optional) Only commits containing this file path will be
+#'   returned.
 #' @param author (string, optional) Author login to filter commits by.
-#' @param since (string, optional) A date & time to filter by. Must be in the format:
-#'   `YYYY-MM-DD HH:MM:SS`.
-#' @param until (string, optional) A date & time to filter by. Must be in the format:
-#'   `YYYY-MM-DD HH:MM:SS`.
+#' @param since (string, optional) A date & time to filter by. Must be in the
+#'   format: `YYYY-MM-DD HH:MM:SS`.
+#' @param until (string, optional) A date & time to filter by. Must be in the
+#'   format: `YYYY-MM-DD HH:MM:SS`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `view_commits()` returns a tibble of commit properties. `view_commit()` returns
-#'   a list of properties for a single commit. `browse_commits()` and `browse_commit` opens
-#'   the default browser on the commit's history or details page and returns the URL.
+#' @return `view_commits()` returns a tibble of commit properties.
+#'   `view_commit()` returns a list of properties for a single commit.
+#'   `browse_commits()` and `browse_commit` opens the default browser on the
+#'   commit's history or details page and returns the URL.
 #'
 #' **Commit Properties:**
 #'
@@ -313,20 +394,23 @@ download_commit <- function(
 #'   view_commits(
 #'     ref  = "main",
 #'     repo = "ChadGoymer/githapi",
-#'     path = "README.md")
+#'     path = "README.md"
+#'   )
 #'
 #'   # View commits created by an author
 #'   view_commits(
 #'     ref    = "main",
 #'     repo   = "ChadGoymer/githapi",
-#'     author = "ChadGoymer")
+#'     author = "ChadGoymer"
+#'   )
 #'
 #'   # View commits within a time window
 #'   view_commits(
 #'     ref   = "main",
 #'     repo  = "ChadGoymer/githapi",
 #'     since = "2020-01-01 00:00:00",
-#'     until = "2020-04-01 00:00:00")
+#'     until = "2020-04-01 00:00:00"
+#'   )
 #'
 #'   # View the properties of the last commit on the main branch
 #'   view_commit("main", "ChadGoymer/githapi")
@@ -346,13 +430,22 @@ view_commits <- function(
   since,
   until,
   n_max = 1000,
-  ...)
-{
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(ref),
+    "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (!missing(path)) {
-    assert(is_scalar_character(path), "'path' must be a string:\n  ", path)
+    assert(
+      is_scalar_character(path),
+      "'path' must be a string:\n  ", path
+    )
     path <- str_c(path, collapse = ",")
   }
   else {
@@ -360,7 +453,10 @@ view_commits <- function(
   }
 
   if (!missing(author)) {
-    assert(is_scalar_character(author), "'author' must be a string:\n  ", author)
+    assert(
+      is_scalar_character(author),
+      "'author' must be a string:\n  ", author
+    )
     author <- str_c(author, collapse = ",")
   }
   else {
@@ -368,20 +464,34 @@ view_commits <- function(
   }
 
   if (!missing(since)) {
-    assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
+    assert(
+      is_scalar_character(since),
+      "'since' must be a string:\n  ", since
+    )
     since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-    assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
+    assert(
+      !is.na(since),
+      "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ",
+      since
+    )
   }
   else {
     since <- NULL
   }
 
   if (!missing(until)) {
-    assert(is_scalar_character(until), "'until' must be a string:\n  ", until)
+    assert(
+      is_scalar_character(until),
+      "'until' must be a string:\n  ", until
+    )
     until <- as.POSIXct(until, format = "%Y-%m-%d %H:%M:%S") %>%
       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-    assert(!is.na(until), "'until' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", until)
+    assert(
+      !is.na(until),
+      "'until' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ",
+      until
+    )
   }
   else {
     until <- NULL
@@ -394,19 +504,23 @@ view_commits <- function(
     path   = path,
     author = author,
     since  = since,
-    until  = until) %>%
+    until  = until
+  ) %>%
     gh_page(n_max = n_max, ...)
 
   info("Transforming results", level = 4)
   commits_gh <- bind_properties(commits_lst, properties$commit) %>%
-    add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "html_url")
+    add_column(
+      parents = map(commits_lst, ~ map_chr(.$parents, "sha")),
+      .before = "html_url"
+    )
 
   info("Done", level = 7)
   commits_gh
 }
 
 
-#  FUNCTION: view_commit ----------------------------------------------------------------------
+#  FUNCTION: view_commit -------------------------------------------------------
 #
 #' @rdname view_commits
 #' @export
@@ -414,10 +528,16 @@ view_commits <- function(
 view_commit <- function(
   ref,
   repo,
-  ...)
-{
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(ref),
+    "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Viewing commit for reference '", ref, "' in repository '", repo, "'")
   commit_lst <- gh_url("repos", repo, "commits", ref) %>%
@@ -425,14 +545,17 @@ view_commit <- function(
 
   info("Transforming results", level = 4)
   commit_gh <- select_properties(commit_lst, properties$commit) %>%
-    modify_list(parents = map_chr(commit_lst$parents, "sha"), .before = "html_url")
+    modify_list(
+      parents = map_chr(commit_lst$parents, "sha"),
+      .before = "html_url"
+    )
 
   info("Done", level = 7)
   commit_gh
 }
 
 
-#  FUNCTION: browse_commits -------------------------------------------------------------------
+#  FUNCTION: browse_commits ----------------------------------------------------
 #
 #' @rdname view_commits
 #' @export
@@ -440,10 +563,16 @@ view_commit <- function(
 browse_commits <- function(
   ref,
   repo,
-  ...)
-{
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(ref),
+    "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Browsing commit '", ref, "' in repository '", repo, "'")
   commit <- gh_url("repos", repo, "commits", ref) %>% gh_request("GET", ...)
@@ -460,11 +589,12 @@ browse_commits <- function(
     url     = attr(commit, "url"),
     request = attr(commit, "request"),
     status  = attr(commit, "status"),
-    header  = attr(commit, "header"))
+    header  = attr(commit, "header")
+  )
 }
 
 
-#  FUNCTION: browse_commit --------------------------------------------------------------------
+#  FUNCTION: browse_commit -----------------------------------------------------
 #
 #' @rdname view_commits
 #' @export
@@ -472,10 +602,16 @@ browse_commits <- function(
 browse_commit <- function(
   ref,
   repo,
-  ...)
-{
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(ref),
+    "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Browsing commit '", ref, "' in repository '", repo, "'")
   commit <- gh_url("repos", repo, "commits", ref) %>% gh_request("GET", ...)
@@ -488,16 +624,21 @@ browse_commit <- function(
     url     = attr(commit, "url"),
     request = attr(commit, "request"),
     status  = attr(commit, "status"),
-    header  = attr(commit, "header"))
+    header  = attr(commit, "header")
+  )
 }
 
 
-#  FUNCTION: view_sha -------------------------------------------------------------------------
+#  FUNCTION: view_sha ----------------------------------------------------------
 #
 #' View the SHA for a commit
 #'
-#' This function returns the commit SHA given a git reference. A reference can be either a
-#' SHA, branch or tag. If it is a branch then the head commit is used.
+#' This function returns the commit SHA given a git reference. A reference can
+#' be either a SHA, branch or tag. If it is a branch then the head commit is
+#' used.
+#'
+#' For more details see the GitHub API documentation:
+#' - <https://docs.github.com/en/rest/reference/repos#get-a-commit>
 #'
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -518,10 +659,16 @@ browse_commit <- function(
 view_sha <- function(
   ref,
   repo,
-  ...)
-{
-  assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(ref),
+    "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Viewing SHA for ref '", ref, "' from repository '", repo, "'")
   gh_url("repos", repo, "commits", ref) %>%
@@ -539,7 +686,7 @@ view_sha <- function(
 #' the history of the `head` commit.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/commits/#compare-two-commits>
+#' - <https://docs.github.com/en/rest/reference/repos#compare-two-commits>
 #'
 #' @param head (string) Either a SHA, branch or tag used to identify the head
 #'   commit.
@@ -593,8 +740,8 @@ compare_commits <- function(
   base,
   head,
   repo,
-  ...)
-{
+  ...
+) {
   assert(
     is_ref(base),
     "'base' must be a valid git reference - see help(is_ref):\n  ", base
@@ -636,5 +783,6 @@ compare_commits <- function(
     url     = attr(comparison_lst, "url"),
     request = attr(comparison_lst, "request"),
     status  = attr(comparison_lst, "status"),
-    header  = attr(comparison_lst, "header"))
+    header  = attr(comparison_lst, "header")
+  )
 }
