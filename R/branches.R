@@ -187,7 +187,7 @@ update_branch <- function(
 #'   view_branches(repo = "ChadGoymer/githapi")
 #'
 #'   # View a single branch
-#'   view_label(branch = "new-branch", repo = "ChadGoymer/githapi")
+#'   view_branch(branch = "new-branch", repo = "ChadGoymer/githapi")
 #'
 #' }
 #'
