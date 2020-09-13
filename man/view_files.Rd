@@ -20,17 +20,18 @@ browse_file(path, ref, repo, ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{recursive}{(boolean, optional) Whether to list files in subfolders as well.
-Default: \code{TRUE}.}
+\item{recursive}{(boolean, optional) Whether to list files in subfolders as
+well. Default: \code{TRUE}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
 \item{path}{(string) The path to the file, within the repository.}
 }
 \value{
-\code{view_files()} returns a tibble of file properties. \code{view_file()} returns a list
-of properties for a single file. \code{browse_files()} and \code{browse_file()} opens the default
-browser on the tree or blob page and returns the URL.
+\code{view_files()} returns a tibble of file properties. \code{view_file()}
+returns a list of properties for a single file. \code{browse_files()} and
+\code{browse_file()} opens the default browser on the tree or blob page and
+returns the URL.
 
 \strong{File Properties:}
 \itemize{
@@ -41,18 +42,18 @@ browser on the tree or blob page and returns the URL.
 }
 }
 \description{
-\code{view_files()} summarises files in a table with the properties as columns and a row for
-each file in the repository. \code{view_file()} returns a list of all properties for a single
-file. \code{browse_files()} and \code{browse_file()} open the web page for the commit tree and
-blob respectively in the default browser.
+\code{view_files()} summarises files in a table with the properties as columns and
+a row for each file in the repository. \code{view_file()} returns a list of all
+properties for a single file. \code{browse_files()} and \code{browse_file()} open the
+web page for the commit tree and blob respectively in the default browser.
 }
 \details{
-You can summarise all the milestones of a repository in a specified \code{state} and change the
-order they are returned using \code{sort} and \code{direction}.
+You can summarise all the milestones of a repository in a specified \code{state}
+and change the order they are returned using \code{sort} and \code{direction}.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository}
+\item \url{https://docs.github.com/en/rest/reference/git#get-a-tree}
 }
 }
 \examples{
@@ -65,7 +66,8 @@ For more details see the GitHub API documentation:
   view_file(
     path = "README.md",
     ref  = "main",
-    repo = "ChadGoymer/githapi")
+    repo = "ChadGoymer/githapi"
+  )
 
   # Open the commit's tree page in the default browser
   browse_files("main", "ChadGoymer/githapi")
@@ -74,7 +76,8 @@ For more details see the GitHub API documentation:
   browse_file(
     path = "README.md",
     ref  = "main",
-    repo = "ChadGoymer/githapi")
+    repo = "ChadGoymer/githapi"
+  )
 
 }
 

@@ -19,7 +19,8 @@ github_source(path, ref, repo, ...)
 The result of the sourced script.
 }
 \description{
-This function sources an R script from a commit in a repository using \code{\link[=source]{source()}}.
+This function sources an R script from a commit in a repository using
+\code{\link[=source]{source()}}.
 }
 \examples{
 \dontrun{
@@ -27,7 +28,8 @@ This function sources an R script from a commit in a repository using \code{\lin
   github_source(
     path = "inst/test-data/test-script.R",
     ref  = "main",
-    repo = "ChadGoymer/githapi")
+    repo = "ChadGoymer/githapi"
+  )
 
 }
 
