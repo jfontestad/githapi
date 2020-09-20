@@ -13,11 +13,11 @@ view_gist(gist, ...)
 browse_gist(gist, ...)
 }
 \arguments{
-\item{user}{(string, optional) The login of the user. If not specified the authenticated
-user is used.}
+\item{user}{(string, optional) The login of the user. If not specified the
+authenticated user is used.}
 
-\item{since}{(string, optional) A date & time to filter by. Must be in the format:
-\verb{YYYY-MM-DD HH:MM:SS}.}
+\item{since}{(string, optional) A date & time to filter by. Must be in the
+format: \verb{YYYY-MM-DD HH:MM:SS}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -34,8 +34,8 @@ default browser on the gist page and returns the URL.
 \itemize{
 \item \strong{id}: The id for the gist
 \item \strong{description}: The description of the gist
-\item \strong{files}: For \code{view_gists()} just the filenames are returned, for \code{view_gist()} a
-tibble of file properties is returned:
+\item \strong{files}: For \code{view_gists()} just the filenames are returned, for
+\code{view_gist()} a tibble of file properties is returned:
 \itemize{
 \item \strong{filename}: The name of the file
 \item \strong{type}: The type of file
@@ -51,19 +51,20 @@ tibble of file properties is returned:
 }
 }
 \description{
-\code{view_gists()} summarises a user's gists in a table with the properties as columns and a
-row for each gist. \code{view_gist()} returns a list of all properties for a single gist.
-\code{browse_gist()} opens the web page for the gist in the default browser.
+\code{view_gists()} summarises a user's gists in a table with the properties as
+columns and a row for each gist. \code{view_gist()} returns a list of all
+properties for a single gist. \code{browse_gist()} opens the web page for the gist
+in the default browser.
 }
 \details{
-When viewing gists, if a user is not specified the gists for the authenticated user are
-returned.
+When viewing gists, if a user is not specified the gists for the
+authenticated user are returned.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/gists/#list-gists-for-a-user}
-\item \url{https://developer.github.com/v3/gists/#list-gists-for-the-authenticated-user}
-\item \url{https://developer.github.com/v3/gists/#get-a-gist}
+\item \url{https://docs.github.com/en/rest/reference/gists#list-gists-for-a-user}
+\item \url{https://docs.github.com/en/rest/reference/gists#list-gists-for-the-authenticated-user}
+\item \url{https://docs.github.com/en/rest/reference/gists#get-a-gist}
 }
 }
 \examples{

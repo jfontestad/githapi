@@ -1,16 +1,17 @@
-#  FUNCTION: create_gist ----------------------------------------------------------------------
+#  FUNCTION: create_gist -------------------------------------------------------
 #
 #' Create a gist in github
 #'
-#' This function creates a new gist in GitHub. You can specify one or more files by providing
-#' a named list (see examples).
+#' This function creates a new gist in GitHub. You can specify one or more files
+#' by providing a named list (see examples).
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/gists/#create-a-gist>
+#' - <https://docs.github.com/en/rest/reference/gists#create-a-gist>
 #'
 #' @param files (list) The file contents with the list names as the filenames.
 #' @param description (string, optional) A description for the gist.
-#' @param public (boolean, optional) Whether the gist is public. Default: `FALSE`.
+#' @param public (boolean, optional) Whether the gist is public. Default:
+#'   `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `create_gist()` returns a list of the gist's properties.
@@ -40,15 +41,18 @@
 #'   # Create a gist with multiple files
 #'   create_gist(
 #'     files = list(
-#'       hello_world.R    = "print(\"Hello World!\")",
-#'       `hello_world-fn.R` = "helloworld <- function() print(\"Hello World!\")"),
-#'     description = "A new gist")
+#'       `hello_world.R`    = "print(\"Hello World!\")",
+#'       `hello_world-fn.R` = "helloworld <- function() print(\"Hello World!\")"
+#'     ),
+#'     description = "A new gist"
+#'   )
 #'
 #'   # Create a public gist
 #'   create_gist(
 #'     files       = list(hello_world.R = "print(\"Hello World!\")"),
 #'     description = "A new gist",
-#'     public      = TRUE)
+#'     public      = TRUE
+#'   )
 #'
 #' }
 #'
@@ -58,17 +62,29 @@ create_gist <- function(
   files,
   description,
   public = FALSE,
-  ...)
-{
-  assert(is_list(files) & has_names(files), "'files' must be a named list:\n  ", files)
-  assert(all(map_lgl(files, is_scalar_character)), "'files' must be a list of string:\n  ", files)
-  assert(is_scalar_logical(public), "'public' must be a boolean:\n  ", public)
+  ...
+) {
+  assert(
+    is_list(files) & has_names(files),
+    "'files' must be a named list:\n  ", files
+  )
+  assert(
+    all(map_lgl(files, is_scalar_character)),
+    "'files' must be a list of strings:\n  ", files
+  )
+  assert(
+    is_scalar_logical(public),
+    "'public' must be a boolean:\n  ", public
+  )
 
   payload <- list(public = public)
   payload$files <- map(files, ~ list(content = .))
 
   if (!missing(description)) {
-    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    assert(
+      is_scalar_character(description),
+      "'description' must be a string:\n  ", description
+    )
     payload$description <- description
   }
 
@@ -77,26 +93,29 @@ create_gist <- function(
 
   info("Transforming results", level = 4)
   gist_gh <- select_properties(gist_lst, properties$gist) %>%
-    modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
+    modify_list(
+      files   = bind_properties(gist_lst$files, properties$gist_file),
+      .before = "owner"
+    )
 
   info("Done", level = 7)
   gist_gh
 }
 
 
-#  FUNCTION: update_gist ----------------------------------------------------------------------
+#  FUNCTION: update_gist -------------------------------------------------------
 #
 #' Update a gist in GitHub
 #'
-#' This function updates an existing gist in GitHub. You can specify add or update files by
-#' providing a named list and rename a file (see examples).
+#' This function updates an existing gist in GitHub. You can specify add or
+#' update files by providing a named list and rename a file (see examples).
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/gists/#update-a-gist>
+#' - <https://docs.github.com/en/rest/reference/gists#update-a-gist>
 #'
 #' @param gist (string) The ID of the gist
-#' @param files (list, optional) The file contents with the list names as the filenames.
-#'   Added a `filename` element changes the filename (see examples).
+#' @param files (list, optional) The file contents with the list names as the
+#'   filenames. Added a `filename` element changes the filename (see examples).
 #' @param description (string, optional) A description for the gist.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -124,14 +143,18 @@ create_gist <- function(
 #'   # Update a gist's description
 #'   update_gist(
 #'     gist        = "806dca6b09a39e7b6326a0c8137583e6",
-#'     description = "An updated description")
+#'     description = "An updated description"
+#'   )
 #'
 #'   # Update the contents of a file
 #'   update_gist(files = list(hello_world.R = "cat(\"Hello World!\")"))
 #'
 #'   # Update the contents of a file and the filename
 #'   update_gist(
-#'     files = list(hello_world.R = c("cat(\"Hello World!\")", filename = "new_filename.R")))
+#'     files = list(
+#'       hello_world.R = c("cat(\"Hello World!\")", filename = "new_filename.R")
+#'     )
+#'   )
 #'
 #' }
 #'
@@ -141,60 +164,85 @@ update_gist <- function(
   gist,
   files,
   description,
-  ...)
-{
-  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+  ...
+) {
+  assert(
+    is_scalar_character(gist),
+    "'gist' must be a string:\n  ", gist
+  )
 
   payload <- NULL
 
   if (!missing(files)) {
-    assert(is_list(files) & has_names(files), "'files' must be a named list:\n  ", files)
     assert(
-      all(map_lgl(files, ~ is_character(.) && all(names(.) %in% c("", "content", "filename")))),
-      "'files' must be a list of character vectors:\n  ", files)
+      is_list(files) & has_names(files),
+      "'files' must be a named list:\n  ", files
+    )
+    assert(
+      all(map_lgl(files, function(f) {
+        is_character(f) && all(names(f) %in% c("", "content", "filename"))
+      })),
+      "'files' must be a list of character vectors:\n  ", files
+    )
     payload$files <- map(files, function(f) {
       as.list(set_names(f, ifelse(names(f) == "", "content", names(f))))
     })
   }
 
   if (!missing(description)) {
-    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    assert(
+      is_scalar_character(description),
+      "'description' must be a string:\n  ", description
+    )
     payload$description <- description
   }
 
   info("Updating gist '", gist, "'")
-  gist_lst <- gh_url("gists", gist) %>% gh_request("PATCH", payload = payload, ...)
+  gist_lst <- gh_url("gists", gist) %>%
+    gh_request("PATCH", payload = payload, ...)
 
   info("Transforming results", level = 4)
   gist_gh <- select_properties(gist_lst, properties$gist) %>%
-    modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
+    modify_list(
+      files = bind_properties(gist_lst$files, properties$gist_file),
+      .before = "owner"
+    )
 
   info("Done", level = 7)
   gist_gh
 }
 
 
-#  FUNCTION: view_gists -----------------------------------------------------------------------
+#  FUNCTION: view_gists --------------------------------------------------------
 #
 #' View gists in GitHub
 #'
-#' `view_gists()` summarises a user's gists in a table with the properties as columns and a
-#' row for each gist. `view_gist()` returns a list of all properties for a single gist.
-#' `browse_gist()` opens the web page for the gist in the default browser.
+#' `view_gists()` summarises a user's gists in a table with the properties as
+#' columns and a row for each gist. `view_gist()` returns a list of all
+#' properties for a single gist. `browse_gist()` opens the web page for the gist
+#' in the default browser.
 #'
-#' When viewing gists, if a user is not specified the gists for the authenticated user are
-#' returned.
+#' When viewing gists, if a user is not specified the gists for the
+#' authenticated user are returned.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/gists/#list-gists-for-a-user>
-#' - <https://developer.github.com/v3/gists/#list-gists-for-the-authenticated-user>
-#' - <https://developer.github.com/v3/gists/#get-a-gist>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/rest/reference/"
+#' cat(paste0("- <", docs_url, "gists#list-gists-for-a-user>"))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0("- <", docs_url, "gists#list-gists-for-the-authenticated-user>"))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0("- <", docs_url, "gists#get-a-gist>"))
+#' ```
 #'
 #' @param gist (string) The id of the gist.
-#' @param user (string, optional) The login of the user. If not specified the authenticated
-#'   user is used.
-#' @param since (string, optional) A date & time to filter by. Must be in the format:
-#'   `YYYY-MM-DD HH:MM:SS`.
+#' @param user (string, optional) The login of the user. If not specified the
+#'   authenticated user is used.
+#' @param since (string, optional) A date & time to filter by. Must be in the
+#'   format: `YYYY-MM-DD HH:MM:SS`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
@@ -206,8 +254,8 @@ update_gist <- function(
 #'
 #' - **id**: The id for the gist
 #' - **description**: The description of the gist
-#' - **files**: For `view_gists()` just the filenames are returned, for `view_gist()` a
-#'   tibble of file properties is returned:
+#' - **files**: For `view_gists()` just the filenames are returned, for
+#'   `view_gist()` a tibble of file properties is returned:
 #'   - **filename**: The name of the file
 #'   - **type**: The type of file
 #'   - **content**: The file content
@@ -242,13 +290,22 @@ view_gists <- function(
   user,
   since,
   n_max = 1000,
-  ...)
-{
+  ...
+) {
   if (!missing(since)) {
-    assert(is_scalar_character(since), "'since' must be a string:\n  ", since)
+    assert(
+      is_scalar_character(since),
+      "'since' must be a string:\n  ", since
+    )
+
     since <- as.POSIXct(since, format = "%Y-%m-%d %H:%M:%S") %>%
       format("%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-    assert(!is.na(since), "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ", since)
+
+    assert(
+      !is.na(since),
+      "'since' must be specified in the format 'YYYY-MM-DD hh:mm:ss':\n  ",
+      since
+    )
   }
   else {
     since <- NULL
@@ -259,7 +316,10 @@ view_gists <- function(
     url <- gh_url("gists", since = since)
   }
   else {
-    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    assert(
+      is_scalar_character(user),
+      "'user' must be a string:\n  ", user
+    )
     if (user %in% c("public", "starred")) {
       info("Viewing ", user, " gists")
       url <- gh_url("gists", user, since = since)
@@ -281,42 +341,52 @@ view_gists <- function(
 }
 
 
-#  FUNCTION: view_gist ------------------------------------------------------------------------
+#  FUNCTION: view_gist ---------------------------------------------------------
 #
 #' @rdname view_gists
 #' @export
 #'
 view_gist <- function(
   gist,
-  ...)
-{
-  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+  ...
+) {
+  assert(
+    is_scalar_character(gist),
+    "'gist' must be a string:\n  ", gist
+  )
 
   info("Viewing gist '", gist, "'")
   gist_lst <- gh_url("gists", gist) %>% gh_request("GET", ...)
 
   info("Transforming results", level = 4)
   gist_gh <- select_properties(gist_lst, properties$gist) %>%
-    modify_list(files = bind_properties(gist_lst$files, properties$gist_file), .before = "owner")
+    modify_list(
+      files = bind_properties(gist_lst$files, properties$gist_file),
+      .before = "owner"
+    )
 
   info("Done", level = 7)
   gist_gh
 }
 
 
-#  FUNCTION: browse_gist ----------------------------------------------------------------------
+#  FUNCTION: browse_gist -------------------------------------------------------
 #
 #' @rdname view_gists
 #' @export
 #'
 browse_gist <- function(
   gist,
-  ...)
-{
-  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+  ...
+) {
+  assert(
+    is_scalar_character(gist),
+    "'gist' must be a string:\n  ", gist
+  )
 
   info("Browsing gist '", gist, "'")
-  gist <- gh_url("gists", gist) %>% gh_request("GET", ...)
+  gist <- gh_url("gists", gist) %>%
+    gh_request("GET", ...)
   httr::BROWSE(gist$html_url)
 
   info("Done", level = 7)
@@ -326,19 +396,20 @@ browse_gist <- function(
     url     = attr(gist, "url"),
     request = attr(gist, "request"),
     status  = attr(gist, "status"),
-    header  = attr(gist, "header"))
+    header  = attr(gist, "header")
+  )
 }
 
 
-#  FUNCTION: delete_gist ----------------------------------------------------------------------
+#  FUNCTION: delete_gist -------------------------------------------------------
 #
 #' Delete a gist in GitHub
 #'
-#' This function deletes a gist from github, as long as you have appropriate permissions.
-#' Care should be taken as it will not be recoverable.
+#' This function deletes a gist from github, as long as you have appropriate
+#' permissions. Care should be taken as it will not be recoverable.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/gists/#delete-a-gist>
+#' - <https://docs.github.com/en/rest/reference/gists#delete-a-gist>
 #'
 #' @param gist (string) The id of the gist.
 #' @param ... Parameters passed to [gh_request()].
@@ -356,12 +427,16 @@ browse_gist <- function(
 #'
 delete_gist <- function(
   gist,
-  ...)
-{
-  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+  ...
+) {
+  assert(
+    is_scalar_character(gist),
+    "'gist' must be a string:\n  ", gist
+  )
 
   info("Deleting gist '", gist, "'")
-  response <- gh_url("gists", gist) %>% gh_request("DELETE", ...)
+  response <- gh_url("gists", gist) %>%
+    gh_request("DELETE", ...)
 
   info("Done", level = 7)
   structure(
@@ -370,11 +445,12 @@ delete_gist <- function(
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
-    header  = attr(response, "header"))
+    header  = attr(response, "header")
+  )
 }
 
 
-#  FUNCTION: download_gist --------------------------------------------------------------------
+#  FUNCTION: download_gist -----------------------------------------------------
 #
 #' Download a gist from GitHub
 #'
@@ -382,8 +458,8 @@ delete_gist <- function(
 #'
 #' @param gist (string) The ID of the gist.
 #' @param path (string) The path to download the gist to.
-#' @param files (character, optional) The files to download. If not specified all the files
-#'   in the gist will be downloaded.
+#' @param files (character, optional) The files to download. If not specified
+#'   all the files in the gist will be downloaded.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `download_gist()` returns the path where the file is downloaded to.
@@ -398,7 +474,8 @@ delete_gist <- function(
 #'   download_gist(
 #'     gist  = "806dca6b09a39e7b6326a0c8137583e6",
 #'     path  = "./gist",
-#'     files = "helloworld.R")
+#'     files = "helloworld.R"
+#'   )
 #'
 #' }
 #'
@@ -408,23 +485,31 @@ download_gist <- function(
   gist,
   path,
   files,
-  ...)
-{
-  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+  ...
+) {
+  assert(
+    is_scalar_character(gist),
+    "'gist' must be a string:\n  ", gist
+  )
 
   info("Viewing gist '", gist, "'")
-  gist <- gh_url("gists", gist) %>% gh_request("GET", ...)
+  gist <- gh_url("gists", gist) %>%
+    gh_request("GET", ...)
 
   if (missing(files)) {
     files <- names(gist$files)
   }
-  assert(is_character(files), "'files' must be a character vector:\n  ", files)
+  assert(
+    is_character(files),
+    "'files' must be a character vector:\n  ", files
+  )
 
   walk(files, function(f) {
     info("Writing file '", f, "'", level = 2)
     readr::write_file(
       x    = gist$files[[f]]$content,
-      path = file.path(path, gist$files[[f]]$filename))
+      path = file.path(path, gist$files[[f]]$filename)
+    )
   })
 
   info("Done", level = 7)
@@ -434,20 +519,21 @@ download_gist <- function(
     url     = attr(gist, "url"),
     request = attr(gist, "request"),
     status  = attr(gist, "status"),
-    header  = attr(gist, "header"))
+    header  = attr(gist, "header")
+  )
 }
 
 
-#  FUNCTION: source_gist ----------------------------------------------------------------------
+#  FUNCTION: source_gist -------------------------------------------------------
 #
 #' Source a gist from GitHub
 #'
-#' This function downloads the files in the specified gist and then sources them using the
-#' [source()] function.
+#' This function downloads the files in the specified gist and then sources them
+#' using the [source()] function.
 #'
 #' @param gist (string) The ID of the gist.
-#' @param files (character, optional) The files to source. If not specified all the files
-#'   in the gist will be sourced.
+#' @param files (character, optional) The files to source. If not specified all
+#'   the files in the gist will be sourced.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `source_gist()` returns the result of sourcing the files.
@@ -462,7 +548,8 @@ download_gist <- function(
 #'   source_gist(
 #'     gist  = "806dca6b09a39e7b6326a0c8137583e6",
 #'     path  = "./gist",
-#'     files = "helloworld.R")
+#'     files = "helloworld.R"
+#'   )
 #'
 #' }
 #'
@@ -471,20 +558,29 @@ download_gist <- function(
 source_gist <- function(
   gist,
   files,
-  ...)
-{
-  assert(is_scalar_character(gist), "'gist' must be a string:\n  ", gist)
+  ...
+) {
+  assert(
+    is_scalar_character(gist),
+    "'gist' must be a string:\n  ", gist
+  )
 
   info("Viewing gist '", gist, "'")
-  gist <- gh_url("gists", gist) %>% gh_request("GET")
+  gist <- gh_url("gists", gist) %>%
+    gh_request("GET")
 
   if (missing(files)) {
     files <- names(gist$files)
   }
-  assert(is_character(files), "'files' must be a character vector:\n  ", files)
+  assert(
+    is_character(files),
+    "'files' must be a character vector:\n  ", files
+  )
   assert(
     all(files %in% names(gist$files)),
-    "'files' must all exist in the gist:\n  ", files[!files %in% names(gist$files)])
+    "'files' must all exist in the gist:\n  ",
+    files[!files %in% names(gist$files)]
+  )
 
   temp_path <- tempfile("source-gist-")
   dir.create(temp_path, recursive = TRUE)
@@ -494,7 +590,8 @@ source_gist <- function(
     info("Sourcing file '", f, "'", level = 2)
     readr::write_file(
       x    = gist$files[[f]]$content,
-      path = file.path(temp_path, gist$files[[f]]$filename))
+      path = file.path(temp_path, gist$files[[f]]$filename)
+    )
     source(file.path(temp_path, gist$files[[f]]$filename), ...)
   })
 }

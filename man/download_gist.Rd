@@ -11,8 +11,8 @@ download_gist(gist, path, files, ...)
 
 \item{path}{(string) The path to download the gist to.}
 
-\item{files}{(character, optional) The files to download. If not specified all the files
-in the gist will be downloaded.}
+\item{files}{(character, optional) The files to download. If not specified
+all the files in the gist will be downloaded.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -32,7 +32,8 @@ This function downloads the files in the specified gist to the path provided.
   download_gist(
     gist  = "806dca6b09a39e7b6326a0c8137583e6",
     path  = "./gist",
-    files = "helloworld.R")
+    files = "helloworld.R"
+  )
 
 }
 

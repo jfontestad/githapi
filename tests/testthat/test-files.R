@@ -300,7 +300,7 @@ test_that("upload_files uploads files and creates a new commit", {
 
 
   recursive_commit <- upload_files(
-    from_path = recursive_file_paths[c(1,3,5)],
+    from_path = recursive_file_paths[c(1, 3, 5)],
     to_path   = c(
       "dir-1/file-1.txt",
       "dir-1/dir-1-1/file-2.txt",
@@ -1177,7 +1177,7 @@ test_that("write_github_csv creates a commit and read_github_csv reads it", {
   expect_identical(attr(csv_contents, "status"), 200L)
   expect_equivalent(
     as_tibble(csv_contents),
-    tibble(letters = LETTERS, numbers = 1:26*1.0)
+    tibble(letters = LETTERS, numbers = 1:26 * 1.0)
   )
 
 })
