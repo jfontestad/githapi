@@ -17,13 +17,13 @@ delete_label(label, repo, ...)
 \code{delete_label()} returns a TRUE if successfully deleted.
 }
 \description{
-This function deletes a label from a repository, as long as you have appropriate
-permissions. Care should be taken as it will not be recoverable.
+This function deletes a label from a repository, as long as you have
+appropriate permissions. Care should be taken as it will not be recoverable.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/labels/#delete-a-label}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#delete-a-label}
 }
 }
 \examples{

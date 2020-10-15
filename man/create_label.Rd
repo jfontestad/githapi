@@ -13,9 +13,10 @@ create_label(name, repo, description, color = random_color(), ...)
 
 \item{description}{(string, optional) A description of the label.}
 
-\item{color}{(string, optional) Either the color name (see \code{\link[grDevices:colors]{grDevices::colors()}}) or a
-hexidecimal color code (see \href{http://www.color-hex.com/}{color-hex.com}). If not
-supplied a color is chosen at random.}
+\item{color}{(string, optional) Either the color name (see
+\code{\link[grDevices:colors]{grDevices::colors()}}) or a hexidecimal color code (see
+\href{http://www.color-hex.com/}{color-hex.com}). If not supplied a color is
+chosen at random.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -30,13 +31,14 @@ supplied a color is chosen at random.}
 }
 }
 \description{
-This function creates a new label for issues and pull requests for the specified
-repository in GitHub. It can also be used to set the colour and description.
+This function creates a new label for issues and pull requests for the
+specified repository in GitHub. It can also be used to set the colour and
+description.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/labels/#create-a-label}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-a-label}
 }
 }
 \examples{
@@ -46,7 +48,8 @@ For more details see the GitHub API documentation:
     name        = "new-label",
     repo        = "ChadGoymer/githapi",
     color       = "blue",
-    description = "This is a detailed label")
+    description = "This is a detailed label"
+  )
 
 }
 
