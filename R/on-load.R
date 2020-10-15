@@ -31,8 +31,8 @@
   # Set github token
   tokens <- c(
     Sys.getenv("GITHAPI_TOKEN"),
-    Sys.getenv("GITHUB_TOKEN"),
-    Sys.getenv("GITHUB_PAT"))
+    Sys.getenv("GITHUB_PAT"),
+    Sys.getenv("GITHUB_TOKEN"))
 
   if (any(tokens != "")) {
     gh_cfg$token <- tokens[tokens != ""][[1]]

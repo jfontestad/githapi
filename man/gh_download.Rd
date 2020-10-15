@@ -19,17 +19,19 @@ gh_download(
 
 \item{path}{(string) The path to download the file to.}
 
-\item{headers}{(character, optional) Headers to add to the request. Default: \code{NULL}.}
+\item{headers}{(character, optional) Headers to add to the request. Default:
+\code{NULL}.}
 
-\item{accept}{(string, optional) The mime format to accept when making the call.
-Default: \code{NULL}.}
+\item{accept}{(string, optional) The mime format to accept when making the
+call. Default: \code{NULL}.}
 
-\item{token}{(string or Token, optional) An authorisation token to include with the
-request. If \code{NULL} the OAuth process is triggered. Default: \code{NULL}.}
+\item{token}{(string or Token, optional) An authorisation token to include
+with the request. If \code{NULL} the OAuth process is triggered. Default:
+\code{NULL}.}
 
-\item{proxy}{(character, optional) The proxy server to use to connect to the github API.
-If \code{NULL} then no proxy is used. Can be set in the option \code{github.proxy} or the
-environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
+\item{proxy}{(character, optional) The proxy server to use to connect to the
+github API. If \code{NULL} then no proxy is used. Can be set in the option
+\code{github.proxy} or the environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
 
 \item{...}{Ignored.}
 }
@@ -51,7 +53,8 @@ This function downloads a file from GitHub in as a binary object.
   # Find an issue by title
   gh_download(
     url  = "https://api.github.com/repos/ChadGoymer/githapi/zipball/main",
-    path = "~/githapi-main.zip")
+    path = "~/githapi-main.zip"
+  )
 
 }
 
