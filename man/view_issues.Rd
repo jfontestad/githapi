@@ -24,7 +24,8 @@ view_issue(issue, repo, ...)
 browse_issue(issue, repo, ...)
 }
 \arguments{
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
+\item{repo}{(string, optional) The repository specified in the format:
+\code{owner/repo}.}
 
 \item{org}{(string, optional) The name of the organization.}
 
@@ -32,17 +33,18 @@ browse_issue(issue, repo, ...)
 
 \item{milestone}{(string or integer) Milestone number or title to filter by.}
 
-\item{since}{(string, optional) A date & time to filter by. Must be in the format:
-\verb{YYYY-MM-DD HH:MM:SS}.}
+\item{since}{(string, optional) A date & time to filter by. Must be in the
+format: \verb{YYYY-MM-DD HH:MM:SS}.}
 
-\item{state}{(string, optional) The state of the issues to return. Can be either \code{"open"},
-\code{"closed"}, or \code{"all"}. Default: \code{"open"}.}
+\item{state}{(string, optional) The state of the issues to return. Can be
+either \code{"open"}, \code{"closed"}, or \code{"all"}. Default: \code{"open"}.}
 
-\item{sort}{(string, optional) The property to order the returned issues by. Can be either
-\code{"created"}, \code{"updated"}, or \code{"comments"}. Default: \code{"created"}.}
+\item{sort}{(string, optional) The property to order the returned issues by.
+Can be either \code{"created"}, \code{"updated"}, or \code{"comments"}. Default:
+\code{"created"}.}
 
-\item{direction}{(string, optional) The direction of the sort. Can be either \code{"asc"} or
-\code{"desc"}. Default: \code{"desc"}.}
+\item{direction}{(string, optional) The direction of the sort. Can be either
+\code{"asc"} or \code{"desc"}. Default: \code{"desc"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -51,9 +53,9 @@ browse_issue(issue, repo, ...)
 \item{issue}{(string or character) The number or title of the issue.}
 }
 \value{
-\code{view_issues()} returns a tibble of issue properties. \code{view_issue()} returns a
-list of properties for a single issue. \code{browse_issue()} opens the default browser on
-the issue's page and returns the URL.
+\code{view_issues()} returns a tibble of issue properties. \code{view_issue()}
+returns a list of properties for a single issue. \code{browse_issue()} opens the
+default browser on the issue's page and returns the URL.
 
 \strong{Issue Properties:}
 \itemize{
@@ -74,23 +76,25 @@ the issue's page and returns the URL.
 }
 }
 \description{
-\code{view_issues()} summarises issues in a table with the properties as columns and a row for
-each issue in the repository or organization. \code{view_issue()} returns a list of all
-properties for a single issue. \code{browse_issue()} opens the web page for the issue in the
-default browser.
+\code{view_issues()} summarises issues in a table with the properties as columns
+and a row for each issue in the repository or organization. \code{view_issue()}
+returns a list of all properties for a single issue. \code{browse_issue()} opens
+the web page for the issue in the default browser.
 }
 \details{
-You can summarise all the issues in a repository or organization by specifying the
-arguments. If neither are specified then all the issues assigned to the authenticated user
-are returned. You can filter the issues based on the labels, milestone, whether they have
-been updated since a specified date or whether they are \code{"open"} or \code{"closed"}. Finally,
-the order the results are returned can be controlled with \code{sort} and \code{direction}.
+You can summarise all the issues in a repository or organization by
+specifying the arguments. If neither are specified then all the issues
+assigned to the authenticated user are returned. You can filter the issues
+based on the labels, milestone, whether they have been updated since a
+specified date or whether they are \code{"open"} or \code{"closed"}. Finally, the order
+the results are returned can be controlled with \code{sort} and \code{direction}.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/#list-issues}
-\item \url{https://developer.github.com/v3/issues/#list-issues-for-a-repository}
-\item \url{https://developer.github.com/v3/issues/#get-a-single-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#list-issues-assigned-to-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#list-organization-issues-assigned-to-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#list-repository-issues}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#get-an-issue}
 }
 }
 \examples{

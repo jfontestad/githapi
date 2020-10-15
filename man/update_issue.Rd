@@ -25,18 +25,21 @@ update_issue(
 
 \item{body}{(string, optional) The contents of the issue.}
 
-\item{assignees}{(character, optional) Logins for Users to assign to this issue. NOTE: Only
-users with push access can set assignees for new issues. Setting to \code{NULL} clears all
-assignees.}
+\item{assignees}{(character, optional) Logins for Users to assign to this
+issue. NOTE: Only users with push access can set assignees for new issues.
+Setting to \code{NULL} clears all assignees.}
 
-\item{labels}{(character, optional) Labels to associate with this issue. NOTE: Only users
-with push access can set labels for new issues. Setting to \code{NULL} clears all labels.}
+\item{labels}{(character, optional) Labels to associate with this issue.
+NOTE: Only users with push access can set labels for new issues. Setting to
+\code{NULL} clears all labels.}
 
-\item{milestone}{(character or integer, optional) The title or number of the milestone to
-associate this issue with. NOTE: Only users with push access can set the milestone for
-new issues. Setting to \code{NULL} clears the current milestone.}
+\item{milestone}{(character or integer, optional) The title or number of the
+milestone to associate this issue with. NOTE: Only users with push access
+can set the milestone for new issues. Setting to \code{NULL} clears the current
+milestone.}
 
-\item{state}{(string, optional) The state of the issue. Either \code{"open"} or \code{"closed"}.}
+\item{state}{(string, optional) The state of the issue. Either \code{"open"} or
+\code{"closed"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -62,14 +65,14 @@ new issues. Setting to \code{NULL} clears the current milestone.}
 }
 }
 \description{
-This function updates an issue for the specified repository in GitHub. It can be used to
-change the title, body, or assignees, it can also be used to replace labels and milestones,
-or to close the issue.
+This function updates an issue for the specified repository in GitHub. It can
+be used to change the title, body, or assignees, it can also be used to
+replace labels and milestones, or to close the issue.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/#edit-an-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue}
 }
 }
 \examples{
@@ -81,13 +84,15 @@ For more details see the GitHub API documentation:
     repo        = "ChadGoymer/githapi",
     title       = "updated test issue",
     description = "This is an updated test issue",
-    due_on      = "2020-12-01")
+    due_on      = "2020-12-01"
+  )
 
   # Close a issue
   update_issue(
     issue = "updated test issue",
     repo      = "ChadGoymer/githapi",
-    state     = "closed")
+    state     = "closed"
+  )
 
 }
 

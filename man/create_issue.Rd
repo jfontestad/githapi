@@ -13,15 +13,15 @@ create_issue(title, repo, body, assignees, labels, milestone, ...)
 
 \item{body}{(string, optional) The contents of the issue.}
 
-\item{assignees}{(character, optional) Logins for Users to assign to this issue. NOTE: Only
-users with push access can set assignees for new issues.}
+\item{assignees}{(character, optional) Logins for Users to assign to this
+issue. NOTE: Only users with push access can set assignees for new issues.}
 
-\item{labels}{(character, optional) Labels to associate with this issue. NOTE: Only users
-with push access can set labels for new issues.}
+\item{labels}{(character, optional) Labels to associate with this issue.
+NOTE: Only users with push access can set labels for new issues.}
 
-\item{milestone}{(character or integer, optional) The title or number of the milestone to
-associate this issue with. NOTE: Only users with push access can set the milestone for
-new issues.}
+\item{milestone}{(character or integer, optional) The title or number of the
+milestone to associate this issue with. NOTE: Only users with push access
+can set the milestone for new issues.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -47,13 +47,13 @@ new issues.}
 }
 }
 \description{
-This function creates a new issue for the specified repository in GitHub. It can also be
-used to assign the issue to a user and add labels or a milestone.
+This function creates a new issue for the specified repository in GitHub. It
+can also be used to assign the issue to a user and add labels or a milestone.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/#create-an-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-an-issue}
 }
 }
 \examples{
@@ -65,13 +65,15 @@ For more details see the GitHub API documentation:
     body      = "This is an issue to test create_issue()",
     assignees = "ChadGoymer",
     labels    = "feature",
-    milestone = "release-1.0")
+    milestone = "release-1.0"
+  )
 
   create_issue(
     title     = "organization issue",
     repo      = "HairyCoos/test-issues",
     body      = "This is an issue to test create_issue()",
-    assignees = "ChadGoymer")
+    assignees = "ChadGoymer"
+  )
 
 }
 
