@@ -13,8 +13,9 @@ update_membership(user, org, team, role, ...)
 
 \item{team}{(integer or string, optional) The ID or name of the team.}
 
-\item{role}{(string, optional) The role to give the user. For an organization this is
-either \code{"member"} or \code{"admin"}, for a team it is either \code{"member"} or \code{"maintainer"}.}
+\item{role}{(string, optional) The role to give the user. For an organization
+this is either \code{"member"} or \code{"admin"}, for a team it is either \code{"member"}
+or \code{"maintainer"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -26,23 +27,23 @@ either \code{"member"} or \code{"admin"}, for a team it is either \code{"member"
 \item \strong{user}: The user login.
 \item \strong{organization}: The organization login.
 \item \strong{team}: The team name (team membership only).
-\item \strong{role}: The role of the user - for organizations it is either \code{"member"} or \code{"admin"},
-for teams it is either \code{"member"} or \code{"maintainer"}.
+\item \strong{role}: The role of the user - for organizations it is either \code{"member"}
+or \code{"admin"}, for teams it is either \code{"member"} or \code{"maintainer"}.
 \item \strong{state}: The state of the membership - either \code{"active"} or \code{"pending"}.
 }
 }
 \description{
-This function can be used to invite a user into an organization or team, or update their
-role within the organization or team.
+This function can be used to invite a user into an organization or team, or
+update their role within the organization or team.
 }
 \details{
-Note: you can only invite or update a user if the authenticate user is an organization
-"owner" or a team "maintainer".
+Note: you can only invite or update a user if the authenticate user is an
+organization "owner" or a team "maintainer".
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/orgs/members/#add-or-update-organization-membership}
-\item \url{https://developer.github.com/v3/teams/members/#add-or-update-team-membership}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#set-organization-membership-for-a-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#add-or-update-team-membership-for-a-user}
 }
 }
 \examples{
@@ -58,7 +59,12 @@ For more details see the GitHub API documentation:
   update_membership("ChadGoymer2", "HairyCoos", "HeadCoos")
 
   # Update a user's role in a team
-  update_membership("ChadGoymer2", "HairyCoos", "HeadCoos", role = "maintainer")
+  update_membership(
+    user = "ChadGoymer2",
+    org  = "HairyCoos",
+    team = "HeadCoos",
+    role = "maintainer"
+  )
 
 }
 

@@ -10,9 +10,9 @@ view_memberships(state, n_max = 1000, ...)
 view_membership(user, org, team, ...)
 }
 \arguments{
-\item{state}{(string, optional) Filter results depending on the \code{state} of the membership.
-Can be either \code{"active"} or \code{"pending"}. If not supplied, all memberships are returned for
-the authenticated user.}
+\item{state}{(string, optional) Filter results depending on the \code{state} of
+the membership. Can be either \code{"active"} or \code{"pending"}. If not supplied,
+all memberships are returned for the authenticated user.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -25,39 +25,41 @@ the authenticated user.}
 \item{team}{(integer or string, optional) The ID or name of the team.}
 }
 \value{
-\code{view_memberships()} returns a tibble of membership properties. \code{view_membership()}
-returns a list of membership properties for a single organization or team.
+\code{view_memberships()} returns a tibble of membership properties.
+\code{view_membership()} returns a list of membership properties for a single
+organization or team.
 
 \strong{Membership Properties:}
 \itemize{
 \item \strong{user}: The user login.
 \item \strong{organization}: The organization login.
 \item \strong{team}: The team name (team membership only).
-\item \strong{role}: The role of the user - for organizations it is either \code{"member"} or \code{"admin"},
-for teams it is either \code{"member"} or \code{"maintainer"}.
+\item \strong{role}: The role of the user - for organizations it is either \code{"member"}
+or \code{"admin"}, for teams it is either \code{"member"} or \code{"maintainer"}.
 \item \strong{state}: The state of the membership - either \code{"active"} or \code{"pending"}.
 }
 }
 \description{
-\code{view_memberships()} summarises the authenticate user's membership in organizations in
-a table with the properties as columns and a row for each organization. \code{view_membership()}
-returns a list of all membership properties for a user in a single organization or team.
+\code{view_memberships()} summarises the authenticate user's membership in
+organizations in a table with the properties as columns and a row for each
+organization. \code{view_membership()} returns a list of all membership properties
+for a user in a single organization or team.
 }
 \details{
-Note: you can only view another user's membership in an organization or team if the
-authenticate user is also a member.
+Note: you can only view another user's membership in an organization or team
+if the authenticate user is also a member.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/orgs/members/#list-your-organization-memberships}
-\item \url{https://developer.github.com/v3/orgs/members/#get-organization-membership}
-\item \url{https://developer.github.com/v3/teams/members/#get-team-membership}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organization-memberships-for-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#get-organization-membership-for-a-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#get-team-membership-for-a-user}
 }
 }
 \examples{
 \dontrun{
 
-  # View membership of all organizations the authenticated user is a member of
+  # View membership of all organizations for the authenticated user
   view_memberships()
 
   # View only active memberships for the authenticated user
