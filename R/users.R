@@ -1,15 +1,24 @@
-#  FUNCTION: update_user ----------------------------------------------------------------------
+#  FUNCTION: update_user -------------------------------------------------------
 #
 #' Update your user properties in GitHub
 #'
-#' This function updates your user properties in GitHub. You cannot update someone else's
-#' profile.
+#' This function updates your user properties in GitHub. You cannot update
+#' someone else's profile.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/users/#update-a-user>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "users#update-the-authenticated-user",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param name (string, optional) The new name of the user.
-#' @param email (string, optional) The publicly visible email address of the user.
+#' @param email (string, optional) The publicly visible email address of the
+#'   user.
 #' @param blog (string, optional) The new blog URL of the user.
 #' @param company (string, optional) The new company of the user.
 #' @param location (string, optional) The new location of the user.
@@ -58,47 +67,69 @@ update_user <- function(
   location,
   hireable,
   bio,
-  ...)
-{
+  ...
+) {
   payload <- list()
 
   if (!missing(name)) {
-    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+    assert(
+      is_scalar_character(name),
+      "'name' must be a string:\n  ", name
+    )
     payload$name <- name
   }
 
   if (!missing(email)) {
-    assert(is_scalar_character(email), "'email' must be a string:\n  ", email)
+    assert(
+      is_scalar_character(email),
+      "'email' must be a string:\n  ", email
+    )
     payload$email <- email
   }
 
   if (!missing(blog)) {
-    assert(is_scalar_character(blog), "'blog' must be a string:\n  ", blog)
+    assert(
+      is_scalar_character(blog),
+      "'blog' must be a string:\n  ", blog
+    )
     payload$blog <- blog
   }
 
   if (!missing(company)) {
-    assert(is_scalar_character(company), "'company' must be a string:\n  ", company)
+    assert(
+      is_scalar_character(company),
+      "'company' must be a string:\n  ", company
+    )
     payload$company <- company
   }
 
   if (!missing(location)) {
-    assert(is_scalar_character(location), "'location' must be a string:\n  ", location)
+    assert(
+      is_scalar_character(location),
+      "'location' must be a string:\n  ", location
+    )
     payload$location <- location
   }
 
   if (!missing(hireable)) {
-    assert(is_scalar_logical(hireable), "'hireable' must be a boolean:\n  ", hireable)
+    assert(
+      is_scalar_logical(hireable),
+      "'hireable' must be a boolean:\n  ", hireable
+    )
     payload$hireable <- hireable
   }
 
   if (!missing(bio)) {
-    assert(is_scalar_character(bio), "'bio' must be a string:\n  ", bio)
+    assert(
+      is_scalar_character(bio),
+      "'bio' must be a string:\n  ", bio
+    )
     payload$bio <- bio
   }
 
   info("Updating user")
-  user_lst <- gh_url("user") %>% gh_request("PATCH", payload = payload, ...)
+  user_lst <- gh_url("user") %>%
+    gh_request("PATCH", payload = payload, ...)
 
   info("Transforming results", level = 4)
   user_gh <- select_properties(user_lst, properties$user)
@@ -108,46 +139,76 @@ update_user <- function(
 }
 
 
-#  FUNCTION: view_users --------------------------------------------------------------------
+#  FUNCTION: view_users --------------------------------------------------------
 #
 #' View users in GitHub
 #'
-#' `view_users()` summarises users in a table with the properties as columns and a row
-#' for each user. `view_user()` returns a list of all properties for a single user.
-#' `browse_user()` opens the web page for the user in the default browser.
+#' `view_users()` summarises users in a table with the properties as columns and
+#' a row for each user. `view_user()` returns a list of all properties for a
+#' single user. `browse_user()` opens the web page for the user in the default
+#' browser.
 #'
-#' You can summarise all the users associated with either an organization or a team within
-#' an organization. If none of those are supplied the first `n_max` users of GitHub are
-#' returned.
+#' You can summarise all the users associated with either an organization or a
+#' team within an organization. If none of those are supplied the first `n_max`
+#' users of GitHub are returned.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/orgs/members/#members-list>
-#' - <https://developer.github.com/v3/teams/members/#list-team-members>
-#' - <https://developer.github.com/v3/users/#get-all-users>
-#' - <https://developer.github.com/v3/users/#get-a-single-user>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "orgs#list-organization-members",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "teams#list-team-members",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "users#list-users",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "users#get-a-user",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param user (string) The login of the user.
 #' @param org (string, optional) The name of the organization.
 #' @param team (string, optional) The name of the team.
-#' @param role (string, optional) Filter the result by role. Can specify either `"admin"`,
-#'   `"member"` or `"all"`. Default: `"all"`.
+#' @param role (string, optional) Filter the result by role. Can specify either
+#'   `"admin"`, `"member"` or `"all"`. Default: `"all"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_users()` returns a tibble of user properties. `view_user()`
-#'   returns a list of properties for a single user.  `browse_user()` opens the default
-#'   browser on the user's page and returns the URL.
+#'   returns a list of properties for a single user.  `browse_user()` opens the
+#'   default browser on the user's page and returns the URL.
 #'
 #' **user Properties:**
 #'
 #' - **id**: The ID of the user.
 #' - **login**: The login name of the user.
 #' - **name**: The name of the user (only available in `view_user()`).
-#' - **email**: The public email address of the user (only available in `view_user()`).
+#' - **email**: The public email address of the user (only available in
+#'   `view_user()`).
 #' - **blog**: The blog address of the user (only available in `view_user()`).
-#' - **company**: The company the user works for (only available in `view_user()`).
+#' - **company**: The company the user works for (only available in
+#'   `view_user()`).
 #' - **location**: The location of the user (only available in `view_user()`).
-#' - **hireable**: Whether the user currently hireable (only available in `view_user()`).
+#' - **hireable**: Whether the user currently hireable (only available in
+#'   `view_user()`).
 #' - **bio**: The biography of the user (only available in `view_user()`).
 #' - **site_admin**: Whether the user is an administrator.
 #' - **html_url**: The GitHub page for the user.
@@ -182,18 +243,27 @@ view_users <- function(
   team,
   role  = "all",
   n_max = 1000,
-  ...)
-{
+  ...
+) {
   if (!missing(org)) {
-    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    assert(
+      is_scalar_character(org),
+      "'org' must be a string:\n  ", org
+    )
     assert(
       is_scalar_character(role) && role %in% values$user$role,
-      "'role' must be one of '", str_c(values$card$role, collapse = "', '"), "':\n  ", role)
+      "'role' must be one of '",
+      str_c(values$card$role, collapse = "', '"), "':\n  ", role
+    )
 
     if (!missing(team)) {
-      assert(is_scalar_character(team), "'team' must be a string:\n  ", team)
+      assert(
+        is_scalar_character(team),
+        "'team' must be a string:\n  ", team
+      )
 
-      team <- gh_url("orgs", org, "teams") %>% gh_find(property = "name", value = team, ...)
+      team <- gh_url("orgs", org, "teams") %>%
+        gh_find(property = "name", value = team, ...)
 
       info("Viewing users in team '", team$name, "'")
       url <- gh_url("teams", team$id, "members", role = role)
@@ -218,21 +288,24 @@ view_users <- function(
 }
 
 
-#  FUNCTION: view_user ---------------------------------------------------------------------
+#  FUNCTION: view_user ---------------------------------------------------------
 #
 #' @rdname view_users
 #' @export
 #'
 view_user <- function(
   user,
-  ...)
-{
+  ...
+) {
   if (missing(user)) {
     info("Viewing authenticated user")
     url <- gh_url("user")
   }
   else {
-    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    assert(
+      is_scalar_character(user),
+      "'user' must be a string:\n  ", user
+    )
     info("Viewing user '", user, "'")
     url <- gh_url("users", user)
   }
@@ -247,15 +320,15 @@ view_user <- function(
 }
 
 
-#  FUNCTION: browse_user ----------------------------------------------------------------------
+#  FUNCTION: browse_user -------------------------------------------------------
 #
 #' @rdname view_users
 #' @export
 #'
 browse_user <- function(
   user,
-  ...)
-{
+  ...
+) {
   user <- view_user(user, ...)
 
   info("Browsing user '", user$name, "'")
@@ -268,5 +341,6 @@ browse_user <- function(
     url     = attr(user, "url"),
     request = attr(user, "request"),
     status  = attr(user, "status"),
-    header  = attr(user, "header"))
+    header  = attr(user, "header")
+  )
 }

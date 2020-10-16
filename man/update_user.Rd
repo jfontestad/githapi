@@ -9,7 +9,8 @@ update_user(name, email, blog, company, location, hireable, bio, ...)
 \arguments{
 \item{name}{(string, optional) The new name of the user.}
 
-\item{email}{(string, optional) The publicly visible email address of the user.}
+\item{email}{(string, optional) The publicly visible email address of the
+user.}
 
 \item{blog}{(string, optional) The new blog URL of the user.}
 
@@ -43,13 +44,13 @@ update_user(name, email, blog, company, location, hireable, bio, ...)
 }
 }
 \description{
-This function updates your user properties in GitHub. You cannot update someone else's
-profile.
+This function updates your user properties in GitHub. You cannot update
+someone else's profile.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/users/#update-a-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/users#update-the-authenticated-user}
 }
 }
 \examples{

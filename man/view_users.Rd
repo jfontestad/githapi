@@ -17,8 +17,8 @@ browse_user(user, ...)
 
 \item{team}{(string, optional) The name of the team.}
 
-\item{role}{(string, optional) Filter the result by role. Can specify either \code{"admin"},
-\code{"member"} or \code{"all"}. Default: \code{"all"}.}
+\item{role}{(string, optional) Filter the result by role. Can specify either
+\code{"admin"}, \code{"member"} or \code{"all"}. Default: \code{"all"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -28,40 +28,44 @@ browse_user(user, ...)
 }
 \value{
 \code{view_users()} returns a tibble of user properties. \code{view_user()}
-returns a list of properties for a single user.  \code{browse_user()} opens the default
-browser on the user's page and returns the URL.
+returns a list of properties for a single user.  \code{browse_user()} opens the
+default browser on the user's page and returns the URL.
 
 \strong{user Properties:}
 \itemize{
 \item \strong{id}: The ID of the user.
 \item \strong{login}: The login name of the user.
 \item \strong{name}: The name of the user (only available in \code{view_user()}).
-\item \strong{email}: The public email address of the user (only available in \code{view_user()}).
+\item \strong{email}: The public email address of the user (only available in
+\code{view_user()}).
 \item \strong{blog}: The blog address of the user (only available in \code{view_user()}).
-\item \strong{company}: The company the user works for (only available in \code{view_user()}).
+\item \strong{company}: The company the user works for (only available in
+\code{view_user()}).
 \item \strong{location}: The location of the user (only available in \code{view_user()}).
-\item \strong{hireable}: Whether the user currently hireable (only available in \code{view_user()}).
+\item \strong{hireable}: Whether the user currently hireable (only available in
+\code{view_user()}).
 \item \strong{bio}: The biography of the user (only available in \code{view_user()}).
 \item \strong{site_admin}: Whether the user is an administrator.
 \item \strong{html_url}: The GitHub page for the user.
 }
 }
 \description{
-\code{view_users()} summarises users in a table with the properties as columns and a row
-for each user. \code{view_user()} returns a list of all properties for a single user.
-\code{browse_user()} opens the web page for the user in the default browser.
+\code{view_users()} summarises users in a table with the properties as columns and
+a row for each user. \code{view_user()} returns a list of all properties for a
+single user. \code{browse_user()} opens the web page for the user in the default
+browser.
 }
 \details{
-You can summarise all the users associated with either an organization or a team within
-an organization. If none of those are supplied the first \code{n_max} users of GitHub are
-returned.
+You can summarise all the users associated with either an organization or a
+team within an organization. If none of those are supplied the first \code{n_max}
+users of GitHub are returned.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/orgs/members/#members-list}
-\item \url{https://developer.github.com/v3/teams/members/#list-team-members}
-\item \url{https://developer.github.com/v3/users/#get-all-users}
-\item \url{https://developer.github.com/v3/users/#get-a-single-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organization-members}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#list-team-members}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/users#list-users}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/users#get-a-user}
 }
 }
 \examples{
