@@ -32,17 +32,17 @@ update_organization(
 
 \item{company}{(string, optional) The company name.}
 
-\item{billing_email}{(string, optional) Billing email address. This address is not
-publicized.}
+\item{billing_email}{(string, optional) Billing email address. This address
+is not publicized.}
 
-\item{has_organization_projects}{(boolean, optional) Toggles whether an organization can use
-organization projects.}
+\item{has_organization_projects}{(boolean, optional) Toggles whether an
+organization can use organization projects.}
 
-\item{has_repository_projects}{(boolean, optional) Toggles whether repositories that belong
-to the organization can use repository projects.}
+\item{has_repository_projects}{(boolean, optional) Toggles whether
+repositories that belong to the organization can use repository projects.}
 
-\item{default_repository_permission}{(string, optional) Default permission level members have
-for organization repositories:
+\item{default_repository_permission}{(string, optional) Default permission
+level members have for organization repositories:
 \itemize{
 \item \code{"read"}: can pull, but not push to or administer this repository.
 \item \code{"write"}: can pull and push, but not administer this repository.
@@ -52,8 +52,9 @@ for organization repositories:
 
 Default: \code{"read"}.}
 
-\item{members_can_create_repositories}{(boolean, optional) Toggles the ability of non-admin
-organization members to create repositories. Can be one of:
+\item{members_can_create_repositories}{(boolean, optional) Toggles the
+ability of non-admin organization members to create repositories. Can be
+one of:
 \itemize{
 \item \code{TRUE}: all organization members can create repositories.
 \item \code{FALSE}: only organization owners can create repositories.
@@ -65,7 +66,8 @@ Default: \code{TRUE}. Note: A parameter can override this parameter. See
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{update_organization()} returns a list of the organization's properties.
+\code{update_organization()} returns a list of the organization's
+properties.
 
 \strong{Organization Properties:}
 \itemize{
@@ -79,7 +81,8 @@ Default: \code{TRUE}. Note: A parameter can override this parameter. See
 \item \strong{email}: The email address for the organization.
 \item \strong{is_verified}: Whether the organization has been verified.
 \item \strong{has_organization_projects}: Whether the organization can have projects.
-\item \strong{has_repository_projects}: Whether the organization's repositories can have projects.
+\item \strong{has_repository_projects}: Whether the organization's repositories can
+have projects.
 \item \strong{public_repos}: The number of public repositories.
 \item \strong{public_gists}: The number of public gists.
 \item \strong{html_url}: The address for the organization's GitHub web page.
@@ -94,18 +97,20 @@ Default: \code{TRUE}. Note: A parameter can override this parameter. See
 \item \strong{plan_space}: The total space allocated for the plan.
 \item \strong{plan_private_repos}: The number of private repositories for the plan.
 \item \strong{default_repository_settings}: The default access for new repositories.
-\item \strong{two_factor_requirement_enabled}: Whether members require two-factor authentication.
-\item \strong{members_can_create_repositories}: Whether members can create repositories.
+\item \strong{two_factor_requirement_enabled}: Whether members require two-factor
+authentication.
+\item \strong{members_can_create_repositories}: Whether members can create
+repositories.
 }
 }
 \description{
-This function updates an organization's properties in GitHub. You can only update an
-organization if you have the appropriate permissions.
+This function updates an organization's properties in GitHub. You can only
+update an organization if you have the appropriate permissions.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/orgs/#edit-an-organization}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#update-an-organization}
 }
 }
 \examples{
@@ -117,7 +122,8 @@ For more details see the GitHub API documentation:
     description                     = "We are the Hairy Coos!",
     location                        = "The Highlands",
     default_repository_permission   = "write",
-    members_can_create_repositories = FALSE)
+    members_can_create_repositories = FALSE
+  )
 
 }
 

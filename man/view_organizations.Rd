@@ -13,8 +13,8 @@ view_organization(org, ...)
 browse_organization(org, ...)
 }
 \arguments{
-\item{user}{(string, optional) The login of the user. If \code{NULL} the authenticated user is
-used.}
+\item{user}{(string, optional) The login of the user. If \code{NULL} the
+authenticated user is used.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -24,9 +24,9 @@ used.}
 }
 \value{
 \code{view_organizations()} returns a tibble of organization properties.
-\code{view_organization()} returns a list of properties for a single organization.
-\code{browse_organization()} opens the default browser on the organization's page and returns
-the URL.
+\code{view_organization()} returns a list of properties for a single
+organization. \code{browse_organization()} opens the default browser on the
+organization's page and returns the URL.
 
 \strong{Organization Properties:}
 \itemize{
@@ -44,7 +44,8 @@ The following are only returned using \code{view_organization()}:
 \item \strong{email}: The email address for the organization.
 \item \strong{is_verified}: Whether the organization has been verified.
 \item \strong{has_organization_projects}: Whether the organization can have projects.
-\item \strong{has_repository_projects}: Whether the organization's repositories can have projects.
+\item \strong{has_repository_projects}: Whether the organization's repositories can
+have projects.
 \item \strong{public_repos}: The number of public repositories.
 \item \strong{public_gists}: The number of public gists.
 \item \strong{html_url}: The address for the organization's GitHub web page.
@@ -59,26 +60,30 @@ The following are only returned using \code{view_organization()}:
 \item \strong{plan_space}: The total space allocated for the plan.
 \item \strong{plan_private_repos}: The number of private repositories for the plan.
 \item \strong{default_repository_permission}: The default access for new repositories.
-\item \strong{two_factor_requirement_enabled}: Whether members require two-factor authentication.
-\item \strong{members_can_create_repositories}: Whether members can create repositories.
+\item \strong{two_factor_requirement_enabled}: Whether members require two-factor
+authentication.
+\item \strong{members_can_create_repositories}: Whether members can create
+repositories.
 }
 }
 \description{
-\code{view_organizations()} summarises organizations in a table with the properties as columns
-and a row for each organization. \code{view_organization()} returns a list of all properties for
-a single organization. \code{browse_organization()} opens the web page for the organization in
-the default browser.
+\code{view_organizations()} summarises organizations in a table with the
+properties as columns and a row for each organization. \code{view_organization()}
+returns a list of all properties for a single organization.
+\code{browse_organization()} opens the web page for the organization in the
+default browser.
 }
 \details{
-You can summarise all the organizations a user is a member of by specifying the user login,
-or the authenticated user if it is set to \code{NULL}. If a user is not supplied the first
-\code{n_max} organizations of GitHub are returned.
+You can summarise all the organizations a user is a member of by specifying
+the user login, or the authenticated user if it is set to \code{NULL}. If a user
+is not supplied the first \code{n_max} organizations of GitHub are returned.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/orgs/#list-user-organizations}
-\item \url{https://developer.github.com/v3/orgs/#list-your-organizations}
-\item \url{https://developer.github.com/v3/orgs/#list-all-organizations}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations-for-a-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations-for-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#get-an-organization}
 }
 }
 \examples{
