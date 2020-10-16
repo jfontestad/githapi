@@ -22,15 +22,17 @@ create_team(
 
 \item{description}{(string, optional) The description of the team.}
 
-\item{maintainers}{(character, optional) The logins of organization members to add as
-maintainers of the team. If you do not specify any maintainers, then you will
-automatically become a team maintainer when you create a new team.}
+\item{maintainers}{(character, optional) The logins of organization members
+to add as maintainers of the team. If you do not specify any maintainers,
+then you will automatically become a team maintainer when you create a new
+team.}
 
 \item{repo_names}{(character, optional) The full name (e.g.
 "organization-name/repository-name") of repositories to add the team to.}
 
-\item{privacy}{(string, optional) The level of privacy this team should have. The
-options are:
+\item{privacy}{(string, optional) The level of privacy this team should have.
+The options are:
+
 For a non-nested team:
 \itemize{
 \item \code{"secret"}: only visible to organization owners and members of this team.
@@ -46,8 +48,8 @@ For a parent or child team:
 
 Default for child team: \code{"closed"}}
 
-\item{parent_team}{(integer or string, optional) The ID or name of a team to set as the
-parent team.}
+\item{parent_team}{(integer or string, optional) The ID or name of a team to
+set as the parent team.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -72,14 +74,14 @@ parent team.}
 }
 }
 \description{
-This function creates a new team in the specified organization in GitHub. It can also
-be used to specify the maintainers, the repositories to add the team to and a parent
-team.
+This function creates a new team in the specified organization in GitHub. It
+can also be used to specify the maintainers, the repositories to add the team
+to and a parent team.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/teams/#create-team}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#create-a-team}
 }
 }
 \examples{
@@ -89,7 +91,11 @@ For more details see the GitHub API documentation:
   create_team("TestTeam", "HairyCoos")
 
   # Create a team and specify maintainers
-  create_team("TestTeam2", "HairyCoos", maintainers = c("ChadGoymer", "chris-walker1"))
+  create_team(
+    name        = "TestTeam2",
+    org         = "HairyCoos",
+    maintainers = c("ChadGoymer", "chris-walker1")
+  )
 
   # Create a team and set the privacy
   create_team("TestTeam3", "HairyCoos", privacy = "closed")

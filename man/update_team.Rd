@@ -13,8 +13,9 @@ update_team(team, name, description, privacy, parent_team, org, ...)
 
 \item{description}{(string, optional) The description of the team.}
 
-\item{privacy}{(string, optional) The level of privacy this team should have. Editing teams
-without specifying this parameter leaves privacy intact. The options are:
+\item{privacy}{(string, optional) The level of privacy this team should have.
+Editing teams without specifying this parameter leaves privacy intact. The
+options are:
 
 For a non-nested team:
 \itemize{
@@ -27,11 +28,11 @@ For a parent or child team:
 \item \code{"closed"}: visible to all members of this organization.
 }}
 
-\item{parent_team}{(integer or string, optional) The ID or name of a team to set as the
-parent team.}
+\item{parent_team}{(integer or string, optional) The ID or name of a team to
+set as the parent team.}
 
-\item{org}{(string, optional) The organization the team is associated with. Not required
-if your are specifying \code{team} and/or \code{parent_team} set by ID.}
+\item{org}{(string, optional) The organization the team is associated with.
+Not required if your are specifying \code{team} and/or \code{parent_team} set by ID.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -56,13 +57,13 @@ if your are specifying \code{team} and/or \code{parent_team} set by ID.}
 }
 }
 \description{
-This function updates a team's properties in GitHub. You can only update a team if you have
-the appropriate permissions.
+This function updates a team's properties in GitHub. You can only update a
+team if you have the appropriate permissions.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/teams/#edit-team}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#update-a-team}
 }
 }
 \examples{
@@ -74,7 +75,8 @@ For more details see the GitHub API documentation:
     description = "This is a test team",
     privacy     = "closed",
     parent_team = "TestTeam3",
-    org         = "HairyCoos")
+    org         = "HairyCoos"
+  )
 
 }
 

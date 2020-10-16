@@ -15,8 +15,8 @@ browse_team(team, org, ...)
 \arguments{
 \item{org}{(string, optional) The login of the organization.}
 
-\item{parent_team}{(integer or string, optional) The ID or name of a team. If supplied, all
-the child teams will be returned.}
+\item{parent_team}{(integer or string, optional) The ID or name of a team. If
+supplied, all the child teams will be returned.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -25,9 +25,9 @@ the child teams will be returned.}
 \item{team}{(integer or string) The ID or name of the team.}
 }
 \value{
-\code{view_teams()} returns a tibble of team properties. \code{view_team()} returns a list
-of properties for a single team. \code{browse_team()} opens the default browser on the
-team's page and returns the URL.
+\code{view_teams()} returns a tibble of team properties. \code{view_team()}
+returns a list of properties for a single team. \code{browse_team()} opens the
+default browser on the team's page and returns the URL.
 
 \strong{Team Properties:}
 \itemize{
@@ -51,23 +51,29 @@ The following are only returned using \code{view_team()}:
 }
 }
 \description{
-\code{view_teams()} summarises teams in a table with the properties as columns and a row for
-each team. \code{view_team()} returns a list of all properties for a single team. \code{browse_team()}
-opens the web page for the team in the default browser.
+\code{view_teams()} summarises teams in a table with the properties as columns and
+a row for each team. \code{view_team()} returns a list of all properties for a
+single team. \code{browse_team()} opens the web page for the team in the default
+browser.
 }
 \details{
-You can summarise all the teams within an organisation, that are children to a parent team
-or, if neither are supplied, the teams the authenticated user is a member of.
+You can summarise all the teams within an organisation, that are children to
+a parent team or, if neither are supplied, the teams the authenticated user
+is a member of.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/teams/#list-teams}
-\item \url{https://developer.github.com/v3/teams/#list-child-teams}
-\item \url{https://developer.github.com/v3/teams/#list-user-teams}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#list-teams-for-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#list-teams}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#list-child-teams}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#get-a-team-by-name}
 }
 }
 \examples{
 \dontrun{
+
+  # View teams authenticated user is a member of
+  view_teams()
 
   # View teams in an organization
   view_teams("HairyCoos")
