@@ -1,35 +1,60 @@
-#  FUNCTION: create_pull_request --------------------------------------------------------------
+#  FUNCTION: create_pull_request -----------------------------------------------
 #
 #' Create an pull request in a repository
 #'
-#' This function creates a new pull request for the specified repository in GitHub. It can
-#' also be used to assign the pull request to a user, request reviewers and add labels or a
-#' milestone.
+#' This function creates a new pull request for the specified repository in
+#' GitHub. It can also be used to assign the pull request to a user, request
+#' reviewers and add labels or a milestone.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/pulls/#create-a-pull-request>
-#' - <https://developer.github.com/v3/issues/#edit-an-issue>
-#' - <https://developer.github.com/v3/pulls/review_requests/#create-a-review-request>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#create-a-pull-request",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#update-an-issue",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#request-reviewers-for-a-pull-request",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param title (string) The title of the pull request.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param head (string) The name of the branch where your changes are implemented. For
-#'   cross-repository pull requests, prefix `head` with an owner, e.g. `"username:branch"`.
-#' @param base (string) The name of the branch you want the changes pulled into. This should
-#'   be an existing branch in the specified repository.
+#' @param head (string) The name of the branch where your changes are
+#'   implemented. For cross-repository pull requests, prefix `head` with an
+#'   owner, e.g. `"username:branch"`.
+#' @param base (string) The name of the branch you want the changes pulled into.
+#'   This should be an existing branch in the specified repository.
 #' @param body (string, optional) The contents of the pull request.
-#' @param assignees (character, optional) Logins for Users to assign to this pull request.
-#'   NOTE: Only users with push access can set assignees for new pull requests.
-#' @param reviewers (character, optional) Logins for Users to review this pull request.
-#'   NOTE: Only users with push access can set reviewers for new pull requests.
-#' @param labels (character, optional) Labels to associate with this pull request. NOTE: Only
-#'   users with push access can set labels for new pull requests.
-#' @param milestone (character or integer, optional) The title or number of the milestone to
-#'   associate this pull request with. NOTE: Only users with push access can set the
-#'   milestone for new pull requests.
+#' @param assignees (character, optional) Logins for Users to assign to this
+#'   pull request. NOTE: Only users with push access can set assignees for new
+#'   pull requests.
+#' @param reviewers (character, optional) Logins for Users to review this pull
+#'   request. NOTE: Only users with push access can set reviewers for new pull
+#'   requests.
+#' @param labels (character, optional) Labels to associate with this pull
+#'   request. NOTE: Only users with push access can set labels for new pull
+#'   requests.
+#' @param milestone (character or integer, optional) The title or number of the
+#'   milestone to associate this pull request with. NOTE: Only users with push
+#'   access can set the milestone for new pull requests.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `create_pull_request()` returns a list of the pull request's properties.
+#' @return `create_pull_request()` returns a list of the pull request's
+#'   properties.
 #'
 #' **Pull Request Properties:**
 #'
@@ -41,7 +66,8 @@
 #' - **head_repo**: The repository containing the branch to merge in.
 #' - **base_sha**: The SHA of the commit to merge onto.
 #' - **base_ref**: The reference, or branch, to merge onto.
-#' - **merge_sha**: The SHA of the merge commit, if the merge has been completed.
+#' - **merge_sha**: The SHA of the merge commit, if the merge has been
+#'   completed.
 #' - **assignees**: The users assigned to the pull request.
 #' - **reviewers**: The users reviewing the pull request.
 #' - **labels**: The labels attached to the pull request.
@@ -68,7 +94,8 @@
 #'     repo  = "ChadGoymer/githapi",
 #'     head  = "test-pulls",
 #'     base  = "main",
-#'     body  = "This is a pull request to test create_pull_request()")
+#'     body  = "This is a pull request to test create_pull_request()"
+#'   )
 #'
 #'   create_pull_request(
 #'     title     = "test assigned pull request",
@@ -79,7 +106,8 @@
 #'     assignees = "ChadGoymer",
 #'     reviewers = c("BobSmith", "JaneJones"),
 #'     labels    = "enhancement",
-#'     milestone = "Release-1.0")
+#'     milestone = "Release-1.0"
+#'   )
 #'
 #' }
 #'
@@ -95,17 +123,32 @@ create_pull_request <- function(
   reviewers,
   labels,
   milestone,
-  ...)
-{
-  assert(is_scalar_character(title), "'title' must be a string:\n  ", title)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_scalar_character(head), "'head' must be a string:\n  ", head)
-  assert(is_scalar_character(base), "'base' must be a string:\n  ", base)
+  ...
+) {
+  assert(
+    is_scalar_character(title),
+    "'title' must be a string:\n  ", title
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
+  assert(
+    is_scalar_character(head),
+    "'head' must be a string:\n  ", head
+  )
+  assert(
+    is_scalar_character(base),
+    "'base' must be a string:\n  ", base
+  )
 
   payload <- list(title = title, head = head, base = base)
 
   if (!missing(body)) {
-    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    assert(
+      is_scalar_character(body),
+      "'body' must be a string:\n  ", body
+    )
     payload$body <- body
   }
 
@@ -116,12 +159,18 @@ create_pull_request <- function(
   payload <- list()
 
   if (!missing(assignees)) {
-    assert(is_character(assignees), "'assignees' must be a character vector:\n  ", assignees)
+    assert(
+      is_character(assignees),
+      "'assignees' must be a character vector:\n  ", assignees
+    )
     payload$assignees <- as.list(assignees)
   }
 
   if (!missing(labels)) {
-    assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+    assert(
+      is_character(labels),
+      "'labels' must be a character vector:\n  ", labels
+    )
     payload$labels <- as.list(labels)
   }
 
@@ -129,23 +178,33 @@ create_pull_request <- function(
     if (is_scalar_character(milestone)) {
       milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
-
-    assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
+    assert(
+      is_scalar_integerish(milestone),
+      "'milestone' must be a string or integer:\n  ", milestone
+    )
     payload$milestone <- milestone
   }
 
   issue_lst <- list(milestone = list(title = NA_character_))
   if (length(payload) > 0) {
-    info("Adding assignees, labels or milestone to pull request '", pull_lst$title, "'")
+    info(
+      "Adding assignees, labels or milestone to pull request '",
+      pull_lst$title, "'"
+    )
     issue_lst <- gh_url("repos", repo, "issues", pull_lst$number) %>%
       gh_request("PATCH", payload = payload, ...)
   }
 
   reviewers_lst <- list()
   if (!missing(reviewers)) {
-    assert(is_character(reviewers), "'reviewers' must be a character vector:\n  ", reviewers)
+    assert(
+      is_character(reviewers),
+      "'reviewers' must be a character vector:\n  ", reviewers
+    )
     info("Adding reviewers to pull request '", pull_lst$title, "'")
-    reviewers_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "requested_reviewers") %>%
+    reviewers_lst <- gh_url(
+      "repos", repo, "pulls", pull_lst$number, "requested_reviewers"
+    ) %>%
       gh_request("POST", payload = list(reviewers = as.list(reviewers)), ...)
   }
 
@@ -155,7 +214,8 @@ create_pull_request <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       reviewers = map_chr(reviewers_lst$requested_reviewers, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
-      .before   = "milestone") %>%
+      .before   = "milestone"
+    ) %>%
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
   info("Done", level = 7)
@@ -163,39 +223,64 @@ create_pull_request <- function(
 }
 
 
-#  FUNCTION: update_pull_request --------------------------------------------------------------
+#  FUNCTION: update_pull_request -----------------------------------------------
 #
 #' Update a pull request in a repository
 #'
-#' This function updates a pull request for the specified repository in GitHub. It can be used
-#' to change the title or body, or used to close the pull request. It can also be used to
-#' assign the pull request to a user, request reviewers and replace labels or a milestone.
+#' This function updates a pull request for the specified repository in GitHub.
+#' It can be used to change the title or body, or used to close the pull
+#' request. It can also be used to assign the pull request to a user, request
+#' reviewers and replace labels or a milestone.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/pulls/#update-a-pull-request>
-#' - <https://developer.github.com/v3/issues/#edit-an-issue>
-#' - <https://developer.github.com/v3/pulls/review_requests/#create-a-review-request>
 #'
-#' @param pull_request (string or character) The number or title of the pull request.
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#update-a-pull-request",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#update-an-issue",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#request-reviewers-for-a-pull-request",
+#'   ">"
+#' ))
+#'
+#' @param pull_request (string or character) The number or title of the pull
+#'   request.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param title (string, optional) The new title of the pull request.
 #' @param body (string, optional) The contents of the pull request.
-#' @param assignees (character, optional) Logins for Users to assign to this pull request.
-#'   NOTE: Only users with push access can set assignees for new pull requests.
-#' @param reviewers (character, optional) Logins for Users to review this pull request.
-#'   NOTE: Only users with push access can set reviewers for new pull requests.
-#' @param labels (character, optional) Labels to associate with this pull request. NOTE: Only
-#'   users with push access can set labels for new pull requests.
-#' @param milestone (character or integer, optional) The title or number of the milestone to
-#'   associate this pull request with. NOTE: Only users with push access can set the
-#'   milestone for new pull requests.
-#' @param state (string, optional) The state of the pull request. Either `"open"` or
-#'   `"closed"`.
-#' @param base (string, optional) The name of the branch you want the changes pulled into.
-#'   This should be an existing branch on the current repository.
+#' @param assignees (character, optional) Logins for Users to assign to this
+#'   pull request. NOTE: Only users with push access can set assignees for new
+#'   pull requests.
+#' @param reviewers (character, optional) Logins for Users to review this pull
+#'   request. NOTE: Only users with push access can set reviewers for new pull
+#'   requests.
+#' @param labels (character, optional) Labels to associate with this pull
+#'   request. NOTE: Only users with push access can set labels for new pull
+#'   requests.
+#' @param milestone (character or integer, optional) The title or number of the
+#'   milestone to associate this pull request with. NOTE: Only users with push
+#'   access can set the milestone for new pull requests.
+#' @param state (string, optional) The state of the pull request. Either
+#'   `"open"` or `"closed"`.
+#' @param base (string, optional) The name of the branch you want the changes
+#'   pulled into. This should be an existing branch on the current repository.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `update_pull_request()` returns a list of the pull request's properties.
+#' @return `update_pull_request()` returns a list of the pull request's
+#'   properties.
 #'
 #' **Pull Request Properties:**
 #'
@@ -207,7 +292,8 @@ create_pull_request <- function(
 #' - **head_repo**: The repository containing the branch to merge in.
 #' - **base_sha**: The SHA of the commit to merge onto.
 #' - **base_ref**: The reference, or branch, to merge onto.
-#' - **merge_sha**: The SHA of the merge commit, if the merge has been completed.
+#' - **merge_sha**: The SHA of the merge commit, if the merge has been
+#'   completed.
 #' - **assignees**: The users assigned to the pull request.
 #' - **reviewers**: The users reviewing the pull request.
 #' - **labels**: The labels attached to the pull request.
@@ -234,13 +320,15 @@ create_pull_request <- function(
 #'     pull_request = "test pull request",
 #'     repo         = "ChadGoymer/githapi",
 #'     title        = "test updated pull request",
-#'     body         = "This is an updated pull request to test create_pull_request()")
+#'     body         = "This is an updated pull request"
+#'   )
 #'
 #'   # Close a pull request
 #'   update_pull_request(
 #'     pull_request = "test updated pull request",
 #'     repo         = "ChadGoymer/githapi",
-#'     state        = "closed")
+#'     state        = "closed"
+#'   )
 #'
 #' }
 #'
@@ -257,50 +345,70 @@ update_pull_request <- function(
   milestone,
   base,
   state,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   payload <- list()
 
   if (!missing(title)) {
-    assert(is_scalar_character(title), "'title' must be a string:\n  ", title)
+    assert(
+      is_scalar_character(title),
+      "'title' must be a string:\n  ", title
+    )
     payload$title <- title
   }
 
   if (!missing(body)) {
-    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    assert(
+      is_scalar_character(body),
+      "'body' must be a string:\n  ", body
+    )
     payload$body <- body
   }
 
   if (!missing(state)) {
     assert(
       is_scalar_character(state) && state %in% values$pull_request$state,
-      "'state' for milestones must be either '", str_c(values$pull_request$state, collapse = "', '"), "':\n  ", state)
+      "'state' for milestones must be either '",
+      str_c(values$pull_request$state, collapse = "', '"), "':\n  ", state
+    )
     payload$state <- state
   }
 
   if (!missing(base)) {
-    assert(is_scalar_character(base), "'base' must be a string:\n  ", base)
+    assert(
+      is_scalar_character(base),
+      "'base' must be a string:\n  ", base
+    )
     payload$base <- base
   }
 
   if (is_scalar_integerish(pull_request)) {
-    info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
+    info("Viewing pull request '", pull_request, "' for repo '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
       gh_request("GET", ...)
   }
   else if (is_scalar_character(pull_request)) {
-    info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
+    info("Viewing pull_request '", pull_request, "' for repo '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
       gh_find(property  = "title", value = pull_request, ...)
   }
   else {
-    error("'pull_request' must be either an integer or a string:\n  ", pull_request)
+    error(
+      "'pull_request' must be either an integer or a string:\n  ",
+      pull_request
+    )
   }
 
   if (length(payload) > 0) {
-    info("Updating pull request '", pull_lst$title, "' in repository '", repo, "'")
+    info(
+      "Updating pull request '", pull_lst$title,
+      "' in repository '", repo, "'"
+    )
     pull_lst <- gh_url("repos", repo, "issues", pull_lst$number) %>%
       gh_request("PATCH", payload = payload, ...)
   }
@@ -308,12 +416,18 @@ update_pull_request <- function(
   payload <- list()
 
   if (!missing(assignees)) {
-    assert(is_character(assignees), "'assignees' must be a character vector:\n  ", assignees)
+    assert(
+      is_character(assignees),
+      "'assignees' must be a character vector:\n  ", assignees
+    )
     payload$assignees <- as.list(assignees)
   }
 
   if (!missing(labels)) {
-    assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
+    assert(
+      is_character(labels),
+      "'labels' must be a character vector:\n  ", labels
+    )
     payload$labels <- as.list(labels)
   }
 
@@ -321,23 +435,33 @@ update_pull_request <- function(
     if (is_scalar_character(milestone)) {
       milestone <- view_milestone(milestone, repo = repo, ...)$number
     }
-
-    assert(is_scalar_integerish(milestone), "'milestone' must be a string or integer:\n  ", milestone)
+    assert(
+      is_scalar_integerish(milestone),
+      "'milestone' must be a string or integer:\n  ", milestone
+    )
     payload$milestone <- milestone
   }
 
   issue_lst <- list(milestone = list(title = NA_character_))
   if (length(payload) > 0) {
-    info("Adding assignees, labels or milestone to pull request '", pull_lst$title, "'")
+    info(
+      "Adding assignees, labels or milestone to pull request '",
+      pull_lst$title, "'"
+    )
     issue_lst <- gh_url("repos", repo, "issues", pull_lst$number) %>%
       gh_request("PATCH", payload = payload, ...)
   }
 
   reviewers_lst <- list()
   if (!missing(reviewers)) {
-    assert(is_character(reviewers), "'reviewers' must be a character vector:\n  ", reviewers)
+    assert(
+      is_character(reviewers),
+      "'reviewers' must be a character vector:\n  ", reviewers
+    )
     info("Adding reviewers to pull request '", pull_lst$title, "'")
-    reviewers_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "requested_reviewers") %>%
+    reviewers_lst <- gh_url(
+      "repos", repo, "pulls", pull_lst$number, "requested_reviewers"
+    ) %>%
       gh_request("POST", payload = list(reviewers = as.list(reviewers)), ...)
   }
 
@@ -347,7 +471,8 @@ update_pull_request <- function(
       assignees = map_chr(issue_lst$assignees, "login"),
       reviewers = map_chr(reviewers_lst$requested_reviewers, "login"),
       labels    = map_chr(issue_lst$labels, "name"),
-      .before   = "milestone") %>%
+      .before   = "milestone"
+    ) %>%
     modify_list(repository = repo, milestone = issue_lst$milestone$title)
 
   info("Done", level = 7)
@@ -355,42 +480,60 @@ update_pull_request <- function(
 }
 
 
-#  FUNCTION: view_pull_requests ---------------------------------------------------------------
+#  FUNCTION: view_pull_requests ------------------------------------------------
 #
 #' View pull requests within a repository
 #'
-#' `view_pull_requests()` summarises pull requests in a table with the properties as columns
-#' and a row for each pull request in the repository. `view_pull_request()` returns a list of
-#' all properties for a single pull request. `browse_pull_request()` opens the web page for
-#' the pull request in the default browser.
+#' `view_pull_requests()` summarises pull requests in a table with the
+#' properties as columns and a row for each pull request in the repository.
+#' `view_pull_request()` returns a list of all properties for a single pull
+#' request. `browse_pull_request()` opens the web page for the pull request in
+#' the default browser.
 #'
-#' You can filter the pull requests by the head and base branches (the branch to merge in and
-#' the branch to merge into) or the state (whether they are `"open"` or `"closed"`). You can
-#' also order the results with `sort` and `direction`.
+#' You can filter the pull requests by the head and base branches (the branch to
+#' merge in and the branch to merge into) or the state (whether they are
+#' `"open"` or `"closed"`). You can also order the results with `sort` and
+#' `direction`.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/pulls/#list-pull-requests>
-#' - <https://developer.github.com/v3/pulls/#get-a-single-pull-request>
 #'
-#' @param pull_request (string or character) The number or title of the pull request.
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#list-pull-requests",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#get-a-pull-request",
+#'   ">"
+#' ))
+#' ```
+#'
+#' @param pull_request (string or character) The number or title of the pull
+#'   request.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param head (string) The branch to merge in. If it is not in the specified `repo` then the
-#'   owner must prefix the branch name, e.g. `"owner:branch"`.
+#' @param head (string) The branch to merge in. If it is not in the specified
+#'   `repo` then the owner must prefix the branch name, e.g. `"owner:branch"`.
 #' @param base (string) The branch to merge into.
-#' @param state (string, optional) The state of the pull requests to return. Can be either
-#'   `"open"`, `"closed"`, or `"all"`. Default: `"open"`.
-#' @param sort (string, optional) The property to order the returned pull requests by. Can
-#'   be either `"created"`, `"updated"`, `"popularity"` (comment count) or `"long-running"`
-#'   (age, filtering by pulls updated in the last month). Default: `"created"`.
-#' @param direction (string, optional) The direction of the sort. Can be either `"asc"` or
-#'   `"desc"`. Default: `"desc"`.
+#' @param state (string, optional) The state of the pull requests to return. Can
+#'   be either `"open"`, `"closed"`, or `"all"`. Default: `"open"`.
+#' @param sort (string, optional) The property to order the returned pull
+#'   requests by. Can be either `"created"`, `"updated"`, `"popularity"`
+#'   (comment count) or `"long-running"` (age, filtering by pulls updated in the
+#'   last month). Default: `"created"`.
+#' @param direction (string, optional) The direction of the sort. Can be either
+#'   `"asc"` or `"desc"`. Default: `"desc"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
 #' @return `view_pull_requests()` returns a tibble of pull request properties.
-#'   `view_pull_request()` returns a list of properties for a single pull request.
-#'   `browse_pull_request()` opens the default browser on the pull request's page and returns
-#'   the URL.
+#'   `view_pull_request()` returns a list of properties for a single pull
+#'   request. `browse_pull_request()` opens the default browser on the pull
+#'   request's page and returns the URL.
 #'
 #' **Pull Request Properties:**
 #'
@@ -402,7 +545,8 @@ update_pull_request <- function(
 #' - **head_repo**: The repository containing the branch to merge in.
 #' - **base_sha**: The SHA of the commit to merge onto.
 #' - **base_ref**: The reference, or branch, to merge onto.
-#' - **merge_sha**: The SHA of the merge commit, if the merge has been completed.
+#' - **merge_sha**: The SHA of the merge commit, if the merge has been
+#'   completed.
 #' - **assignees**: The users assigned to the pull request.
 #' - **reviewers**: The users reviewing the pull request.
 #' - **labels**: The labels attached to the pull request.
@@ -464,7 +608,11 @@ update_pull_request <- function(
 #'   view_pull_requests("ChadGoymer/githapi", base = "main")
 #'
 #'   # View pull requests, sorted by the most recently updated
-#'   view_pull_requests("ChadGoymer/githapi", sort = "updated", direction = "desc")
+#'   view_pull_requests(
+#'     repo      = "ChadGoymer/githapi",
+#'     sort      = "updated",
+#'     direction = "desc"
+#'   )
 #'
 #'   # View single pull request
 #'   view_pull_request("test pull request", repo = "ChadGoymer/githapi")
@@ -484,12 +632,18 @@ view_pull_requests <- function(
   sort      = "created",
   direction = "desc",
   n_max     = 1000,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (!missing(head)) {
-    assert(is_scalar_character(head), "'head' must be a string:\n  ", head)
+    assert(
+      is_scalar_character(head),
+      "'head' must be a string:\n  ", head
+    )
     if (!str_detect(head, ":")) {
       head <- str_c(dirname(repo), ":", head)
     }
@@ -499,7 +653,10 @@ view_pull_requests <- function(
   }
 
   if (!missing(base)) {
-    assert(is_scalar_character(base), "'base' must be a string:\n  ", base)
+    assert(
+      is_scalar_character(base),
+      "'base' must be a string:\n  ", base
+    )
   }
   else {
     base <- NULL
@@ -507,13 +664,21 @@ view_pull_requests <- function(
 
   assert(
     is_scalar_character(state) && state %in% values$pull_request$state,
-    "'state' must be either '", str_c(values$pull_request$state, collapse = "', '"), "':\n  ", state)
+    "'state' must be either '",
+    str_c(values$pull_request$state, collapse = "', '"), "':\n  ", state
+  )
   assert(
     is_scalar_character(sort) && sort %in% values$pull_request$sort,
-    "'sort' must be either '", str_c(values$pull_request$sort, collapse = "', '"), "':\n  ", sort)
+    "'sort' must be either '",
+    str_c(values$pull_request$sort, collapse = "', '"), "':\n  ", sort
+  )
   assert(
-    is_scalar_character(direction) && direction %in% values$pull_request$direction,
-    "'direction' must be either '", str_c(values$pull_request$direction, collapse = "', '"), "':\n  ", direction)
+    is_scalar_character(direction) &&
+      direction %in% values$pull_request$direction,
+    "'direction' must be either '",
+    str_c(values$pull_request$direction, collapse = "', '"), "':\n  ",
+    direction
+  )
 
   info("Viewing pull requests for repository '", repo, "'")
   pulls_lst <- gh_url(
@@ -522,21 +687,31 @@ view_pull_requests <- function(
     base      = base,
     state     = state,
     sort      = sort,
-    direction = direction) %>%
+    direction = direction
+  ) %>%
     gh_page(n_max = n_max, ...)
 
   info("Transforming results", level = 4)
   pulls_gh <- bind_properties(pulls_lst, properties$pull_request) %>%
-    add_column(labels    = map(pulls_lst, ~ map_chr(.$labels, "name")), .before = "milestone") %>%
-    add_column(assignees = map(pulls_lst, ~ map_chr(.$assignees, "login")), .before = "labels") %>%
-    add_column(reviewers = map(pulls_lst, ~ map_chr(.$requested_reviewers, "login")), .before = "labels")
+    add_column(
+      labels  = map(pulls_lst, ~ map_chr(.$labels, "name")),
+      .before = "milestone"
+    ) %>%
+    add_column(
+      assignees = map(pulls_lst, ~ map_chr(.$assignees, "login")),
+      .before   = "labels"
+    ) %>%
+    add_column(
+      reviewers = map(pulls_lst, ~ map_chr(.$requested_reviewers, "login")),
+      .before   = "labels"
+    )
 
   info("Done", level = 7)
   pulls_gh
 }
 
 
-#  FUNCTION: view_pull_request ----------------------------------------------------------------
+#  FUNCTION: view_pull_request -------------------------------------------------
 #
 #' @rdname view_pull_requests
 #' @export
@@ -545,29 +720,38 @@ view_pull_request <- function(
   pull_request,
   repo,
   n_max = 1000,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (is_scalar_integerish(pull_request)) {
-    info("Viewing pull request '", pull_request, "' for repository '", repo, "'")
+    info("Viewing pull request '", pull_request, "' for repo '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", pull_request) %>%
       gh_request("GET", ...)
   }
   else if (is_scalar_character(pull_request)) {
-    info("Viewing pull_request '", pull_request, "' for repository '", repo, "'")
+    info("Viewing pull_request '", pull_request, "' for repo '", repo, "'")
     pull_lst <- gh_url("repos", repo, "pulls", state = "all") %>%
       gh_find(property  = "title", value = pull_request, ...)
   }
   else {
-    error("'pull_request' must be either an integer or a string:\n  ", pull_request)
+    error(
+      "'pull_request' must be either an integer or a string:\n  ",
+      pull_request
+    )
   }
 
   info("Transforming results", level = 4)
   commits_lst <- gh_url("repos", repo, "pulls", pull_lst$number, "commits") %>%
     gh_page(n_max = n_max, ...)
   commits <- bind_properties(commits_lst, properties$pull_commits) %>%
-    add_column(parents = map(commits_lst, ~ map_chr(.$parents, "sha")), .before = "html_url")
+    add_column(
+      parents = map(commits_lst, ~ map_chr(.$parents, "sha")),
+      .before = "html_url"
+    )
 
   files <- gh_url("repos", repo, "pulls", pull_lst$number, "files") %>%
     gh_page(n_max = n_max, ...) %>%
@@ -582,19 +766,21 @@ view_pull_request <- function(
       assignees = map_chr(pull_lst$assignees, "login"),
       reviewers = map_chr(pull_lst$requested_reviewers, "login"),
       labels    = map_chr(pull_lst$labels, "name"),
-      .before   = "milestone") %>%
+      .before   = "milestone"
+    ) %>%
     modify_list(
       repository = repo,
       commits    = commits,
       files      = files,
-      reviews    = reviews)
+      reviews    = reviews
+    )
 
   info("Done", level = 7)
   pull_gh
 }
 
 
-#  FUNCTION: browse_pull_request --------------------------------------------------------------
+#  FUNCTION: browse_pull_request -----------------------------------------------
 #
 #' @rdname view_pull_requests
 #' @export
@@ -602,11 +788,15 @@ view_pull_request <- function(
 browse_pull_request <- function(
   pull_request,
   repo,
-  ...)
-{
-  pull_request <- view_pull_request(pull_request = pull_request, repo = repo, ...)
+  ...
+) {
+  pull_request <- view_pull_request(
+    pull_request = pull_request,
+    repo         = repo,
+    ...
+  )
 
-  info("Browsing pull request '", pull_request$title, "' in repository '", repo, "'")
+  info("Browsing pull request '", pull_request$title, "' in repo '", repo, "'")
   httr::BROWSE(pull_request$html_url)
 
   info("Done", level = 7)
@@ -616,5 +806,6 @@ browse_pull_request <- function(
     url     = attr(pull_request, "url"),
     request = attr(pull_request, "request"),
     status  = attr(pull_request, "status"),
-    header  = attr(pull_request, "header"))
+    header  = attr(pull_request, "header")
+  )
 }

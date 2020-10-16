@@ -24,32 +24,34 @@ browse_pull_request(pull_request, repo, ...)
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{head}{(string) The branch to merge in. If it is not in the specified \code{repo} then the
-owner must prefix the branch name, e.g. \code{"owner:branch"}.}
+\item{head}{(string) The branch to merge in. If it is not in the specified
+\code{repo} then the owner must prefix the branch name, e.g. \code{"owner:branch"}.}
 
 \item{base}{(string) The branch to merge into.}
 
-\item{state}{(string, optional) The state of the pull requests to return. Can be either
-\code{"open"}, \code{"closed"}, or \code{"all"}. Default: \code{"open"}.}
+\item{state}{(string, optional) The state of the pull requests to return. Can
+be either \code{"open"}, \code{"closed"}, or \code{"all"}. Default: \code{"open"}.}
 
-\item{sort}{(string, optional) The property to order the returned pull requests by. Can
-be either \code{"created"}, \code{"updated"}, \code{"popularity"} (comment count) or \code{"long-running"}
-(age, filtering by pulls updated in the last month). Default: \code{"created"}.}
+\item{sort}{(string, optional) The property to order the returned pull
+requests by. Can be either \code{"created"}, \code{"updated"}, \code{"popularity"}
+(comment count) or \code{"long-running"} (age, filtering by pulls updated in the
+last month). Default: \code{"created"}.}
 
-\item{direction}{(string, optional) The direction of the sort. Can be either \code{"asc"} or
-\code{"desc"}. Default: \code{"desc"}.}
+\item{direction}{(string, optional) The direction of the sort. Can be either
+\code{"asc"} or \code{"desc"}. Default: \code{"desc"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 
-\item{pull_request}{(string or character) The number or title of the pull request.}
+\item{pull_request}{(string or character) The number or title of the pull
+request.}
 }
 \value{
 \code{view_pull_requests()} returns a tibble of pull request properties.
-\code{view_pull_request()} returns a list of properties for a single pull request.
-\code{browse_pull_request()} opens the default browser on the pull request's page and returns
-the URL.
+\code{view_pull_request()} returns a list of properties for a single pull
+request. \code{browse_pull_request()} opens the default browser on the pull
+request's page and returns the URL.
 
 \strong{Pull Request Properties:}
 \itemize{
@@ -61,7 +63,8 @@ the URL.
 \item \strong{head_repo}: The repository containing the branch to merge in.
 \item \strong{base_sha}: The SHA of the commit to merge onto.
 \item \strong{base_ref}: The reference, or branch, to merge onto.
-\item \strong{merge_sha}: The SHA of the merge commit, if the merge has been completed.
+\item \strong{merge_sha}: The SHA of the merge commit, if the merge has been
+completed.
 \item \strong{assignees}: The users assigned to the pull request.
 \item \strong{reviewers}: The users reviewing the pull request.
 \item \strong{labels}: The labels attached to the pull request.
@@ -117,20 +120,22 @@ Additionally, the \code{view_pull_request()} function also returns:
 }
 }
 \description{
-\code{view_pull_requests()} summarises pull requests in a table with the properties as columns
-and a row for each pull request in the repository. \code{view_pull_request()} returns a list of
-all properties for a single pull request. \code{browse_pull_request()} opens the web page for
-the pull request in the default browser.
+\code{view_pull_requests()} summarises pull requests in a table with the
+properties as columns and a row for each pull request in the repository.
+\code{view_pull_request()} returns a list of all properties for a single pull
+request. \code{browse_pull_request()} opens the web page for the pull request in
+the default browser.
 }
 \details{
-You can filter the pull requests by the head and base branches (the branch to merge in and
-the branch to merge into) or the state (whether they are \code{"open"} or \code{"closed"}). You can
-also order the results with \code{sort} and \code{direction}.
+You can filter the pull requests by the head and base branches (the branch to
+merge in and the branch to merge into) or the state (whether they are
+\code{"open"} or \code{"closed"}). You can also order the results with \code{sort} and
+\code{direction}.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/pulls/#list-pull-requests}
-\item \url{https://developer.github.com/v3/pulls/#get-a-single-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#list-pull-requests}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#get-a-pull-request}
 }
 }
 \examples{
@@ -146,7 +151,11 @@ For more details see the GitHub API documentation:
   view_pull_requests("ChadGoymer/githapi", base = "main")
 
   # View pull requests, sorted by the most recently updated
-  view_pull_requests("ChadGoymer/githapi", sort = "updated", direction = "desc")
+  view_pull_requests(
+    repo      = "ChadGoymer/githapi",
+    sort      = "updated",
+    direction = "desc"
+  )
 
   # View single pull request
   view_pull_request("test pull request", repo = "ChadGoymer/githapi")
