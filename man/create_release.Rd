@@ -24,11 +24,13 @@ create_release(
 
 \item{body}{(string, optional) The description of the release.}
 
-\item{ref}{(string, optional) Either a SHA or branch used to identify the commit. If the
-\code{tag} exists this \code{ref} is ignored. If not supplied the repositories default branch is
+\item{ref}{(string, optional) Either a SHA or branch used to identify the
+commit. If the \code{tag} exists this \code{ref} is ignored. If not supplied the
+repositories default branch is
 used.}
 
-\item{draft}{(boolean, optional) Whether the release is a draft. Default: \code{FALSE}.}
+\item{draft}{(boolean, optional) Whether the release is a draft. Default:
+\code{FALSE}.}
 
 \item{prerelease}{(boolean, optional) Whether the release is a pre-release.
 Default: \code{FALSE}.}
@@ -55,15 +57,15 @@ Default: \code{FALSE}.}
 }
 }
 \description{
-This function creates a new release in the specified repository in GitHub. It must be
-pointed at a commit by providing an existing tag or a Git reference, which can be either a
-SHA or branch. If the tag does not exist it is created pointing at the commit; if it does
-exist then the reference is ignored.
+This function creates a new release in the specified repository in GitHub. It
+must be pointed at a commit by providing an existing tag or a Git reference,
+which can be either a SHA or branch. If the tag does not exist it is created
+pointing at the commit; if it does exist then the reference is ignored.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/releases/#create-a-release}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-release}
 }
 }
 \examples{
@@ -74,7 +76,8 @@ For more details see the GitHub API documentation:
     tag  = "1.0.0",
     repo = "ChadGoymer/githapi",
     name = "Initial production release",
-    body = "This is a release created by create_release()")
+    body = "This is a release created by create_release()"
+  )
 
   # Create a draft pre-release
   create_release(
@@ -84,7 +87,8 @@ For more details see the GitHub API documentation:
     body       = "This is a release created by create_release()",
     ref        = "dev-branch",
     draft      = TRUE,
-    prerelease = TRUE)
+    prerelease = TRUE
+  )
 
 }
 
