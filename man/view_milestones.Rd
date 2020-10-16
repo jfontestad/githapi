@@ -22,14 +22,14 @@ browse_milestone(milestone, repo, ...)
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{state}{(string, optional) The state of the milestones to filter the result. Can be
-either \code{"open"}, \code{"closed"} or \code{"all"}. Default: \code{"open"}.}
+\item{state}{(string, optional) The state of the milestones to filter the
+result. Can be either \code{"open"}, \code{"closed"} or \code{"all"}. Default: \code{"open"}.}
 
-\item{sort}{(string, optional) The property to order the returned milestones by. Can
-be either \code{"due_on"} or \code{"completeness"}. Default: \code{"due_on"}.}
+\item{sort}{(string, optional) The property to order the returned milestones
+by. Can be either \code{"due_on"} or \code{"completeness"}. Default: \code{"due_on"}.}
 
-\item{direction}{(string, optional) The direction of the sort. Can be either \code{"asc"} or
-\code{"desc"}. Default: \code{"asc"}.}
+\item{direction}{(string, optional) The direction of the sort. Can be either
+\code{"asc"} or \code{"desc"}. Default: \code{"asc"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -38,9 +38,10 @@ be either \code{"due_on"} or \code{"completeness"}. Default: \code{"due_on"}.}
 \item{milestone}{(string or character) The number or title of the milestone.}
 }
 \value{
-\code{view_milestones()} returns a tibble of milestone properties. \code{view_milestone()}
-returns a list of properties for a single milestone. \code{browse_milestone()} opens the
-default browser on the milestone's page and returns the URL.
+\code{view_milestones()} returns a tibble of milestone properties.
+\code{view_milestone()} returns a list of properties for a single milestone.
+\code{browse_milestone()} opens the default browser on the milestone's page and
+returns the URL.
 
 \strong{Milestone Properties:}
 \itemize{
@@ -59,18 +60,19 @@ default browser on the milestone's page and returns the URL.
 }
 }
 \description{
-\code{view_milestones()} summarises milestones in a table with the properties as columns and a
-row for each milestone in the repository. \code{view_milestone()} returns a list of all
-properties for a single milestone. \code{browse_milestone()} opens the web page for the
-milestone in the default browser.
+\code{view_milestones()} summarises milestones in a table with the properties as
+columns and a row for each milestone in the repository. \code{view_milestone()}
+returns a list of all properties for a single milestone. \code{browse_milestone()}
+opens the web page for the milestone in the default browser.
 }
 \details{
-You can summarise all the milestones of a repository in a specified \code{state} and change the
-order they are returned using \code{sort} and \code{direction}.
+You can summarise all the milestones of a repository in a specified \code{state}
+and change the order they are returned using \code{sort} and \code{direction}.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#list-milestones}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#get-a-milestone}
 }
 }
 \examples{
@@ -85,12 +87,14 @@ For more details see the GitHub API documentation:
   # View a single milestone
   view_milestone(
     milestone = "test milestone",
-    repo      = "ChadGoymer/githapi")
+    repo      = "ChadGoymer/githapi"
+  )
 
   # Open a milestone's page in a browser
   browse_milestone(
     milestone = "test milestone",
-    repo      = "ChadGoymer/githapi")
+    repo      = "ChadGoymer/githapi"
+  )
 
 }
 

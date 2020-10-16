@@ -15,10 +15,11 @@ update_milestone(milestone, repo, title, description, due_on, state, ...)
 
 \item{description}{(string, optional) A description of the milestone.}
 
-\item{due_on}{(string, optional) The milestone due date. This is in the format:
-\verb{YYYY-MM-DD HH:MM:SS}.}
+\item{due_on}{(string, optional) The milestone due date. This is in the
+format: \verb{YYYY-MM-DD HH:MM:SS}.}
 
-\item{state}{(string, optional) The state of the milestone. Either \code{"open"} or \code{"closed"}.}
+\item{state}{(string, optional) The state of the milestone. Either \code{"open"}
+or \code{"closed"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -42,13 +43,14 @@ update_milestone(milestone, repo, title, description, due_on, state, ...)
 }
 }
 \description{
-This function updates a milestone for the specified repository in GitHub. It can be used to
-change title, description or due date, but can also be used to close the milestone.
+This function updates a milestone for the specified repository in GitHub. It
+can be used to change title, description or due date, but can also be used to
+close the milestone.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/milestones/#update-a-milestone}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-a-milestone}
 }
 }
 \examples{
@@ -60,13 +62,15 @@ For more details see the GitHub API documentation:
     repo        = "ChadGoymer/githapi",
     title       = "updated test milestone",
     description = "This is an updated test milestone",
-    due_on      = "2020-12-01")
+    due_on      = "2020-12-01"
+  )
 
   # Close a milestone
   update_milestone(
     milestone = "updated test milestone",
     repo      = "ChadGoymer/githapi",
-    state     = "closed")
+    state     = "closed"
+  )
 
 }
 

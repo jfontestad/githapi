@@ -13,11 +13,11 @@ create_milestone(title, repo, description, due_on, state = "open", ...)
 
 \item{description}{(string, optional) A description of the milestone.}
 
-\item{due_on}{(string, optional) The milestone due date. This is in the format:
-\code{YYYY-MM-DD}.}
+\item{due_on}{(string, optional) The milestone due date. This is in the
+format: \code{YYYY-MM-DD}.}
 
-\item{state}{(string, optional) The state of the milestone. Either \code{"open"} or \code{"closed"}.
-Default: \code{"open"}.}
+\item{state}{(string, optional) The state of the milestone. Either \code{"open"}
+or \code{"closed"}. Default: \code{"open"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -41,13 +41,13 @@ Default: \code{"open"}.}
 }
 }
 \description{
-This function creates a new milestone for the specified repository in GitHub. It can also be
-used to set a due date.
+This function creates a new milestone for the specified repository in GitHub.
+It can also be used to set a due date.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/milestones/#create-a-milestone}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-a-milestone}
 }
 }
 \examples{
@@ -57,7 +57,8 @@ For more details see the GitHub API documentation:
     title       = "test milestone",
     repo        = "ChadGoymer/githapi",
     description = "This is a test milestone",
-    due_on      = "2030-01-01 00:00:00")
+    due_on      = "2030-01-01 00:00:00"
+  )
 
 }
 
