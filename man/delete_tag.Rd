@@ -17,13 +17,13 @@ delete_tag(tag, repo, ...)
 \code{delete_tag()} returns a TRUE if successfully deleted.
 }
 \description{
-This function deletes a tag from a repository, as long as you have appropriate permissions.
-Care should be taken as it will not be recoverable.
+This function deletes a tag from a repository, as long as you have
+appropriate permissions. Care should be taken as it will not be recoverable.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/git/refs/#delete-a-reference}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#delete-a-reference}
 }
 }
 \examples{

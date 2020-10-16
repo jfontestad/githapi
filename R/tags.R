@@ -1,13 +1,21 @@
-#  FUNCTION: create_tag -----------------------------------------------------------------------
+#  FUNCTION: create_tag --------------------------------------------------------
 #
 #' Create a tag in a repository
 #'
-#' This function creates a new tag in the specified repository in GitHub. It must be
-#' pointed at a commit by providing a Git reference, which can be either a SHA, branch or
-#' tag. For a branch, the head commit is used.
+#' This function creates a new tag in the specified repository in GitHub. It
+#' must be pointed at a commit by providing a Git reference, which can be either
+#' a SHA, branch or tag. For a branch, the head commit is used.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/git/refs/#create-a-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param name (string) The name of the tag.
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
@@ -28,7 +36,8 @@
 #'   create_tag(
 #'     name = "new-tag",
 #'     ref  = "main",
-#'     repo = "ChadGoymer/githapi")
+#'     repo = "ChadGoymer/githapi"
+#'   )
 #'
 #' }
 #'
@@ -38,15 +47,24 @@ create_tag <- function(
   name,
   ref,
   repo,
-  ...)
-{
-  assert(is_ref(name), "'name' must be a valid git reference - see help(is_ref):\n  ", name)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(name),
+    "'name' must be a valid git reference - see help(is_ref):\n  ", name
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (!is_sha(ref)) {
     ref <- view_sha(ref = ref, repo = repo, ...)
   }
-  assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
+  assert(
+    is_sha(ref),
+    "'ref' must be a 40 character string:\n  ", ref
+  )
 
   payload <- list(ref = str_c("refs/tags/", name), sha = ref)
 
@@ -63,22 +81,31 @@ create_tag <- function(
 }
 
 
-#  FUNCTION: update_tag -----------------------------------------------------------------------
+#  FUNCTION: update_tag --------------------------------------------------------
 #
 #' Update a tag in a repository
 #'
-#' This function updates a tag in the specified repository to point at a new commit. It must
-#' be pointed at a commit by providing a Git reference, which can be either a SHA, branch or
-#' tag. For a branch, the head commit is used.
+#' This function updates a tag in the specified repository to point at a new
+#' commit. It must be pointed at a commit by providing a Git reference, which
+#' can be either a SHA, branch or tag. For a branch, the head commit is used.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/git/refs/#update-a-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#update-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param tag (string) The name of the tag.
-#' @param ref (string) Either a SHA, branch or tag used to identify the new commit.
+#' @param ref (string) Either a SHA, branch or tag used to identify the new
+#'   commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param force (boolean, optional) Whether to force the update if it is not a simple
-#'   fast-forward. Default: `FALSE`.
+#' @param force (boolean, optional) Whether to force the update if it is not a
+#'   simple fast-forward. Default: `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `update_tag()` returns a list of the tag properties.
@@ -95,7 +122,8 @@ create_tag <- function(
 #'   update_tag(
 #'     tag  = "new-tag",
 #'     ref  = "6b7b5a090d47fd3ef495620513a3f80da2487b1d",
-#'     repo = "ChadGoymer/githapi")
+#'     repo = "ChadGoymer/githapi"
+#'   )
 #'
 #' }
 #'
@@ -106,16 +134,28 @@ update_tag <- function(
   ref,
   repo,
   force = FALSE,
-  ...)
-{
-  assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_scalar_logical(force), "'force' must be boolean:\n  ", force)
+  ...
+) {
+  assert(
+    is_ref(tag),
+    "'tag' must be a valid git reference - see help(is_ref):\n  ", tag
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
+  assert(
+    is_scalar_logical(force),
+    "'force' must be boolean:\n  ", force
+  )
 
   if (!is_sha(ref)) {
     ref <- view_sha(ref = ref, repo = repo, ...)
   }
-  assert(is_sha(ref), "'ref' must be a 40 character string:\n  ", ref)
+  assert(
+    is_sha(ref),
+    "'ref' must be a 40 character string:\n  ", ref
+  )
 
   info("Updating tag '", tag, "' in repository '", repo, "'")
   tag_lst <- gh_url("repos", repo, "git/refs/tags", tag) %>%
@@ -130,24 +170,39 @@ update_tag <- function(
 }
 
 
-#  FUNCTION: view_tags ------------------------------------------------------------------------
+#  FUNCTION: view_tags ---------------------------------------------------------
 #
 #' View tags within a repository
 #'
-#' `view_tags()` summarises tags in a table with the properties as columns and a row for each
-#' tag in the repository. `view_tag()` returns a list of all properties for a single tag.
+#' `view_tags()` summarises tags in a table with the properties as columns and a
+#' row for each tag in the repository. `view_tag()` returns a list of all
+#' properties for a single tag.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/git/refs/#list-matching-references>
-#' - <https://developer.github.com/v3/git/refs/#get-a-single-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#list-matching-references",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#get-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param tag (string) The name of the tag.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `view_tags()` returns a tibble of tag properties. `view_tag()` returns a list of
-#'   properties for a single tag.
+#' @return `view_tags()` returns a tibble of tag properties. `view_tag()`
+#'   returns a list of properties for a single tag.
 #'
 #' **Tag Properties:**
 #'
@@ -171,9 +226,12 @@ update_tag <- function(
 view_tags <- function(
   repo,
   n_max = 1000,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Viewing tags for repository '", repo, "'")
   tags_lst <- gh_url("repos", repo, "git/refs/tags") %>%
@@ -188,7 +246,7 @@ view_tags <- function(
 }
 
 
-#  FUNCTION: view_tag -------------------------------------------------------------------------
+#  FUNCTION: view_tag ----------------------------------------------------------
 #
 #' @rdname view_tags
 #' @export
@@ -196,10 +254,16 @@ view_tags <- function(
 view_tag <- function(
   tag,
   repo,
-  ...)
-{
-  assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(tag),
+    "'tag' must be a valid git reference - see help(is_ref):\n  ", tag
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Viewing tag '", tag, "' in repository '", repo, "'")
   tag_lst <- gh_url("repos", repo, "git/ref/tags", tag) %>%
@@ -214,15 +278,23 @@ view_tag <- function(
 }
 
 
-#  FUNCTION: delete_tag -----------------------------------------------------------------------
+#  FUNCTION: delete_tag --------------------------------------------------------
 #
 #' Delete a tag from a repository
 #'
-#' This function deletes a tag from a repository, as long as you have appropriate permissions.
-#' Care should be taken as it will not be recoverable.
+#' This function deletes a tag from a repository, as long as you have
+#' appropriate permissions. Care should be taken as it will not be recoverable.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/git/refs/#delete-a-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#delete-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param tag (string) The name of the tag.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -242,10 +314,16 @@ view_tag <- function(
 delete_tag <- function(
   tag,
   repo,
-  ...)
-{
-  assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_ref(tag),
+    "'tag' must be a valid git reference - see help(is_ref):\n  ", tag
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Deleting tag '", tag, "' in repository '", repo, "'")
   response <- gh_url("repos", repo, "git/refs/tags", tag) %>%
@@ -258,5 +336,6 @@ delete_tag <- function(
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
-    header  = attr(response, "header"))
+    header  = attr(response, "header")
+  )
 }
