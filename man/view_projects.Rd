@@ -13,7 +13,8 @@ view_project(project, repo, user, team, org, ...)
 browse_project(project, repo, user, team, org, ...)
 }
 \arguments{
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
+\item{repo}{(string, optional) The repository specified in the format:
+\code{owner/repo}.}
 
 \item{user}{(string, optional) The login of the user.}
 
@@ -21,8 +22,8 @@ browse_project(project, repo, user, team, org, ...)
 
 \item{org}{(string, optional) The name of the organization.}
 
-\item{state}{(string, optional) Indicates the state of the projects to return. Can be
-either "open", "closed", or "all". Default: \code{"open"}.}
+\item{state}{(string, optional) Indicates the state of the projects to
+return. Can be either "open", "closed", or "all". Default: \code{"open"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -31,21 +32,25 @@ either "open", "closed", or "all". Default: \code{"open"}.}
 \item{project}{(integer or string) The number or name of the project.}
 }
 \value{
-\code{view_projects()} returns a tibble of project properties. \code{view_project()}
-returns a list of properties for a single project. \code{browse_project()} opens the default
-browser on the project's page and returns the URL.
+\code{view_projects()} returns a tibble of project properties.
+\code{view_project()} returns a list of properties for a single project.
+\code{browse_project()} opens the default browser on the project's page and
+returns the URL.
 
 \strong{Project Properties:}
 \itemize{
 \item \strong{id}: The ID of the project.
-\item \strong{number}: The number of the project for the repository, user or organization.
+\item \strong{number}: The number of the project for the repository, user or
+organization.
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
-\item \strong{private}: Whether the project is private (organization and team projects only).
-\item \strong{org_permissions}: The default permission for organization members (organization and
-team projects only).
-\item \strong{team_permissions}: The default permission for team members (team projects only).
+\item \strong{private}: Whether the project is private (organization and team projects
+only).
+\item \strong{org_permissions}: The default permission for organization members
+(organization and team projects only).
+\item \strong{team_permissions}: The default permission for team members (team
+projects only).
 \item \strong{creator}: The user who created the project.
 \item \strong{created_at}: When it was created.
 \item \strong{updated_at}: When it was last updated.
@@ -53,21 +58,22 @@ team projects only).
 }
 }
 \description{
-\code{view_projects()} summarises projects in a table with the properties as columns and a row
-for each project. \code{view_project()} returns a list of all properties for a single project.
-\code{browse_project()} opens the web page for the project in the default browser.
+\code{view_projects()} summarises projects in a table with the properties as
+columns and a row for each project. \code{view_project()} returns a list of all
+properties for a single project. \code{browse_project()} opens the web page for
+the project in the default browser.
 }
 \details{
-You can summarise all the projects associated with either a repository, user, team or
-organization, by supplying them as an input.
+You can summarise all the projects associated with either a repository, user,
+team or organization, by supplying them as an input.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/projects/#list-repository-projects}
-\item \url{https://developer.github.com/v3/projects/#list-user-projects}
-\item \url{https://developer.github.com/v3/projects/#list-organization-projects}
-\item \url{https://developer.github.com/v3/teams/#review-a-team-project}
-\item \url{https://developer.github.com/v3/projects/#get-a-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-repository-projects}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-user-projects}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-organization-projects}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#check-team-permissions-for-a-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#get-a-project}
 }
 }
 \examples{

@@ -9,7 +9,8 @@ delete_project(project, repo, user, team, org, ...)
 \arguments{
 \item{project}{(integer or string) Either the project number or name.}
 
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
+\item{repo}{(string, optional) The repository specified in the format:
+\code{owner/repo}.}
 
 \item{user}{(string, optional) The login of the user.}
 
@@ -23,19 +24,19 @@ delete_project(project, repo, user, team, org, ...)
 \code{delete_project()} returns a TRUE if successfully deleted.
 }
 \description{
-This function deletes a project in GitHub. Care should be taken as it will not be
-recoverable. If you just want to close the project use \code{\link[=update_project]{update_project()}}.
+This function deletes a project in GitHub. Care should be taken as it will
+not be recoverable. If you just want to close the project use
+\code{\link[=update_project]{update_project()}}.
 }
 \details{
-You can delete a project associated with either a repository, user, team or organization,
-by supplying them as an input, as long as you have appropriate permissions. Deleting a
-team project just removes the team's access. If you want to delete it completely you
-have to delete the organization's project.
+You can delete a project associated with either a repository, user, team or
+organization, by supplying them as an input, as long as you have appropriate
+permissions. Deleting a team project just removes the team's access. If you
+want to delete it completely you have to delete the organization's project.
 
-For more details see the GitHub API documentation:
+For more details see the GitHub API documentation:- \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#delete-a-project}
 \itemize{
-\item \url{https://developer.github.com/v3/projects/#delete-a-project}
-\item \url{https://developer.github.com/v3/teams/#remove-team-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#remove-a-project-from-a-team}
 }
 }
 \examples{
@@ -44,23 +45,27 @@ For more details see the GitHub API documentation:
   # Delete a project for a repository
   delete_project(
     project = "Repo project",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Delete a project for a user
   delete_project(
     project = "User project",
-    user    = "ChadGoymer")
+    user    = "ChadGoymer"
+  )
 
   # Remove a team's access to the organization's project
   delete_project(
     project = "User project",
     team    = "HeadCoos",
-    org     = "HairyCoos")
+    org     = "HairyCoos"
+  )
 
   # Delete a project for an organization
   delete_project(
     project = "User project",
-    org     = "HairyCoos")
+    org     = "HairyCoos"
+  )
 
 }
 

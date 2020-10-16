@@ -1,22 +1,44 @@
-#  FUNCTION: create_project -------------------------------------------------------------------
+#  FUNCTION: create_project ----------------------------------------------------
 #
 #' Create a GitHub project
 #'
-#' This function creates a new project in GitHub. The project will be empty so you will need
-#' to add columns and cards separately.
+#' This function creates a new project in GitHub. The project will be empty so
+#' you will need to add columns and cards separately.
 #'
-#' You can create a project associated with either a repository or organization, by
-#' supplying them as an input, as long as you have appropriate permissions. If no repository
-#' or organization is specified the project is created for the authenticated user.
+#' You can create a project associated with either a repository or organization,
+#' by supplying them as an input, as long as you have appropriate permissions.
+#' If no repository or organization is specified the project is created for the
+#' authenticated user.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/projects/#create-a-repository-project>
-#' - <https://developer.github.com/v3/projects/#create-an-organization-project>
-#' - <https://developer.github.com/v3/projects/#create-a-user-project>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#create-a-repository-project",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#create-an-organization-project",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#create-a-user-project",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param name (string) The name of the project.
 #' @param body (string) The description of the project.
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param repo (string, optional) The repository specified in the format:
+#'   `owner/repo`.
 #' @param org (string, optional) The name of the organization.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -25,13 +47,14 @@
 #' **Project Properties:**
 #'
 #' - **id**: The ID of the project.
-#' - **number**: The number of the project for the repository, user or organization.
+#' - **number**: The number of the project for the repository, user or
+#'   organization.
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
 #' - **private**: Whether the project is private (organisation project only).
-#' - **org_permission**: The default permission for the project - either "read", "write" or
-#'   "admin" (organisation project only).
+#' - **org_permission**: The default permission for the project - either "read",
+#'   "write" or "admin" (organisation project only).
 #' - **creator**: The user who created the project.
 #' - **created_at**: When it was created.
 #' - **updated_at**: When it was last updated.
@@ -44,18 +67,21 @@
 #'   create_project(
 #'     name = "Repo project",
 #'     body = "This is a repository's project",
-#'     repo = "ChadGoymer/githapi")
+#'     repo = "ChadGoymer/githapi"
+#'   )
 #'
 #'   # Create a project for the current user
 #'   create_project(
 #'     name = "User project",
-#'     body = "This is a user's project")
+#'     body = "This is a user's project"
+#'   )
 #'
 #'   # Create a project for an organization
 #'   create_project(
 #'     name = "Organization project",
 #'     body = "This is an organization's project",
-#'     org  = "HairyCoos")
+#'     org  = "HairyCoos"
+#'   )
 #'
 #' }
 #'
@@ -66,18 +92,30 @@ create_project <- function(
   body,
   repo,
   org,
-  ...)
-{
-  assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
-  assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+  ...
+) {
+  assert(
+    is_scalar_character(name),
+    "'name' must be a string:\n  ", name
+  )
+  assert(
+    is_scalar_character(body),
+    "'body' must be a string:\n  ", body
+  )
 
   if (!missing(repo)) {
-    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    assert(
+      is_repo(repo),
+      "'repo' must be a string in the format 'owner/repo':\n  ", repo
+    )
     info("Creating project '", name, "' for repository '", repo, "'")
     url <- gh_url("repos", repo, "projects")
   }
   else if (!missing(org)) {
-    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    assert(
+      is_scalar_character(org),
+      "'org' must be a string:\n  ", org
+    )
     info("Creating project '", name, "' for organization '", org, "'")
     url <- gh_url("orgs", org, "projects")
   }
@@ -91,7 +129,8 @@ create_project <- function(
     type    = "POST",
     payload = list(name = name, body = body),
     accept  = "application/vnd.github.inertia-preview+json",
-    ...)
+    ...
+  )
 
   info("Transforming results", level = 4)
   project_gh <- select_properties(project_lst, properties$project)
@@ -101,7 +140,8 @@ create_project <- function(
       modify_list(
         private        = project_lst$private,
         org_permission = project_lst$organization_permission,
-        .after = "state")
+        .after         = "state"
+      )
   }
 
   info("Done", level = 7)
@@ -109,32 +149,50 @@ create_project <- function(
 }
 
 
-#  FUNCTION: update_project -------------------------------------------------------------------
+#  FUNCTION: update_project ----------------------------------------------------
 #
 #' Update a GitHub project
 #'
-#' This function updates a project in GitHub. It can be used to change the name and body, but
-#' can also be used to close the project, change permissions or add a team.
+#' This function updates a project in GitHub. It can be used to change the name
+#' and body, but can also be used to close the project, change permissions or
+#' add a team.
 #'
-#' You can update a project associated with either a repository, user, team or organization,
-#' by supplying them as an input, as long as you have appropriate permissions. Supplying a
-#' team that does not already have access to the project adds them. If they have access, then
-#' the team's permissions can be changed with the `permission` argument.
+#' You can update a project associated with either a repository, user, team or
+#' organization, by supplying them as an input, as long as you have appropriate
+#' permissions. Supplying a team that does not already have access to the
+#' project adds them. If they have access, then the team's permissions can be
+#' changed with the `permission` argument.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/projects/#update-a-project>
-#' - <https://developer.github.com/v3/teams/#add-or-update-team-project>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#update-a-project",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "teams#add-or-update-team-project-permissions",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param project (integer or string) Either the project number or name.
 #' @param name (string, optional) The new name for the project.
 #' @param body (string, optional) The new description of the project.
-#' @param state (string, optional) The new state of the project, either `"open"` or `"closed"`.
-#' @param permission (string, optional) The new team or organisation permissions for the
-#'   project, either `"read"`, `"write"`, `"admin"` or `"none"`. Note: applies to team and
-#'   organization projects only.
-#' @param private (boolean, optional) Whether the project should be private. Note: applies to
-#'   team and organization projects only.
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param state (string, optional) The new state of the project, either `"open"`
+#'   or `"closed"`.
+#' @param permission (string, optional) The new team or organisation permissions
+#'   for the project, either `"read"`, `"write"`, `"admin"` or `"none"`. Note:
+#'   applies to team and organization projects only.
+#' @param private (boolean, optional) Whether the project should be private.
+#'   Note: applies to team and organization projects only.
+#' @param repo (string, optional) The repository specified in the format:
+#'   `owner/repo`.
 #' @param user (string, optional) The login of the user.
 #' @param team (string or integer, optional) The team ID or name.
 #' @param org (string, optional) The name of the organization.
@@ -145,14 +203,17 @@ create_project <- function(
 #' **Project Properties:**
 #'
 #' - **id**: The ID of the project.
-#' - **number**: The number of the project for the repository, user or organization.
+#' - **number**: The number of the project for the repository, user or
+#'   organization.
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
-#' - **private**: Whether the project is private (organization and team projects only).
-#' - **org_permissions**: The default permission for organization members (organization and
-#'   team projects only).
-#' - **team_permissions**: The default permission for team members (team projects only).
+#' - **private**: Whether the project is private (organization and team projects
+#'   only).
+#' - **org_permissions**: The default permission for organization members
+#'   (organization and team projects only).
+#' - **team_permissions**: The default permission for team members (team
+#'   projects only).
 #' - **creator**: The user who created the project.
 #' - **created_at**: When it was created.
 #' - **updated_at**: When it was last updated.
@@ -166,33 +227,38 @@ create_project <- function(
 #'     project = "Repo project",
 #'     name    = "Updated repo project",
 #'     body    = "This is an updated repository's project",
-#'     repo    = "ChadGoymer/githapi")
+#'     repo    = "ChadGoymer/githapi"
+#'   )
 #'
 #'   # Update the state of a project for a user
 #'   update_project(
 #'     name  = "User project",
 #'     state = "closed",
-#'     user  = "ChadGoymer")
+#'     user  = "ChadGoymer"
+#'   )
 #'
 #'   # Update the permissions of a project for an organization
 #'   update_project(
 #'     name       = "Org project",
 #'     permission = "read",
 #'     private    = TRUE,
-#'     org        = "HairyCoos")
+#'     org        = "HairyCoos"
+#'   )
 #'
 #'   # Add a team to the project
 #'   update_project(
 #'     project = "Org project",
 #'     team    = "HeadCoos",
-#'     org     = "HairyCoos")
+#'     org     = "HairyCoos"
+#'   )
 #'
 #'   # Update the team's permissions on the project
 #'   update_project(
 #'     project    = "Org project",
 #'     permission = "write",
 #'     team       = "HeadCoos",
-#'     org        = "HairyCoos")
+#'     org        = "HairyCoos"
+#'   )
 #'
 #' }
 #'
@@ -209,33 +275,44 @@ update_project <- function(
   user,
   team,
   org,
-  ...)
-{
+  ...
+) {
   project <- view_project(
     project = project,
     repo    = repo,
     user    = user,
     org     = org,
-    ...)
+    ...
+  )
 
   payload <- NULL
 
   if (!missing(team)) {
     if (!missing(permission)) {
       assert(
-        is_scalar_character(permission) && permission %in% values$project$permission,
-        "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
+        is_scalar_character(permission) &&
+          permission %in% values$project$permission,
+        "'permission' must be one of '",
+        str_c(values$project$permission, collapse = "', '"), "':\n  ",
+        permission
+      )
       payload$permission <- permission
     }
 
     team_id <- team
     if (is_scalar_character(team)) {
-      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      assert(
+        is_scalar_character(org),
+        "'org' must be a string:\n  ", org
+      )
       team_id <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = team, ...) %>%
         pluck("id")
     }
-    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+    assert(
+      is_scalar_integerish(team_id),
+      "'team' must be an integer or string:\n  ", team
+    )
 
     info("Adding project '", project$name, "' to team '", team, "'")
     result <- gh_url("teams", team_id, "projects", project$id) %>%
@@ -243,13 +320,15 @@ update_project <- function(
         type    = "PUT",
         payload = payload,
         accept  = "application/vnd.github.inertia-preview+json",
-        ...)
+        ...
+      )
 
     project_gh <- view_project(
       project = project$name,
       team    = team,
       org     = org,
-      ...)
+      ...
+    )
 
     info("Done", level = 7)
     structure(
@@ -257,35 +336,52 @@ update_project <- function(
       url     = attr(result, "url"),
       request = attr(result, "request"),
       status  = attr(result, "status"),
-      header  = attr(result, "header"))
+      header  = attr(result, "header")
+    )
   }
   else {
     if (!missing(permission)) {
       assert(
-        is_scalar_character(permission) && permission %in% values$project$permission,
-        "'permission' must be one of '", str_c(values$project$permission, collapse = "', '"), "':\n  ", permission)
+        is_scalar_character(permission) &&
+          permission %in% values$project$permission,
+        "'permission' must be one of '",
+        str_c(values$project$permission, collapse = "', '"), "':\n  ",
+        permission
+      )
       payload$organization_permission <- permission
     }
 
     if (!missing(name)) {
-      assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+      assert(
+        is_scalar_character(name),
+        "'name' must be a string:\n  ", name
+      )
       payload$name <- name
     }
 
     if (!missing(body)) {
-      assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+      assert(
+        is_scalar_character(body),
+        "'body' must be a string:\n  ", body
+      )
       payload$body <- body
     }
 
     if (!missing(state)) {
       assert(
-        is_scalar_character(state) && state %in% str_subset(values$project$state, "all", negate = TRUE),
-        "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
+        is_scalar_character(state) &&
+          state %in% str_subset(values$project$state, "all", negate = TRUE),
+        "'state' must be one of '",
+        str_c(values$project$state, collapse = "', '"), "':\n  ", state
+      )
       payload$state <- state
     }
 
     if (!missing(private)) {
-      assert(is_scalar_logical(private), "'private' must be a boolean:\n  ", private)
+      assert(
+        is_scalar_logical(private),
+        "'private' must be a boolean:\n  ", private
+      )
       payload$private <- private
     }
 
@@ -295,7 +391,8 @@ update_project <- function(
         type    = "PATCH",
         payload = payload,
         accept  = "application/vnd.github.inertia-preview+json",
-        ...)
+        ...
+      )
 
     info("Transforming results", level = 4)
     project_gh <- select_properties(project_lst, properties$project)
@@ -305,7 +402,8 @@ update_project <- function(
         modify_list(
           private        = project_lst$private,
           org_permission = project_lst$organization_permission,
-          .after = "state")
+          .after         = "state"
+        )
     }
 
     info("Done", level = 7)
@@ -314,49 +412,87 @@ update_project <- function(
 }
 
 
-#  FUNCTION: view_projects --------------------------------------------------------------------
+#  FUNCTION: view_projects -----------------------------------------------------
 #
 #' View GitHub projects
 #'
-#' `view_projects()` summarises projects in a table with the properties as columns and a row
-#' for each project. `view_project()` returns a list of all properties for a single project.
-#' `browse_project()` opens the web page for the project in the default browser.
+#' `view_projects()` summarises projects in a table with the properties as
+#' columns and a row for each project. `view_project()` returns a list of all
+#' properties for a single project. `browse_project()` opens the web page for
+#' the project in the default browser.
 #'
-#' You can summarise all the projects associated with either a repository, user, team or
-#' organization, by supplying them as an input.
+#' You can summarise all the projects associated with either a repository, user,
+#' team or organization, by supplying them as an input.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/projects/#list-repository-projects>
-#' - <https://developer.github.com/v3/projects/#list-user-projects>
-#' - <https://developer.github.com/v3/projects/#list-organization-projects>
-#' - <https://developer.github.com/v3/teams/#review-a-team-project>
-#' - <https://developer.github.com/v3/projects/#get-a-project>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#list-repository-projects",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#list-user-projects",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#list-organization-projects",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "teams#check-team-permissions-for-a-project",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#get-a-project",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param project (integer or string) The number or name of the project.
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param repo (string, optional) The repository specified in the format:
+#'   `owner/repo`.
 #' @param user (string, optional) The login of the user.
 #' @param team (string or integer, optional) The team ID or name.
 #' @param org (string, optional) The name of the organization.
-#' @param state (string, optional) Indicates the state of the projects to return. Can be
-#'   either "open", "closed", or "all". Default: `"open"`.
+#' @param state (string, optional) Indicates the state of the projects to
+#'   return. Can be either "open", "closed", or "all". Default: `"open"`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `view_projects()` returns a tibble of project properties. `view_project()`
-#'   returns a list of properties for a single project. `browse_project()` opens the default
-#'   browser on the project's page and returns the URL.
+#' @return `view_projects()` returns a tibble of project properties.
+#'   `view_project()` returns a list of properties for a single project.
+#'   `browse_project()` opens the default browser on the project's page and
+#'   returns the URL.
 #'
 #' **Project Properties:**
 #'
 #' - **id**: The ID of the project.
-#' - **number**: The number of the project for the repository, user or organization.
+#' - **number**: The number of the project for the repository, user or
+#'   organization.
 #' - **name**: The name given to the project.
 #' - **body**: The description given to the project.
 #' - **state**: Whether the project is "open" or "closed".
-#' - **private**: Whether the project is private (organization and team projects only).
-#' - **org_permissions**: The default permission for organization members (organization and
-#'   team projects only).
-#' - **team_permissions**: The default permission for team members (team projects only).
+#' - **private**: Whether the project is private (organization and team projects
+#'   only).
+#' - **org_permissions**: The default permission for organization members
+#'   (organization and team projects only).
+#' - **team_permissions**: The default permission for team members (team
+#'   projects only).
 #' - **creator**: The user who created the project.
 #' - **created_at**: When it was created.
 #' - **updated_at**: When it was last updated.
@@ -418,37 +554,54 @@ view_projects <- function(
   org,
   state = "open",
   n_max = 1000,
-  ...)
-{
+  ...
+) {
   assert(
     is_scalar_character(state) && state %in% values$project$state,
-    "'state' must be one of '", str_c(values$project$state, collapse = "', '"), "':\n  ", state)
+    "'state' must be one of '", str_c(values$project$state, collapse = "', '"),
+    "':\n  ", state
+  )
 
   if (!missing(repo)) {
-    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    assert(
+      is_repo(repo),
+      "'repo' must be a string in the format 'owner/repo':\n  ", repo
+    )
     info("Viewing projects for repository '", repo, "'")
     url <- gh_url("repos", repo, "projects", state = state)
   }
   else if (!missing(user)) {
-    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    assert(
+      is_scalar_character(user),
+      "'user' must be a string:\n  ", user
+    )
     info("Viewing projects for user '", user, "'")
     url <- gh_url("users", user, "projects", state = state)
   }
   else if (!missing(team)) {
     team_id <- team
     if (is_scalar_character(team)) {
-      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      assert(
+        is_scalar_character(org),
+        "'org' must be a string:\n  ", org
+      )
       team_id <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = team, ...) %>%
         pluck("id")
     }
-    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+    assert(
+      is_scalar_integerish(team_id),
+      "'team' must be an integer or string:\n  ", team
+    )
 
     info("Viewing projects for team '", team, "'")
     url <- gh_url("teams", team_id, "projects", state = state)
   }
   else if (!missing(org)) {
-    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    assert(
+      is_scalar_character(org),
+      "'org' must be a string:\n  ", org
+    )
     info("Viewing projects for organization '", org, "'")
     url <- gh_url("orgs", org, "projects", state = state)
   }
@@ -460,7 +613,8 @@ view_projects <- function(
     url    = url,
     accept = "application/vnd.github.inertia-preview+json",
     n_max  = n_max,
-    ...)
+    ...
+  )
 
   info("Transforming results", level = 4)
   projects_gh <- bind_properties(projects_lst, properties$project)
@@ -468,9 +622,17 @@ view_projects <- function(
   if (!missing(team)) {
     proj_order <- values$project$permission
     team_permission <- map_chr(projects_lst, function(p) {
-      last(proj_order[proj_order %in% names(p$permissions[as.logical(p$permissions)])])
+      last(
+        proj_order[
+          proj_order %in% names(p$permissions[as.logical(p$permissions)])
+        ]
+      )
     })
-    projects_gh <- add_column(projects_gh, team_permission = team_permission, .after = "state")
+    projects_gh <- add_column(
+      projects_gh,
+      team_permission = team_permission,
+      .after          = "state"
+    )
   }
 
   if (!missing(org)) {
@@ -486,7 +648,7 @@ view_projects <- function(
 }
 
 
-#  FUNCTION: view_project ---------------------------------------------------------------------
+#  FUNCTION: view_project ------------------------------------------------------
 #
 #' @rdname view_projects
 #' @export
@@ -497,8 +659,8 @@ view_project <- function(
   user,
   team,
   org,
-  ...)
-{
+  ...
+) {
   if (is_scalar_integerish(project)) {
     property <- "number"
   }
@@ -510,30 +672,45 @@ view_project <- function(
   }
 
   if (!missing(repo)) {
-    assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+    assert(
+      is_repo(repo),
+      "'repo' must be a string in the format 'owner/repo':\n  ", repo
+    )
     info("Viewing project '", project, "' for repository '", repo, "'")
     url <- gh_url("repos", repo, "projects", state = "all")
   }
   else if (!missing(user)) {
-    assert(is_scalar_character(user), "'user' must be a string:\n  ", user)
+    assert(
+      is_scalar_character(user),
+      "'user' must be a string:\n  ", user
+    )
     info("Viewing project '", project, "' for user '", user, "'")
     url <- gh_url("users", user, "projects", state = "all")
   }
   else if (!missing(team)) {
     team_id <- team
     if (is_scalar_character(team)) {
-      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      assert(
+        is_scalar_character(org),
+        "'org' must be a string:\n  ", org
+      )
       team_id <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = team, ...) %>%
         pluck("id")
     }
-    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+    assert(
+      is_scalar_integerish(team_id),
+      "'team' must be an integer or string:\n  ", team
+    )
 
     info("Viewing project '", project, "' for team '", team, "'")
     url <- gh_url("teams", team_id, "projects", state = "all")
   }
   else if (!missing(org)) {
-    assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+    assert(
+      is_scalar_character(org),
+      "'org' must be a string:\n  ", org
+    )
     info("Viewing project '", project, "' for organization '", org, "'")
     url <- gh_url("orgs", org, "projects", state = "all")
   }
@@ -546,14 +723,20 @@ view_project <- function(
     property  = property,
     value     = project,
     accept    = "application/vnd.github.inertia-preview+json",
-    ...)
+    ...
+  )
 
   info("Transforming results", level = 4)
   project_gh <- select_properties(project_lst, properties$project)
 
   if (!missing(team)) {
     proj_order <- values$project$permission
-    permission <- last(proj_order[proj_order %in% names(project_lst$permissions[as.logical(project_lst$permissions)])])
+    permission <- last(
+      proj_order[
+        proj_order %in%
+          names(project_lst$permissions[as.logical(project_lst$permissions)])
+      ]
+    )
 
     project_gh <- project_gh %>%
       modify_list(team_permission = permission, .after = "state")
@@ -564,7 +747,8 @@ view_project <- function(
       modify_list(
         private        = project_lst$private,
         org_permission = project_lst$organization_permission,
-        .after = "state")
+        .after         = "state"
+      )
   }
 
   info("Done", level = 7)
@@ -572,7 +756,7 @@ view_project <- function(
 }
 
 
-#  FUNCTION: browse_project -------------------------------------------------------------------
+#  FUNCTION: browse_project ----------------------------------------------------
 #
 #' @rdname view_projects
 #' @export
@@ -583,15 +767,16 @@ browse_project <- function(
   user,
   team,
   org,
-  ...)
-{
+  ...
+) {
   project <- view_project(
     project = project,
     repo    = repo,
     user    = user,
     team    = team,
     org     = org,
-    ...)
+    ...
+  )
 
   info("Browsing project '", project$name, "'")
   httr::BROWSE(project$html_url)
@@ -603,28 +788,44 @@ browse_project <- function(
     url     = attr(project, "url"),
     request = attr(project, "request"),
     status  = attr(project, "status"),
-    header  = attr(project, "header"))
+    header  = attr(project, "header")
+  )
 }
 
 
-#  FUNCTION: delete_project -------------------------------------------------------------------
+#  FUNCTION: delete_project ----------------------------------------------------
 #
 #' Delete a GitHub project
 #'
-#' This function deletes a project in GitHub. Care should be taken as it will not be
-#' recoverable. If you just want to close the project use [update_project()].
+#' This function deletes a project in GitHub. Care should be taken as it will
+#' not be recoverable. If you just want to close the project use
+#' [update_project()].
 #'
-#' You can delete a project associated with either a repository, user, team or organization,
-#' by supplying them as an input, as long as you have appropriate permissions. Deleting a
-#' team project just removes the team's access. If you want to delete it completely you
-#' have to delete the organization's project.
+#' You can delete a project associated with either a repository, user, team or
+#' organization, by supplying them as an input, as long as you have appropriate
+#' permissions. Deleting a team project just removes the team's access. If you
+#' want to delete it completely you have to delete the organization's project.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/projects/#delete-a-project>
-#' - <https://developer.github.com/v3/teams/#remove-team-project>
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#delete-a-project",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "teams#remove-a-project-from-a-team",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param project (integer or string) Either the project number or name.
-#' @param repo (string, optional) The repository specified in the format: `owner/repo`.
+#' @param repo (string, optional) The repository specified in the format:
+#'   `owner/repo`.
 #' @param user (string, optional) The login of the user.
 #' @param team (string or integer, optional) The team ID or name.
 #' @param org (string, optional) The name of the organization.
@@ -638,23 +839,27 @@ browse_project <- function(
 #'   # Delete a project for a repository
 #'   delete_project(
 #'     project = "Repo project",
-#'     repo    = "ChadGoymer/githapi")
+#'     repo    = "ChadGoymer/githapi"
+#'   )
 #'
 #'   # Delete a project for a user
 #'   delete_project(
 #'     project = "User project",
-#'     user    = "ChadGoymer")
+#'     user    = "ChadGoymer"
+#'   )
 #'
 #'   # Remove a team's access to the organization's project
 #'   delete_project(
 #'     project = "User project",
 #'     team    = "HeadCoos",
-#'     org     = "HairyCoos")
+#'     org     = "HairyCoos"
+#'   )
 #'
 #'   # Delete a project for an organization
 #'   delete_project(
 #'     project = "User project",
-#'     org     = "HairyCoos")
+#'     org     = "HairyCoos"
+#'   )
 #'
 #' }
 #'
@@ -666,15 +871,16 @@ delete_project <- function(
   user,
   team,
   org,
-  ...)
-{
+  ...
+) {
   project <- view_project(
     project = project,
     repo    = repo,
     user    = user,
     team    = team,
     org     = org,
-    ...)
+    ...
+  )
 
   if (missing(team)) {
     info("Deleting project '", project$name, "'")
@@ -683,12 +889,18 @@ delete_project <- function(
   else {
     team_id <- team
     if (is_scalar_character(team)) {
-      assert(is_scalar_character(org), "'org' must be a string:\n  ", org)
+      assert(
+        is_scalar_character(org),
+        "'org' must be a string:\n  ", org
+      )
       team_id <- gh_url("orgs", org, "teams") %>%
         gh_find(property = "name", value = team, ...) %>%
         pluck("id")
     }
-    assert(is_scalar_integerish(team_id), "'team' must be an integer or string:\n  ", team)
+    assert(
+      is_scalar_integerish(team_id),
+      "'team' must be an integer or string:\n  ", team
+    )
 
     info("Removing project '", project$name, "' from team '", team, "'")
     url <- gh_url("teams", team_id, "projects", project$id)
@@ -698,7 +910,8 @@ delete_project <- function(
     url    = url,
     type   = "DELETE",
     accept = "application/vnd.github.inertia-preview+json",
-    ...)
+    ...
+  )
 
   info("Done", level = 7)
   structure(
@@ -707,5 +920,6 @@ delete_project <- function(
     url     = attr(result, "url"),
     request = attr(result, "request"),
     status  = attr(result, "status"),
-    header  = attr(result, "header"))
+    header  = attr(result, "header")
+  )
 }
