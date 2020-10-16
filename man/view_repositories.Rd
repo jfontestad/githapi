@@ -27,11 +27,12 @@ browse_repository(repo, ...)
 
 \item{org}{(string, optional) The name of the organization.}
 
-\item{sort}{(string, optional) The property to order the returned repositories by. Can
-be either \code{"created"}, \code{"updated"}, \code{"pushed"} or \code{"full_name"}. Default: \code{"created"}.}
+\item{sort}{(string, optional) The property to order the returned
+repositories by. Can be either \code{"created"}, \code{"updated"}, \code{"pushed"} or
+\code{"full_name"}. Default: \code{"created"}.}
 
-\item{direction}{(string, optional) The direction of the sort. Can be either \code{"asc"} or
-\code{"desc"}. Default: \code{"desc"}.}
+\item{direction}{(string, optional) The direction of the sort. Can be either
+\code{"asc"} or \code{"desc"}. Default: \code{"desc"}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -42,14 +43,15 @@ be either \code{"created"}, \code{"updated"}, \code{"pushed"} or \code{"full_nam
 \value{
 \code{view_repositories()} returns a tibble of repository properties.
 \code{view_repository()} returns a list of properties for a single repository.
-\code{browse_repository()} opens the default browser on the repository's page and returns
-the URL.
+\code{browse_repository()} opens the default browser on the repository's page
+and returns the URL.
 
 \strong{Repository Properties:}
 \itemize{
 \item \strong{id}: The ID of the repository.
 \item \strong{name}: The name of the repository.
-\item \strong{full_name}: The full name of the repository, in the format: \code{owner/repo}.
+\item \strong{full_name}: The full name of the repository, in the format:
+\code{owner/repo}.
 \item \strong{description}: The description of the repository.
 \item \strong{owner}: The owner of the repository.
 \item \strong{html_url}: The address of the repository's web page in GitHub.
@@ -64,10 +66,12 @@ the URL.
 \item \strong{has_wiki}: Whether the repository has a wiki.
 \item \strong{has_pages}: Whether the repository has GitHub Pages.
 \item \strong{has_downloads}: Whether the repository has downloads.
-\item \strong{allow_squash_merge}: Whether the repository allows squash-merging pull requests.
-\item \strong{allow_merge_commit}: Whether the repository allows merging pull requests with a merge
-commit.
-\item \strong{allow_rebase_merge}: Whether the repository allows rebase-merging pull requests.
+\item \strong{allow_squash_merge}: Whether the repository allows squash-merging pull
+requests.
+\item \strong{allow_merge_commit}: Whether the repository allows merging pull requests
+with a merge commit.
+\item \strong{allow_rebase_merge}: Whether the repository allows rebase-merging pull
+requests.
 \item \strong{fork}: Whether the repository is a fork of another.
 \item \strong{archived}: Whether the repository has been archived.
 \item \strong{disabled}: Whether the repository has been disabled.
@@ -80,24 +84,26 @@ commit.
 }
 }
 \description{
-\code{view_repositories()} summarises the repositories for a user, team or organization in a
-table with the properties as columns and a row for each repository. \code{view_repository()}
-returns a list of a single repository's properties. \code{browse_repository()} opens the web
-page for the repository in the default browser.
+\code{view_repositories()} summarises the repositories for a user, team or
+organization in a table with the properties as columns and a row for each
+repository. \code{view_repository()} returns a list of a single repository's
+properties. \code{browse_repository()} opens the web page for the repository in
+the default browser.
 }
 \details{
-You can summarise all the repositories associated with either a user, team or organization,
-by supplying them as an input. If neither a user or organization is specified a summary of
-the authenticated user's repositories is returned.
+You can summarise all the repositories associated with either a user, team or
+organization, by supplying them as an input. If neither a user or
+organization is specified a summary of the authenticated user's repositories
+is returned.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/#list-user-repositories}
-\item \url{https://developer.github.com/v3/repos/#list-organization-repositories}
-\item \url{https://developer.github.com/v3/teams/#list-team-repos}
-\item \url{https://developer.github.com/v3/repos/#list-your-repositories}
-\item \url{https://developer.github.com/v3/repos/#get-a-repository}
-\item \url{https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repositories-for-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repositories-for-a-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-organization-repositories}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#list-team-repositories}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-repository}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#check-team-permissions-for-a-repository}
 }
 }
 \examples{
@@ -113,7 +119,11 @@ For more details see the GitHub API documentation:
   view_repositories(team = "Test Team", org = "HairyCoos")
 
   # Reorder a user's repositories
-  view_repositories(user = "ChadGoymer", sort = "full_name", direction = "asc")
+  view_repositories(
+    user      = "ChadGoymer",
+    sort      = "full_name",
+    direction = "asc"
+  )
 
   # View a specific user repository
   view_repository("Test repo", user = "ChadGoymer")
