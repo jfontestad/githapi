@@ -53,8 +53,8 @@ repository, user or organization, by supplying them as an input.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/projects#list-project-cards}
-\item \url{https://docs.github.com/en/rest/reference/projects#get-a-project-card}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-project-cards}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#get-a-project-card}
 }
 }
 \examples{

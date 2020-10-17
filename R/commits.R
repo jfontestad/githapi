@@ -21,9 +21,29 @@
 #' parents are specified then a merge commit is created.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/git#create-a-blob>
-#' - <https://docs.github.com/en/rest/reference/git#create-a-tree>
-#' - <https://docs.github.com/en/rest/reference/git#create-a-commit>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-blob",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-tree",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-commit",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param path (string) The path to the directory to upload. It must be
 #'   readable.
@@ -253,8 +273,12 @@ upload_commit <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "repos#download-a-repository-archive", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#download-a-repository-archive",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
@@ -349,8 +373,22 @@ download_commit <- function(
 #' history and commit details respectively in the default browser.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/repos#list-commits>
-#' - <https://docs.github.com/en/rest/reference/repos#get-a-commit>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#list-commits",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#get-a-commit",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -638,7 +676,15 @@ browse_commit <- function(
 #' used.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/repos#get-a-commit>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#get-a-commit",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -686,7 +732,15 @@ view_sha <- function(
 #' the history of the `head` commit.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/repos#compare-two-commits>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#compare-two-commits",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param head (string) Either a SHA, branch or tag used to identify the head
 #'   commit.

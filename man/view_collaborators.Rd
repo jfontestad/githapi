@@ -55,9 +55,9 @@ user is also a member.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/repos#list-repository-collaborators}
-\item \url{https://docs.github.com/en/rest/reference/projects#list-project-collaborators}
-\item \url{https://docs.github.com/en/rest/reference/orgs#list-outside-collaborators-for-an-organization}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repository-collaborators}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-project-collaborators}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-outside-collaborators-for-an-organization}
 }
 }
 \examples{

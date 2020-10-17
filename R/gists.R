@@ -6,7 +6,15 @@
 #' by providing a named list (see examples).
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/gists#create-a-gist>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#create-a-gist",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param files (list) The file contents with the list names as the filenames.
 #' @param description (string, optional) A description for the gist.
@@ -111,7 +119,15 @@ create_gist <- function(
 #' update files by providing a named list and rename a file (see examples).
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/gists#update-a-gist>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#update-a-gist",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param gist (string) The ID of the gist
 #' @param files (list, optional) The file contents with the list names as the
@@ -228,14 +244,26 @@ update_gist <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "gists#list-gists-for-a-user>"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#list-gists-for-a-user",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "gists#list-gists-for-the-authenticated-user>"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#list-gists-for-the-authenticated-user",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "gists#get-a-gist>"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#get-a-gist",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param gist (string) The id of the gist.
@@ -409,7 +437,15 @@ browse_gist <- function(
 #' permissions. Care should be taken as it will not be recoverable.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/gists#delete-a-gist>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#delete-a-gist",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param gist (string) The id of the gist.
 #' @param ... Parameters passed to [gh_request()].

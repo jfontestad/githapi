@@ -71,10 +71,10 @@ or \code{commit} reference, \code{repo}, \code{path} and \code{position} must be
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/gists#create-a-gist-comment}
-\item \url{https://docs.github.com/en/rest/reference/issues#create-an-issue-comment}
-\item \url{https://docs.github.com/en/rest/reference/pulls#create-a-review-comment-for-a-pull-request}
-\item \url{https://docs.github.com/en/rest/reference/repos#create-a-commit-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#create-a-gist-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-an-issue-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#create-a-review-comment-for-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-commit-comment}
 }
 }
 \examples{

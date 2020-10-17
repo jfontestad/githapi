@@ -45,7 +45,7 @@ by providing a named list (see examples).
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/gists#create-a-gist}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#create-a-gist}
 }
 }
 \examples{

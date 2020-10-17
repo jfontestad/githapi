@@ -62,9 +62,9 @@ authenticated user are returned.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/gists#list-gists-for-a-user}
-\item \url{https://docs.github.com/en/rest/reference/gists#list-gists-for-the-authenticated-user}
-\item \url{https://docs.github.com/en/rest/reference/gists#get-a-gist}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#list-gists-for-a-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#list-gists-for-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#get-a-gist}
 }
 }
 \examples{

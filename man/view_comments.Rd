@@ -65,14 +65,14 @@ default browser.
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/gists#list-gist-comments}
-\item \url{https://docs.github.com/en/rest/reference/issues#list-issue-comments}
-\item \url{https://docs.github.com/en/rest/reference/pulls#list-review-comments-on-a-pull-request}
-\item \url{https://docs.github.com/en/rest/reference/repos#list-commit-comments}
-\item \url{https://docs.github.com/en/rest/reference/gists#get-a-gist-comment}
-\item \url{https://docs.github.com/en/rest/reference/issues#get-an-issue-comment}
-\item \url{https://docs.github.com/en/rest/reference/pulls#get-a-review-comment-for-a-pull-request}
-\item \url{https://docs.github.com/en/rest/reference/repos#get-a-commit-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#list-gist-comments}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#list-issue-comments}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#list-review-comments-on-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-commit-comments}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#get-a-gist-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#get-an-issue-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#get-a-review-comment-for-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-commit-comment}
 }
 }
 \examples{

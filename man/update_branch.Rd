@@ -37,7 +37,7 @@ can be either a SHA, branch or tag. For a branch, the head commit is used.
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/git#update-a-reference}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#update-a-reference}
 }
 }
 \examples{

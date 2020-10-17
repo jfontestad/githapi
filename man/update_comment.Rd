@@ -47,10 +47,10 @@ required if a gist is specified.
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/gists#update-a-gist-comment}
-\item \url{https://docs.github.com/en/rest/reference/issues#update-an-issue-comment}
-\item \url{https://docs.github.com/en/rest/reference/pulls#update-a-review-comment-for-a-pull-request}
-\item \url{https://docs.github.com/en/rest/reference/repos#update-a-commit-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#update-a-gist-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#update-a-review-comment-for-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-commit-comment}
 }
 }
 \examples{

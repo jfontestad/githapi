@@ -27,7 +27,7 @@ path specified.
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/repos#download-a-repository-archive}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#download-a-repository-archive}
 }
 }
 \examples{

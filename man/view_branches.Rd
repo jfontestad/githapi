@@ -37,8 +37,8 @@ a list of all properties for a single branch.
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/git#list-matching-references}
-\item \url{https://docs.github.com/en/rest/reference/git#get-a-reference}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#list-matching-references}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-reference}
 }
 }
 \examples{

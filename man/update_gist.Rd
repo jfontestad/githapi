@@ -45,7 +45,7 @@ update files by providing a named list and rename a file (see examples).
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/gists#update-a-gist}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#update-a-gist}
 }
 }
 \examples{

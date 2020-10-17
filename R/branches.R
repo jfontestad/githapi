@@ -7,7 +7,15 @@
 #' a SHA, branch or tag. For a branch, the head commit is used.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/git#create-a-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param name (string) The name of the branch.
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
@@ -82,7 +90,15 @@ create_branch <- function(
 #' can be either a SHA, branch or tag. For a branch, the head commit is used.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/git#update-a-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#update-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param branch (string) The name of the branch.
 #' @param ref (string) Either a SHA, branch or tag used to identify the new
@@ -163,8 +179,22 @@ update_branch <- function(
 #' a list of all properties for a single branch.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/git#list-matching-references>
-#' - <https://docs.github.com/en/rest/reference/git#get-a-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#list-matching-references",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#get-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param branch (string) The name of the branch.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -256,7 +286,15 @@ view_branch <- function(
 #' appropriate permissions. Care should be taken as it will not be recoverable.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/git#delete-a-reference>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#delete-a-reference",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param branch (string) The name of the branch.
 #' @param repo (string) The repository specified in the format: `owner/repo`.

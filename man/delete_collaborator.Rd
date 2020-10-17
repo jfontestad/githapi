@@ -35,9 +35,9 @@ Note: you can only remove a user if the authenticate user is an organization
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/repos#remove-a-repository-collaborator}
-\item \url{https://docs.github.com/en/rest/reference/projects#remove-project-collaborator}
-\item \url{https://docs.github.com/en/rest/reference/orgs#remove-outside-collaborator-from-an-organization}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#remove-a-repository-collaborator}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#remove-project-collaborator}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#remove-outside-collaborator-from-an-organization}
 }
 }
 \examples{

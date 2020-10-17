@@ -16,20 +16,33 @@
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "gists#create-a-gist-comment", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "issues#create-an-issue-comment", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#create-a-gist-comment",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "pulls#create-a-review-comment-for-a-pull-request", ">"
+#'   "issues#create-an-issue-comment",
+#'   ">"
 #' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "repos#create-a-commit-comment", ">"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#create-a-review-comment-for-a-pull-request",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#create-a-commit-comment",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param body (string) The content of the comment.
@@ -229,20 +242,33 @@ create_comment <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "gists#update-a-gist-comment", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "issues#update-an-issue-comment", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#update-a-gist-comment",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "pulls#update-a-review-comment-for-a-pull-request", ">"
+#'   "issues#update-an-issue-comment",
+#'   ">"
 #' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "repos#update-a-commit-comment", ">"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#update-a-review-comment-for-a-pull-request",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#update-a-commit-comment",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param comment (integer) The id of the comment.
@@ -387,35 +413,61 @@ update_comment <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "gists#list-gist-comments", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "issues#list-issue-comments", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#list-gist-comments",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "pulls#list-review-comments-on-a-pull-request", ">"
+#'   "issues#list-issue-comments",
+#'   ">"
 #' ))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "repos#list-commit-comments", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "gists#get-a-gist-comment", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "issues#get-an-issue-comment", ">"))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "pulls#get-a-review-comment-for-a-pull-request", ">"
+#'   "pulls#list-review-comments-on-a-pull-request",
+#'   ">"
 #' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "repos#get-a-commit-comment", ">"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#list-commit-comments",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#get-a-gist-comment",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#get-an-issue-comment",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#get-a-review-comment-for-a-pull-request",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#get-a-commit-comment",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param comment (integer) The id of the comment.
@@ -746,20 +798,33 @@ browse_comment <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "gists#delete-a-gist-comment", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "issues#delete-an-issue-comment", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "gists#delete-a-gist-comment",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "pulls#delete-a-review-comment-for-a-pull-request", ">"
+#'   "issues#delete-an-issue-comment",
+#'   ">"
 #' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "repos#delete-a-commit-comment", ">"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "pulls#delete-a-review-comment-for-a-pull-request",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#delete-a-commit-comment",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param comment (integer) The id of the comment.

@@ -71,7 +71,7 @@ larger files use the \code{\link[=upload_files]{upload_files()}} function.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/repos#create-or-update-file-contents}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-or-update-file-contents}
 }
 }
 \examples{

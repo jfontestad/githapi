@@ -21,7 +21,7 @@ permissions. Care should be taken as it will not be recoverable.
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/gists#delete-a-gist}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#delete-a-gist}
 }
 }
 \examples{

@@ -53,7 +53,8 @@ and change the order they are returned using \code{sort} and \code{direction}.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/git#get-a-tree}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-tree}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-repository-content}
 }
 }
 \examples{

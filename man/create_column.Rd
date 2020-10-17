@@ -42,7 +42,7 @@ appropriate permissions.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/projects#create-a-project-column}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#create-a-project-column}
 }
 }
 \examples{

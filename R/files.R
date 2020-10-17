@@ -3,7 +3,15 @@
 # Read a file and upload it to GitHub
 #
 # For more details see the GitHub API documentation:
-# - <https://docs.github.com/en/rest/reference/git#create-a-blob>
+#
+# ```{r echo=FALSE, results='asis'}
+# docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+# cat(paste0(
+#   "- <", docs_url,
+#   "git#create-a-blob",
+#   ">"
+# ))
+# ```
 #
 # @param path (string) The path to the file to upload. It must be readable.
 # @param repo (string) The repository specified in the format: `owner/repo`.
@@ -45,8 +53,22 @@ upload_blob <- function(
 # Upload a directory of files as a tree
 #
 # For more details see the GitHub API documentation:
-# - <https://docs.github.com/en/rest/reference/git#create-a-blob>
-# - <https://docs.github.com/en/rest/reference/git#create-a-tree>
+#
+# ```{r echo=FALSE, results='asis'}
+# docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+# cat(paste0(
+#   "- <", docs_url,
+#   "git#create-a-blob",
+#   ">"
+# ))
+# ```
+# ```{r echo=FALSE, results='asis'}
+# cat(paste0(
+#   "- <", docs_url,
+#   "git#create-a-tree",
+#   ">"
+# ))
+# ```
 #
 # @param path (string) The path to the directory to upload. It must be readable.
 # @param repo (string) The repository specified in the format: `owner/repo`.
@@ -171,9 +193,29 @@ upload_tree <- function(
 #' Note: The GitHub API imposes a file size limit of 100MB for this request.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/git#create-a-blob>
-#' - <https://docs.github.com/en/rest/reference/git#create-a-tree>
-#' - <https://docs.github.com/en/rest/reference/git#create-a-commit>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-blob",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-tree",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#create-a-commit",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param from_path (string) The paths to the files to upload. They must be
 #'   readable.
@@ -397,7 +439,15 @@ upload_files <- function(
 #' Note: The GitHub API imposes a file size limit of 100MB for this request.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/repos#get-repository-content>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#get-repository-content",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param from_path (string) The path to the file to download, within the
 #'   repository.
@@ -490,8 +540,12 @@ download_file <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "repos#create-or-update-file-contents", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#create-or-update-file-contents",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param content (string) The content of the file specified as a single string.
@@ -667,8 +721,12 @@ create_file <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "repos#create-or-update-file-contents", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#create-or-update-file-contents",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param content (string) The content of the file specified as a single string.
@@ -841,7 +899,15 @@ update_file <- function(
 #' larger files use the [upload_files()] function.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/repos#delete-a-file>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#delete-a-file",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param path (string) The path of the file to delete, within the repository.
 #' @param branch (string) The name of the branch to make the new commit on.
@@ -998,7 +1064,22 @@ delete_file <- function(
 #' and change the order they are returned using `sort` and `direction`.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/git#get-a-tree>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#get-a-tree",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#get-repository-content",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param path (string) The path to the file, within the repository.
 #' @param ref (string) Either a SHA, branch or tag used to identify the commit.
@@ -1726,7 +1807,15 @@ github_source <- function(
 #' commit must be in the history of the `head` commit.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/repos#compare-two-commits>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#compare-two-commits",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param head (string) Either a SHA, branch or tag used to identify the head
 #'   commit.

@@ -55,8 +55,8 @@ You can move a column by either specifying the position, either \code{"first"} o
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/projects#update-a-project-column}
-\item \url{https://docs.github.com/en/rest/reference/projects#move-a-project-column}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#update-a-project-column}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#move-a-project-column}
 }
 }
 \examples{

@@ -38,8 +38,8 @@ Note: you can only invite or update a user if the authenticate user is an
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/repos#add-a-repository-collaborator}
-\item \url{https://docs.github.com/en/rest/reference/projects#add-project-collaborator}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#add-a-repository-collaborator}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#add-project-collaborator}
 }
 }
 \examples{

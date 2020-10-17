@@ -12,8 +12,12 @@
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "projects#create-a-project-column", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#create-a-project-column",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param name (string) The name of the column.
@@ -116,11 +120,19 @@ create_column <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "projects#update-a-project-column", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#update-a-project-column",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "projects#move-a-project-column", ">"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#move-a-project-column",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param column (integer or string) Either the column number or name.
@@ -296,8 +308,22 @@ move_column <- function(
 #' repository, user or organization, by supplying them as an input.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/projects#list-project-columns>
-#' - <https://docs.github.com/en/rest/reference/projects#get-a-project-column>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#list-project-columns",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#get-a-project-column",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param column (integer or string) The number or name of the column.
 #' @param project (integer or string) Either the project number or name.
@@ -465,8 +491,12 @@ view_column <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "projects#delete-a-project-column", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#delete-a-project-column",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param column (integer or string) Either the column number or name.

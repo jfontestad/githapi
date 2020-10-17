@@ -83,9 +83,9 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/git#create-a-blob}
-\item \url{https://docs.github.com/en/rest/reference/git#create-a-tree}
-\item \url{https://docs.github.com/en/rest/reference/git#create-a-commit}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-blob}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-tree}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-commit}
 }
 }
 \examples{

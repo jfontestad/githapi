@@ -11,7 +11,15 @@
 #' appropriate permissions.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/projects#create-a-project-card>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#create-a-project-card",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param content_id (integer, optional) The issue or pull request id associated
 #'   with this card. Note: `content_type` is also required.
@@ -175,8 +183,22 @@ create_card <- function(
 #' column to move it to.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/projects#update-a-project-card>
-#' - <https://docs.github.com/en/rest/reference/projects#move-a-project-card>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#update-a-project-card",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#move-a-project-card",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param card (integer) The ID of the card.
 #' @param note (string, optional) The new note for the card.
@@ -374,8 +396,22 @@ move_card <- function(
 #' repository, user or organization, by supplying them as an input.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/projects#list-project-cards>
-#' - <https://docs.github.com/en/rest/reference/projects#get-a-project-card>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#list-project-cards",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#get-a-project-card",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param card (integer) The ID of the card.
 #' @param column (integer or string) Either the ID or name of the column.
@@ -529,7 +565,15 @@ view_card <- function(
 #' permissions.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://docs.github.com/en/rest/reference/projects#delete-a-project-card>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#delete-a-project-card",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param card (integer) The ID of the card.
 #' @param ... Parameters passed to [gh_request()].

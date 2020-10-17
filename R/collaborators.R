@@ -12,11 +12,19 @@
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "repos#add-a-repository-collaborator", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#add-a-repository-collaborator",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "projects#add-project-collaborator", ">"))
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "projects#add-project-collaborator",
+#'   ">"
+#' ))
 #' ```
 #'
 #' @param user (string) The login of the user.
@@ -156,15 +164,25 @@ update_collaborator <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "repos#list-repository-collaborators", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "projects#list-project-collaborators", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#list-repository-collaborators",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
-#'   "- <", docs_url, "orgs#list-outside-collaborators-for-an-organization", ">"
+#'   "- <", docs_url,
+#'   "projects#list-project-collaborators",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "orgs#list-outside-collaborators-for-an-organization",
+#'   ">"
 #' ))
 #' ```
 #'
@@ -364,16 +382,25 @@ view_collaborator <- function(
 #' For more details see the GitHub API documentation:
 #'
 #' ```{r echo=FALSE, results='asis'}
-#' docs_url <- "https://docs.github.com/en/rest/reference/"
-#' cat(paste0("- <", docs_url, "repos#remove-a-repository-collaborator", ">"))
-#' ```
-#' ```{r echo=FALSE, results='asis'}
-#' cat(paste0("- <", docs_url, "projects#remove-project-collaborator", ">"))
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#remove-a-repository-collaborator",
+#'   ">"
+#' ))
 #' ```
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "orgs#remove-outside-collaborator-from-an-organization", ">"
+#'   "projects#remove-project-collaborator",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "orgs#remove-outside-collaborator-from-an-organization",
+#'   ">"
 #' ))
 #' ```
 #'
