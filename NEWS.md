@@ -1,3 +1,5 @@
+# githapi 0.10.17
+
 # githapi 0.10.16
 
 - Expanded `compare_commits()` to return summary statistics
