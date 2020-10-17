@@ -807,6 +807,7 @@ browse_project <- function(
 #' want to delete it completely you have to delete the organization's project.
 #'
 #' For more details see the GitHub API documentation:
+#'
 #' ```{r echo=FALSE, results='asis'}
 #' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
 #' cat(paste0(

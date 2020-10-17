@@ -34,8 +34,9 @@ organization, by supplying them as an input, as long as you have appropriate
 permissions. Deleting a team project just removes the team's access. If you
 want to delete it completely you have to delete the organization's project.
 
-For more details see the GitHub API documentation:- \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#delete-a-project}
+For more details see the GitHub API documentation:
 \itemize{
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#delete-a-project}
 \item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#remove-a-project-from-a-team}
 }
 }

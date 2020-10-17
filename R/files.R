@@ -448,6 +448,14 @@ upload_files <- function(
 #'   ">"
 #' ))
 #' ```
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "git#get-a-blob",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param from_path (string) The path to the file to download, within the
 #'   repository.

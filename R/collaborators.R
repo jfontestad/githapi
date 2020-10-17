@@ -392,7 +392,7 @@ view_collaborator <- function(
 #' ```{r echo=FALSE, results='asis'}
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "projects#remove-project-collaborator",
+#'   "projects#remove-user-as-a-collaborator",
 #'   ">"
 #' ))
 #' ```

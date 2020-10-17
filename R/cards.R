@@ -188,7 +188,7 @@ create_card <- function(
 #' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "projects#update-a-project-card",
+#'   "projects#update-an-existing-project-card",
 #'   ">"
 #' ))
 #' ```

@@ -30,6 +30,7 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
 For more details see the GitHub API documentation:
 \itemize{
 \item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-repository-content}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-blob}
 }
 }
 \examples{

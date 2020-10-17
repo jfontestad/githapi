@@ -276,7 +276,7 @@ upload_commit <- function(
 #' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
 #' cat(paste0(
 #'   "- <", docs_url,
-#'   "repos#download-a-repository-archive",
+#'   "repos#download-a-repository-archive-zip",
 #'   ">"
 #' ))
 #' ```

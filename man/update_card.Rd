@@ -66,7 +66,7 @@ column to move it to.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#update-a-project-card}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#update-an-existing-project-card}
 \item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#move-a-project-card}
 }
 }
