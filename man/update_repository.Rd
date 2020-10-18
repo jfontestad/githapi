@@ -31,33 +31,41 @@ update_repository(
 
 \item{description}{(string, optional) A short description of the repository.}
 
-\item{homepage}{(string, optional) A URL with more information about the repository.}
+\item{homepage}{(string, optional) A URL with more information about the
+repository.}
 
-\item{private}{(boolean, optional) Whether the repository is private or public.}
+\item{private}{(boolean, optional) Whether the repository is private or
+public.}
 
-\item{has_issues}{(boolean, optional) Whether to enable issues for the repository.}
+\item{has_issues}{(boolean, optional) Whether to enable issues for the
+repository.}
 
-\item{has_projects}{(boolean, optional) Whether to enable projects for the repository.}
+\item{has_projects}{(boolean, optional) Whether to enable projects for the
+repository.}
 
-\item{has_wiki}{(boolean, optional) Whether to enable the wiki for the repository.}
+\item{has_wiki}{(boolean, optional) Whether to enable the wiki for the
+repository.}
 
 \item{default_branch}{(string, optional) The name of the default branch.}
 
-\item{allow_squash_merge}{(boolean, optional) Whether to allow squash-merging pull requests.}
+\item{allow_squash_merge}{(boolean, optional) Whether to allow squash-merging
+pull requests.}
 
-\item{allow_merge_commit}{(boolean, optional) Whether to allow merging pull requests with a
-merge commit.}
+\item{allow_merge_commit}{(boolean, optional) Whether to allow merging pull
+requests with a merge commit.}
 
-\item{allow_rebase_merge}{(boolean, optional) Whether to allow rebase-merging pull requests.}
+\item{allow_rebase_merge}{(boolean, optional) Whether to allow rebase-merging
+pull requests.}
 
-\item{delete_branch_on_merge}{(boolean, optional) Whether to allow automatically deleting
-branches when pull requests are merged.}
+\item{delete_branch_on_merge}{(boolean, optional) Whether to allow
+automatically deleting branches when pull requests are merged.}
 
 \item{archived}{(boolean, optional) Whether to archive the repository.}
 
 \item{team}{(string) The team name.}
 
-\item{permission}{(string, optional) The permission to set for the team. Either: \verb{"pull"``, }"push"\verb{, }"admin"\verb{, }"maintain"\code{or}"triage"\verb{. Default: }"pull"`.}
+\item{permission}{(string, optional) The permission to set for the team.
+Either: \verb{"pull"``, }"push"\verb{, }"admin"\verb{, }"maintain"\code{or}"triage"\verb{. Default: }"pull"`.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -68,7 +76,8 @@ branches when pull requests are merged.}
 \itemize{
 \item \strong{id}: The ID of the repository.
 \item \strong{name}: The name of the repository.
-\item \strong{full_name}: The full name of the repository, in the format: \code{owner/repo}.
+\item \strong{full_name}: The full name of the repository, in the format:
+\code{owner/repo}.
 \item \strong{description}: The description of the repository.
 \item \strong{owner}: The owner of the repository.
 \item \strong{html_url}: The address of the repository's web page in GitHub.
@@ -83,10 +92,12 @@ branches when pull requests are merged.}
 \item \strong{has_wiki}: Whether the repository has a wiki.
 \item \strong{has_pages}: Whether the repository has GitHub Pages.
 \item \strong{has_downloads}: Whether the repository has downloads.
-\item \strong{allow_squash_merge}: Whether the repository allows squash-merging pull requests.
-\item \strong{allow_merge_commit}: Whether the repository allows merging pull requests with a merge
-commit.
-\item \strong{allow_rebase_merge}: Whether the repository allows rebase-merging pull requests.
+\item \strong{allow_squash_merge}: Whether the repository allows squash-merging pull
+requests.
+\item \strong{allow_merge_commit}: Whether the repository allows merging pull requests
+with a merge commit.
+\item \strong{allow_rebase_merge}: Whether the repository allows rebase-merging pull
+requests.
 \item \strong{fork}: Whether the repository is a fork of another.
 \item \strong{archived}: Whether the repository has been archived.
 \item \strong{disabled}: Whether the repository has been disabled.
@@ -99,29 +110,30 @@ commit.
 }
 }
 \description{
-This function updates a repository for the specified user or organization in GitHub. It can
-be used to change whether the project is private or has issues, projects or a wiki, it can
-redefine the allowed behaviour when merging pull requests or add or update team
-permissions.
+This function updates a repository for the authenticated user or organization
+in GitHub. It can be used to change whether the project is private or has
+issues, projects or a wiki, it can redefine the allowed behaviour when
+merging pull requests or add or update team permissions.
 }
 \details{
 The team's permission can be set to:
 \itemize{
 \item \code{"pull"}: Team members can pull from this repository.
 \item \code{"push"}: Team members can pull from and push to this repository.
-\item \code{"admin"}: Team members can pull from, push to and administer this repository.
-\item \code{"maintain"}: Team members can manage the repository without access to sensitive or
-destructive actions. Recommended for project managers. Only applies to repositories
-owned by organizations.
-\item \code{"triage"}: Team members can proactively manage issues and pull requests without write
-access. Recommended for contributors who triage a repository. Only applies to
-repositories owned by organizations.
+\item \code{"admin"}: Team members can pull from, push to and administer this
+repository.
+\item \code{"maintain"}: Team members can manage the repository without access to
+sensitive or destructive actions. Recommended for project managers. Only
+applies to repositories owned by organizations.
+\item \code{"triage"}: Team members can proactively manage issues and pull requests
+without write access. Recommended for contributors who triage a repository.
+Only applies to repositories owned by organizations.
 }
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/#edit}
-\item \url{https://developer.github.com/v3/teams/#add-or-update-team-repository-permissions}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-repository}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#add-or-update-team-repository-permissions}
 }
 }
 \examples{
@@ -136,7 +148,8 @@ For more details see the GitHub API documentation:
     has_issues     = FALSE,
     has_projects   = FALSE,
     has_wiki       = FALSE,
-    default_branch = "main")
+    default_branch = "main"
+  )
 
   # Update an organization's repository
   update_repository(
@@ -148,7 +161,8 @@ For more details see the GitHub API documentation:
     allow_squash_merge     = FALSE,
     allow_merge_commit     = FALSE,
     allow_rebase_merge     = TRUE,
-    delete_branch_on_merge = TRUE)
+    delete_branch_on_merge = TRUE
+  )
 
   # Archive a repository
   update_repository("HairyCoos/org-repository", archived = TRUE)
@@ -156,13 +170,15 @@ For more details see the GitHub API documentation:
   # Add read access for the specified team
   update_repository(
     repo = "HairyCoos/test-repository",
-    team = "test-team")
+    team = "test-team"
+  )
 
   # Update team's permission to "maintain"
   update_repository(
     repo       = "HairyCoos/test-repository",
     team       = "test-team",
-    permission = "maintain")
+    permission = "maintain"
+  )
 
 }
 

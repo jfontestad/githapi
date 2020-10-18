@@ -23,26 +23,28 @@ gh_find(
 
 \item{value}{(scalar) The property value to search for.}
 
-\item{max_pages}{(integer, optional) The maximum number of pages to search through.
-Default: 100.}
+\item{max_pages}{(integer, optional) The maximum number of pages to search
+through. Default: 100.}
 
-\item{headers}{(character, optional) Headers to add to the request. Default: \code{NULL}.}
+\item{headers}{(character, optional) Headers to add to the request. Default:
+\code{NULL}.}
 
-\item{accept}{(string, optional) The mime format to accept when making the call. Default:
-"application/vnd.github.v3+json".}
+\item{accept}{(string, optional) The mime format to accept when making the
+call. Default: \code{"application/vnd.github.v3+json"}.}
 
-\item{token}{(string or Token, optional) An authorisation token to include with the
-request. If \code{NULL} the OAuth process is triggered. Default: \code{NULL}.}
+\item{token}{(string or Token, optional) An authorisation token to include
+with the request. If \code{NULL} the OAuth process is triggered. Default:
+\code{NULL}.}
 
-\item{proxy}{(character, optional) The proxy server to use to connect to the github API.
-If \code{NULL} then no proxy is used. Can be set in the option \code{github.proxy} or the
-environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
+\item{proxy}{(character, optional) The proxy server to use to connect to the
+github API. If \code{NULL} then no proxy is used. Can be set in the option
+\code{github.proxy} or the environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-A \code{github} list object consisting of the response, parsed into a list, with the
-attributes:
+A \code{github} list object consisting of the response, parsed into a
+list, with the attributes:
 \itemize{
 \item \strong{url}: The URLs the request was sent to
 \item \strong{request}: The type of HTTP request made
@@ -51,9 +53,9 @@ attributes:
 }
 }
 \description{
-This function pages through a collection of entities searching for a specified property
-value. It returns the first match found. For example, you can search for an issue by
-specifying the title.
+This function pages through a collection of entities searching for a
+specified property value. It returns the first match found. For example, you
+can search for an issue by specifying the title.
 }
 \examples{
 \dontrun{
@@ -62,7 +64,8 @@ specifying the title.
   gh_find(
     url      = "https://api.github.com/repos/ChadGoymer/githapi/issues",
     property = "title",
-    value    = "Test issue")
+    value    = "Test issue"
+  )
 
 }
 

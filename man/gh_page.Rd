@@ -19,23 +19,25 @@ gh_page(
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: 1000.}
 
-\item{headers}{(character, optional) Headers to add to the request. Default: \code{NULL}.}
+\item{headers}{(character, optional) Headers to add to the request. Default:
+\code{NULL}.}
 
-\item{accept}{(string, optional) The mime format to accept when making the call. Default:
-"application/vnd.github.v3+json".}
+\item{accept}{(string, optional) The mime format to accept when making the
+call. Default: \code{"application/vnd.github.v3+json"}.}
 
-\item{token}{(string or Token, optional) An authorisation token to include with the
-request. If \code{NULL} the OAuth process is triggered. Default: \code{NULL}.}
+\item{token}{(string or Token, optional) An authorisation token to include
+with the request. If \code{NULL} the OAuth process is triggered. Default:
+\code{NULL}.}
 
-\item{proxy}{(character, optional) The proxy server to use to connect to the github API.
-If \code{NULL} then no proxy is used. Can be set in the option \code{github.proxy} or the
-environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
+\item{proxy}{(character, optional) The proxy server to use to connect to the
+github API. If \code{NULL} then no proxy is used. Can be set in the option
+\code{github.proxy} or the environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-A \code{github} list object consisting of the response, parsed into a list, with the
-attributes:
+A \code{github} list object consisting of the response, parsed into a
+list, with the attributes:
 \itemize{
 \item \strong{url}: The URLs the request was sent to
 \item \strong{request}: The type of HTTP request made
@@ -44,9 +46,10 @@ attributes:
 }
 }
 \description{
-This function is used when requesting a collection of entities. GitHub sets a maximum page
-size of 100, so if more are request multiple requests are made and the results are combined.
-Each page uses \code{\link[=gh_request]{gh_request()}} to retrieve the contents.
+This function is used when requesting a collection of entities. GitHub sets a
+maximum page size of 100, so if more are request multiple requests are made
+and the results are combined. Each page uses \code{\link[=gh_request]{gh_request()}} to retrieve the
+contents.
 }
 \examples{
 \dontrun{
@@ -54,12 +57,14 @@ Each page uses \code{\link[=gh_request]{gh_request()}} to retrieve the contents.
   # First 20 users
   gh_page(
     url   = "https://api.github.com/users",
-    n_max = 20)
+    n_max = 20
+  )
 
   # First 150 users (two pages)
   gh_page(
     url   = "https://api.github.com/users",
-    n_max = 150)
+    n_max = 150
+  )
 
 }
 

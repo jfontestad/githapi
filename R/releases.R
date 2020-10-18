@@ -1,23 +1,33 @@
-#  FUNCTION: create_release -------------------------------------------------------------------
+#  FUNCTION: create_release ----------------------------------------------------
 #
 #' Create a release in a repository
 #'
-#' This function creates a new release in the specified repository in GitHub. It must be
-#' pointed at a commit by providing an existing tag or a Git reference, which can be either a
-#' SHA or branch. If the tag does not exist it is created pointing at the commit; if it does
-#' exist then the reference is ignored.
+#' This function creates a new release in the specified repository in GitHub. It
+#' must be pointed at a commit by providing an existing tag or a Git reference,
+#' which can be either a SHA or branch. If the tag does not exist it is created
+#' pointing at the commit; if it does exist then the reference is ignored.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/releases/#create-a-release>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#create-a-release",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param tag (string) The name of the tag.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param name (string, optional) The name of the release.
 #' @param body (string, optional) The description of the release.
-#' @param ref (string, optional) Either a SHA or branch used to identify the commit. If the
-#'   `tag` exists this `ref` is ignored. If not supplied the repositories default branch is
+#' @param ref (string, optional) Either a SHA or branch used to identify the
+#'   commit. If the `tag` exists this `ref` is ignored. If not supplied the
+#'   repositories default branch is
 #'   used.
-#' @param draft (boolean, optional) Whether the release is a draft. Default: `FALSE`.
+#' @param draft (boolean, optional) Whether the release is a draft. Default:
+#'   `FALSE`.
 #' @param prerelease (boolean, optional) Whether the release is a pre-release.
 #'   Default: `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
@@ -47,7 +57,8 @@
 #'     tag  = "1.0.0",
 #'     repo = "ChadGoymer/githapi",
 #'     name = "Initial production release",
-#'     body = "This is a release created by create_release()")
+#'     body = "This is a release created by create_release()"
+#'   )
 #'
 #'   # Create a draft pre-release
 #'   create_release(
@@ -57,7 +68,8 @@
 #'     body       = "This is a release created by create_release()",
 #'     ref        = "dev-branch",
 #'     draft      = TRUE,
-#'     prerelease = TRUE)
+#'     prerelease = TRUE
+#'   )
 #'
 #' }
 #'
@@ -71,30 +83,52 @@ create_release <- function(
   ref,
   draft      = FALSE,
   prerelease = FALSE,
-  ...)
-{
-  assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_scalar_logical(draft), "'draft' must be a boolean:\n  ", draft)
-  assert(is_scalar_logical(prerelease), "'prerelease' must be a boolean:\n  ", prerelease)
+  ...
+) {
+  assert(
+    is_ref(tag),
+    "'tag' must be a valid git reference - see help(is_ref):\n  ", tag
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
+  assert(
+    is_scalar_logical(draft),
+    "'draft' must be a boolean:\n  ", draft
+  )
+  assert(
+    is_scalar_logical(prerelease),
+    "'prerelease' must be a boolean:\n  ", prerelease
+  )
 
   payload <- list(
     tag_name   = tag,
     draft      = draft,
-    prerelease = prerelease)
+    prerelease = prerelease
+  )
 
   if (!missing(name)) {
-    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+    assert(
+      is_scalar_character(name),
+      "'name' must be a string:\n  ", name
+    )
     payload$name <- name
   }
 
   if (!missing(body)) {
-    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    assert(
+      is_scalar_character(body),
+      "'body' must be a string:\n  ", body
+    )
     payload$body <- body
   }
 
   if (!missing(ref)) {
-    assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+    assert(
+      is_ref(ref),
+      "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+    )
     payload$target_commitish <- ref
   }
 
@@ -104,33 +138,46 @@ create_release <- function(
 
   info("Transforming results", level = 4)
   release_gh <- select_properties(release_lst, properties$release) %>%
-    modify_list(assets = map_chr(release_lst$assets, "name"), .before = "html_url")
+    modify_list(
+      assets  = map_chr(release_lst$assets, "name"),
+      .before = "html_url"
+    )
 
   info("Done", level = 7)
   release_gh
 }
 
 
-#  FUNCTION: update_release -------------------------------------------------------------------
+#  FUNCTION: update_release ----------------------------------------------------
 #
 #' Update a release in a repository
 #'
-#' This function updates a release in the specified repository. It can be used to update
-#' properties, such as `name` or whether it is `draft`, or it can be used to point the release
-#' at a new commit by providing a Git reference, which can be either a SHA or branch.
+#' This function updates a release in the specified repository. It can be used
+#' to update properties, such as `name` or whether it is `draft`, or it can be
+#' used to point the release at a new commit by providing a Git reference, which
+#' can be either a SHA or branch.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/releases/#edit-a-release>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#update-a-release",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param release (string) The id or current tag of the release.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param tag (string, optional) The name of the new tag.
 #' @param name (string, optional) The name of the release.
 #' @param body (string, optional) The description of the release.
-#' @param ref (string, optional) Either a SHA or branch used to identify the commit. If the
-#'   `tag` exists this `ref` is ignored. If not supplied the repositories default branch is
-#'   used.
-#' @param draft (boolean, optional) Whether the release is a draft. Default: `FALSE`.
+#' @param ref (string, optional) Either a SHA or branch used to identify the
+#'   commit. If the `tag` exists this `ref` is ignored. If not supplied the
+#'   repositories default branch is used.
+#' @param draft (boolean, optional) Whether the release is a draft. Default:
+#'   `FALSE`.
 #' @param prerelease (boolean, optional) Whether the release is a pre-release.
 #'   Default: `FALSE`.
 #' @param ... Parameters passed to [gh_request()].
@@ -160,7 +207,8 @@ create_release <- function(
 #'     repo    = "ChadGoymer/githapi",
 #'     tag     = "1.0.1",
 #'     name    = "Updated production release",
-#'     body    = "This release has been updated by update_release()")
+#'     body    = "This release has been updated by update_release()"
+#'   )
 #'
 #'   update_release(
 #'     release    = 1234567,
@@ -169,7 +217,8 @@ create_release <- function(
 #'     name       = "Promoted draft release",
 #'     body       = "This release has been updated by update_release()",
 #'     draft      = FALSE,
-#'     prerelease = FALSE)
+#'     prerelease = FALSE
+#'   )
 #'
 #' }
 #'
@@ -184,40 +233,65 @@ update_release <- function(
   ref,
   draft      = FALSE,
   prerelease = FALSE,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_scalar_logical(draft), "'draft' must be a boolean:\n  ", draft)
-  assert(is_scalar_logical(prerelease), "'prerelease' must be a boolean:\n  ", prerelease)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
+  assert(
+    is_scalar_logical(draft),
+    "'draft' must be a boolean:\n  ", draft
+  )
+  assert(
+    is_scalar_logical(prerelease),
+    "'prerelease' must be a boolean:\n  ", prerelease
+  )
 
   payload <- list(
     draft      = draft,
-    prerelease = prerelease)
+    prerelease = prerelease
+  )
 
   if (!missing(tag)) {
-    assert(is_ref(tag), "'tag' must be a valid git reference - see help(is_ref):\n  ", tag)
+    assert(
+      is_ref(tag),
+      "'tag' must be a valid git reference - see help(is_ref):\n  ", tag
+    )
     payload$tag_name <- tag
   }
 
   if (!missing(name)) {
-    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+    assert(
+      is_scalar_character(name),
+      "'name' must be a string:\n  ", name
+    )
     payload$name <- name
   }
 
   if (!missing(body)) {
-    assert(is_scalar_character(body), "'body' must be a string:\n  ", body)
+    assert(
+      is_scalar_character(body),
+      "'body' must be a string:\n  ", body
+    )
     payload$body <- body
   }
 
   if (!missing(ref)) {
-    assert(is_ref(ref), "'ref' must be a valid git reference - see help(is_ref):\n  ", ref)
+    assert(
+      is_ref(ref),
+      "'ref' must be a valid git reference - see help(is_ref):\n  ", ref
+    )
     payload$target_commitish <- ref
   }
 
   if (is_scalar_character(release)) {
     release <- view_release(release = release, repo = repo, ...)$id
   }
-  assert(is_scalar_integerish(release), "'release' must be an integer or a string:\n  ", release)
+  assert(
+    is_scalar_integerish(release),
+    "'release' must be an integer or a string:\n  ", release
+  )
 
   info("Updating release '", release, "' in repository '", repo, "'")
   release_lst <- gh_url("repos", repo, "releases", release) %>%
@@ -225,35 +299,59 @@ update_release <- function(
 
   info("Transforming results", level = 4)
   release_gh <- select_properties(release_lst, properties$release) %>%
-    modify_list(assets = map_chr(release_lst$assets, "name"), .before = "html_url")
+    modify_list(
+      assets  = map_chr(release_lst$assets, "name"),
+      .before = "html_url"
+    )
 
   info("Done", level = 7)
   release_gh
 }
 
 
-#  FUNCTION: view_releases --------------------------------------------------------------------
+#  FUNCTION: view_releases -----------------------------------------------------
 #
 #' View releases within a repository
 #'
-#' `view_releases()` summarises releases in a table with the properties as columns and a row
-#' for each release in the repository. `view_release()` returns a list of all properties for
-#' a single release. `browse_release()` opens the web page for the release in the default
-#' browser.
+#' `view_releases()` summarises releases in a table with the properties as
+#' columns and a row for each release in the repository. `view_release()`
+#' returns a list of all properties for a single release. `browse_release()`
+#' opens the web page for the release in the default browser.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository>
-#' - <https://developer.github.com/v3/repos/releases/#get-a-single-release>
-#' - <https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#list-releases",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#get-a-release",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#get-a-release-by-tag-name",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param release (string) The id or tag of the release.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
-#' @return `view_releases()` returns a tibble of release properties. `view_release()`
-#'   returns a list of properties for a single release. `browse_release` opens the
-#'   default browser on the release page and returns the URL.
+#' @return `view_releases()` returns a tibble of release properties.
+#'   `view_release()` returns a list of properties for a single release.
+#'   `browse_release` opens the default browser on the release page and returns
+#'   the URL.
 #'
 #' **Release Properties:**
 #'
@@ -289,9 +387,12 @@ update_release <- function(
 view_releases <- function(
   repo,
   n_max = 1000,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Viewing releases for repository '", repo, "'")
   releases_lst <- gh_url("repos", repo, "releases") %>%
@@ -299,14 +400,17 @@ view_releases <- function(
 
   info("Transforming results", level = 4)
   releases_gh <- bind_properties(releases_lst, properties$release) %>%
-    add_column(assets = map(releases_lst, ~ map_chr(.$assets, "name")), .before = "html_url")
+    add_column(
+      assets = map(releases_lst, ~ map_chr(.$assets, "name")),
+      .before = "html_url"
+    )
 
   info("Done", level = 7)
   releases_gh
 }
 
 
-#  FUNCTION: view_release ---------------------------------------------------------------------
+#  FUNCTION: view_release ------------------------------------------------------
 #
 #' @rdname view_releases
 #' @export
@@ -314,9 +418,12 @@ view_releases <- function(
 view_release <- function(
   release,
   repo,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (is_scalar_integerish(release)) {
     url <- gh_url("repos", repo, "releases", release)
@@ -325,7 +432,10 @@ view_release <- function(
     url <- gh_url("repos", repo, "releases/tags", release)
   }
   else {
-    error("'release' must be either an integer or a valid git reference - see help(is_ref):\n  ", release)
+    error(
+      "'release' must be either an integer or a valid git reference",
+      " - see help(is_ref):\n  ", release
+    )
   }
 
   info("Viewing release '", release, "' in repository '", repo, "'")
@@ -333,14 +443,17 @@ view_release <- function(
 
   info("Transforming results", level = 4)
   release_gh <- select_properties(release_lst, properties$release) %>%
-    modify_list(assets = map_chr(release_lst$assets, "name"), .before = "html_url")
+    modify_list(
+      assets = map_chr(release_lst$assets, "name"),
+      .before = "html_url"
+    )
 
   info("Done", level = 7)
   release_gh
 }
 
 
-#  FUNCTION: browse_release -------------------------------------------------------------------
+#  FUNCTION: browse_release ----------------------------------------------------
 #
 #' @rdname view_releases
 #' @export
@@ -348,9 +461,12 @@ view_release <- function(
 browse_release <- function(
   release,
   repo,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (is_scalar_integerish(release)) {
     url <- gh_url("repos", repo, "releases", release)
@@ -359,7 +475,10 @@ browse_release <- function(
     url <- gh_url("repos", repo, "releases/tags", release)
   }
   else {
-    error("'release' must be either an integer or a valid git reference - see help(is_ref):\n  ", release)
+    error(
+      "'release' must be either an integer or a valid git reference",
+      " - see help(is_ref):\n  ", release
+    )
   }
 
   info("Browsing release '", release, "' in repository '", repo, "'")
@@ -373,19 +492,28 @@ browse_release <- function(
     url     = attr(release, "url"),
     request = attr(release, "request"),
     status  = attr(release, "status"),
-    header  = attr(release, "header"))
+    header  = attr(release, "header")
+  )
 }
 
 
-#  FUNCTION: delete_release -------------------------------------------------------------------
+#  FUNCTION: delete_release ----------------------------------------------------
 #
 #' Delete a release from a repository
 #'
-#' This function deletes a release from a repository, as long as you have appropriate
-#' permissions. Care should be taken as it will not be recoverable.
+#' This function deletes a release from a repository, as long as you have
+#' appropriate permissions. Care should be taken as it will not be recoverable.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/repos/releases/#delete-a-release>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "repos#delete-a-release",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param release (string) The id or tag of the release.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -405,14 +533,20 @@ browse_release <- function(
 delete_release <- function(
   release,
   repo,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (is_scalar_character(release)) {
     release <- view_release(release = release, repo = repo, ...)$id
   }
-  assert(is_scalar_integerish(release), "'release' must be an integer or a string:\n  ", release)
+  assert(
+    is_scalar_integerish(release),
+    "'release' must be an integer or a string:\n  ", release
+  )
 
   info("Deleting release '", release, "' in repository '", repo, "'")
   response <- gh_url("repos", repo, "releases", release) %>%
@@ -425,5 +559,6 @@ delete_release <- function(
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
-    header  = attr(response, "header"))
+    header  = attr(response, "header")
+  )
 }

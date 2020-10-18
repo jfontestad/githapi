@@ -7,19 +7,20 @@
 gh_url(..., api = getOption("github.api"))
 }
 \arguments{
-\item{...}{(strings, optional) unnamed strings are built up into a URL path and named
-parameters are added as queries.}
+\item{...}{(strings, optional) unnamed strings are built up into a URL path
+and named parameters are added as queries.}
 
-\item{api}{(string, optional) The URL of GitHub's API. Default: the value stored in the
-environment variable \code{GITHUB_API} or \verb{https://api.github.com}.}
+\item{api}{(string, optional) The URL of GitHub's API. Default: the value
+stored in the environment variable \code{GITHUB_API} or
+\verb{https://api.github.com}.}
 }
 \value{
 Valid URL (string)
 }
 \description{
-This function is used to build the URL for the various endpoints in the GitHub API.
-Unnamed strings are used to build the path upon the API and named strings are added as
-queries.
+This function is used to build the URL for the various endpoints in the
+GitHub API. Unnamed strings are used to build the path upon the API and named
+strings are added as queries.
 }
 \examples{
 \dontrun{
@@ -31,7 +32,10 @@ queries.
   gh_url("repos", "ChadGoymer/githapi", "git/refs/heads", "main")
 
   # URL for a file tree with the recursive option
-  gh_url(c("repos", "ChadGoymer/githapi", "git/trees", "234752384"), list(recursive = 1))
+  gh_url(
+    c("repos", "ChadGoymer/githapi", "git/trees", "234752384"),
+    list(recursive = 1)
+  )
 
 }
 

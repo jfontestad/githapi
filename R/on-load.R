@@ -1,7 +1,9 @@
-.onLoad <- function(libname, pkgname)
-{
+.onLoad <- function(libname, pkgname) {
   # Read configuration file
-  if (Sys.getenv("GITHAPI_CONFIG") != "" && file.exists(Sys.getenv("GITHAPI_CONFIG"))) {
+  if (
+    Sys.getenv("GITHAPI_CONFIG") != "" &&
+      file.exists(Sys.getenv("GITHAPI_CONFIG"))
+  ) {
     config_path <- Sys.getenv("GITHAPI_CONFIG")
   } else {
     config_path <- system.file("config.json", package = "githapi")
@@ -29,8 +31,8 @@
   # Set github token
   tokens <- c(
     Sys.getenv("GITHAPI_TOKEN"),
-    Sys.getenv("GITHUB_TOKEN"),
-    Sys.getenv("GITHUB_PAT"))
+    Sys.getenv("GITHUB_PAT"),
+    Sys.getenv("GITHUB_TOKEN"))
 
   if (any(tokens != "")) {
     gh_cfg$token <- tokens[tokens != ""][[1]]
@@ -39,14 +41,14 @@
   # Set R options
   options(
     # GitHub API
-    github.api       = gh_cfg$api,        # The base address of the GitHub API
-    github.oauth     = gh_cfg$oauth,      # The base address of the GitHub OAuth URL
+    github.api       = gh_cfg$api,        # The URL of the GitHub API
+    github.oauth     = gh_cfg$oauth,      # The URL for GitHub OAuth
     github.token     = gh_cfg$token,      # The GitHub token
     github.proxy     = gh_cfg$proxy,      # The proxy to use to access GitHub
 
     # githapi application
-    githapi.key      = app_cfg$key,       # The application ID for accessing GitHub
-    githapi.secret   = app_cfg$secret,    # The secret for the application to access GitHub
-    githapi.cache    = app_cfg$cache      # Location for cached token - FALSE means do not cache
+    githapi.key      = app_cfg$key,       # The GitHub application ID
+    githapi.secret   = app_cfg$secret,    # The GitHub application secret
+    githapi.cache    = app_cfg$cache      # Location for cached token
   )
 }

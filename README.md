@@ -15,7 +15,7 @@ provides a user-friendly way to access content within GitHub through v3 of its
 [API](https://developer.github.com/v3/). The functions are also consistent with the
 [tidyverse](http://www.tidyverse.org/) approach and return tibbles where possible.
 
-Detailed documentation can be found at: http://www.goymer.me.uk/githapi
+Detailed documentation can be found at: http://goymer.me/githapi
 
 Installation
 ------------
@@ -55,7 +55,7 @@ library(githapi)
 
 `githapi` provides many functions for extracting information about repositories. For example, 
 To first get a summary of the repositories you can use
-[`view_repositories()`](http://www.goymer.me.uk/githapi/reference/view_repositories.html):
+[`view_repositories()`](http://goymer.me/githapi/reference/view_repositories.html):
 
 ```r
 view_repositories("ChadGoymer")
@@ -82,7 +82,7 @@ view_repositories("ChadGoymer")
 ```
 
 For a particular repository you can view a summary of the branches using 
-[`view_branches()`](http://www.goymer.me.uk/githapi/reference/view_branches.html):
+[`view_branches()`](http://goymer.me/githapi/reference/view_branches.html):
 
 ```r
 view_branches("ChadGoymer/githapi")
@@ -98,7 +98,7 @@ view_branches("ChadGoymer/githapi")
 ```
 
 Similarly, to get the history of commits for a particular branch use 
-[`view_commits()`](http://www.goymer.me.uk/githapi/reference/view_commits.html):
+[`view_commits()`](http://goymer.me/githapi/reference/view_commits.html):
 
 ```r
 view_commits("main", "ChadGoymer/githapi")
@@ -126,7 +126,7 @@ view_commits("main", "ChadGoymer/githapi")
 
 Note that, by default, when viewing many items, only the last 1000 are returned. If you wish to
 view more you can set the `n_max` parameter. To get information about the files in a particular 
-commit use [`view_files()`](http://www.goymer.me.uk/githapi/reference/view_files.html):
+commit use [`view_files()`](http://goymer.me/githapi/reference/view_files.html):
 
 ```r
 view_files(ref = "main", repo = "ChadGoymer/githapi")
@@ -154,8 +154,8 @@ in `githapi` allow git references to identify commits. A git reference is either
 which case the head commit on the branch is used, a tag or the SHA-1 of the commit.
 
 Information about tags and releases can also be viewed by using 
-[`view_tags()`](http://www.goymer.me.uk/githapi/reference/view_tags.html) and 
-[`view_releases()`](http://www.goymer.me.uk/githapi/reference/view_releases.html).
+[`view_tags()`](http://goymer.me/githapi/reference/view_tags.html) and 
+[`view_releases()`](http://goymer.me/githapi/reference/view_releases.html).
 
 ```r
 view_tags("ChadGoymer/githapi")
@@ -213,7 +213,7 @@ view_releases("ChadGoymer/githapi")
 
 In addition to getting information about the contents of a repository, `githapi` can also 
 download files and commits. To download individual files use
-[`download_file()`](http://www.goymer.me.uk/githapi/reference/download_file.html)
+[`download_file()`](http://goymer.me/githapi/reference/download_file.html)
 
 ```r
 download_file(
@@ -224,7 +224,7 @@ download_file(
 ```
 
 To download an entire commit use
-[`download_commit()`](http://www.goymer.me.uk/githapi/reference/download_commit.html)
+[`download_commit()`](http://goymer.me/githapi/reference/download_commit.html)
 
 ```r
 download_commit(
@@ -234,14 +234,14 @@ download_commit(
 ```
 
 You can also read text files from a commit directly using
-[`read_github_file()`](http://www.goymer.me.uk/githapi/reference/read_github_file.html)
+[`read_github_file()`](http://goymer.me/githapi/reference/read_github_file.html)
 
 ```r
 read_github_file("README.md", ref = "main", repo = "ChadGoymer/githapi")
 ```
 
 and source R scripts directly from GitHub using
-[`github_source()`](http://www.goymer.me.uk/githapi/reference/github_source.html)
+[`github_source()`](http://goymer.me/githapi/reference/github_source.html)
 
 ```r
 github_source("inst/test-data/test-source.R", ref = "main", repo = "ChadGoymer/githapi")
@@ -252,8 +252,8 @@ github_source("inst/test-data/test-source.R", ref = "main", repo = "ChadGoymer/g
 
 `githapi` also provides a set of functions for updating repositories, for adding branches, tags as
 well as new commits. To create or update a file use
-[`create_file()`](http://www.goymer.me.uk/githapi/reference/create_file.html) or
-[`update_file()`](http://www.goymer.me.uk/githapi/reference/update_file.html)
+[`create_file()`](http://goymer.me/githapi/reference/create_file.html) or
+[`update_file()`](http://goymer.me/githapi/reference/update_file.html)
 
 ```r
 create_file(
@@ -275,7 +275,7 @@ update_file(
 
 These functions create a new commit and specify the contents as strings. To upload many files, 
 and/or binary files, use 
-[`upload_commit()`](http://www.goymer.me.uk/githapi/reference/upload_commit.html)
+[`upload_commit()`](http://goymer.me/githapi/reference/upload_commit.html)
 
 ```r
 upload_commit(
@@ -289,8 +289,8 @@ This function, by default, makes a new commit containing the contents of the spe
 (see documentation for details).
 
 Finally, tags and releases can be created using 
-[`create_tag()`](http://www.goymer.me.uk/githapi/reference/create_tag.html) and
-[`create_release()`](http://www.goymer.me.uk/githapi/reference/create_release.html) respectively.
+[`create_tag()`](http://goymer.me/githapi/reference/create_tag.html) and
+[`create_release()`](http://goymer.me/githapi/reference/create_release.html) respectively.
 
 ```r
 create_tag(

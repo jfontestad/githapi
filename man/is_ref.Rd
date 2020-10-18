@@ -13,17 +13,21 @@ is_ref(x)
 TRUE if x is a valid reference name, FALSE otherwise
 }
 \description{
-A valid reference has restrictions on the special characters allowed (see details).
+A valid reference has restrictions on the special characters allowed (see
+details).
 }
 \details{
 Git imposes the following rules when naming references:
 \enumerate{
-\item They can include slash '/' for hierarchical (directory) grouping, but no slash-separated
-component can begin with a dot '.' or dash '-' or end with the sequence '.lock'.
+\item They can include slash '/' for hierarchical (directory) grouping, but no
+slash-separated component can begin with a dot '.' or dash '-' or end with
+the sequence '.lock'.
 \item They cannot have two consecutive dots '..' anywhere.
-\item They cannot have the special characters: space ' ', tilde '~', caret '^', or colon ':',
-question-mark '?', asterisk '*', backslash '\\', or open bracket '[' anywhere.
-\item They cannot begin or end with a slash '/' or contain multiple consecutive slashes
+\item They cannot have the special characters: space ' ', tilde '~', caret '^',
+or colon ':', question-mark '?', asterisk '*', backslash '\\', or open
+bracket '[' anywhere.
+\item They cannot begin or end with a slash '/' or contain multiple consecutive
+slashes
 \item They cannot end with a dot '.'.
 \item They cannot contain a sequence '@\{'.
 \item They cannot be the single character '@'.

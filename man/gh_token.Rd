@@ -15,47 +15,50 @@ gh_token(
 )
 }
 \arguments{
-\item{token}{(string, optional) A personal access token. If \code{NULL} then the OAuth process
-is triggered. Can be set in the \code{github.token} option or the \code{GITHUB_TOKEN} environment
-variable. Default: \code{NULL}.}
+\item{token}{(string, optional) A personal access token. If \code{NULL} then the
+OAuth process is triggered. Can be set in the \code{github.token} option or the
+\code{GITHAPI_TOKEN}, \code{GITHUB_PAT}, or \code{GITHUB_TOKEN} environment variable.
+Default: \code{NULL}.}
 
-\item{oauth}{(string, optional) The base URL for for the OAuth endpoint. Can be set in the
-\code{github.oauth} option or the \code{GITHUB_OAUTH} environment variable. Default:
-\code{"https://github.com/login/oauth"}.}
+\item{oauth}{(string, optional) The base URL for for the OAuth endpoint. Can
+be set in the \code{github.oauth} option or the \code{GITHUB_OAUTH} environment
+variable. Default: \code{"https://github.com/login/oauth"}.}
 
-\item{proxy}{(character, optional) The proxy server to use to connect to the github API.
-If \code{NULL} then no proxy is used. Can be set in the option \code{github.proxy} or the
-environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
+\item{proxy}{(character, optional) The proxy server to use to connect to the
+github API. If \code{NULL} then no proxy is used. Can be set in the option
+\code{github.proxy} or the environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
 
-\item{key}{(string, optional) The application ID for accessing GitHub. Can be set in the
-\code{githapi.key} option or the \code{GITHAPI_KEY} environment variable. Default: The key for the
-githapi application in github.com.}
+\item{key}{(string, optional) The application ID for accessing GitHub. Can be
+set in the \code{githapi.key} option or the \code{GITHAPI_KEY} environment variable.
+Default: The key for the githapi application in github.com.}
 
-\item{secret}{(string, optional) The secret for the application to access GitHub. Can be
-set in the \code{githapi.secret} option or the \code{GITHAPI_SECRET} environment variable. Default:
-The secret for the githapi application in github.com}
+\item{secret}{(string, optional) The secret for the application to access
+GitHub. Can be set in the \code{githapi.secret} option or the \code{GITHAPI_SECRET}
+environment variable. Default: The secret for the githapi application in
+github.com}
 
-\item{cache}{(boolean or string, optional) The location to store a cached token. If \code{TRUE}
-the cache uses the httr default; if \code{FALSE} it does not cache. Can be set in the
-\code{"githapi.cache"} option or the \code{GITHAPI_CACHE} environment variable. Default: \code{FALSE}.}
+\item{cache}{(boolean or string, optional) The location to store a cached
+token. If \code{TRUE} the cache uses the httr default; if \code{FALSE} it does not
+cache. Can be set in the \code{"githapi.cache"} option or the \code{GITHAPI_CACHE}
+environment variable. Default: \code{FALSE}.}
 
-\item{refresh}{(boolean, optional) Whether to force the refresh of the cached token.
-Default: FALSE.}
+\item{refresh}{(boolean, optional) Whether to force the refresh of the cached
+token. Default: FALSE.}
 }
 \value{
-A token which is either a string, for a personal access token, or a \link[httr:Token]{httr::Token}
-object for an OAuth token.
+A token which is either a string, for a personal access token, or a
+\link[httr:Token]{httr::Token} object for an OAuth token.
 }
 \description{
-This function initiates the OAuth authentication code grant flow with GitHub. The user
-will be redirected to GitHub's login page to enter a user name and password. Once complete
-the user can close the window and this function returns a token which can be used for all
-calls to the githapi API.
+This function initiates the OAuth authentication code grant flow with GitHub.
+The user will be redirected to GitHub's login page to enter a user name and
+password. Once complete the user can close the window and this function
+returns a token which can be used for all calls to the githapi API.
 }
 \details{
-For non-interactive processes a personal access token can be specified, either as an R
-option (\code{"github.token"}) or as an environment variable (either \code{GITHUB_TOKEN} or
-\code{GITHUB_PAT}).
+For non-interactive processes a personal access token can be specified,
+either as an R option (\code{"github.token"}) or as an environment variable
+(either \code{GITHAPI_TOKEN}, \code{GITHUB_PAT}, or \code{GITHUB_TOKEN}).
 }
 \examples{
 \dontrun{

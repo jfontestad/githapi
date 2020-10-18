@@ -1,4 +1,4 @@
-#  FUNCTION: is_sha ---------------------------------------------------------------------------
+#  FUNCTION: is_sha ------------------------------------------------------------
 #
 #' Checks whether the supplied object is a valid SHA
 #'
@@ -10,15 +10,14 @@
 #'
 #' @export
 #'
-is_sha <- function(x)
-{
+is_sha <- function(x) {
   is_scalar_character(x) &&
     identical(str_length(x), 40L) &&
     all(str_split(x, "")[[1]] %in% c(0:9, letters[1:6]))
 }
 
 
-#  FUNCTION: is_repo --------------------------------------------------------------------------
+#  FUNCTION: is_repo -----------------------------------------------------------
 #
 #' Checks whether the supplied object is a valid repository name
 #'
@@ -30,26 +29,29 @@ is_sha <- function(x)
 #'
 #' @export
 #'
-is_repo <- function(x)
-{
+is_repo <- function(x) {
   is_scalar_character(x) &&
     identical(length(str_split(x, "/")[[1]]), 2L)
 }
 
 
-#  FUNCTION: is_ref ---------------------------------------------------------------------------
+#  FUNCTION: is_ref ------------------------------------------------------------
 #
 #' Checks whether the supplied object is a valid reference name
 #'
-#' A valid reference has restrictions on the special characters allowed (see details).
+#' A valid reference has restrictions on the special characters allowed (see
+#' details).
 #'
 #' Git imposes the following rules when naming references:
-#' 1. They can include slash '/' for hierarchical (directory) grouping, but no slash-separated
-#'    component can begin with a dot '.' or dash '-' or end with the sequence '.lock'.
+#' 1. They can include slash '/' for hierarchical (directory) grouping, but no
+#'    slash-separated component can begin with a dot '.' or dash '-' or end with
+#'    the sequence '.lock'.
 #' 2. They cannot have two consecutive dots '..' anywhere.
-#' 3. They cannot have the special characters: space ' ', tilde '~', caret '^', or colon ':',
-#'    question-mark '?', asterisk '*', backslash '\\', or open bracket '\[' anywhere.
-#' 5. They cannot begin or end with a slash '/' or contain multiple consecutive slashes
+#' 3. They cannot have the special characters: space ' ', tilde '~', caret '^',
+#'    or colon ':', question-mark '?', asterisk '*', backslash '\\', or open
+#'    bracket '\[' anywhere.
+#' 5. They cannot begin or end with a slash '/' or contain multiple consecutive
+#'    slashes
 #' 6. They cannot end with a dot '.'.
 #' 7. They cannot contain a sequence '@\{'.
 #' 8. They cannot be the single character '@'.
@@ -60,10 +62,10 @@ is_repo <- function(x)
 #'
 #' @export
 #'
-is_ref <- function(x)
-{
-  if (!is_scalar_character(x))
+is_ref <- function(x) {
+  if (!is_scalar_character(x)) {
     return(FALSE)
+  }
 
   invalid <- c(
     "\\.\\.", # double dot '..'
@@ -79,23 +81,33 @@ is_ref <- function(x)
     "\\/$",   # ends with slash '/'
     "\\/\\/", # double slash '//'
     "\\@\\{", # pattern '@{'
-    "^\\@$")  # only contains '@'
-  if (any(str_detect(x, invalid)))
+    "^\\@$"   # only contains '@'
+  )
+
+  if (any(str_detect(x, invalid))) {
     return(FALSE)
+  }
 
   split_invalid <- c(
     "^\\.",     # starts with dot '.'
     "\\.$",     # ends with dot '.'
     "^\\-",     # starts with dash '-'
     "\\-$",     # ends with dash '-'
-    "\\.lock$") # ends with ',lock'
-  if (any(map_lgl(str_split(x, "/")[[1]], ~ any(str_detect(., pattern = split_invalid)))))
+    "\\.lock$"  # ends with ',lock'
+  )
+
+  detect_split <- map_lgl(str_split(x, "/")[[1]], function(.x) {
+    any(str_detect(.x, pattern = split_invalid))
+  })
+
+  if (any(detect_split)) {
     return(FALSE)
+  }
 
   TRUE
 }
 
-# FUNCTION: is_hex ----------------------------------------------------------------------------
+# FUNCTION: is_hex -------------------------------------------------------------
 #
 # Checks whether the supplied object is a hexidecimal color code
 #
@@ -103,13 +115,12 @@ is_ref <- function(x)
 #
 # @return TRUE if x is a valid hexidecimal color code, FALSE otherwise
 #
-is_hex <- function(x)
-{
+is_hex <- function(x) {
   is_scalar_character(x) && nchar(x) == 7 && startsWith(x, "#")
 }
 
 
-# FUNCTION: as_hex ----------------------------------------------------------------------------
+# FUNCTION: as_hex -------------------------------------------------------------
 #
 # Convert a vector of color names into hexidecimal codes
 #
@@ -117,29 +128,28 @@ is_hex <- function(x)
 #
 # @return A character vector of hexidecimal codes
 #
-as_hex <- function(color_name)
-{
+as_hex <- function(color_name) {
   color_matrix <- grDevices::col2rgb(color_name)
   grDevices::rgb(
-    red   = color_matrix[1,] / 255,
-    green = color_matrix[2,] / 255,
-    blue  = color_matrix[3,] / 255)
+    red   = color_matrix[1, ] / 255,
+    green = color_matrix[2, ] / 255,
+    blue  = color_matrix[3, ] / 255
+  )
 }
 
 
-# FUNCTION: random_color ----------------------------------------------------------------------
+# FUNCTION: random_color -------------------------------------------------------
 #
 # Select a color at random
 #
 # @return A color name sampled from [grDevices::colors()]
 #
-random_color <- function()
-{
+random_color <- function() {
   sample(grDevices::colors(), 1)
 }
 
 
-# FUNCTION: as.datetime -----------------------------------------------------------------------
+# FUNCTION: as.datetime --------------------------------------------------------
 #
 # convert a vector into a date time (POSIXct) vector
 #
@@ -147,26 +157,25 @@ random_color <- function()
 #
 # @return A `POSIXct` vector
 #
-as.datetime <- function(x)
-{
+as.datetime <- function(x) {
   as.POSIXct(x, format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC") %>%
     format(tz = "") %>%
     as.POSIXct()
 }
 
 
-# FUNCTION: property_names --------------------------------------------------------------------
+# FUNCTION: property_names -----------------------------------------------------
 #
 # Construct property names
 #
-# If names have been specified then they are used, otherwise concatenate the property vector
+# If names have been specified then they are used, otherwise concatenate the
+# property vector
 #
 # @param properties (list) A list of properties
 #
 # @return A character vector of names
 #
-property_names <- function(properties)
-{
+property_names <- function(properties) {
   names <- map_chr(properties, str_c, collapse = "_")
 
   if (!is_null(names(properties))) {
@@ -181,7 +190,7 @@ property_names <- function(properties)
 }
 
 
-# FUNCTION: select_properties -----------------------------------------------------------------
+# FUNCTION: select_properties --------------------------------------------------
 #
 # Select properties from an entity
 #
@@ -190,10 +199,15 @@ property_names <- function(properties)
 #
 # @return A list of properties
 #
-select_properties <- function(entity, properties)
-{
-  assert(is_null(entity) || is_list(entity), "'entity' must be a list:\n  ", entity)
-  assert(is_list(properties) && !identical(length(properties), 0L), "'properties' must be a non-empty list:\n  ", properties)
+select_properties <- function(entity, properties) {
+  assert(
+    is_null(entity) || is_list(entity),
+    "'entity' must be a list:\n  ", entity
+  )
+  assert(
+    is_list(properties) && !identical(length(properties), 0L),
+    "'properties' must be a non-empty list:\n  ", properties
+  )
 
   conversions <- map_chr(properties, ~ .["as"])
   properties  <- properties %>%
@@ -204,7 +218,10 @@ select_properties <- function(entity, properties)
     selected_properties <- map(properties, ~ logical())
   }
   else {
-    selected_properties <- map(properties, ~ pluck(.x = entity, !!!., .default = NA))
+    selected_properties <- map(
+      properties,
+      ~ pluck(.x = entity, !!!., .default = NA)
+    )
   }
 
   map2(selected_properties, conversions, function(prop, conv) {
@@ -215,11 +232,12 @@ select_properties <- function(entity, properties)
       url     = attr(entity, "url"),
       request = attr(entity, "request"),
       status  = attr(entity, "status"),
-      header  = attr(entity, "header"))
+      header  = attr(entity, "header")
+    )
 }
 
 
-# FUNCTION: bind_properties -------------------------------------------------------------------
+# FUNCTION: bind_properties ----------------------------------------------------
 #
 # Bind properties from a collection of entities into a tibble
 #
@@ -228,10 +246,15 @@ select_properties <- function(entity, properties)
 #
 # @return A tibble with properties as columns and a row for each entity
 #
-bind_properties <- function(collection, properties)
-{
-  assert(is_list(collection), "'collection' must be a list:\n  ", collection)
-  assert(is_list(properties) && !identical(length(properties), 0L), "'properties' must be a non-empty list:\n  ", properties)
+bind_properties <- function(collection, properties) {
+  assert(
+    is_list(collection),
+    "'collection' must be a list:\n  ", collection
+  )
+  assert(
+    is_list(properties) && !identical(length(properties), 0L),
+    "'properties' must be a non-empty list:\n  ", properties
+  )
 
   conversions <- map_chr(properties, ~ .["as"])
   properties  <- properties %>%
@@ -256,15 +279,17 @@ bind_properties <- function(collection, properties)
       url     = attr(collection, "url"),
       request = attr(collection, "request"),
       status  = attr(collection, "status"),
-      header  = attr(collection, "header"))
+      header  = attr(collection, "header")
+    )
 }
 
 
-# FUNCTION: modify_list -----------------------------------------------------------------------
+# FUNCTION: modify_list --------------------------------------------------------
 #
 # Modify a list
 #
-# This function can add elements before or after existing elements or replaces them.
+# This function can add elements before or after existing elements or replaces
+# them.
 #
 # @param .x (list) The list to modify
 # @param ... (any) The elements to add or modify
@@ -277,8 +302,8 @@ modify_list <- function(
   .x,
   ...,
   .before,
-  .after)
-{
+  .after
+) {
   dots <- list(...)
   if (!missing(.before)) {
     x <- prepend(.x, dots, before = which(names(.x) == .before))
@@ -296,5 +321,6 @@ modify_list <- function(
     url     = attr(.x, "url"),
     request = attr(.x, "request"),
     status  = attr(.x, "status"),
-    header  = attr(.x, "header"))
+    header  = attr(.x, "header")
+  )
 }

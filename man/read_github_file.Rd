@@ -19,20 +19,21 @@ read_github_csv(path, ref, repo, ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{...}{Parameters passed to \code{\link[readr:read_file]{readr::read_file()}}, \code{\link[readr:read_lines]{readr::read_lines()}} or
-\code{\link[readr:read_csv]{readr::read_csv()}}.}
+\item{...}{Parameters passed to \code{\link[readr:read_file]{readr::read_file()}}, \code{\link[readr:read_lines]{readr::read_lines()}}
+or \code{\link[readr:read_csv]{readr::read_csv()}}.}
 }
 \value{
 \code{read_github_file()} returns a string containing the file contents,
-\code{read_github_lines()} returns a character vector, and \code{read_github_csv()} returns a
-tibble.
+\code{read_github_lines()} returns a character vector, and \code{read_github_csv()}
+returns a tibble.
 }
 \description{
-These functions read a file from a commit in a repository. \code{read_github_file()} reads a
-text file, using \code{\link[readr:read_file]{readr::read_file()}}, and returns the result as a string.
-\code{read_github_lines()} reads a text file, using \code{\link[readr:read_lines]{readr::read_lines()}}, and returns the
-result as a character vector, one element per line. \code{read_github_csv()} reads a CSV file,
-using \code{\link[readr:read_csv]{readr::read_csv()}}, and returns the result as a tibble.
+These functions read a file from a commit in a repository.
+\code{read_github_file()} reads a text file, using \code{\link[readr:read_file]{readr::read_file()}}, and
+returns the result as a string. \code{read_github_lines()} reads a text file,
+using \code{\link[readr:read_lines]{readr::read_lines()}}, and returns the result as a character vector,
+one element per line. \code{read_github_csv()} reads a CSV file, using
+\code{\link[readr:read_csv]{readr::read_csv()}}, and returns the result as a tibble.
 }
 \examples{
 \dontrun{
@@ -40,17 +41,20 @@ using \code{\link[readr:read_csv]{readr::read_csv()}}, and returns the result as
   read_github_file(
     path = "README.md",
     ref  = "main",
-    repo = "ChadGoymer/githapi")
+    repo = "ChadGoymer/githapi"
+  )
 
   read_github_lines(
     path = "README.md",
     ref  = "main",
-    repo = "ChadGoymer/githapi")
+    repo = "ChadGoymer/githapi"
+  )
 
   read_github_csv(
     path = "inst/test-data/test.csv",
     ref  = "main",
-    repo = "ChadGoymer/githapi")
+    repo = "ChadGoymer/githapi"
+  )
 
 }
 

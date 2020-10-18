@@ -9,8 +9,8 @@ source_gist(gist, files, ...)
 \arguments{
 \item{gist}{(string) The ID of the gist.}
 
-\item{files}{(character, optional) The files to source. If not specified all the files
-in the gist will be sourced.}
+\item{files}{(character, optional) The files to source. If not specified all
+the files in the gist will be sourced.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -18,8 +18,8 @@ in the gist will be sourced.}
 \code{source_gist()} returns the result of sourcing the files.
 }
 \description{
-This function downloads the files in the specified gist and then sources them using the
-\code{\link[=source]{source()}} function.
+This function downloads the files in the specified gist and then sources them
+using the \code{\link[=source]{source()}} function.
 }
 \examples{
 \dontrun{
@@ -31,7 +31,8 @@ This function downloads the files in the specified gist and then sources them us
   source_gist(
     gist  = "806dca6b09a39e7b6326a0c8137583e6",
     path  = "./gist",
-    files = "helloworld.R")
+    files = "helloworld.R"
+  )
 
 }
 

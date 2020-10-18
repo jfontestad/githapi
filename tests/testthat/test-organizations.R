@@ -1,45 +1,48 @@
 context("organizations")
 
 
-# TEST: update_organization -------------------------------------------------------------------
+# TEST: update_organization ----------------------------------------------------
 
 test_that("update_organization changes the organization's properties", {
 
-  original_organization <- view_organization("HairyCoos")
+  org <- view_organization("HairyCoos")
 
   on.exit({
     update_organization(
       org                             = "HairyCoos",
-      name                            = original_organization$name,
-      description                     = original_organization$description,
-      email                           = original_organization$email,
-      location                        = original_organization$location,
-      company                         = original_organization$company,
-      billing_email                   = original_organization$billing_email,
-      has_organization_projects       = original_organization$has_organization_projects,
-      has_repository_projects         = original_organization$has_repository_projects,
-      default_repository_permission   = original_organization$default_repository_permission,
-      members_can_create_repositories = original_organization$members_can_create_repositories)
+      name                            = org$name,
+      description                     = org$description,
+      email                           = org$email,
+      location                        = org$location,
+      company                         = org$company,
+      billing_email                   = org$billing_email,
+      has_organization_projects       = org$has_organization_projects,
+      has_repository_projects         = org$has_repository_projects,
+      default_repository_permission   = org$default_repository_permission,
+      members_can_create_repositories = org$members_can_create_repositories
+    )
   })
 
   updated_organization <- update_organization(
     org                             = "HairyCoos",
     name                            = "ACME",
     description                     = "ACME Trading Co",
-    email                           = original_organization$email,
+    email                           = org$email,
     location                        = "The desert",
     company                         = "ACME",
-    billing_email                   = original_organization$billing_email,
+    billing_email                   = org$billing_email,
     has_organization_projects       = FALSE,
     has_repository_projects         = FALSE,
     default_repository_permission   = "write",
-    members_can_create_repositories = FALSE)
+    members_can_create_repositories = FALSE
+  )
 
   expect_is(updated_organization, "list")
   expect_identical(attr(updated_organization, "status"), 200L)
   expect_identical(
     map_chr(updated_organization, ~ class(.)[[1]]),
-    c(id                                       = "integer",
+    c(
+      id                                       = "integer",
       login                                    = "character",
       name                                     = "character",
       description                              = "character",
@@ -65,7 +68,9 @@ test_that("update_organization changes the organization's properties", {
       two_factor_requirement_enabled           = "logical",
       members_can_create_repositories          = "logical",
       html_url                                 = "character",
-      created_at                               = "POSIXct"))
+      created_at                               = "POSIXct"
+    )
+  )
 
   expect_identical(updated_organization$login, "HairyCoos")
   expect_identical(updated_organization$name, "ACME")
@@ -80,7 +85,7 @@ test_that("update_organization changes the organization's properties", {
 })
 
 
-# TEST: view_organizations --------------------------------------------------------------------
+# TEST: view_organizations -----------------------------------------------------
 
 test_that("view_organizations returns a tibble summarising the organizations", {
 
@@ -90,9 +95,12 @@ test_that("view_organizations returns a tibble summarising the organizations", {
   expect_identical(attr(user_organizations, "status"), 200L)
   expect_identical(
     map_chr(user_organizations, ~ class(.)[[1]]),
-    c(id          = "integer",
+    c(
+      id          = "integer",
       login       = "character",
-      description = "character"))
+      description = "character"
+    )
+  )
 
   expect_true("HairyCoos" %in% user_organizations$login)
 
@@ -102,9 +110,12 @@ test_that("view_organizations returns a tibble summarising the organizations", {
   expect_identical(attr(auth_organizations, "status"), 200L)
   expect_identical(
     map_chr(auth_organizations, ~ class(.)[[1]]),
-    c(id          = "integer",
+    c(
+      id          = "integer",
       login       = "character",
-      description = "character"))
+      description = "character"
+    )
+  )
 
   expect_true("HairyCoos" %in% auth_organizations$login)
 
@@ -114,14 +125,17 @@ test_that("view_organizations returns a tibble summarising the organizations", {
   expect_identical(attr(all_organizations, "status"), 200L)
   expect_identical(
     map_chr(all_organizations, ~ class(.)[[1]]),
-    c(id          = "integer",
+    c(
+      id          = "integer",
       login       = "character",
-      description = "character"))
+      description = "character"
+    )
+  )
 
 })
 
 
-# TEST: view_organization ---------------------------------------------------------------------
+# TEST: view_organization ------------------------------------------------------
 
 test_that("view_organization returns a list of organization properties", {
 
@@ -131,7 +145,8 @@ test_that("view_organization returns a list of organization properties", {
   expect_identical(attr(organization, "status"), 200L)
   expect_identical(
     map_chr(organization, ~ class(.)[[1]]),
-    c(id                                       = "integer",
+    c(
+      id                                       = "integer",
       login                                    = "character",
       name                                     = "character",
       description                              = "character",
@@ -157,14 +172,16 @@ test_that("view_organization returns a list of organization properties", {
       two_factor_requirement_enabled           = "logical",
       members_can_create_repositories          = "logical",
       html_url                                 = "character",
-      created_at                               = "POSIXct"))
+      created_at                               = "POSIXct"
+    )
+  )
 
   expect_identical(organization$login, "HairyCoos")
 
 })
 
 
-# TEST: browse_organization -------------------------------------------------------------------
+# TEST: browse_organization ----------------------------------------------------
 
 test_that("browse_organization opens the organization's page in the browser", {
 

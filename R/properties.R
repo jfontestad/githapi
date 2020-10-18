@@ -1,9 +1,10 @@
-# LIST: properties ----------------------------------------------------------------------------
+# LIST: properties -------------------------------------------------------------
 #
 # The properties to show for all GitHub entities
 #
-# This list is used in the `view_*()` functions to extract the required properties and
-# convert to the desired column type. The settings can also be used to rename properties.
+# This list is used in the `view_*()` functions to extract the required
+# properties and convert to the desired column type. The settings can also be
+# used to rename properties.
 #
 properties <- list(
 
@@ -334,12 +335,13 @@ properties <- list(
 )
 
 
-# LIST: values --------------------------------------------------------------------------------
+# LIST: values -----------------------------------------------------------------
 #
 # List of allowed values
 #
-# This list contains the allowed values the specified properties, as defined by enumerations
-# in the GitHub documentation. They are used to validate parameters.
+# This list contains the allowed values the specified properties, as defined by
+# enumerations in the GitHub documentation. They are used to validate
+# parameters.
 #
 values <- list(
 

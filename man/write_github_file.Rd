@@ -32,18 +32,18 @@ write_github_csv(content, path, branch, message, repo, author, committer, ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{author}{(list, optional) A the name and email address of the user who wrote the
-changes in the commit.}
+\item{author}{(list, optional) A the name and email address of the user who
+wrote the changes in the commit.}
 
-\item{committer}{(list, optional) A the name and email address of the user who created
-the commit.}
+\item{committer}{(list, optional) A the name and email address of the user
+who created the commit.}
 
-\item{...}{Parameters passed to \code{\link[readr:write_file]{readr::write_file()}}, \code{\link[readr:write_lines]{readr::write_lines()}} or
-\code{\link[readr:write_csv]{readr::write_csv()}}.}
+\item{...}{Parameters passed to \code{\link[readr:write_file]{readr::write_file()}}, \code{\link[readr:write_lines]{readr::write_lines()}}
+or \code{\link[readr:write_csv]{readr::write_csv()}}.}
 }
 \value{
-\code{write_github_file()}, \code{write_github_lines()} and \code{write_github_csv()} return a
-list of the commit properties.
+\code{write_github_file()}, \code{write_github_lines()} and
+\code{write_github_csv()} return a list of the commit properties.
 
 \strong{Commit Properties:}
 \itemize{
@@ -59,35 +59,38 @@ list of the commit properties.
 }
 }
 \description{
-These functions writes files to a repository by creating a new commit on the specified
-branch. \code{write_github_file()} writes the \code{content} to a text file, using
-\code{\link[readr:write_file]{readr::write_file()}}; \code{write_github_lines()} writes to a text file, using
-\code{\link[readr:write_lines]{readr::write_lines()}} and \code{write_github_csv()} writes a CSV file, using
-\code{\link[readr:write_csv]{readr::write_csv()}}.
+These functions writes files to a repository by creating a new commit on the
+specified branch. \code{write_github_file()} writes the \code{content} to a text file,
+using \code{\link[readr:write_file]{readr::write_file()}}; \code{write_github_lines()} writes to a text file,
+using \code{\link[readr:write_lines]{readr::write_lines()}} and \code{write_github_csv()} writes a CSV file,
+using \code{\link[readr:write_csv]{readr::write_csv()}}.
 }
 \examples{
 \dontrun{
 
   write_github_file(
-    content = "# This is a new file\\\\n\\\\n Created by `write_github_file()`",
+    content = "# This is a new file\\\\n\\\\n Created by githapi",
     path    = "new-file.md",
     branch  = "main",
     message = "Created a new file with write_github_file()",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   write_github_lines(
-    content   = c("# This is a new file", "", "Created by `write_github_lines()`"),
+    content   = c("# This is a new file", "", "Created by githapi"),
     path      = "new-file.md",
     branch    = "main",
     message   = "Created a new file with write_github_lines()",
-    repo      = "ChadGoymer/githapi")
+    repo      = "ChadGoymer/githapi"
+  )
 
   write_github_csv(
     content = tibble(letters = LETTERS, numbers = 1:26),
     path    = "new-file.md",
     branch  = "main",
     message = "Updated an existing file with write_github_csv()",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
 }
 

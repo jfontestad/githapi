@@ -19,7 +19,8 @@ upload_commit(
 )
 }
 \arguments{
-\item{path}{(string) The path to the directory to upload. It must be readable.}
+\item{path}{(string) The path to the directory to upload. It must be
+readable.}
 
 \item{branch}{(string) The name of the branch to make the new commit on.}
 
@@ -27,21 +28,22 @@ upload_commit(
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{author}{(list, optional) A the name and email address of the user who wrote the
-changes in the commit.}
+\item{author}{(list, optional) A the name and email address of the user who
+wrote the changes in the commit.}
 
-\item{committer}{(list, optional) A the name and email address of the user who created
-the commit.}
+\item{committer}{(list, optional) A the name and email address of the user
+who created the commit.}
 
-\item{parents}{(character, optional) References for the commits to use as parents, can
-be either a SHA, branch or tag. If it is a branch then the head commit is used. See
-the details section for more information.}
+\item{parents}{(character, optional) References for the commits to use as
+parents, can be either a SHA, branch or tag. If it is a branch then the
+head commit is used. See the details section for more information.}
 
-\item{ignore}{(character, optional) The files to ignore in the directory. Default: \code{".git"},
-\code{".Rproj.user"}, \code{".Rhistory"}, \code{".RData"} and \code{".Ruserdata"}.}
+\item{ignore}{(character, optional) The files to ignore in the directory.
+Default: \code{".git"}, \code{".Rproj.user"}, \code{".Rhistory"}, \code{".RData"} and
+\code{".Ruserdata"}.}
 
-\item{force}{(boolean, optional) Whether to force the update if it is not a simple
-fast-forward. Default: \code{FALSE}.}
+\item{force}{(boolean, optional) Whether to force the update if it is not a
+simple fast-forward. Default: \code{FALSE}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -62,22 +64,31 @@ fast-forward. Default: \code{FALSE}.}
 }
 }
 \description{
-This function uploads all the files in the directory (except those in the \code{ignore}
-argument) and creates a new commit on the specified branch. Note: the new commit is
-created with exactly the files uploaded, so if a file in the parent commit has not been
-uploaded it will be removed in the new commit.
+This function uploads all the files in the directory (except those in the
+\code{ignore} argument) and creates a new commit on the specified branch. Note:
+the new commit is created with exactly the files uploaded, so if a file in
+the parent commit has not been uploaded it will be removed in the new commit.
 }
 \details{
-The \code{author} and \code{committer} arguments are optional and if not supplied the current
-authenticated user is used. However, if you want to set them explicitly you must specify
-a named list with \code{name} and \code{email} as the elements (see examples).
+The \code{author} and \code{committer} arguments are optional and if not supplied the
+current authenticated user is used. However, if you want to set them
+explicitly you must specify a named list with \code{name} and \code{email} as the
+elements (see examples).
 
-A commit may have none, one or two parents. If none are specified and the branch already
-exists, the head of the branch will be used as a parent. If the branch does not exist,
-an orphan commit is created without a parent. If one parent is specified the commit is
-added and the branch set to the new commit, if it is a simple fast-forward. If you want
-to set the branch to the new commit no matter what then set the \code{force} argument to
-\code{TRUE}. If two parents are specified then a merge commit is created.
+A commit may have none, one or two parents. If none are specified and the
+branch already exists, the head of the branch will be used as a parent. If
+the branch does not exist, an orphan commit is created without a parent. If
+one parent is specified the commit is added and the branch set to the new
+commit, if it is a simple fast-forward. If you want to set the branch to the
+new commit no matter what then set the \code{force} argument to \code{TRUE}. If two
+parents are specified then a merge commit is created.
+
+For more details see the GitHub API documentation:
+\itemize{
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-blob}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-tree}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-commit}
+}
 }
 \examples{
 \dontrun{
@@ -87,7 +98,8 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     path    = "C:/files-to-upload",
     branch  = "main",
     message = "Commit to test upload_commit()",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # override the author and committer
   upload_commit(
@@ -96,7 +108,8 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     message   = "Commit to test upload_commit()",
     repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",   email = "bob@acme.com"),
-    committer = list(name = "Jane",  email = "jane@acme.com"))
+    committer = list(name = "Jane",  email = "jane@acme.com")
+  )
 
   # Create a commit on a new branch
   upload_commit(
@@ -104,14 +117,16 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     branch  = "test-commits-1",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
-    parents = "main")
+    parents = "main"
+  )
 
   # Create an orphan commit
   upload_commit(
     path    = "C:/files-to-upload",
     branch  = "test-commits-2",
     message = "Commit to test upload_commit()",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Force branch to point at the new commit
   upload_commit(
@@ -120,7 +135,8 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
     parents = "test-commits-1",
-    force   = TRUE)
+    force   = TRUE
+  )
 
   # Create a commit merging a branch into the main branch
   upload_commit(
@@ -128,7 +144,8 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     branch  = "main",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
-    parents = c("main", "test-commits-1"))
+    parents = c("main", "test-commits-1")
+  )
 
   # Create a commit merging two branches into a new branch
   upload_commit(
@@ -136,7 +153,8 @@ to set the branch to the new commit no matter what then set the \code{force} arg
     branch  = "test-commits-3",
     message = "Commit to test upload_commit()",
     repo    = "ChadGoymer/githapi",
-    parents = c("main", "test-commits-2"))
+    parents = c("main", "test-commits-2")
+  )
 
 }
 

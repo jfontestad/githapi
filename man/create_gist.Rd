@@ -11,7 +11,8 @@ create_gist(files, description, public = FALSE, ...)
 
 \item{description}{(string, optional) A description for the gist.}
 
-\item{public}{(boolean, optional) Whether the gist is public. Default: \code{FALSE}.}
+\item{public}{(boolean, optional) Whether the gist is public. Default:
+\code{FALSE}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -38,13 +39,13 @@ create_gist(files, description, public = FALSE, ...)
 }
 }
 \description{
-This function creates a new gist in GitHub. You can specify one or more files by providing
-a named list (see examples).
+This function creates a new gist in GitHub. You can specify one or more files
+by providing a named list (see examples).
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/gists/#create-a-gist}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#create-a-gist}
 }
 }
 \examples{
@@ -56,15 +57,18 @@ For more details see the GitHub API documentation:
   # Create a gist with multiple files
   create_gist(
     files = list(
-      hello_world.R    = "print(\"Hello World!\")",
-      `hello_world-fn.R` = "helloworld <- function() print(\"Hello World!\")"),
-    description = "A new gist")
+      `hello_world.R`    = "print(\"Hello World!\")",
+      `hello_world-fn.R` = "helloworld <- function() print(\"Hello World!\")"
+    ),
+    description = "A new gist"
+  )
 
   # Create a public gist
   create_gist(
     files       = list(hello_world.R = "print(\"Hello World!\")"),
     description = "A new gist",
-    public      = TRUE)
+    public      = TRUE
+  )
 
 }
 

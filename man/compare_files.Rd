@@ -7,9 +7,11 @@
 compare_files(base, head, repo, ...)
 }
 \arguments{
-\item{base}{(string) Either a SHA, branch or tag used to identify the base commit.}
+\item{base}{(string) Either a SHA, branch or tag used to identify the base
+commit.}
 
-\item{head}{(string) Either a SHA, branch or tag used to identify the head commit.}
+\item{head}{(string) Either a SHA, branch or tag used to identify the head
+commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
@@ -31,14 +33,14 @@ compare_files(base, head, repo, ...)
 }
 }
 \description{
-\code{compare_files()} summarises the file changes made between two commits in a table with the
-properties as columns and a row for each file. The \code{base} commit must be in the history
-of the \code{head} commit.
+\code{compare_files()} summarises the file changes made between two commits in a
+table with the properties as columns and a row for each file. The \code{base}
+commit must be in the history of the \code{head} commit.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/commits/#compare-two-commits}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#compare-two-commits}
 }
 }
 \examples{

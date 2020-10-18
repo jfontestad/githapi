@@ -12,7 +12,8 @@ view_label(label, repo, ...)
 \arguments{
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{issue}{(string or character, optional) The number or title of the issue.}
+\item{issue}{(string or character, optional) The number or title of the
+issue.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
@@ -32,16 +33,17 @@ returns a list of properties for a single label.
 }
 }
 \description{
-\code{view_labels()} summarises labels in a table with the properties as columns and a row for
-each label in the repository. It can also be used to view the labels assigned to a single
-issue. \code{view_label()} returns a list of all properties for a single label.
+\code{view_labels()} summarises labels in a table with the properties as columns
+and a row for each label in the repository. It can also be used to view the
+labels assigned to a single issue. \code{view_label()} returns a list of all
+properties for a single label.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository}
-\item \url{https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue}
-\item \url{https://developer.github.com/v3/issues/labels/#get-a-single-label}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#list-labels-for-a-repository}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#list-labels-for-an-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#get-a-label}
 }
 }
 \examples{

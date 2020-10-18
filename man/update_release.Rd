@@ -27,11 +27,12 @@ update_release(
 
 \item{body}{(string, optional) The description of the release.}
 
-\item{ref}{(string, optional) Either a SHA or branch used to identify the commit. If the
-\code{tag} exists this \code{ref} is ignored. If not supplied the repositories default branch is
-used.}
+\item{ref}{(string, optional) Either a SHA or branch used to identify the
+commit. If the \code{tag} exists this \code{ref} is ignored. If not supplied the
+repositories default branch is used.}
 
-\item{draft}{(boolean, optional) Whether the release is a draft. Default: \code{FALSE}.}
+\item{draft}{(boolean, optional) Whether the release is a draft. Default:
+\code{FALSE}.}
 
 \item{prerelease}{(boolean, optional) Whether the release is a pre-release.
 Default: \code{FALSE}.}
@@ -58,14 +59,15 @@ Default: \code{FALSE}.}
 }
 }
 \description{
-This function updates a release in the specified repository. It can be used to update
-properties, such as \code{name} or whether it is \code{draft}, or it can be used to point the release
-at a new commit by providing a Git reference, which can be either a SHA or branch.
+This function updates a release in the specified repository. It can be used
+to update properties, such as \code{name} or whether it is \code{draft}, or it can be
+used to point the release at a new commit by providing a Git reference, which
+can be either a SHA or branch.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/releases/#edit-a-release}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-release}
 }
 }
 \examples{
@@ -76,7 +78,8 @@ For more details see the GitHub API documentation:
     repo    = "ChadGoymer/githapi",
     tag     = "1.0.1",
     name    = "Updated production release",
-    body    = "This release has been updated by update_release()")
+    body    = "This release has been updated by update_release()"
+  )
 
   update_release(
     release    = 1234567,
@@ -85,7 +88,8 @@ For more details see the GitHub API documentation:
     name       = "Promoted draft release",
     body       = "This release has been updated by update_release()",
     draft      = FALSE,
-    prerelease = FALSE)
+    prerelease = FALSE
+  )
 
 }
 

@@ -17,8 +17,15 @@ view_sha(ref, repo, ...)
 \code{view_sha()} returns the commit SHA as a string.
 }
 \description{
-This function returns the commit SHA given a git reference. A reference can be either a
-SHA, branch or tag. If it is a branch then the head commit is used.
+This function returns the commit SHA given a git reference. A reference can
+be either a SHA, branch or tag. If it is a branch then the head commit is
+used.
+}
+\details{
+For more details see the GitHub API documentation:
+\itemize{
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-commit}
+}
 }
 \examples{
 \dontrun{

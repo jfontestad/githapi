@@ -19,7 +19,8 @@ update_pull_request(
 )
 }
 \arguments{
-\item{pull_request}{(string or character) The number or title of the pull request.}
+\item{pull_request}{(string or character) The number or title of the pull
+request.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
@@ -27,29 +28,33 @@ update_pull_request(
 
 \item{body}{(string, optional) The contents of the pull request.}
 
-\item{assignees}{(character, optional) Logins for Users to assign to this pull request.
-NOTE: Only users with push access can set assignees for new pull requests.}
+\item{assignees}{(character, optional) Logins for Users to assign to this
+pull request. NOTE: Only users with push access can set assignees for new
+pull requests.}
 
-\item{reviewers}{(character, optional) Logins for Users to review this pull request.
-NOTE: Only users with push access can set reviewers for new pull requests.}
+\item{reviewers}{(character, optional) Logins for Users to review this pull
+request. NOTE: Only users with push access can set reviewers for new pull
+requests.}
 
-\item{labels}{(character, optional) Labels to associate with this pull request. NOTE: Only
-users with push access can set labels for new pull requests.}
+\item{labels}{(character, optional) Labels to associate with this pull
+request. NOTE: Only users with push access can set labels for new pull
+requests.}
 
-\item{milestone}{(character or integer, optional) The title or number of the milestone to
-associate this pull request with. NOTE: Only users with push access can set the
-milestone for new pull requests.}
+\item{milestone}{(character or integer, optional) The title or number of the
+milestone to associate this pull request with. NOTE: Only users with push
+access can set the milestone for new pull requests.}
 
-\item{base}{(string, optional) The name of the branch you want the changes pulled into.
-This should be an existing branch on the current repository.}
+\item{base}{(string, optional) The name of the branch you want the changes
+pulled into. This should be an existing branch on the current repository.}
 
-\item{state}{(string, optional) The state of the pull request. Either \code{"open"} or
-\code{"closed"}.}
+\item{state}{(string, optional) The state of the pull request. Either
+\code{"open"} or \code{"closed"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{update_pull_request()} returns a list of the pull request's properties.
+\code{update_pull_request()} returns a list of the pull request's
+properties.
 
 \strong{Pull Request Properties:}
 \itemize{
@@ -61,7 +66,8 @@ This should be an existing branch on the current repository.}
 \item \strong{head_repo}: The repository containing the branch to merge in.
 \item \strong{base_sha}: The SHA of the commit to merge onto.
 \item \strong{base_ref}: The reference, or branch, to merge onto.
-\item \strong{merge_sha}: The SHA of the merge commit, if the merge has been completed.
+\item \strong{merge_sha}: The SHA of the merge commit, if the merge has been
+completed.
 \item \strong{assignees}: The users assigned to the pull request.
 \item \strong{reviewers}: The users reviewing the pull request.
 \item \strong{labels}: The labels attached to the pull request.
@@ -82,16 +88,17 @@ This should be an existing branch on the current repository.}
 }
 }
 \description{
-This function updates a pull request for the specified repository in GitHub. It can be used
-to change the title or body, or used to close the pull request. It can also be used to
-assign the pull request to a user, request reviewers and replace labels or a milestone.
+This function updates a pull request for the specified repository in GitHub.
+It can be used to change the title or body, or used to close the pull
+request. It can also be used to assign the pull request to a user, request
+reviewers and replace labels or a milestone.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/pulls/#update-a-pull-request}
-\item \url{https://developer.github.com/v3/issues/#edit-an-issue}
-\item \url{https://developer.github.com/v3/pulls/review_requests/#create-a-review-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#update-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#request-reviewers-for-a-pull-request}
 }
 }
 \examples{
@@ -102,13 +109,15 @@ For more details see the GitHub API documentation:
     pull_request = "test pull request",
     repo         = "ChadGoymer/githapi",
     title        = "test updated pull request",
-    body         = "This is an updated pull request to test create_pull_request()")
+    body         = "This is an updated pull request"
+  )
 
   # Close a pull request
   update_pull_request(
     pull_request = "test updated pull request",
     repo         = "ChadGoymer/githapi",
-    state        = "closed")
+    state        = "closed"
+  )
 
 }
 

@@ -19,8 +19,8 @@ remove_labels(labels, issue, repo, ...)
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{add_labels()} returns a tibble of the added labels properties. \code{remove_labels()}
-returns a tibble of the remaining labels properties.
+\code{add_labels()} returns a tibble of the added labels properties.
+\code{remove_labels()} returns a tibble of the remaining labels properties.
 
 \strong{Label Properties:}
 \itemize{
@@ -30,14 +30,15 @@ returns a tibble of the remaining labels properties.
 }
 }
 \description{
-\code{add_labels()} adds labels to an existing issue or pull request within a GitHub repository.
-\code{remove_labels()} removes labels from an issue or pull request.
+\code{add_labels()} adds labels to an existing issue or pull request within a
+GitHub repository. \code{remove_labels()} removes labels from an issue or pull
+request.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue}
-\item \url{https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#add-labels-to-an-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#remove-a-label-from-an-issue}
 }
 }
 \examples{
@@ -46,12 +47,14 @@ For more details see the GitHub API documentation:
   add_labels(
     labels = c("feature", "new-label"),
     issue  = "Test issue",
-    repo   = "ChadGoymer/githapi")
+    repo   = "ChadGoymer/githapi"
+  )
 
   remove_labels(
     labels = c("feature", "new-label"),
     issue  = "Test issue",
-    repo   = "ChadGoymer/githapi")
+    repo   = "ChadGoymer/githapi"
+  )
 
 }
 

@@ -15,8 +15,8 @@ create_status(
 )
 }
 \arguments{
-\item{state}{(string) The state of the status. Can be one of \code{"error"}, \code{"failure"},
-\code{"pending"}, or \code{"success"}.}
+\item{state}{(string) The state of the status. Can be one of \code{"error"},
+\code{"failure"}, \code{"pending"}, or \code{"success"}.}
 
 \item{ref}{(string) Either a SHA, branch or tag used to identify the commit.}
 
@@ -24,11 +24,12 @@ create_status(
 
 \item{description}{(string, optional) A short description of the status.}
 
-\item{target_url}{(string, optional) The target URL to associate with this status. This URL
-will be linked from the GitHub UI to allow users to easily see the source of the status.}
+\item{target_url}{(string, optional) The target URL to associate with this
+status. This URL will be linked from the GitHub UI to allow users to easily
+see the source of the status.}
 
-\item{context}{(string, optional) A string label to differentiate this status from the
-status of other systems. Default: \code{"default"}.}
+\item{context}{(string, optional) A string label to differentiate this status
+from the status of other systems. Default: \code{"default"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -48,15 +49,16 @@ status of other systems. Default: \code{"default"}.}
 }
 }
 \description{
-This function creates a new status for a commit in the specified repository in GitHub.
-The status can also have a \code{description} and a target URL, allowing a user to link to more
-information. The \code{context} allows you to differentiate the status from others. The status
-can then be updated, from \code{pending} to \code{success} say, by using the same \code{context}.
+This function creates a new status for a commit in the specified repository
+in GitHub. The status can also have a \code{description} and a target URL,
+allowing a user to link to more information. The \code{context} allows you to
+differentiate the status from others. The status can then be updated, from
+\code{pending} to \code{success} say, by using the same \code{context}.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/repos#create-a-commit-status}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-commit-status}
 }
 }
 \examples{
@@ -68,8 +70,9 @@ For more details see the GitHub API documentation:
     ref         = "main",
     repo        = "ChadGoymer/test-githapi",
     description = "This is a pending status",
-    target_url  = "https://www.goymer.me.uk/githapi",
-    context     = "test/githapi")
+    target_url  = "https://goymer.me/githapi",
+    context     = "test/githapi"
+  )
 
   # Update the status on the main branch
   create_status(
@@ -77,8 +80,9 @@ For more details see the GitHub API documentation:
     ref         = "main",
     repo        = "ChadGoymer/test-githapi",
     description = "This is a success status",
-    target_url  = "https://www.goymer.me.uk/githapi",
-    context     = "test/githapi")
+    target_url  = "https://goymer.me/githapi",
+    context     = "test/githapi"
+  )
 
 }
 

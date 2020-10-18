@@ -19,8 +19,8 @@ view_status(ref, repo, ...)
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{view_statuses()} returns a tibble of status properties. \code{view_status()} returns a
-string for combined status.
+\code{view_statuses()} returns a tibble of status properties.
+\code{view_status()} returns a string for combined status.
 
 \strong{Status Properties:}
 \itemize{
@@ -35,15 +35,15 @@ string for combined status.
 }
 }
 \description{
-\code{view_statuses()} summarises statuses in a table with the properties as columns and a row
-for each status for the specified commit in the repository. \code{view_status()} returns the
-combined state of all statuses for the commit.
+\code{view_statuses()} summarises statuses in a table with the properties as
+columns and a row for each status for the specified commit in the repository.
+\code{view_status()} returns the combined state of all statuses for the commit.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://docs.github.com/en/rest/reference/repos#list-commit-statuses-for-a-reference}
-\item \url{https://docs.github.com/en/rest/reference/repos#get-the-combined-status-for-a-specific-reference}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-commit-statuses-for-a-reference}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-the-combined-status-for-a-specific-reference}
 }
 }
 \examples{

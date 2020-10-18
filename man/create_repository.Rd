@@ -28,34 +28,36 @@ create_repository(
 
 \item{description}{(string, optional) A short description of the repository.}
 
-\item{homepage}{(string, optional) A URL with more information about the repository.}
+\item{homepage}{(string, optional) A URL with more information about the
+repository.}
 
-\item{private}{(boolean, optional) Whether the repository is private or public.
-Default: \code{FALSE}.}
+\item{private}{(boolean, optional) Whether the repository is private or
+public. Default: \code{FALSE}.}
 
-\item{has_issues}{(boolean, optional) Whether to enable issues for the repository.
-Default: \code{TRUE}.}
+\item{has_issues}{(boolean, optional) Whether to enable issues for the
+repository. Default: \code{TRUE}.}
 
-\item{has_projects}{(boolean, optional) Whether to enable projects for the repository.
-Default: \code{TRUE}.}
+\item{has_projects}{(boolean, optional) Whether to enable projects for the
+repository. Default: \code{TRUE}.}
 
-\item{has_wiki}{(boolean, optional) Whether to enable the wiki for the repository.
-Default: \code{TRUE}.}
+\item{has_wiki}{(boolean, optional) Whether to enable the wiki for the
+repository. Default: \code{TRUE}.}
 
-\item{auto_init}{(boolean, optional) Whether to create an initial commit with empty README.
-Default: \code{FALSE}.}
+\item{auto_init}{(boolean, optional) Whether to create an initial commit with
+empty README. Default: \code{FALSE}.}
 
-\item{allow_squash_merge}{(boolean, optional) Whether to allow squash-merging pull requests.
-Default: \code{TRUE}.}
+\item{allow_squash_merge}{(boolean, optional) Whether to allow squash-merging
+pull requests. Default: \code{TRUE}.}
 
-\item{allow_merge_commit}{(boolean, optional) Whether to allow merging pull requests with a
-merge commit. Default: \code{TRUE}.}
+\item{allow_merge_commit}{(boolean, optional) Whether to allow merging pull
+requests with a merge commit. Default: \code{TRUE}.}
 
-\item{allow_rebase_merge}{(boolean, optional) Whether to allow rebase-merging pull requests.
-Default: \code{TRUE}.}
+\item{allow_rebase_merge}{(boolean, optional) Whether to allow rebase-merging
+pull requests. Default: \code{TRUE}.}
 
-\item{delete_branch_on_merge}{(boolean, optional) Whether to allow automatically deleting
-branches when pull requests are merged. Default: \code{FALSE}.}
+\item{delete_branch_on_merge}{(boolean, optional) Whether to allow
+automatically deleting branches when pull requests are merged. Default:
+\code{FALSE}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -66,7 +68,8 @@ branches when pull requests are merged. Default: \code{FALSE}.}
 \itemize{
 \item \strong{id}: The ID of the repository.
 \item \strong{name}: The name of the repository.
-\item \strong{full_name}: The full name of the repository, in the format: \code{owner/repo}.
+\item \strong{full_name}: The full name of the repository, in the format:
+\code{owner/repo}.
 \item \strong{description}: The description of the repository.
 \item \strong{owner}: The owner of the repository.
 \item \strong{html_url}: The address of the repository's web page in GitHub.
@@ -81,10 +84,12 @@ branches when pull requests are merged. Default: \code{FALSE}.}
 \item \strong{has_wiki}: Whether the repository has a wiki.
 \item \strong{has_pages}: Whether the repository has GitHub Pages.
 \item \strong{has_downloads}: Whether the repository has downloads.
-\item \strong{allow_squash_merge}: Whether the repository allows squash-merging pull requests.
-\item \strong{allow_merge_commit}: Whether the repository allows merging pull requests with a merge
-commit.
-\item \strong{allow_rebase_merge}: Whether the repository allows rebase-merging pull requests.
+\item \strong{allow_squash_merge}: Whether the repository allows squash-merging pull
+requests.
+\item \strong{allow_merge_commit}: Whether the repository allows merging pull requests
+with a merge commit.
+\item \strong{allow_rebase_merge}: Whether the repository allows rebase-merging pull
+requests.
 \item \strong{fork}: Whether the repository is a fork of another.
 \item \strong{archived}: Whether the repository has been archived.
 \item \strong{disabled}: Whether the repository has been disabled.
@@ -97,14 +102,16 @@ commit.
 }
 }
 \description{
-This function creates a new repository for the specified user or organization in GitHub.
-It can also be used to specify whether the project is private or has issues, projects or
-a wiki and can define the allowed behaviour when merging pull requests.
+This function creates a new repository for the authenticated user or an
+organization in GitHub. It can also be used to specify whether the project is
+private or has issues, projects or a wiki and can define the allowed
+behaviour when merging pull requests.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/#create}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-repository-for-the-authenticated-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-an-organization-repository}
 }
 }
 \examples{
@@ -113,13 +120,15 @@ For more details see the GitHub API documentation:
   create_repository(
     name        = "user-repository",
     description = "This is a user repository",
-    homepage    = "https://user-repository.com")
+    homepage    = "https://user-repository.com"
+  )
 
   create_repository(
     name        = "org-repository",
     org         = "HairyCoos",
     description = "This is a organization repository",
-    homepage    = "https://org-repository.com")
+    homepage    = "https://org-repository.com"
+  )
 
 }
 

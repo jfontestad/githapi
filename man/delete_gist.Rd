@@ -15,13 +15,13 @@ delete_gist(gist, ...)
 \code{delete_gist()} returns a TRUE if successfully deleted.
 }
 \description{
-This function deletes a gist from github, as long as you have appropriate permissions.
-Care should be taken as it will not be recoverable.
+This function deletes a gist from github, as long as you have appropriate
+permissions. Care should be taken as it will not be recoverable.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/gists/#delete-a-gist}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#delete-a-gist}
 }
 }
 \examples{

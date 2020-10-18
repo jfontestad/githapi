@@ -19,18 +19,19 @@ delete_membership(user, org, team, ...)
 \code{delete_membership()} returns a TRUE if successfully deleted.
 }
 \description{
-This function removes a user from an organization or team. Removing someone from a team
-does not remove them from the organization, whereas removing them from an organization
-also removes them from any teams within the organization.
+This function removes a user from an organization or team. Removing someone
+from a team does not remove them from the organization, whereas removing them
+from an organization also removes them from any teams within the
+organization.
 }
 \details{
-Note: you can only remove a user if the authenticate user is an organization "owner" or a
-team "maintainer".
+Note: you can only remove a user if the authenticate user is an organization
+"owner" or a team "maintainer".
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/orgs/members/#remove-organization-membership}
-\item \url{https://developer.github.com/v3/teams/members/#remove-team-membership}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#remove-organization-membership-for-a-user}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#remove-team-membership-for-a-user}
 }
 }
 \examples{

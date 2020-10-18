@@ -13,8 +13,9 @@ update_label(label, repo, name, color, description, ...)
 
 \item{name}{(string, optional) The name of the label.}
 
-\item{color}{(string, optional) Either the color name (see \code{\link[grDevices:colors]{grDevices::colors()}}) or a
-hexidecimal color code (see \href{http://www.color-hex.com/}{color-hex.com}).}
+\item{color}{(string, optional) Either the color name (see
+\code{\link[grDevices:colors]{grDevices::colors()}}) or a hexidecimal color code (see
+\href{http://www.color-hex.com/}{color-hex.com}).}
 
 \item{description}{(string, optional) A description of the label.}
 
@@ -31,13 +32,13 @@ hexidecimal color code (see \href{http://www.color-hex.com/}{color-hex.com}).}
 }
 }
 \description{
-This function updates a label for the specified repository in GitHub. It can be used to
-change name, color or description.
+This function updates a label for the specified repository in GitHub. It can
+be used to change name, color or description.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/issues/labels/#update-a-label}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-a-label}
 }
 }
 \examples{
@@ -48,7 +49,8 @@ For more details see the GitHub API documentation:
     repo        = "ChadGoymer/githapi",
     name        = "updated-label",
     color       = "green",
-    description = "This is an updated label")
+    description = "This is an updated label"
+  )
 
 }
 

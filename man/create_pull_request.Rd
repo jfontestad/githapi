@@ -22,31 +22,36 @@ create_pull_request(
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{head}{(string) The name of the branch where your changes are implemented. For
-cross-repository pull requests, prefix \code{head} with an owner, e.g. \code{"username:branch"}.}
+\item{head}{(string) The name of the branch where your changes are
+implemented. For cross-repository pull requests, prefix \code{head} with an
+owner, e.g. \code{"username:branch"}.}
 
-\item{base}{(string) The name of the branch you want the changes pulled into. This should
-be an existing branch in the specified repository.}
+\item{base}{(string) The name of the branch you want the changes pulled into.
+This should be an existing branch in the specified repository.}
 
 \item{body}{(string, optional) The contents of the pull request.}
 
-\item{assignees}{(character, optional) Logins for Users to assign to this pull request.
-NOTE: Only users with push access can set assignees for new pull requests.}
+\item{assignees}{(character, optional) Logins for Users to assign to this
+pull request. NOTE: Only users with push access can set assignees for new
+pull requests.}
 
-\item{reviewers}{(character, optional) Logins for Users to review this pull request.
-NOTE: Only users with push access can set reviewers for new pull requests.}
+\item{reviewers}{(character, optional) Logins for Users to review this pull
+request. NOTE: Only users with push access can set reviewers for new pull
+requests.}
 
-\item{labels}{(character, optional) Labels to associate with this pull request. NOTE: Only
-users with push access can set labels for new pull requests.}
+\item{labels}{(character, optional) Labels to associate with this pull
+request. NOTE: Only users with push access can set labels for new pull
+requests.}
 
-\item{milestone}{(character or integer, optional) The title or number of the milestone to
-associate this pull request with. NOTE: Only users with push access can set the
-milestone for new pull requests.}
+\item{milestone}{(character or integer, optional) The title or number of the
+milestone to associate this pull request with. NOTE: Only users with push
+access can set the milestone for new pull requests.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{create_pull_request()} returns a list of the pull request's properties.
+\code{create_pull_request()} returns a list of the pull request's
+properties.
 
 \strong{Pull Request Properties:}
 \itemize{
@@ -58,7 +63,8 @@ milestone for new pull requests.}
 \item \strong{head_repo}: The repository containing the branch to merge in.
 \item \strong{base_sha}: The SHA of the commit to merge onto.
 \item \strong{base_ref}: The reference, or branch, to merge onto.
-\item \strong{merge_sha}: The SHA of the merge commit, if the merge has been completed.
+\item \strong{merge_sha}: The SHA of the merge commit, if the merge has been
+completed.
 \item \strong{assignees}: The users assigned to the pull request.
 \item \strong{reviewers}: The users reviewing the pull request.
 \item \strong{labels}: The labels attached to the pull request.
@@ -79,16 +85,16 @@ milestone for new pull requests.}
 }
 }
 \description{
-This function creates a new pull request for the specified repository in GitHub. It can
-also be used to assign the pull request to a user, request reviewers and add labels or a
-milestone.
+This function creates a new pull request for the specified repository in
+GitHub. It can also be used to assign the pull request to a user, request
+reviewers and add labels or a milestone.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/pulls/#create-a-pull-request}
-\item \url{https://developer.github.com/v3/issues/#edit-an-issue}
-\item \url{https://developer.github.com/v3/pulls/review_requests/#create-a-review-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#create-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#request-reviewers-for-a-pull-request}
 }
 }
 \examples{
@@ -99,7 +105,8 @@ For more details see the GitHub API documentation:
     repo  = "ChadGoymer/githapi",
     head  = "test-pulls",
     base  = "main",
-    body  = "This is a pull request to test create_pull_request()")
+    body  = "This is a pull request to test create_pull_request()"
+  )
 
   create_pull_request(
     title     = "test assigned pull request",
@@ -110,7 +117,8 @@ For more details see the GitHub API documentation:
     assignees = "ChadGoymer",
     reviewers = c("BobSmith", "JaneJones"),
     labels    = "enhancement",
-    milestone = "Release-1.0")
+    milestone = "Release-1.0"
+  )
 
 }
 

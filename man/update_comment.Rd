@@ -15,8 +15,8 @@ update_comment(comment, body, gist, repo, type = "gist", ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{type}{(string, optional) Whether the comment is for a \code{"gist"}, \code{"issue"},
-\code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
+\item{type}{(string, optional) Whether the comment is for a \code{"gist"},
+\code{"issue"}, \code{"pull_request"} or \code{"commit"}. Default: \code{"gist"}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -27,12 +27,12 @@ update_comment(comment, body, gist, repo, type = "gist", ...)
 \itemize{
 \item \strong{id}: The id of the comment.
 \item \strong{body}: The content of the comment.
-\item \strong{commit}: The commit associated with the comment (only for pull request or commit
-comments).
-\item \strong{path}: The path of the file to add the comment to (only for pull request or commit
-comments).
-\item \strong{position}: The line number in the file to attach the comment to (only for pull
-request or commit comments).
+\item \strong{commit}: The commit associated with the comment (only for pull request
+or commit comments).
+\item \strong{path}: The path of the file to add the comment to (only for pull request
+or commit comments).
+\item \strong{position}: The line number in the file to attach the comment to (only
+for pull request or commit comments).
 \item \strong{user}: The comment author's account login.
 \item \strong{html_url}: The address of the comment's web page.
 \item \strong{created_at}: The time and date the comment was created.
@@ -40,17 +40,17 @@ request or commit comments).
 }
 }
 \description{
-This function updates a comment for a gist, issue, pull request or commit. It can be used
-to replace the content of the comment. The \code{repo} argument is not required if a gist is
-specified.
+This function updates a comment for a gist, issue, pull request or commit. It
+can be used to replace the content of the comment. The \code{repo} argument is not
+required if a gist is specified.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/gists/comments/#edit-a-comment}
-\item \url{https://developer.github.com/v3/issues/comments/#edit-a-comment}
-\item \url{https://developer.github.com/v3/pulls/comments/#edit-a-comment}
-\item \url{https://developer.github.com/v3/repos/comments/#update-a-commit-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#update-a-gist-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#update-a-review-comment-for-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-commit-comment}
 }
 }
 \examples{
@@ -60,28 +60,32 @@ For more details see the GitHub API documentation:
   update_comment(
     comment = 3281939,
     body    = "This comment has been updated by update_comment()",
-    gist    = "8e5be270de9a88168372293a813543f9")
+    gist    = "8e5be270de9a88168372293a813543f9"
+  )
 
   # Update an issue comment
   update_comment(
     comment = 622980929,
     body    = "This comment has been updated by update_comment()",
     type    = "issue",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Update an pull request comment
   update_comment(
     comment = 418979473,
     body    = "This comment has been updated by update_comment()",
     type    = "pull_request",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Update a commit comment
   update_comment(
     comment = 38899533,
     body    = "This comment has been updated by update_comment()",
     type    = "commit",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
 }
 

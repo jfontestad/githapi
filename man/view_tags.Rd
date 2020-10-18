@@ -19,8 +19,8 @@ view_tag(tag, repo, ...)
 \item{tag}{(string) The name of the tag.}
 }
 \value{
-\code{view_tags()} returns a tibble of tag properties. \code{view_tag()} returns a list of
-properties for a single tag.
+\code{view_tags()} returns a tibble of tag properties. \code{view_tag()}
+returns a list of properties for a single tag.
 
 \strong{Tag Properties:}
 \itemize{
@@ -30,14 +30,15 @@ properties for a single tag.
 }
 }
 \description{
-\code{view_tags()} summarises tags in a table with the properties as columns and a row for each
-tag in the repository. \code{view_tag()} returns a list of all properties for a single tag.
+\code{view_tags()} summarises tags in a table with the properties as columns and a
+row for each tag in the repository. \code{view_tag()} returns a list of all
+properties for a single tag.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/git/refs/#list-matching-references}
-\item \url{https://developer.github.com/v3/git/refs/#get-a-single-reference}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#list-matching-references}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-reference}
 }
 }
 \examples{

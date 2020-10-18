@@ -1,19 +1,29 @@
-#  FUNCTION: create_label ------------------------------------------------------------------
+#  FUNCTION: create_label ------------------------------------------------------
 #
 #' Create an issue label in a repository
 #'
-#' This function creates a new label for issues and pull requests for the specified
-#' repository in GitHub. It can also be used to set the colour and description.
+#' This function creates a new label for issues and pull requests for the
+#' specified repository in GitHub. It can also be used to set the colour and
+#' description.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/issues/labels/#create-a-label>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#create-a-label",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param name (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param description (string, optional) A description of the label.
-#' @param color (string, optional) Either the color name (see [grDevices::colors()]) or a
-#'   hexidecimal color code (see [color-hex.com](http://www.color-hex.com/)). If not
-#'   supplied a color is chosen at random.
+#' @param color (string, optional) Either the color name (see
+#'   [grDevices::colors()]) or a hexidecimal color code (see
+#'   [color-hex.com](http://www.color-hex.com/)). If not supplied a color is
+#'   chosen at random.
 #' @param ... Parameters passed to [gh_request()].
 #'
 #' @return `create_label()` returns a list of the label's properties.
@@ -31,7 +41,8 @@
 #'     name        = "new-label",
 #'     repo        = "ChadGoymer/githapi",
 #'     color       = "blue",
-#'     description = "This is a detailed label")
+#'     description = "This is a detailed label"
+#'   )
 #'
 #' }
 #'
@@ -42,11 +53,20 @@ create_label <- function(
   repo,
   description,
   color = random_color(),
-  ...)
-{
-  assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
-  assert(is_scalar_character(color), "'color' must be a string:\n  ", color)
+  ...
+) {
+  assert(
+    is_scalar_character(name),
+    "'name' must be a string:\n  ", name
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
+  assert(
+    is_scalar_character(color),
+    "'color' must be a string:\n  ", color
+  )
 
   if (!is_hex(color)) {
     color <- as_hex(color)
@@ -56,7 +76,10 @@ create_label <- function(
   payload <- list(name = name, color = color)
 
   if (!missing(description)) {
-    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    assert(
+      is_scalar_character(description),
+      "'description' must be a string:\n  ", description
+    )
     payload$description <- description
   }
 
@@ -72,21 +95,30 @@ create_label <- function(
 }
 
 
-#  FUNCTION: update_label ---------------------------------------------------------------------
+#  FUNCTION: update_label ------------------------------------------------------
 #
 #' Update a label in a repository
 #'
-#' This function updates a label for the specified repository in GitHub. It can be used to
-#' change name, color or description.
+#' This function updates a label for the specified repository in GitHub. It can
+#' be used to change name, color or description.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/issues/labels/#update-a-label>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#update-a-label",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param label (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param name (string, optional) The name of the label.
-#' @param color (string, optional) Either the color name (see [grDevices::colors()]) or a
-#'   hexidecimal color code (see [color-hex.com](http://www.color-hex.com/)).
+#' @param color (string, optional) Either the color name (see
+#'   [grDevices::colors()]) or a hexidecimal color code (see
+#'   [color-hex.com](http://www.color-hex.com/)).
 #' @param description (string, optional) A description of the label.
 #' @param ... Parameters passed to [gh_request()].
 #'
@@ -106,7 +138,8 @@ create_label <- function(
 #'     repo        = "ChadGoymer/githapi",
 #'     name        = "updated-label",
 #'     color       = "green",
-#'     description = "This is an updated label")
+#'     description = "This is an updated label"
+#'   )
 #'
 #' }
 #'
@@ -118,20 +151,32 @@ update_label <- function(
   name,
   color,
   description,
-  ...)
-{
-  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_scalar_character(label),
+    "'label' must be a string:\n  ", label
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   payload <- list()
 
   if (!missing(name)) {
-    assert(is_scalar_character(name), "'name' must be a string:\n  ", name)
+    assert(
+      is_scalar_character(name),
+      "'name' must be a string:\n  ", name
+    )
     payload$name <- name
   }
 
   if (!missing(color)) {
-    assert(is_scalar_character(color), "'color' must be a string:\n  ", color)
+    assert(
+      is_scalar_character(color),
+      "'color' must be a string:\n  ", color
+    )
     if (!is_hex(color)) {
       color <- as_hex(color)
     }
@@ -139,7 +184,10 @@ update_label <- function(
   }
 
   if (!missing(description)) {
-    assert(is_scalar_character(description), "'description' must be a string:\n  ", description)
+    assert(
+      is_scalar_character(description),
+      "'description' must be a string:\n  ", description
+    )
     payload$description <- description
   }
 
@@ -155,22 +203,44 @@ update_label <- function(
 }
 
 
-#  FUNCTION: view_labels ----------------------------------------------------------------------
+#  FUNCTION: view_labels -------------------------------------------------------
 #
 #' View labels within a repository
 #'
-#' `view_labels()` summarises labels in a table with the properties as columns and a row for
-#' each label in the repository. It can also be used to view the labels assigned to a single
-#' issue. `view_label()` returns a list of all properties for a single label.
+#' `view_labels()` summarises labels in a table with the properties as columns
+#' and a row for each label in the repository. It can also be used to view the
+#' labels assigned to a single issue. `view_label()` returns a list of all
+#' properties for a single label.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository>
-#' - <https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue>
-#' - <https://developer.github.com/v3/issues/labels/#get-a-single-label>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#list-labels-for-a-repository",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#list-labels-for-an-issue",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#get-a-label",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param label (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
-#' @param issue (string or character, optional) The number or title of the issue.
+#' @param issue (string or character, optional) The number or title of the
+#'   issue.
 #' @param n_max (integer, optional) Maximum number to return. Default: `1000`.
 #' @param ... Parameters passed to [gh_page()] or [gh_request()].
 #'
@@ -200,9 +270,12 @@ view_labels <- function(
   repo,
   issue,
   n_max = 1000,
-  ...)
-{
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   if (missing(issue)) {
     info("Viewing labels for repository '", repo, "'")
@@ -210,7 +283,10 @@ view_labels <- function(
   }
   else {
     issue <- view_issue(issue, repo = repo, ...)
-    info("Viewing labels for issue '", issue$title, "' in repository '", repo, "'")
+    info(
+      "Viewing labels for issue '", issue$title,
+      "' in repository '", repo, "'"
+    )
     url <- gh_url("repos", repo, "issues", issue$number, "labels")
   }
 
@@ -224,7 +300,7 @@ view_labels <- function(
 }
 
 
-#  FUNCTION: view_label -----------------------------------------------------------------------
+#  FUNCTION: view_label --------------------------------------------------------
 #
 #' @rdname view_labels
 #' @export
@@ -232,10 +308,16 @@ view_labels <- function(
 view_label <- function(
   label,
   repo,
-  ...)
-{
-  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_scalar_character(label),
+    "'label' must be a string:\n  ", label
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Viewing label '", label, "' for repository '", repo, "'")
   label_lst <- gh_url("repos", repo, "labels", label) %>%
@@ -249,15 +331,23 @@ view_label <- function(
 }
 
 
-#  FUNCTION: delete_label ---------------------------------------------------------------------
+#  FUNCTION: delete_label ------------------------------------------------------
 #
 #' Delete a label from a repository
 #'
-#' This function deletes a label from a repository, as long as you have appropriate
-#' permissions. Care should be taken as it will not be recoverable.
+#' This function deletes a label from a repository, as long as you have
+#' appropriate permissions. Care should be taken as it will not be recoverable.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/issues/labels/#delete-a-label>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#delete-a-label",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param label (string) The name of the label.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
@@ -277,10 +367,16 @@ view_label <- function(
 delete_label <- function(
   label,
   repo,
-  ...)
-{
-  assert(is_scalar_character(label), "'label' must be a string:\n  ", label)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_scalar_character(label),
+    "'label' must be a string:\n  ", label
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   info("Deleting label '", label, "' in repository '", repo, "'")
   response <- gh_url("repos", repo, "labels", label) %>%
@@ -293,28 +389,44 @@ delete_label <- function(
     url     = attr(response, "url"),
     request = attr(response, "request"),
     status  = attr(response, "status"),
-    header  = attr(response, "header"))
+    header  = attr(response, "header")
+  )
 }
 
 
-#  FUNCTION: add_labels -----------------------------------------------------------------------
+#  FUNCTION: add_labels --------------------------------------------------------
 #
 #' Add or remove labels from an issue or pull request
 #'
-#' `add_labels()` adds labels to an existing issue or pull request within a GitHub repository.
-#' `remove_labels()` removes labels from an issue or pull request.
+#' `add_labels()` adds labels to an existing issue or pull request within a
+#' GitHub repository. `remove_labels()` removes labels from an issue or pull
+#' request.
 #'
 #' For more details see the GitHub API documentation:
-#' - <https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue>
-#' - <https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue>
+#'
+#' ```{r echo=FALSE, results='asis'}
+#' docs_url <- "https://docs.github.com/en/free-pro-team@latest/rest/reference/"
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#add-labels-to-an-issue",
+#'   ">"
+#' ))
+#' ```
+#' ```{r echo=FALSE, results='asis'}
+#' cat(paste0(
+#'   "- <", docs_url,
+#'   "issues#remove-a-label-from-an-issue",
+#'   ">"
+#' ))
+#' ```
 #'
 #' @param labels (character) The name of the labels.
 #' @param issue (string or character) The number or title of the issue.
 #' @param repo (string) The repository specified in the format: `owner/repo`.
 #' @param ... Parameters passed to [gh_request()].
 #'
-#' @return `add_labels()` returns a tibble of the added labels properties. `remove_labels()`
-#'   returns a tibble of the remaining labels properties.
+#' @return `add_labels()` returns a tibble of the added labels properties.
+#'   `remove_labels()` returns a tibble of the remaining labels properties.
 #'
 #' **Label Properties:**
 #'
@@ -328,12 +440,14 @@ delete_label <- function(
 #'   add_labels(
 #'     labels = c("feature", "new-label"),
 #'     issue  = "Test issue",
-#'     repo   = "ChadGoymer/githapi")
+#'     repo   = "ChadGoymer/githapi"
+#'   )
 #'
 #'   remove_labels(
 #'     labels = c("feature", "new-label"),
 #'     issue  = "Test issue",
-#'     repo   = "ChadGoymer/githapi")
+#'     repo   = "ChadGoymer/githapi"
+#'   )
 #'
 #' }
 #'
@@ -343,14 +457,23 @@ add_labels <- function(
   labels,
   issue,
   repo,
-  ...)
-{
-  assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_character(labels),
+    "'labels' must be a character vector:\n  ", labels
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   issue <- view_issue(issue, repo = repo, ...)
 
-  info("Adding labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
+  info(
+    "Adding labels '", str_c(labels, collapse = "', '"),
+    "' to issue '", issue$title, "' in repository '", repo, "'"
+  )
   labels_lst <- gh_url("repos", repo, "issues", issue$number, "labels") %>%
     gh_request("POST", payload = list(labels = as.list(labels)), ...)
 
@@ -362,7 +485,7 @@ add_labels <- function(
 }
 
 
-#  FUNCTION: remove_label ---------------------------------------------------------------------
+#  FUNCTION: remove_label ------------------------------------------------------
 #
 #' @rdname add_labels
 #' @export
@@ -371,14 +494,23 @@ remove_labels <- function(
   labels,
   issue,
   repo,
-  ...)
-{
-  assert(is_character(labels), "'labels' must be a character vector:\n  ", labels)
-  assert(is_repo(repo), "'repo' must be a string in the format 'owner/repo':\n  ", repo)
+  ...
+) {
+  assert(
+    is_character(labels),
+    "'labels' must be a character vector:\n  ", labels
+  )
+  assert(
+    is_repo(repo),
+    "'repo' must be a string in the format 'owner/repo':\n  ", repo
+  )
 
   issue <- view_issue(issue, repo = repo, ...)
 
-  info("Deleting labels '", str_c(labels, collapse = "', '"), "' to issue '", issue$title, "' in repository '", repo, "'")
+  info(
+    "Deleting labels '", str_c(labels, collapse = "', '"),
+    "' from issue '", issue$title, "' in repository '", repo, "'"
+  )
   labels_lst <- try_map(labels, function(label) {
     gh_url("repos", repo, "issues", issue$number, "labels", label) %>%
       gh_request("DELETE", ...)

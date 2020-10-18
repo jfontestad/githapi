@@ -1,7 +1,7 @@
 context("utilities")
 
 
-# TEST: is_sha --------------------------------------------------------------------------------
+# TEST: is_sha -----------------------------------------------------------------
 
 test_that("is_sha returns TRUE with a valid SHA and FALSE otherwise", {
 
@@ -16,7 +16,7 @@ test_that("is_sha returns TRUE with a valid SHA and FALSE otherwise", {
 })
 
 
-# TEST: is_repo -------------------------------------------------------------------------------
+# TEST: is_repo ----------------------------------------------------------------
 
 test_that("is_repo returns TRUE with a valid repo and FALSE otherwise", {
 
@@ -31,9 +31,9 @@ test_that("is_repo returns TRUE with a valid repo and FALSE otherwise", {
 })
 
 
-# TEST: is_ref --------------------------------------------------------------------------------
+# TEST: is_ref -----------------------------------------------------------------
 
-test_that("is_ref returns TRUE for a valid reference name and FALSE otherwise", {
+test_that("is_ref returns TRUE for a valid reference name, FALSE otherwise", {
 
   expect_true(is_ref("branch"))
   expect_true(is_ref("12-branch"))
@@ -71,9 +71,9 @@ test_that("is_ref returns TRUE for a valid reference name and FALSE otherwise", 
 })
 
 
-# TEST: is_hex --------------------------------------------------------------------------------
+# TEST: is_hex -----------------------------------------------------------------
 
-test_that("is_hex returns TRUE with a valid hexadecimal color code and FALSE otherwise", {
+test_that("is_hex returns TRUE with a valid hex color, FALSE otherwise", {
 
   expect_true(is_hex("#FFFFFF"))
   expect_true(is_hex("#000000"))
@@ -87,7 +87,7 @@ test_that("is_hex returns TRUE with a valid hexadecimal color code and FALSE oth
 
 
 
-# TEST: random_color --------------------------------------------------------------------------
+# TEST: random_color -----------------------------------------------------------
 
 test_that("random_color returns a color name", {
 
@@ -105,7 +105,7 @@ test_that("random_color returns a color name", {
 })
 
 
-# TEST: as_hex --------------------------------------------------------------------------------
+# TEST: as_hex -----------------------------------------------------------------
 
 test_that("as_hex converts a color name to a hexidecimal color code", {
 
@@ -115,39 +115,53 @@ test_that("as_hex converts a color name to a hexidecimal color code", {
 })
 
 
-# TEST: as.datetime ---------------------------------------------------------------------------
+# TEST: as.datetime ------------------------------------------------------------
 
 test_that("as.datetime converts a datetime string from UTC to local timezone", {
 
   summer <- as.character(as.datetime("2019-08-01T10:00:00Z"))
-  local_summer <- as.POSIXct("2019-08-01 10:00:00", tz = "UTC") %>% format(tz = "")
+  local_summer <- as.POSIXct("2019-08-01 10:00:00", tz = "UTC") %>%
+    format(tz = "")
 
   expect_identical(summer, local_summer)
 
   winter <- as.character(as.datetime("2019-11-01T10:00:00Z"))
-  local_winter <- as.POSIXct("2019-11-01 10:00:00", tz = "UTC") %>% format(tz = "")
+  local_winter <- as.POSIXct("2019-11-01 10:00:00", tz = "UTC") %>%
+    format(tz = "")
 
   expect_identical(winter, local_winter)
 
 })
 
 
-# TEST: property_names ------------------------------------------------------------------------
+# TEST: property_names ---------------------------------------------------------
 
 test_that("property_names returns appropriate names", {
 
   expect_identical(property_names(list("single_name")), "single_name")
 
-  expect_identical(property_names(list("first_name", "second_name")), c("first_name", "second_name"))
-  expect_identical(property_names(list(c("first_name", "second_name"))), "first_name_second_name")
+  expect_identical(
+    property_names(list("first_name", "second_name")),
+    c("first_name", "second_name")
+  )
+  expect_identical(
+    property_names(list(c("first_name", "second_name"))),
+    "first_name_second_name"
+  )
 
-  expect_identical(property_names(list(name = "first_name", "second_name")), c("name", "second_name"))
-  expect_identical(property_names(list(name = c("first_name", "second_name"))), "name")
+  expect_identical(
+    property_names(list(name = "first_name", "second_name")),
+    c("name", "second_name")
+  )
+  expect_identical(
+    property_names(list(name = c("first_name", "second_name"))),
+    "name"
+  )
 
 })
 
 
-# TEST: select_properties ---------------------------------------------------------------------
+# TEST: select_properties ------------------------------------------------------
 
 test_that("select_properties returns a list of converted properties", {
 
@@ -162,7 +176,8 @@ test_that("select_properties returns a list of converted properties", {
     creator                 = list(login = "ChadGoymer"),
     created_at              = "2019-11-16T07:20:09Z",
     updated_at              = "2019-12-10T19:07:53Z",
-    html_url                = "https://github.com/users/ChadGoymer/projects/1")
+    html_url                = "https://github.com/users/ChadGoymer/projects/1"
+  )
 
   properties <- list(
     id         = c("id",                      as = "integer"),
@@ -175,7 +190,8 @@ test_that("select_properties returns a list of converted properties", {
     creator    = c("creator", "login",        as = "character"),
     created_at = c("created_at",              as = "datetime"),
     updated_at = c("updated_at",              as = "datetime"),
-    html_url   = c("html_url",                as = "character"))
+    html_url   = c("html_url",                as = "character")
+  )
 
   selected_properties <- select_properties(entity, properties)
 
@@ -188,9 +204,14 @@ test_that("select_properties returns a list of converted properties", {
     permission = as.character(NA),
     private    = NA,
     creator    = "ChadGoymer",
-    created_at = as.POSIXct("2019-11-16 07:20:09", tz = "UTC") %>% format(tz = "") %>% as.POSIXct(),
-    updated_at = as.POSIXct("2019-12-10 19:07:53", tz = "UTC") %>% format(tz = "") %>% as.POSIXct(),
-    html_url   = "https://github.com/users/ChadGoymer/projects/1")
+    created_at = as.POSIXct("2019-11-16 07:20:09", tz = "UTC") %>%
+      format(tz = "") %>%
+      as.POSIXct(),
+    updated_at = as.POSIXct("2019-12-10 19:07:53", tz = "UTC") %>%
+      format(tz = "") %>%
+      as.POSIXct(),
+    html_url   = "https://github.com/users/ChadGoymer/projects/1"
+  )
 
   class(expected_result) <- c("github", "list")
 
@@ -198,7 +219,7 @@ test_that("select_properties returns a list of converted properties", {
 
 })
 
-test_that("select_properties returns a list of empty vectors for an empty entity", {
+test_that("select_properties returns empty vectors for an empty entity", {
 
   properties <- list(
     id         = c("id",                      as = "integer"),
@@ -211,7 +232,8 @@ test_that("select_properties returns a list of empty vectors for an empty entity
     creator    = c("creator", "login",        as = "character"),
     created_at = c("created_at",              as = "datetime"),
     updated_at = c("updated_at",              as = "datetime"),
-    html_url   = c("html_url",                as = "character"))
+    html_url   = c("html_url",                as = "character")
+  )
 
   empty_result <- select_properties(list(), properties)
 
@@ -226,7 +248,8 @@ test_that("select_properties returns a list of empty vectors for an empty entity
     creator    = character(),
     created_at = as.POSIXct(character()),
     updated_at = as.POSIXct(character()),
-    html_url   = character())
+    html_url   = character()
+  )
 
   class(expected_empty_result) <- c("github", "list")
 
@@ -235,9 +258,9 @@ test_that("select_properties returns a list of empty vectors for an empty entity
 })
 
 
-# TEST: bind_properties -----------------------------------------------------------------------
+# TEST: bind_properties --------------------------------------------------------
 
-test_that("bind_properties extracts properties from entities and binds them into a data.frame", {
+test_that("bind_properties extracts properties from entities as a data.frame", {
 
   entities <- list(
     list(
@@ -251,7 +274,8 @@ test_that("bind_properties extracts properties from entities and binds them into
       creator                 = list(login = "ChadGoymer"),
       created_at              = "2019-11-16T07:20:09Z",
       updated_at              = "2019-12-10T19:07:53Z",
-      html_url                = "https://github.com/users/ChadGoymer/projects/1"),
+      html_url                = "https://github.com/users/ChadGoymer/projects/1"
+    ),
     list(
       id                      = 747228,
       number                  = 1,
@@ -263,7 +287,8 @@ test_that("bind_properties extracts properties from entities and binds them into
       creator                 = list(login = "ChadGoymer"),
       created_at              = "2017-07-11T11:24:23Z",
       updated_at              = "2019-12-07T12:53:24Z",
-      html_url                = "https://github.com/ChadGoymer/githapi/projects/1")
+      html_url              = "https://github.com/ChadGoymer/githapi/projects/1"
+    )
   )
 
   properties <- list(
@@ -277,7 +302,8 @@ test_that("bind_properties extracts properties from entities and binds them into
     creator    = c("creator", "login",        as = "character"),
     created_at = c("created_at",              as = "datetime"),
     updated_at = c("updated_at",              as = "datetime"),
-    html_url   = c("html_url",                as = "character"))
+    html_url   = c("html_url",                as = "character")
+  )
 
   result <- bind_properties(entities, properties)
 
@@ -290,9 +316,19 @@ test_that("bind_properties extracts properties from entities and binds them into
     permission = as.character(c(NA, NA)),
     private    = c(NA, NA),
     creator    = c("ChadGoymer", "ChadGoymer"),
-    created_at = as.POSIXct(c("2019-11-16 07:20:09", "2017-07-11 11:24:23"), tz = "UTC") %>% format(tz = "") %>% as.POSIXct(),
-    updated_at = as.POSIXct(c("2019-12-10 19:07:53", "2019-12-07 12:53:24"), tz = "UTC") %>% format(tz = "") %>% as.POSIXct(),
-    html_url   = c("https://github.com/users/ChadGoymer/projects/1", "https://github.com/ChadGoymer/githapi/projects/1"))
+    created_at = c("2019-11-16 07:20:09", "2017-07-11 11:24:23") %>%
+      as.POSIXct(tz = "UTC") %>%
+      format(tz = "") %>%
+      as.POSIXct(),
+    updated_at = c("2019-12-10 19:07:53", "2019-12-07 12:53:24") %>%
+      as.POSIXct(tz = "UTC") %>%
+      format(tz = "") %>%
+      as.POSIXct(),
+    html_url   = c(
+      "https://github.com/users/ChadGoymer/projects/1",
+      "https://github.com/ChadGoymer/githapi/projects/1"
+    )
+  )
 
   class(expected_result) <- c("github", class(expected_result))
 
@@ -300,7 +336,7 @@ test_that("bind_properties extracts properties from entities and binds them into
 
 })
 
-test_that("bind_properties returns an empty data.frame for an empty list of entities", {
+test_that("bind_properties returns an empty data.frame for an empty list", {
 
   properties <- list(
     id         = c("id",                      as = "integer"),
@@ -313,7 +349,8 @@ test_that("bind_properties returns an empty data.frame for an empty list of enti
     creator    = c("creator", "login",        as = "character"),
     created_at = c("created_at",              as = "datetime"),
     updated_at = c("updated_at",              as = "datetime"),
-    html_url   = c("html_url",                as = "character"))
+    html_url   = c("html_url",                as = "character")
+  )
 
   empty_result <- bind_properties(list(), properties)
 
@@ -328,7 +365,8 @@ test_that("bind_properties returns an empty data.frame for an empty list of enti
     creator    = character(),
     created_at = as.POSIXct(character()),
     updated_at = as.POSIXct(character()),
-    html_url   = character())
+    html_url   = character()
+  )
 
   class(expected_empty_result) <- c("github", class(expected_empty_result))
 
@@ -337,7 +375,7 @@ test_that("bind_properties returns an empty data.frame for an empty list of enti
 })
 
 
-# TEST: modify_list ---------------------------------------------------------------------------
+# TEST: modify_list ------------------------------------------------------------
 
 test_that("modify_list adds or modifies a list", {
 

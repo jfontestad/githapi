@@ -9,8 +9,8 @@ update_gist(gist, files, description, ...)
 \arguments{
 \item{gist}{(string) The ID of the gist}
 
-\item{files}{(list, optional) The file contents with the list names as the filenames.
-Added a \code{filename} element changes the filename (see examples).}
+\item{files}{(list, optional) The file contents with the list names as the
+filenames. Added a \code{filename} element changes the filename (see examples).}
 
 \item{description}{(string, optional) A description for the gist.}
 
@@ -39,13 +39,13 @@ Added a \code{filename} element changes the filename (see examples).}
 }
 }
 \description{
-This function updates an existing gist in GitHub. You can specify add or update files by
-providing a named list and rename a file (see examples).
+This function updates an existing gist in GitHub. You can specify add or
+update files by providing a named list and rename a file (see examples).
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/gists/#update-a-gist}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#update-a-gist}
 }
 }
 \examples{
@@ -54,14 +54,18 @@ For more details see the GitHub API documentation:
   # Update a gist's description
   update_gist(
     gist        = "806dca6b09a39e7b6326a0c8137583e6",
-    description = "An updated description")
+    description = "An updated description"
+  )
 
   # Update the contents of a file
   update_gist(files = list(hello_world.R = "cat(\"Hello World!\")"))
 
   # Update the contents of a file and the filename
   update_gist(
-    files = list(hello_world.R = c("cat(\"Hello World!\")", filename = "new_filename.R")))
+    files = list(
+      hello_world.R = c("cat(\"Hello World!\")", filename = "new_filename.R")
+    )
+  )
 
 }
 

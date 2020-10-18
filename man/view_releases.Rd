@@ -22,9 +22,10 @@ browse_release(release, repo, ...)
 \item{release}{(string) The id or tag of the release.}
 }
 \value{
-\code{view_releases()} returns a tibble of release properties. \code{view_release()}
-returns a list of properties for a single release. \code{browse_release} opens the
-default browser on the release page and returns the URL.
+\code{view_releases()} returns a tibble of release properties.
+\code{view_release()} returns a list of properties for a single release.
+\code{browse_release} opens the default browser on the release page and returns
+the URL.
 
 \strong{Release Properties:}
 \itemize{
@@ -43,17 +44,17 @@ default browser on the release page and returns the URL.
 }
 }
 \description{
-\code{view_releases()} summarises releases in a table with the properties as columns and a row
-for each release in the repository. \code{view_release()} returns a list of all properties for
-a single release. \code{browse_release()} opens the web page for the release in the default
-browser.
+\code{view_releases()} summarises releases in a table with the properties as
+columns and a row for each release in the repository. \code{view_release()}
+returns a list of all properties for a single release. \code{browse_release()}
+opens the web page for the release in the default browser.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository}
-\item \url{https://developer.github.com/v3/repos/releases/#get-a-single-release}
-\item \url{https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-release}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-release-by-tag-name}
 }
 }
 \examples{

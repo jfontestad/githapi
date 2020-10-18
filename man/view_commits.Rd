@@ -20,24 +20,26 @@ browse_commit(ref, repo, ...)
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{path}{(string, optional) Only commits containing this file path will be returned.}
+\item{path}{(string, optional) Only commits containing this file path will be
+returned.}
 
 \item{author}{(string, optional) Author login to filter commits by.}
 
-\item{since}{(string, optional) A date & time to filter by. Must be in the format:
-\verb{YYYY-MM-DD HH:MM:SS}.}
+\item{since}{(string, optional) A date & time to filter by. Must be in the
+format: \verb{YYYY-MM-DD HH:MM:SS}.}
 
-\item{until}{(string, optional) A date & time to filter by. Must be in the format:
-\verb{YYYY-MM-DD HH:MM:SS}.}
+\item{until}{(string, optional) A date & time to filter by. Must be in the
+format: \verb{YYYY-MM-DD HH:MM:SS}.}
 
 \item{n_max}{(integer, optional) Maximum number to return. Default: \code{1000}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_page]{gh_page()}} or \code{\link[=gh_request]{gh_request()}}.}
 }
 \value{
-\code{view_commits()} returns a tibble of commit properties. \code{view_commit()} returns
-a list of properties for a single commit. \code{browse_commits()} and \code{browse_commit} opens
-the default browser on the commit's history or details page and returns the URL.
+\code{view_commits()} returns a tibble of commit properties.
+\code{view_commit()} returns a list of properties for a single commit.
+\code{browse_commits()} and \code{browse_commit} opens the default browser on the
+commit's history or details page and returns the URL.
 
 \strong{Commit Properties:}
 \itemize{
@@ -56,16 +58,17 @@ the default browser on the commit's history or details page and returns the URL.
 }
 }
 \description{
-\code{view_commits()} summarises commits in a table with the properties as columns and a row for
-each commit in the history of the given reference. \code{view_commit()} returns a list of all
-properties for a single commit. \code{browse_commits()} and \code{browse_commit()} opens the web page
-for the commit history and commit details respectively in the default browser.
+\code{view_commits()} summarises commits in a table with the properties as columns
+and a row for each commit in the history of the given reference.
+\code{view_commit()} returns a list of all properties for a single commit.
+\code{browse_commits()} and \code{browse_commit()} opens the web page for the commit
+history and commit details respectively in the default browser.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository}
-\item \url{https://developer.github.com/v3/repos/commits/#get-a-single-commit}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-commits}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-commit}
 }
 }
 \examples{
@@ -78,20 +81,23 @@ For more details see the GitHub API documentation:
   view_commits(
     ref  = "main",
     repo = "ChadGoymer/githapi",
-    path = "README.md")
+    path = "README.md"
+  )
 
   # View commits created by an author
   view_commits(
     ref    = "main",
     repo   = "ChadGoymer/githapi",
-    author = "ChadGoymer")
+    author = "ChadGoymer"
+  )
 
   # View commits within a time window
   view_commits(
     ref   = "main",
     repo  = "ChadGoymer/githapi",
     since = "2020-01-01 00:00:00",
-    until = "2020-04-01 00:00:00")
+    until = "2020-04-01 00:00:00"
+  )
 
   # View the properties of the last commit on the main branch
   view_commit("main", "ChadGoymer/githapi")

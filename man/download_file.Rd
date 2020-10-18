@@ -7,7 +7,8 @@
 download_file(from_path, to_path, ref, repo, ...)
 }
 \arguments{
-\item{from_path}{(string) The path to the file to download, within the repository.}
+\item{from_path}{(string) The path to the file to download, within the
+repository.}
 
 \item{to_path}{(string) The path to download the file to.}
 
@@ -25,6 +26,12 @@ This function downloads a file in the specified commit to the path provided.
 }
 \details{
 Note: The GitHub API imposes a file size limit of 100MB for this request.
+
+For more details see the GitHub API documentation:
+\itemize{
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-repository-content}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-blob}
+}
 }
 \examples{
 \dontrun{
@@ -34,7 +41,8 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
     from_path = "README.md",
     to_path   = "~/README.md",
     ref       = "main",
-    repo      = "ChadGoymer/githapi")
+    repo      = "ChadGoymer/githapi"
+  )
 
 }
 

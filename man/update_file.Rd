@@ -27,14 +27,14 @@ update_file(
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{parent}{(string, optional) If creating a new branch the the parent commit must
-be specified as either a SHA, branch or tag.}
+\item{parent}{(string, optional) If creating a new branch the the parent
+commit must be specified as either a SHA, branch or tag.}
 
-\item{author}{(list, optional) A the name and email address of the user who wrote the
-changes in the commit.}
+\item{author}{(list, optional) A the name and email address of the user who
+wrote the changes in the commit.}
 
-\item{committer}{(list, optional) A the name and email address of the user who created
-the commit.}
+\item{committer}{(list, optional) A the name and email address of the user
+who created the commit.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -55,17 +55,23 @@ the commit.}
 }
 }
 \description{
-This function updates a file in a repository in GitHub by creating a new commit on the
-specified branch. If the branch does not already exist a \code{parent} commit must be specified
-and a new branch is created from it.
+This function updates a file in a repository in GitHub by creating a new
+commit on the specified branch. If the branch does not already exist a
+\code{parent} commit must be specified and a new branch is created from it.
 }
 \details{
-The \code{author} and \code{committer} arguments are optional and if not supplied the current
-authenticated user is used. However, if you want to set them explicitly you must specify
-a named list with \code{name} and \code{email} as the elements (see examples).
+The \code{author} and \code{committer} arguments are optional and if not supplied the
+current authenticated user is used. However, if you want to set them
+explicitly you must specify a named list with \code{name} and \code{email} as the
+elements (see examples).
 
-Note: The GitHub API imposes a file size limit of 1MB for this request. For larger files
-use the \code{\link[=upload_files]{upload_files()}} function.
+Note: The GitHub API imposes a file size limit of 1MB for this request. For
+larger files use the \code{\link[=upload_files]{upload_files()}} function.
+
+For more details see the GitHub API documentation:
+\itemize{
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-or-update-file-contents}
+}
 }
 \examples{
 \dontrun{
@@ -76,7 +82,8 @@ use the \code{\link[=upload_files]{upload_files()}} function.
     path    = "updated-file.md",
     branch  = "main",
     message = "Updated a file with update_file()",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Update a file on a new branch
   update_file(
@@ -85,7 +92,8 @@ use the \code{\link[=upload_files]{upload_files()}} function.
     branch  = "new-branch",
     message = "Updated a file with update_file()",
     repo    = "ChadGoymer/githapi",
-    parent  = "main")
+    parent  = "main"
+  )
 
   # Create a new file on the main branch specifying an author and committer
   update_file(
@@ -95,7 +103,8 @@ use the \code{\link[=upload_files]{upload_files()}} function.
     message   = "Updated a file with update_file()",
     repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",  email = "bob@acme.com"),
-    committer = list(name = "Jane", email = "jane@acme.com"))
+    committer = list(name = "Jane", email = "jane@acme.com")
+  )
 
 }
 

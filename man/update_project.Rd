@@ -25,16 +25,18 @@ update_project(
 
 \item{body}{(string, optional) The new description of the project.}
 
-\item{state}{(string, optional) The new state of the project, either \code{"open"} or \code{"closed"}.}
+\item{state}{(string, optional) The new state of the project, either \code{"open"}
+or \code{"closed"}.}
 
-\item{permission}{(string, optional) The new team or organisation permissions for the
-project, either \code{"read"}, \code{"write"}, \code{"admin"} or \code{"none"}. Note: applies to team and
-organization projects only.}
+\item{permission}{(string, optional) The new team or organisation permissions
+for the project, either \code{"read"}, \code{"write"}, \code{"admin"} or \code{"none"}. Note:
+applies to team and organization projects only.}
 
-\item{private}{(boolean, optional) Whether the project should be private. Note: applies to
-team and organization projects only.}
+\item{private}{(boolean, optional) Whether the project should be private.
+Note: applies to team and organization projects only.}
 
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
+\item{repo}{(string, optional) The repository specified in the format:
+\code{owner/repo}.}
 
 \item{user}{(string, optional) The login of the user.}
 
@@ -50,14 +52,17 @@ team and organization projects only.}
 \strong{Project Properties:}
 \itemize{
 \item \strong{id}: The ID of the project.
-\item \strong{number}: The number of the project for the repository, user or organization.
+\item \strong{number}: The number of the project for the repository, user or
+organization.
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
-\item \strong{private}: Whether the project is private (organization and team projects only).
-\item \strong{org_permissions}: The default permission for organization members (organization and
-team projects only).
-\item \strong{team_permissions}: The default permission for team members (team projects only).
+\item \strong{private}: Whether the project is private (organization and team projects
+only).
+\item \strong{org_permissions}: The default permission for organization members
+(organization and team projects only).
+\item \strong{team_permissions}: The default permission for team members (team
+projects only).
 \item \strong{creator}: The user who created the project.
 \item \strong{created_at}: When it was created.
 \item \strong{updated_at}: When it was last updated.
@@ -65,19 +70,21 @@ team projects only).
 }
 }
 \description{
-This function updates a project in GitHub. It can be used to change the name and body, but
-can also be used to close the project, change permissions or add a team.
+This function updates a project in GitHub. It can be used to change the name
+and body, but can also be used to close the project, change permissions or
+add a team.
 }
 \details{
-You can update a project associated with either a repository, user, team or organization,
-by supplying them as an input, as long as you have appropriate permissions. Supplying a
-team that does not already have access to the project adds them. If they have access, then
-the team's permissions can be changed with the \code{permission} argument.
+You can update a project associated with either a repository, user, team or
+organization, by supplying them as an input, as long as you have appropriate
+permissions. Supplying a team that does not already have access to the
+project adds them. If they have access, then the team's permissions can be
+changed with the \code{permission} argument.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/projects/#update-a-project}
-\item \url{https://developer.github.com/v3/teams/#add-or-update-team-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#update-a-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#add-or-update-team-project-permissions}
 }
 }
 \examples{
@@ -88,33 +95,38 @@ For more details see the GitHub API documentation:
     project = "Repo project",
     name    = "Updated repo project",
     body    = "This is an updated repository's project",
-    repo    = "ChadGoymer/githapi")
+    repo    = "ChadGoymer/githapi"
+  )
 
   # Update the state of a project for a user
   update_project(
     name  = "User project",
     state = "closed",
-    user  = "ChadGoymer")
+    user  = "ChadGoymer"
+  )
 
   # Update the permissions of a project for an organization
   update_project(
     name       = "Org project",
     permission = "read",
     private    = TRUE,
-    org        = "HairyCoos")
+    org        = "HairyCoos"
+  )
 
   # Add a team to the project
   update_project(
     project = "Org project",
     team    = "HeadCoos",
-    org     = "HairyCoos")
+    org     = "HairyCoos"
+  )
 
   # Update the team's permissions on the project
   update_project(
     project    = "Org project",
     permission = "write",
     team       = "HeadCoos",
-    org        = "HairyCoos")
+    org        = "HairyCoos"
+  )
 
 }
 

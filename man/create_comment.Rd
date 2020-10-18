@@ -25,13 +25,15 @@ create_comment(
 
 \item{pull_request}{(integer, optional) The pull request number.}
 
-\item{commit}{(string, optional) Either a SHA or branch used to identify the commit.}
+\item{commit}{(string, optional) Either a SHA or branch used to identify the
+commit.}
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
 \item{path}{(string, optional) The path of the file to add the comment to.}
 
-\item{position}{(integer, optional) The line number in the file to attach the comment to.}
+\item{position}{(integer, optional) The line number in the file to attach the
+comment to.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -42,12 +44,12 @@ create_comment(
 \itemize{
 \item \strong{id}: The id of the comment.
 \item \strong{body}: The content of the comment.
-\item \strong{commit}: The commit associated with the comment (only for pull request or commit
-comments).
-\item \strong{path}: The path of the file to add the comment to (only for pull request or commit
-comments).
-\item \strong{position}: The line number in the file to attach the comment to (only for pull
-request or commit comments).
+\item \strong{commit}: The commit associated with the comment (only for pull request
+or commit comments).
+\item \strong{path}: The path of the file to add the comment to (only for pull request
+or commit comments).
+\item \strong{position}: The line number in the file to attach the comment to (only
+for pull request or commit comments).
 \item \strong{user}: The comment author's account login.
 \item \strong{html_url}: The address of the comment's web page.
 \item \strong{created_at}: The time and date the comment was created.
@@ -55,23 +57,24 @@ request or commit comments).
 }
 }
 \description{
-This function creates a new comment for the specified gist, issue, pull request or commit
-in GitHub. A standard comment is created for a gist or issue (note: since a pull request
-is also an issue a standard comment is also created if the \code{issue} argument is set to the
-pull request number) and a review comment is created for pull requests and commits.
+This function creates a new comment for the specified gist, issue, pull
+request or commit in GitHub. A standard comment is created for a gist or
+issue (note: since a pull request is also an issue a standard comment is also
+created if the \code{issue} argument is set to the pull request number) and a
+review comment is created for pull requests and commits.
 }
 \details{
-When creating a gist comment only the \code{body} and \code{gist} ID need to be specified; for an
-issue the \code{body}, \code{issue} number and \code{repo} must be specified; and for a pull request or
-commit the \code{body}, \code{pull_request} number or \code{commit} reference, \code{repo}, \code{path} and
-\code{position} must be specified.
+When creating a gist comment only the \code{body} and \code{gist} ID need to be
+specified; for an issue the \code{body}, \code{issue} number and \code{repo} must be
+specified; and for a pull request or commit the \code{body}, \code{pull_request} number
+or \code{commit} reference, \code{repo}, \code{path} and \code{position} must be specified.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/gists/comments/#create-a-comment}
-\item \url{https://developer.github.com/v3/issues/comments/#create-a-comment}
-\item \url{https://developer.github.com/v3/pulls/comments/#create-a-comment}
-\item \url{https://developer.github.com/v3/repos/comments/#create-a-commit-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#create-a-gist-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-an-issue-comment}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#create-a-review-comment-for-a-pull-request}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-commit-comment}
 }
 }
 \examples{
@@ -80,13 +83,15 @@ For more details see the GitHub API documentation:
   # Create a comment on a gist
   create_comment(
     body = "This is a comment created by create_comment()",
-    gist = "806dca6b09a39e7b6326a0c8137583e6")
+    gist = "806dca6b09a39e7b6326a0c8137583e6"
+  )
 
   # Create a comment on an issue
   create_comment(
     body  = "This is a comment created by create_comment()",
     issue = "test issue",
-    repo  = "ChadGoymer/githapi")
+    repo  = "ChadGoymer/githapi"
+  )
 
   # Create a comment on a pull request
   create_comment(
@@ -95,7 +100,8 @@ For more details see the GitHub API documentation:
     commit       = "test-branch",
     repo         = "ChadGoymer/githapi",
     path         = "test-comments.txt",
-    position     = 1)
+    position     = 1
+  )
 
   # Create a comment on a commit
   create_comment(
@@ -103,7 +109,8 @@ For more details see the GitHub API documentation:
     commit   = "main",
     repo     = "ChadGoymer/githapi",
     path     = "README.md",
-    position = 1)
+    position = 1
+  )
 
 }
 

@@ -17,13 +17,14 @@ delete_team(team, org, ...)
 \code{delete_team()} returns a TRUE if successfully deleted.
 }
 \description{
-This function deletes a team from an organization in GitHub, as long as you have
-appropriate permissions. Care should be taken as it will not be recoverable.
+This function deletes a team from an organization in GitHub, as long as you
+have appropriate permissions. Care should be taken as it will not be
+recoverable.
 }
 \details{
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/teams/#delete-team}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#delete-a-team}
 }
 }
 \examples{

@@ -11,7 +11,8 @@ create_project(name, body, repo, org, ...)
 
 \item{body}{(string) The description of the project.}
 
-\item{repo}{(string, optional) The repository specified in the format: \code{owner/repo}.}
+\item{repo}{(string, optional) The repository specified in the format:
+\code{owner/repo}.}
 
 \item{org}{(string, optional) The name of the organization.}
 
@@ -23,13 +24,14 @@ create_project(name, body, repo, org, ...)
 \strong{Project Properties:}
 \itemize{
 \item \strong{id}: The ID of the project.
-\item \strong{number}: The number of the project for the repository, user or organization.
+\item \strong{number}: The number of the project for the repository, user or
+organization.
 \item \strong{name}: The name given to the project.
 \item \strong{body}: The description given to the project.
 \item \strong{state}: Whether the project is "open" or "closed".
 \item \strong{private}: Whether the project is private (organisation project only).
-\item \strong{org_permission}: The default permission for the project - either "read", "write" or
-"admin" (organisation project only).
+\item \strong{org_permission}: The default permission for the project - either "read",
+"write" or "admin" (organisation project only).
 \item \strong{creator}: The user who created the project.
 \item \strong{created_at}: When it was created.
 \item \strong{updated_at}: When it was last updated.
@@ -37,19 +39,20 @@ create_project(name, body, repo, org, ...)
 }
 }
 \description{
-This function creates a new project in GitHub. The project will be empty so you will need
-to add columns and cards separately.
+This function creates a new project in GitHub. The project will be empty so
+you will need to add columns and cards separately.
 }
 \details{
-You can create a project associated with either a repository or organization, by
-supplying them as an input, as long as you have appropriate permissions. If no repository
-or organization is specified the project is created for the authenticated user.
+You can create a project associated with either a repository or organization,
+by supplying them as an input, as long as you have appropriate permissions.
+If no repository or organization is specified the project is created for the
+authenticated user.
 
 For more details see the GitHub API documentation:
 \itemize{
-\item \url{https://developer.github.com/v3/projects/#create-a-repository-project}
-\item \url{https://developer.github.com/v3/projects/#create-an-organization-project}
-\item \url{https://developer.github.com/v3/projects/#create-a-user-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#create-a-repository-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#create-an-organization-project}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#create-a-user-project}
 }
 }
 \examples{
@@ -59,18 +62,21 @@ For more details see the GitHub API documentation:
   create_project(
     name = "Repo project",
     body = "This is a repository's project",
-    repo = "ChadGoymer/githapi")
+    repo = "ChadGoymer/githapi"
+  )
 
   # Create a project for the current user
   create_project(
     name = "User project",
-    body = "This is a user's project")
+    body = "This is a user's project"
+  )
 
   # Create a project for an organization
   create_project(
     name = "Organization project",
     body = "This is an organization's project",
-    org  = "HairyCoos")
+    org  = "HairyCoos"
+  )
 
 }
 

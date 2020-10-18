@@ -18,9 +18,11 @@ upload_files(
 )
 }
 \arguments{
-\item{from_path}{(string) The paths to the files to upload. They must be readable.}
+\item{from_path}{(string) The paths to the files to upload. They must be
+readable.}
 
-\item{to_path}{(string) The paths to write the files to, within the repository.}
+\item{to_path}{(string) The paths to write the files to, within the
+repository.}
 
 \item{branch}{(string) The name of the branch to make the new commit on.}
 
@@ -28,18 +30,18 @@ upload_files(
 
 \item{repo}{(string) The repository specified in the format: \code{owner/repo}.}
 
-\item{author}{(list, optional) A the name and email address of the user who wrote the
-changes in the commit.}
+\item{author}{(list, optional) A the name and email address of the user who
+wrote the changes in the commit.}
 
-\item{committer}{(list, optional) A the name and email address of the user who created
-the commit.}
+\item{committer}{(list, optional) A the name and email address of the user
+who created the commit.}
 
-\item{parent}{(string, optional) Reference for the commit to use as a parent, can be
-either a SHA, branch or tag. If it is a branch then the head commit is used. See the
-details section for more information.}
+\item{parent}{(string, optional) Reference for the commit to use as a parent,
+can be either a SHA, branch or tag. If it is a branch then the head commit
+is used. See the details section for more information.}
 
-\item{force}{(boolean, optional) Whether to force the update if it is not a simple
-fast-forward. Default: \code{FALSE}.}
+\item{force}{(boolean, optional) Whether to force the update if it is not a
+simple fast-forward. Default: \code{FALSE}.}
 
 \item{...}{Parameters passed to \code{\link[=gh_request]{gh_request()}}.}
 }
@@ -60,23 +62,31 @@ fast-forward. Default: \code{FALSE}.}
 }
 }
 \description{
-This function uploads the specified files to a repository in GitHub and creates a commit
-on the specified branch.
+This function uploads the specified files to a repository in GitHub and
+creates a commit on the specified branch.
 }
 \details{
-This function uploads the specified files to a repository and creates a new commit on the
-specified branch. Note: the files are created, or updated if they already exist, and any
-other files in the parent are left unchanged.
+This function uploads the specified files to a repository and creates a new
+commit on the specified branch. Note: the files are created, or updated if
+they already exist, and any other files in the parent are left unchanged.
 
-The \code{author} and \code{committer} arguments are optional and if not supplied the current
-authenticated user is used. However, if you want to set them explicitly you must specify
-a named list with \code{name} and \code{email} as the elements (see examples).
+The \code{author} and \code{committer} arguments are optional and if not supplied the
+current authenticated user is used. However, if you want to set them
+explicitly you must specify a named list with \code{name} and \code{email} as the
+elements (see examples).
 
-If a parent has been specified the files are created or updated. If a parent has not been
-specified, but the branch exists the current head commit is used as a parent. If the
-branch does not exist then an orphan commit is created.
+If a parent has been specified the files are created or updated. If a parent
+has not been specified, but the branch exists the current head commit is used
+as a parent. If the branch does not exist then an orphan commit is created.
 
 Note: The GitHub API imposes a file size limit of 100MB for this request.
+
+For more details see the GitHub API documentation:
+\itemize{
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-blob}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-tree}
+\item \url{https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-commit}
+}
 }
 \examples{
 \dontrun{
@@ -87,15 +97,25 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
     to_path   = c("file1.txt", "file2.txt"),
     branch    = "main",
     message   = "Commit to test upload_files()",
-    repo      = "ChadGoymer/githapi")
+    repo      = "ChadGoymer/githapi"
+  )
 
   # Upload files into directories within the main branch
   upload_files(
-    from_path = c("c:/test/file1.txt", "c:/test/file2.txt", "c:/test/file3.txt"),
-    to_path   = c("dir-1/file-1.txt", "dir-1/dir-1-1/file-2.txt", "dir-2/file-3.txt"),
+    from_path = c(
+      "c:/test/file1.txt",
+      "c:/test/file2.txt",
+      "c:/test/file3.txt"
+    ),
+    to_path   = c(
+      "dir-1/file-1.txt",
+      "dir-1/dir-1-1/file-2.txt",
+      "dir-2/file-3.txt"
+    ),
     branch    = "main",
     message   = "Commit to test upload_files()",
-    repo      = str_c("ChadGoymer/test-files-", now))
+    repo      = str_c("ChadGoymer/test-files-", now)
+  )
 
   # Upload files to the main branch specifying an author and committer
   upload_files(
@@ -105,7 +125,8 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
     message   = "Commit to test upload_files()",
     repo      = "ChadGoymer/githapi",
     author    = list(name = "Bob",  email = "bob@acme.com"),
-    committer = list(name = "Jane", email = "jane@acme.com"))
+    committer = list(name = "Jane", email = "jane@acme.com")
+  )
 
   # Create a new branch from the main branch
   upload_files(
@@ -114,7 +135,8 @@ Note: The GitHub API imposes a file size limit of 100MB for this request.
     branch    = "new-branch",
     message   = "Commit to test upload_files()",
     repo      = "ChadGoymer/githapi",
-    parent    = "main")
+    parent    = "main"
+  )
 
 }
 
