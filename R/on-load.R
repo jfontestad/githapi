@@ -20,6 +20,7 @@
     gh_cfg <- config[["github"]]
   } else {
     warning("GitHub configuration not set in specified configuration file")
+    gh_cfg <- list()
   }
 
   if (Sys.getenv("GITHAPI_APP") %in% names(config)) {
