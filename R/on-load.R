@@ -32,7 +32,8 @@
   tokens <- c(
     Sys.getenv("GITHAPI_TOKEN"),
     Sys.getenv("GITHUB_PAT"),
-    Sys.getenv("GITHUB_TOKEN"))
+    Sys.getenv("GITHUB_TOKEN")
+  )
 
   if (any(tokens != "")) {
     gh_cfg$token <- tokens[tokens != ""][[1]]
@@ -47,7 +48,7 @@
     github.proxy     = gh_cfg$proxy,      # The proxy to use to access GitHub
 
     # githapi application
-    githapi.key      = app_cfg$key,       # The GitHub application ID
+    githapi.id       = app_cfg$id,        # The GitHub application ID
     githapi.secret   = app_cfg$secret,    # The GitHub application secret
     githapi.cache    = app_cfg$cache      # Location for cached token
   )

@@ -8,7 +8,7 @@ gh_token(
   token = getOption("github.token"),
   oauth = getOption("github.oauth"),
   proxy = getOption("github.proxy"),
-  key = getOption("githapi.key"),
+  id = getOption("githapi.id"),
   secret = getOption("githapi.secret"),
   cache = getOption("githapi.cache"),
   refresh = FALSE
@@ -28,9 +28,9 @@ variable. Default: \code{"https://github.com/login/oauth"}.}
 github API. If \code{NULL} then no proxy is used. Can be set in the option
 \code{github.proxy} or the environment variable \code{GITHUB_PROXY}. Default: \code{NULL}.}
 
-\item{key}{(string, optional) The application ID for accessing GitHub. Can be
-set in the \code{githapi.key} option or the \code{GITHAPI_KEY} environment variable.
-Default: The key for the githapi application in github.com.}
+\item{id}{(string, optional) The application ID for accessing GitHub. Can be
+set in the \code{githapi.id} option or the \code{GITHAPI_ID} environment variable.
+Default: The id for the githapi application in github.com.}
 
 \item{secret}{(string, optional) The secret for the application to access
 GitHub. Can be set in the \code{githapi.secret} option or the \code{GITHAPI_SECRET}
