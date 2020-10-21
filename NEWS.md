@@ -1,3 +1,8 @@
+# githapi 0.10.18
+
+- Changed app key to app ID in configuration
+- Added environment variable overrides for configuration settings
+
 # githapi 0.10.17
 
 - Updated function documentation
