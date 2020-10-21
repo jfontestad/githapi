@@ -39,6 +39,41 @@
     gh_cfg$token <- tokens[tokens != ""][[1]]
   }
 
+  # Override github API URL
+  api <- c(
+    Sys.getenv("GITHUB_API"),
+    Sys.getenv("GITHUB_API_URL")
+  )
+
+  if (any(api != "")) {
+    gh_cfg$api <- api[api != ""][[1]]
+  }
+
+  # Override github OAuth URL
+  if (Sys.getenv("GITHUB_OAUTH") != "") {
+    gh_cfg$oauth <- Sys.getenv("GITHUB_OAUTH")
+  }
+
+  # Override github proxy URL
+  if (Sys.getenv("GITHUB_PROXY") != "") {
+    gh_cfg$proxy <- Sys.getenv("GITHUB_PROXY")
+  }
+
+  # Override githapi application ID
+  if (Sys.getenv("GITHAPI_ID") != "") {
+    app_cfg$id <- Sys.getenv("GITHAPI_ID")
+  }
+
+  # Override githapi application secret
+  if (Sys.getenv("GITHAPI_SECRET") != "") {
+    app_cfg$secret <- Sys.getenv("GITHAPI_SECRET")
+  }
+
+  # Override githapi application token cache location
+  if (Sys.getenv("GITHAPI_CACHE") != "") {
+    app_cfg$cache <- Sys.getenv("GITHAPI_CACHE")
+  }
+
   # Set R options
   options(
     # GitHub API
