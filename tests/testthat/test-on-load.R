@@ -1,6 +1,81 @@
 context("on load")
 
 
+# SETUP ------------------------------------------------------------------------
+
+temp_path <- tempfile("")
+
+setup(suppressMessages({
+
+  dir.create(temp_path)
+
+  test_config <- list(
+    prod = list(
+      github = list(
+        api   = "https://prod-api.github.com",
+        oauth = "https://prod-github.com/login/oauth"
+      ),
+      githapi = list(
+        id     = "1329854079b03237d8a4",
+        secret = "76c1a1be132ac20e2dc7431c2363b849a3b94eed",
+        cache  = "~/.prod-githapi.oauth"
+      ),
+      newapp = list(
+        id     = "b17156cbd901aa75e41c",
+        secret = "dd771c62bcb66834cab30225c34d010c4ca9423d",
+        cache  = "~/.prod-newapp.oauth"
+      )
+    ),
+    test = list(
+      github = list(
+        api   = "https://test-api.github.com",
+        oauth = "https://test-github.com/login/oauth"
+      ),
+      githapi = list(
+        id     = "748012285b47946a70e1",
+        secret = "d2e69443e73b38821b602235b582e2ac4eb1a815",
+        cache  = "~/.test-githapi.oauth"
+      )
+    )
+  )
+
+  jsonlite::write_json(
+    test_config,
+    path       = file.path(temp_path, "test-config.json"),
+    pretty     = TRUE,
+    auto_unbox = TRUE
+  )
+
+  invalid_config <- list(
+    prod = list(
+      githapi = list(
+        api    = "https://prod-api.github.com",
+        oauth  = "https://prod-github.com/login/oauth",
+        id     = "1329854079b03237d8a4",
+        secret = "76c1a1be132ac20e2dc7431c2363b849a3b94eed",
+        cache  = "~/.prod-githapi.oauth"
+      )
+    )
+  )
+
+  jsonlite::write_json(
+    invalid_config,
+    path       = file.path(temp_path, "invalid-config.json"),
+    pretty     = TRUE,
+    auto_unbox = TRUE
+  )
+
+}))
+
+teardown(suppressMessages({
+
+  if (dir.exists(temp_path)) {
+    unlink(temp_path, recursive = TRUE)
+  }
+
+}))
+
+
 test_that("Options are  set correctly on load", {
 
   expect_identical(
@@ -11,8 +86,9 @@ test_that("Options are  set correctly on load", {
     getOption("github.oauth"),
     "https://github.com/login/oauth"
   )
+
   expect_null(getOption("github.proxy"))
-  expect_null(getOption("github.token"))
+
   expect_identical(
     getOption("githapi.id"),
     "07f9a4157365992e4db8"
@@ -172,6 +248,7 @@ test_that("Setting the GITHAPI_CONFIG reads the config file", {
   original_env_vars <- list(
     GITHAPI_CONFIG = Sys.getenv("GITHAPI_CONFIG"),
     GITHUB_API     = Sys.getenv("GITHUB_API"),
+    GITHUB_API_URL = Sys.getenv("GITHUB_API_URL"),
     GITHUB_OAUTH   = Sys.getenv("GITHUB_OAUTH"),
     GITHAPI_ID     = Sys.getenv("GITHAPI_ID"),
     GITHAPI_SECRET = Sys.getenv("GITHAPI_SECRET"),
@@ -183,16 +260,13 @@ test_that("Setting the GITHAPI_CONFIG reads the config file", {
     .onLoad()
   })
 
+  Sys.setenv(GITHAPI_CONFIG = file.path(temp_path, "test-config.json"))
   Sys.setenv(GITHUB_API     = "")
+  Sys.setenv(GITHUB_API_URL = "")
   Sys.setenv(GITHUB_OAUTH   = "")
   Sys.setenv(GITHAPI_ID     = "")
   Sys.setenv(GITHAPI_SECRET = "")
   Sys.setenv(GITHAPI_CACHE  = "")
-
-  Sys.setenv(GITHAPI_CONFIG = system.file(
-    "test-data/test-config.json",
-    package = "githapi"
-  ))
 
   .onLoad()
 
@@ -226,6 +300,7 @@ test_that("Setting a different app sets the configuration correctly", {
     GITHAPI_CONFIG = Sys.getenv("GITHAPI_CONFIG"),
     GITHAPI_APP    = Sys.getenv("GITHAPI_APP"),
     GITHUB_API     = Sys.getenv("GITHUB_API"),
+    GITHUB_API_URL = Sys.getenv("GITHUB_API_URL"),
     GITHUB_OAUTH   = Sys.getenv("GITHUB_OAUTH"),
     GITHAPI_ID     = Sys.getenv("GITHAPI_ID"),
     GITHAPI_SECRET = Sys.getenv("GITHAPI_SECRET"),
@@ -237,18 +312,14 @@ test_that("Setting a different app sets the configuration correctly", {
     .onLoad()
   })
 
+  Sys.setenv(GITHAPI_CONFIG = file.path(temp_path, "test-config.json"))
+  Sys.setenv(GITHAPI_APP  = "newapp")
   Sys.setenv(GITHUB_API     = "")
+  Sys.setenv(GITHUB_API_URL = "")
   Sys.setenv(GITHUB_OAUTH   = "")
   Sys.setenv(GITHAPI_ID     = "")
   Sys.setenv(GITHAPI_SECRET = "")
   Sys.setenv(GITHAPI_CACHE  = "")
-
-  Sys.setenv(GITHAPI_CONFIG = system.file(
-    "test-data/test-config.json",
-    package = "githapi"
-  ))
-
-  Sys.setenv(GITHAPI_APP  = "newapp")
 
   .onLoad()
 
@@ -282,6 +353,7 @@ test_that("Setting the ENVIRONMENT sets the configuration correctly", {
     GITHAPI_CONFIG = Sys.getenv("GITHAPI_CONFIG"),
     ENVIRONMENT    = Sys.getenv("ENVIRONMENT"),
     GITHUB_API     = Sys.getenv("GITHUB_API"),
+    GITHUB_API_URL = Sys.getenv("GITHUB_API_URL"),
     GITHUB_OAUTH   = Sys.getenv("GITHUB_OAUTH"),
     GITHAPI_ID     = Sys.getenv("GITHAPI_ID"),
     GITHAPI_SECRET = Sys.getenv("GITHAPI_SECRET"),
@@ -293,18 +365,14 @@ test_that("Setting the ENVIRONMENT sets the configuration correctly", {
     .onLoad()
   })
 
+  Sys.setenv(GITHAPI_CONFIG = file.path(temp_path, "test-config.json"))
+  Sys.setenv(ENVIRONMENT = "test")
   Sys.setenv(GITHUB_API     = "")
+  Sys.setenv(GITHUB_API_URL = "")
   Sys.setenv(GITHUB_OAUTH   = "")
   Sys.setenv(GITHAPI_ID     = "")
   Sys.setenv(GITHAPI_SECRET = "")
   Sys.setenv(GITHAPI_CACHE  = "")
-
-  Sys.setenv(GITHAPI_CONFIG = system.file(
-    "test-data/test-config.json",
-    package = "githapi"
-  ))
-
-  Sys.setenv(ENVIRONMENT = "test")
 
   .onLoad()
 
@@ -341,13 +409,10 @@ test_that("An invalid configuration file gives a warning", {
     .onLoad()
   })
 
-  Sys.setenv(GITHAPI_CONFIG = system.file(
-    "test-data/invalid-config.json",
-    package = "githapi"
-  ))
+  Sys.setenv(GITHAPI_CONFIG = file.path(temp_path, "invalid-config.json"))
 
   expect_warning(
-    githapi:::.onLoad(),
+    .onLoad(),
     "GitHub configuration not set in specified configuration file"
   )
 
