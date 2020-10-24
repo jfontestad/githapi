@@ -21,9 +21,9 @@
 #' @param proxy (character, optional) The proxy server to use to connect to the
 #'   github API. If `NULL` then no proxy is used. Can be set in the option
 #'   `github.proxy` or the environment variable `GITHUB_PROXY`. Default: `NULL`.
-#' @param key (string, optional) The application ID for accessing GitHub. Can be
-#'   set in the `githapi.key` option or the `GITHAPI_KEY` environment variable.
-#'   Default: The key for the githapi application in github.com.
+#' @param id (string, optional) The application ID for accessing GitHub. Can be
+#'   set in the `githapi.id` option or the `GITHAPI_ID` environment variable.
+#'   Default: The id for the githapi application in github.com.
 #' @param secret (string, optional) The secret for the application to access
 #'   GitHub. Can be set in the `githapi.secret` option or the `GITHAPI_SECRET`
 #'   environment variable. Default: The secret for the githapi application in
@@ -51,7 +51,7 @@ gh_token <- function(
   token   = getOption("github.token"),
   oauth   = getOption("github.oauth"),
   proxy   = getOption("github.proxy"),
-  key     = getOption("githapi.key"),
+  id      = getOption("githapi.id"),
   secret  = getOption("githapi.secret"),
   cache   = getOption("githapi.cache"),
   refresh = FALSE
@@ -75,8 +75,8 @@ gh_token <- function(
     "'oauth' must be a string:\n  ", oauth
   )
   assert(
-    is_scalar_character(key),
-    "'key' must be a string:\n  ", key
+    is_scalar_character(id),
+    "'id' must be a string:\n  ", id
   )
   assert(
     is_scalar_character(secret),
@@ -104,7 +104,7 @@ gh_token <- function(
 
   githapi_app <- httr::oauth_app(
     appname = "githapi",
-    key     = key,
+    key     = id,
     secret  = secret
   )
 

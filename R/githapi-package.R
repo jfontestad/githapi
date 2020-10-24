@@ -20,6 +20,8 @@
 #' @importFrom rlang is_integerish is_scalar_integerish
 #' @import stringr purrr tibble dplyr msgr
 #'
+#' @noRd
+#'
 # Global variables used in dplyr pipelines
 globalVariables(c(".", ".data"))
 
