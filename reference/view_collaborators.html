@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="View collaborators in an organization, repository or project — view_collaborators" />
-<meta property="og:description" content="view_collaborators() summarises the collaborators in a repository, project or
-organization in a table with the properties as columns and a row for each collaborator.
-view_collaborator() returns a list of all collaborator's properties including their
-permission." />
+<meta property="og:description" content="view_collaborators() summarises the collaborators in a repository, project
+or organization in a table with the properties as columns and a row for each
+collaborator. view_collaborator() returns a list of all collaborator's
+properties including their permission." />
 
 
 
@@ -75,7 +75,7 @@ permission." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,35 +120,38 @@ permission." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_collaborators()</code> summarises the collaborators in a repository, project or
-organization in a table with the properties as columns and a row for each collaborator.
-<code>view_collaborator()</code> returns a list of all collaborator's properties including their
-permission.</p>
+    <p><code>view_collaborators()</code> summarises the collaborators in a repository, project
+or organization in a table with the properties as columns and a row for each
+collaborator. <code>view_collaborator()</code> returns a list of all collaborator's
+properties including their permission.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_collaborators</span>(<span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, affiliation = <span class='st'>"all"</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_collaborators</span><span class='op'>(</span><span class='va'>repo</span>, <span class='va'>project</span>, <span class='va'>org</span>, affiliation <span class='op'>=</span> <span class='st'>"all"</span>, n_max <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>view_collaborator</span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>view_collaborator</span><span class='op'>(</span><span class='va'>user</span>, <span class='va'>repo</span>, <span class='va'>project</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>repo</th>
-      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format:
+<code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>project</th>
-      <td><p>(integer or string, optional) Either the project number or name.</p></td>
+      <td><p>(integer or string, optional) Either the project number or
+name.</p></td>
     </tr>
     <tr>
       <th>org</th>
-      <td><p>(string, optional) The name of the organization. Only required for projects.</p></td>
+      <td><p>(string, optional) The name of the organization. Only required for
+projects.</p></td>
     </tr>
     <tr>
       <th>affiliation</th>
-      <td><p>(string, optional) Filter by the affiliation of the user. This is either
-<code>"outside"</code>, <code>"direct"</code> or <code>"all"</code>.</p></td>
+      <td><p>(string, optional) Filter by the affiliation of the user.
+This is either <code>"outside"</code>, <code>"direct"</code> or <code>"all"</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -167,50 +170,51 @@ permission.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>view_collaborators()</code> returns a tibble of collaborator properties.
-<code>view_collaborator()</code> returns a list of properties for a single collaborator.</p>
+<code>view_collaborator()</code> returns a list of properties for a single
+collaborator.</p>
 <p><strong>Collaborator Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the collaborator.</p></li>
 <li><p><strong>login</strong>: The login name of the collaborator.</p></li>
 <li><p><strong>site_admin</strong>: Whether the collaborator is an administrator.</p></li>
 <li><p><strong>html_url</strong>: The GitHub page for the collaborator.</p></li>
-<li><p><strong>permission</strong>: The permission the collaborator has (only available in <code>view_collaborator()</code>).</p></li>
+<li><p><strong>permission</strong>: The permission the collaborator has (only available in
+<code>view_collaborator()</code>).</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: you can only view collaborators in an organization if the authenticate user is also
-a member.</p>
+    <p>Note: you can only view collaborators in an organization if the authenticate
+user is also a member.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/repos/collaborators/#list-collaborators'>https://developer.github.com/v3/repos/collaborators/#list-collaborators</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/collaborators/#list-collaborators'>https://developer.github.com/v3/projects/collaborators/#list-collaborators</a></p></li>
-<li><p><a href='https://developer.github.com/v3/orgs/outside_collaborators/#list-outside-collaborators'>https://developer.github.com/v3/orgs/outside_collaborators/#list-outside-collaborators</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level'>https://developer.github.com/v3/repos/collaborators/#review-a-users-permission-level</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/collaborators/#review-a-users-permission-level'>https://developer.github.com/v3/projects/collaborators/#review-a-users-permission-level</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repository-collaborators'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repository-collaborators</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-project-collaborators'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-project-collaborators</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-outside-collaborators-for-an-organization'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-outside-collaborators-for-an-organization</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View collaborators on a repository</span>
-  <span class='fu'>view_collaborators</span>(repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_collaborators</span><span class='op'>(</span>repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># View collaborators on a project</span>
-  <span class='fu'>view_collaborators</span>(project = <span class='kw'>test_project</span><span class='op'>$</span><span class='kw'>name</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_collaborators</span><span class='op'>(</span>project <span class='op'>=</span> <span class='va'>test_project</span><span class='op'>$</span><span class='va'>name</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># View collaborators in an organization</span>
-  <span class='fu'>view_collaborators</span>(org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_collaborators</span><span class='op'>(</span>org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># View collaborator on a repository</span>
-  <span class='fu'>view_collaborator</span>(<span class='st'>"ChadGoymer"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_collaborator</span><span class='op'>(</span>user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>, repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># View collaborator on a project</span>
-  <span class='fu'>view_collaborator</span>(
-    user    = <span class='st'>"ChadGoymer"</span>,
-    project = <span class='st'>"Test project"</span>,
-    org     = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_collaborator</span><span class='op'>(</span>
+    user    <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    org     <span class='op'>=</span> <span class='st'>"HairyCoos"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -228,7 +232,7 @@ a member.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

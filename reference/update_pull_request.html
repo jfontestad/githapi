@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="Update a pull request in a repository — update_pull_request" />
-<meta property="og:description" content="This function updates a pull request for the specified repository in GitHub. It can be used
-to change the title or body, or used to close the pull request. It can also be used to
-assign the pull request to a user, request reviewers and replace labels or a milestone." />
+<meta property="og:description" content="This function updates a pull request for the specified repository in GitHub.
+It can be used to change the title or body, or used to close the pull
+request. It can also be used to assign the pull request to a user, request
+reviewers and replace labels or a milestone." />
 
 
 
@@ -74,7 +75,7 @@ assign the pull request to a user, request reviewers and replace labels or a mil
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,31 +120,33 @@ assign the pull request to a user, request reviewers and replace labels or a mil
     </div>
 
     <div class="ref-description">
-    <p>This function updates a pull request for the specified repository in GitHub. It can be used
-to change the title or body, or used to close the pull request. It can also be used to
-assign the pull request to a user, request reviewers and replace labels or a milestone.</p>
+    <p>This function updates a pull request for the specified repository in GitHub.
+It can be used to change the title or body, or used to close the pull
+request. It can also be used to assign the pull request to a user, request
+reviewers and replace labels or a milestone.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_pull_request</span>(
-  <span class='kw'>pull_request</span>,
-  <span class='kw'>repo</span>,
-  <span class='kw'>title</span>,
-  <span class='kw'>body</span>,
-  <span class='kw'>assignees</span>,
-  <span class='kw'>reviewers</span>,
-  <span class='kw'>labels</span>,
-  <span class='kw'>milestone</span>,
-  <span class='kw'>base</span>,
-  <span class='kw'>state</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_pull_request</span><span class='op'>(</span>
+  <span class='va'>pull_request</span>,
+  <span class='va'>repo</span>,
+  <span class='va'>title</span>,
+  <span class='va'>body</span>,
+  <span class='va'>assignees</span>,
+  <span class='va'>reviewers</span>,
+  <span class='va'>labels</span>,
+  <span class='va'>milestone</span>,
+  <span class='va'>base</span>,
+  <span class='va'>state</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pull_request</th>
-      <td><p>(string or character) The number or title of the pull request.</p></td>
+      <td><p>(string or character) The number or title of the pull
+request.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -159,34 +162,37 @@ assign the pull request to a user, request reviewers and replace labels or a mil
     </tr>
     <tr>
       <th>assignees</th>
-      <td><p>(character, optional) Logins for Users to assign to this pull request.
-NOTE: Only users with push access can set assignees for new pull requests.</p></td>
+      <td><p>(character, optional) Logins for Users to assign to this
+pull request. NOTE: Only users with push access can set assignees for new
+pull requests.</p></td>
     </tr>
     <tr>
       <th>reviewers</th>
-      <td><p>(character, optional) Logins for Users to review this pull request.
-NOTE: Only users with push access can set reviewers for new pull requests.</p></td>
+      <td><p>(character, optional) Logins for Users to review this pull
+request. NOTE: Only users with push access can set reviewers for new pull
+requests.</p></td>
     </tr>
     <tr>
       <th>labels</th>
-      <td><p>(character, optional) Labels to associate with this pull request. NOTE: Only
-users with push access can set labels for new pull requests.</p></td>
+      <td><p>(character, optional) Labels to associate with this pull
+request. NOTE: Only users with push access can set labels for new pull
+requests.</p></td>
     </tr>
     <tr>
       <th>milestone</th>
-      <td><p>(character or integer, optional) The title or number of the milestone to
-associate this pull request with. NOTE: Only users with push access can set the
-milestone for new pull requests.</p></td>
+      <td><p>(character or integer, optional) The title or number of the
+milestone to associate this pull request with. NOTE: Only users with push
+access can set the milestone for new pull requests.</p></td>
     </tr>
     <tr>
       <th>base</th>
-      <td><p>(string, optional) The name of the branch you want the changes pulled into.
-This should be an existing branch on the current repository.</p></td>
+      <td><p>(string, optional) The name of the branch you want the changes
+pulled into. This should be an existing branch on the current repository.</p></td>
     </tr>
     <tr>
       <th>state</th>
-      <td><p>(string, optional) The state of the pull request. Either <code>"open"</code> or
-<code>"closed"</code>.</p></td>
+      <td><p>(string, optional) The state of the pull request. Either
+<code>"open"</code> or <code>"closed"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -196,7 +202,8 @@ This should be an existing branch on the current repository.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_pull_request()</code> returns a list of the pull request's properties.</p>
+    <p><code>update_pull_request()</code> returns a list of the pull request's
+properties.</p>
 <p><strong>Pull Request Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the pull request.</p></li>
 <li><p><strong>title</strong>: The title of the pull request.</p></li>
@@ -206,7 +213,8 @@ This should be an existing branch on the current repository.</p></td>
 <li><p><strong>head_repo</strong>: The repository containing the branch to merge in.</p></li>
 <li><p><strong>base_sha</strong>: The SHA of the commit to merge onto.</p></li>
 <li><p><strong>base_ref</strong>: The reference, or branch, to merge onto.</p></li>
-<li><p><strong>merge_sha</strong>: The SHA of the merge commit, if the merge has been completed.</p></li>
+<li><p><strong>merge_sha</strong>: The SHA of the merge commit, if the merge has been
+completed.</p></li>
 <li><p><strong>assignees</strong>: The users assigned to the pull request.</p></li>
 <li><p><strong>reviewers</strong>: The users reviewing the pull request.</p></li>
 <li><p><strong>labels</strong>: The labels attached to the pull request.</p></li>
@@ -229,29 +237,31 @@ This should be an existing branch on the current repository.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/pulls/#update-a-pull-request'>https://developer.github.com/v3/pulls/#update-a-pull-request</a></p></li>
-<li><p><a href='https://developer.github.com/v3/issues/#edit-an-issue'>https://developer.github.com/v3/issues/#edit-an-issue</a></p></li>
-<li><p><a href='https://developer.github.com/v3/pulls/review_requests/#create-a-review-request'>https://developer.github.com/v3/pulls/review_requests/#create-a-review-request</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#update-a-pull-request'>https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#update-a-pull-request</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#request-reviewers-for-a-pull-request'>https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#request-reviewers-for-a-pull-request</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Update a pull request's properties</span>
-  <span class='fu'>update_pull_request</span>(
-    pull_request = <span class='st'>"test pull request"</span>,
-    repo         = <span class='st'>"ChadGoymer/githapi"</span>,
-    title        = <span class='st'>"test updated pull request"</span>,
-    body         = <span class='st'>"This is an updated pull request to test create_pull_request()"</span>)
+  <span class='fu'>update_pull_request</span><span class='op'>(</span>
+    pull_request <span class='op'>=</span> <span class='st'>"test pull request"</span>,
+    repo         <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    title        <span class='op'>=</span> <span class='st'>"test updated pull request"</span>,
+    body         <span class='op'>=</span> <span class='st'>"This is an updated pull request"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Close a pull request</span>
-  <span class='fu'>update_pull_request</span>(
-    pull_request = <span class='st'>"test updated pull request"</span>,
-    repo         = <span class='st'>"ChadGoymer/githapi"</span>,
-    state        = <span class='st'>"closed"</span>)
+  <span class='fu'>update_pull_request</span><span class='op'>(</span>
+    pull_request <span class='op'>=</span> <span class='st'>"test updated pull request"</span>,
+    repo         <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    state        <span class='op'>=</span> <span class='st'>"closed"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -269,7 +279,7 @@ This should be an existing branch on the current repository.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

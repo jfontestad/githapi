@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="Update a branch in a repository — update_branch" />
-<meta property="og:description" content="This function updates a branch in the specified repository to point at a new commit. It
-must be pointed at a commit by providing a Git reference, which can be either a SHA, branch
-or tag. For a branch, the head commit is used." />
+<meta property="og:description" content="This function updates a branch in the specified repository to point at a new
+commit. It must be pointed at a commit by providing a Git reference, which
+can be either a SHA, branch or tag. For a branch, the head commit is used." />
 
 
 
@@ -74,7 +74,7 @@ or tag. For a branch, the head commit is used." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,12 +119,12 @@ or tag. For a branch, the head commit is used." />
     </div>
 
     <div class="ref-description">
-    <p>This function updates a branch in the specified repository to point at a new commit. It
-must be pointed at a commit by providing a Git reference, which can be either a SHA, branch
-or tag. For a branch, the head commit is used.</p>
+    <p>This function updates a branch in the specified repository to point at a new
+commit. It must be pointed at a commit by providing a Git reference, which
+can be either a SHA, branch or tag. For a branch, the head commit is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_branch</span>(<span class='kw'>branch</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, force = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_branch</span><span class='op'>(</span><span class='va'>branch</span>, <span class='va'>ref</span>, <span class='va'>repo</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,7 +135,8 @@ or tag. For a branch, the head commit is used.</p>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>(string) Either a SHA, branch or tag used to identify the new commit.</p></td>
+      <td><p>(string) Either a SHA, branch or tag used to identify the new
+commit.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -143,8 +144,8 @@ or tag. For a branch, the head commit is used.</p>
     </tr>
     <tr>
       <th>force</th>
-      <td><p>(boolean, optional) Whether to force the update if it is not a simple
-fast-forward. Default: <code>FALSE</code>.</p></td>
+      <td><p>(boolean, optional) Whether to force the update if it is not a
+simple fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -164,19 +165,20 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/git/refs/#update-a-reference'>https://developer.github.com/v3/git/refs/#update-a-reference</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/git#update-a-reference'>https://docs.github.com/en/free-pro-team@latest/rest/reference/git#update-a-reference</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-  <span class='fu'>update_branch</span>(
-    name = <span class='st'>"new-branch"</span>,
-    repo = <span class='st'>"ChadGoymer/githapi"</span>,
-    ref  = <span class='st'>"6b7b5a090d47fd3ef495620513a3f80da2487b1d"</span>)
+  <span class='fu'>update_branch</span><span class='op'>(</span>
+    name <span class='op'>=</span> <span class='st'>"new-branch"</span>,
+    repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    ref  <span class='op'>=</span> <span class='st'>"6b7b5a090d47fd3ef495620513a3f80da2487b1d"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -194,7 +196,7 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="Remove a member from an organization or team. — delete_membership" />
-<meta property="og:description" content="This function removes a user from an organization or team. Removing someone from a team
-does not remove them from the organization, whereas removing them from an organization
-also removes them from any teams within the organization." />
+<meta property="og:description" content="This function removes a user from an organization or team. Removing someone
+from a team does not remove them from the organization, whereas removing them
+from an organization also removes them from any teams within the
+organization." />
 
 
 
@@ -74,7 +75,7 @@ also removes them from any teams within the organization." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,12 +120,13 @@ also removes them from any teams within the organization." />
     </div>
 
     <div class="ref-description">
-    <p>This function removes a user from an organization or team. Removing someone from a team
-does not remove them from the organization, whereas removing them from an organization
-also removes them from any teams within the organization.</p>
+    <p>This function removes a user from an organization or team. Removing someone
+from a team does not remove them from the organization, whereas removing them
+from an organization also removes them from any teams within the
+organization.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_membership</span>(<span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>team</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_membership</span><span class='op'>(</span><span class='va'>user</span>, <span class='va'>org</span>, <span class='va'>team</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,24 +154,24 @@ also removes them from any teams within the organization.</p>
     <p><code>delete_membership()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: you can only remove a user if the authenticate user is an organization "owner" or a
-team "maintainer".</p>
+    <p>Note: you can only remove a user if the authenticate user is an organization
+"owner" or a team "maintainer".</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/orgs/members/#remove-organization-membership'>https://developer.github.com/v3/orgs/members/#remove-organization-membership</a></p></li>
-<li><p><a href='https://developer.github.com/v3/teams/members/#remove-team-membership'>https://developer.github.com/v3/teams/members/#remove-team-membership</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#remove-organization-membership-for-a-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#remove-organization-membership-for-a-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#remove-team-membership-for-a-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#remove-team-membership-for-a-user</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Remove a user from an organization</span>
-  <span class='fu'>delete_membership</span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>delete_membership</span><span class='op'>(</span><span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># Remove a user from a team</span>
-  <span class='fu'>delete_membership</span>(<span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>)
+  <span class='fu'>delete_membership</span><span class='op'>(</span><span class='st'>"ChadGoymer"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -187,7 +189,7 @@ team "maintainer".</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

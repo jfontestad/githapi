@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Delete a card in a GitHub project — delete_card" />
-<meta property="og:description" content="This function deletes a card in a GitHub project. Care should be taken as it will not be
-recoverable. Instead, you may way to archive the card with update_card()." />
+<meta property="og:description" content="This function deletes a card in a GitHub project. Care should be taken as it
+will not be recoverable. Instead, you may way to archive the card with
+update_card()." />
 
 
 
@@ -73,7 +74,7 @@ recoverable. Instead, you may way to archive the card with update_card()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,11 +119,12 @@ recoverable. Instead, you may way to archive the card with update_card()." />
     </div>
 
     <div class="ref-description">
-    <p>This function deletes a card in a GitHub project. Care should be taken as it will not be
-recoverable. Instead, you may way to archive the card with <code><a href='update_card.html'>update_card()</a></code>.</p>
+    <p>This function deletes a card in a GitHub project. Care should be taken as it
+will not be recoverable. Instead, you may way to archive the card with
+<code><a href='update_card.html'>update_card()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_card</span>(<span class='kw'>card</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_card</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,20 +144,21 @@ recoverable. Instead, you may way to archive the card with <code><a href='update
     <p><code>delete_card()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can delete a card associated with either a repository, user or organization, by
-supplying them as an input, as long as you have appropriate permissions.</p>
+    <p>You can delete a card associated with either a repository, user or
+organization, by supplying them as an input, as long as you have appropriate
+permissions.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/projects/cards/#delete-a-project-card'>https://developer.github.com/v3/projects/cards/#delete-a-project-card</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#delete-a-project-card'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#delete-a-project-card</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Delete a card</span>
-  <span class='fu'>delete_card</span>(<span class='fl'>123456</span>)
+  <span class='fu'>delete_card</span><span class='op'>(</span>card <span class='op'>=</span> <span class='fl'>123456</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -173,7 +176,7 @@ supplying them as an input, as long as you have appropriate permissions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

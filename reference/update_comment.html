@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="Update a comment in a repository — update_comment" />
-<meta property="og:description" content="This function updates a comment for a gist, issue, pull request or commit. It can be used
-to replace the content of the comment. The repo argument is not required if a gist is
-specified." />
+<meta property="og:description" content="This function updates a comment for a gist, issue, pull request or commit. It
+can be used to replace the content of the comment. The repo argument is not
+required if a gist is specified." />
 
 
 
@@ -74,7 +74,7 @@ specified." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,12 +119,12 @@ specified." />
     </div>
 
     <div class="ref-description">
-    <p>This function updates a comment for a gist, issue, pull request or commit. It can be used
-to replace the content of the comment. The <code>repo</code> argument is not required if a gist is
-specified.</p>
+    <p>This function updates a comment for a gist, issue, pull request or commit. It
+can be used to replace the content of the comment. The <code>repo</code> argument is not
+required if a gist is specified.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_comment</span>(<span class='kw'>comment</span>, <span class='kw'>body</span>, <span class='kw'>gist</span>, <span class='kw'>repo</span>, type = <span class='st'>"gist"</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_comment</span><span class='op'>(</span><span class='va'>comment</span>, <span class='va'>body</span>, <span class='va'>gist</span>, <span class='va'>repo</span>, type <span class='op'>=</span> <span class='st'>"gist"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,8 +147,8 @@ specified.</p>
     </tr>
     <tr>
       <th>type</th>
-      <td><p>(string, optional) Whether the comment is for a <code>"gist"</code>, <code>"issue"</code>,
-<code>"pull_request"</code> or <code>"commit"</code>. Default: <code>"gist"</code>.</p></td>
+      <td><p>(string, optional) Whether the comment is for a <code>"gist"</code>,
+<code>"issue"</code>, <code>"pull_request"</code> or <code>"commit"</code>. Default: <code>"gist"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -162,12 +162,12 @@ specified.</p>
 <p><strong>Comment Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id of the comment.</p></li>
 <li><p><strong>body</strong>: The content of the comment.</p></li>
-<li><p><strong>commit</strong>: The commit associated with the comment (only for pull request or commit
-comments).</p></li>
-<li><p><strong>path</strong>: The path of the file to add the comment to (only for pull request or commit
-comments).</p></li>
-<li><p><strong>position</strong>: The line number in the file to attach the comment to (only for pull
-request or commit comments).</p></li>
+<li><p><strong>commit</strong>: The commit associated with the comment (only for pull request
+or commit comments).</p></li>
+<li><p><strong>path</strong>: The path of the file to add the comment to (only for pull request
+or commit comments).</p></li>
+<li><p><strong>position</strong>: The line number in the file to attach the comment to (only
+for pull request or commit comments).</p></li>
 <li><p><strong>user</strong>: The comment author's account login.</p></li>
 <li><p><strong>html_url</strong>: The address of the comment's web page.</p></li>
 <li><p><strong>created_at</strong>: The time and date the comment was created.</p></li>
@@ -177,44 +177,48 @@ request or commit comments).</p></li>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/gists/comments/#edit-a-comment'>https://developer.github.com/v3/gists/comments/#edit-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/issues/comments/#edit-a-comment'>https://developer.github.com/v3/issues/comments/#edit-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/pulls/comments/#edit-a-comment'>https://developer.github.com/v3/pulls/comments/#edit-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/comments/#update-a-commit-comment'>https://developer.github.com/v3/repos/comments/#update-a-commit-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#update-a-gist-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#update-a-gist-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-an-issue-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#update-a-review-comment-for-a-pull-request'>https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#update-a-review-comment-for-a-pull-request</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-commit-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-commit-comment</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Update a gist comment</span>
-  <span class='fu'>update_comment</span>(
-    comment = <span class='fl'>3281939</span>,
-    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
-    gist    = <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
+  <span class='fu'>update_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>3281939</span>,
+    body    <span class='op'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    gist    <span class='op'>=</span> <span class='st'>"8e5be270de9a88168372293a813543f9"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Update an issue comment</span>
-  <span class='fu'>update_comment</span>(
-    comment = <span class='fl'>622980929</span>,
-    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
-    type    = <span class='st'>"issue"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>update_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>622980929</span>,
+    body    <span class='op'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    type    <span class='op'>=</span> <span class='st'>"issue"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Update an pull request comment</span>
-  <span class='fu'>update_comment</span>(
-    comment = <span class='fl'>418979473</span>,
-    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
-    type    = <span class='st'>"pull_request"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>update_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>418979473</span>,
+    body    <span class='op'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    type    <span class='op'>=</span> <span class='st'>"pull_request"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Update a commit comment</span>
-  <span class='fu'>update_comment</span>(
-    comment = <span class='fl'>38899533</span>,
-    body    = <span class='st'>"This comment has been updated by update_comment()"</span>,
-    type    = <span class='st'>"commit"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>update_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>38899533</span>,
+    body    <span class='op'>=</span> <span class='st'>"This comment has been updated by update_comment()"</span>,
+    type    <span class='op'>=</span> <span class='st'>"commit"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -232,7 +236,7 @@ request or commit comments).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

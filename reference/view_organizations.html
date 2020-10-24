@@ -40,10 +40,11 @@
 
 
 <meta property="og:title" content="View organizations in GitHub — view_organizations" />
-<meta property="og:description" content="view_organizations() summarises organizations in a table with the properties as columns
-and a row for each organization. view_organization() returns a list of all properties for
-a single organization. browse_organization() opens the web page for the organization in
-the default browser." />
+<meta property="og:description" content="view_organizations() summarises organizations in a table with the
+properties as columns and a row for each organization. view_organization()
+returns a list of all properties for a single organization.
+browse_organization() opens the web page for the organization in the
+default browser." />
 
 
 
@@ -75,7 +76,7 @@ the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,25 +121,26 @@ the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_organizations()</code> summarises organizations in a table with the properties as columns
-and a row for each organization. <code>view_organization()</code> returns a list of all properties for
-a single organization. <code>browse_organization()</code> opens the web page for the organization in
-the default browser.</p>
+    <p><code>view_organizations()</code> summarises organizations in a table with the
+properties as columns and a row for each organization. <code>view_organization()</code>
+returns a list of all properties for a single organization.
+<code>browse_organization()</code> opens the web page for the organization in the
+default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_organizations</span>(<span class='kw'>user</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_organizations</span><span class='op'>(</span><span class='va'>user</span>, n_max <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>view_organization</span>(<span class='kw'>org</span>, <span class='kw'>...</span>)
+<span class='fu'>view_organization</span><span class='op'>(</span><span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>browse_organization</span>(<span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_organization</span><span class='op'>(</span><span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>user</th>
-      <td><p>(string, optional) The login of the user. If <code>NULL</code> the authenticated user is
-used.</p></td>
+      <td><p>(string, optional) The login of the user. If <code>NULL</code> the
+authenticated user is used.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -157,9 +159,9 @@ used.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>view_organizations()</code> returns a tibble of organization properties.
-<code>view_organization()</code> returns a list of properties for a single organization.
-<code>browse_organization()</code> opens the default browser on the organization's page and returns
-the URL.</p>
+<code>view_organization()</code> returns a list of properties for a single
+organization. <code>browse_organization()</code> opens the default browser on the
+organization's page and returns the URL.</p>
 <p><strong>Organization Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the organization.</p></li>
 <li><p><strong>login</strong>: The login name of the organization.</p></li>
@@ -174,7 +176,8 @@ the URL.</p>
 <li><p><strong>email</strong>: The email address for the organization.</p></li>
 <li><p><strong>is_verified</strong>: Whether the organization has been verified.</p></li>
 <li><p><strong>has_organization_projects</strong>: Whether the organization can have projects.</p></li>
-<li><p><strong>has_repository_projects</strong>: Whether the organization's repositories can have projects.</p></li>
+<li><p><strong>has_repository_projects</strong>: Whether the organization's repositories can
+have projects.</p></li>
 <li><p><strong>public_repos</strong>: The number of public repositories.</p></li>
 <li><p><strong>public_gists</strong>: The number of public gists.</p></li>
 <li><p><strong>html_url</strong>: The address for the organization's GitHub web page.</p></li>
@@ -189,41 +192,44 @@ the URL.</p>
 <li><p><strong>plan_space</strong>: The total space allocated for the plan.</p></li>
 <li><p><strong>plan_private_repos</strong>: The number of private repositories for the plan.</p></li>
 <li><p><strong>default_repository_permission</strong>: The default access for new repositories.</p></li>
-<li><p><strong>two_factor_requirement_enabled</strong>: Whether members require two-factor authentication.</p></li>
-<li><p><strong>members_can_create_repositories</strong>: Whether members can create repositories.</p></li>
+<li><p><strong>two_factor_requirement_enabled</strong>: Whether members require two-factor
+authentication.</p></li>
+<li><p><strong>members_can_create_repositories</strong>: Whether members can create
+repositories.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the organizations a user is a member of by specifying the user login,
-or the authenticated user if it is set to <code>NULL</code>. If a user is not supplied the first
-<code>n_max</code> organizations of GitHub are returned.</p>
+    <p>You can summarise all the organizations a user is a member of by specifying
+the user login, or the authenticated user if it is set to <code>NULL</code>. If a user
+is not supplied the first <code>n_max</code> organizations of GitHub are returned.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/orgs/#list-user-organizations'>https://developer.github.com/v3/orgs/#list-user-organizations</a></p></li>
-<li><p><a href='https://developer.github.com/v3/orgs/#list-your-organizations'>https://developer.github.com/v3/orgs/#list-your-organizations</a></p></li>
-<li><p><a href='https://developer.github.com/v3/orgs/#list-all-organizations'>https://developer.github.com/v3/orgs/#list-all-organizations</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations-for-a-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations-for-a-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations-for-the-authenticated-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations-for-the-authenticated-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#list-organizations</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#get-an-organization'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#get-an-organization</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View organizations a user is a member of</span>
-  <span class='fu'>view_organizations</span>(user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_organizations</span><span class='op'>(</span>user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># View organizations the authenticated user is a member of</span>
-  <span class='fu'>view_organizations</span>(user = <span class='kw'>NULL</span>)
+  <span class='fu'>view_organizations</span><span class='op'>(</span>user <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
   <span class='co'># View all organizations</span>
-  <span class='fu'>view_organizations</span>()
+  <span class='fu'>view_organizations</span><span class='op'>(</span><span class='op'>)</span>
 
   <span class='co'># View a single organization in more detail.</span>
-  <span class='fu'>view_organization</span>(<span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_organization</span><span class='op'>(</span><span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># Browse a organization's GitHub page</span>
-  <span class='fu'>browse_organization</span>(<span class='st'>"HairyCoos"</span>)
+  <span class='fu'>browse_organization</span><span class='op'>(</span><span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -241,7 +247,7 @@ or the authenticated user if it is set to <code>NULL</code>. If a user is not su
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

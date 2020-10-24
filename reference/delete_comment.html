@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Delete a comment from GitHub — delete_comment" />
-<meta property="og:description" content="This function deletes a comment from a gist, issue, pull request or commit, as long as you
-have appropriate permissions. Care should be taken as it will not be recoverable." />
+<meta property="og:description" content="This function deletes a comment from a gist, issue, pull request or commit,
+as long as you have appropriate permissions. Care should be taken as it will
+not be recoverable." />
 
 
 
@@ -73,7 +74,7 @@ have appropriate permissions. Care should be taken as it will not be recoverable
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,11 +119,12 @@ have appropriate permissions. Care should be taken as it will not be recoverable
     </div>
 
     <div class="ref-description">
-    <p>This function deletes a comment from a gist, issue, pull request or commit, as long as you
-have appropriate permissions. Care should be taken as it will not be recoverable.</p>
+    <p>This function deletes a comment from a gist, issue, pull request or commit,
+as long as you have appropriate permissions. Care should be taken as it will
+not be recoverable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_comment</span>(<span class='kw'>comment</span>, <span class='kw'>gist</span>, <span class='kw'>repo</span>, type = <span class='st'>"gist"</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_comment</span><span class='op'>(</span><span class='va'>comment</span>, <span class='va'>gist</span>, <span class='va'>repo</span>, type <span class='op'>=</span> <span class='st'>"gist"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,8 +143,8 @@ have appropriate permissions. Care should be taken as it will not be recoverable
     </tr>
     <tr>
       <th>type</th>
-      <td><p>(string, optional) Whether the comment is for a <code>"gist"</code>, <code>"issue"</code>,
-<code>"pull_request"</code> or <code>"commit"</code>. Default: <code>"gist"</code>.</p></td>
+      <td><p>(string, optional) Whether the comment is for a <code>"gist"</code>,
+<code>"issue"</code>, <code>"pull_request"</code> or <code>"commit"</code>. Default: <code>"gist"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -156,38 +158,44 @@ have appropriate permissions. Care should be taken as it will not be recoverable
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/gists/comments/#delete-a-comment'>https://developer.github.com/v3/gists/comments/#delete-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/issues/comments/#delete-a-comment'>https://developer.github.com/v3/issues/comments/#delete-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/pulls/comments/#delete-a-comment'>https://developer.github.com/v3/pulls/comments/#delete-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/comments/#delete-a-commit-comment'>https://developer.github.com/v3/repos/comments/#delete-a-commit-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#delete-a-gist-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#delete-a-gist-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#delete-an-issue-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#delete-an-issue-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#delete-a-review-comment-for-a-pull-request'>https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#delete-a-review-comment-for-a-pull-request</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#delete-a-commit-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#delete-a-commit-comment</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Delete a gist comment</span>
-  <span class='fu'>delete_comment</span>(<span class='kw'>gist_comment_id</span>, gist = <span class='st'>"8e5be270de9a88168372293a813543f9"</span>)
+  <span class='fu'>delete_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>622980929</span>,
+    gist    <span class='op'>=</span> <span class='st'>"8e5be270de9a88168372293a813543f9"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Delete a issue comment</span>
-  <span class='fu'>delete_comment</span>(
-    comment = <span class='fl'>622980929</span>,
-    type    = <span class='st'>"issue"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>delete_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>622980929</span>,
+    type    <span class='op'>=</span> <span class='st'>"issue"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Delete a pull request comment</span>
-  <span class='fu'>delete_comment</span>(
-    comment = <span class='fl'>418979473</span>,
-    type    = <span class='st'>"pull_request"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>delete_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>418979473</span>,
+    type    <span class='op'>=</span> <span class='st'>"pull_request"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Delete a commit comment</span>
-  <span class='fu'>delete_comment</span>(
-    comment = <span class='fl'>38899533</span>,
-    type    = <span class='st'>"commit"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>delete_comment</span><span class='op'>(</span>
+    comment <span class='op'>=</span> <span class='fl'>38899533</span>,
+    type    <span class='op'>=</span> <span class='st'>"commit"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -205,7 +213,7 @@ have appropriate permissions. Care should be taken as it will not be recoverable
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

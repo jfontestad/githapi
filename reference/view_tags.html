@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="View tags within a repository — view_tags" />
-<meta property="og:description" content="view_tags() summarises tags in a table with the properties as columns and a row for each
-tag in the repository. view_tag() returns a list of all properties for a single tag." />
+<meta property="og:description" content="view_tags() summarises tags in a table with the properties as columns and a
+row for each tag in the repository. view_tag() returns a list of all
+properties for a single tag." />
 
 
 
@@ -73,7 +74,7 @@ tag in the repository. view_tag() returns a list of all properties for a single 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,13 +119,14 @@ tag in the repository. view_tag() returns a list of all properties for a single 
     </div>
 
     <div class="ref-description">
-    <p><code>view_tags()</code> summarises tags in a table with the properties as columns and a row for each
-tag in the repository. <code>view_tag()</code> returns a list of all properties for a single tag.</p>
+    <p><code>view_tags()</code> summarises tags in a table with the properties as columns and a
+row for each tag in the repository. <code>view_tag()</code> returns a list of all
+properties for a single tag.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_tags</span>(<span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_tags</span><span class='op'>(</span><span class='va'>repo</span>, n_max <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>view_tag</span>(<span class='kw'>tag</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>view_tag</span><span class='op'>(</span><span class='va'>tag</span>, <span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,8 +151,8 @@ tag in the repository. <code>view_tag()</code> returns a list of all properties 
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_tags()</code> returns a tibble of tag properties. <code>view_tag()</code> returns a list of
-properties for a single tag.</p>
+    <p><code>view_tags()</code> returns a tibble of tag properties. <code>view_tag()</code>
+returns a list of properties for a single tag.</p>
 <p><strong>Tag Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the tag.</p></li>
 <li><p><strong>ref</strong>: The full Git reference of the tag.</p></li>
@@ -160,21 +162,21 @@ properties for a single tag.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/git/refs/#list-matching-references'>https://developer.github.com/v3/git/refs/#list-matching-references</a></p></li>
-<li><p><a href='https://developer.github.com/v3/git/refs/#get-a-single-reference'>https://developer.github.com/v3/git/refs/#get-a-single-reference</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/git#list-matching-references'>https://docs.github.com/en/free-pro-team@latest/rest/reference/git#list-matching-references</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-reference'>https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-reference</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View all tags in a repository</span>
-  <span class='fu'>view_tags</span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_tags</span><span class='op'>(</span><span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># View a single tag</span>
-  <span class='fu'>view_tag</span>(<span class='st'>"new-tag"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_tag</span><span class='op'>(</span><span class='st'>"new-tag"</span>, <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -192,7 +194,7 @@ properties for a single tag.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Add or remove labels from an issue or pull request — add_labels" />
-<meta property="og:description" content="add_labels() adds labels to an existing issue or pull request within a GitHub repository.
-remove_labels() removes labels from an issue or pull request." />
+<meta property="og:description" content="add_labels() adds labels to an existing issue or pull request within a
+GitHub repository. remove_labels() removes labels from an issue or pull
+request." />
 
 
 
@@ -73,7 +74,7 @@ remove_labels() removes labels from an issue or pull request." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,13 +119,14 @@ remove_labels() removes labels from an issue or pull request." />
     </div>
 
     <div class="ref-description">
-    <p><code>add_labels()</code> adds labels to an existing issue or pull request within a GitHub repository.
-<code>remove_labels()</code> removes labels from an issue or pull request.</p>
+    <p><code>add_labels()</code> adds labels to an existing issue or pull request within a
+GitHub repository. <code>remove_labels()</code> removes labels from an issue or pull
+request.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_labels</span>(<span class='kw'>labels</span>, <span class='kw'>issue</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>add_labels</span><span class='op'>(</span><span class='va'>labels</span>, <span class='va'>issue</span>, <span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>remove_labels</span>(<span class='kw'>labels</span>, <span class='kw'>issue</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>remove_labels</span><span class='op'>(</span><span class='va'>labels</span>, <span class='va'>issue</span>, <span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,8 +151,8 @@ remove_labels() removes labels from an issue or pull request." />
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>add_labels()</code> returns a tibble of the added labels properties. <code>remove_labels()</code>
-returns a tibble of the remaining labels properties.</p>
+    <p><code>add_labels()</code> returns a tibble of the added labels properties.
+<code>remove_labels()</code> returns a tibble of the remaining labels properties.</p>
 <p><strong>Label Properties:</strong></p><ul>
 <li><p><strong>name</strong>: The name of the label.</p></li>
 <li><p><strong>color</strong>: The color of the label in hexidecimal code.</p></li>
@@ -160,25 +162,27 @@ returns a tibble of the remaining labels properties.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue'>https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue</a></p></li>
-<li><p><a href='https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue'>https://developer.github.com/v3/issues/labels/#remove-a-label-from-an-issue</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#add-labels-to-an-issue'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#add-labels-to-an-issue</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#remove-a-label-from-an-issue'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#remove-a-label-from-an-issue</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-  <span class='fu'>add_labels</span>(
-    labels = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"feature"</span>, <span class='st'>"new-label"</span>),
-    issue  = <span class='st'>"Test issue"</span>,
-    repo   = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>add_labels</span><span class='op'>(</span>
+    labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"feature"</span>, <span class='st'>"new-label"</span><span class='op'>)</span>,
+    issue  <span class='op'>=</span> <span class='st'>"Test issue"</span>,
+    repo   <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
-  <span class='fu'>remove_labels</span>(
-    labels = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"feature"</span>, <span class='st'>"new-label"</span>),
-    issue  = <span class='st'>"Test issue"</span>,
-    repo   = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>remove_labels</span><span class='op'>(</span>
+    labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"feature"</span>, <span class='st'>"new-label"</span><span class='op'>)</span>,
+    issue  <span class='op'>=</span> <span class='st'>"Test issue"</span>,
+    repo   <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -196,7 +200,7 @@ returns a tibble of the remaining labels properties.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

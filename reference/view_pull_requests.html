@@ -40,10 +40,11 @@
 
 
 <meta property="og:title" content="View pull requests within a repository — view_pull_requests" />
-<meta property="og:description" content="view_pull_requests() summarises pull requests in a table with the properties as columns
-and a row for each pull request in the repository. view_pull_request() returns a list of
-all properties for a single pull request. browse_pull_request() opens the web page for
-the pull request in the default browser." />
+<meta property="og:description" content="view_pull_requests() summarises pull requests in a table with the
+properties as columns and a row for each pull request in the repository.
+view_pull_request() returns a list of all properties for a single pull
+request. browse_pull_request() opens the web page for the pull request in
+the default browser." />
 
 
 
@@ -75,7 +76,7 @@ the pull request in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,26 +121,27 @@ the pull request in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_pull_requests()</code> summarises pull requests in a table with the properties as columns
-and a row for each pull request in the repository. <code>view_pull_request()</code> returns a list of
-all properties for a single pull request. <code>browse_pull_request()</code> opens the web page for
-the pull request in the default browser.</p>
+    <p><code>view_pull_requests()</code> summarises pull requests in a table with the
+properties as columns and a row for each pull request in the repository.
+<code>view_pull_request()</code> returns a list of all properties for a single pull
+request. <code>browse_pull_request()</code> opens the web page for the pull request in
+the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_pull_requests</span>(
-  <span class='kw'>repo</span>,
-  <span class='kw'>head</span>,
-  <span class='kw'>base</span>,
-  state = <span class='st'>"open"</span>,
-  sort = <span class='st'>"created"</span>,
-  direction = <span class='st'>"desc"</span>,
-  n_max = <span class='fl'>1000</span>,
-  <span class='kw'>...</span>
-)
+    <pre class="usage"><span class='fu'>view_pull_requests</span><span class='op'>(</span>
+  <span class='va'>repo</span>,
+  <span class='va'>head</span>,
+  <span class='va'>base</span>,
+  state <span class='op'>=</span> <span class='st'>"open"</span>,
+  sort <span class='op'>=</span> <span class='st'>"created"</span>,
+  direction <span class='op'>=</span> <span class='st'>"desc"</span>,
+  n_max <span class='op'>=</span> <span class='fl'>1000</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>view_pull_request</span>(<span class='kw'>pull_request</span>, <span class='kw'>repo</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+<span class='fu'>view_pull_request</span><span class='op'>(</span><span class='va'>pull_request</span>, <span class='va'>repo</span>, n_max <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>browse_pull_request</span>(<span class='kw'>pull_request</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_pull_request</span><span class='op'>(</span><span class='va'>pull_request</span>, <span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,8 +152,8 @@ the pull request in the default browser.</p>
     </tr>
     <tr>
       <th>head</th>
-      <td><p>(string) The branch to merge in. If it is not in the specified <code>repo</code> then the
-owner must prefix the branch name, e.g. <code>"owner:branch"</code>.</p></td>
+      <td><p>(string) The branch to merge in. If it is not in the specified
+<code>repo</code> then the owner must prefix the branch name, e.g. <code>"owner:branch"</code>.</p></td>
     </tr>
     <tr>
       <th>base</th>
@@ -159,19 +161,20 @@ owner must prefix the branch name, e.g. <code>"owner:branch"</code>.</p></td>
     </tr>
     <tr>
       <th>state</th>
-      <td><p>(string, optional) The state of the pull requests to return. Can be either
-<code>"open"</code>, <code>"closed"</code>, or <code>"all"</code>. Default: <code>"open"</code>.</p></td>
+      <td><p>(string, optional) The state of the pull requests to return. Can
+be either <code>"open"</code>, <code>"closed"</code>, or <code>"all"</code>. Default: <code>"open"</code>.</p></td>
     </tr>
     <tr>
       <th>sort</th>
-      <td><p>(string, optional) The property to order the returned pull requests by. Can
-be either <code>"created"</code>, <code>"updated"</code>, <code>"popularity"</code> (comment count) or <code>"long-running"</code>
-(age, filtering by pulls updated in the last month). Default: <code>"created"</code>.</p></td>
+      <td><p>(string, optional) The property to order the returned pull
+requests by. Can be either <code>"created"</code>, <code>"updated"</code>, <code>"popularity"</code>
+(comment count) or <code>"long-running"</code> (age, filtering by pulls updated in the
+last month). Default: <code>"created"</code>.</p></td>
     </tr>
     <tr>
       <th>direction</th>
-      <td><p>(string, optional) The direction of the sort. Can be either <code>"asc"</code> or
-<code>"desc"</code>. Default: <code>"desc"</code>.</p></td>
+      <td><p>(string, optional) The direction of the sort. Can be either
+<code>"asc"</code> or <code>"desc"</code>. Default: <code>"desc"</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -183,16 +186,17 @@ be either <code>"created"</code>, <code>"updated"</code>, <code>"popularity"</co
     </tr>
     <tr>
       <th>pull_request</th>
-      <td><p>(string or character) The number or title of the pull request.</p></td>
+      <td><p>(string or character) The number or title of the pull
+request.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>view_pull_requests()</code> returns a tibble of pull request properties.
-<code>view_pull_request()</code> returns a list of properties for a single pull request.
-<code>browse_pull_request()</code> opens the default browser on the pull request's page and returns
-the URL.</p>
+<code>view_pull_request()</code> returns a list of properties for a single pull
+request. <code>browse_pull_request()</code> opens the default browser on the pull
+request's page and returns the URL.</p>
 <p><strong>Pull Request Properties:</strong></p><ul>
 <li><p><strong>number</strong>: The number assigned to the pull request.</p></li>
 <li><p><strong>title</strong>: The title of the pull request.</p></li>
@@ -202,7 +206,8 @@ the URL.</p>
 <li><p><strong>head_repo</strong>: The repository containing the branch to merge in.</p></li>
 <li><p><strong>base_sha</strong>: The SHA of the commit to merge onto.</p></li>
 <li><p><strong>base_ref</strong>: The reference, or branch, to merge onto.</p></li>
-<li><p><strong>merge_sha</strong>: The SHA of the merge commit, if the merge has been completed.</p></li>
+<li><p><strong>merge_sha</strong>: The SHA of the merge commit, if the merge has been
+completed.</p></li>
 <li><p><strong>assignees</strong>: The users assigned to the pull request.</p></li>
 <li><p><strong>reviewers</strong>: The users reviewing the pull request.</p></li>
 <li><p><strong>labels</strong>: The labels attached to the pull request.</p></li>
@@ -255,37 +260,42 @@ the URL.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can filter the pull requests by the head and base branches (the branch to merge in and
-the branch to merge into) or the state (whether they are <code>"open"</code> or <code>"closed"</code>). You can
-also order the results with <code>sort</code> and <code>direction</code>.</p>
+    <p>You can filter the pull requests by the head and base branches (the branch to
+merge in and the branch to merge into) or the state (whether they are
+<code>"open"</code> or <code>"closed"</code>). You can also order the results with <code>sort</code> and
+<code>direction</code>.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/pulls/#list-pull-requests'>https://developer.github.com/v3/pulls/#list-pull-requests</a></p></li>
-<li><p><a href='https://developer.github.com/v3/pulls/#get-a-single-pull-request'>https://developer.github.com/v3/pulls/#get-a-single-pull-request</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#list-pull-requests'>https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#list-pull-requests</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#get-a-pull-request'>https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#get-a-pull-request</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View all open pull requests</span>
-  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_pull_requests</span><span class='op'>(</span><span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># View all closed pull requests</span>
-  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
+  <span class='fu'>view_pull_requests</span><span class='op'>(</span><span class='st'>"ChadGoymer/githapi"</span>, state <span class='op'>=</span> <span class='st'>"closed"</span><span class='op'>)</span>
 
   <span class='co'># View all pull requests for the "main" branch</span>
-  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>, base = <span class='st'>"main"</span>)
+  <span class='fu'>view_pull_requests</span><span class='op'>(</span><span class='st'>"ChadGoymer/githapi"</span>, base <span class='op'>=</span> <span class='st'>"main"</span><span class='op'>)</span>
 
   <span class='co'># View pull requests, sorted by the most recently updated</span>
-  <span class='fu'>view_pull_requests</span>(<span class='st'>"ChadGoymer/githapi"</span>, sort = <span class='st'>"updated"</span>, direction = <span class='st'>"desc"</span>)
+  <span class='fu'>view_pull_requests</span><span class='op'>(</span>
+    repo      <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    sort      <span class='op'>=</span> <span class='st'>"updated"</span>,
+    direction <span class='op'>=</span> <span class='st'>"desc"</span>
+  <span class='op'>)</span>
 
   <span class='co'># View single pull request</span>
-  <span class='fu'>view_pull_request</span>(<span class='st'>"test pull request"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_pull_request</span><span class='op'>(</span><span class='st'>"test pull request"</span>, repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># Open a pull request's page in a browser</span>
-  <span class='fu'>browse_pull_request</span>(<span class='st'>"test pull request"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>browse_pull_request</span><span class='op'>(</span><span class='st'>"test pull request"</span>, repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -303,7 +313,7 @@ also order the results with <code>sort</code> and <code>direction</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Update a card in a GitHub project — update_card" />
-<meta property="og:description" content="update_card() can be used to change a card's note in a project in GitHub or archive it.
-move_card() can be used to reorder the cards or move them to other columns." />
+<meta property="og:description" content="update_card() can be used to change a card's note in a project in GitHub or
+archive it. move_card() can be used to reorder the cards or move them to
+other columns." />
 
 
 
@@ -73,7 +74,7 @@ move_card() can be used to reorder the cards or move them to other columns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,13 +119,14 @@ move_card() can be used to reorder the cards or move them to other columns." />
     </div>
 
     <div class="ref-description">
-    <p><code>update_card()</code> can be used to change a card's note in a project in GitHub or archive it.
-<code>move_card()</code> can be used to reorder the cards or move them to other columns.</p>
+    <p><code>update_card()</code> can be used to change a card's note in a project in GitHub or
+archive it. <code>move_card()</code> can be used to reorder the cards or move them to
+other columns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_card</span>(<span class='kw'>card</span>, <span class='kw'>note</span>, <span class='kw'>archived</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>update_card</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>note</span>, <span class='va'>archived</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>move_card</span>(<span class='kw'>card</span>, <span class='kw'>position</span>, <span class='kw'>after</span>, <span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>move_card</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>position</span>, <span class='va'>after</span>, <span class='va'>column</span>, <span class='va'>project</span>, <span class='va'>repo</span>, <span class='va'>user</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,20 +153,23 @@ move_card() can be used to reorder the cards or move them to other columns." />
     </tr>
     <tr>
       <th>after</th>
-      <td><p>(integer, optional) An ID of another card to place this one after.</p></td>
+      <td><p>(integer, optional) An ID of another card to place this one
+after.</p></td>
     </tr>
     <tr>
       <th>column</th>
-      <td><p>(integer or string, optional) Either the ID or name of the column.</p></td>
+      <td><p>(integer or string, optional) Either the ID or name of the
+column.</p></td>
     </tr>
     <tr>
       <th>project</th>
-      <td><p>(integer or string) Either the project number or name. Only required
-if moving the column.</p></td>
+      <td><p>(integer or string) Either the project number or name. Only
+required if moving the column.</p></td>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format:
+<code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -191,40 +196,43 @@ if moving the column.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can update a card associated with either a repository, user or organization, by
-supplying them as an input, as long as you have appropriate permissions.</p>
-<p>You can move a card by either specifying the position, either <code>"top"</code> or <code>"bottom"</code>,
-by specifying another card to place it after, or by specifying a column to move it to.</p>
+    <p>You can update a card associated with either a repository, user or
+organization, by supplying them as an input, as long as you have appropriate
+permissions.</p>
+<p>You can move a card by either specifying the position, either <code>"top"</code> or
+<code>"bottom"</code>, by specifying another card to place it after, or by specifying a
+column to move it to.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/projects/cards/#update-a-project-card'>https://developer.github.com/v3/projects/cards/#update-a-project-card</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/cards/#move-a-project-card'>https://developer.github.com/v3/projects/cards/#move-a-project-card</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#update-an-existing-project-card'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#update-an-existing-project-card</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#move-a-project-card'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#move-a-project-card</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Update a note in a card</span>
-  <span class='fu'>update_card</span>(card = <span class='fl'>123456</span>, note = <span class='st'>"This is an updated note"</span>)
+  <span class='fu'>update_card</span><span class='op'>(</span>card <span class='op'>=</span> <span class='fl'>123456</span>, note <span class='op'>=</span> <span class='st'>"This is an updated note"</span><span class='op'>)</span>
 
   <span class='co'># Archive a card</span>
-  <span class='fu'>update_card</span>(card = <span class='fl'>654321</span>, archived = <span class='fl'>TRUE</span>)
+  <span class='fu'>update_card</span><span class='op'>(</span>card <span class='op'>=</span> <span class='fl'>654321</span>, archived <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
   <span class='co'># Move a card to the top of a column</span>
-  <span class='fu'>move_card</span>(card = <span class='fl'>123456</span>, position = <span class='st'>"top"</span>)
+  <span class='fu'>move_card</span><span class='op'>(</span>card <span class='op'>=</span> <span class='fl'>123456</span>, position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span>
 
   <span class='co'># Move a card after another card</span>
-  <span class='fu'>move_card</span>(card  = <span class='fl'>123456</span>, after = <span class='fl'>654321</span>)
+  <span class='fu'>move_card</span><span class='op'>(</span>card  <span class='op'>=</span> <span class='fl'>123456</span>, after <span class='op'>=</span> <span class='fl'>654321</span><span class='op'>)</span>
 
   <span class='co'># Move card to another column</span>
-  <span class='fu'>move_card</span>(
-    card     = <span class='fl'>123456</span>,
-    position = <span class='st'>"top"</span>,
-    column   = <span class='st'>"Test column 2"</span>,
-    project  = <span class='st'>"Test project"</span>,
-    repo     = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>move_card</span><span class='op'>(</span>
+    card     <span class='op'>=</span> <span class='fl'>123456</span>,
+    position <span class='op'>=</span> <span class='st'>"top"</span>,
+    column   <span class='op'>=</span> <span class='st'>"Test column 2"</span>,
+    project  <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    repo     <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -242,7 +250,7 @@ by specifying another card to place it after, or by specifying a column to move 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Update membership of an organization or team — update_membership" />
-<meta property="og:description" content="This function can be used to invite a user into an organization or team, or update their
-role within the organization or team." />
+<meta property="og:description" content="This function can be used to invite a user into an organization or team, or
+update their role within the organization or team." />
 
 
 
@@ -73,7 +73,7 @@ role within the organization or team." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,11 +118,11 @@ role within the organization or team." />
     </div>
 
     <div class="ref-description">
-    <p>This function can be used to invite a user into an organization or team, or update their
-role within the organization or team.</p>
+    <p>This function can be used to invite a user into an organization or team, or
+update their role within the organization or team.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_membership</span>(<span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>team</span>, <span class='kw'>role</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_membership</span><span class='op'>(</span><span class='va'>user</span>, <span class='va'>org</span>, <span class='va'>team</span>, <span class='va'>role</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,8 +141,9 @@ role within the organization or team.</p>
     </tr>
     <tr>
       <th>role</th>
-      <td><p>(string, optional) The role to give the user. For an organization this is
-either <code>"member"</code> or <code>"admin"</code>, for a team it is either <code>"member"</code> or <code>"maintainer"</code>.</p></td>
+      <td><p>(string, optional) The role to give the user. For an organization
+this is either <code>"member"</code> or <code>"admin"</code>, for a team it is either <code>"member"</code>
+or <code>"maintainer"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -157,37 +158,42 @@ either <code>"member"</code> or <code>"admin"</code>, for a team it is either <c
 <li><p><strong>user</strong>: The user login.</p></li>
 <li><p><strong>organization</strong>: The organization login.</p></li>
 <li><p><strong>team</strong>: The team name (team membership only).</p></li>
-<li><p><strong>role</strong>: The role of the user - for organizations it is either <code>"member"</code> or <code>"admin"</code>,
-for teams it is either <code>"member"</code> or <code>"maintainer"</code>.</p></li>
+<li><p><strong>role</strong>: The role of the user - for organizations it is either <code>"member"</code>
+or <code>"admin"</code>, for teams it is either <code>"member"</code> or <code>"maintainer"</code>.</p></li>
 <li><p><strong>state</strong>: The state of the membership - either <code>"active"</code> or <code>"pending"</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: you can only invite or update a user if the authenticate user is an organization
-"owner" or a team "maintainer".</p>
+    <p>Note: you can only invite or update a user if the authenticate user is an
+organization "owner" or a team "maintainer".</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/orgs/members/#add-or-update-organization-membership'>https://developer.github.com/v3/orgs/members/#add-or-update-organization-membership</a></p></li>
-<li><p><a href='https://developer.github.com/v3/teams/members/#add-or-update-team-membership'>https://developer.github.com/v3/teams/members/#add-or-update-team-membership</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#set-organization-membership-for-a-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#set-organization-membership-for-a-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#add-or-update-team-membership-for-a-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#add-or-update-team-membership-for-a-user</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Invite a new user into an organization</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>update_membership</span><span class='op'>(</span><span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># Update a user's role in an organization</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, role = <span class='st'>"admin"</span>)
+  <span class='fu'>update_membership</span><span class='op'>(</span><span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, role <span class='op'>=</span> <span class='st'>"admin"</span><span class='op'>)</span>
 
   <span class='co'># Invite a new user into a team</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>)
+  <span class='fu'>update_membership</span><span class='op'>(</span><span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span><span class='op'>)</span>
 
   <span class='co'># Update a user's role in a team</span>
-  <span class='fu'>update_membership</span>(<span class='st'>"ChadGoymer2"</span>, <span class='st'>"HairyCoos"</span>, <span class='st'>"HeadCoos"</span>, role = <span class='st'>"maintainer"</span>)
+  <span class='fu'>update_membership</span><span class='op'>(</span>
+    user <span class='op'>=</span> <span class='st'>"ChadGoymer2"</span>,
+    org  <span class='op'>=</span> <span class='st'>"HairyCoos"</span>,
+    team <span class='op'>=</span> <span class='st'>"HeadCoos"</span>,
+    role <span class='op'>=</span> <span class='st'>"maintainer"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -205,7 +211,7 @@ for teams it is either <code>"member"</code> or <code>"maintainer"</code>.</p></
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

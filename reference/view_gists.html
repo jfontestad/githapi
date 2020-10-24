@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="View gists in GitHub — view_gists" />
-<meta property="og:description" content="view_gists() summarises a user's gists in a table with the properties as columns and a
-row for each gist. view_gist() returns a list of all properties for a single gist.
-browse_gist() opens the web page for the gist in the default browser." />
+<meta property="og:description" content="view_gists() summarises a user's gists in a table with the properties as
+columns and a row for each gist. view_gist() returns a list of all
+properties for a single gist. browse_gist() opens the web page for the gist
+in the default browser." />
 
 
 
@@ -74,7 +75,7 @@ browse_gist() opens the web page for the gist in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,29 +120,30 @@ browse_gist() opens the web page for the gist in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_gists()</code> summarises a user's gists in a table with the properties as columns and a
-row for each gist. <code>view_gist()</code> returns a list of all properties for a single gist.
-<code>browse_gist()</code> opens the web page for the gist in the default browser.</p>
+    <p><code>view_gists()</code> summarises a user's gists in a table with the properties as
+columns and a row for each gist. <code>view_gist()</code> returns a list of all
+properties for a single gist. <code>browse_gist()</code> opens the web page for the gist
+in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_gists</span>(<span class='kw'>user</span>, <span class='kw'>since</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_gists</span><span class='op'>(</span><span class='va'>user</span>, <span class='va'>since</span>, n_max <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>view_gist</span>(<span class='kw'>gist</span>, <span class='kw'>...</span>)
+<span class='fu'>view_gist</span><span class='op'>(</span><span class='va'>gist</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>browse_gist</span>(<span class='kw'>gist</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_gist</span><span class='op'>(</span><span class='va'>gist</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>user</th>
-      <td><p>(string, optional) The login of the user. If not specified the authenticated
-user is used.</p></td>
+      <td><p>(string, optional) The login of the user. If not specified the
+authenticated user is used.</p></td>
     </tr>
     <tr>
       <th>since</th>
-      <td><p>(string, optional) A date &amp; time to filter by. Must be in the format:
-<code>YYYY-MM-DD HH:MM:SS</code>.</p></td>
+      <td><p>(string, optional) A date &amp; time to filter by. Must be in the
+format: <code>YYYY-MM-DD HH:MM:SS</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -165,8 +167,8 @@ default browser on the gist page and returns the URL.</p>
 <p><strong>Gist Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id for the gist</p></li>
 <li><p><strong>description</strong>: The description of the gist</p></li>
-<li><p><strong>files</strong>: For <code>view_gists()</code> just the filenames are returned, for <code>view_gist()</code> a
-tibble of file properties is returned:</p><ul>
+<li><p><strong>files</strong>: For <code>view_gists()</code> just the filenames are returned, for
+<code>view_gist()</code> a tibble of file properties is returned:</p><ul>
 <li><p><strong>filename</strong>: The name of the file</p></li>
 <li><p><strong>type</strong>: The type of file</p></li>
 <li><p><strong>content</strong>: The file content</p></li>
@@ -182,31 +184,31 @@ tibble of file properties is returned:</p><ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>When viewing gists, if a user is not specified the gists for the authenticated user are
-returned.</p>
+    <p>When viewing gists, if a user is not specified the gists for the
+authenticated user are returned.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/gists/#list-gists-for-a-user'>https://developer.github.com/v3/gists/#list-gists-for-a-user</a></p></li>
-<li><p><a href='https://developer.github.com/v3/gists/#list-gists-for-the-authenticated-user'>https://developer.github.com/v3/gists/#list-gists-for-the-authenticated-user</a></p></li>
-<li><p><a href='https://developer.github.com/v3/gists/#get-a-gist'>https://developer.github.com/v3/gists/#get-a-gist</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#list-gists-for-a-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#list-gists-for-a-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#list-gists-for-the-authenticated-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#list-gists-for-the-authenticated-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#get-a-gist'>https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#get-a-gist</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View the authenticated user's gists</span>
-  <span class='fu'>view_gists</span>()
+  <span class='fu'>view_gists</span><span class='op'>(</span><span class='op'>)</span>
 
   <span class='co'># View a specific user's gists</span>
-  <span class='fu'>view_gists</span>(<span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_gists</span><span class='op'>(</span><span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># View a specific gist</span>
-  <span class='fu'>view_gist</span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
+  <span class='fu'>view_gist</span><span class='op'>(</span><span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span><span class='op'>)</span>
 
   <span class='co'># Browse a gist</span>
-  <span class='fu'>browse_gist</span>(<span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
+  <span class='fu'>browse_gist</span><span class='op'>(</span><span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -224,7 +226,7 @@ returned.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

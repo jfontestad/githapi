@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="Get multiple pages from the GitHub API — gh_page" />
-<meta property="og:description" content="This function is used when requesting a collection of entities. GitHub sets a maximum page
-size of 100, so if more are request multiple requests are made and the results are combined.
-Each page uses gh_request() to retrieve the contents." />
+<meta property="og:description" content="This function is used when requesting a collection of entities. GitHub sets a
+maximum page size of 100, so if more are request multiple requests are made
+and the results are combined. Each page uses gh_request() to retrieve the
+contents." />
 
 
 
@@ -74,7 +75,7 @@ Each page uses gh_request() to retrieve the contents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,20 +120,21 @@ Each page uses gh_request() to retrieve the contents." />
     </div>
 
     <div class="ref-description">
-    <p>This function is used when requesting a collection of entities. GitHub sets a maximum page
-size of 100, so if more are request multiple requests are made and the results are combined.
-Each page uses <code><a href='gh_request.html'>gh_request()</a></code> to retrieve the contents.</p>
+    <p>This function is used when requesting a collection of entities. GitHub sets a
+maximum page size of 100, so if more are request multiple requests are made
+and the results are combined. Each page uses <code><a href='gh_request.html'>gh_request()</a></code> to retrieve the
+contents.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_page</span>(
-  <span class='kw'>url</span>,
-  n_max = <span class='fl'>1000</span>,
-  headers = <span class='kw'>NULL</span>,
-  accept = <span class='st'>"application/vnd.github.v3+json"</span>,
-  token = <span class='fu'><a href='gh_token.html'>gh_token</a></span>(),
-  proxy = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>gh_page</span><span class='op'>(</span>
+  <span class='va'>url</span>,
+  n_max <span class='op'>=</span> <span class='fl'>1000</span>,
+  headers <span class='op'>=</span> <span class='cn'>NULL</span>,
+  accept <span class='op'>=</span> <span class='st'>"application/vnd.github.v3+json"</span>,
+  token <span class='op'>=</span> <span class='fu'><a href='gh_token.html'>gh_token</a></span><span class='op'>(</span><span class='op'>)</span>,
+  proxy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"github.proxy"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,23 +149,25 @@ Each page uses <code><a href='gh_request.html'>gh_request()</a></code> to retrie
     </tr>
     <tr>
       <th>headers</th>
-      <td><p>(character, optional) Headers to add to the request. Default: <code>NULL</code>.</p></td>
+      <td><p>(character, optional) Headers to add to the request. Default:
+<code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>accept</th>
-      <td><p>(string, optional) The mime format to accept when making the call. Default:
-"application/vnd.github.v3+json".</p></td>
+      <td><p>(string, optional) The mime format to accept when making the
+call. Default: <code>"application/vnd.github.v3+json"</code>.</p></td>
     </tr>
     <tr>
       <th>token</th>
-      <td><p>(string or Token, optional) An authorisation token to include with the
-request. If <code>NULL</code> the OAuth process is triggered. Default: <code>NULL</code>.</p></td>
+      <td><p>(string or Token, optional) An authorisation token to include
+with the request. If <code>NULL</code> the OAuth process is triggered. Default:
+<code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>proxy</th>
-      <td><p>(character, optional) The proxy server to use to connect to the github API.
-If <code>NULL</code> then no proxy is used. Can be set in the option <code>github.proxy</code> or the
-environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
+      <td><p>(character, optional) The proxy server to use to connect to the
+github API. If <code>NULL</code> then no proxy is used. Can be set in the option
+<code>github.proxy</code> or the environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -173,8 +177,8 @@ environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p><
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>github</code> list object consisting of the response, parsed into a list, with the
-attributes:</p><ul>
+    <p>A <code>github</code> list object consisting of the response, parsed into a
+list, with the attributes:</p><ul>
 <li><p><strong>url</strong>: The URLs the request was sent to</p></li>
 <li><p><strong>request</strong>: The type of HTTP request made</p></li>
 <li><p><strong>status</strong>: The HTTP status code returned</p></li>
@@ -183,19 +187,21 @@ attributes:</p><ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># First 20 users</span>
-  <span class='fu'>gh_page</span>(
-    url   = <span class='st'>"https://api.github.com/users"</span>,
-    n_max = <span class='fl'>20</span>)
+  <span class='fu'>gh_page</span><span class='op'>(</span>
+    url   <span class='op'>=</span> <span class='st'>"https://api.github.com/users"</span>,
+    n_max <span class='op'>=</span> <span class='fl'>20</span>
+  <span class='op'>)</span>
 
   <span class='co'># First 150 users (two pages)</span>
-  <span class='fu'>gh_page</span>(
-    url   = <span class='st'>"https://api.github.com/users"</span>,
-    n_max = <span class='fl'>150</span>)
+  <span class='fu'>gh_page</span><span class='op'>(</span>
+    url   <span class='op'>=</span> <span class='st'>"https://api.github.com/users"</span>,
+    n_max <span class='op'>=</span> <span class='fl'>150</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -213,7 +219,7 @@ attributes:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

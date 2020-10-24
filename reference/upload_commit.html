@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="Upload a directory of files and create a commit — upload_commit" />
-<meta property="og:description" content="This function uploads all the files in the directory (except those in the ignore
-argument) and creates a new commit on the specified branch. Note: the new commit is
-created with exactly the files uploaded, so if a file in the parent commit has not been
-uploaded it will be removed in the new commit." />
+<meta property="og:description" content="This function uploads all the files in the directory (except those in the
+ignore argument) and creates a new commit on the specified branch. Note:
+the new commit is created with exactly the files uploaded, so if a file in
+the parent commit has not been uploaded it will be removed in the new commit." />
 
 
 
@@ -75,7 +75,7 @@ uploaded it will be removed in the new commit." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,32 +120,33 @@ uploaded it will be removed in the new commit." />
     </div>
 
     <div class="ref-description">
-    <p>This function uploads all the files in the directory (except those in the <code>ignore</code>
-argument) and creates a new commit on the specified branch. Note: the new commit is
-created with exactly the files uploaded, so if a file in the parent commit has not been
-uploaded it will be removed in the new commit.</p>
+    <p>This function uploads all the files in the directory (except those in the
+<code>ignore</code> argument) and creates a new commit on the specified branch. Note:
+the new commit is created with exactly the files uploaded, so if a file in
+the parent commit has not been uploaded it will be removed in the new commit.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>upload_commit</span>(
-  <span class='kw'>path</span>,
-  <span class='kw'>branch</span>,
-  <span class='kw'>message</span>,
-  <span class='kw'>repo</span>,
-  <span class='kw'>author</span>,
-  <span class='kw'>committer</span>,
-  <span class='kw'>parents</span>,
-  ignore = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"\\.git"</span>, <span class='st'>"\\.Rproj\\.user"</span>, <span class='st'>"\\.Rhistory"</span>, <span class='st'>"\\.RData"</span>,
-    <span class='st'>"\\.Ruserdata"</span>),
-  force = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>upload_commit</span><span class='op'>(</span>
+  <span class='va'>path</span>,
+  <span class='va'>branch</span>,
+  <span class='va'>message</span>,
+  <span class='va'>repo</span>,
+  <span class='va'>author</span>,
+  <span class='va'>committer</span>,
+  <span class='va'>parents</span>,
+  ignore <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"\\.git"</span>, <span class='st'>"\\.Rproj\\.user"</span>, <span class='st'>"\\.Rhistory"</span>, <span class='st'>"\\.RData"</span>,
+    <span class='st'>"\\.Ruserdata"</span><span class='op'>)</span>,
+  force <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path</th>
-      <td><p>(string) The path to the directory to upload. It must be readable.</p></td>
+      <td><p>(string) The path to the directory to upload. It must be
+readable.</p></td>
     </tr>
     <tr>
       <th>branch</th>
@@ -161,29 +162,30 @@ uploaded it will be removed in the new commit.</p>
     </tr>
     <tr>
       <th>author</th>
-      <td><p>(list, optional) A the name and email address of the user who wrote the
-changes in the commit.</p></td>
+      <td><p>(list, optional) A the name and email address of the user who
+wrote the changes in the commit.</p></td>
     </tr>
     <tr>
       <th>committer</th>
-      <td><p>(list, optional) A the name and email address of the user who created
-the commit.</p></td>
+      <td><p>(list, optional) A the name and email address of the user
+who created the commit.</p></td>
     </tr>
     <tr>
       <th>parents</th>
-      <td><p>(character, optional) References for the commits to use as parents, can
-be either a SHA, branch or tag. If it is a branch then the head commit is used. See
-the details section for more information.</p></td>
+      <td><p>(character, optional) References for the commits to use as
+parents, can be either a SHA, branch or tag. If it is a branch then the
+head commit is used. See the details section for more information.</p></td>
     </tr>
     <tr>
       <th>ignore</th>
-      <td><p>(character, optional) The files to ignore in the directory. Default: <code>".git"</code>,
-<code>".Rproj.user"</code>, <code>".Rhistory"</code>, <code>".RData"</code> and <code>".Ruserdata"</code>.</p></td>
+      <td><p>(character, optional) The files to ignore in the directory.
+Default: <code>".git"</code>, <code>".Rproj.user"</code>, <code>".Rhistory"</code>, <code>".RData"</code> and
+<code>".Ruserdata"</code>.</p></td>
     </tr>
     <tr>
       <th>force</th>
-      <td><p>(boolean, optional) Whether to force the update if it is not a simple
-fast-forward. Default: <code>FALSE</code>.</p></td>
+      <td><p>(boolean, optional) Whether to force the update if it is not a
+simple fast-forward. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -208,76 +210,91 @@ fast-forward. Default: <code>FALSE</code>.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>author</code> and <code>committer</code> arguments are optional and if not supplied the current
-authenticated user is used. However, if you want to set them explicitly you must specify
-a named list with <code>name</code> and <code>email</code> as the elements (see examples).</p>
-<p>A commit may have none, one or two parents. If none are specified and the branch already
-exists, the head of the branch will be used as a parent. If the branch does not exist,
-an orphan commit is created without a parent. If one parent is specified the commit is
-added and the branch set to the new commit, if it is a simple fast-forward. If you want
-to set the branch to the new commit no matter what then set the <code>force</code> argument to
-<code>TRUE</code>. If two parents are specified then a merge commit is created.</p>
+    <p>The <code>author</code> and <code>committer</code> arguments are optional and if not supplied the
+current authenticated user is used. However, if you want to set them
+explicitly you must specify a named list with <code>name</code> and <code>email</code> as the
+elements (see examples).</p>
+<p>A commit may have none, one or two parents. If none are specified and the
+branch already exists, the head of the branch will be used as a parent. If
+the branch does not exist, an orphan commit is created without a parent. If
+one parent is specified the commit is added and the branch set to the new
+commit, if it is a simple fast-forward. If you want to set the branch to the
+new commit no matter what then set the <code>force</code> argument to <code>TRUE</code>. If two
+parents are specified then a merge commit is created.</p>
+<p>For more details see the GitHub API documentation:</p><ul>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-blob'>https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-blob</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-tree'>https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-tree</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-commit'>https://docs.github.com/en/free-pro-team@latest/rest/reference/git#create-a-commit</a></p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Add a commit to the main branch</span>
-  <span class='fu'>upload_commit</span>(
-    path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"main"</span>,
-    message = <span class='st'>"Commit to test upload_commit()"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>upload_commit</span><span class='op'>(</span>
+    path    <span class='op'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    branch  <span class='op'>=</span> <span class='st'>"main"</span>,
+    message <span class='op'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># override the author and committer</span>
-  <span class='fu'>upload_commit</span>(
-    path      = <span class='st'>"C:/files-to-upload"</span>,
-    branch    = <span class='st'>"main"</span>,
-    message   = <span class='st'>"Commit to test upload_commit()"</span>,
-    repo      = <span class='st'>"ChadGoymer/githapi"</span>,
-    author    = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name = <span class='st'>"Bob"</span>,   email = <span class='st'>"bob@acme.com"</span>),
-    committer = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name = <span class='st'>"Jane"</span>,  email = <span class='st'>"jane@acme.com"</span>))
+  <span class='fu'>upload_commit</span><span class='op'>(</span>
+    path      <span class='op'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    branch    <span class='op'>=</span> <span class='st'>"main"</span>,
+    message   <span class='op'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    repo      <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    author    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Bob"</span>,   email <span class='op'>=</span> <span class='st'>"bob@acme.com"</span><span class='op'>)</span>,
+    committer <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Jane"</span>,  email <span class='op'>=</span> <span class='st'>"jane@acme.com"</span><span class='op'>)</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a commit on a new branch</span>
-  <span class='fu'>upload_commit</span>(
-    path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"test-commits-1"</span>,
-    message = <span class='st'>"Commit to test upload_commit()"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parents = <span class='st'>"main"</span>)
+  <span class='fu'>upload_commit</span><span class='op'>(</span>
+    path    <span class='op'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    branch  <span class='op'>=</span> <span class='st'>"test-commits-1"</span>,
+    message <span class='op'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    parents <span class='op'>=</span> <span class='st'>"main"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create an orphan commit</span>
-  <span class='fu'>upload_commit</span>(
-    path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"test-commits-2"</span>,
-    message = <span class='st'>"Commit to test upload_commit()"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>upload_commit</span><span class='op'>(</span>
+    path    <span class='op'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    branch  <span class='op'>=</span> <span class='st'>"test-commits-2"</span>,
+    message <span class='op'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Force branch to point at the new commit</span>
-  <span class='fu'>upload_commit</span>(
-    path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"main"</span>,
-    message = <span class='st'>"Commit to test upload_commit()"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parents = <span class='st'>"test-commits-1"</span>,
-    force   = <span class='fl'>TRUE</span>)
+  <span class='fu'>upload_commit</span><span class='op'>(</span>
+    path    <span class='op'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    branch  <span class='op'>=</span> <span class='st'>"main"</span>,
+    message <span class='op'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    parents <span class='op'>=</span> <span class='st'>"test-commits-1"</span>,
+    force   <span class='op'>=</span> <span class='cn'>TRUE</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a commit merging a branch into the main branch</span>
-  <span class='fu'>upload_commit</span>(
-    path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"main"</span>,
-    message = <span class='st'>"Commit to test upload_commit()"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parents = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"main"</span>, <span class='st'>"test-commits-1"</span>))
+  <span class='fu'>upload_commit</span><span class='op'>(</span>
+    path    <span class='op'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    branch  <span class='op'>=</span> <span class='st'>"main"</span>,
+    message <span class='op'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    parents <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"main"</span>, <span class='st'>"test-commits-1"</span><span class='op'>)</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a commit merging two branches into a new branch</span>
-  <span class='fu'>upload_commit</span>(
-    path    = <span class='st'>"C:/files-to-upload"</span>,
-    branch  = <span class='st'>"test-commits-3"</span>,
-    message = <span class='st'>"Commit to test upload_commit()"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>,
-    parents = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"main"</span>, <span class='st'>"test-commits-2"</span>))
+  <span class='fu'>upload_commit</span><span class='op'>(</span>
+    path    <span class='op'>=</span> <span class='st'>"C:/files-to-upload"</span>,
+    branch  <span class='op'>=</span> <span class='st'>"test-commits-3"</span>,
+    message <span class='op'>=</span> <span class='st'>"Commit to test upload_commit()"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    parents <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"main"</span>, <span class='st'>"test-commits-2"</span><span class='op'>)</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -295,7 +312,7 @@ to set the branch to the new commit no matter what then set the <code>force</cod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Send an HTTP request to the GitHub API — gh_request" />
-<meta property="og:description" content="This function can be used to make &quot;GET&quot;, &quot;POST&quot;, &quot;PATCH&quot;, &quot;PUT&quot; or &quot;DELETE&quot; requests to
-the specified URL." />
+<meta property="og:description" content="This function can be used to make &quot;GET&quot;, &quot;POST&quot;, &quot;PATCH&quot;, &quot;PUT&quot; or &quot;DELETE&quot;
+requests to the specified URL." />
 
 
 
@@ -73,7 +73,7 @@ the specified URL." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,20 +118,20 @@ the specified URL." />
     </div>
 
     <div class="ref-description">
-    <p>This function can be used to make "GET", "POST", "PATCH", "PUT" or "DELETE" requests to
-the specified URL.</p>
+    <p>This function can be used to make "GET", "POST", "PATCH", "PUT" or "DELETE"
+requests to the specified URL.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_request</span>(
-  <span class='kw'>url</span>,
-  <span class='kw'>type</span>,
-  payload = <span class='kw'>NULL</span>,
-  headers = <span class='kw'>NULL</span>,
-  accept = <span class='st'>"application/vnd.github.v3+json"</span>,
-  token = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  proxy = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>gh_request</span><span class='op'>(</span>
+  <span class='va'>url</span>,
+  <span class='va'>type</span>,
+  payload <span class='op'>=</span> <span class='cn'>NULL</span>,
+  headers <span class='op'>=</span> <span class='cn'>NULL</span>,
+  accept <span class='op'>=</span> <span class='st'>"application/vnd.github.v3+json"</span>,
+  token <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"github.token"</span><span class='op'>)</span>,
+  proxy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"github.proxy"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,33 +142,35 @@ the specified URL.</p>
     </tr>
     <tr>
       <th>type</th>
-      <td><p>(string) The type of HTTP request. Either "GET", "POST", "PATCH", "PUT" or
-"DELETE".</p></td>
+      <td><p>(string) The type of HTTP request. Either "GET", "POST", "PATCH",
+"PUT" or "DELETE".</p></td>
     </tr>
     <tr>
       <th>payload</th>
-      <td><p>(list, optional) The information to send to the API for "POST", "PATCH",
-"PUT" or "DELETE" requests. Default: <code>NULL</code>.</p></td>
+      <td><p>(list, optional) The information to send to the API for
+"POST", "PATCH", "PUT" or "DELETE" requests. Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>headers</th>
-      <td><p>(character, optional) Headers to add to the request. Default: <code>NULL</code>.</p></td>
+      <td><p>(character, optional) Headers to add to the request. Default:
+<code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>accept</th>
-      <td><p>(string, optional) The mime format to accept when making the call. Default:
-"application/vnd.github.v3+json".</p></td>
+      <td><p>(string, optional) The mime format to accept when making the
+call. Default: <code>"application/vnd.github.v3+json"</code>.</p></td>
     </tr>
     <tr>
       <th>token</th>
-      <td><p>(string or Token, optional) An authorisation token to include with the
-request. If <code>NULL</code> the OAuth process is triggered. Default: <code>NULL</code>.</p></td>
+      <td><p>(string or Token, optional) An authorisation token to include
+with the request. If <code>NULL</code> the OAuth process is triggered. Default:
+<code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>proxy</th>
-      <td><p>(character, optional) The proxy server to use to connect to the github API.
-If <code>NULL</code> then no proxy is used. Can be set in the option <code>github.proxy</code> or the
-environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
+      <td><p>(character, optional) The proxy server to use to connect to the
+github API. If <code>NULL</code> then no proxy is used. Can be set in the option
+<code>github.proxy</code> or the environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -178,8 +180,8 @@ environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p><
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>github</code> list object consisting of the response, parsed into a list, with the
-attributes:</p><ul>
+    <p>A <code>github</code> list object consisting of the response, parsed into a
+list, with the attributes:</p><ul>
 <li><p><strong>url</strong>: The URL the request was sent to</p></li>
 <li><p><strong>request</strong>: The type of HTTP request made</p></li>
 <li><p><strong>status</strong>: The HTTP status code returned</p></li>
@@ -188,43 +190,49 @@ attributes:</p><ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The response is parsed from either JSON or plain text, depending on the format received.
-When no response is received an empty list returned by the function. Details of the
-response are recorded as attributes.</p>
-<p>For "POST", "PATCH", "PUT" and "DELETE" requests a payload can be supplied. It is parsed
-into a JSON format before being sent to the URL.</p>
-<p>If an error is returned from the API then an error is thrown by this function, detailing
-the URL, the HTTP status code and a message from the API, if there is one.</p>
+    <p>The response is parsed from either JSON or plain text, depending on the
+format received. When no response is received an empty list returned by the
+function. Details of the response are recorded as attributes.</p>
+<p>For "POST", "PATCH", "PUT" and "DELETE" requests a payload can be supplied.
+It is parsed into a JSON format before being sent to the URL.</p>
+<p>If an error is returned from the API then an error is thrown by this
+function, detailing the URL, the HTTP status code and a message from the API,
+if there is one.</p>
 <p>Finally, an authorisation token can be supplied if it is required.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Create a tag</span>
-  <span class='fu'>gh_request</span>(
-    url     = <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/refs"</span>,
-    type    = <span class='st'>"POST"</span>,
-    payload = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-      ref = <span class='st'>"test-tag"</span>,
-      sha = <span class='st'>"a4b6545671455234757313a42738e44c10b0ef37"</span>))
+  <span class='fu'>gh_request</span><span class='op'>(</span>
+    url     <span class='op'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/refs"</span>,
+    type    <span class='op'>=</span> <span class='st'>"POST"</span>,
+    payload <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+      ref <span class='op'>=</span> <span class='st'>"test-tag"</span>,
+      sha <span class='op'>=</span> <span class='st'>"a4b6545671455234757313a42738e44c10b0ef37"</span>
+    <span class='op'>)</span>
+  <span class='op'>)</span>
 
   <span class='co'># View a tag</span>
-  <span class='fu'>gh_request</span>(
-    url  = <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
-    type = <span class='st'>"GET"</span>)
+  <span class='fu'>gh_request</span><span class='op'>(</span>
+    url  <span class='op'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
+    type <span class='op'>=</span> <span class='st'>"GET"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Update a tag</span>
-  <span class='fu'>gh_request</span>(
-    url     = <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
-    type    = <span class='st'>"PATCH"</span>,
-    payload = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(sha = <span class='st'>"a4b6545671455234757313a42738e44c10b0ef37"</span>))
+  <span class='fu'>gh_request</span><span class='op'>(</span>
+    url     <span class='op'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
+    type    <span class='op'>=</span> <span class='st'>"PATCH"</span>,
+    payload <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sha <span class='op'>=</span> <span class='st'>"a4b6545671455234757313a42738e44c10b0ef37"</span><span class='op'>)</span>
+  <span class='op'>)</span>
 
   <span class='co'># Delete a tag</span>
-  <span class='fu'>gh_request</span>(
-    url  = <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
-    type = <span class='st'>"DELETE"</span>)
+  <span class='fu'>gh_request</span><span class='op'>(</span>
+    url  <span class='op'>=</span> <span class='st'>"https://api.github.com/repos/ChadGoymer/githapi/git/test-tag"</span>,
+    type <span class='op'>=</span> <span class='st'>"DELETE"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -242,7 +250,7 @@ the URL, the HTTP status code and a message from the API, if there is one.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

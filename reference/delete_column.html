@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Delete a column in a GitHub project — delete_column" />
-<meta property="og:description" content="This function deletes a column in a GitHub project. Care should be taken as it will not be
-recoverable." />
+<meta property="og:description" content="This function deletes a column in a GitHub project. Care should be taken as
+it will not be recoverable." />
 
 
 
@@ -73,7 +73,7 @@ recoverable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,11 +118,11 @@ recoverable." />
     </div>
 
     <div class="ref-description">
-    <p>This function deletes a column in a GitHub project. Care should be taken as it will not be
-recoverable.</p>
+    <p>This function deletes a column in a GitHub project. Care should be taken as
+it will not be recoverable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_column</span>(<span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_column</span><span class='op'>(</span><span class='va'>column</span>, <span class='va'>project</span>, <span class='va'>repo</span>, <span class='va'>user</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,7 +137,8 @@ recoverable.</p>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format:
+<code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -158,35 +159,39 @@ recoverable.</p>
     <p><code>delete_column()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can delete a column associated with either a repository, user or organization, by
-supplying them as an input, as long as you have appropriate permissions.</p>
+    <p>You can delete a column associated with either a repository, user or
+organization, by supplying them as an input, as long as you have appropriate
+permissions.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/columns/#delete-a-column'>https://developer.github.com/v3/columns/#delete-a-column</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#delete-a-project-column'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#delete-a-project-column</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Delete a column in a repository project</span>
-  <span class='fu'>delete_column</span>(
-    column  = <span class='st'>"Test column"</span>,
-    project = <span class='st'>"Test project"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>delete_column</span><span class='op'>(</span>
+    column  <span class='op'>=</span> <span class='st'>"Test column"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Delete a column in a user's project</span>
-  <span class='fu'>delete_column</span>(
-    column  = <span class='st'>"Test column"</span>,
-    project = <span class='st'>"Test project"</span>,
-    user    = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>delete_column</span><span class='op'>(</span>
+    column  <span class='op'>=</span> <span class='st'>"Test column"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    user    <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Delete a column in an organization's project</span>
-  <span class='fu'>delete_column</span>(
-    column  = <span class='st'>"Test column"</span>,
-    project = <span class='st'>"Test project"</span>,
-    org     = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>delete_column</span><span class='op'>(</span>
+    column  <span class='op'>=</span> <span class='st'>"Test column"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    org     <span class='op'>=</span> <span class='st'>"HairyCoos"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -204,7 +209,7 @@ supplying them as an input, as long as you have appropriate permissions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

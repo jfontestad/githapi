@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="Remove a collaborator from a repository, project or organization. — delete_collaborator" />
-<meta property="og:description" content="This function removes a collaborator from a repository, project or organization. Removing
-someone from a repository or project does not remove them from the organization, whereas
-removing them from an organization also removes them from any repositories and projects
-within the organization." />
+<meta property="og:description" content="This function removes a collaborator from a repository, project or
+organization. Removing someone from a repository or project does not remove
+them from the organization, whereas removing them from an organization also
+removes them from any repositories and project within the organization." />
 
 
 
@@ -75,7 +75,7 @@ within the organization." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,13 +120,13 @@ within the organization." />
     </div>
 
     <div class="ref-description">
-    <p>This function removes a collaborator from a repository, project or organization. Removing
-someone from a repository or project does not remove them from the organization, whereas
-removing them from an organization also removes them from any repositories and projects
-within the organization.</p>
+    <p>This function removes a collaborator from a repository, project or
+organization. Removing someone from a repository or project does not remove
+them from the organization, whereas removing them from an organization also
+removes them from any repositories and project within the organization.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>delete_collaborator</span>(<span class='kw'>user</span>, <span class='kw'>repo</span>, <span class='kw'>project</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_collaborator</span><span class='op'>(</span><span class='va'>user</span>, <span class='va'>repo</span>, <span class='va'>project</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,15 +137,18 @@ within the organization.</p>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format:
+<code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>project</th>
-      <td><p>(integer or string, optional) Either the project number or name.</p></td>
+      <td><p>(integer or string, optional) Either the project number or
+name.</p></td>
     </tr>
     <tr>
       <th>org</th>
-      <td><p>(string, optional) The name of the organization. Only required for projects.</p></td>
+      <td><p>(string, optional) The name of the organization. Only required for
+projects.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -158,31 +161,32 @@ within the organization.</p>
     <p><code>delete_collaborator()</code> returns a TRUE if successfully deleted.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note: you can only remove a user if the authenticate user is an organization "owner" or a
-team "maintainer".</p>
+    <p>Note: you can only remove a user if the authenticate user is an organization
+"owner" or a team "maintainer".</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/repos/collaborators/#remove-user-as-a-collaborator'>https://developer.github.com/v3/repos/collaborators/#remove-user-as-a-collaborator</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/collaborators/#remove-user-as-a-collaborator'>https://developer.github.com/v3/projects/collaborators/#remove-user-as-a-collaborator</a></p></li>
-<li><p><a href='https://developer.github.com/v3/orgs/outside_collaborators/#remove-outside-collaborator'>https://developer.github.com/v3/orgs/outside_collaborators/#remove-outside-collaborator</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#remove-a-repository-collaborator'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#remove-a-repository-collaborator</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#remove-user-as-a-collaborator'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#remove-user-as-a-collaborator</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#remove-outside-collaborator-from-an-organization'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#remove-outside-collaborator-from-an-organization</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Remove a collaborator from a repository</span>
-  <span class='fu'>delete_collaborator</span>(<span class='st'>"ChadGoymer"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>delete_collaborator</span><span class='op'>(</span>user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>, repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># Remove a collaborator from a project</span>
-  <span class='fu'>delete_collaborator</span>(
-    user    = <span class='st'>"ChadGoymer"</span>,
-    project = <span class='st'>"Test project"</span>,
-    org     = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>delete_collaborator</span><span class='op'>(</span>
+    user    <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    org     <span class='op'>=</span> <span class='st'>"HairyCoos"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Remove a collaborator from an organization</span>
-  <span class='fu'>delete_collaborator</span>(<span class='st'>"ChadGoymer"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>delete_collaborator</span><span class='op'>(</span>user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -200,7 +204,7 @@ team "maintainer".</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

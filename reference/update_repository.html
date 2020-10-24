@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="Update a user or organization repository — update_repository" />
-<meta property="og:description" content="This function updates a repository for the specified user or organization in GitHub. It can
-be used to change whether the project is private or has issues, projects or a wiki, it can
-redefine the allowed behaviour when merging pull requests or add or update team
-permissions." />
+<meta property="og:description" content="This function updates a repository for the authenticated user or organization
+in GitHub. It can be used to change whether the project is private or has
+issues, projects or a wiki, it can redefine the allowed behaviour when
+merging pull requests or add or update team permissions." />
 
 
 
@@ -75,7 +75,7 @@ permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,31 +120,31 @@ permissions." />
     </div>
 
     <div class="ref-description">
-    <p>This function updates a repository for the specified user or organization in GitHub. It can
-be used to change whether the project is private or has issues, projects or a wiki, it can
-redefine the allowed behaviour when merging pull requests or add or update team
-permissions.</p>
+    <p>This function updates a repository for the authenticated user or organization
+in GitHub. It can be used to change whether the project is private or has
+issues, projects or a wiki, it can redefine the allowed behaviour when
+merging pull requests or add or update team permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_repository</span>(
-  <span class='kw'>repo</span>,
-  <span class='kw'>name</span>,
-  <span class='kw'>description</span>,
-  <span class='kw'>homepage</span>,
-  <span class='kw'>private</span>,
-  <span class='kw'>has_issues</span>,
-  <span class='kw'>has_projects</span>,
-  <span class='kw'>has_wiki</span>,
-  <span class='kw'>default_branch</span>,
-  <span class='kw'>allow_squash_merge</span>,
-  <span class='kw'>allow_merge_commit</span>,
-  <span class='kw'>allow_rebase_merge</span>,
-  <span class='kw'>delete_branch_on_merge</span>,
-  <span class='kw'>archived</span>,
-  <span class='kw'>team</span>,
-  permission = <span class='st'>"pull"</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_repository</span><span class='op'>(</span>
+  <span class='va'>repo</span>,
+  <span class='va'>name</span>,
+  <span class='va'>description</span>,
+  <span class='va'>homepage</span>,
+  <span class='va'>private</span>,
+  <span class='va'>has_issues</span>,
+  <span class='va'>has_projects</span>,
+  <span class='va'>has_wiki</span>,
+  <span class='va'>default_branch</span>,
+  <span class='va'>allow_squash_merge</span>,
+  <span class='va'>allow_merge_commit</span>,
+  <span class='va'>allow_rebase_merge</span>,
+  <span class='va'>delete_branch_on_merge</span>,
+  <span class='va'>archived</span>,
+  <span class='va'>team</span>,
+  permission <span class='op'>=</span> <span class='st'>"pull"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,23 +163,28 @@ permissions.</p>
     </tr>
     <tr>
       <th>homepage</th>
-      <td><p>(string, optional) A URL with more information about the repository.</p></td>
+      <td><p>(string, optional) A URL with more information about the
+repository.</p></td>
     </tr>
     <tr>
       <th>private</th>
-      <td><p>(boolean, optional) Whether the repository is private or public.</p></td>
+      <td><p>(boolean, optional) Whether the repository is private or
+public.</p></td>
     </tr>
     <tr>
       <th>has_issues</th>
-      <td><p>(boolean, optional) Whether to enable issues for the repository.</p></td>
+      <td><p>(boolean, optional) Whether to enable issues for the
+repository.</p></td>
     </tr>
     <tr>
       <th>has_projects</th>
-      <td><p>(boolean, optional) Whether to enable projects for the repository.</p></td>
+      <td><p>(boolean, optional) Whether to enable projects for the
+repository.</p></td>
     </tr>
     <tr>
       <th>has_wiki</th>
-      <td><p>(boolean, optional) Whether to enable the wiki for the repository.</p></td>
+      <td><p>(boolean, optional) Whether to enable the wiki for the
+repository.</p></td>
     </tr>
     <tr>
       <th>default_branch</th>
@@ -187,21 +192,23 @@ permissions.</p>
     </tr>
     <tr>
       <th>allow_squash_merge</th>
-      <td><p>(boolean, optional) Whether to allow squash-merging pull requests.</p></td>
+      <td><p>(boolean, optional) Whether to allow squash-merging
+pull requests.</p></td>
     </tr>
     <tr>
       <th>allow_merge_commit</th>
-      <td><p>(boolean, optional) Whether to allow merging pull requests with a
-merge commit.</p></td>
+      <td><p>(boolean, optional) Whether to allow merging pull
+requests with a merge commit.</p></td>
     </tr>
     <tr>
       <th>allow_rebase_merge</th>
-      <td><p>(boolean, optional) Whether to allow rebase-merging pull requests.</p></td>
+      <td><p>(boolean, optional) Whether to allow rebase-merging
+pull requests.</p></td>
     </tr>
     <tr>
       <th>delete_branch_on_merge</th>
-      <td><p>(boolean, optional) Whether to allow automatically deleting
-branches when pull requests are merged.</p></td>
+      <td><p>(boolean, optional) Whether to allow
+automatically deleting branches when pull requests are merged.</p></td>
     </tr>
     <tr>
       <th>archived</th>
@@ -213,7 +220,8 @@ branches when pull requests are merged.</p></td>
     </tr>
     <tr>
       <th>permission</th>
-      <td><p>(string, optional) The permission to set for the team. Either: <code>"pull"``, </code>"push"<code>, </code>"admin"<code>, </code>"maintain"<code>or</code>"triage"<code>. Default: </code>"pull"`.</p></td>
+      <td><p>(string, optional) The permission to set for the team.
+Either: <code>"pull"``, </code>"push"<code>, </code>"admin"<code>, </code>"maintain"<code>or</code>"triage"<code>. Default: </code>"pull"`.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -227,7 +235,8 @@ branches when pull requests are merged.</p></td>
 <p><strong>Repository Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the repository.</p></li>
 <li><p><strong>name</strong>: The name of the repository.</p></li>
-<li><p><strong>full_name</strong>: The full name of the repository, in the format: <code>owner/repo</code>.</p></li>
+<li><p><strong>full_name</strong>: The full name of the repository, in the format:
+<code>owner/repo</code>.</p></li>
 <li><p><strong>description</strong>: The description of the repository.</p></li>
 <li><p><strong>owner</strong>: The owner of the repository.</p></li>
 <li><p><strong>html_url</strong>: The address of the repository's web page in GitHub.</p></li>
@@ -242,10 +251,12 @@ branches when pull requests are merged.</p></td>
 <li><p><strong>has_wiki</strong>: Whether the repository has a wiki.</p></li>
 <li><p><strong>has_pages</strong>: Whether the repository has GitHub Pages.</p></li>
 <li><p><strong>has_downloads</strong>: Whether the repository has downloads.</p></li>
-<li><p><strong>allow_squash_merge</strong>: Whether the repository allows squash-merging pull requests.</p></li>
-<li><p><strong>allow_merge_commit</strong>: Whether the repository allows merging pull requests with a merge
-commit.</p></li>
-<li><p><strong>allow_rebase_merge</strong>: Whether the repository allows rebase-merging pull requests.</p></li>
+<li><p><strong>allow_squash_merge</strong>: Whether the repository allows squash-merging pull
+requests.</p></li>
+<li><p><strong>allow_merge_commit</strong>: Whether the repository allows merging pull requests
+with a merge commit.</p></li>
+<li><p><strong>allow_rebase_merge</strong>: Whether the repository allows rebase-merging pull
+requests.</p></li>
 <li><p><strong>fork</strong>: Whether the repository is a fork of another.</p></li>
 <li><p><strong>archived</strong>: Whether the repository has been archived.</p></li>
 <li><p><strong>disabled</strong>: Whether the repository has been disabled.</p></li>
@@ -262,62 +273,67 @@ commit.</p></li>
     <p>The team's permission can be set to:</p><ul>
 <li><p><code>"pull"</code>: Team members can pull from this repository.</p></li>
 <li><p><code>"push"</code>: Team members can pull from and push to this repository.</p></li>
-<li><p><code>"admin"</code>: Team members can pull from, push to and administer this repository.</p></li>
-<li><p><code>"maintain"</code>: Team members can manage the repository without access to sensitive or
-destructive actions. Recommended for project managers. Only applies to repositories
-owned by organizations.</p></li>
-<li><p><code>"triage"</code>: Team members can proactively manage issues and pull requests without write
-access. Recommended for contributors who triage a repository. Only applies to
-repositories owned by organizations.</p></li>
+<li><p><code>"admin"</code>: Team members can pull from, push to and administer this
+repository.</p></li>
+<li><p><code>"maintain"</code>: Team members can manage the repository without access to
+sensitive or destructive actions. Recommended for project managers. Only
+applies to repositories owned by organizations.</p></li>
+<li><p><code>"triage"</code>: Team members can proactively manage issues and pull requests
+without write access. Recommended for contributors who triage a repository.
+Only applies to repositories owned by organizations.</p></li>
 </ul>
 
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/repos/#edit'>https://developer.github.com/v3/repos/#edit</a></p></li>
-<li><p><a href='https://developer.github.com/v3/teams/#add-or-update-team-repository-permissions'>https://developer.github.com/v3/teams/#add-or-update-team-repository-permissions</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-repository'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#update-a-repository</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#add-or-update-team-repository-permissions'>https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#add-or-update-team-repository-permissions</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Update a repository</span>
-  <span class='fu'>update_repository</span>(
-    repo           = <span class='st'>"ChadGoymer/user-repository"</span>,
-    name           = <span class='st'>"updated-user-repository"</span>,
-    description    = <span class='st'>"This is an updated user repository"</span>,
-    homepage       = <span class='st'>"https://updated-user-repository.com"</span>,
-    has_issues     = <span class='fl'>FALSE</span>,
-    has_projects   = <span class='fl'>FALSE</span>,
-    has_wiki       = <span class='fl'>FALSE</span>,
-    default_branch = <span class='st'>"main"</span>)
+  <span class='fu'>update_repository</span><span class='op'>(</span>
+    repo           <span class='op'>=</span> <span class='st'>"ChadGoymer/user-repository"</span>,
+    name           <span class='op'>=</span> <span class='st'>"updated-user-repository"</span>,
+    description    <span class='op'>=</span> <span class='st'>"This is an updated user repository"</span>,
+    homepage       <span class='op'>=</span> <span class='st'>"https://updated-user-repository.com"</span>,
+    has_issues     <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    has_projects   <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    has_wiki       <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    default_branch <span class='op'>=</span> <span class='st'>"main"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Update an organization's repository</span>
-  <span class='fu'>update_repository</span>(
-    repo                   = <span class='st'>"HairyCoos/org-repository"</span>,
-    name                   = <span class='st'>"updated-org-repository"</span>,
-    description            = <span class='st'>"This is an updated organization repository"</span>,
-    homepage               = <span class='st'>"https://updated-org-repository.com"</span>,
-    private                = <span class='fl'>FALSE</span>,
-    allow_squash_merge     = <span class='fl'>FALSE</span>,
-    allow_merge_commit     = <span class='fl'>FALSE</span>,
-    allow_rebase_merge     = <span class='fl'>TRUE</span>,
-    delete_branch_on_merge = <span class='fl'>TRUE</span>)
+  <span class='fu'>update_repository</span><span class='op'>(</span>
+    repo                   <span class='op'>=</span> <span class='st'>"HairyCoos/org-repository"</span>,
+    name                   <span class='op'>=</span> <span class='st'>"updated-org-repository"</span>,
+    description            <span class='op'>=</span> <span class='st'>"This is an updated organization repository"</span>,
+    homepage               <span class='op'>=</span> <span class='st'>"https://updated-org-repository.com"</span>,
+    private                <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    allow_squash_merge     <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    allow_merge_commit     <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    allow_rebase_merge     <span class='op'>=</span> <span class='cn'>TRUE</span>,
+    delete_branch_on_merge <span class='op'>=</span> <span class='cn'>TRUE</span>
+  <span class='op'>)</span>
 
   <span class='co'># Archive a repository</span>
-  <span class='fu'>update_repository</span>(<span class='st'>"HairyCoos/org-repository"</span>, archived = <span class='fl'>TRUE</span>)
+  <span class='fu'>update_repository</span><span class='op'>(</span><span class='st'>"HairyCoos/org-repository"</span>, archived <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
   <span class='co'># Add read access for the specified team</span>
-  <span class='fu'>update_repository</span>(
-    repo = <span class='st'>"HairyCoos/test-repository"</span>,
-    team = <span class='st'>"test-team"</span>)
+  <span class='fu'>update_repository</span><span class='op'>(</span>
+    repo <span class='op'>=</span> <span class='st'>"HairyCoos/test-repository"</span>,
+    team <span class='op'>=</span> <span class='st'>"test-team"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Update team's permission to "maintain"</span>
-  <span class='fu'>update_repository</span>(
-    repo       = <span class='st'>"HairyCoos/test-repository"</span>,
-    team       = <span class='st'>"test-team"</span>,
-    permission = <span class='st'>"maintain"</span>)
+  <span class='fu'>update_repository</span><span class='op'>(</span>
+    repo       <span class='op'>=</span> <span class='st'>"HairyCoos/test-repository"</span>,
+    team       <span class='op'>=</span> <span class='st'>"test-team"</span>,
+    permission <span class='op'>=</span> <span class='st'>"maintain"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -335,7 +351,7 @@ repositories owned by organizations.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Checks whether the supplied object is a valid reference name — is_ref" />
-<meta property="og:description" content="A valid reference has restrictions on the special characters allowed (see details)." />
+<meta property="og:description" content="A valid reference has restrictions on the special characters allowed (see
+details)." />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -117,10 +118,11 @@
     </div>
 
     <div class="ref-description">
-    <p>A valid reference has restrictions on the special characters allowed (see details).</p>
+    <p>A valid reference has restrictions on the special characters allowed (see
+details).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_ref</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>is_ref</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,12 +139,15 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Git imposes the following rules when naming references:</p><ol>
-<li><p>They can include slash '/' for hierarchical (directory) grouping, but no slash-separated
-component can begin with a dot '.' or dash '-' or end with the sequence '.lock'.</p></li>
+<li><p>They can include slash '/' for hierarchical (directory) grouping, but no
+slash-separated component can begin with a dot '.' or dash '-' or end with
+the sequence '.lock'.</p></li>
 <li><p>They cannot have two consecutive dots '..' anywhere.</p></li>
-<li><p>They cannot have the special characters: space ' ', tilde '~', caret '^', or colon ':',
-question-mark '?', asterisk '*', backslash '\', or open bracket '[' anywhere.</p></li>
-<li><p>They cannot begin or end with a slash '/' or contain multiple consecutive slashes</p></li>
+<li><p>They cannot have the special characters: space ' ', tilde '~', caret '^',
+or colon ':', question-mark '?', asterisk '*', backslash '\', or open
+bracket '[' anywhere.</p></li>
+<li><p>They cannot begin or end with a slash '/' or contain multiple consecutive
+slashes</p></li>
 <li><p>They cannot end with a dot '.'.</p></li>
 <li><p>They cannot contain a sequence '@{'.</p></li>
 <li><p>They cannot be the single character '@'.</p></li>
@@ -164,7 +169,7 @@ question-mark '?', asterisk '*', backslash '\', or open bracket '[' anywhere.</p
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

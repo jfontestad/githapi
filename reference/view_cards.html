@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="View cards within a GitHub project — view_cards" />
-<meta property="og:description" content="view_cards() summarises cards in a table with the properties as columns and a row
-for each card in a column of a project. view_card() returns a list of all properties
-for a single card." />
+<meta property="og:description" content="view_cards() summarises cards in a table with the properties as columns and
+a row for each card in a column of a project. view_card() returns a list of
+all properties for a single card." />
 
 
 
@@ -74,7 +74,7 @@ for a single card." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,14 +119,14 @@ for a single card." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_cards()</code> summarises cards in a table with the properties as columns and a row
-for each card in a column of a project. <code>view_card()</code> returns a list of all properties
-for a single card.</p>
+    <p><code>view_cards()</code> summarises cards in a table with the properties as columns and
+a row for each card in a column of a project. <code>view_card()</code> returns a list of
+all properties for a single card.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_cards</span>(<span class='kw'>column</span>, <span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>org</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_cards</span><span class='op'>(</span><span class='va'>column</span>, <span class='va'>project</span>, <span class='va'>repo</span>, <span class='va'>user</span>, <span class='va'>org</span>, n_max <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>view_card</span>(<span class='kw'>card</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>view_card</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +141,8 @@ for a single card.</p>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format:
+<code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -181,39 +182,42 @@ returns a list of properties for a single card.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the cards of a project associated with either a repository, user
-or organization, by supplying them as an input.</p>
+    <p>You can summarise all the cards of a project associated with either a
+repository, user or organization, by supplying them as an input.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/projects/cards/#list-project-cards'>https://developer.github.com/v3/projects/cards/#list-project-cards</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/cards/#get-a-project-card'>https://developer.github.com/v3/projects/cards/#get-a-project-card</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-project-cards'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-project-cards</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#get-a-project-card'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#get-a-project-card</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View cards in a repository project</span>
-  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span>(
-    column  = <span class='st'>"Test cards"</span>,
-    project = <span class='st'>"Test cards"</span>,
-    repo    = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='va'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span><span class='op'>(</span>
+    column  <span class='op'>=</span> <span class='st'>"Test cards"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test cards"</span>,
+    repo    <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># View cards in a user's project</span>
-  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span>(
-    column  = <span class='st'>"Test cards"</span>,
-    project = <span class='st'>"Test cards"</span>,
-    user    = <span class='st'>"ChadGoymer"</span>)
+  <span class='va'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span><span class='op'>(</span>
+    column  <span class='op'>=</span> <span class='st'>"Test cards"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test cards"</span>,
+    user    <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>
+  <span class='op'>)</span>
 
   <span class='co'># View cards in an organization's project</span>
-  <span class='kw'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span>(
-    column  = <span class='st'>"Test cards"</span>,
-    project = <span class='st'>"Test cards"</span>,
-    org     = <span class='st'>"HairyCoos"</span>)
+  <span class='va'>cards</span> <span class='op'>&lt;-</span> <span class='fu'>view_cards</span><span class='op'>(</span>
+    column  <span class='op'>=</span> <span class='st'>"Test cards"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test cards"</span>,
+    org     <span class='op'>=</span> <span class='st'>"HairyCoos"</span>
+  <span class='op'>)</span>
 
   <span class='co'># View a single card</span>
-  <span class='fu'>view_card</span>(card = <span class='fl'>123456</span>)
+  <span class='fu'>view_card</span><span class='op'>(</span>card <span class='op'>=</span> <span class='fl'>123456</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -231,7 +235,7 @@ or organization, by supplying them as an input.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

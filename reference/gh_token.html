@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="Get a token for accessing GitHub — gh_token" />
-<meta property="og:description" content="This function initiates the OAuth authentication code grant flow with GitHub. The user
-will be redirected to GitHub's login page to enter a user name and password. Once complete
-the user can close the window and this function returns a token which can be used for all
-calls to the githapi API." />
+<meta property="og:description" content="This function initiates the OAuth authentication code grant flow with GitHub.
+The user will be redirected to GitHub's login page to enter a user name and
+password. Once complete the user can close the window and this function
+returns a token which can be used for all calls to the githapi API." />
 
 
 
@@ -75,7 +75,7 @@ calls to the githapi API." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,84 +120,87 @@ calls to the githapi API." />
     </div>
 
     <div class="ref-description">
-    <p>This function initiates the OAuth authentication code grant flow with GitHub. The user
-will be redirected to GitHub's login page to enter a user name and password. Once complete
-the user can close the window and this function returns a token which can be used for all
-calls to the githapi API.</p>
+    <p>This function initiates the OAuth authentication code grant flow with GitHub.
+The user will be redirected to GitHub's login page to enter a user name and
+password. Once complete the user can close the window and this function
+returns a token which can be used for all calls to the githapi API.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gh_token</span>(
-  token = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.token"</span>),
-  oauth = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.oauth"</span>),
-  proxy = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"github.proxy"</span>),
-  key = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"githapi.key"</span>),
-  secret = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"githapi.secret"</span>),
-  cache = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"githapi.cache"</span>),
-  refresh = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>gh_token</span><span class='op'>(</span>
+  token <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"github.token"</span><span class='op'>)</span>,
+  oauth <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"github.oauth"</span><span class='op'>)</span>,
+  proxy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"github.proxy"</span><span class='op'>)</span>,
+  id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"githapi.id"</span><span class='op'>)</span>,
+  secret <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"githapi.secret"</span><span class='op'>)</span>,
+  cache <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"githapi.cache"</span><span class='op'>)</span>,
+  refresh <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>token</th>
-      <td><p>(string, optional) A personal access token. If <code>NULL</code> then the OAuth process
-is triggered. Can be set in the <code>github.token</code> option or the <code>GITHUB_TOKEN</code> environment
-variable. Default: <code>NULL</code>.</p></td>
+      <td><p>(string, optional) A personal access token. If <code>NULL</code> then the
+OAuth process is triggered. Can be set in the <code>github.token</code> option or the
+<code>GITHAPI_TOKEN</code>, <code>GITHUB_PAT</code>, or <code>GITHUB_TOKEN</code> environment variable.
+Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>oauth</th>
-      <td><p>(string, optional) The base URL for for the OAuth endpoint. Can be set in the
-<code>github.oauth</code> option or the <code>GITHUB_OAUTH</code> environment variable. Default:
-<code>"https://github.com/login/oauth"</code>.</p></td>
+      <td><p>(string, optional) The base URL for for the OAuth endpoint. Can
+be set in the <code>github.oauth</code> option or the <code>GITHUB_OAUTH</code> environment
+variable. Default: <code>"https://github.com/login/oauth"</code>.</p></td>
     </tr>
     <tr>
       <th>proxy</th>
-      <td><p>(character, optional) The proxy server to use to connect to the github API.
-If <code>NULL</code> then no proxy is used. Can be set in the option <code>github.proxy</code> or the
-environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
+      <td><p>(character, optional) The proxy server to use to connect to the
+github API. If <code>NULL</code> then no proxy is used. Can be set in the option
+<code>github.proxy</code> or the environment variable <code>GITHUB_PROXY</code>. Default: <code>NULL</code>.</p></td>
     </tr>
     <tr>
-      <th>key</th>
-      <td><p>(string, optional) The application ID for accessing GitHub. Can be set in the
-<code>githapi.key</code> option or the <code>GITHAPI_KEY</code> environment variable. Default: The key for the
-githapi application in github.com.</p></td>
+      <th>id</th>
+      <td><p>(string, optional) The application ID for accessing GitHub. Can be
+set in the <code>githapi.id</code> option or the <code>GITHAPI_ID</code> environment variable.
+Default: The id for the githapi application in github.com.</p></td>
     </tr>
     <tr>
       <th>secret</th>
-      <td><p>(string, optional) The secret for the application to access GitHub. Can be
-set in the <code>githapi.secret</code> option or the <code>GITHAPI_SECRET</code> environment variable. Default:
-The secret for the githapi application in github.com</p></td>
+      <td><p>(string, optional) The secret for the application to access
+GitHub. Can be set in the <code>githapi.secret</code> option or the <code>GITHAPI_SECRET</code>
+environment variable. Default: The secret for the githapi application in
+github.com</p></td>
     </tr>
     <tr>
       <th>cache</th>
-      <td><p>(boolean or string, optional) The location to store a cached token. If <code>TRUE</code>
-the cache uses the httr default; if <code>FALSE</code> it does not cache. Can be set in the
-<code>"githapi.cache"</code> option or the <code>GITHAPI_CACHE</code> environment variable. Default: <code>FALSE</code>.</p></td>
+      <td><p>(boolean or string, optional) The location to store a cached
+token. If <code>TRUE</code> the cache uses the httr default; if <code>FALSE</code> it does not
+cache. Can be set in the <code>"githapi.cache"</code> option or the <code>GITHAPI_CACHE</code>
+environment variable. Default: <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>refresh</th>
-      <td><p>(boolean, optional) Whether to force the refresh of the cached token.
-Default: FALSE.</p></td>
+      <td><p>(boolean, optional) Whether to force the refresh of the cached
+token. Default: FALSE.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A token which is either a string, for a personal access token, or a <a href='https://httr.r-lib.org/reference/Token-class.html'>httr::Token</a>
-object for an OAuth token.</p>
+    <p>A token which is either a string, for a personal access token, or a
+<a href='https://httr.r-lib.org/reference/Token-class.html'>httr::Token</a> object for an OAuth token.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For non-interactive processes a personal access token can be specified, either as an R
-option (<code>"github.token"</code>) or as an environment variable (either <code>GITHUB_TOKEN</code> or
-<code>GITHUB_PAT</code>).</p>
+    <p>For non-interactive processes a personal access token can be specified,
+either as an R option (<code>"github.token"</code>) or as an environment variable
+(either <code>GITHAPI_TOKEN</code>, <code>GITHUB_PAT</code>, or <code>GITHUB_TOKEN</code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-  <span class='kw'>token</span> <span class='op'>&lt;-</span> <span class='fu'>gh_token</span>()
+  <span class='va'>token</span> <span class='op'>&lt;-</span> <span class='fu'>gh_token</span><span class='op'>(</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -215,7 +218,7 @@ option (<code>"github.token"</code>) or as an environment variable (either <code
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

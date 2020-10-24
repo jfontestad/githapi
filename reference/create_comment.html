@@ -40,10 +40,11 @@
 
 
 <meta property="og:title" content="Create a comment in github — create_comment" />
-<meta property="og:description" content="This function creates a new comment for the specified gist, issue, pull request or commit
-in GitHub. A standard comment is created for a gist or issue (note: since a pull request
-is also an issue a standard comment is also created if the issue argument is set to the
-pull request number) and a review comment is created for pull requests and commits." />
+<meta property="og:description" content="This function creates a new comment for the specified gist, issue, pull
+request or commit in GitHub. A standard comment is created for a gist or
+issue (note: since a pull request is also an issue a standard comment is also
+created if the issue argument is set to the pull request number) and a
+review comment is created for pull requests and commits." />
 
 
 
@@ -75,7 +76,7 @@ pull request number) and a review comment is created for pull requests and commi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,23 +121,24 @@ pull request number) and a review comment is created for pull requests and commi
     </div>
 
     <div class="ref-description">
-    <p>This function creates a new comment for the specified gist, issue, pull request or commit
-in GitHub. A standard comment is created for a gist or issue (note: since a pull request
-is also an issue a standard comment is also created if the <code>issue</code> argument is set to the
-pull request number) and a review comment is created for pull requests and commits.</p>
+    <p>This function creates a new comment for the specified gist, issue, pull
+request or commit in GitHub. A standard comment is created for a gist or
+issue (note: since a pull request is also an issue a standard comment is also
+created if the <code>issue</code> argument is set to the pull request number) and a
+review comment is created for pull requests and commits.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_comment</span>(
-  <span class='kw'>body</span>,
-  <span class='kw'>gist</span>,
-  <span class='kw'>issue</span>,
-  <span class='kw'>pull_request</span>,
-  <span class='kw'>commit</span>,
-  <span class='kw'>repo</span>,
-  <span class='kw'>path</span>,
-  <span class='kw'>position</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>create_comment</span><span class='op'>(</span>
+  <span class='va'>body</span>,
+  <span class='va'>gist</span>,
+  <span class='va'>issue</span>,
+  <span class='va'>pull_request</span>,
+  <span class='va'>commit</span>,
+  <span class='va'>repo</span>,
+  <span class='va'>path</span>,
+  <span class='va'>position</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,7 +161,8 @@ pull request number) and a review comment is created for pull requests and commi
     </tr>
     <tr>
       <th>commit</th>
-      <td><p>(string, optional) Either a SHA or branch used to identify the commit.</p></td>
+      <td><p>(string, optional) Either a SHA or branch used to identify the
+commit.</p></td>
     </tr>
     <tr>
       <th>repo</th>
@@ -171,7 +174,8 @@ pull request number) and a review comment is created for pull requests and commi
     </tr>
     <tr>
       <th>position</th>
-      <td><p>(integer, optional) The line number in the file to attach the comment to.</p></td>
+      <td><p>(integer, optional) The line number in the file to attach the
+comment to.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -185,12 +189,12 @@ pull request number) and a review comment is created for pull requests and commi
 <p><strong>Comment Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The id of the comment.</p></li>
 <li><p><strong>body</strong>: The content of the comment.</p></li>
-<li><p><strong>commit</strong>: The commit associated with the comment (only for pull request or commit
-comments).</p></li>
-<li><p><strong>path</strong>: The path of the file to add the comment to (only for pull request or commit
-comments).</p></li>
-<li><p><strong>position</strong>: The line number in the file to attach the comment to (only for pull
-request or commit comments).</p></li>
+<li><p><strong>commit</strong>: The commit associated with the comment (only for pull request
+or commit comments).</p></li>
+<li><p><strong>path</strong>: The path of the file to add the comment to (only for pull request
+or commit comments).</p></li>
+<li><p><strong>position</strong>: The line number in the file to attach the comment to (only
+for pull request or commit comments).</p></li>
 <li><p><strong>user</strong>: The comment author's account login.</p></li>
 <li><p><strong>html_url</strong>: The address of the comment's web page.</p></li>
 <li><p><strong>created_at</strong>: The time and date the comment was created.</p></li>
@@ -199,50 +203,54 @@ request or commit comments).</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>When creating a gist comment only the <code>body</code> and <code>gist</code> ID need to be specified; for an
-issue the <code>body</code>, <code>issue</code> number and <code>repo</code> must be specified; and for a pull request or
-commit the <code>body</code>, <code>pull_request</code> number or <code>commit</code> reference, <code>repo</code>, <code>path</code> and
-<code>position</code> must be specified.</p>
+    <p>When creating a gist comment only the <code>body</code> and <code>gist</code> ID need to be
+specified; for an issue the <code>body</code>, <code>issue</code> number and <code>repo</code> must be
+specified; and for a pull request or commit the <code>body</code>, <code>pull_request</code> number
+or <code>commit</code> reference, <code>repo</code>, <code>path</code> and <code>position</code> must be specified.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/gists/comments/#create-a-comment'>https://developer.github.com/v3/gists/comments/#create-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/issues/comments/#create-a-comment'>https://developer.github.com/v3/issues/comments/#create-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/pulls/comments/#create-a-comment'>https://developer.github.com/v3/pulls/comments/#create-a-comment</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/comments/#create-a-commit-comment'>https://developer.github.com/v3/repos/comments/#create-a-commit-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#create-a-gist-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/gists#create-a-gist-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-an-issue-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-an-issue-comment</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#create-a-review-comment-for-a-pull-request'>https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls#create-a-review-comment-for-a-pull-request</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-commit-comment'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-commit-comment</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Create a comment on a gist</span>
-  <span class='fu'>create_comment</span>(
-    body = <span class='st'>"This is a comment created by create_comment()"</span>,
-    gist = <span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>)
+  <span class='fu'>create_comment</span><span class='op'>(</span>
+    body <span class='op'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
+    gist <span class='op'>=</span> <span class='st'>"806dca6b09a39e7b6326a0c8137583e6"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a comment on an issue</span>
-  <span class='fu'>create_comment</span>(
-    body  = <span class='st'>"This is a comment created by create_comment()"</span>,
-    issue = <span class='st'>"test issue"</span>,
-    repo  = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>create_comment</span><span class='op'>(</span>
+    body  <span class='op'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
+    issue <span class='op'>=</span> <span class='st'>"test issue"</span>,
+    repo  <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a comment on a pull request</span>
-  <span class='fu'>create_comment</span>(
-    body         = <span class='st'>"This is a comment created by create_comment()"</span>,
-    pull_request = <span class='st'>"test pull request"</span>,
-    commit       = <span class='st'>"test-branch"</span>,
-    repo         = <span class='st'>"ChadGoymer/githapi"</span>,
-    path         = <span class='st'>"test-comments.txt"</span>,
-    position     = <span class='fl'>1</span>)
+  <span class='fu'>create_comment</span><span class='op'>(</span>
+    body         <span class='op'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
+    pull_request <span class='op'>=</span> <span class='st'>"test pull request"</span>,
+    commit       <span class='op'>=</span> <span class='st'>"test-branch"</span>,
+    repo         <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    path         <span class='op'>=</span> <span class='st'>"test-comments.txt"</span>,
+    position     <span class='op'>=</span> <span class='fl'>1</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a comment on a commit</span>
-  <span class='fu'>create_comment</span>(
-    body     = <span class='st'>"This is a comment created by create_comment()"</span>,
-    commit   = <span class='st'>"main"</span>,
-    repo     = <span class='st'>"ChadGoymer/githapi"</span>,
-    path     = <span class='st'>"README.md"</span>,
-    position = <span class='fl'>1</span>)
+  <span class='fu'>create_comment</span><span class='op'>(</span>
+    body     <span class='op'>=</span> <span class='st'>"This is a comment created by create_comment()"</span>,
+    commit   <span class='op'>=</span> <span class='st'>"main"</span>,
+    repo     <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    path     <span class='op'>=</span> <span class='st'>"README.md"</span>,
+    position <span class='op'>=</span> <span class='fl'>1</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -260,7 +268,7 @@ commit the <code>body</code>, <code>pull_request</code> number or <code>commit</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

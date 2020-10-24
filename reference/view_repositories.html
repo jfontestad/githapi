@@ -40,10 +40,11 @@
 
 
 <meta property="og:title" content="View repositories for a user, team or organization — view_repositories" />
-<meta property="og:description" content="view_repositories() summarises the repositories for a user, team or organization in a
-table with the properties as columns and a row for each repository. view_repository()
-returns a list of a single repository's properties. browse_repository() opens the web
-page for the repository in the default browser." />
+<meta property="og:description" content="view_repositories() summarises the repositories for a user, team or
+organization in a table with the properties as columns and a row for each
+repository. view_repository() returns a list of a single repository's
+properties. browse_repository() opens the web page for the repository in
+the default browser." />
 
 
 
@@ -75,7 +76,7 @@ page for the repository in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,25 +121,26 @@ page for the repository in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_repositories()</code> summarises the repositories for a user, team or organization in a
-table with the properties as columns and a row for each repository. <code>view_repository()</code>
-returns a list of a single repository's properties. <code>browse_repository()</code> opens the web
-page for the repository in the default browser.</p>
+    <p><code>view_repositories()</code> summarises the repositories for a user, team or
+organization in a table with the properties as columns and a row for each
+repository. <code>view_repository()</code> returns a list of a single repository's
+properties. <code>browse_repository()</code> opens the web page for the repository in
+the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_repositories</span>(
-  <span class='kw'>user</span>,
-  <span class='kw'>team</span>,
-  <span class='kw'>org</span>,
-  sort = <span class='st'>"created"</span>,
-  direction = <span class='st'>"desc"</span>,
-  n_max = <span class='fl'>1000</span>,
-  <span class='kw'>...</span>
-)
+    <pre class="usage"><span class='fu'>view_repositories</span><span class='op'>(</span>
+  <span class='va'>user</span>,
+  <span class='va'>team</span>,
+  <span class='va'>org</span>,
+  sort <span class='op'>=</span> <span class='st'>"created"</span>,
+  direction <span class='op'>=</span> <span class='st'>"desc"</span>,
+  n_max <span class='op'>=</span> <span class='fl'>1000</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>view_repository</span>(<span class='kw'>repo</span>, <span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)
+<span class='fu'>view_repository</span><span class='op'>(</span><span class='va'>repo</span>, <span class='va'>team</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>browse_repository</span>(<span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_repository</span><span class='op'>(</span><span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,13 +159,14 @@ page for the repository in the default browser.</p>
     </tr>
     <tr>
       <th>sort</th>
-      <td><p>(string, optional) The property to order the returned repositories by. Can
-be either <code>"created"</code>, <code>"updated"</code>, <code>"pushed"</code> or <code>"full_name"</code>. Default: <code>"created"</code>.</p></td>
+      <td><p>(string, optional) The property to order the returned
+repositories by. Can be either <code>"created"</code>, <code>"updated"</code>, <code>"pushed"</code> or
+<code>"full_name"</code>. Default: <code>"created"</code>.</p></td>
     </tr>
     <tr>
       <th>direction</th>
-      <td><p>(string, optional) The direction of the sort. Can be either <code>"asc"</code> or
-<code>"desc"</code>. Default: <code>"desc"</code>.</p></td>
+      <td><p>(string, optional) The direction of the sort. Can be either
+<code>"asc"</code> or <code>"desc"</code>. Default: <code>"desc"</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -183,12 +186,13 @@ be either <code>"created"</code>, <code>"updated"</code>, <code>"pushed"</code> 
 
     <p><code>view_repositories()</code> returns a tibble of repository properties.
 <code>view_repository()</code> returns a list of properties for a single repository.
-<code>browse_repository()</code> opens the default browser on the repository's page and returns
-the URL.</p>
+<code>browse_repository()</code> opens the default browser on the repository's page
+and returns the URL.</p>
 <p><strong>Repository Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the repository.</p></li>
 <li><p><strong>name</strong>: The name of the repository.</p></li>
-<li><p><strong>full_name</strong>: The full name of the repository, in the format: <code>owner/repo</code>.</p></li>
+<li><p><strong>full_name</strong>: The full name of the repository, in the format:
+<code>owner/repo</code>.</p></li>
 <li><p><strong>description</strong>: The description of the repository.</p></li>
 <li><p><strong>owner</strong>: The owner of the repository.</p></li>
 <li><p><strong>html_url</strong>: The address of the repository's web page in GitHub.</p></li>
@@ -203,10 +207,12 @@ the URL.</p>
 <li><p><strong>has_wiki</strong>: Whether the repository has a wiki.</p></li>
 <li><p><strong>has_pages</strong>: Whether the repository has GitHub Pages.</p></li>
 <li><p><strong>has_downloads</strong>: Whether the repository has downloads.</p></li>
-<li><p><strong>allow_squash_merge</strong>: Whether the repository allows squash-merging pull requests.</p></li>
-<li><p><strong>allow_merge_commit</strong>: Whether the repository allows merging pull requests with a merge
-commit.</p></li>
-<li><p><strong>allow_rebase_merge</strong>: Whether the repository allows rebase-merging pull requests.</p></li>
+<li><p><strong>allow_squash_merge</strong>: Whether the repository allows squash-merging pull
+requests.</p></li>
+<li><p><strong>allow_merge_commit</strong>: Whether the repository allows merging pull requests
+with a merge commit.</p></li>
+<li><p><strong>allow_rebase_merge</strong>: Whether the repository allows rebase-merging pull
+requests.</p></li>
 <li><p><strong>fork</strong>: Whether the repository is a fork of another.</p></li>
 <li><p><strong>archived</strong>: Whether the repository has been archived.</p></li>
 <li><p><strong>disabled</strong>: Whether the repository has been disabled.</p></li>
@@ -220,50 +226,55 @@ commit.</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the repositories associated with either a user, team or organization,
-by supplying them as an input. If neither a user or organization is specified a summary of
-the authenticated user's repositories is returned.</p>
+    <p>You can summarise all the repositories associated with either a user, team or
+organization, by supplying them as an input. If neither a user or
+organization is specified a summary of the authenticated user's repositories
+is returned.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/repos/#list-user-repositories'>https://developer.github.com/v3/repos/#list-user-repositories</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/#list-organization-repositories'>https://developer.github.com/v3/repos/#list-organization-repositories</a></p></li>
-<li><p><a href='https://developer.github.com/v3/teams/#list-team-repos'>https://developer.github.com/v3/teams/#list-team-repos</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/#list-your-repositories'>https://developer.github.com/v3/repos/#list-your-repositories</a></p></li>
-<li><p><a href='https://developer.github.com/v3/repos/#get-a-repository'>https://developer.github.com/v3/repos/#get-a-repository</a></p></li>
-<li><p><a href='https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository'>https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repositories-for-the-authenticated-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repositories-for-the-authenticated-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repositories-for-a-user'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-repositories-for-a-user</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-organization-repositories'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-organization-repositories</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#list-team-repositories'>https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#list-team-repositories</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-repository'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-a-repository</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#check-team-permissions-for-a-repository'>https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#check-team-permissions-for-a-repository</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View a user's repositories</span>
-  <span class='fu'>view_repositories</span>(user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_repositories</span><span class='op'>(</span>user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># View an organization's repositories</span>
-  <span class='fu'>view_repositories</span>(org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_repositories</span><span class='op'>(</span>org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># View a team's repositories</span>
-  <span class='fu'>view_repositories</span>(team = <span class='st'>"Test Team"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_repositories</span><span class='op'>(</span>team <span class='op'>=</span> <span class='st'>"Test Team"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># Reorder a user's repositories</span>
-  <span class='fu'>view_repositories</span>(user = <span class='st'>"ChadGoymer"</span>, sort = <span class='st'>"full_name"</span>, direction = <span class='st'>"asc"</span>)
+  <span class='fu'>view_repositories</span><span class='op'>(</span>
+    user      <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>,
+    sort      <span class='op'>=</span> <span class='st'>"full_name"</span>,
+    direction <span class='op'>=</span> <span class='st'>"asc"</span>
+  <span class='op'>)</span>
 
   <span class='co'># View a specific user repository</span>
-  <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_repository</span><span class='op'>(</span><span class='st'>"Test repo"</span>, user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># View a specific organization repository</span>
-  <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_repository</span><span class='op'>(</span><span class='st'>"Test repo"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># View a specific team repository</span>
-  <span class='fu'>view_repository</span>(<span class='st'>"Test repo"</span>, team = <span class='st'>"Test Team"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_repository</span><span class='op'>(</span><span class='st'>"Test repo"</span>, team <span class='op'>=</span> <span class='st'>"Test Team"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># Browse a specific user repository</span>
-  <span class='fu'>browse_repository</span>(<span class='st'>"Test repo"</span>, user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>browse_repository</span><span class='op'>(</span><span class='st'>"Test repo"</span>, user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># Browse a specific organization repository</span>
-  <span class='fu'>browse_repository</span>(<span class='st'>"Test repo"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>browse_repository</span><span class='op'>(</span><span class='st'>"Test repo"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -281,7 +292,7 @@ the authenticated user's repositories is returned.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

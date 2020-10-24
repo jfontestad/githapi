@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="View GitHub projects — view_projects" />
-<meta property="og:description" content="view_projects() summarises projects in a table with the properties as columns and a row
-for each project. view_project() returns a list of all properties for a single project.
-browse_project() opens the web page for the project in the default browser." />
+<meta property="og:description" content="view_projects() summarises projects in a table with the properties as
+columns and a row for each project. view_project() returns a list of all
+properties for a single project. browse_project() opens the web page for
+the project in the default browser." />
 
 
 
@@ -74,7 +75,7 @@ browse_project() opens the web page for the project in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -119,23 +120,25 @@ browse_project() opens the web page for the project in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_projects()</code> summarises projects in a table with the properties as columns and a row
-for each project. <code>view_project()</code> returns a list of all properties for a single project.
-<code>browse_project()</code> opens the web page for the project in the default browser.</p>
+    <p><code>view_projects()</code> summarises projects in a table with the properties as
+columns and a row for each project. <code>view_project()</code> returns a list of all
+properties for a single project. <code>browse_project()</code> opens the web page for
+the project in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_projects</span>(<span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>team</span>, <span class='kw'>org</span>, state = <span class='st'>"open"</span>, n_max = <span class='fl'>1000</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_projects</span><span class='op'>(</span><span class='va'>repo</span>, <span class='va'>user</span>, <span class='va'>team</span>, <span class='va'>org</span>, state <span class='op'>=</span> <span class='st'>"open"</span>, n_max <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>view_project</span>(<span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)
+<span class='fu'>view_project</span><span class='op'>(</span><span class='va'>project</span>, <span class='va'>repo</span>, <span class='va'>user</span>, <span class='va'>team</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>browse_project</span>(<span class='kw'>project</span>, <span class='kw'>repo</span>, <span class='kw'>user</span>, <span class='kw'>team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_project</span><span class='op'>(</span><span class='va'>project</span>, <span class='va'>repo</span>, <span class='va'>user</span>, <span class='va'>team</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>repo</th>
-      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format:
+<code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -151,8 +154,8 @@ for each project. <code>view_project()</code> returns a list of all properties f
     </tr>
     <tr>
       <th>state</th>
-      <td><p>(string, optional) Indicates the state of the projects to return. Can be
-either "open", "closed", or "all". Default: <code>"open"</code>.</p></td>
+      <td><p>(string, optional) Indicates the state of the projects to
+return. Can be either "open", "closed", or "all". Default: <code>"open"</code>.</p></td>
     </tr>
     <tr>
       <th>n_max</th>
@@ -170,19 +173,23 @@ either "open", "closed", or "all". Default: <code>"open"</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_projects()</code> returns a tibble of project properties. <code>view_project()</code>
-returns a list of properties for a single project. <code>browse_project()</code> opens the default
-browser on the project's page and returns the URL.</p>
+    <p><code>view_projects()</code> returns a tibble of project properties.
+<code>view_project()</code> returns a list of properties for a single project.
+<code>browse_project()</code> opens the default browser on the project's page and
+returns the URL.</p>
 <p><strong>Project Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the project.</p></li>
-<li><p><strong>number</strong>: The number of the project for the repository, user or organization.</p></li>
+<li><p><strong>number</strong>: The number of the project for the repository, user or
+organization.</p></li>
 <li><p><strong>name</strong>: The name given to the project.</p></li>
 <li><p><strong>body</strong>: The description given to the project.</p></li>
 <li><p><strong>state</strong>: Whether the project is "open" or "closed".</p></li>
-<li><p><strong>private</strong>: Whether the project is private (organization and team projects only).</p></li>
-<li><p><strong>org_permissions</strong>: The default permission for organization members (organization and
-team projects only).</p></li>
-<li><p><strong>team_permissions</strong>: The default permission for team members (team projects only).</p></li>
+<li><p><strong>private</strong>: Whether the project is private (organization and team projects
+only).</p></li>
+<li><p><strong>org_permissions</strong>: The default permission for organization members
+(organization and team projects only).</p></li>
+<li><p><strong>team_permissions</strong>: The default permission for team members (team
+projects only).</p></li>
 <li><p><strong>creator</strong>: The user who created the project.</p></li>
 <li><p><strong>created_at</strong>: When it was created.</p></li>
 <li><p><strong>updated_at</strong>: When it was last updated.</p></li>
@@ -191,63 +198,63 @@ team projects only).</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the projects associated with either a repository, user, team or
-organization, by supplying them as an input.</p>
+    <p>You can summarise all the projects associated with either a repository, user,
+team or organization, by supplying them as an input.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/projects/#list-repository-projects'>https://developer.github.com/v3/projects/#list-repository-projects</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/#list-user-projects'>https://developer.github.com/v3/projects/#list-user-projects</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/#list-organization-projects'>https://developer.github.com/v3/projects/#list-organization-projects</a></p></li>
-<li><p><a href='https://developer.github.com/v3/teams/#review-a-team-project'>https://developer.github.com/v3/teams/#review-a-team-project</a></p></li>
-<li><p><a href='https://developer.github.com/v3/projects/#get-a-project'>https://developer.github.com/v3/projects/#get-a-project</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-repository-projects'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-repository-projects</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-user-projects'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-user-projects</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-organization-projects'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#list-organization-projects</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#check-team-permissions-for-a-project'>https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#check-team-permissions-for-a-project</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#get-a-project'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#get-a-project</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View a repository's projects</span>
-  <span class='fu'>view_projects</span>(<span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_projects</span><span class='op'>(</span><span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># View a user's projects</span>
-  <span class='fu'>view_projects</span>(user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_projects</span><span class='op'>(</span>user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># View an organization's projects</span>
-  <span class='fu'>view_projects</span>(org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_projects</span><span class='op'>(</span>org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># View a team's projects</span>
-  <span class='fu'>view_projects</span>(team = <span class='st'>"HeadCoos"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_projects</span><span class='op'>(</span>team <span class='op'>=</span> <span class='st'>"HeadCoos"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># View closed projects</span>
-  <span class='fu'>view_projects</span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"closed"</span>)
+  <span class='fu'>view_projects</span><span class='op'>(</span><span class='st'>"ChadGoymer/githapi"</span>, state <span class='op'>=</span> <span class='st'>"closed"</span><span class='op'>)</span>
 
   <span class='co'># View all projects</span>
-  <span class='fu'>view_projects</span>(<span class='st'>"ChadGoymer/githapi"</span>, state = <span class='st'>"all"</span>)
+  <span class='fu'>view_projects</span><span class='op'>(</span><span class='st'>"ChadGoymer/githapi"</span>, state <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
 
   <span class='co'># View a specific repository project</span>
-  <span class='fu'>view_project</span>(<span class='st'>"Prioritisation"</span>, repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_project</span><span class='op'>(</span><span class='st'>"Prioritisation"</span>, repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># View a specific user project</span>
-  <span class='fu'>view_project</span>(<span class='st'>"Test project"</span>, user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>view_project</span><span class='op'>(</span><span class='st'>"Test project"</span>, user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># View a specific organization project</span>
-  <span class='fu'>view_project</span>(<span class='st'>"Prioritisation"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_project</span><span class='op'>(</span><span class='st'>"Prioritisation"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># View a specific team project</span>
-  <span class='fu'>view_project</span>(<span class='st'>"Prioritisation"</span>, team = <span class='st'>"HeadCoos"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>view_project</span><span class='op'>(</span><span class='st'>"Prioritisation"</span>, team <span class='op'>=</span> <span class='st'>"HeadCoos"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># Browse a specific repository project</span>
-  <span class='fu'>browse_project</span>(<span class='st'>"Prioritisation"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>browse_project</span><span class='op'>(</span><span class='st'>"Prioritisation"</span>, <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># Browse a specific user project</span>
-  <span class='fu'>browse_project</span>(<span class='st'>"Test project"</span>, user = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>browse_project</span><span class='op'>(</span><span class='st'>"Test project"</span>, user <span class='op'>=</span> <span class='st'>"ChadGoymer"</span><span class='op'>)</span>
 
   <span class='co'># Browse a specific organization project</span>
-  <span class='fu'>browse_project</span>(<span class='st'>"Prioritisation"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>browse_project</span><span class='op'>(</span><span class='st'>"Prioritisation"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
   <span class='co'># Browse a specific team project</span>
-  <span class='fu'>browse_project</span>(<span class='st'>"Prioritisation"</span>, team = <span class='st'>"HeadCoos"</span>, org = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>browse_project</span><span class='op'>(</span><span class='st'>"Prioritisation"</span>, team <span class='op'>=</span> <span class='st'>"HeadCoos"</span>, org <span class='op'>=</span> <span class='st'>"HairyCoos"</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -265,7 +272,7 @@ organization, by supplying them as an input.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

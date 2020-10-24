@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Create a card in a GitHub project — create_card" />
-<meta property="og:description" content="This function creates a new card in the specified column in a project in GitHub. The
-card can either contain an existing issue or pull request or you can create a note." />
+<meta property="og:description" content="This function creates a new card in the specified column in a project in
+GitHub. The card can either contain an existing issue or pull request or you
+can create a note." />
 
 
 
@@ -73,7 +74,7 @@ card can either contain an existing issue or pull request or you can create a no
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,39 +119,40 @@ card can either contain an existing issue or pull request or you can create a no
     </div>
 
     <div class="ref-description">
-    <p>This function creates a new card in the specified column in a project in GitHub. The
-card can either contain an existing issue or pull request or you can create a note.</p>
+    <p>This function creates a new card in the specified column in a project in
+GitHub. The card can either contain an existing issue or pull request or you
+can create a note.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_card</span>(
-  <span class='kw'>content_id</span>,
-  <span class='kw'>content_type</span>,
-  <span class='kw'>note</span>,
-  <span class='kw'>column</span>,
-  <span class='kw'>project</span>,
-  <span class='kw'>repo</span>,
-  <span class='kw'>user</span>,
-  <span class='kw'>org</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>create_card</span><span class='op'>(</span>
+  <span class='va'>content_id</span>,
+  <span class='va'>content_type</span>,
+  <span class='va'>note</span>,
+  <span class='va'>column</span>,
+  <span class='va'>project</span>,
+  <span class='va'>repo</span>,
+  <span class='va'>user</span>,
+  <span class='va'>org</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>content_id</th>
-      <td><p>(integer, optional) The issue or pull request id associated with this
-card. Note: <code>content_type</code> is also required.</p></td>
+      <td><p>(integer, optional) The issue or pull request id associated
+with this card. Note: <code>content_type</code> is also required.</p></td>
     </tr>
     <tr>
       <th>content_type</th>
-      <td><p>(string, optional) Whether the <code>content_id</code> identifies an <code>"Issue"</code>
-or a <code>"PullRequest"</code>.</p></td>
+      <td><p>(string, optional) Whether the <code>content_id</code> identifies an
+<code>"Issue"</code> or a <code>"PullRequest"</code>.</p></td>
     </tr>
     <tr>
       <th>note</th>
-      <td><p>(string, optional) The card's note content. Not used if <code>content_id</code> is
-specified.</p></td>
+      <td><p>(string, optional) The card's note content. Not used if
+<code>content_id</code> is specified.</p></td>
     </tr>
     <tr>
       <th>column</th>
@@ -162,7 +164,8 @@ specified.</p></td>
     </tr>
     <tr>
       <th>repo</th>
-      <td><p>(string, optional) The repository specified in the format: <code>owner/repo</code>.</p></td>
+      <td><p>(string, optional) The repository specified in the format:
+<code>owner/repo</code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -193,40 +196,44 @@ specified.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can create a card in a project associated with either a repository, user or
-organization, by supplying them as an input, as long as you have appropriate permissions.</p>
+    <p>You can create a card in a project associated with either a repository, user
+or organization, by supplying them as an input, as long as you have
+appropriate permissions.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/projects/cards/#create-a-project-card'>https://developer.github.com/v3/projects/cards/#create-a-project-card</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#create-a-project-card'>https://docs.github.com/en/free-pro-team@latest/rest/reference/projects#create-a-project-card</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Create an issue card in a repository project</span>
-  <span class='fu'>create_card</span>(
-    content_id   = <span class='fl'>1</span>,
-    content_type = <span class='st'>"Issue"</span>,
-    column       = <span class='st'>"Test column"</span>,
-    project      = <span class='st'>"Test project"</span>,
-    repo         = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>create_card</span><span class='op'>(</span>
+    content_id   <span class='op'>=</span> <span class='fl'>1</span>,
+    content_type <span class='op'>=</span> <span class='st'>"Issue"</span>,
+    column       <span class='op'>=</span> <span class='st'>"Test column"</span>,
+    project      <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    repo         <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a pull request card in a user's project</span>
-  <span class='fu'>create_card</span>(
-    content_id   = <span class='fl'>2</span>,
-    content_type = <span class='st'>"PullRequest"</span>,
-    column       = <span class='st'>"Test column"</span>,
-    project      = <span class='st'>"Test project"</span>,
-    user         = <span class='st'>"ChadGoymer"</span>)
+  <span class='fu'>create_card</span><span class='op'>(</span>
+    content_id   <span class='op'>=</span> <span class='fl'>2</span>,
+    content_type <span class='op'>=</span> <span class='st'>"PullRequest"</span>,
+    column       <span class='op'>=</span> <span class='st'>"Test column"</span>,
+    project      <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    user         <span class='op'>=</span> <span class='st'>"ChadGoymer"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Create a note card in an organization's project</span>
-  <span class='fu'>create_card</span>(
-    note    = <span class='st'>"This is a note"</span>,
-    column  = <span class='st'>"Test column"</span>,
-    project = <span class='st'>"Test project"</span>,
-    org     = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>create_card</span><span class='op'>(</span>
+    note    <span class='op'>=</span> <span class='st'>"This is a note"</span>,
+    column  <span class='op'>=</span> <span class='st'>"Test column"</span>,
+    project <span class='op'>=</span> <span class='st'>"Test project"</span>,
+    org     <span class='op'>=</span> <span class='st'>"HairyCoos"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -244,7 +251,7 @@ organization, by supplying them as an input, as long as you have appropriate per
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

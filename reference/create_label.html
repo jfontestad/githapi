@@ -40,8 +40,9 @@
 
 
 <meta property="og:title" content="Create an issue label in a repository — create_label" />
-<meta property="og:description" content="This function creates a new label for issues and pull requests for the specified
-repository in GitHub. It can also be used to set the colour and description." />
+<meta property="og:description" content="This function creates a new label for issues and pull requests for the
+specified repository in GitHub. It can also be used to set the colour and
+description." />
 
 
 
@@ -73,7 +74,7 @@ repository in GitHub. It can also be used to set the colour and description." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,11 +119,12 @@ repository in GitHub. It can also be used to set the colour and description." />
     </div>
 
     <div class="ref-description">
-    <p>This function creates a new label for issues and pull requests for the specified
-repository in GitHub. It can also be used to set the colour and description.</p>
+    <p>This function creates a new label for issues and pull requests for the
+specified repository in GitHub. It can also be used to set the colour and
+description.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_label</span>(<span class='kw'>name</span>, <span class='kw'>repo</span>, <span class='kw'>description</span>, color = <span class='fu'>random_color</span>(), <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>create_label</span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>repo</span>, <span class='va'>description</span>, color <span class='op'>=</span> <span class='fu'>random_color</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,9 +143,10 @@ repository in GitHub. It can also be used to set the colour and description.</p>
     </tr>
     <tr>
       <th>color</th>
-      <td><p>(string, optional) Either the color name (see <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code>) or a
-hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a>). If not
-supplied a color is chosen at random.</p></td>
+      <td><p>(string, optional) Either the color name (see
+<code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code>) or a hexidecimal color code (see
+<a href='http://www.color-hex.com/'>color-hex.com</a>). If not supplied a color is
+chosen at random.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -163,20 +166,21 @@ supplied a color is chosen at random.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/issues/labels/#create-a-label'>https://developer.github.com/v3/issues/labels/#create-a-label</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-a-label'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#create-a-label</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-  <span class='fu'>create_label</span>(
-    name        = <span class='st'>"new-label"</span>,
-    repo        = <span class='st'>"ChadGoymer/githapi"</span>,
-    color       = <span class='st'>"blue"</span>,
-    description = <span class='st'>"This is a detailed label"</span>)
+  <span class='fu'>create_label</span><span class='op'>(</span>
+    name        <span class='op'>=</span> <span class='st'>"new-label"</span>,
+    repo        <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    color       <span class='op'>=</span> <span class='st'>"blue"</span>,
+    description <span class='op'>=</span> <span class='st'>"This is a detailed label"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -194,7 +198,7 @@ supplied a color is chosen at random.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

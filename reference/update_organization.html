@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Update an organization's properties in GitHub — update_organization" />
-<meta property="og:description" content="This function updates an organization's properties in GitHub. You can only update an
-organization if you have the appropriate permissions." />
+<meta property="og:description" content="This function updates an organization's properties in GitHub. You can only
+update an organization if you have the appropriate permissions." />
 
 
 
@@ -73,7 +73,7 @@ organization if you have the appropriate permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,24 +118,24 @@ organization if you have the appropriate permissions." />
     </div>
 
     <div class="ref-description">
-    <p>This function updates an organization's properties in GitHub. You can only update an
-organization if you have the appropriate permissions.</p>
+    <p>This function updates an organization's properties in GitHub. You can only
+update an organization if you have the appropriate permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_organization</span>(
-  <span class='kw'>org</span>,
-  <span class='kw'>name</span>,
-  <span class='kw'>description</span>,
-  <span class='kw'>email</span>,
-  <span class='kw'>location</span>,
-  <span class='kw'>company</span>,
-  <span class='kw'>billing_email</span>,
-  <span class='kw'>has_organization_projects</span>,
-  <span class='kw'>has_repository_projects</span>,
-  <span class='kw'>default_repository_permission</span>,
-  <span class='kw'>members_can_create_repositories</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>update_organization</span><span class='op'>(</span>
+  <span class='va'>org</span>,
+  <span class='va'>name</span>,
+  <span class='va'>description</span>,
+  <span class='va'>email</span>,
+  <span class='va'>location</span>,
+  <span class='va'>company</span>,
+  <span class='va'>billing_email</span>,
+  <span class='va'>has_organization_projects</span>,
+  <span class='va'>has_repository_projects</span>,
+  <span class='va'>default_repository_permission</span>,
+  <span class='va'>members_can_create_repositories</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,23 +166,23 @@ organization if you have the appropriate permissions.</p>
     </tr>
     <tr>
       <th>billing_email</th>
-      <td><p>(string, optional) Billing email address. This address is not
-publicized.</p></td>
+      <td><p>(string, optional) Billing email address. This address
+is not publicized.</p></td>
     </tr>
     <tr>
       <th>has_organization_projects</th>
-      <td><p>(boolean, optional) Toggles whether an organization can use
-organization projects.</p></td>
+      <td><p>(boolean, optional) Toggles whether an
+organization can use organization projects.</p></td>
     </tr>
     <tr>
       <th>has_repository_projects</th>
-      <td><p>(boolean, optional) Toggles whether repositories that belong
-to the organization can use repository projects.</p></td>
+      <td><p>(boolean, optional) Toggles whether
+repositories that belong to the organization can use repository projects.</p></td>
     </tr>
     <tr>
       <th>default_repository_permission</th>
-      <td><p>(string, optional) Default permission level members have
-for organization repositories:</p><ul>
+      <td><p>(string, optional) Default permission
+level members have for organization repositories:</p><ul>
 <li><p><code>"read"</code>: can pull, but not push to or administer this repository.</p></li>
 <li><p><code>"write"</code>: can pull and push, but not administer this repository.</p></li>
 <li><p><code>"admin"</code>: can pull, push, and administer this repository.</p></li>
@@ -193,8 +193,9 @@ for organization repositories:</p><ul>
     </tr>
     <tr>
       <th>members_can_create_repositories</th>
-      <td><p>(boolean, optional) Toggles the ability of non-admin
-organization members to create repositories. Can be one of:</p><ul>
+      <td><p>(boolean, optional) Toggles the
+ability of non-admin organization members to create repositories. Can be
+one of:</p><ul>
 <li><p><code>TRUE</code>: all organization members can create repositories.</p></li>
 <li><p><code>FALSE</code>: only organization owners can create repositories.</p></li>
 </ul>
@@ -210,7 +211,8 @@ organization members to create repositories. Can be one of:</p><ul>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>update_organization()</code> returns a list of the organization's properties.</p>
+    <p><code>update_organization()</code> returns a list of the organization's
+properties.</p>
 <p><strong>Organization Properties:</strong></p><ul>
 <li><p><strong>id</strong>: The ID of the organization.</p></li>
 <li><p><strong>login</strong>: The login name of the organization.</p></li>
@@ -222,7 +224,8 @@ organization members to create repositories. Can be one of:</p><ul>
 <li><p><strong>email</strong>: The email address for the organization.</p></li>
 <li><p><strong>is_verified</strong>: Whether the organization has been verified.</p></li>
 <li><p><strong>has_organization_projects</strong>: Whether the organization can have projects.</p></li>
-<li><p><strong>has_repository_projects</strong>: Whether the organization's repositories can have projects.</p></li>
+<li><p><strong>has_repository_projects</strong>: Whether the organization's repositories can
+have projects.</p></li>
 <li><p><strong>public_repos</strong>: The number of public repositories.</p></li>
 <li><p><strong>public_gists</strong>: The number of public gists.</p></li>
 <li><p><strong>html_url</strong>: The address for the organization's GitHub web page.</p></li>
@@ -237,29 +240,32 @@ organization members to create repositories. Can be one of:</p><ul>
 <li><p><strong>plan_space</strong>: The total space allocated for the plan.</p></li>
 <li><p><strong>plan_private_repos</strong>: The number of private repositories for the plan.</p></li>
 <li><p><strong>default_repository_settings</strong>: The default access for new repositories.</p></li>
-<li><p><strong>two_factor_requirement_enabled</strong>: Whether members require two-factor authentication.</p></li>
-<li><p><strong>members_can_create_repositories</strong>: Whether members can create repositories.</p></li>
+<li><p><strong>two_factor_requirement_enabled</strong>: Whether members require two-factor
+authentication.</p></li>
+<li><p><strong>members_can_create_repositories</strong>: Whether members can create
+repositories.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/orgs/#edit-an-organization'>https://developer.github.com/v3/orgs/#edit-an-organization</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#update-an-organization'>https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs#update-an-organization</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Update some of your organization properties</span>
-  <span class='fu'>update_organization</span>(
-    org                             = <span class='st'>"HairyCoos"</span>,
-    description                     = <span class='st'>"We are the Hairy Coos!"</span>,
-    location                        = <span class='st'>"The Highlands"</span>,
-    default_repository_permission   = <span class='st'>"write"</span>,
-    members_can_create_repositories = <span class='fl'>FALSE</span>)
+  <span class='fu'>update_organization</span><span class='op'>(</span>
+    org                             <span class='op'>=</span> <span class='st'>"HairyCoos"</span>,
+    description                     <span class='op'>=</span> <span class='st'>"We are the Hairy Coos!"</span>,
+    location                        <span class='op'>=</span> <span class='st'>"The Highlands"</span>,
+    default_repository_permission   <span class='op'>=</span> <span class='st'>"write"</span>,
+    members_can_create_repositories <span class='op'>=</span> <span class='cn'>FALSE</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -277,7 +283,7 @@ organization members to create repositories. Can be one of:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

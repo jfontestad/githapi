@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="View files within a repository — view_files" />
-<meta property="og:description" content="view_files() summarises files in a table with the properties as columns and a row for
-each file in the repository. view_file() returns a list of all properties for a single
-file. browse_files() and browse_file() open the web page for the commit tree and
-blob respectively in the default browser." />
+<meta property="og:description" content="view_files() summarises files in a table with the properties as columns and
+a row for each file in the repository. view_file() returns a list of all
+properties for a single file. browse_files() and browse_file() open the
+web page for the commit tree and blob respectively in the default browser." />
 
 
 
@@ -75,7 +75,7 @@ blob respectively in the default browser." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -120,19 +120,19 @@ blob respectively in the default browser." />
     </div>
 
     <div class="ref-description">
-    <p><code>view_files()</code> summarises files in a table with the properties as columns and a row for
-each file in the repository. <code>view_file()</code> returns a list of all properties for a single
-file. <code>browse_files()</code> and <code>browse_file()</code> open the web page for the commit tree and
-blob respectively in the default browser.</p>
+    <p><code>view_files()</code> summarises files in a table with the properties as columns and
+a row for each file in the repository. <code>view_file()</code> returns a list of all
+properties for a single file. <code>browse_files()</code> and <code>browse_file()</code> open the
+web page for the commit tree and blob respectively in the default browser.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>view_files</span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, recursive = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>view_files</span><span class='op'>(</span><span class='va'>ref</span>, <span class='va'>repo</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>view_file</span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
+<span class='fu'>view_file</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>ref</span>, <span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>browse_files</span>(<span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)
+<span class='fu'>browse_files</span><span class='op'>(</span><span class='va'>ref</span>, <span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>browse_file</span>(<span class='kw'>path</span>, <span class='kw'>ref</span>, <span class='kw'>repo</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>browse_file</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>ref</span>, <span class='va'>repo</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,8 +147,8 @@ blob respectively in the default browser.</p>
     </tr>
     <tr>
       <th>recursive</th>
-      <td><p>(boolean, optional) Whether to list files in subfolders as well.
-Default: <code>TRUE</code>.</p></td>
+      <td><p>(boolean, optional) Whether to list files in subfolders as
+well. Default: <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -162,9 +162,10 @@ Default: <code>TRUE</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>view_files()</code> returns a tibble of file properties. <code>view_file()</code> returns a list
-of properties for a single file. <code>browse_files()</code> and <code>browse_file()</code> opens the default
-browser on the tree or blob page and returns the URL.</p>
+    <p><code>view_files()</code> returns a tibble of file properties. <code>view_file()</code>
+returns a list of properties for a single file. <code>browse_files()</code> and
+<code>browse_file()</code> opens the default browser on the tree or blob page and
+returns the URL.</p>
 <p><strong>File Properties:</strong></p><ul>
 <li><p><strong>path</strong>: The path to the file within the repository.</p></li>
 <li><p><strong>sha</strong>: The SHA of the file blob.</p></li>
@@ -174,35 +175,38 @@ browser on the tree or blob page and returns the URL.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>You can summarise all the milestones of a repository in a specified <code>state</code> and change the
-order they are returned using <code>sort</code> and <code>direction</code>.</p>
+    <p>You can summarise all the milestones of a repository in a specified <code>state</code>
+and change the order they are returned using <code>sort</code> and <code>direction</code>.</p>
 <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository'>https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-tree'>https://docs.github.com/en/free-pro-team@latest/rest/reference/git#get-a-tree</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-repository-content'>https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#get-repository-content</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># View files on the main branch in a repository</span>
-  <span class='fu'>view_files</span>(<span class='st'>"main"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_files</span><span class='op'>(</span><span class='st'>"main"</span>, <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># View properties of a single file in a repository</span>
-  <span class='fu'>view_file</span>(
-    path = <span class='st'>"README.md"</span>,
-    ref  = <span class='st'>"main"</span>,
-    repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>view_file</span><span class='op'>(</span>
+    path <span class='op'>=</span> <span class='st'>"README.md"</span>,
+    ref  <span class='op'>=</span> <span class='st'>"main"</span>,
+    repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
   <span class='co'># Open the commit's tree page in the default browser</span>
-  <span class='fu'>browse_files</span>(<span class='st'>"main"</span>, <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>browse_files</span><span class='op'>(</span><span class='st'>"main"</span>, <span class='st'>"ChadGoymer/githapi"</span><span class='op'>)</span>
 
   <span class='co'># Open the file's blob page in the default browser</span>
-  <span class='fu'>browse_file</span>(
-    path = <span class='st'>"README.md"</span>,
-    ref  = <span class='st'>"main"</span>,
-    repo = <span class='st'>"ChadGoymer/githapi"</span>)
+  <span class='fu'>browse_file</span><span class='op'>(</span>
+    path <span class='op'>=</span> <span class='st'>"README.md"</span>,
+    ref  <span class='op'>=</span> <span class='st'>"main"</span>,
+    repo <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -220,7 +224,7 @@ order they are returned using <code>sort</code> and <code>direction</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

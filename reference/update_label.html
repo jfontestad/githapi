@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Update a label in a repository — update_label" />
-<meta property="og:description" content="This function updates a label for the specified repository in GitHub. It can be used to
-change name, color or description." />
+<meta property="og:description" content="This function updates a label for the specified repository in GitHub. It can
+be used to change name, color or description." />
 
 
 
@@ -73,7 +73,7 @@ change name, color or description." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,11 +118,11 @@ change name, color or description." />
     </div>
 
     <div class="ref-description">
-    <p>This function updates a label for the specified repository in GitHub. It can be used to
-change name, color or description.</p>
+    <p>This function updates a label for the specified repository in GitHub. It can
+be used to change name, color or description.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_label</span>(<span class='kw'>label</span>, <span class='kw'>repo</span>, <span class='kw'>name</span>, <span class='kw'>color</span>, <span class='kw'>description</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_label</span><span class='op'>(</span><span class='va'>label</span>, <span class='va'>repo</span>, <span class='va'>name</span>, <span class='va'>color</span>, <span class='va'>description</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,8 +141,9 @@ change name, color or description.</p>
     </tr>
     <tr>
       <th>color</th>
-      <td><p>(string, optional) Either the color name (see <code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code>) or a
-hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a>).</p></td>
+      <td><p>(string, optional) Either the color name (see
+<code><a href='https://rdrr.io/r/grDevices/colors.html'>grDevices::colors()</a></code>) or a hexidecimal color code (see
+<a href='http://www.color-hex.com/'>color-hex.com</a>).</p></td>
     </tr>
     <tr>
       <th>description</th>
@@ -166,21 +167,22 @@ hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/issues/labels/#update-a-label'>https://developer.github.com/v3/issues/labels/#update-a-label</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-a-label'>https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-a-label</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-  <span class='fu'>update_label</span>(
-    label       = <span class='st'>"new-label"</span>,
-    repo        = <span class='st'>"ChadGoymer/githapi"</span>,
-    name        = <span class='st'>"updated-label"</span>,
-    color       = <span class='st'>"green"</span>,
-    description = <span class='st'>"This is an updated label"</span>)
+  <span class='fu'>update_label</span><span class='op'>(</span>
+    label       <span class='op'>=</span> <span class='st'>"new-label"</span>,
+    repo        <span class='op'>=</span> <span class='st'>"ChadGoymer/githapi"</span>,
+    name        <span class='op'>=</span> <span class='st'>"updated-label"</span>,
+    color       <span class='op'>=</span> <span class='st'>"green"</span>,
+    description <span class='op'>=</span> <span class='st'>"This is an updated label"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -198,7 +200,7 @@ hexidecimal color code (see <a href='http://www.color-hex.com/'>color-hex.com</a
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Update a team's properties in GitHub — update_team" />
-<meta property="og:description" content="This function updates a team's properties in GitHub. You can only update a team if you have
-the appropriate permissions." />
+<meta property="og:description" content="This function updates a team's properties in GitHub. You can only update a
+team if you have the appropriate permissions." />
 
 
 
@@ -73,7 +73,7 @@ the appropriate permissions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">githapi</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.18</span>
       </span>
     </div>
 
@@ -118,11 +118,11 @@ the appropriate permissions." />
     </div>
 
     <div class="ref-description">
-    <p>This function updates a team's properties in GitHub. You can only update a team if you have
-the appropriate permissions.</p>
+    <p>This function updates a team's properties in GitHub. You can only update a
+team if you have the appropriate permissions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_team</span>(<span class='kw'>team</span>, <span class='kw'>name</span>, <span class='kw'>description</span>, <span class='kw'>privacy</span>, <span class='kw'>parent_team</span>, <span class='kw'>org</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>update_team</span><span class='op'>(</span><span class='va'>team</span>, <span class='va'>name</span>, <span class='va'>description</span>, <span class='va'>privacy</span>, <span class='va'>parent_team</span>, <span class='va'>org</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,8 +141,9 @@ the appropriate permissions.</p>
     </tr>
     <tr>
       <th>privacy</th>
-      <td><p>(string, optional) The level of privacy this team should have. Editing teams
-without specifying this parameter leaves privacy intact. The options are:</p>
+      <td><p>(string, optional) The level of privacy this team should have.
+Editing teams without specifying this parameter leaves privacy intact. The
+options are:</p>
 <p>For a non-nested team:</p><ul>
 <li><p><code>"secret"</code>: only visible to organization owners and members of this team.</p></li>
 <li><p><code>"closed"</code>: visible to all members of this organization.</p></li>
@@ -154,13 +155,13 @@ without specifying this parameter leaves privacy intact. The options are:</p>
     </tr>
     <tr>
       <th>parent_team</th>
-      <td><p>(integer or string, optional) The ID or name of a team to set as the
-parent team.</p></td>
+      <td><p>(integer or string, optional) The ID or name of a team to
+set as the parent team.</p></td>
     </tr>
     <tr>
       <th>org</th>
-      <td><p>(string, optional) The organization the team is associated with. Not required
-if your are specifying <code>team</code> and/or <code>parent_team</code> set by ID.</p></td>
+      <td><p>(string, optional) The organization the team is associated with.
+Not required if your are specifying <code>team</code> and/or <code>parent_team</code> set by ID.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -190,22 +191,23 @@ if your are specifying <code>team</code> and/or <code>parent_team</code> set by 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For more details see the GitHub API documentation:</p><ul>
-<li><p><a href='https://developer.github.com/v3/teams/#edit-team'>https://developer.github.com/v3/teams/#edit-team</a></p></li>
+<li><p><a href='https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#update-a-team'>https://docs.github.com/en/free-pro-team@latest/rest/reference/teams#update-a-team</a></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Update a team</span>
-  <span class='fu'>update_team</span>(
-    team        = <span class='st'>"TestTeam"</span>,
-    description = <span class='st'>"This is a test team"</span>,
-    privacy     = <span class='st'>"closed"</span>,
-    parent_team = <span class='st'>"TestTeam3"</span>,
-    org         = <span class='st'>"HairyCoos"</span>)
+  <span class='fu'>update_team</span><span class='op'>(</span>
+    team        <span class='op'>=</span> <span class='st'>"TestTeam"</span>,
+    description <span class='op'>=</span> <span class='st'>"This is a test team"</span>,
+    privacy     <span class='op'>=</span> <span class='st'>"closed"</span>,
+    parent_team <span class='op'>=</span> <span class='st'>"TestTeam3"</span>,
+    org         <span class='op'>=</span> <span class='st'>"HairyCoos"</span>
+  <span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -223,7 +225,7 @@ if your are specifying <code>team</code> and/or <code>parent_team</code> set by 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
