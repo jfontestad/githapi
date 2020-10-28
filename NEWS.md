@@ -1,3 +1,9 @@
+# githapi 0.10.19
+
+- Allowed `create_file()` to create files in subfolders
+- When checking for file existence use a `tryCatch()` rather than listing
+  all files
+
 # githapi 0.10.18
 
 - Changed app key to app ID in configuration
