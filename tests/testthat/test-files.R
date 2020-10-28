@@ -591,6 +591,45 @@ test_that("create_file creates a new commit with the file added", {
   expect_identical(main_commit$committer_email, "chad.goymer@gmail.com")
 
 
+  subfolder_commit <- create_file(
+    content = "# This is a new file\\n\\nCreated by `create_file()`",
+    path    = "subfolder/new-file-1.md",
+    branch  = "main",
+    message = "Created a new file in a subfolder with create_file()",
+    repo    = str_c("ChadGoymer/test-files-", suffix)
+  )
+
+  expect_is(subfolder_commit, "list")
+  expect_identical(attr(subfolder_commit, "status"), 200L)
+  expect_identical(
+    map_chr(subfolder_commit, ~ class(.)[[1]]),
+    c(
+      sha             = "character",
+      message         = "character",
+      author_login    = "character",
+      author_name     = "character",
+      author_email    = "character",
+      author_date     = "POSIXct",
+      committer_login = "character",
+      committer_name  = "character",
+      committer_email = "character",
+      committer_date  = "POSIXct",
+      tree_sha        = "character",
+      parents         = "character",
+      html_url        = "character"
+    )
+  )
+
+  expect_identical(
+    subfolder_commit$message,
+    "Created a new file in a subfolder with create_file()"
+  )
+  expect_identical(subfolder_commit$author_name, "Chad Goymer")
+  expect_identical(subfolder_commit$author_email, "chad.goymer@gmail.com")
+  expect_identical(subfolder_commit$committer_name, "Chad Goymer")
+  expect_identical(subfolder_commit$committer_email, "chad.goymer@gmail.com")
+
+
   branch_commit <- create_file(
     content = "# This is a new file\\n\\nCreated by `create_file()`",
     path    = "new-file-2.md",
@@ -670,6 +709,25 @@ test_that("create_file creates a new commit with the file added", {
   expect_identical(author_commit$author_email, "bob@acme.com")
   expect_identical(author_commit$committer_name, "Jane")
   expect_identical(author_commit$committer_email, "jane@acme.com")
+
+})
+
+
+test_that("Trying to create a file that already exists throws an error", {
+
+  expect_error(
+    create_file(
+      content = "# This is a new file\\n\\nCreated by `create_file()`",
+      path    = "new-file-1.md",
+      branch  = "main",
+      message = "Created a new file with create_file()",
+      repo    = str_c("ChadGoymer/test-files-", suffix)
+    ),
+    str_c(
+      "A file with path 'new-file-1.md' already exists. ",
+      "To update it use update_file()"
+    )
+  )
 
 })
 
@@ -787,6 +845,25 @@ test_that("update_file creates a new commit with the file updated", {
   expect_identical(author_commit$author_email, "bob@acme.com")
   expect_identical(author_commit$committer_name, "Jane")
   expect_identical(author_commit$committer_email, "jane@acme.com")
+
+})
+
+
+test_that("Trying to update a file that does not exist throws an error", {
+
+  expect_error(
+    update_file(
+      content = "# This is an updated file\\n\\nUpdated by `update_file()`",
+      path    = "new-file-99.md",
+      branch  = "main",
+      message = "Updated a file with update_file()",
+      repo    = str_c("ChadGoymer/test-files-", suffix)
+    ),
+    str_c(
+      "A file with path 'new-file-99.md' does not exist. ",
+      "To create it use create_file()"
+    )
+  )
 
 })
 
