@@ -506,15 +506,8 @@ download_file <- function(
     "' exists in repository '", repo, "'",
     level = 3
   )
-  contents_path <- dirname(str_c("contents/", from_path))
-  file <- gh_url("repos", repo, contents_path, ref = ref) %>%
-    gh_request("GET", ...) %>%
-    pluck(which(map_chr(., "name") == basename(from_path)))
-
-  assert(
-    !is_null(file),
-    "Cannot find file '", basename(from_path), "' in commit '", ref, "'"
-  )
+  file <- gh_url("repos", repo, "contents", from_path, ref = ref) %>%
+    gh_request("GET", ...)
 
   info(
     "Downloading file '", basename(from_path),
@@ -691,12 +684,17 @@ create_file <- function(
     "' already exists in repository '", repo, "'",
     level = 3
   )
-  contents_path <- dirname(str_c("contents/", path))
-  files <- gh_url("repos", repo, contents_path, ref = branch) %>%
-    gh_request("GET", ...)
+  file_exists <- tryCatch({
+    gh_url("repos", repo, "contents", path, ref = branch) %>%
+      gh_request("GET", ...)
+    TRUE
+  },
+  error = function(e) {
+    FALSE
+  })
 
   assert(
-    !basename(path) %in% map_chr(files, "name"),
+    !file_exists,
     "A file with path '", path,
     "' already exists. To update it use update_file()"
   )
@@ -872,13 +870,20 @@ update_file <- function(
     "' already exists in repository '", repo, "'",
     level = 3
   )
-  contents_path <- dirname(str_c("contents/", path))
-  files <- gh_url("repos", repo, contents_path, ref = branch) %>%
-    gh_request("GET", ...)
+  file <- tryCatch({
+    gh_url("repos", repo, "contents", path, ref = branch) %>%
+      gh_request("GET", ...)
+  },
+  error = function(e) {
+    NULL
+  })
 
-  if (basename(path) %in% map_chr(files, "name")) {
-    payload$sha <- files[[which(basename(path) == map_chr(files, "name"))]]$sha
-  }
+  assert(
+    !is_null(file),
+    "A file with path '", path,
+    "' does not exist. To create it use create_file()"
+  )
+  payload$sha <- file$sha
 
   info("Updating file '", basename(path), "' in repository '", repo, "'")
   commit <- gh_url("repos", repo, "contents", path) %>%
@@ -1039,16 +1044,9 @@ delete_file <- function(
     "' already exists in repository '", repo, "'",
     level = 3
   )
-  contents_path <- dirname(str_c("contents/", path))
-  files <- gh_url("repos", repo, contents_path, ref = branch) %>%
+  file <- gh_url("repos", repo, "contents", path, ref = branch) %>%
     gh_request("GET", ...)
-
-  assert(
-    basename(path) %in% map_chr(files, "name"),
-    "A file with path '", path, "' does not exist in the commit"
-  )
-
-  payload$sha <- files[[which(basename(path) == map_chr(files, "name"))]]$sha
+  payload$sha <- file$sha
 
   info("Deleting file '", basename(path), "' in repository '", repo, "'")
   commit <- gh_url("repos", repo, "contents", path) %>%
@@ -1214,24 +1212,22 @@ view_file <- function(
   )
 
   info("Viewing file '", basename(path), "' in repository '", repo, "'")
-  contents_path <- dirname(str_c("contents/", path))
-  files <- gh_url("repos", repo, contents_path, ref = ref) %>%
+  file_lst <- gh_url("repos", repo, "contents", path, ref = ref) %>%
     gh_request("GET", ...)
 
   info("Transforming results", level = 4)
-  file_gh <- files %>%
-    pluck(which(map_chr(files, "name") == basename(path))) %>%
+  file_gh <- file_lst %>%
     select_properties(properties$file) %>%
     discard(names(.) == "type")
 
   info("Done", level = 7)
   structure(
     file_gh,
-    class   = class(files),
-    url     = attr(files, "url"),
-    request = attr(files, "request"),
-    status  = attr(files, "status"),
-    header  = attr(files, "header")
+    class   = class(file_lst),
+    url     = attr(file_lst, "url"),
+    request = attr(file_lst, "request"),
+    status  = attr(file_lst, "status"),
+    header  = attr(file_lst, "header")
   )
 }
 
@@ -1256,7 +1252,8 @@ browse_files <- function(
   )
 
   info("Browsing commit '", ref, "' in repository '", repo, "'")
-  commit <- gh_url("repos", repo, "commits", ref) %>% gh_request("GET", ...)
+  commit <- gh_url("repos", repo, "commits", ref) %>%
+    gh_request("GET", ...)
 
   tree_url <- commit$html_url %>%
     str_replace(str_c(repo, "/", "commit"), str_c(repo, "/", "tree"))
