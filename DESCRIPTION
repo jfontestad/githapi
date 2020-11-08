@@ -20,7 +20,9 @@ Imports:
 Suggests: 
     httpuv,
     testthat,
-    covr
+    covr,
+    knitr,
+    rmarkdown
 Encoding: UTF-8
 Language: En-GB
 License: MIT + file LICENSE
@@ -29,3 +31,4 @@ RoxygenNote: 7.1.0
 LazyData: true
 URL: https://github.com/ChadGoymer/githapi
 BugReports: https://github.com/ChadGoymer/githapi/issues
+VignetteBuilder: knitr
